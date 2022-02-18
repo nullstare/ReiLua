@@ -1,0 +1,27 @@
+Backlog {
+	* Compilation
+		* Windows
+		* Web
+		* Could be better in general
+	* More and better examples
+
+	* Raygui
+		* Advanced controls
+	* Core
+		* File drop
+		* Screen-space-related
+		* Cursor-related
+	* Text
+		* Fonts
+		* More draw functions
+		* Codepoints
+		* String management. At least TextSplit
+	* Audio
+		* Wave?
+	* Gestures
+	* Raymath
+		* Quaternions
+	* Physac
+
+	* VR?
+}

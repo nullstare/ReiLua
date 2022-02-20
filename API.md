@@ -2,8 +2,7 @@
 
 ## Usage
 
-Application needs 'main.lua' file as entry point. ReiLua executable will first look it from same directory
-or it's path can be given by argument. There are three global functions that the engine will call, 'init', 'process' and 'draw'.
+Application needs 'main.lua' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are three global Lua functions that the engine will call, 'init', 'process' and 'draw'.
 
 ---
 > function init()

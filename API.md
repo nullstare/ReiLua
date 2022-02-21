@@ -2,7 +2,7 @@
 
 ## Usage
 
-Application needs 'main.lua' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are three global Lua functions that the engine will call, 'init', 'process' and 'draw'.
+Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are three global Lua functions that the engine will call, 'init', 'process' and 'draw'.
 
 ---
 > function init()
@@ -192,7 +192,7 @@ NPATCH_THREE_PATCH_VERTICAL
 
 NPATCH_THREE_PATCH_HORIZONTAL
 
-## Globals - Shader
+## Globals - ShaderLocationIndex
 
 SHADER_LOC_VERTEX_POSITION
 
@@ -246,7 +246,7 @@ SHADER_LOC_MAP_PREFILTER
 
 SHADER_LOC_MAP_BRDF
 
-## Globals - Shader
+## Globals - ShaderUniformDataType
 
 SHADER_UNIFORM_FLOAT
 
@@ -266,7 +266,7 @@ SHADER_UNIFORM_IVEC4
 
 SHADER_UNIFORM_SAMPLER2D
 
-## Globals - Shader
+## Globals - ShaderAttributeDataTypes
 
 SHADER_ATTRIB_FLOAT
 
@@ -1676,6 +1676,19 @@ Get texture size
 
 ---
 
+## Textures - Color/pixel
+
+---
+
+> color = RL_ColorFromHSV( float hue, float saturation, float value )
+
+Returns a Color from HSV values, hue [0..360], saturation/value [0..1]
+
+- Failure return false
+- Success return Color
+
+---
+
 ## Text - Loading
 
 ---
@@ -1690,6 +1703,15 @@ Load font from file into GPU memory ( VRAM )
 ---
 
 ## Text - Draw
+
+---
+
+> success = RL_DrawFPS( Vector2 pos )
+
+Draw current FPS
+
+- Failure return false
+- Success return true
 
 ---
 

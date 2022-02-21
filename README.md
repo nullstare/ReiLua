@@ -1,16 +1,20 @@
 ## About
 
-Idea of this project was to bring the power and simplicity of raylib to easy beginner friendly language like Lua in a very straight forward manner. It is not a straight binding to Raylib, some functions are not included and some are added. The idea of pointing "main.lua" file and access functions "init", "process" and "draw" are borrowed from Löve game engine.
+Idea of this project was to bring the power and simplicity of raylib to easy beginner friendly language like Lua in a very straight forward manner. It is not a straight binding to Raylib, some functions will not be included and some are added. The idea of pointing "main.lua" file and access functions "init", "process" and "draw" are borrowed from Löve game engine.
 
-Need for boilerplate code is minimal and in true Lua fashion (in better and worse) you don't need to worry about types and typecasts since all Raylib types are just lua tables and object id's. Also what Lua cannot handle, the engine is simple enough to be fairly easily extended with new functionality or by using Lua C-libraries.
+Need for boilerplate code is minimal and in true Lua fashion (in better and worse) you don't need to worry about types since all Raylib types are just lua tables and object id's. Also what Lua cannot handle, the engine is simple enough to be fairly easily extended with new functionality or by using Lua C-libraries.
+
+ReiLua is not planned to be a one-to-one binding to raylib. If you want more direct bindings, there are other projects like https://github.com/TSnake41/raylib-lua.
+
+Reilua means fair in finnish.
 
 ## Status
 
-Engine is currently in arbitrary version 0.1 and some functionality is still missing. Also the build system is still lacking of Web build and Mac is not tested.
+ReiLua is currently in arbitrary version 0.1 and some planned raylib functionality is still missing. Also the build system is still lacking of Web build and Mac is not tested.
 
 ## Usage
 
-Application needs 'main.lua' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are three global Lua functions that the engine will call, 'init', 'process' and 'draw'.
+Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are three global Lua functions that the engine will call, 'init', 'process' and 'draw'.
 
 Example of basic "main.lua" file that will show basic windows with text.
 
@@ -35,8 +39,8 @@ function process( delta )
 end
 
 function draw()
-	RL_ClearBackground( RAYWHITE );
-    RL_DrawText( 0, "Congrats! You created your first window!", textPos, 20, 2, textColor );
+	RL_ClearBackground( RAYWHITE )
+    RL_DrawText( 0, "Congrats! You created your first window!", textPos, 20, 2, textColor )
 end
 ```
 
@@ -57,6 +61,7 @@ I think the simplest way would be to statically link Raylib and Lua to the same 
 //TODO In future these instructions should be set on fixed release versions of Raylib.
 
 https://github.com/raysan5/raylib
+
 https://github.com/lua/lua
 
 ### Linux
@@ -103,7 +108,7 @@ mingw32-make
 * I haven't got Lua to compile on Windows so we will download it's binarys from http://luabinaries.sourceforge.net/download.html. Take the one with "Windows x64 DLL and Includes (MingW-w64 6 Built)".
 * Copy "liblua54.a" to "ReiLua/lib" folder.
 * Change it's name to "liblua.a" or change the part in "CMakeLists.txt" where it links to "/lib/liblua.a" to "/lib/liblua54.a".
-* Navigate to "ReiLua/build" folder with "w64devkit" and run...
+* Navigate to "ReiLua/build" folder on "w64devkit" and run...
 
 ```
 cmake -G "MinGW Makefiles" ..

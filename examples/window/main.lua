@@ -18,6 +18,6 @@ function process( delta )
 end
 
 function draw()
-	RL_ClearBackground( RAYWHITE );
-    RL_DrawText( 0, "Congrats! You created your first window!", textPos, 20, 2, textColor );
+	RL_ClearBackground( RAYWHITE )
+    RL_DrawText( 0, "Congrats! You created your first window!", textPos, 20, 2, textColor )
 end

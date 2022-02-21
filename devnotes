@@ -1,9 +1,6 @@
 Backlog {
 	* Compilation
-		* Windows
-			Mingw cross compilation causes name clashes with raylib https://github.com/raysan5/raylib/issues/1217
 		* Web
-		* Better CMakeList
 	* More and better examples
 
 	* Raygui

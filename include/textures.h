@@ -42,3 +42,5 @@ int ltexturesGenTextureMipmaps( lua_State *L );
 int ltexturesSetTextureFilter( lua_State *L );
 int ltexturesSetTextureWrap( lua_State *L );
 int ltexturesGetTextureSize( lua_State *L );
+/* Color/pixel */
+int ltexturesColorFromHSV( lua_State *L );

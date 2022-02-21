@@ -66,6 +66,28 @@ int lmodelsLoadFont( lua_State *L ) {
 */
 
 /*
+> success = RL_DrawFPS( Vector2 pos )
+
+Draw current FPS
+
+- Failure return false
+- Success return true
+*/
+int ltextDrawFPS( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_DrawFPS( Vector2 pos )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 pos = uluaGetVector2( L );
+
+	DrawFPS( pos.x, pos.y );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
 > success = RL_DrawText( Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
 
 Draw text using font and additional parameters

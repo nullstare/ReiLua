@@ -1055,3 +1055,26 @@ int ltexturesGetTextureSize( lua_State *L ) {
 
 	return 1;
 }
+
+/*
+## Textures - Color/pixel
+*/
+
+/*
+> color = RL_ColorFromHSV( float hue, float saturation, float value )
+
+Returns a Color from HSV values, hue [0..360], saturation/value [0..1]
+
+- Failure return false
+- Success return Color
+*/
+int ltexturesColorFromHSV( lua_State *L ) {
+	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_ColorFromHSV( float hue, float saturation, float value )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushColor( L, ColorFromHSV( lua_tonumber( L, -3 ), lua_tonumber( L, -2 ), lua_tonumber( L, -1 ) ) );
+
+	return 1;
+}

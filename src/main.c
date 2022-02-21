@@ -7,7 +7,7 @@ int main( int argn, const char **argc ) {
 
 	if ( 1 < argn ) {
 		if ( strcmp( argc[1], "--version" ) == 0 || strcmp( argc[1], "-v" ) == 0 ) {
-			printf( "ReiLua %d.%d\n", VERSION_MAJOR, VERSION_MINOR );
+			printf( "ReiLua %d.%d.%d\n", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH );
 
 			return 1;
 		}

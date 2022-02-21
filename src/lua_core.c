@@ -114,7 +114,7 @@ void defineGlobals() {
 	assignGlobalInt( NPATCH_NINE_PATCH, "NPATCH_NINE_PATCH" );
 	assignGlobalInt( NPATCH_THREE_PATCH_VERTICAL, "NPATCH_THREE_PATCH_VERTICAL" );
 	assignGlobalInt( NPATCH_THREE_PATCH_HORIZONTAL, "NPATCH_THREE_PATCH_HORIZONTAL" );
-	/* Shader location index */
+	/* ShaderLocationIndex */
 	assignGlobalInt( SHADER_LOC_VERTEX_POSITION, "SHADER_LOC_VERTEX_POSITION" );
 	assignGlobalInt( SHADER_LOC_VERTEX_TEXCOORD01, "SHADER_LOC_VERTEX_TEXCOORD01" );
 	assignGlobalInt( SHADER_LOC_VERTEX_TEXCOORD02, "SHADER_LOC_VERTEX_TEXCOORD02" );
@@ -141,7 +141,7 @@ void defineGlobals() {
 	assignGlobalInt( SHADER_LOC_MAP_IRRADIANCE, "SHADER_LOC_MAP_IRRADIANCE" );
 	assignGlobalInt( SHADER_LOC_MAP_PREFILTER, "SHADER_LOC_MAP_PREFILTER" );
 	assignGlobalInt( SHADER_LOC_MAP_BRDF, "SHADER_LOC_MAP_BRDF" );
-	/* Shader uniform data type */
+	/* ShaderUniformDataType */
 	assignGlobalInt( SHADER_UNIFORM_FLOAT, "SHADER_UNIFORM_FLOAT" );
 	assignGlobalInt( SHADER_UNIFORM_VEC2, "SHADER_UNIFORM_VEC2" );
 	assignGlobalInt( SHADER_UNIFORM_VEC3, "SHADER_UNIFORM_VEC3" );
@@ -151,7 +151,7 @@ void defineGlobals() {
 	assignGlobalInt( SHADER_UNIFORM_IVEC3, "SHADER_UNIFORM_IVEC3" );
 	assignGlobalInt( SHADER_UNIFORM_IVEC4, "SHADER_UNIFORM_IVEC4" );
 	assignGlobalInt( SHADER_UNIFORM_SAMPLER2D, "SHADER_UNIFORM_SAMPLER2D" );
-	/* Shader attribute data types */
+	/* ShaderAttributeDataTypes */
 	assignGlobalInt( SHADER_ATTRIB_FLOAT, "SHADER_ATTRIB_FLOAT" );
 	assignGlobalInt( SHADER_ATTRIB_VEC2, "SHADER_ATTRIB_VEC2" );
 	assignGlobalInt( SHADER_ATTRIB_VEC3, "SHADER_ATTRIB_VEC3" );
@@ -214,6 +214,11 @@ bool luaCallMain() {
 	char path[ STRING_LEN ] = { '\0' };
 
 	sprintf( path, "%smain.lua", state->exePath );
+
+	/* Alternatively look for main. Could be precompiled binary file. */
+	if ( !FileExists( path ) ) {
+		sprintf( path, "%smain", state->exePath );
+	}
 
     luaL_dofile( L, path );
 
@@ -451,6 +456,8 @@ void luaRegister() {
 	lua_register( L, "RL_SetTextureWrap", ltexturesSetTextureWrap );
 	lua_register( L, "RL_GetTextureSize", ltexturesGetTextureSize );
 
+	lua_register( L, "RL_ColorFromHSV", ltexturesColorFromHSV );
+
 	/* Models. */
 		/* Basic. */
 	lua_register( L, "RL_DrawLine3D", lmodelsDrawLine3D );
@@ -523,6 +530,7 @@ void luaRegister() {
 		/* Loading. */
 	lua_register( L, "RL_LoadFont", lmodelsLoadFont );
 		/* Drawing. */
+	lua_register( L, "RL_DrawFPS", ltextDrawFPS );
 	lua_register( L, "RL_DrawText", ltextDrawText );
 
 	/* Audio. */

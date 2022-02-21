@@ -22,7 +22,7 @@ apiFile:write( "# ReiLua API\n" )
 -- Usage.
 
 apiFile:write( "\n## Usage\n" )
-apiFile:write( "\nApplication needs 'main.lua' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where \"main.lua\" is located can be given as argument. There are three global Lua functions that the engine will call, 'init', 'process' and 'draw'.\n" )
+apiFile:write( "\nApplication needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where \"main.lua\" is located can be given as argument. There are three global Lua functions that the engine will call, 'init', 'process' and 'draw'.\n" )
 
 apiFile:write( "\n---\n> function init()\n\
 This function will be called first when 'main.lua' is found\n\n---\n" )

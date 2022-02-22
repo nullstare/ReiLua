@@ -213,12 +213,16 @@ bool luaCallMain() {
 
 	char path[ STRING_LEN ] = { '\0' };
 
+/* If web, set path to resources folder. */
+#ifdef EMSCRIPTEN
+	sprintf( path, "resources/main.lua" );
+#else
 	sprintf( path, "%smain.lua", state->exePath );
-
 	/* Alternatively look for main. Could be precompiled binary file. */
 	if ( !FileExists( path ) ) {
 		sprintf( path, "%smain", state->exePath );
 	}
+#endif
 
     luaL_dofile( L, path );
 

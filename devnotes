@@ -1,6 +1,4 @@
 Backlog {
-	* Compilation
-		* Web
 	* More and better examples
 
 	* Raygui
@@ -13,9 +11,9 @@ Backlog {
 		* Fonts
 		* More draw functions
 		* Codepoints
-		* String management. At least TextSplit
+		* String management. At least TextSplit.
 	* Audio
-		* Wave?
+		* Wave
 	* Gestures
 	* Raymath
 		* Quaternions

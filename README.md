@@ -10,7 +10,7 @@ Reilua means fair in finnish.
 
 ## Status
 
-ReiLua is currently in arbitrary version 0.1 and some planned raylib functionality is still missing. Also the build system is still lacking of Web build and Mac is not tested.
+ReiLua is currently in arbitrary version 0.1 and some planned raylib functionality is still missing.
 
 ## Usage
 
@@ -136,3 +136,65 @@ Not tested, but I guess it should work similarly to Linux.
 ### Raspberry Pi
 
 Works best when compiled using PLATFORM=DRM, but Raylib seems to have some problems with the input handling.
+
+### Web
+
+Compile Raylib for web by following it's instructions. https://github.com/raysan5/raylib/wiki/Working-for-Web-(HTML5)#1-install-emscripten-toolchain
+
+Lua can be compiled by making few changes to it's makefile.
+```
+MYCFLAGS= $(LOCAL) -std=c99 -DLUA_USE_LINUX -DLUA_USE_READLINE
+# to
+MYCFLAGS= $(LOCAL) -std=c99
+
+MYLIBS= -ldl -lreadline
+# to
+MYLIBS= -ldl
+
+CC= gcc
+# to
+CC= emcc
+
+AR= ar rc
+# to
+AR= emar
+
+# And a little bit more down.
+	$(AR) $@ $?
+# to
+	$(AR) rcs $@ $?
+```
+
+* If your enviromental variables for "emsdk" are correct, you should be able to compile with make.
+* You should now have "libraylib.a" and "liblua.a" librarys.
+* Put them into "ReiLua/lib/web/".
+* Navigate into "ReiLua/build/".
+
+Emscripten builds the resources like lua files and images to "ReiLua.data" file so we will create folder called "resources" that should include all that. "resources" should also be included in all resource paths. "main.lua" should be located in the root of that folder. So we should now have.
+
+```
+ReiLua
+ \build
+ |\resources
+ ||\main.lua
+```
+
+We can now build the game. You can use the command it top of the "CMakeLists.txt" to use emsdk toolchain with cmake. Remember to replace \<YOUR PATH HERE> with correct path.
+
+```
+cmake .. -DCMAKE_TOOLCHAIN_FILE=<YOUR PATH HERE>/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DPLATFORM=Web
+
+make
+```
+
+You should now have "ReiLua.html", "ReiLua.js", "ReiLua.wasm" and "ReiLua.data". You can test the game by creating localhost with Python.
+
+```
+python -m http.server 8080
+```
+
+You should now be able to access the webpage from browser.
+
+```
+localhost:8080/ReiLua.html
+```

@@ -3,3 +3,8 @@ cmake_install.cmake
 Makefile
 CMakeFiles
 ReiLua
+resources
+ReiLua.data
+ReiLua.html
+ReiLua.js
+ReiLua.wasm

@@ -32,6 +32,8 @@ int lcoreDisableCursor( lua_State *L );
 int lcoreIsCursorOnScreen( lua_State *L );
 /* Drawing. */
 int lcoreClearBackground( lua_State *L );
+int lcoreBeginDrawing( lua_State *L );
+int lcoreEndDrawing( lua_State *L );
 int lcoreBeginBlendMode( lua_State *L );
 int lcoreEndBlendMode( lua_State *L );
 int lcoreBeginScissorMode( lua_State *L );

@@ -10,7 +10,37 @@ Reilua means fair in finnish.
 
 ## Status
 
-ReiLua is currently in arbitrary version 0.1 and some planned raylib functionality is still missing.
+ReiLua is currently in arbitrary version 0.1 and some planned raylib functionality is still missing but it already has over 300 functions.
+
+List of some missing features that are planned to be included. For specific function check API.
+
+* Core
+	* Some screen-space-related functions
+	* Files drop
+	* custom callbacks
+	* camera2d and it's functions
+	* VR stereo config functions for VR simulator
+* Textures
+	* Most image loading functions
+	* Image manipulation functions
+	* Texture update functions
+	* Color/pixel related functions
+* Text
+	* Some font loading/unloading functions
+* Audio
+	* Wave
+	* AudioStream management functions
+* Mesh
+	* Some mesh management functions
+
+Submodules.
+
+* Raygui
+	* Advanced controls
+* Raymath
+	* Quaternions
+* Physac
+	* Whole implementation
 
 ## Usage
 

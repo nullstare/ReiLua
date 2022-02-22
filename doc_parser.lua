@@ -30,7 +30,8 @@ apiFile:write( "\n> function process( delta )\n\
 This function will be called every frame during execution. It will get time duration from last frame on argument 'delta'\n\n---\n" )
 apiFile:write( "\n> function draw()\n\
 This function will be called every frame after process and it should have all rendering related functions.\
-Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it\n\n---\n" )
+Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it.\
+You can still use RL_BeginDrawing() and RL_EndDrawing() manually from anywhere.\n\n---\n" )
 
 -- Globals.
 

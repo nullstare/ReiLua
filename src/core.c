@@ -495,6 +495,28 @@ int lcoreClearBackground( lua_State *L ) {
 }
 
 /*
+> RL_BeginDrawing()
+
+Setup canvas ( framebuffer ) to start drawing
+*/
+int lcoreBeginDrawing( lua_State *L ) {
+	BeginDrawing();
+
+	return 1;
+}
+
+/*
+> RL_EndDrawing()
+
+End canvas drawing and swap buffers ( double buffering )
+*/
+int lcoreEndDrawing( lua_State *L ) {
+	EndDrawing();
+
+	return 1;
+}
+
+/*
 > success = RL_BeginBlendMode( int mode )
 
 Begin blending mode ( BLEND_ALPHA, BLEND_ADDITIVE, BLEND_MULTIPLIED... )

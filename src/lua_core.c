@@ -228,6 +228,10 @@ bool luaCallMain() {
 /* If web, set path to resources folder. */
 #ifdef EMSCRIPTEN
 	sprintf( path, "resources/main.lua" );
+	/* Alternatively look for main. Could be precompiled binary file. */
+	if ( !FileExists( path ) ) {
+		sprintf( path, "resources/main" );
+	}
 #else
 	sprintf( path, "%smain.lua", state->exePath );
 	/* Alternatively look for main. Could be precompiled binary file. */
@@ -347,6 +351,8 @@ void luaRegister() {
 	lua_register( L, "RL_IsCursorOnScreen", lcoreIsCursorOnScreen );
 		/* Drawing. */
 	lua_register( L, "RL_ClearBackground", lcoreClearBackground );
+	lua_register( L, "RL_BeginDrawing", lcoreBeginDrawing );
+	lua_register( L, "RL_EndDrawing", lcoreEndDrawing );
 	lua_register( L, "RL_BeginBlendMode", lcoreBeginBlendMode );
 	lua_register( L, "RL_EndBlendMode", lcoreEndBlendMode );
 	lua_register( L, "RL_BeginScissorMode", lcoreBeginScissorMode );

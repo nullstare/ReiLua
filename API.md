@@ -20,7 +20,8 @@ This function will be called every frame during execution. It will get time dura
 > function draw()
 
 This function will be called every frame after process and it should have all rendering related functions.
-Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it
+Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it.
+You can still use RL_BeginDrawing() and RL_EndDrawing() manually from anywhere.
 
 ---
 
@@ -695,6 +696,18 @@ Set background color ( framebuffer clear color )
 
 - Failure return false
 - Success return true
+
+---
+
+> RL_BeginDrawing()
+
+Setup canvas ( framebuffer ) to start drawing
+
+---
+
+> RL_EndDrawing()
+
+End canvas drawing and swap buffers ( double buffering )
 
 ---
 

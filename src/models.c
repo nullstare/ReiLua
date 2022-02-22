@@ -939,7 +939,14 @@ int lmodelsGenMeshHeightmap( lua_State *L ) {
 	}
 	Vector3 size = uluaGetVector3( L );
 	lua_pop( L, 1 );
-	Image *heightmap = state->images[ lua_tointeger( L, -1 ) ];
+	size_t imageId = lua_tointeger( L, -1 );
+
+	if ( !validImage( imageId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	Image *heightmap = state->images[ imageId ];
 	int i = 0;
 
 	for ( i = 0; i < state->meshCount; i++ ) {
@@ -1112,7 +1119,7 @@ int lmodelsDrawMesh( lua_State *L ) {
 	return 1;
 }
 
-/* TODO Needs shader to work. Test it when we have shaders. */
+/* TODO Not testet. */
 /*
 > success = RL_DrawMeshInstanced( Mesh mesh, Material material, Matrix{} transforms, int instances )
 

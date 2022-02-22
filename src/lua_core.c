@@ -156,6 +156,18 @@ void defineGlobals() {
 	assignGlobalInt( SHADER_ATTRIB_VEC2, "SHADER_ATTRIB_VEC2" );
 	assignGlobalInt( SHADER_ATTRIB_VEC3, "SHADER_ATTRIB_VEC3" );
 	assignGlobalInt( SHADER_ATTRIB_VEC4, "SHADER_ATTRIB_VEC4" );
+	/* Gesture */
+	assignGlobalInt( GESTURE_NONE, "GESTURE_NONE" );
+	assignGlobalInt( GESTURE_TAP, "GESTURE_TAP" );
+	assignGlobalInt( GESTURE_DOUBLETAP, "GESTURE_DOUBLETAP" );
+	assignGlobalInt( GESTURE_HOLD, "GESTURE_HOLD" );
+	assignGlobalInt( GESTURE_DRAG, "GESTURE_DRAG" );
+	assignGlobalInt( GESTURE_SWIPE_RIGHT, "GESTURE_SWIPE_RIGHT" );
+	assignGlobalInt( GESTURE_SWIPE_LEFT, "GESTURE_SWIPE_LEFT" );
+	assignGlobalInt( GESTURE_SWIPE_UP, "GESTURE_SWIPE_UP" );
+	assignGlobalInt( GESTURE_SWIPE_DOWN, "GESTURE_SWIPE_DOWN" );
+	assignGlobalInt( GESTURE_PINCH_IN, "GESTURE_PINCH_IN" );
+	assignGlobalInt( GESTURE_PINCH_OUT, "GESTURE_PINCH_OUT" );
 	/* Colors */
 	assignGlobalColor( WHITE, "WHITE" );
 	assignGlobalColor( BLACK, "BLACK" );
@@ -402,6 +414,17 @@ void luaRegister() {
 	lua_register( L, "RL_GetMouseDelta", lcoreGetMouseDelta );
 	lua_register( L, "RL_GetMouseWheelMove", lcoreGetMouseWheelMove );
 	lua_register( L, "RL_SetMousePosition", lcoreSetMousePosition );
+	lua_register( L, "RL_GetTouchPosition", lcoreGetTouchPosition );
+	lua_register( L, "RL_GetTouchPointId", lcoreGetTouchPointId );
+	lua_register( L, "RL_GetTouchPointCount", lcoreGetTouchPointCount );
+	lua_register( L, "RL_SetGesturesEnabled", lcoreSetGesturesEnabled );
+	lua_register( L, "RL_IsGestureDetected", lcoreIsGestureDetected );
+	lua_register( L, "RL_GetGestureDetected", lcoreGetGestureDetected );
+	lua_register( L, "RL_GetGestureHoldDuration", lcoreGetGestureHoldDuration );
+	lua_register( L, "RL_GetGestureDragVector", lcoreGetGestureDragVector );
+	lua_register( L, "RL_GetGestureDragAngle", lcoreGetGestureDragAngle );
+	lua_register( L, "RL_GetGesturePinchVector", lcoreGetGesturePinchVector );
+	lua_register( L, "RL_GetGesturePinchAngle", lcoreGetGesturePinchAngle );
 
 	/* Shapes. */
 		/* Drawing. */
@@ -532,10 +555,12 @@ void luaRegister() {
 
 	/* Text. */
 		/* Loading. */
-	lua_register( L, "RL_LoadFont", lmodelsLoadFont );
+	lua_register( L, "RL_LoadFont", ltextLoadFont );
+	lua_register( L, "RL_UnloadFont", ltextUnloadFont );
 		/* Drawing. */
 	lua_register( L, "RL_DrawFPS", ltextDrawFPS );
 	lua_register( L, "RL_DrawText", ltextDrawText );
+	lua_register( L, "RL_DrawTextPro", ltextDrawTextPro );
 
 	/* Audio. */
 		/* Sound. */

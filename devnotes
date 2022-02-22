@@ -4,17 +4,14 @@ Backlog {
 	* Raygui
 		* Advanced controls
 	* Core
-		* File drop
 		* Screen-space-related
-		* Cursor-related
+		* Files drop
 	* Text
-		* Fonts
-		* More draw functions
+		* More Font loading/unloading functions
 		* Codepoints
 		* String management. At least TextSplit.
 	* Audio
 		* Wave
-	* Gestures
 	* Raymath
 		* Quaternions
 	* Physac

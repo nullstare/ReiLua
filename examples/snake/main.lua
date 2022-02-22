@@ -210,8 +210,13 @@ function draw()
 		drawGrass()
 		drawSnake()
 		drawApple()
+
+		if gameState == STATE.OVER then
+			RL_DrawText( 0, "Press Enter to\nrestart", { 10, 10 }, 10, 2, WHITE )
+		end
 	RL_EndTextureMode()
 
+	
 	-- Draw framebuffer to window.
 	RL_SetTextureSource( TEXTURE_SOURCE_RENDER_TEXTURE )
 	RL_DrawTexturePro( framebuffer, { 0, 0, RESOLUTION[1], -RESOLUTION[2] }, { 0, 0, winSize[1], winSize[2] }, { 0, 0 }, 0.0, WHITE )

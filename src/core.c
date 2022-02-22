@@ -326,9 +326,11 @@ int lcoreSetTargetFPS( lua_State *L ) {
 }
 
 /*
-> RL_GetFrameTime()
+> delta = RL_GetFrameTime()
 
 Get time in seconds for last frame drawn ( Delta time )
+
+- Success return float
 */
 int lcoreGetFrameTime( lua_State *L ) {
 	lua_pushnumber( L, GetFrameTime() );
@@ -337,9 +339,11 @@ int lcoreGetFrameTime( lua_State *L ) {
 }
 
 /*
-> RL_GetTime()
+> time = RL_GetTime()
 
 Get elapsed time in seconds since InitWindow()
+
+- Success return float
 */
 int lcoreGetTime( lua_State *L ) {
 	lua_pushnumber( L, GetTime() );
@@ -1260,6 +1264,174 @@ int lcoreSetMousePosition( lua_State *L ) {
 
 	SetMousePosition( pos.x, pos.y );
 	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> position = RL_GetTouchPosition( int index )
+
+Get touch position XY for a touch point index ( relative to screen size )
+
+- Failure return false
+- Success return Vector2
+*/
+int lcoreGetTouchPosition( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetTouchPosition( int index )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushVector2( L, GetTouchPosition( lua_tointeger( L, -1 ) ) );
+
+	return 1;
+}
+
+/*
+> id = RL_GetTouchPointId( int index )
+
+Get touch point identifier for given index
+
+- Failure return false
+- Success return int
+*/
+int lcoreGetTouchPointId( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetTouchPointId( int index )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	lua_pushinteger( L, GetTouchPointId( lua_tointeger( L, -1 ) ) );
+
+	return 1;
+}
+
+/*
+> count = RL_GetTouchPointCount()
+
+Get touch point identifier for given index
+
+- Success return int
+*/
+int lcoreGetTouchPointCount( lua_State *L ) {
+	lua_pushinteger( L, GetTouchPointCount() );
+
+	return 1;
+}
+
+/*
+> success = RL_SetGesturesEnabled( unsigned int flags )
+
+Enable a set of gestures using flags
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetGesturesEnabled( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetGesturesEnabled( unsigned int flags )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	SetGesturesEnabled( (unsigned int)lua_tointeger( L, -1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> detected = RL_IsGestureDetected( int gesture )
+
+Check if a gesture have been detected
+
+- Failure return nil
+- Success return bool
+*/
+int lcoreIsGestureDetected( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_IsGestureDetected( int gesture )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	lua_pushboolean( L, IsGestureDetected( lua_tointeger( L, -1 ) ) );
+
+	return 1;
+}
+
+/*
+> gesture = RL_GetGestureDetected()
+
+Get latest detected gesture
+
+- Success return int
+*/
+int lcoreGetGestureDetected( lua_State *L ) {
+	lua_pushinteger( L, GetGestureDetected() );
+
+	return 1;
+}
+
+/*
+> time = RL_GetGestureHoldDuration()
+
+Get gesture hold time in milliseconds
+
+- Success return float
+*/
+int lcoreGetGestureHoldDuration( lua_State *L ) {
+	lua_pushnumber( L, GetGestureHoldDuration() );
+
+	return 1;
+}
+
+/*
+> vector = RL_GetGestureDragVector()
+
+Get gesture drag vector
+
+- Success return Vector2
+*/
+int lcoreGetGestureDragVector( lua_State *L ) {
+	uluaPushVector2( L, GetGestureDragVector() );
+
+	return 1;
+}
+
+/*
+> angle = RL_GetGestureDragAngle()
+
+Get gesture drag angle
+
+- Success return float
+*/
+int lcoreGetGestureDragAngle( lua_State *L ) {
+	lua_pushnumber( L, GetGestureDragAngle() );
+
+	return 1;
+}
+
+/*
+> vector = RL_GetGesturePinchVector()
+
+Get gesture pinch delta
+
+- Success return Vector2
+*/
+int lcoreGetGesturePinchVector( lua_State *L ) {
+	uluaPushVector2( L, GetGesturePinchVector() );
+
+	return 1;
+}
+
+/*
+> angle = RL_GetGesturePinchAngle()
+
+Get gesture pinch angle
+
+- Success return float
+*/
+int lcoreGetGesturePinchAngle( lua_State *L ) {
+	lua_pushnumber( L, GetGesturePinchAngle() );
 
 	return 1;
 }

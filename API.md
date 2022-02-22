@@ -276,6 +276,30 @@ SHADER_ATTRIB_VEC3
 
 SHADER_ATTRIB_VEC4
 
+## Globals - Gesture
+
+GESTURE_NONE
+
+GESTURE_TAP
+
+GESTURE_DOUBLETAP
+
+GESTURE_HOLD
+
+GESTURE_DRAG
+
+GESTURE_SWIPE_RIGHT
+
+GESTURE_SWIPE_LEFT
+
+GESTURE_SWIPE_UP
+
+GESTURE_SWIPE_DOWN
+
+GESTURE_PINCH_IN
+
+GESTURE_PINCH_OUT
+
 ## Globals - Colors
 
 WHITE
@@ -579,15 +603,19 @@ Set target FPS ( maximum )
 
 ---
 
-> RL_GetFrameTime()
+> delta = RL_GetFrameTime()
 
 Get time in seconds for last frame drawn ( Delta time )
 
+- Success return float
+
 ---
 
-> RL_GetTime()
+> time = RL_GetTime()
 
 Get elapsed time in seconds since InitWindow()
+
+- Success return float
 
 ---
 
@@ -975,6 +1003,98 @@ Set mouse position XY
 
 - Failure return false
 - Success return true
+
+---
+
+> position = RL_GetTouchPosition( int index )
+
+Get touch position XY for a touch point index ( relative to screen size )
+
+- Failure return false
+- Success return Vector2
+
+---
+
+> id = RL_GetTouchPointId( int index )
+
+Get touch point identifier for given index
+
+- Failure return false
+- Success return int
+
+---
+
+> count = RL_GetTouchPointCount()
+
+Get touch point identifier for given index
+
+- Success return int
+
+---
+
+> success = RL_SetGesturesEnabled( unsigned int flags )
+
+Enable a set of gestures using flags
+
+- Failure return false
+- Success return true
+
+---
+
+> detected = RL_IsGestureDetected( int gesture )
+
+Check if a gesture have been detected
+
+- Failure return nil
+- Success return bool
+
+---
+
+> gesture = RL_GetGestureDetected()
+
+Get latest detected gesture
+
+- Success return int
+
+---
+
+> time = RL_GetGestureHoldDuration()
+
+Get gesture hold time in milliseconds
+
+- Success return float
+
+---
+
+> vector = RL_GetGestureDragVector()
+
+Get gesture drag vector
+
+- Success return Vector2
+
+---
+
+> angle = RL_GetGestureDragAngle()
+
+Get gesture drag angle
+
+- Success return float
+
+---
+
+> vector = RL_GetGesturePinchVector()
+
+Get gesture pinch delta
+
+- Success return Vector2
+
+---
+
+> angle = RL_GetGesturePinchAngle()
+
+Get gesture pinch angle
+
+- Success return float
 
 ---
 
@@ -1702,6 +1822,15 @@ Load font from file into GPU memory ( VRAM )
 
 ---
 
+> success = RL_UnloadFont( Font font )
+
+Unload Font from GPU memory ( VRAM )
+
+- Failure return false
+- Success return true
+
+---
+
 ## Text - Draw
 
 ---
@@ -1718,6 +1847,15 @@ Draw current FPS
 > success = RL_DrawText( Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
 
 Draw text using font and additional parameters
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawTextPro( Font font, const char text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint )
+
+Draw text using Font and pro parameters ( rotation )
 
 - Failure return false
 - Success return true

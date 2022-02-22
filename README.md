@@ -183,7 +183,6 @@ We can now build the game. You can use the command it top of the "CMakeLists.txt
 
 ```
 cmake .. -DCMAKE_TOOLCHAIN_FILE=<YOUR PATH HERE>/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DPLATFORM=Web
-
 make
 ```
 

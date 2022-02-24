@@ -26,7 +26,7 @@ function init()
 	RL_SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 
 	camera = RL_CreateCamera3D()
-	RL_SetCamera3DPosition( camera, { 0, 2, 4 } )
+	RL_SetCamera3DPosition( camera, { 0, 8, 16 } )
 	RL_SetCamera3DTarget( camera, { 0, 0, 0 } )
 	RL_SetCamera3DUp( camera, { 0, 2, 0 } )
 	RL_SetCamera3DMode( camera, CAMERA_FREE )
@@ -68,6 +68,27 @@ function init()
 	RL_SetTextureSource( TEXTURE_SOURCE_TEXTURE )
 
 	matrix = RL_MatrixMultiply( RL_MatrixIdentity(), RL_MatrixTranslate( { -4, 0, -4 } ) )
+end
+
+function process( delta )
+	-- print( "RL_GetTouchPointCount()", RL_GetTouchPointCount() )
+	-- print( "RL_GetGestureDetected()", RL_GetGestureDetected() )
+	-- local gesture = RL_GetGestureDetected()
+
+	-- if gesture then
+	-- 	local dragVec = RL_GetGestureDragVector()
+	-- 	local pinchVec = RL_GetGesturePinchVector()
+	-- 	-- print( "gesture "..gesture, "dragVec "..dragVec[1]..", "..dragVec[2] )
+	-- 	print( "gesture "..gesture, "dragVec "..pinchVec[1]..", "..pinchVec[2] )
+	-- end
+	
+	-- local vec = RL_GetGestureDragVector()
+
+	-- print( vec[1]..", "..vec[2] )
+
+	-- if RL_IsGestureDetected() then
+	-- 	print( RL_GetGestureDetected() )
+	-- end
 end
 
 function draw()

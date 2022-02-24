@@ -12,7 +12,7 @@ Reilua means fair in finnish.
 
 ReiLua is currently in arbitrary version 0.1 and some planned raylib functionality is still missing but it already has over 300 functions.
 
-List of some missing features that are planned to be included. For specific function check API.
+List of some MISSING features that are planned to be included. For specific function, check API.
 
 * Core
 	* Some screen-space-related functions
@@ -122,8 +122,6 @@ Run example.
 If you now see extremely low res snake racing off the window then you are successfull. Congratulations! You can reset the game by pressing enter.
 
 ### Windows
-
-I don't have much experience on compiling on Windows, but I got the following method to work.
 
 * Download "w64devkit" from https://github.com/skeeto/w64devkit and "CMake" from https://cmake.org/download/. Install CMake with path environment variables set.
 * Download Raylib source.

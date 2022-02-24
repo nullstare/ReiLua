@@ -16,5 +16,3 @@
 #include <lualib.h>
 #include <lauxlib.h>
 #include <stdint.h>
-
-#include "glfw3.h"

@@ -43,4 +43,14 @@ int ltexturesSetTextureFilter( lua_State *L );
 int ltexturesSetTextureWrap( lua_State *L );
 int ltexturesGetTextureSize( lua_State *L );
 /* Color/pixel */
+int ltexturesFade( lua_State *L );
+int ltexturesColorToInt( lua_State *L );
+int ltexturesColorNormalize( lua_State *L );
+int ltexturesColorFromNormalized( lua_State *L );
+int ltexturesColorToHSV( lua_State *L );
 int ltexturesColorFromHSV( lua_State *L );
+int ltexturesColorAlpha( lua_State *L );
+int ltexturesColorAlphaBlend( lua_State *L );
+int ltexturesGetColor( lua_State *L );
+int ltexturesGetPixelColor( lua_State *L );
+int ltexturesGetPixelDataSize( lua_State *L );

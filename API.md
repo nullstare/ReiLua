@@ -301,6 +301,50 @@ GESTURE_PINCH_IN
 
 GESTURE_PINCH_OUT
 
+## Globals - PixelFormats
+
+PIXELFORMAT_UNCOMPRESSED_GRAYSCALE
+
+PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA
+
+PIXELFORMAT_UNCOMPRESSED_R5G6B5
+
+PIXELFORMAT_UNCOMPRESSED_R8G8B8
+
+PIXELFORMAT_UNCOMPRESSED_R5G5B5A1
+
+PIXELFORMAT_UNCOMPRESSED_R4G4B4A4
+
+PIXELFORMAT_UNCOMPRESSED_R8G8B8A8
+
+PIXELFORMAT_UNCOMPRESSED_R32
+
+PIXELFORMAT_UNCOMPRESSED_R32G32B32
+
+PIXELFORMAT_UNCOMPRESSED_R32G32B32A32
+
+PIXELFORMAT_COMPRESSED_DXT1_RGB
+
+PIXELFORMAT_COMPRESSED_DXT1_RGBA
+
+PIXELFORMAT_COMPRESSED_DXT3_RGBA
+
+PIXELFORMAT_COMPRESSED_DXT5_RGBA
+
+PIXELFORMAT_COMPRESSED_ETC1_RGB
+
+PIXELFORMAT_COMPRESSED_ETC2_RGB
+
+PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA
+
+PIXELFORMAT_COMPRESSED_PVRT_RGB
+
+PIXELFORMAT_COMPRESSED_PVRT_RGBA
+
+PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA
+
+PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA
+
 ## Globals - Colors
 
 WHITE
@@ -1813,12 +1857,102 @@ Get texture size
 
 ---
 
+> color = RL_Fade( Color color, float alpha )
+
+Returns color with alpha applied, alpha goes from 0.0f to 1.0f
+
+- Failure return false
+- Success return Color
+
+---
+
+> value = RL_ColorToInt( Color color )
+
+Returns hexadecimal value for a Color
+
+- Failure return false
+- Success return int
+
+---
+
+> color = RL_ColorNormalize( Color color )
+
+Returns Color normalized as float [0..1]
+
+- Failure return false
+- Success return Vector4
+
+---
+
+> color = RL_ColorFromNormalized( Vector4 normalized )
+
+Color from normalized values [0..1]
+
+- Failure return false
+- Success return Color
+
+---
+
+> HSV = RL_ColorToHSV( Color color )
+
+Returns HSV values for a Color, hue [0..360], saturation/value [0..1]
+
+- Failure return false
+- Success return Vector3
+
+---
+
 > color = RL_ColorFromHSV( float hue, float saturation, float value )
 
 Returns a Color from HSV values, hue [0..360], saturation/value [0..1]
 
 - Failure return false
 - Success return Color
+
+---
+
+> color = RL_ColorAlpha( Color color, float alpha )
+
+Returns color with alpha applied, alpha goes from 0.0f to 1.0f
+
+- Failure return false
+- Success return Color
+
+---
+
+> color = RL_ColorAlphaBlend( Color dst, Color src, Color tint )
+
+Returns src alpha-blended into dst color with tint
+
+- Failure return false
+- Success return Color
+
+---
+
+> Color = RL_GetColor( unsigned int hexValue )
+
+Get Color structure from hexadecimal value
+
+- Failure return false
+- Success return Color
+
+---
+
+> Color = RL_GetPixelColor( Texture2D texture, Vector2 position )
+
+Get pixel color from source texture
+
+- Failure return false
+- Success return Color
+
+---
+
+> size = RL_GetPixelDataSize( int width, int height, int format )
+
+Get pixel data size in bytes for certain format
+
+- Failure return false
+- Success return int
 
 ---
 

@@ -168,6 +168,28 @@ void defineGlobals() {
 	assignGlobalInt( GESTURE_SWIPE_DOWN, "GESTURE_SWIPE_DOWN" );
 	assignGlobalInt( GESTURE_PINCH_IN, "GESTURE_PINCH_IN" );
 	assignGlobalInt( GESTURE_PINCH_OUT, "GESTURE_PINCH_OUT" );
+	/* PixelFormats */
+	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_GRAYSCALE, "PIXELFORMAT_UNCOMPRESSED_GRAYSCALE" );
+	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA, "PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA" );
+	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_R5G6B5, "PIXELFORMAT_UNCOMPRESSED_R5G6B5" );
+	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_R8G8B8, "PIXELFORMAT_UNCOMPRESSED_R8G8B8" );
+	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_R5G5B5A1, "PIXELFORMAT_UNCOMPRESSED_R5G5B5A1" );
+	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_R4G4B4A4, "PIXELFORMAT_UNCOMPRESSED_R4G4B4A4" );
+	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_R8G8B8A8, "PIXELFORMAT_UNCOMPRESSED_R8G8B8A8" );
+	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_R32, "PIXELFORMAT_UNCOMPRESSED_R32" );
+	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_R32G32B32, "PIXELFORMAT_UNCOMPRESSED_R32G32B32" );
+	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_R32G32B32A32, "PIXELFORMAT_UNCOMPRESSED_R32G32B32A32" );
+	assignGlobalInt( PIXELFORMAT_COMPRESSED_DXT1_RGB, "PIXELFORMAT_COMPRESSED_DXT1_RGB" );
+	assignGlobalInt( PIXELFORMAT_COMPRESSED_DXT1_RGBA, "PIXELFORMAT_COMPRESSED_DXT1_RGBA" );
+	assignGlobalInt( PIXELFORMAT_COMPRESSED_DXT3_RGBA, "PIXELFORMAT_COMPRESSED_DXT3_RGBA" );
+	assignGlobalInt( PIXELFORMAT_COMPRESSED_DXT5_RGBA, "PIXELFORMAT_COMPRESSED_DXT5_RGBA" );
+	assignGlobalInt( PIXELFORMAT_COMPRESSED_ETC1_RGB, "PIXELFORMAT_COMPRESSED_ETC1_RGB" );
+	assignGlobalInt( PIXELFORMAT_COMPRESSED_ETC2_RGB, "PIXELFORMAT_COMPRESSED_ETC2_RGB" );
+	assignGlobalInt( PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA, "PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA" );
+	assignGlobalInt( PIXELFORMAT_COMPRESSED_PVRT_RGB, "PIXELFORMAT_COMPRESSED_PVRT_RGB" );
+	assignGlobalInt( PIXELFORMAT_COMPRESSED_PVRT_RGBA, "PIXELFORMAT_COMPRESSED_PVRT_RGBA" );
+	assignGlobalInt( PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA, "PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA" );
+	assignGlobalInt( PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA, "PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA" );
 	/* Colors */
 	assignGlobalColor( WHITE, "WHITE" );
 	assignGlobalColor( BLACK, "BLACK" );
@@ -488,8 +510,18 @@ void luaRegister() {
 	lua_register( L, "RL_SetTextureFilter", ltexturesSetTextureFilter );
 	lua_register( L, "RL_SetTextureWrap", ltexturesSetTextureWrap );
 	lua_register( L, "RL_GetTextureSize", ltexturesGetTextureSize );
-
+		/* Color/pixel */
+	lua_register( L, "RL_Fade", ltexturesFade );
+	lua_register( L, "RL_ColorToInt", ltexturesColorToInt );
+	lua_register( L, "RL_ColorNormalize", ltexturesColorNormalize );
+	lua_register( L, "RL_ColorFromNormalized", ltexturesColorFromNormalized );
+	lua_register( L, "RL_ColorToHSV", ltexturesColorToHSV );
 	lua_register( L, "RL_ColorFromHSV", ltexturesColorFromHSV );
+	lua_register( L, "RL_ColorAlpha", ltexturesColorAlpha );
+	lua_register( L, "RL_ColorAlphaBlend", ltexturesColorAlphaBlend );
+	lua_register( L, "RL_GetColor", ltexturesGetColor );
+	lua_register( L, "RL_GetPixelColor", ltexturesGetPixelColor );
+	lua_register( L, "RL_GetPixelDataSize", ltexturesGetPixelDataSize );
 
 	/* Models. */
 		/* Basic. */
@@ -700,7 +732,7 @@ Vector2 uluaGetVector2( lua_State *L ) {
     Vector2 vector = { 0.0f, 0.0f };
 
     if ( !lua_istable( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Error. Wrong vector value. Returning { 0, 0 }" );
+		TraceLog( LOG_WARNING, "%s", "Error. Wrong vector2 value. Returning { 0, 0 }" );
         return vector;
     }
 	int t = lua_gettop( L ), i = 0;
@@ -729,7 +761,7 @@ Vector3 uluaGetVector3( lua_State *L ) {
     Vector3 vector = { 0.0f, 0.0f, 0.0f };
 
     if ( !lua_istable( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Error. Wrong vector value. Returning { 0, 0, 0 }" );
+		TraceLog( LOG_WARNING, "%s", "Error. Wrong vector3 value. Returning { 0, 0, 0 }" );
         return vector;
     }
 	int t = lua_gettop( L ), i = 0;
@@ -746,6 +778,41 @@ Vector3 uluaGetVector3( lua_State *L ) {
                     break;
                 case 2:
                     vector.z = lua_tonumber( L, -1 );
+                    break;
+                default:
+                    break;
+            }
+        }
+        i++;
+        lua_pop( L, 1 );
+    }
+    return vector;
+}
+
+Vector4 uluaGetVector4( lua_State *L ) {
+    Vector4 vector = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+    if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Error. Wrong vector4 value. Returning { 0, 0, 0, 0 }" );
+        return vector;
+    }
+	int t = lua_gettop( L ), i = 0;
+    lua_pushnil( L );
+
+    while ( lua_next( L, t ) != 0 ) {
+        if ( lua_isnumber( L, -1 ) ) {
+            switch ( i ) {
+                case 0:
+                    vector.x = lua_tonumber( L, -1 );
+                    break;
+                case 1:
+                    vector.y = lua_tonumber( L, -1 );
+                    break;
+                case 2:
+                    vector.z = lua_tonumber( L, -1 );
+                    break;
+                case 3:
+                    vector.w = lua_tonumber( L, -1 );
                     break;
                 default:
                     break;
@@ -990,6 +1057,18 @@ void uluaPushVector3( lua_State *L, Vector3 vector ) {
     lua_rawseti( L, -2, 2 );
     lua_pushnumber( L, vector.z );
     lua_rawseti( L, -2, 3 );
+}
+
+void uluaPushVector4( lua_State *L, Vector4 vector ) {
+	lua_createtable( L, 4, 0 );
+    lua_pushnumber( L, vector.x );
+    lua_rawseti( L, -2, 1 );
+    lua_pushnumber( L, vector.y );
+    lua_rawseti( L, -2, 2 );
+    lua_pushnumber( L, vector.z );
+    lua_rawseti( L, -2, 3 );
+    lua_pushnumber( L, vector.w );
+    lua_rawseti( L, -2, 4 );
 }
 
 void uluaPushRectangle( lua_State *L, Rectangle rect ) {

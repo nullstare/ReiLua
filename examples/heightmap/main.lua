@@ -70,27 +70,6 @@ function init()
 	matrix = RL_MatrixMultiply( RL_MatrixIdentity(), RL_MatrixTranslate( { -4, 0, -4 } ) )
 end
 
-function process( delta )
-	-- print( "RL_GetTouchPointCount()", RL_GetTouchPointCount() )
-	-- print( "RL_GetGestureDetected()", RL_GetGestureDetected() )
-	-- local gesture = RL_GetGestureDetected()
-
-	-- if gesture then
-	-- 	local dragVec = RL_GetGestureDragVector()
-	-- 	local pinchVec = RL_GetGesturePinchVector()
-	-- 	-- print( "gesture "..gesture, "dragVec "..dragVec[1]..", "..dragVec[2] )
-	-- 	print( "gesture "..gesture, "dragVec "..pinchVec[1]..", "..pinchVec[2] )
-	-- end
-	
-	-- local vec = RL_GetGestureDragVector()
-
-	-- print( vec[1]..", "..vec[2] )
-
-	-- if RL_IsGestureDetected() then
-	-- 	print( RL_GetGestureDetected() )
-	-- end
-end
-
 function draw()
 	RL_ClearBackground( { 100, 150, 100 } )
 	RL_UpdateCamera3D( camera )

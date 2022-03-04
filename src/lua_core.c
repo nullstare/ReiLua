@@ -204,6 +204,44 @@ void defineGlobals() {
 /*DOC_END*/
 }
 
+// Custom logging funtion
+void LogCustom( int msgType, const char *text, va_list args ) {
+	char string[ STRING_LEN ] = {'\0'};
+	char msg[ STRING_LEN ] = {'\0'};
+
+	vsprintf( string, text, args );
+
+    switch ( msgType ) {
+        case LOG_ALL: sprintf( msg, "ALL: %s", string ); break;
+        case LOG_TRACE: sprintf( msg, "TRACE: %s", string ); break;
+        case LOG_DEBUG: sprintf( msg, "DEBUG: %s", string ); break;
+        case LOG_INFO: sprintf( msg, "INFO: %s", string ); break;
+        case LOG_WARNING: sprintf( msg, "WARNING: %s", string ); break;
+        case LOG_ERROR: sprintf( msg, "ERROR: %s", string ); break;
+        case LOG_FATAL: sprintf( msg, "FATAL: %s", string ); break;
+        default: break;
+    }
+	printf( "%s\n", msg );
+
+	/* Call Lua log function if exists. */
+	lua_State *L = state->luaState;
+
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop( L );
+	lua_getglobal( L, "log" );
+
+    if ( lua_isfunction( L, -1 ) ) {
+        lua_pushstring( L, msg );
+
+        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_WARNING, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+ 	    	return;
+        }
+    }
+	lua_pop( L, -1 );
+}
+
 bool luaInit() {
 	state->luaState = luaL_newstate();
 
@@ -284,6 +322,8 @@ bool luaCallMain() {
 		TraceLog( LOG_WARNING, "%s", "No Lua main found!" );
         return false;
     }
+	/* Apply custom callback here. */
+	SetTraceLogCallback( LogCustom );
 
 	return true;
 }

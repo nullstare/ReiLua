@@ -18,7 +18,6 @@ int main( int argn, const char **argc ) {
 	else {
 		sprintf( exePath, "%s/", GetWorkingDirectory() );
 	}
-
 	TraceLog( LOG_INFO, "ReiLua %d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH );
 	stateInit( exePath );
 

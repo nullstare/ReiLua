@@ -17,14 +17,12 @@ List of some MISSING features that are planned to be included. For specific func
 * Core
 	* Some screen-space-related functions
 	* Files drop
-	* custom callbacks
 	* camera2d and it's functions
 	* VR stereo config functions for VR simulator
 * Textures
 	* Most image loading functions
 	* Image manipulation functions
 	* Texture update functions
-	* Color/pixel related functions
 * Text
 	* Some font loading/unloading functions
 * Audio

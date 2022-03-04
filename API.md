@@ -25,6 +25,12 @@ You can still use RL_BeginDrawing() and RL_EndDrawing() manually from anywhere.
 
 ---
 
+> function log( message )
+
+This function can be used for custom log message handling.
+
+---
+
 ## Globals - Keys
 
 KEY_ENTER

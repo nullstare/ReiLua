@@ -215,7 +215,6 @@ function draw()
 			RL_DrawText( 0, "Press Enter to\nrestart", { 10, 10 }, 10, 2, WHITE )
 		end
 	RL_EndTextureMode()
-
 	
 	-- Draw framebuffer to window.
 	RL_SetTextureSource( TEXTURE_SOURCE_RENDER_TEXTURE )

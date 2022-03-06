@@ -29,13 +29,15 @@ end
 
 function draw()
   	local t = RL_GetTime()
+	local cos = math.cos
+	local sin = math.sin
 
-	local scale = (2.0 + math.sin(t)) * 0.7
+	local scale = (2.0 + sin(t)) * 0.7
 	local camera_time = t * 0.3
 	local camera_pos = RL_GetCamera3DPosition( camera )
 
-	camera_pos[1] = math.cos(camera_time) * 40.0
-	camera_pos[3] = math.sin(camera_time) * 40.0
+	camera_pos[1] = cos(camera_time) * 40.0
+	camera_pos[3] = sin(camera_time) * 40.0
   
 	RL_SetCamera3DPosition( camera, camera_pos )
 	RL_ClearBackground( RAYWHITE )
@@ -47,7 +49,7 @@ function draw()
 			for y = 0,num_blocks - 1 do
 				for z = 0,num_blocks - 1 do
 					local block_scale = (x + y + z) / 30
-					local scatter = math.sin(block_scale * 20.0 + t * 4.0)
+					local scatter = sin(block_scale * 20.0 + t * 4.0)
 
 					local cube_pos = {
 						(x - num_blocks / 2) * (scale * 3.0) + scatter,

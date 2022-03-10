@@ -16,6 +16,7 @@ int lcoreClearWindowState( lua_State *L );
 int lcoreIsWindowResized( lua_State *L );
 int lcoreSetWindowIcon( lua_State *L );
 int lcoreSetWindowTitle( lua_State *L );
+int lcoreCloseWindow( lua_State *L );
 /* Timing. */
 int lcoreSetTargetFPS( lua_State *L );
 int lcoreGetFrameTime( lua_State *L );

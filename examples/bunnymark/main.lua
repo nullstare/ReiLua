@@ -10,7 +10,7 @@ Bunny.__index = Bunny
 
 function Bunny:new( pos, spd, col )
 	local bunny = {}
-	setmetatable( bunny,Bunny )
+	setmetatable( bunny, Bunny )
 	bunny.position = pos
 	bunny.speed = spd
 	bunny.color = col
@@ -24,7 +24,7 @@ local texSize = { 0, 0 }
 local texBunny = -1
 local bunnies = {}
 
-function Bunny:update( texture )
+function Bunny:update()
 	self.position[1] = self.position[1] + self.speed[1]
 	self.position[2] = self.position[2] + self.speed[2]
 
@@ -65,7 +65,7 @@ function process( delta )
 	end
 	-- Update bunnies
 	for i = 1, #bunnies do
-	  	bunnies[i]:update( texBunny )
+	  	bunnies[i]:update()
 	end
 end
 

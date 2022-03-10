@@ -397,6 +397,7 @@ void luaRegister() {
 	lua_register( L, "RL_IsWindowResized", lcoreIsWindowResized );
 	lua_register( L, "RL_SetWindowIcon", lcoreSetWindowIcon );
 	lua_register( L, "RL_SetWindowTitle", lcoreSetWindowTitle );
+	lua_register( L, "RL_CloseWindow", lcoreCloseWindow );
 		/* Timing. */
 	lua_register( L, "RL_SetTargetFPS", lcoreSetTargetFPS );
 	lua_register( L, "RL_GetFrameTime", lcoreGetFrameTime );
@@ -634,11 +635,14 @@ void luaRegister() {
 	/* Text. */
 		/* Loading. */
 	lua_register( L, "RL_LoadFont", ltextLoadFont );
+	lua_register( L, "RL_LoadFontFromImage", ltextLoadFontFromImage );
 	lua_register( L, "RL_UnloadFont", ltextUnloadFont );
 		/* Drawing. */
 	lua_register( L, "RL_DrawFPS", ltextDrawFPS );
 	lua_register( L, "RL_DrawText", ltextDrawText );
 	lua_register( L, "RL_DrawTextPro", ltextDrawTextPro );
+		/* Misc. */
+	lua_register( L, "RL_MeasureText", ltextMeasureText );
 
 	/* Audio. */
 		/* Sound. */

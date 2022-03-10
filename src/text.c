@@ -1,6 +1,7 @@
 #include "main.h"
 #include "state.h"
 #include "text.h"
+#include "textures.h"
 #include "lua_core.h"
 
 static void checkFontRealloc( int i ) {
@@ -55,6 +56,46 @@ int ltextLoadFont( lua_State *L ) {
 	}
 	state->fonts[i] = malloc( sizeof( Font ) );
 	*state->fonts[i] = LoadFont( lua_tostring( L, -1 ) );
+	lua_pushinteger( L, i );
+	checkFontRealloc( i );
+
+	return 1;
+}
+
+/*
+> font = RL_LoadFontFromImage( Image image, Color key, int firstChar )
+
+Load font from Image ( XNA style )
+
+- Failure return -1
+- Success return int
+*/
+int ltextLoadFontFromImage( lua_State *L ) {
+	if ( !lua_isnumber( L, -3 ) || !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadFontFromImage( Image image, Color key, int firstChar )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	int i = 0;
+
+	for ( i = 0; i < state->fontCount; i++ ) {
+		if ( state->fonts[i] == NULL ) {
+			break;
+		}
+	}
+	int firstChar = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	Color key = uluaGetColor( L );
+	lua_pop( L, 1 );
+	size_t imageId = lua_tointeger( L, -1 );
+
+	if ( !validImage( imageId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	state->fonts[i] = malloc( sizeof( Font ) );
+	*state->fonts[i] = LoadFontFromImage( *state->images[ imageId ], key, firstChar );
 	lua_pushinteger( L, i );
 	checkFontRealloc( i );
 
@@ -150,7 +191,7 @@ int ltextDrawText( lua_State *L ) {
 }
 
 /*
-> success = RL_DrawTextPro( Font font, const char text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint )
+> success = RL_DrawTextPro( Font font, string text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint )
 
 Draw text using Font and pro parameters ( rotation )
 
@@ -160,7 +201,7 @@ Draw text using Font and pro parameters ( rotation )
 int ltextDrawTextPro( lua_State *L ) {
 	if ( !lua_isnumber( L, -8 ) || !lua_isstring( L, -7 ) || !lua_istable( L, -6 ) || !lua_istable( L, -5 )
 	|| !lua_isnumber( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_DrawTextPro( Font font, const char text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint )" );
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_DrawTextPro( Font font, string text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -184,6 +225,39 @@ int ltextDrawTextPro( lua_State *L ) {
 	}
 	DrawTextPro( *state->fonts[ fontId ], lua_tostring( L, -1 ), position, origin, rotation, fontSize, spacing, color );
 	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+## Text - Misc
+*/
+
+/*
+> size = RL_MeasureText( Font font, string text, float fontSize, float spacing )
+
+Measure string size for Font
+
+- Failure return false
+- Success return Vector2
+*/
+int ltextMeasureText( lua_State *L ) {
+	if ( !lua_isnumber( L, -4 ) || !lua_isstring( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_MeasureText( Font font, string text, float fontSize, float spacing )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float spacing = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	float fontSize = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	size_t fontId = lua_tointeger( L, -2 );
+
+	if ( !validFont( fontId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushVector2( L, MeasureTextEx( *state->fonts[ fontId ], lua_tostring( L, -1 ), fontSize, spacing ) );
 
 	return 1;
 }

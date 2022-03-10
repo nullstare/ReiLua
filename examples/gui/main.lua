@@ -31,6 +31,7 @@ function draw()
 
 	if RL_GuiButton( { 112, 16, 96, 32 }, "Button" ) then
 		print( "Button pressed!" )
+		RL_CloseWindow()
 	end
 
 	if windowOpen and RL_GuiWindowBox( { 300, 16, 200, 320 }, "Window" ) then

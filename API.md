@@ -641,6 +641,12 @@ Set title for window ( Only PLATFORM_DESKTOP )
 
 ---
 
+> RL_lcoreCloseWindow()
+
+Close window and unload OpenGL context and free all resources
+
+---
+
 ## Core - Timing
 
 ---
@@ -1975,6 +1981,15 @@ Load font from file into GPU memory ( VRAM )
 
 ---
 
+> font = RL_LoadFontFromImage( Image image, Color key, int firstChar )
+
+Load font from Image ( XNA style )
+
+- Failure return -1
+- Success return int
+
+---
+
 > success = RL_UnloadFont( Font font )
 
 Unload Font from GPU memory ( VRAM )
@@ -2006,12 +2021,25 @@ Draw text using font and additional parameters
 
 ---
 
-> success = RL_DrawTextPro( Font font, const char text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint )
+> success = RL_DrawTextPro( Font font, string text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint )
 
 Draw text using Font and pro parameters ( rotation )
 
 - Failure return false
 - Success return true
+
+---
+
+## Text - Misc
+
+---
+
+> size = RL_MeasureText( Font font, string text, float fontSize, float spacing )
+
+Measure string size for Font
+
+- Failure return false
+- Success return Vector2
 
 ---
 

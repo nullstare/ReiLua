@@ -10,6 +10,8 @@ bool validSourceTexture( size_t id );
 Texture2D* texturesGetSourceTexture( size_t index );
 /* File. */
 int ltexturesLoadImage( lua_State *L );
+int ltexturesLoadImageFromTexture( lua_State *L );
+int ltexturesLoadImageFromScreen( lua_State *L );
 int ltexturesGenImageColor( lua_State *L );
 int ltexturesUnloadImage( lua_State *L );
 int ltexturesExportImage( lua_State *L );

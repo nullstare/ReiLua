@@ -143,6 +143,66 @@ int ltexturesLoadImage( lua_State *L ) {
 }
 
 /*
+> image = RL_LoadImageFromTexture( Texture2D texture )
+
+Load image from GPU texture data
+
+- Failure return -1
+- Success return int
+*/
+int ltexturesLoadImageFromTexture( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadImageFromTexture( Texture2D texture )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+
+	size_t texId = lua_tointeger( L, -1 );
+
+	if ( !validSourceTexture( texId ) ) {
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+
+	int i = 0;
+
+	for ( i = 0; i < state->imageCount; i++ ) {
+		if ( state->images[i] == NULL ) {
+			break;
+		}
+	}
+	state->images[i] = malloc( sizeof( Image ) );
+	*state->images[i] = LoadImageFromTexture( *texturesGetSourceTexture( texId ) );
+	lua_pushinteger( L, i );
+	checkImageRealloc( i );
+
+	return 1;
+}
+
+/*
+> image = RL_LoadImageFromScreen()
+
+Load image from screen buffer and ( screenshot )
+
+- Success return int
+*/
+int ltexturesLoadImageFromScreen( lua_State *L ) {
+	int i = 0;
+
+	for ( i = 0; i < state->imageCount; i++ ) {
+		if ( state->images[i] == NULL ) {
+			break;
+		}
+	}
+	state->images[i] = malloc( sizeof( Image ) );
+	*state->images[i] = LoadImageFromScreen();
+	lua_pushinteger( L, i );
+	checkImageRealloc( i );
+
+	return 1;
+}
+
+/*
 > image = RL_GenImageColor( int width, int height, Color color )
 
 Generate image: plain color

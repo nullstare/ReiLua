@@ -1596,6 +1596,23 @@ Load image from file into CPU memory ( RAM )
 
 ---
 
+> image = RL_LoadImageFromTexture( Texture2D texture )
+
+Load image from GPU texture data
+
+- Failure return -1
+- Success return int
+
+---
+
+> image = RL_LoadImageFromScreen()
+
+Load image from screen buffer and ( screenshot )
+
+- Success return int
+
+---
+
 > image = RL_GenImageColor( int width, int height, Color color )
 
 Generate image: plain color

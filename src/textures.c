@@ -204,6 +204,56 @@ int ltexturesUnloadImage( lua_State *L ) {
 }
 
 /*
+> success = RL_ExportImage( Image image, string fileName )
+
+Export image data to file, returns true on success
+
+- Failure return nil
+- Success return bool
+*/
+int ltexturesExportImage( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_ExportImage( Image image, string fileName )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	size_t id = lua_tointeger( L, -2 );
+
+	if ( !validImage( id ) ) {
+		lua_pushnil( L );
+		return 1;
+	}
+	lua_pushboolean( L, ExportImage( *state->images[ id ], lua_tostring( L, -1 ) ) );
+
+	return 1;
+}
+
+/*
+> success = RL_ExportImageAsCode( Image image, string fileName )
+
+Export image as code file defining an array of bytes, returns true on success
+
+- Failure return nil
+- Success return bool
+*/
+int ltexturesExportImageAsCode( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_ExportImageAsCode( Image image, string fileName )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	size_t id = lua_tointeger( L, -2 );
+
+	if ( !validImage( id ) ) {
+		lua_pushnil( L );
+		return 1;
+	}
+	lua_pushboolean( L, ExportImageAsCode( *state->images[ id ], lua_tostring( L, -1 ) ) );
+
+	return 1;
+}
+
+/*
 > texture = RL_LoadTexture( string fileName )
 
 Load texture from file into GPU memory ( VRAM )

@@ -641,7 +641,7 @@ Set title for window ( Only PLATFORM_DESKTOP )
 
 ---
 
-> RL_lcoreCloseWindow()
+> RL_CloseWindow()
 
 Close window and unload OpenGL context and free all resources
 
@@ -1611,6 +1611,24 @@ Unload image from CPU memory ( RAM )
 
 - Failure return false
 - Success return true
+
+---
+
+> success = RL_ExportImage( Image image, string fileName )
+
+Export image data to file, returns true on success
+
+- Failure return nil
+- Success return bool
+
+---
+
+> success = RL_ExportImageAsCode( Image image, string fileName )
+
+Export image as code file defining an array of bytes, returns true on success
+
+- Failure return nil
+- Success return bool
 
 ---
 

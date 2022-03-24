@@ -12,6 +12,8 @@ Texture2D* texturesGetSourceTexture( size_t index );
 int ltexturesLoadImage( lua_State *L );
 int ltexturesGenImageColor( lua_State *L );
 int ltexturesUnloadImage( lua_State *L );
+int ltexturesExportImage( lua_State *L );
+int ltexturesExportImageAsCode( lua_State *L );
 int ltexturesLoadTexture( lua_State *L );
 int ltexturesLoadTextureFromImage( lua_State *L );
 int ltexturesUnloadTexture( lua_State *L );

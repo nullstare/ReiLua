@@ -521,6 +521,8 @@ void luaRegister() {
 	lua_register( L, "RL_LoadImage", ltexturesLoadImage );
 	lua_register( L, "RL_GenImageColor", ltexturesGenImageColor );
 	lua_register( L, "RL_UnloadImage", ltexturesUnloadImage );
+	lua_register( L, "RL_ExportImage", ltexturesExportImage );
+	lua_register( L, "RL_ExportImageAsCode", ltexturesExportImageAsCode );
 	lua_register( L, "RL_LoadTexture", ltexturesLoadTexture );
 	lua_register( L, "RL_LoadTextureFromImage", ltexturesLoadTextureFromImage );
 	lua_register( L, "RL_UnloadTexture", ltexturesUnloadTexture );

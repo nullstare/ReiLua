@@ -302,7 +302,7 @@ int lcoreSetWindowTitle( lua_State *L ) {
 }
 
 /*
-> RL_lcoreCloseWindow()
+> RL_CloseWindow()
 
 Close window and unload OpenGL context and free all resources
 */

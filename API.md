@@ -373,6 +373,180 @@ BLUE
 
 PI
 
+## Globals - GuiControlState
+
+GUI_STATE_NORMAL
+
+GUI_STATE_FOCUSED
+
+GUI_STATE_PRESSED
+
+GUI_STATE_DISABLED
+
+## Globals - GuiTextAlignment
+
+GUI_TEXT_ALIGN_LEFT
+
+GUI_TEXT_ALIGN_CENTER
+
+GUI_TEXT_ALIGN_RIGHT
+
+## Globals - GuiControls
+
+DEFAULT
+
+LABEL
+
+BUTTON
+
+TOGGLE
+
+SLIDER
+
+PROGRESSBAR
+
+CHECKBOX
+
+COMBOBOX
+
+DROPDOWNBOX
+
+TEXTBOX
+
+VALUEBOX
+
+SPINNER
+
+LISTVIEW
+
+COLORPICKER
+
+SCROLLBAR
+
+STATUSBAR
+
+## Globals - GuiControlProperty
+
+BORDER_COLOR_NORMAL
+
+BASE_COLOR_NORMAL
+
+TEXT_COLOR_NORMAL
+
+BORDER_COLOR_FOCUSED
+
+BASE_COLOR_FOCUSED
+
+TEXT_COLOR_FOCUSED
+
+BORDER_COLOR_PRESSED
+
+BASE_COLOR_PRESSED
+
+TEXT_COLOR_PRESSED
+
+BORDER_COLOR_DISABLED
+
+BASE_COLOR_DISABLED
+
+TEXT_COLOR_DISABLED
+
+BORDER_WIDTH
+
+TEXT_PADDING
+
+TEXT_ALIGNMENT
+
+RESERVED
+
+## Globals - GuiDefaultProperty
+
+TEXT_SIZE
+
+TEXT_SPACING
+
+LINE_COLOR
+
+BACKGROUND_COLOR
+
+## Globals - GuiToggleProperty
+
+GROUP_PADDING
+
+## Globals - GuiSliderProperty
+
+SLIDER_WIDTH
+
+SLIDER_PADDING
+
+## Globals - GuiProgressBarProperty
+
+PROGRESS_PADDING
+
+## Globals - GuiCheckBoxProperty
+
+CHECK_PADDING
+
+## Globals - GuiComboBoxProperty
+
+COMBO_BUTTON_WIDTH
+
+COMBO_BUTTON_SPACING
+
+## Globals - GuiDropdownBoxProperty
+
+ARROW_PADDING
+
+DROPDOWN_ITEMS_SPACING
+
+## Globals - GuiTextBoxProperty
+
+TEXT_INNER_PADDING
+
+TEXT_LINES_SPACING
+
+## Globals - GuiSpinnerProperty
+
+SPIN_BUTTON_WIDTH
+
+SPIN_BUTTON_SPACING
+
+## Globals - GuiScrollBarProperty
+
+ARROWS_SIZE
+
+ARROWS_VISIBLE
+
+SCROLL_SLIDER_PADDING
+
+SCROLL_SLIDER_SIZE
+
+SCROLL_PADDING
+
+SCROLL_SPEED
+
+## Globals - GuiListViewProperty
+
+LIST_ITEMS_HEIGHT
+
+LIST_ITEMS_SPACING
+
+SCROLLBAR_WIDTH
+
+SCROLLBAR_SIDE
+
+## Globals - GuiColorPickerProperty
+
+COLOR_SELECTOR_SIZE
+
+HUEBAR_WIDTH
+
+HUEBAR_PADDING
+
+HUEBAR_SELECTOR_HEIGHT
+
+HUEBAR_SELECTOR_OVERFLOW
+
 ## Types
 
 Raylib structs in Lua
@@ -638,6 +812,14 @@ Set title for window ( Only PLATFORM_DESKTOP )
 
 - Failure return false
 - Success return true
+
+---
+
+> count = RL_GetMonitorCount()
+
+Get number of connected monitors
+
+- Success return int
 
 ---
 
@@ -3177,6 +3359,28 @@ Set gui custom font ( Global state )
 
 ---
 
+## Gui - Style
+
+---
+
+> success = RL_GuiSetStyle( int control, int property, int value )
+
+Set one style property
+
+- Failure return false
+- Success return true
+
+---
+
+> value = RL_GuiGetStyle( int control, int property )
+
+Get one style property
+
+- Failure return false
+- Success return int
+
+---
+
 ## Gui - Container
 
 ---
@@ -3190,7 +3394,25 @@ Window Box control, shows a window that can be closed
 
 ---
 
-> success = RL_GuiPanel( Rectangle bounds )
+> success = RL_GuiGroupBox( Rectangle bounds, string text )
+
+Group Box control with text name
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_GuiLine( Rectangle bounds, string text )
+
+Line separator control, could contain text
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_GuiPanel( Rectangle bounds, string text )
 
 Panel control, useful to group controls
 
@@ -3199,7 +3421,7 @@ Panel control, useful to group controls
 
 ---
 
-> view, scroll = RL_GuiScrollPanel( Rectangle bounds, Rectangle content, Vector2 scroll )
+> view, scroll = RL_GuiScrollPanel( Rectangle bounds, string text, Rectangle content, Vector2 scroll )
 
 Scroll Panel control
 
@@ -3236,6 +3458,15 @@ Toggle Button control, returns true when active
 
 - Failure return nil
 - Success return boolean
+
+---
+
+> index = RL_GuiToggleGroup( Rectangle bounds, string text, int active )
+
+Toggle Group control, returns active toggle index
+
+- Failure return false
+- Success return int
 
 ---
 

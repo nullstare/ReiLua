@@ -79,6 +79,49 @@ int lguiGuiSetFont( lua_State *L ) {
 }
 
 /*
+## Gui - Style
+*/
+
+/*
+> success = RL_GuiSetStyle( int control, int property, int value )
+
+Set one style property
+
+- Failure return false
+- Success return true
+*/
+int lguiGuiSetStyle( lua_State *L ) {
+	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiSetStyle( int control, int property, int value )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	GuiSetStyle( lua_tointeger( L, -3 ), lua_tointeger( L, -2 ), lua_tointeger( L, -1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> value = RL_GuiGetStyle( int control, int property )
+
+Get one style property
+
+- Failure return false
+- Success return int
+*/
+int lguiGuiGetStyle( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiGetStyle( int control, int property )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	lua_pushinteger( L, GuiGetStyle( lua_tointeger( L, -2 ), lua_tointeger( L, -1 ) ) );
+
+	return 1;
+}
+
+/*
 ## Gui - Container
 */
 
@@ -107,7 +150,57 @@ int lguiGuiWindowBox( lua_State *L ) {
 }
 
 /*
-> success = RL_GuiPanel( Rectangle bounds )
+> success = RL_GuiGroupBox( Rectangle bounds, string text )
+
+Group Box control with text name
+
+- Failure return false
+- Success return true
+*/
+int lguiGuiGroupBox( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiGroupBox( Rectangle bounds, string text )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	Rectangle rect = uluaGetRectangle( L );
+
+	GuiGroupBox( rect, text );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_GuiLine( Rectangle bounds, string text )
+
+Line separator control, could contain text
+
+- Failure return false
+- Success return true
+*/
+int lguiGuiLine( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiLine( Rectangle bounds, string text )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	Rectangle rect = uluaGetRectangle( L );
+
+	GuiLine( rect, text );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_GuiPanel( Rectangle bounds, string text )
 
 Panel control, useful to group controls
 
@@ -115,21 +208,24 @@ Panel control, useful to group controls
 - Success return true
 */
 int lguiGuiPanel( lua_State *L ) {
-	if ( !lua_istable( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiPanel( Rectangle bounds )" );
+	if ( !lua_istable( L, -2 ) || !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiPanel( Rectangle bounds, string text )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
 	Rectangle rect = uluaGetRectangle( L );
 
-	GuiPanel( rect );
+	GuiPanel( rect, text );
 	lua_pushboolean( L, true );
 
 	return 1;
 }
 
 /*
-> view, scroll = RL_GuiScrollPanel( Rectangle bounds, Rectangle content, Vector2 scroll )
+> view, scroll = RL_GuiScrollPanel( Rectangle bounds, string text, Rectangle content, Vector2 scroll )
 
 Scroll Panel control
 
@@ -137,8 +233,8 @@ Scroll Panel control
 - Success return Rectangle, Vector2
 */
 int lguiGuiScrollPanel( lua_State *L ) {
-	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiScrollPanel( Rectangle bounds, Rectangle content, Vector2 scroll )" );
+	if ( !lua_istable( L, -4 ) || !lua_isstring( L, -3 ) || lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiScrollPanel( Rectangle bounds, string text, Rectangle content, Vector2 scroll )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -146,9 +242,12 @@ int lguiGuiScrollPanel( lua_State *L ) {
 	lua_pop( L, 1 );
 	Rectangle content = uluaGetRectangle( L );
 	lua_pop( L, 1 );
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
 	Rectangle bounds = uluaGetRectangle( L );
 
-	uluaPushRectangle( L, GuiScrollPanel( bounds, content, &scroll ) );
+	uluaPushRectangle( L, GuiScrollPanel( bounds, text, content, &scroll ) );
 	uluaPushVector2( L, scroll );
 
 	return 2;
@@ -229,6 +328,32 @@ int lguiGuiToggle( lua_State *L ) {
 	Rectangle rect = uluaGetRectangle( L );
 
 	lua_pushboolean( L, GuiToggle( rect, text, checked ) );
+
+	return 1;
+}
+
+/*
+> index = RL_GuiToggleGroup( Rectangle bounds, string text, int active )
+
+Toggle Group control, returns active toggle index
+
+- Failure return false
+- Success return int
+*/
+int lguiGuiToggleGroup( lua_State *L ) {
+	if ( !lua_istable( L, -3 ) || !lua_isstring( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiToggleGroup( Rectangle bounds, string text, bool active )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int active = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	Rectangle rect = uluaGetRectangle( L );
+
+	lua_pushinteger( L, GuiToggleGroup( rect, text, active ) );
 
 	return 1;
 }

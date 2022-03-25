@@ -9,6 +9,7 @@
 #include "audio.h"
 #include "rmath.h"
 #include "rgui.h"
+#include "raygui.h"
 
 static void assignGlobalInt( int value, const char *name ) {
 	lua_State *L = state->luaState;
@@ -201,6 +202,93 @@ void defineGlobals() {
 	assignGlobalColor( BLUE, "BLUE" );
 	/* Math */
 	assignGlobalFloat( PI, "PI" );
+	/* GuiControlState */
+	assignGlobalInt( GUI_STATE_NORMAL, "GUI_STATE_NORMAL" );
+	assignGlobalInt( GUI_STATE_FOCUSED, "GUI_STATE_FOCUSED" );
+	assignGlobalInt( GUI_STATE_PRESSED, "GUI_STATE_PRESSED" );
+	assignGlobalInt( GUI_STATE_DISABLED, "GUI_STATE_DISABLED" );
+	/* GuiTextAlignment */
+	assignGlobalInt( GUI_TEXT_ALIGN_LEFT, "GUI_TEXT_ALIGN_LEFT" );
+	assignGlobalInt( GUI_TEXT_ALIGN_CENTER, "GUI_TEXT_ALIGN_CENTER" );
+	assignGlobalInt( GUI_TEXT_ALIGN_RIGHT, "GUI_TEXT_ALIGN_RIGHT" );
+	/* GuiControls */
+	assignGlobalInt( DEFAULT, "DEFAULT" );
+	assignGlobalInt( LABEL, "LABEL" );
+	assignGlobalInt( BUTTON, "BUTTON" );
+	assignGlobalInt( TOGGLE, "TOGGLE" );
+	assignGlobalInt( SLIDER, "SLIDER" );
+	assignGlobalInt( PROGRESSBAR, "PROGRESSBAR" );
+	assignGlobalInt( CHECKBOX, "CHECKBOX" );
+	assignGlobalInt( COMBOBOX, "COMBOBOX" );
+	assignGlobalInt( DROPDOWNBOX, "DROPDOWNBOX" );
+	assignGlobalInt( TEXTBOX, "TEXTBOX" );
+	assignGlobalInt( VALUEBOX, "VALUEBOX" );
+	assignGlobalInt( SPINNER, "SPINNER" );
+	assignGlobalInt( LISTVIEW, "LISTVIEW" );
+	assignGlobalInt( COLORPICKER, "COLORPICKER" );
+	assignGlobalInt( SCROLLBAR, "SCROLLBAR" );
+	assignGlobalInt( STATUSBAR, "STATUSBAR" );
+	/* GuiControlProperty */
+	assignGlobalInt( BORDER_COLOR_NORMAL, "BORDER_COLOR_NORMAL" );
+	assignGlobalInt( BASE_COLOR_NORMAL, "BASE_COLOR_NORMAL" );
+	assignGlobalInt( TEXT_COLOR_NORMAL, "TEXT_COLOR_NORMAL" );
+	assignGlobalInt( BORDER_COLOR_FOCUSED, "BORDER_COLOR_FOCUSED" );
+	assignGlobalInt( BASE_COLOR_FOCUSED, "BASE_COLOR_FOCUSED" );
+	assignGlobalInt( TEXT_COLOR_FOCUSED, "TEXT_COLOR_FOCUSED" );
+	assignGlobalInt( BORDER_COLOR_PRESSED, "BORDER_COLOR_PRESSED" );
+	assignGlobalInt( BASE_COLOR_PRESSED, "BASE_COLOR_PRESSED" );
+	assignGlobalInt( TEXT_COLOR_PRESSED, "TEXT_COLOR_PRESSED" );
+	assignGlobalInt( BORDER_COLOR_DISABLED, "BORDER_COLOR_DISABLED" );
+	assignGlobalInt( BASE_COLOR_DISABLED, "BASE_COLOR_DISABLED" );
+	assignGlobalInt( TEXT_COLOR_DISABLED, "TEXT_COLOR_DISABLED" );
+	assignGlobalInt( BORDER_WIDTH, "BORDER_WIDTH" );
+	assignGlobalInt( TEXT_PADDING, "TEXT_PADDING" );
+	assignGlobalInt( TEXT_ALIGNMENT, "TEXT_ALIGNMENT" );
+	assignGlobalInt( RESERVED, "RESERVED" );
+	/* GuiDefaultProperty */
+	assignGlobalInt( TEXT_SIZE, "TEXT_SIZE" );
+	assignGlobalInt( TEXT_SPACING, "TEXT_SPACING" );
+	assignGlobalInt( LINE_COLOR, "LINE_COLOR" );
+	assignGlobalInt( BACKGROUND_COLOR, "BACKGROUND_COLOR" );
+	/* GuiToggleProperty */
+	assignGlobalInt( GROUP_PADDING, "GROUP_PADDING" );
+	/* GuiSliderProperty */
+	assignGlobalInt( SLIDER_WIDTH, "SLIDER_WIDTH" );
+	assignGlobalInt( SLIDER_PADDING, "SLIDER_PADDING" );
+	/* GuiProgressBarProperty */
+	assignGlobalInt( PROGRESS_PADDING, "PROGRESS_PADDING" );
+	/* GuiCheckBoxProperty */
+	assignGlobalInt( CHECK_PADDING, "CHECK_PADDING" );
+	/* GuiComboBoxProperty */
+	assignGlobalInt( COMBO_BUTTON_WIDTH, "COMBO_BUTTON_WIDTH" );
+	assignGlobalInt( COMBO_BUTTON_SPACING, "COMBO_BUTTON_SPACING" );
+	/* GuiDropdownBoxProperty */
+	assignGlobalInt( ARROW_PADDING, "ARROW_PADDING" );
+	assignGlobalInt( DROPDOWN_ITEMS_SPACING, "DROPDOWN_ITEMS_SPACING" );
+	/* GuiTextBoxProperty */
+	assignGlobalInt( TEXT_INNER_PADDING, "TEXT_INNER_PADDING" );
+	assignGlobalInt( TEXT_LINES_SPACING, "TEXT_LINES_SPACING" );
+	/* GuiSpinnerProperty */
+	assignGlobalInt( SPIN_BUTTON_WIDTH, "SPIN_BUTTON_WIDTH" );
+	assignGlobalInt( SPIN_BUTTON_SPACING, "SPIN_BUTTON_SPACING" );
+	/* GuiScrollBarProperty */
+	assignGlobalInt( ARROWS_SIZE, "ARROWS_SIZE" );
+	assignGlobalInt( ARROWS_VISIBLE, "ARROWS_VISIBLE" );
+	assignGlobalInt( SCROLL_SLIDER_PADDING, "SCROLL_SLIDER_PADDING" );
+	assignGlobalInt( SCROLL_SLIDER_SIZE, "SCROLL_SLIDER_SIZE" );
+	assignGlobalInt( SCROLL_PADDING, "SCROLL_PADDING" );
+	assignGlobalInt( SCROLL_SPEED, "SCROLL_SPEED" );
+	/* GuiListViewProperty */
+	assignGlobalInt( LIST_ITEMS_HEIGHT, "LIST_ITEMS_HEIGHT" );
+	assignGlobalInt( LIST_ITEMS_SPACING, "LIST_ITEMS_SPACING" );
+	assignGlobalInt( SCROLLBAR_WIDTH, "SCROLLBAR_WIDTH" );
+	assignGlobalInt( SCROLLBAR_SIDE, "SCROLLBAR_SIDE" );
+	/* GuiColorPickerProperty */
+	assignGlobalInt( COLOR_SELECTOR_SIZE, "COLOR_SELECTOR_SIZE" );
+	assignGlobalInt( HUEBAR_WIDTH, "HUEBAR_WIDTH" );
+	assignGlobalInt( HUEBAR_PADDING, "HUEBAR_PADDING" );
+	assignGlobalInt( HUEBAR_SELECTOR_HEIGHT, "HUEBAR_SELECTOR_HEIGHT" );
+	assignGlobalInt( HUEBAR_SELECTOR_OVERFLOW, "HUEBAR_SELECTOR_OVERFLOW" );
 /*DOC_END*/
 }
 
@@ -397,6 +485,7 @@ void luaRegister() {
 	lua_register( L, "RL_IsWindowResized", lcoreIsWindowResized );
 	lua_register( L, "RL_SetWindowIcon", lcoreSetWindowIcon );
 	lua_register( L, "RL_SetWindowTitle", lcoreSetWindowTitle );
+	lua_register( L, "RL_GetMonitorCount", lcoreGetMonitorCount );
 	lua_register( L, "RL_CloseWindow", lcoreCloseWindow );
 		/* Timing. */
 	lua_register( L, "RL_SetTargetFPS", lcoreSetTargetFPS );
@@ -719,14 +808,20 @@ void luaRegister() {
 	lua_register( L, "RL_GuiUnlock", lguiGuiUnlock );
 		/* Font. */
 	lua_register( L, "RL_GuiSetFont", lguiGuiSetFont );
+		/* Style. */
+	lua_register( L, "RL_GuiSetStyle", lguiGuiSetStyle );
+	lua_register( L, "RL_GuiGetStyle", lguiGuiGetStyle );
 		/* Container. */
 	lua_register( L, "RL_GuiWindowBox", lguiGuiWindowBox );
+	lua_register( L, "RL_GuiGroupBox", lguiGuiGroupBox );
+	lua_register( L, "RL_GuiLine", lguiGuiLine );
 	lua_register( L, "RL_GuiPanel", lguiGuiPanel );
 	lua_register( L, "RL_GuiScrollPanel", lguiGuiScrollPanel );
 		/* Basic. */
 	lua_register( L, "RL_GuiLabel", lguiGuiLabel );
 	lua_register( L, "RL_GuiButton", lguiGuiButton );
 	lua_register( L, "RL_GuiToggle", lguiGuiToggle );
+	lua_register( L, "RL_GuiToggleGroup", lguiGuiToggleGroup );
 	lua_register( L, "RL_GuiCheckBox", lguiGuiCheckBox );
 	lua_register( L, "RL_GuiTextBox", lguiGuiTextBox );
 	lua_register( L, "RL_GuiTextBoxMulti", lguiGuiTextBoxMulti );

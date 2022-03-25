@@ -11,6 +11,7 @@ local sliderValueRange = { 0.0, 10.0 }
 local scrollbarValue = 0.0
 local dropdownValue = 0
 local dropdownActive = false
+local index = 0
 
 function init()
 	local monitor = 0
@@ -38,9 +39,10 @@ function draw()
 		windowOpen = false
 	end
 
-	RL_GuiPanel( { 60, 260, 100, 100 } )
+	RL_GuiPanel( { 60, 260, 100, 100 }, "Panel" )
 
 	toggled = RL_GuiToggle( { 200, 260, 64, 32 }, "Toggle", toggled )
+	index = RL_GuiToggleGroup( { 520, 30, 64, 32 }, "Cat\nDog\nMonkey", index )
 	checkbox = RL_GuiCheckBox( { 200, 300, 16, 16 }, "CheckBox", checkbox )
 
 	local textBoxToggle = false

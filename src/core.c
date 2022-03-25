@@ -302,6 +302,18 @@ int lcoreSetWindowTitle( lua_State *L ) {
 }
 
 /*
+> count = RL_GetMonitorCount()
+
+Get number of connected monitors
+
+- Success return int
+*/
+int lcoreGetMonitorCount( lua_State *L ) {
+	lua_pushinteger( L, GetMonitorCount() );
+	return 1;
+}
+
+/*
 > RL_CloseWindow()
 
 Close window and unload OpenGL context and free all resources

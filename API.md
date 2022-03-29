@@ -3559,3 +3559,70 @@ Dropdown Box control, returns selected item
 - Success return bool, int
 
 ---
+
+## Gui - Advanced
+
+---
+
+> itemIndex, scrollIndex = RL_GuiListView( Rectangle bounds, string text, int scrollIndex, int active )
+
+List View control, returns selected list item index and scroll index
+
+- Failure return nil
+- Success return int, int
+
+---
+
+> buttonIndex = RL_GuiMessageBox( Rectangle bounds, string title, string message, string buttons )
+
+Message Box control, displays a message, returns button index ( 0 is x button )
+
+- Failure return false
+- Success return int
+
+---
+
+> buttonIndex, text, secretViewActive = RL_GuiTextInputBox( Rectangle bounds, string title, string message, string buttons, string text, int textMaxSize, int secretViewActive )
+
+Text Input Box control, ask for text, supports secret
+
+- Failure return false
+- Success return int, string, int
+
+---
+
+> color = RL_GuiColorPicker( Rectangle bounds, string text, Color color )
+
+Color Picker control ( multiple color controls )
+
+- Failure return false
+- Success return Color
+
+---
+
+> color = RL_GuiColorPanel( Rectangle bounds, string text, Color color )
+
+Color Panel control
+
+- Failure return false
+- Success return Color
+
+---
+
+> alpha = RL_GuiColorBarAlpha( Rectangle bounds, string text, float alpha )
+
+Color Bar Alpha control
+
+- Failure return false
+- Success return float
+
+---
+
+> hue = RL_GuiColorBarHue( Rectangle bounds, string text, float value )
+
+Color Bar Hue control
+
+- Failure return false
+- Success return float
+
+---

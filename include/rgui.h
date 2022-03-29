@@ -31,3 +31,11 @@ int lguiGuiSliderBar( lua_State *L );
 int lguiGuiProgressBar( lua_State *L );
 int lguiGuiScrollBar( lua_State *L );
 int lguiGuiDropdownBox( lua_State *L );
+/* Advanced. */
+int lguiGuiListView( lua_State *L );
+int lguiGuiMessageBox( lua_State *L );
+int lguiGuiTextInputBox( lua_State *L );
+int lguiGuiColorPicker( lua_State *L );
+int lguiGuiColorPanel( lua_State *L );
+int lguiGuiColorBarAlpha( lua_State *L );
+int lguiGuiColorBarHue( lua_State *L );

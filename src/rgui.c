@@ -142,9 +142,9 @@ int lguiGuiWindowBox( lua_State *L ) {
 	char text[ STRING_LEN ] = { '\0' };
 	strcpy( text, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	lua_pushboolean( L, GuiWindowBox( rect, text ) );
+	lua_pushboolean( L, GuiWindowBox( bounds, text ) );
 
 	return 1;
 }
@@ -166,9 +166,9 @@ int lguiGuiGroupBox( lua_State *L ) {
 	char text[ STRING_LEN ] = { '\0' };
 	strcpy( text, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	GuiGroupBox( rect, text );
+	GuiGroupBox( bounds, text );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -191,9 +191,9 @@ int lguiGuiLine( lua_State *L ) {
 	char text[ STRING_LEN ] = { '\0' };
 	strcpy( text, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	GuiLine( rect, text );
+	GuiLine( bounds, text );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -216,9 +216,9 @@ int lguiGuiPanel( lua_State *L ) {
 	char text[ STRING_LEN ] = { '\0' };
 	strcpy( text, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	GuiPanel( rect, text );
+	GuiPanel( bounds, text );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -274,9 +274,9 @@ int lguiGuiLabel( lua_State *L ) {
 	char text[ STRING_LEN ] = { '\0' };
 	strcpy( text, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	GuiLabel( rect, text );
+	GuiLabel( bounds, text );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -299,9 +299,9 @@ int lguiGuiButton( lua_State *L ) {
 	char text[ STRING_LEN ] = { '\0' };
 	strcpy( text, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	lua_pushboolean( L, GuiButton( rect, text ) );
+	lua_pushboolean( L, GuiButton( bounds, text ) );
 
 	return 1;
 }
@@ -325,9 +325,9 @@ int lguiGuiToggle( lua_State *L ) {
 	char text[ STRING_LEN ] = { '\0' };
 	strcpy( text, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	lua_pushboolean( L, GuiToggle( rect, text, checked ) );
+	lua_pushboolean( L, GuiToggle( bounds, text, checked ) );
 
 	return 1;
 }
@@ -351,9 +351,9 @@ int lguiGuiToggleGroup( lua_State *L ) {
 	char text[ STRING_LEN ] = { '\0' };
 	strcpy( text, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	lua_pushinteger( L, GuiToggleGroup( rect, text, active ) );
+	lua_pushinteger( L, GuiToggleGroup( bounds, text, active ) );
 
 	return 1;
 }
@@ -377,9 +377,9 @@ int lguiGuiCheckBox( lua_State *L ) {
 	char text[ STRING_LEN ] = { '\0' };
 	strcpy( text, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	lua_pushboolean( L, GuiCheckBox( rect, text, checked ) );
+	lua_pushboolean( L, GuiCheckBox( bounds, text, checked ) );
 
 	return 1;
 }
@@ -405,9 +405,9 @@ int lguiGuiTextBox( lua_State *L ) {
 	char text[ STRING_LEN ] = { '\0' };
 	strcpy( text, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	lua_pushboolean( L, GuiTextBox( rect, text, textSize, editMode ) );
+	lua_pushboolean( L, GuiTextBox( bounds, text, textSize, editMode ) );
 	lua_pushstring( L, text );
 
 	return 2;
@@ -434,9 +434,9 @@ int lguiGuiTextBoxMulti( lua_State *L ) {
 	char text[ STRING_LEN ] = { '\0' };
 	strcpy( text, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	lua_pushboolean( L, GuiTextBoxMulti( rect, text, textSize, editMode ) );
+	lua_pushboolean( L, GuiTextBoxMulti( bounds, text, textSize, editMode ) );
 	lua_pushstring( L, text );
 
 	return 2;
@@ -468,9 +468,9 @@ int lguiGuiSpinner( lua_State *L ) {
 	char text[ STRING_LEN ] = { '\0' };
 	strcpy( text, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	lua_pushboolean( L, GuiSpinner( rect, text, &value, minValue, maxValue, editMode ) );
+	lua_pushboolean( L, GuiSpinner( bounds, text, &value, minValue, maxValue, editMode ) );
 	lua_pushinteger( L, value );
 
 	return 2;
@@ -502,9 +502,9 @@ int lguiGuiValueBox( lua_State *L ) {
 	char text[ STRING_LEN ] = { '\0' };
 	strcpy( text, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	lua_pushboolean( L, GuiValueBox( rect, text, &value, minValue, maxValue, editMode ) );
+	lua_pushboolean( L, GuiValueBox( bounds, text, &value, minValue, maxValue, editMode ) );
 	lua_pushinteger( L, value );
 
 	return 2;
@@ -537,9 +537,9 @@ int lguiGuiSlider( lua_State *L ) {
 	char textLeft[ STRING_LEN ] = { '\0' };
 	strcpy( textLeft, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	lua_pushnumber( L, GuiSlider( rect, textLeft, textRight, value, minValue, maxValue ) );
+	lua_pushnumber( L, GuiSlider( bounds, textLeft, textRight, value, minValue, maxValue ) );
 
 	return 1;
 }
@@ -571,9 +571,9 @@ int lguiGuiSliderBar( lua_State *L ) {
 	char textLeft[ STRING_LEN ] = { '\0' };
 	strcpy( textLeft, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	lua_pushnumber( L, GuiSliderBar( rect, textLeft, textRight, value, minValue, maxValue ) );
+	lua_pushnumber( L, GuiSliderBar( bounds, textLeft, textRight, value, minValue, maxValue ) );
 
 	return 1;
 }
@@ -605,9 +605,9 @@ int lguiGuiProgressBar( lua_State *L ) {
 	char textLeft[ STRING_LEN ] = { '\0' };
 	strcpy( textLeft, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	lua_pushnumber( L, GuiProgressBar( rect, textLeft, textRight, value, minValue, maxValue ) );
+	lua_pushnumber( L, GuiProgressBar( bounds, textLeft, textRight, value, minValue, maxValue ) );
 
 	return 1;
 }
@@ -632,9 +632,9 @@ int lguiGuiScrollBar( lua_State *L ) {
 	lua_pop( L, 1 );
 	int value = lua_tointeger( L, -1 );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	lua_pushinteger( L, GuiScrollBar( rect, value, minValue, maxValue ) );
+	lua_pushinteger( L, GuiScrollBar( bounds, value, minValue, maxValue ) );
 
 	return 1;
 }
@@ -660,10 +660,216 @@ int lguiGuiDropdownBox( lua_State *L ) {
 	char text[ STRING_LEN ] = { '\0' };
 	strcpy( text, lua_tostring( L, -1 ) );
 	lua_pop( L, 1 );
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle bounds = uluaGetRectangle( L );
 
-	lua_pushboolean( L, GuiDropdownBox( rect, text, &active, editMode ) );
+	lua_pushboolean( L, GuiDropdownBox( bounds, text, &active, editMode ) );
 	lua_pushinteger( L, active );
 
 	return 2;
+}
+
+/*
+## Gui - Advanced
+*/
+
+/*
+> itemIndex, scrollIndex = RL_GuiListView( Rectangle bounds, string text, int scrollIndex, int active )
+
+List View control, returns selected list item index and scroll index
+
+- Failure return nil
+- Success return int, int
+*/
+int lguiGuiListView( lua_State *L ) {
+	if ( !lua_istable( L, -4 )	|| !lua_isstring( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiListView( Rectangle bounds, string text, int scrollIndex, int active )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	int active = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	int scrollIndex = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	Rectangle bounds = uluaGetRectangle( L );
+
+	lua_pushinteger( L, GuiListView( bounds, text, &scrollIndex, active ) );
+	lua_pushinteger( L, scrollIndex );
+
+	return 2;
+}
+
+/*
+> buttonIndex = RL_GuiMessageBox( Rectangle bounds, string title, string message, string buttons )
+
+Message Box control, displays a message, returns button index ( 0 is x button )
+
+- Failure return false
+- Success return int
+*/
+int lguiGuiMessageBox( lua_State *L ) {
+	if ( !lua_istable( L, -4 )	|| !lua_isstring( L, -3 ) || !lua_isstring( L, -2 ) || !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiMessageBox( Rectangle bounds, string title, string message, string buttons )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	char buttons[ STRING_LEN ] = { '\0' };
+	strcpy( buttons, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	char message[ STRING_LEN ] = { '\0' };
+	strcpy( message, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	char title[ STRING_LEN ] = { '\0' };
+	strcpy( title, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	Rectangle bounds = uluaGetRectangle( L );
+
+	lua_pushinteger( L, GuiMessageBox( bounds, title, message, buttons ) );
+
+	return 1;
+}
+
+/*
+> buttonIndex, text, secretViewActive = RL_GuiTextInputBox( Rectangle bounds, string title, string message, string buttons, string text, int textMaxSize, int secretViewActive )
+
+Text Input Box control, ask for text, supports secret
+
+- Failure return false
+- Success return int, string, int
+*/
+int lguiGuiTextInputBox( lua_State *L ) {
+	if ( !lua_istable( L, -7 )	|| !lua_isstring( L, -6 ) || !lua_isstring( L, -5 ) || !lua_isstring( L, -4 ) || !lua_isstring( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiTextInputBox( Rectangle bounds, string title, string message, string buttons, string text, int textMaxSize, int secretViewActive )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int secretViewActive = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	int textMaxSize = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	char buttons[ STRING_LEN ] = { '\0' };
+	strcpy( buttons, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	char message[ STRING_LEN ] = { '\0' };
+	strcpy( message, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	char title[ STRING_LEN ] = { '\0' };
+	strcpy( title, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	Rectangle bounds = uluaGetRectangle( L );
+
+	lua_pushinteger( L, GuiTextInputBox( bounds, title, message, buttons, text, textMaxSize, &secretViewActive ) );
+	lua_pushstring( L, text );
+	lua_pushinteger( L, secretViewActive );
+
+	return 3;
+}
+
+/*
+> color = RL_GuiColorPicker( Rectangle bounds, string text, Color color )
+
+Color Picker control ( multiple color controls )
+
+- Failure return false
+- Success return Color
+*/
+int lguiGuiColorPicker( lua_State *L ) {
+	if ( !lua_istable( L, -3 )	|| !lua_isstring( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiColorPicker( Rectangle bounds, string text, Color color )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Color color = uluaGetColor( L );
+	lua_pop( L, 1 );
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	Rectangle bounds = uluaGetRectangle( L );
+
+	uluaPushColor( L, GuiColorPicker( bounds, text, color ) );
+
+	return 1;
+}
+
+/*
+> color = RL_GuiColorPanel( Rectangle bounds, string text, Color color )
+
+Color Panel control
+
+- Failure return false
+- Success return Color
+*/
+int lguiGuiColorPanel( lua_State *L ) {
+	if ( !lua_istable( L, -3 )	|| !lua_isstring( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiColorPanel( Rectangle bounds, string text, Color color )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Color color = uluaGetColor( L );
+	lua_pop( L, 1 );
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	Rectangle bounds = uluaGetRectangle( L );
+
+	uluaPushColor( L, GuiColorPanel( bounds, text, color ) );
+
+	return 1;
+}
+
+/*
+> alpha = RL_GuiColorBarAlpha( Rectangle bounds, string text, float alpha )
+
+Color Bar Alpha control
+
+- Failure return false
+- Success return float
+*/
+int lguiGuiColorBarAlpha( lua_State *L ) {
+	if ( !lua_istable( L, -3 )	|| !lua_isstring( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiColorBarAlpha( Rectangle bounds, string text, float alpha )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float alpha = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	Rectangle bounds = uluaGetRectangle( L );
+
+	lua_pushnumber( L, GuiColorBarAlpha( bounds, text, alpha ) );
+
+	return 1;
+}
+
+/*
+> hue = RL_GuiColorBarHue( Rectangle bounds, string text, float value )
+
+Color Bar Hue control
+
+- Failure return false
+- Success return float
+*/
+int lguiGuiColorBarHue( lua_State *L ) {
+	if ( !lua_istable( L, -3 )	|| !lua_isstring( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiColorBarHue( Rectangle bounds, string text, float value )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float value = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	Rectangle bounds = uluaGetRectangle( L );
+
+	lua_pushnumber( L, GuiColorBarHue( bounds, text, value ) );
+
+	return 1;
 }

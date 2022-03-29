@@ -12,6 +12,11 @@ local scrollbarValue = 0.0
 local dropdownValue = 0
 local dropdownActive = false
 local index = 0
+local listView = { item = 0, scroll = 0 }
+local messageBox = { buttonIndex = -1 }
+local textInputBox = { buttonIndex = 0, text = "", secretViewActive = 1 }
+local colorPicker = { color = { 255, 255, 255 } }
+local colorPanel = { color = { 255, 255, 255 }, alpha = 1.0, hue = 1.0, oldHue = 1.0 }
 
 function init()
 	local monitor = 0
@@ -69,5 +74,31 @@ function draw()
 
 	if dropdownToggle then
 		dropdownActive = not dropdownActive
+	end
+
+	listView.item, listView.scroll = RL_GuiListView( { 200, 400, 200, 200 }, "Cat\nElefant\nSquirrel", listView.scroll, listView.item )
+	messageBox.buttonIndex = RL_GuiMessageBox( { 420, 400, 200, 100 }, "Message", "Are you sure about this?", "Yes\nNo" )
+
+	if 0 <= messageBox.buttonIndex then
+		print( "messageBox.buttonIndex", messageBox.buttonIndex )
+	end
+
+	textInputBox.buttonIndex, textInputBox.text, textInputBox.secretViewActive
+	= RL_GuiTextInputBox( { 420, 510, 300, 150 }, "Input Box", "Put text here", "Button",textInputBox.text, 200, textInputBox.secretViewActive )
+
+	if 0 <= textInputBox.buttonIndex then
+		print( "textInputBox.buttonIndex", textInputBox.buttonIndex )
+	end
+
+	colorPicker.color = RL_GuiColorPicker( { 620, 20, 150, 150 }, "Color Picker", colorPicker.color )
+
+	colorPanel.color = RL_GuiColorPanel( { 820, 20, 150, 150 }, "Color Panel", colorPanel.color )
+	colorPanel.alpha = RL_GuiColorBarAlpha( { 820, 180, 150, 20 }, "Color alpha", colorPanel.alpha )
+	colorPanel.hue = RL_GuiColorBarHue( { 980, 20, 20, 150 }, "Color hue", colorPanel.hue )
+
+	if colorPanel.hue ~= colorPanel.oldHue then
+		colorPanel.oldHue = colorPanel.hue
+
+		colorPanel.color = RL_ColorFromHSV( colorPanel.hue, 1.0, 1.0 )
 	end
 end

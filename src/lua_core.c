@@ -832,6 +832,14 @@ void luaRegister() {
 	lua_register( L, "RL_GuiProgressBar", lguiGuiProgressBar );
 	lua_register( L, "RL_GuiScrollBar", lguiGuiScrollBar );
 	lua_register( L, "RL_GuiDropdownBox", lguiGuiDropdownBox );
+		/* Advanced. */
+	lua_register( L, "RL_GuiListView", lguiGuiListView );
+	lua_register( L, "RL_GuiMessageBox", lguiGuiMessageBox );
+	lua_register( L, "RL_GuiTextInputBox", lguiGuiTextInputBox );
+	lua_register( L, "RL_GuiColorPicker", lguiGuiColorPicker );
+	lua_register( L, "RL_GuiColorPanel", lguiGuiColorPanel );
+	lua_register( L, "RL_GuiColorBarAlpha", lguiGuiColorBarAlpha );
+	lua_register( L, "RL_GuiColorBarHue", lguiGuiColorBarHue );
 }
 
 /* Lua util functions. */

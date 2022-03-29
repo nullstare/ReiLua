@@ -1,12 +1,13 @@
 Current {
+	* Raygui
+		* Advanced controls
 }
 
 Backlog {
 	* More and better examples
 
-	* Raygui
-		* Advanced controls
 	* Core
+		* Clipboard
 		* Screen-space-related
 		* Files drop
 	* Text

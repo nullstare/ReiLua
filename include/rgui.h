@@ -10,6 +10,8 @@ int lguiGuiSetFont( lua_State *L );
 /* Style */
 int lguiGuiSetStyle( lua_State *L );
 int lguiGuiGetStyle( lua_State *L );
+int lguiGuiLoadStyle( lua_State *L );
+int lguiGuiLoadStyleDefault( lua_State *L );
 /* Container. */
 int lguiGuiWindowBox( lua_State *L );
 int lguiGuiGroupBox( lua_State *L );
@@ -39,3 +41,9 @@ int lguiGuiColorPicker( lua_State *L );
 int lguiGuiColorPanel( lua_State *L );
 int lguiGuiColorBarAlpha( lua_State *L );
 int lguiGuiColorBarHue( lua_State *L );
+/* Icons. */
+int lguiGuiDrawIcon( lua_State *L );
+int lguiGuiSetIconScale( lua_State *L );
+int lguiGuiSetIconPixel( lua_State *L );
+int lguiGuiClearIconPixel( lua_State *L );
+int lguiGuiCheckIconPixel( lua_State *L );

@@ -33,7 +33,6 @@ List of some MISSING features that are planned to be included. For specific func
 Submodules.
 
 * Raygui
-	* Icons
 * Raymath
 	* Quaternions
 * Physac
@@ -140,7 +139,7 @@ cmake -G "MinGW Makefiles" ..
 
 # Cmake uses NMake Makefiles by default so we will set the Generator to MinGW with -G
 
-mingw32-make
+mingw32-make.exe
 ```
 
 * You should now have "ReiLua.exe".

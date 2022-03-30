@@ -811,6 +811,8 @@ void luaRegister() {
 		/* Style. */
 	lua_register( L, "RL_GuiSetStyle", lguiGuiSetStyle );
 	lua_register( L, "RL_GuiGetStyle", lguiGuiGetStyle );
+	lua_register( L, "RL_GuiLoadStyle", lguiGuiLoadStyle );
+	lua_register( L, "RL_GuiLoadStyleDefault", lguiGuiLoadStyleDefault );
 		/* Container. */
 	lua_register( L, "RL_GuiWindowBox", lguiGuiWindowBox );
 	lua_register( L, "RL_GuiGroupBox", lguiGuiGroupBox );
@@ -840,6 +842,12 @@ void luaRegister() {
 	lua_register( L, "RL_GuiColorPanel", lguiGuiColorPanel );
 	lua_register( L, "RL_GuiColorBarAlpha", lguiGuiColorBarAlpha );
 	lua_register( L, "RL_GuiColorBarHue", lguiGuiColorBarHue );
+		/* Icons. */
+	lua_register( L, "RL_GuiDrawIcon", lguiGuiDrawIcon );
+	lua_register( L, "RL_GuiSetIconScale", lguiGuiSetIconScale );
+	lua_register( L, "RL_GuiSetIconPixel", lguiGuiSetIconPixel );
+	lua_register( L, "RL_GuiClearIconPixel", lguiGuiClearIconPixel );
+	lua_register( L, "RL_GuiCheckIconPixel", lguiGuiCheckIconPixel );
 }
 
 /* Lua util functions. */

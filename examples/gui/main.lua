@@ -101,4 +101,6 @@ function draw()
 
 		colorPanel.color = RL_ColorFromHSV( colorPanel.hue, 1.0, 1.0 )
 	end
+	
+	RL_GuiDrawIcon( 121, { 6, 20 }, 2, WHITE )
 end

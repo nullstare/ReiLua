@@ -18,7 +18,7 @@ Enable gui controls ( Global state )
 int lguiGuiEnable( lua_State *L ) {
 	GuiEnable();
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -29,7 +29,7 @@ Disable gui controls ( Global state )
 int lguiGuiDisable( lua_State *L ) {
 	GuiDisable();
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -40,7 +40,7 @@ Lock gui controls ( Global state )
 int lguiGuiLock( lua_State *L ) {
 	GuiLock();
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -51,7 +51,7 @@ Unlock gui controls ( Global state )
 int lguiGuiUnlock( lua_State *L ) {
 	GuiUnlock();
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -119,6 +119,37 @@ int lguiGuiGetStyle( lua_State *L ) {
 	lua_pushinteger( L, GuiGetStyle( lua_tointeger( L, -2 ), lua_tointeger( L, -1 ) ) );
 
 	return 1;
+}
+
+/*
+> success = RL_GuiLoadStyle( int control, int property )
+
+Load style file over global style variable ( .rgs )
+
+- Failure return false
+- Success return true
+*/
+int lguiGuiLoadStyle( lua_State *L ) {
+	if ( !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiLoadStyle( string fileName )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	GuiLoadStyle( lua_tostring( L, -1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> RL_GuiLoadStyleDefault()
+
+Load style default over global style
+*/
+int lguiGuiLoadStyleDefault( lua_State *L ) {
+	GuiLoadStyleDefault();
+
+	return 0;
 }
 
 /*
@@ -870,6 +901,129 @@ int lguiGuiColorBarHue( lua_State *L ) {
 	Rectangle bounds = uluaGetRectangle( L );
 
 	lua_pushnumber( L, GuiColorBarHue( bounds, text, value ) );
+
+	return 1;
+}
+
+/*
+## Gui - Icons
+*/
+
+/*
+> success = RL_GuiDrawIcon( int iconId, Vector2 pos, int pixelSize, Color color )
+
+Draw icon
+
+- Failure return false
+- Success return true
+*/
+int lguiGuiDrawIcon( lua_State *L ) {
+	if ( !lua_isnumber( L, -4 )	|| !lua_istable( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiDrawIcon( int iconId, Vector2 pos, int pixelSize, Color color )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Color color = uluaGetColor( L );
+	lua_pop( L, 1 );
+	int pixelSize = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	Vector2 pos = uluaGetVector2( L );
+	lua_pop( L, 1 );
+	int iconId = lua_tointeger( L, -1 );
+
+	GuiDrawIcon( iconId, pos.x, pos.y, pixelSize, color );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_GuiSetIconScale( int scale )
+
+Set icon scale ( 1 by default )
+
+- Failure return false
+- Success return true
+*/
+int lguiGuiSetIconScale( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiSetIconScale( int scale )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	GuiSetIconScale( (unsigned int)lua_tointeger( L, -1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_GuiSetIconPixel( int iconId, Vector2 pos )
+
+Set icon pixel value
+
+- Failure return false
+- Success return true
+*/
+int lguiGuiSetIconPixel( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiSetIconPixel( int iconId, Vector2 pos )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 pos = uluaGetVector2( L );
+	lua_pop( L, 1 );
+	int iconId = lua_tointeger( L, -1 );
+
+	GuiSetIconPixel( iconId, pos.x, pos.y );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_GuiClearIconPixel( int iconId, Vector2 pos )
+
+Clear icon pixel value
+
+- Failure return false
+- Success return true
+*/
+int lguiGuiClearIconPixel( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiClearIconPixel( int iconId, Vector2 pos )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 pos = uluaGetVector2( L );
+	lua_pop( L, 1 );
+	int iconId = lua_tointeger( L, -1 );
+
+	GuiClearIconPixel( iconId, pos.x, pos.y );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> value = RL_GuiCheckIconPixel( int iconId, Vector2 pos )
+
+Check icon pixel value
+
+- Failure return nil
+- Success return bool
+*/
+int lguiGuiCheckIconPixel( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiCheckIconPixel( int iconId, Vector2 pos )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	Vector2 pos = uluaGetVector2( L );
+	lua_pop( L, 1 );
+	int iconId = lua_tointeger( L, -1 );
+
+	lua_pushboolean( L, GuiCheckIconPixel( iconId, pos.x, pos.y ) );
 
 	return 1;
 }

@@ -3381,6 +3381,21 @@ Get one style property
 
 ---
 
+> success = RL_GuiLoadStyle( int control, int property )
+
+Load style file over global style variable ( .rgs )
+
+- Failure return false
+- Success return true
+
+---
+
+> RL_GuiLoadStyleDefault()
+
+Load style default over global style
+
+---
+
 ## Gui - Container
 
 ---
@@ -3624,5 +3639,54 @@ Color Bar Hue control
 
 - Failure return false
 - Success return float
+
+---
+
+## Gui - Icons
+
+---
+
+> success = RL_GuiDrawIcon( int iconId, Vector2 pos, int pixelSize, Color color )
+
+Draw icon
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_GuiSetIconScale( int scale )
+
+Set icon scale ( 1 by default )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_GuiSetIconPixel( int iconId, Vector2 pos )
+
+Set icon pixel value
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_GuiClearIconPixel( int iconId, Vector2 pos )
+
+Clear icon pixel value
+
+- Failure return false
+- Success return true
+
+---
+
+> value = RL_GuiCheckIconPixel( int iconId, Vector2 pos )
+
+Check icon pixel value
+
+- Failure return nil
+- Success return bool
 
 ---

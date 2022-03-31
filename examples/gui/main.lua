@@ -13,10 +13,12 @@ local dropdownValue = 0
 local dropdownActive = false
 local index = 0
 local listView = { item = 0, scroll = 0 }
+local listViewEx = { item = 0, scroll = 0, focus = 0 }
 local messageBox = { buttonIndex = -1 }
 local textInputBox = { buttonIndex = 0, text = "", secretViewActive = 1 }
 local colorPicker = { color = { 255, 255, 255 } }
 local colorPanel = { color = { 255, 255, 255 }, alpha = 1.0, hue = 1.0, oldHue = 1.0 }
+local comboBoxActive = 0
 
 function init()
 	local monitor = 0
@@ -35,8 +37,7 @@ end
 function draw()
 	RL_ClearBackground( { 50, 20, 75 } )
 
-	if RL_GuiButton( { 112, 16, 96, 32 }, "Button" ) then
-		print( "Button pressed!" )
+	if RL_GuiButton( { 112, 16, 96, 32 }, "Exit" ) then
 		RL_CloseWindow()
 	end
 
@@ -77,6 +78,7 @@ function draw()
 	end
 
 	listView.item, listView.scroll = RL_GuiListView( { 200, 400, 200, 200 }, "Cat\nElefant\nSquirrel", listView.scroll, listView.item )
+	-- listViewEx.item, listViewEx.scroll, listViewEx.focus = RL_GuiListViewEx( { 200, 400, 200, 200 }, "Cat\nElefant\nSquirrel", listViewEx.focus, listViewEx.scroll, listViewEx.item )
 	messageBox.buttonIndex = RL_GuiMessageBox( { 420, 400, 200, 100 }, "Message", "Are you sure about this?", "Yes\nNo" )
 
 	if 0 <= messageBox.buttonIndex then
@@ -103,4 +105,6 @@ function draw()
 	end
 	
 	RL_GuiDrawIcon( 121, { 6, 20 }, 2, WHITE )
+
+	comboBoxActive = RL_GuiComboBox( { 5, 50, 80, 20 }, "One\nTwo\nThree", comboBoxActive )
 end

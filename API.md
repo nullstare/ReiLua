@@ -3472,25 +3472,59 @@ Get camera look-at matrix ( View matrix )
 
 > RL_GuiEnable()
 
-Enable gui controls ( Global state )
+Enable gui controls ( global state )
 
 ---
 
 > RL_GuiDisable()
 
-Disable gui controls ( Global state )
+Disable gui controls ( global state )
 
 ---
 
 > RL_GuiLock()
 
-Lock gui controls ( Global state )
+Lock gui controls ( global state )
 
 ---
 
 > RL_GuiUnlock()
 
-Unlock gui controls ( Global state )
+Unlock gui controls ( global state )
+
+---
+
+> locked = RL_GuiIsLocked()
+
+Check if gui is locked ( global state )
+
+- Success return bool
+
+---
+
+> success = RL_GuiFade( float alpha )
+
+Set gui controls alpha ( global state ), alpha goes from 0.0f to 1.0f
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_GuiSetState( int state )
+
+Set gui state ( global state )
+
+- Failure return false
+- Success return true
+
+---
+
+> state = RL_GuiGetState()
+
+Get gui state ( global state )
+
+- Success return int
 
 ---
 
@@ -3615,6 +3649,15 @@ Button control, returns true when clicked
 
 ---
 
+> clicked = RL_GuiLabelButton( Rectangle bounds, string text )
+
+Label button control, show true when clicked
+
+- Failure return nil
+- Success return boolean
+
+---
+
 > active = RL_GuiToggle( Rectangle bounds, string text, bool active )
 
 Toggle Button control, returns true when active
@@ -3639,6 +3682,15 @@ Check Box control, returns true when active
 
 - Failure return nil
 - Success return boolean
+
+---
+
+> active = RL_GuiComboBox( Rectangle bounds, string text, int active )
+
+Combo Box control, returns selected item index
+
+- Failure return nil
+- Success return int
 
 ---
 
@@ -3723,6 +3775,33 @@ Dropdown Box control, returns selected item
 
 ---
 
+> success = RL_GuiStatusBar( Rectangle bounds, string text )
+
+Status Bar control, shows info text
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_GuiDummyRec( Rectangle bounds, string text )
+
+Dummy control for placeholders
+
+- Failure return false
+- Success return true
+
+---
+
+> cell = RL_GuiGrid( Rectangle bounds, string text, float spacing, int subdivs )
+
+Grid control, returns mouse cell position
+
+- Failure return false
+- Success return Vector2
+
+---
+
 ## Gui - Advanced
 
 ---
@@ -3733,6 +3812,15 @@ List View control, returns selected list item index and scroll index
 
 - Failure return nil
 - Success return int, int
+
+---
+
+> itemIndex, scrollIndex, focus = RL_GuiListViewEx( Rectangle bounds, string text, int focus, int scrollIndex, int active )
+
+List View with extended parameters, returns selected list item index, scroll index and focus
+
+- Failure return nil
+- Success return int, int, int
 
 ---
 

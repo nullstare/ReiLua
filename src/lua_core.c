@@ -824,6 +824,10 @@ void luaRegister() {
 	lua_register( L, "RL_GuiDisable", lguiGuiDisable );
 	lua_register( L, "RL_GuiLock", lguiGuiLock );
 	lua_register( L, "RL_GuiUnlock", lguiGuiUnlock );
+	lua_register( L, "RL_GuiIsLocked", lguiGuiIsLocked );
+	lua_register( L, "RL_GuiFade", lguiGuiFade );
+	lua_register( L, "RL_GuiSetState", lguiGuiSetState );
+	lua_register( L, "RL_GuiGetState", lguiGuiGetState );
 		/* Font. */
 	lua_register( L, "RL_GuiSetFont", lguiGuiSetFont );
 		/* Style. */
@@ -840,9 +844,11 @@ void luaRegister() {
 		/* Basic. */
 	lua_register( L, "RL_GuiLabel", lguiGuiLabel );
 	lua_register( L, "RL_GuiButton", lguiGuiButton );
+	lua_register( L, "RL_GuiLabelButton", lguiGuiLabelButton );
 	lua_register( L, "RL_GuiToggle", lguiGuiToggle );
 	lua_register( L, "RL_GuiToggleGroup", lguiGuiToggleGroup );
 	lua_register( L, "RL_GuiCheckBox", lguiGuiCheckBox );
+	lua_register( L, "RL_GuiComboBox", lguiGuiComboBox );
 	lua_register( L, "RL_GuiTextBox", lguiGuiTextBox );
 	lua_register( L, "RL_GuiTextBoxMulti", lguiGuiTextBoxMulti );
 	lua_register( L, "RL_GuiSpinner", lguiGuiSpinner );
@@ -852,8 +858,12 @@ void luaRegister() {
 	lua_register( L, "RL_GuiProgressBar", lguiGuiProgressBar );
 	lua_register( L, "RL_GuiScrollBar", lguiGuiScrollBar );
 	lua_register( L, "RL_GuiDropdownBox", lguiGuiDropdownBox );
+	lua_register( L, "RL_GuiStatusBar", lguiGuiStatusBar );
+	lua_register( L, "RL_GuiDummyRec", lguiGuiDummyRec );
+	lua_register( L, "RL_GuiGrid", lguiGuiGrid );
 		/* Advanced. */
 	lua_register( L, "RL_GuiListView", lguiGuiListView );
+	lua_register( L, "RL_GuiListViewEx", lguiGuiListViewEx );
 	lua_register( L, "RL_GuiMessageBox", lguiGuiMessageBox );
 	lua_register( L, "RL_GuiTextInputBox", lguiGuiTextInputBox );
 	lua_register( L, "RL_GuiColorPicker", lguiGuiColorPicker );

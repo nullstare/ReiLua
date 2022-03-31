@@ -15,9 +15,9 @@ ReiLua is currently in arbitrary version 0.1 and some planned raylib functionali
 List of some MISSING features that are planned to be included. For specific function, check API.
 
 * Core
-	* Some screen-space-related functions
 	* Files drop
-	* camera2d and it's functions
+	* Camera2d and it's functions
+		* Screen-space-related functions
 	* VR stereo config functions for VR simulator
 * Textures
 	* Image manipulation functions
@@ -32,7 +32,7 @@ List of some MISSING features that are planned to be included. For specific func
 
 Submodules.
 
-* Raygui
+* Raygui ( Done )
 * Raymath
 	* Quaternions
 * Physac

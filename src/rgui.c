@@ -13,7 +13,7 @@
 /*
 > RL_GuiEnable()
 
-Enable gui controls ( Global state )
+Enable gui controls ( global state )
 */
 int lguiGuiEnable( lua_State *L ) {
 	GuiEnable();
@@ -24,7 +24,7 @@ int lguiGuiEnable( lua_State *L ) {
 /*
 > RL_GuiDisable()
 
-Disable gui controls ( Global state )
+Disable gui controls ( global state )
 */
 int lguiGuiDisable( lua_State *L ) {
 	GuiDisable();
@@ -35,7 +35,7 @@ int lguiGuiDisable( lua_State *L ) {
 /*
 > RL_GuiLock()
 
-Lock gui controls ( Global state )
+Lock gui controls ( global state )
 */
 int lguiGuiLock( lua_State *L ) {
 	GuiLock();
@@ -46,12 +46,78 @@ int lguiGuiLock( lua_State *L ) {
 /*
 > RL_GuiUnlock()
 
-Unlock gui controls ( Global state )
+Unlock gui controls ( global state )
 */
 int lguiGuiUnlock( lua_State *L ) {
 	GuiUnlock();
 
 	return 0;
+}
+
+/*
+> locked = RL_GuiIsLocked()
+
+Check if gui is locked ( global state )
+
+- Success return bool
+*/
+int lguiGuiIsLocked( lua_State *L ) {
+	lua_pushboolean( L, GuiIsLocked() );
+
+	return 0;
+}
+
+/*
+> success = RL_GuiFade( float alpha )
+
+Set gui controls alpha ( global state ), alpha goes from 0.0f to 1.0f
+
+- Failure return false
+- Success return true
+*/
+int lguiGuiFade( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiFade( float alpha )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	GuiFade( lua_tonumber( L, -1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_GuiSetState( int state )
+
+Set gui state ( global state )
+
+- Failure return false
+- Success return true
+*/
+int lguiGuiSetState( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiSetState( int state )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	GuiSetState( lua_tointeger( L, -1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> state = RL_GuiGetState()
+
+Get gui state ( global state )
+
+- Success return int
+*/
+int lguiGuiGetState( lua_State *L ) {
+	lua_pushinteger( L, GuiGetState() );
+
+	return 1;
 }
 
 /*
@@ -338,6 +404,30 @@ int lguiGuiButton( lua_State *L ) {
 }
 
 /*
+> clicked = RL_GuiLabelButton( Rectangle bounds, string text )
+
+Label button control, show true when clicked
+
+- Failure return nil
+- Success return boolean
+*/
+int lguiGuiLabelButton( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiLabelButton( Rectangle bounds, string text )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	Rectangle bounds = uluaGetRectangle( L );
+
+	lua_pushboolean( L, GuiLabelButton( bounds, text ) );
+
+	return 1;
+}
+
+/*
 > active = RL_GuiToggle( Rectangle bounds, string text, bool active )
 
 Toggle Button control, returns true when active
@@ -411,6 +501,32 @@ int lguiGuiCheckBox( lua_State *L ) {
 	Rectangle bounds = uluaGetRectangle( L );
 
 	lua_pushboolean( L, GuiCheckBox( bounds, text, checked ) );
+
+	return 1;
+}
+
+/*
+> active = RL_GuiComboBox( Rectangle bounds, string text, int active )
+
+Combo Box control, returns selected item index
+
+- Failure return nil
+- Success return int
+*/
+int lguiGuiComboBox( lua_State *L ) {
+	if ( !lua_istable( L, -3 ) || !lua_isstring( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiComboBox( Rectangle bounds, string text, int active )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	int active = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	Rectangle bounds = uluaGetRectangle( L );
+
+	lua_pushinteger( L, GuiComboBox( bounds, text, active ) );
 
 	return 1;
 }
@@ -700,6 +816,84 @@ int lguiGuiDropdownBox( lua_State *L ) {
 }
 
 /*
+> success = RL_GuiStatusBar( Rectangle bounds, string text )
+
+Status Bar control, shows info text
+
+- Failure return false
+- Success return true
+*/
+int lguiGuiStatusBar( lua_State *L ) {
+	if ( !lua_istable( L, -2 )	|| !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiStatusBar( Rectangle bounds, string text )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	Rectangle bounds = uluaGetRectangle( L );
+
+	GuiStatusBar( bounds, text );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_GuiDummyRec( Rectangle bounds, string text )
+
+Dummy control for placeholders
+
+- Failure return false
+- Success return true
+*/
+int lguiGuiDummyRec( lua_State *L ) {
+	if ( !lua_istable( L, -2 )	|| !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiDummyRec( Rectangle bounds, string text )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	Rectangle bounds = uluaGetRectangle( L );
+
+	GuiDummyRec( bounds, text );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> cell = RL_GuiGrid( Rectangle bounds, string text, float spacing, int subdivs )
+
+Grid control, returns mouse cell position
+
+- Failure return false
+- Success return Vector2
+*/
+int lguiGuiGrid( lua_State *L ) {
+	if ( !lua_istable( L, -4 )	|| !lua_isstring( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiGrid( Rectangle bounds, string text, float spacing, int subdivs )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int subdivs = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	float spacing = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	Rectangle bounds = uluaGetRectangle( L );
+
+	uluaPushVector2( L, GuiGrid( bounds, text, spacing, subdivs ) );
+
+	return 1;
+}
+
+/*
 ## Gui - Advanced
 */
 
@@ -730,6 +924,39 @@ int lguiGuiListView( lua_State *L ) {
 	lua_pushinteger( L, scrollIndex );
 
 	return 2;
+}
+
+/*
+> itemIndex, scrollIndex, focus = RL_GuiListViewEx( Rectangle bounds, string text, int focus, int scrollIndex, int active )
+
+List View with extended parameters, returns selected list item index, scroll index and focus
+
+- Failure return nil
+- Success return int, int, int
+*/
+int lguiGuiListViewEx( lua_State *L ) {
+	if ( !lua_istable( L, -5 )	|| !lua_isstring( L, -4 ) || !lua_isnumber( L, -3 )
+	|| !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiListViewEx( Rectangle bounds, string text, int focus, int scrollIndex, int active )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	int active = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	int scrollIndex = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	int focus = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	int count = 0;
+	const char **text = GuiTextSplit( lua_tostring( L, -1 ), &count, NULL );
+	lua_pop( L, 1 );
+	Rectangle bounds = uluaGetRectangle( L );
+
+	lua_pushinteger( L, GuiListViewEx( bounds, text, count, &focus, &scrollIndex, active ) );
+	lua_pushinteger( L, scrollIndex );
+	lua_pushinteger( L, focus );
+
+	return 3;
 }
 
 /*

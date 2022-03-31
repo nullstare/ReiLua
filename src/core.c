@@ -2337,3 +2337,86 @@ int lcoreUpdateCamera3D( lua_State *L ) {
 
 	return 1;
 }
+
+/*
+## Core - Screen-space
+*/
+
+/*
+> ray = RL_GetMouseRay( Vector2 mousePosition, Camera3D camera )
+
+Get a ray trace from mouse position
+
+- Failure return false
+- Success return Ray
+*/
+int lcoreGetMouseRay( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetMouseRay( Vector2 mousePosition, Camera3D camera )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	Vector2 mousePosition = uluaGetVector2( L );
+
+	if ( !validCamera3D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushRay( L, GetMouseRay( mousePosition, *state->camera3Ds[ cameraId ] ) );
+
+	return 1;
+}
+
+/*
+> matrix = RL_GetCameraMatrix( Camera3D camera )
+
+Get camera transform matrix ( view matrix )
+
+- Failure return false
+- Success return Matrix
+*/
+int lcoreGetCameraMatrix( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetCameraMatrix( Camera3D camera )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, -1 );
+
+	if ( !validCamera3D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushMatrix( L, GetCameraMatrix( *state->camera3Ds[ cameraId ] ) );
+
+	return 1;
+}
+
+/*
+> position = RL_GetWorldToScreen( Vector3 position, Camera3D camera )
+
+Get the screen space position for a 3d world space position
+
+- Failure return false
+- Success return Vector2
+*/
+int lcoreGetWorldToScreen( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetWorldToScreen( Vector3 position, Camera3D camera )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	Vector3 position = uluaGetVector3( L );
+
+	if ( !validCamera3D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushVector2( L, GetWorldToScreen( position, *state->camera3Ds[ cameraId ] ) );
+
+	return 1;
+}

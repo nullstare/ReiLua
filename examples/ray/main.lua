@@ -12,6 +12,17 @@ local function setupWindow()
 	RL_SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 end
 
+function ray_collision()
+	local rayCol = RL_GetRayCollisionMesh( ray, sphereMesh, RL_MatrixIdentity() )
+
+	if rayCol ~= nil and rayCol.hit then
+		print( "hit", rayCol.hit )
+		print( "distance", rayCol.distance )
+		print( "point", rayCol.point[1], rayCol.point[2], rayCol.point[3] )
+		print( "normal", rayCol.normal[1], rayCol.normal[2], rayCol.normal[3] )
+	end
+end
+
 function init()
 	setupWindow()
 
@@ -23,14 +34,13 @@ function init()
 
 	sphereMesh = RL_GenMeshSphere( 1.0, 8, 10 )
 
-	-- local rayCol = RL_GetRayCollisionSphere( { { 0.5, 0, 4 }, { 0, 0, -1 } }, { 0, 0, 0 }, 1.0 )
-	local rayCol = RL_GetRayCollisionMesh( ray, sphereMesh, RL_MatrixIdentity() )
+	ray_collision()
+end
 
-	if rayCol ~= nil and rayCol.hit then
-		print( "hit", rayCol.hit )
-		print( "distance", rayCol.distance )
-		print( "point", rayCol.point[1], rayCol.point[2], rayCol.point[3] )
-		print( "normal", rayCol.normal[1], rayCol.normal[2], rayCol.normal[3] )
+function process( delta )
+	if RL_IsMouseButtonPressed( 0 ) then
+		ray = RL_GetMouseRay( RL_GetMousePosition(), camera )
+		ray_collision()
 	end
 end
 

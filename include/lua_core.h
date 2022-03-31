@@ -24,6 +24,7 @@ void uluaPushVector3( lua_State *L, Vector3 vector );
 void uluaPushVector4( lua_State *L, Vector4 vector );
 void uluaPushRectangle( lua_State *L, Rectangle rect );
 void uluaPushMatrix( lua_State *L, Matrix matrix );
+void uluaPushRay( lua_State *L, Ray ray );
 void uluaPushRayCollision( lua_State *L, RayCollision rayCol );
 
 int uluaGetTableLen( lua_State *L );

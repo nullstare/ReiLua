@@ -128,3 +128,7 @@ int lcoreGetGestureDragVector( lua_State *L );
 int lcoreGetGestureDragAngle( lua_State *L );
 int lcoreGetGesturePinchVector( lua_State *L );
 int lcoreGetGesturePinchAngle( lua_State *L );
+/* Screen-space. */
+int lcoreGetMouseRay( lua_State *L );
+int lcoreGetCameraMatrix( lua_State *L );
+int lcoreGetWorldToScreen( lua_State *L );

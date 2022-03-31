@@ -667,7 +667,7 @@ int id. Basic 3d Model type
 
 ---
 
-> RayCollision = { hit = true, distance = 1.0, point = { 0.0, 0.0 }, normal = { 0.0, 0.0, 1.0 } }
+> RayCollision = { hit = true, distance = 1.0, point = { 0.0, 0.0, 0.0 }, normal = { 0.0, 0.0, 1.0 } }
 
 Raycast hit information. NOTE: Data in named keys
 
@@ -1718,6 +1718,37 @@ Update camera position for selected mode
 
 - Failure return false
 - Success return true
+
+---
+
+## Core - Screen-space
+
+---
+
+> ray = RL_GetMouseRay( Vector2 mousePosition, Camera3D camera )
+
+Get a ray trace from mouse position
+
+- Failure return false
+- Success return Ray
+
+---
+
+> matrix = RL_GetCameraMatrix( Camera3D camera )
+
+Get camera transform matrix ( view matrix )
+
+- Failure return false
+- Success return Matrix
+
+---
+
+> position = RL_GetWorldToScreen( Vector3 position, Camera3D camera )
+
+Get the screen space position for a 3d world space position
+
+- Failure return false
+- Success return Vector2
 
 ---
 

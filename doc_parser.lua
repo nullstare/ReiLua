@@ -119,7 +119,7 @@ apiFile:write( "\n> Model = ModelId\n\
 int id. Basic 3d Model type\n\n---\n" )
 apiFile:write( "\n> Ray = { { 0.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0 } }\n\
 { position, direction }. Ray type (useful for raycast)\n\n---\n" )
-apiFile:write( "\n> RayCollision = { hit = true, distance = 1.0, point = { 0.0, 0.0 }, normal = { 0.0, 0.0, 1.0 } }\n\
+apiFile:write( "\n> RayCollision = { hit = true, distance = 1.0, point = { 0.0, 0.0, 0.0 }, normal = { 0.0, 0.0, 1.0 } }\n\
 Raycast hit information. NOTE: Data in named keys\n\n---\n" )
 apiFile:write( "\n> BoundingBox = { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } }\n\
 { min, max }. Bounding box type for 3d mesh\n\n---\n" )

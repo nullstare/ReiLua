@@ -597,6 +597,10 @@ void luaRegister() {
 	lua_register( L, "RL_GetGestureDragAngle", lcoreGetGestureDragAngle );
 	lua_register( L, "RL_GetGesturePinchVector", lcoreGetGesturePinchVector );
 	lua_register( L, "RL_GetGesturePinchAngle", lcoreGetGesturePinchAngle );
+		/* Screen-space. */
+	lua_register( L, "RL_GetMouseRay", lcoreGetMouseRay );
+	lua_register( L, "RL_GetCameraMatrix", lcoreGetCameraMatrix );
+	lua_register( L, "RL_GetWorldToScreen", lcoreGetWorldToScreen );
 
 	/* Shapes. */
 		/* Drawing. */
@@ -1302,6 +1306,28 @@ void uluaPushMatrix( lua_State *L, Matrix matrix ) {
 	lua_pushnumber( L, matrix.m15 );
 	lua_rawseti( L, -2, 4 );
 	lua_rawseti( L, -2, 4 );
+}
+
+void uluaPushRay( lua_State *L, Ray ray ) {
+	lua_createtable( L, 2, 0 );
+
+	lua_createtable( L, 3, 0 );
+	lua_pushnumber( L, ray.position.x );
+	lua_rawseti( L, -2, 1 );
+	lua_pushnumber( L, ray.position.y );
+	lua_rawseti( L, -2, 2 );
+	lua_pushnumber( L, ray.position.z );
+	lua_rawseti( L, -2, 3 );
+	lua_rawseti( L, -2, 1 );
+
+	lua_createtable( L, 3, 0 );
+	lua_pushnumber( L, ray.direction.x );
+	lua_rawseti( L, -2, 1 );
+	lua_pushnumber( L, ray.direction.y );
+	lua_rawseti( L, -2, 2 );
+	lua_pushnumber( L, ray.direction.z );
+	lua_rawseti( L, -2, 3 );
+	lua_rawseti( L, -2, 2 );
 }
 
 void uluaPushRayCollision( lua_State *L, RayCollision rayCol ) {

@@ -3,9 +3,16 @@
 /* Validators. */
 bool validCamera3D( size_t id );
 /* Window. */
+int lcoreIsWindowReady( lua_State *L );
+int lcoreIsWindowFullscreen( lua_State *L );
+int lcoreIsWindowHidden( lua_State *L );
+int lcoreIsWindowMinimized( lua_State *L );
+int lcoreIsWindowMaximized( lua_State *L );
+int lcoreIsWindowFocused( lua_State *L );
 int lcoreSetWindowMonitor( lua_State *L );
 int lcoreSetWindowPosition( lua_State *L );
 int lcoreSetWindowSize( lua_State *L );
+int lcoreSetWindowMinSize( lua_State *L );
 int lcoreGetMonitorPosition( lua_State *L );
 int lcoreGetMonitorSize( lua_State *L );
 int lcoreGetWindowPosition( lua_State *L );
@@ -17,7 +24,14 @@ int lcoreIsWindowResized( lua_State *L );
 int lcoreSetWindowIcon( lua_State *L );
 int lcoreSetWindowTitle( lua_State *L );
 int lcoreGetMonitorCount( lua_State *L );
+int lcoreGetCurrentMonitor( lua_State *L );
+int lcoreGetMonitorPhysicalSize( lua_State *L );
+int lcoreGetMonitorRefreshRate( lua_State *L );
+int lcoreGetWindowScaleDPI( lua_State *L );
+int lcoreGetMonitorName( lua_State *L );
 int lcoreCloseWindow( lua_State *L );
+int lcoreSetClipboardText( lua_State *L );
+int lcoreGetClipboardText( lua_State *L );
 /* Timing. */
 int lcoreSetTargetFPS( lua_State *L );
 int lcoreGetFrameTime( lua_State *L );

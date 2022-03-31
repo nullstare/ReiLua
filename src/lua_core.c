@@ -472,9 +472,16 @@ void luaRegister() {
 
 	/* Core. */
 		/* Window. */
+	lua_register( L, "RL_IsWindowReady", lcoreIsWindowReady );
+	lua_register( L, "RL_IsWindowFullscreen", lcoreIsWindowFullscreen );
+	lua_register( L, "RL_IsWindowHidden", lcoreIsWindowHidden );
+	lua_register( L, "RL_IsWindowMinimized", lcoreIsWindowMinimized );
+	lua_register( L, "RL_IsWindowMaximized", lcoreIsWindowMaximized );
+	lua_register( L, "RL_IsWindowFocused", lcoreIsWindowFocused );
 	lua_register( L, "RL_SetWindowMonitor", lcoreSetWindowMonitor );
 	lua_register( L, "RL_SetWindowPosition", lcoreSetWindowPosition );
 	lua_register( L, "RL_SetWindowSize", lcoreSetWindowSize );
+	lua_register( L, "RL_SetWindowMinSize", lcoreSetWindowMinSize );
 	lua_register( L, "RL_GetMonitorPosition", lcoreGetMonitorPosition );
 	lua_register( L, "RL_GetMonitorSize", lcoreGetMonitorSize );
 	lua_register( L, "RL_GetWindowPosition", lcoreGetWindowPosition );
@@ -486,7 +493,14 @@ void luaRegister() {
 	lua_register( L, "RL_SetWindowIcon", lcoreSetWindowIcon );
 	lua_register( L, "RL_SetWindowTitle", lcoreSetWindowTitle );
 	lua_register( L, "RL_GetMonitorCount", lcoreGetMonitorCount );
+	lua_register( L, "RL_GetCurrentMonitor", lcoreGetCurrentMonitor );
+	lua_register( L, "RL_GetMonitorPhysicalSize", lcoreGetMonitorPhysicalSize );
+	lua_register( L, "RL_GetMonitorRefreshRate", lcoreGetMonitorRefreshRate );
+	lua_register( L, "RL_GetWindowScaleDPI", lcoreGetWindowScaleDPI );
+	lua_register( L, "RL_GetMonitorName", lcoreGetMonitorName );
 	lua_register( L, "RL_CloseWindow", lcoreCloseWindow );
+	lua_register( L, "RL_SetClipboardText", lcoreSetClipboardText );
+	lua_register( L, "RL_GetClipboardText", lcoreGetClipboardText );
 		/* Timing. */
 	lua_register( L, "RL_SetTargetFPS", lcoreSetTargetFPS );
 	lua_register( L, "RL_GetFrameTime", lcoreGetFrameTime );

@@ -59,6 +59,84 @@ static inline bool validShader( size_t id ) {
 */
 
 /*
+> state = RL_IsWindowReady()
+
+Check if window has been initialized successfully
+
+- Success return bool
+*/
+int lcoreIsWindowReady( lua_State *L ) {
+	lua_pushboolean( L, IsWindowReady() );
+
+	return 1;
+}
+
+/*
+> state = RL_IsWindowFullscreen()
+
+Check if window is currently fullscreen
+
+- Success return bool
+*/
+int lcoreIsWindowFullscreen( lua_State *L ) {
+	lua_pushboolean( L, IsWindowFullscreen() );
+
+	return 1;
+}
+
+/*
+> state = RL_IsWindowHidden()
+
+Check if window is currently hidden ( only PLATFORM_DESKTOP )
+
+- Success return bool
+*/
+int lcoreIsWindowHidden( lua_State *L ) {
+	lua_pushboolean( L, IsWindowHidden() );
+
+	return 1;
+}
+
+/*
+> state = RL_IsWindowMinimized()
+
+Check if window is currently minimized ( only PLATFORM_DESKTOP )
+
+- Success return bool
+*/
+int lcoreIsWindowMinimized( lua_State *L ) {
+	lua_pushboolean( L, IsWindowMinimized() );
+
+	return 1;
+}
+
+/*
+> state = RL_IsWindowMaximized()
+
+Check if window is currently maximized ( only PLATFORM_DESKTOP )
+
+- Success return bool
+*/
+int lcoreIsWindowMaximized( lua_State *L ) {
+	lua_pushboolean( L, IsWindowMaximized() );
+
+	return 1;
+}
+
+/*
+> state = RL_IsWindowFocused()
+
+Check if window is currently focused ( only PLATFORM_DESKTOP )
+
+- Success return bool
+*/
+int lcoreIsWindowFocused( lua_State *L ) {
+	lua_pushboolean( L, IsWindowFocused() );
+
+	return 1;
+}
+
+/*
 > success = RL_SetWindowMonitor( int monitor )
 
 Set monitor for the current window (fullscreen mode)
@@ -115,6 +193,27 @@ int lcoreSetWindowSize( lua_State *L ) {
 	Vector2 size = uluaGetVector2( L );
 
 	SetWindowSize( (int)size.x, (int)size.y );
+	lua_pushboolean( L, true );
+	return 1;
+}
+
+/*
+> success = RL_SetWindowMinSize( Vector2 size )
+
+Set window minimum dimensions ( for FLAG_WINDOW_RESIZABLE )
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetWindowMinSize( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetWindowMinSize( Vector2 size )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 size = uluaGetVector2( L );
+
+	SetWindowMinSize( (int)size.x, (int)size.y );
 	lua_pushboolean( L, true );
 	return 1;
 }
@@ -314,6 +413,90 @@ int lcoreGetMonitorCount( lua_State *L ) {
 }
 
 /*
+> monitor = RL_GetCurrentMonitor()
+
+Get current connected monitor
+
+- Success return int
+*/
+int lcoreGetCurrentMonitor( lua_State *L ) {
+	lua_pushinteger( L, GetCurrentMonitor() );
+	return 1;
+}
+
+/*
+> size = RL_GetMonitorPhysicalSize( int monitor )
+
+Get specified monitor physical size in millimetres
+
+- Failure return false
+- Success return Vector2
+*/
+int lcoreGetMonitorPhysicalSize( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetMonitorPhysicalSize( int monitor )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int monitor = lua_tointeger( L, -1 );
+	Vector2 size = { GetMonitorPhysicalWidth( monitor ), GetMonitorPhysicalHeight( monitor ) };
+	uluaPushVector2( L, size );
+
+	return 1;
+}
+
+/*
+> size = RL_GetMonitorRefreshRate( int monitor )
+
+Get specified monitor refresh rate
+
+- Failure return false
+- Success return int
+*/
+int lcoreGetMonitorRefreshRate( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetMonitorRefreshRate( int monitor )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	lua_pushinteger( L, GetMonitorRefreshRate( lua_tointeger( L, -1 ) ) );
+
+	return 1;
+}
+
+/*
+> scale = RL_GetWindowScaleDPI()
+
+Get window scale DPI factor
+
+- Success return Vector2
+*/
+int lcoreGetWindowScaleDPI( lua_State *L ) {
+	uluaPushVector2( L, GetWindowScaleDPI() );
+
+	return 1;
+}
+
+/*
+> name = RL_GetMonitorName( int monitor )
+
+Get the human-readable, UTF-8 encoded name of the monitor
+
+- Failure return false
+- Success return string
+*/
+int lcoreGetMonitorName( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetMonitorName( int monitor )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	lua_pushstring( L, GetMonitorName( lua_tointeger( L, -1 ) ) );
+
+	return 1;
+}
+
+/*
 > RL_CloseWindow()
 
 Close window and unload OpenGL context and free all resources
@@ -322,6 +505,37 @@ int lcoreCloseWindow( lua_State *L ) {
 	state->run = false;
 
 	return 0;
+}
+
+/*
+> success = RL_SetClipboardText( string text )
+
+Set clipboard text content
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetClipboardText( lua_State *L ) {
+	if ( !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetClipboardText( string text )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	SetClipboardText( lua_tostring( L, -1 ) );
+	lua_pushboolean( L, true );
+	return 1;
+}
+
+/*
+> text = RL_GetClipboardText()
+
+Get clipboard text content
+
+- Success return string
+*/
+int lcoreGetClipboardText( lua_State *L ) {
+	lua_pushstring( L, GetClipboardText() );
+	return 1;
 }
 
 /*

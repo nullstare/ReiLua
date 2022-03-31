@@ -702,6 +702,54 @@ int id. ModelAnimations
 
 ---
 
+> state = RL_IsWindowReady()
+
+Check if window has been initialized successfully
+
+- Success return bool
+
+---
+
+> state = RL_IsWindowFullscreen()
+
+Check if window is currently fullscreen
+
+- Success return bool
+
+---
+
+> state = RL_IsWindowHidden()
+
+Check if window is currently hidden ( only PLATFORM_DESKTOP )
+
+- Success return bool
+
+---
+
+> state = RL_IsWindowMinimized()
+
+Check if window is currently minimized ( only PLATFORM_DESKTOP )
+
+- Success return bool
+
+---
+
+> state = RL_IsWindowMaximized()
+
+Check if window is currently maximized ( only PLATFORM_DESKTOP )
+
+- Success return bool
+
+---
+
+> state = RL_IsWindowFocused()
+
+Check if window is currently focused ( only PLATFORM_DESKTOP )
+
+- Success return bool
+
+---
+
 > success = RL_SetWindowMonitor( int monitor )
 
 Set monitor for the current window (fullscreen mode)
@@ -723,6 +771,15 @@ Set window position on screen
 > success = RL_SetWindowSize( Vector2 size )
 
 Set window dimensions
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_SetWindowMinSize( Vector2 size )
+
+Set window minimum dimensions ( for FLAG_WINDOW_RESIZABLE )
 
 - Failure return false
 - Success return true
@@ -823,9 +880,69 @@ Get number of connected monitors
 
 ---
 
+> monitor = RL_GetCurrentMonitor()
+
+Get current connected monitor
+
+- Success return int
+
+---
+
+> size = RL_GetMonitorPhysicalSize( int monitor )
+
+Get specified monitor physical size in millimetres
+
+- Failure return false
+- Success return Vector2
+
+---
+
+> size = RL_GetMonitorRefreshRate( int monitor )
+
+Get specified monitor refresh rate
+
+- Failure return false
+- Success return int
+
+---
+
+> scale = RL_GetWindowScaleDPI()
+
+Get window scale DPI factor
+
+- Success return Vector2
+
+---
+
+> name = RL_GetMonitorName( int monitor )
+
+Get the human-readable, UTF-8 encoded name of the monitor
+
+- Failure return false
+- Success return string
+
+---
+
 > RL_CloseWindow()
 
 Close window and unload OpenGL context and free all resources
+
+---
+
+> success = RL_SetClipboardText( string text )
+
+Set clipboard text content
+
+- Failure return false
+- Success return true
+
+---
+
+> text = RL_GetClipboardText()
+
+Get clipboard text content
+
+- Success return string
 
 ---
 

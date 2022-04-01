@@ -1353,7 +1353,7 @@ Get Color structure from hexadecimal value
 - Success return Color
 */
 int ltexturesGetColor( lua_State *L ) {
-	if ( !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, -1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetColor( unsigned int hexValue )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -1393,10 +1393,6 @@ int ltexturesGetPixelColor( lua_State *L ) {
 
 	return 1;
 }
-
-
-
-Color GetPixelColor(void *srcPtr, int format);
 
 /*
 > size = RL_GetPixelDataSize( int width, int height, int format )

@@ -37,7 +37,8 @@ end
 function draw()
 	RL_ClearBackground( { 50, 20, 75 } )
 
-	if RL_GuiButton( { 112, 16, 96, 32 }, "Exit" ) then
+	-- if RL_GuiButton( { 112, 16, 96, 32 }, "Exit" ) then
+	if RL_GuiButton( { 112, 16, 96, 32 }, RL_GuiIconText( 113, "Exit" ) ) then
 		RL_CloseWindow()
 	end
 

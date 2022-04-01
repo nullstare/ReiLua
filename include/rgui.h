@@ -52,6 +52,7 @@ int lguiGuiColorPanel( lua_State *L );
 int lguiGuiColorBarAlpha( lua_State *L );
 int lguiGuiColorBarHue( lua_State *L );
 /* Icons. */
+int lguiGuiIconText( lua_State *L );
 int lguiGuiDrawIcon( lua_State *L );
 int lguiGuiSetIconScale( lua_State *L );
 int lguiGuiSetIconPixel( lua_State *L );

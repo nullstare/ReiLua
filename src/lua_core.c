@@ -871,6 +871,7 @@ void luaRegister() {
 	lua_register( L, "RL_GuiColorBarAlpha", lguiGuiColorBarAlpha );
 	lua_register( L, "RL_GuiColorBarHue", lguiGuiColorBarHue );
 		/* Icons. */
+	lua_register( L, "RL_GuiIconText", lguiGuiIconText );
 	lua_register( L, "RL_GuiDrawIcon", lguiGuiDrawIcon );
 	lua_register( L, "RL_GuiSetIconScale", lguiGuiSetIconScale );
 	lua_register( L, "RL_GuiSetIconPixel", lguiGuiSetIconPixel );

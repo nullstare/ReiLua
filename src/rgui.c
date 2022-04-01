@@ -1137,6 +1137,35 @@ int lguiGuiColorBarHue( lua_State *L ) {
 */
 
 /*
+> text = RL_GuiIconText( int iconId, string text )
+
+Get text with icon id prepended ( if supported )
+
+- Failure return false
+- Success return string
+*/
+int lguiGuiIconText( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GuiIconText( int iconId, string text )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	char text[ STRING_LEN ] = { '\0' };
+	strcpy( text, lua_tostring( L, -1 ) );
+	lua_pop( L, 1 );
+	int iconId = lua_tointeger( L, -1 );
+
+	if ( TextIsEqual( text, "" ) ) {
+		lua_pushstring( L, GuiIconText( iconId, NULL ) );
+	}
+	else {
+		lua_pushstring( L, GuiIconText( iconId, text ) );
+	}
+
+	return 1;
+}
+
+/*
 > success = RL_GuiDrawIcon( int iconId, Vector2 pos, int pixelSize, Color color )
 
 Draw icon

@@ -3882,6 +3882,15 @@ Color Bar Hue control
 
 ---
 
+> text = RL_GuiIconText( int iconId, string text )
+
+Get text with icon id prepended ( if supported )
+
+- Failure return false
+- Success return string
+
+---
+
 > success = RL_GuiDrawIcon( int iconId, Vector2 pos, int pixelSize, Color color )
 
 Draw icon

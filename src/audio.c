@@ -62,8 +62,9 @@ int laudioLoadSound( lua_State *L ) {
 	}
 	else {
 		lua_pushinteger( L, -1 );
-		return 1;
 	}
+
+	return 1;
 }
 
 /*

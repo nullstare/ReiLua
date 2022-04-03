@@ -60,8 +60,10 @@ int laudioLoadSound( lua_State *L ) {
 		lua_pushinteger( L, i );
 		checkSoundRealloc( i );
 	}
-
-	return 1;
+	else {
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
 }
 
 /*

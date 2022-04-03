@@ -2848,6 +2848,24 @@ Draw a billboard texture defined by source
 
 ---
 
+> success = RL_SetModelTransform( Model model, Matrix transform )
+
+Set model transform matrix
+
+- Failure return false
+- Success return true
+
+---
+
+> transform = RL_GetModelTransform( Model model )
+
+Get model transform matrix
+
+- Failure return false
+- Success return Matrix
+
+---
+
 ## Model - Animations
 
 ---
@@ -3210,7 +3228,7 @@ Subtract two vectors
 
 ---
 
-> result = RL_Vector3Subtract( Vector3 v1, Vector3 v2 )
+> result = RL_Vector3Multiply( Vector3 v1, Vector3 v2 )
 
 Multiply vector by vector
 
@@ -3239,7 +3257,7 @@ Calculate one vector perpendicular vector
 
 > result = RL_Vector3Length( Vector3 v )
 
-Calculate one vector perpendicular vector
+Calculate vector length
 
 - Failure return false
 - Success return float
@@ -3385,7 +3403,7 @@ Add two matrices
 
 ---
 
-> result = RL_MatrixAdd( Matrix left, Matrix right )
+> result = RL_MatrixSubtract( Matrix left, Matrix right )
 
 Subtract two matrices (left - right)
 

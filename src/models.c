@@ -1765,6 +1765,59 @@ int lmodelsDrawBillboardRec( lua_State *L ) {
 }
 
 /*
+> success = RL_SetModelTransform( Model model, Matrix transform )
+
+Set model transform matrix
+
+- Failure return false
+- Success return true
+*/
+int lmodelsSetModelTransform( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetModelTransform( Model model, Matrix transform )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Matrix transform = uluaGetMatrix( L );
+	lua_pop( L, 1 );
+	size_t modelId = lua_tointeger( L, -1 );
+
+	if ( !validModel( modelId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	state->models[ modelId ]->transform = transform;
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> transform = RL_GetModelTransform( Model model )
+
+Get model transform matrix
+
+- Failure return false
+- Success return Matrix
+*/
+int lmodelsGetModelTransform( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetModelTransform( Model model )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t modelId = lua_tointeger( L, -1 );
+
+	if ( !validModel( modelId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushMatrix( L, state->models[ modelId ]->transform );
+
+	return 1;
+}
+
+/*
 ## Model - Animations
 */
 

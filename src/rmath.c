@@ -342,7 +342,7 @@ int lmathVector3Subtract( lua_State *L ) {
 }
 
 /*
-> result = RL_Vector3Subtract( Vector3 v1, Vector3 v2 )
+> result = RL_Vector3Multiply( Vector3 v1, Vector3 v2 )
 
 Multiply vector by vector
 
@@ -411,7 +411,7 @@ int lmathVector3Perpendicular( lua_State *L ) {
 /*
 > result = RL_Vector3Length( Vector3 v )
 
-Calculate one vector perpendicular vector
+Calculate vector length
 
 - Failure return false
 - Success return float
@@ -559,11 +559,11 @@ int lmathVector3Transform( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Vector3 v1 = uluaGetVector3( L );
-	lua_pop( L, 1 );
 	Matrix mat = uluaGetMatrix( L );
+	lua_pop( L, 1 );
+	Vector3 v = uluaGetVector3( L );
 
-	uluaPushVector3( L, Vector3Transform( v1, mat ) );
+	uluaPushVector3( L, Vector3Transform( v, mat ) );
 
 	return 1;
 }
@@ -582,11 +582,11 @@ int lmathVector3RotateByQuaternion( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Vector3 v1 = uluaGetVector3( L );
-	lua_pop( L, 1 );
 	Quaternion q = uluaGetQuaternion( L );
+	lua_pop( L, 1 );
+	Vector3 v = uluaGetVector3( L );
 
-	uluaPushVector3( L, Vector3RotateByQuaternion( v1, q ) );
+	uluaPushVector3( L, Vector3RotateByQuaternion( v, q ) );
 
 	return 1;
 }
@@ -764,7 +764,7 @@ int lmathMatrixAdd( lua_State *L ) {
 }
 
 /*
-> result = RL_MatrixAdd( Matrix left, Matrix right )
+> result = RL_MatrixSubtract( Matrix left, Matrix right )
 
 Subtract two matrices (left - right)
 
@@ -889,15 +889,14 @@ int lmathMatrixFrustum( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	// float far = lua_tonumber( L, -1 );
-	// float near = lua_tonumber( L, -2 );
-	// float top = lua_tonumber( L, -3 );
-	// float bottom = lua_tonumber( L, -4 );
-	// float right = lua_tonumber( L, -5 );
-	// float left = lua_tonumber( L, -6 );
+	float far = lua_tonumber( L, -1 );
+	float near = lua_tonumber( L, -2 );
+	float top = lua_tonumber( L, -3 );
+	float bottom = lua_tonumber( L, -4 );
+	float right = lua_tonumber( L, -5 );
+	float left = lua_tonumber( L, -6 );
 
-	// uluaPushMatrix( L, MatrixFrustum( left, right, bottom, top, near, far ) );
-	uluaPushMatrix( L, MatrixFrustum( lua_tonumber( L, -6 ), lua_tonumber( L, -5 ), lua_tonumber( L, -4 ), lua_tonumber( L, -3 ), lua_tonumber( L, -2 ), lua_tonumber( L, -1 ) ) );
+	uluaPushMatrix( L, MatrixFrustum( left, right, bottom, top, near, far ) );
 
 	return 1;
 }
@@ -916,13 +915,12 @@ int lmathMatrixPerspective( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	// float far = lua_tonumber( L, -1 );
-	// float near = lua_tonumber( L, -2 );
-	// float aspect = lua_tonumber( L, -3 );
-	// float fovy = lua_tonumber( L, -4 );
+	float far = lua_tonumber( L, -1 );
+	float near = lua_tonumber( L, -2 );
+	float aspect = lua_tonumber( L, -3 );
+	float fovy = lua_tonumber( L, -4 );
 
-	// uluaPushMatrix( L, MatrixPerspective( fovy, aspect, near, far ) );
-	uluaPushMatrix( L, MatrixPerspective( lua_tonumber( L, -4 ), lua_tonumber( L, -3 ), lua_tonumber( L, -2 ), lua_tonumber( L, -1 ) ) );
+	uluaPushMatrix( L, MatrixPerspective( fovy, aspect, near, far ) );
 
 	return 1;
 }
@@ -942,15 +940,14 @@ int lmathMatrixOrtho( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	// float far = lua_tonumber( L, -1 );
-	// float near = lua_tonumber( L, -2 );
-	// float top = lua_tonumber( L, -3 );
-	// float bottom = lua_tonumber( L, -4 );
-	// float right = lua_tonumber( L, -5 );
-	// float left = lua_tonumber( L, -6 );
+	float far = lua_tonumber( L, -1 );
+	float near = lua_tonumber( L, -2 );
+	float top = lua_tonumber( L, -3 );
+	float bottom = lua_tonumber( L, -4 );
+	float right = lua_tonumber( L, -5 );
+	float left = lua_tonumber( L, -6 );
 
-	// uluaPushMatrix( L, MatrixOrtho( left, right, bottom, top, near, far ) );
-	uluaPushMatrix( L, MatrixOrtho( lua_tonumber( L, -6 ), lua_tonumber( L, -5 ), lua_tonumber( L, -4 ), lua_tonumber( L, -3 ), lua_tonumber( L, -2 ), lua_tonumber( L, -1 ) ) );
+	uluaPushMatrix( L, MatrixOrtho( left, right, bottom, top, near, far ) );
 
 	return 1;
 }

@@ -51,6 +51,8 @@ int lmodelsSetModelMaterial( lua_State *L );
 int lmodelsSetModelMeshMaterial( lua_State *L );
 int lmodelsDrawBillboard( lua_State *L );
 int lmodelsDrawBillboardRec( lua_State *L );
+int lmodelsSetModelTransform( lua_State *L );
+int lmodelsGetModelTransform( lua_State *L );
 /* Animations. */
 int lmodelsLoadModelAnimations( lua_State *L );
 int lmodelsUpdateModelAnimation( lua_State *L );

@@ -727,6 +727,8 @@ void luaRegister() {
 	lua_register( L, "RL_SetModelMeshMaterial", lmodelsSetModelMeshMaterial );
 	lua_register( L, "RL_DrawBillboard", lmodelsDrawBillboard );
 	lua_register( L, "RL_DrawBillboardRec", lmodelsDrawBillboardRec );
+	lua_register( L, "RL_SetModelTransform", lmodelsSetModelTransform );
+	lua_register( L, "RL_GetModelTransform", lmodelsGetModelTransform );
 		/* Animations. */
 	lua_register( L, "RL_LoadModelAnimations", lmodelsLoadModelAnimations );
 	lua_register( L, "RL_UpdateModelAnimation", lmodelsUpdateModelAnimation );

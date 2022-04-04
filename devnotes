@@ -2,6 +2,7 @@ Current {
 }
 
 Backlog {
+	* Set reguirement for two arguments in Shader load functions.
 	* More and better examples
 
 	* Core
@@ -13,6 +14,7 @@ Backlog {
 		* String management. At least TextSplit.
 	* Audio
 		* Wave
+
 	* Raymath
 		* Quaternions
 	* Physac

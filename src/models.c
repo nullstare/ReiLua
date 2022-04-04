@@ -1321,7 +1321,7 @@ int lmodelsCreateMaterial( lua_State *L ) {
 			}
 		}
 		else if ( strcmp( "shader", (char*)lua_tostring( L, -2 ) ) == 0 && lua_isnumber( L, -1 ) ) {
-			/* TODO Shader when implemented. */
+			state->materials[i]->shader = *state->shaders[ lua_tointeger( L, -1 ) ];
 		}
 		lua_pop( L, 1 );
 	}

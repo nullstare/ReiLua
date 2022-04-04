@@ -547,6 +547,12 @@ HUEBAR_SELECTOR_HEIGHT
 
 HUEBAR_SELECTOR_OVERFLOW
 
+## Globals - LightType
+
+LIGHT_DIRECTIONAL
+
+LIGHT_POINT
+
 ## Types
 
 Raylib structs in Lua
@@ -1147,6 +1153,24 @@ Get shader uniform location
 Get shader attribute location
 
 - Failure return -1
+- Success return int
+
+---
+
+> success = RL_SetShaderLocationIndex( Shader shader, int shaderLocationIndex, int location )
+
+Set shader location index
+
+- Failure return false
+- Success return true
+
+---
+
+> location = RL_GetShaderLocationIndex( Shader shader, int shaderLocationIndex )
+
+Get shader location index
+
+- Failure return false
 - Success return int
 
 ---
@@ -3951,5 +3975,27 @@ Check icon pixel value
 
 - Failure return nil
 - Success return bool
+
+---
+
+## Lights - Basics
+
+---
+
+> light = RL_CreateLight( int type, Vector3 position, Vector3 target, Color color, Shader shader )
+
+Create a light and get shader locations
+
+- Failure return -1
+- Success return int
+
+---
+
+> success = RL_UpdateLightValues( Shader shader, Light light )
+
+Send light properties to shader
+
+- Failure return false
+- Success return true
 
 ---

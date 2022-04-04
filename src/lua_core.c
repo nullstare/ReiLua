@@ -9,7 +9,7 @@
 #include "audio.h"
 #include "rmath.h"
 #include "rgui.h"
-#include "raygui.h"
+#include "lights.h"
 
 static void assignGlobalInt( int value, const char *name ) {
 	lua_State *L = state->luaState;
@@ -289,6 +289,9 @@ void defineGlobals() {
 	assignGlobalInt( HUEBAR_PADDING, "HUEBAR_PADDING" );
 	assignGlobalInt( HUEBAR_SELECTOR_HEIGHT, "HUEBAR_SELECTOR_HEIGHT" );
 	assignGlobalInt( HUEBAR_SELECTOR_OVERFLOW, "HUEBAR_SELECTOR_OVERFLOW" );
+	/* LightType */
+	assignGlobalInt( LIGHT_DIRECTIONAL, "LIGHT_DIRECTIONAL" );
+	assignGlobalInt( LIGHT_POINT, "LIGHT_POINT" );
 /*DOC_END*/
 }
 
@@ -530,6 +533,8 @@ void luaRegister() {
 	lua_register( L, "RL_EndShaderMode", lcoreEndShaderMode );
 	lua_register( L, "RL_GetShaderLocation", lcoreGetShaderLocation );
 	lua_register( L, "RL_GetShaderLocationAttrib", lcoreGetShaderLocationAttrib );
+	lua_register( L, "RL_SetShaderLocationIndex", lcoreSetShaderLocationIndex );
+	lua_register( L, "RL_GetShaderLocationIndex", lcoreGetShaderLocationIndex );
 	lua_register( L, "RL_SetShaderValueMatrix", lcoreSetShaderValueMatrix );
 	lua_register( L, "RL_SetShaderValueTexture", lcoreSetShaderValueTexture );
 	lua_register( L, "RL_SetShaderValue", lcoreSetShaderValue );
@@ -879,6 +884,10 @@ void luaRegister() {
 	lua_register( L, "RL_GuiSetIconPixel", lguiGuiSetIconPixel );
 	lua_register( L, "RL_GuiClearIconPixel", lguiGuiClearIconPixel );
 	lua_register( L, "RL_GuiCheckIconPixel", lguiGuiCheckIconPixel );
+	/* Lights */
+		/* Basics. */
+	lua_register( L, "RL_CreateLight", llightsCreateLight );
+	lua_register( L, "RL_UpdateLightValues", llightsUpdateLightValues );
 }
 
 /* Lua util functions. */

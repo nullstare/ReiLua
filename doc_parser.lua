@@ -142,6 +142,7 @@ local sourceFiles = {
 	"src/audio.c",
 	"src/rmath.c",
 	"src/rgui.c",
+	"src/lights.c",
 }
 
 for _, src in ipairs( sourceFiles ) do

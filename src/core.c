@@ -44,7 +44,7 @@ bool validCamera3D( size_t id ) {
 	}
 }
 
-static inline bool validShader( size_t id ) {
+bool validShader( size_t id ) {
 	if ( id < 0 || state->shaderCount < id || state->shaders[ id ] == NULL ) {
 		TraceLog( LOG_WARNING, "%s %d", "Invalid shader", id );
 		return false;
@@ -859,8 +859,8 @@ int lcoreLoadShader( lua_State *L ) {
 	}
 	state->shaders[i] = malloc( sizeof( Shader ) );
 	// *state->shaders[i] = LoadShader( lua_tostring( L, -2 ), lua_tostring( L, -1 ) );
-	// *state->shaders[i] = LoadShader( vsFileName, fsFileName );
-	*state->shaders[i] = LoadShader( 0, fsFileName );
+	*state->shaders[i] = LoadShader( vsFileName, fsFileName );
+	// *state->shaders[i] = LoadShader( 0, fsFileName );
 	lua_pushinteger( L, i );
 	checkShaderRealloc( i );
 
@@ -876,13 +876,23 @@ Load shader from code strings and bind default locations
 - Success return int
 */
 
-//TODO Should also allow only one shader.
 int lcoreLoadShaderFromMemory( lua_State *L ) {
-	if ( !lua_isstring( L, -2 ) || !lua_isstring( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadShaderFromMemory( string vsCode, string fsCode )" );
-		lua_pushinteger( L, -1 );
-		return 1;
+	// if ( !lua_isstring( L, -2 ) || !lua_isstring( L, -1 ) ) {
+	// 	TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadShaderFromMemory( string vsCode, string fsCode )" );
+	// 	lua_pushinteger( L, -1 );
+	// 	return 1;
+	// }
+
+	char fs[ STRING_LEN ] = { '\0' };
+	char vs[ STRING_LEN ] = { '\0' };
+
+	if ( lua_isstring( L, -1 ) ) {
+		strcpy( fs, lua_tostring( L, -1 ) );
 	}
+	if ( lua_isstring( L, -2 ) ) {
+		strcpy( vs, lua_tostring( L, -2 ) );
+	}
+
 	int i = 0;
 
 	for ( i = 0; i < state->shaderCount; i++ ) {
@@ -891,7 +901,8 @@ int lcoreLoadShaderFromMemory( lua_State *L ) {
 		}
 	}
 	state->shaders[i] = malloc( sizeof( Shader ) );
-	*state->shaders[i] = LoadShaderFromMemory( lua_tostring( L, -2 ), lua_tostring( L, -1 ) );
+	// *state->shaders[i] = LoadShaderFromMemory( lua_tostring( L, -2 ), lua_tostring( L, -1 ) );
+	*state->shaders[i] = LoadShaderFromMemory( vs, fs );
 	lua_pushinteger( L, i );
 	checkShaderRealloc( i );
 
@@ -981,6 +992,63 @@ int lcoreGetShaderLocationAttrib( lua_State *L ) {
 		return 1;
 	}
 	lua_pushinteger( L, GetShaderLocationAttrib( *state->shaders[ shaderId ], lua_tostring( L, -1 ) ) );
+
+	return 1;
+}
+
+/*
+> success = RL_SetShaderLocationIndex( Shader shader, int shaderLocationIndex, int location )
+
+Set shader location index
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetShaderLocationIndex( lua_State *L ) {
+	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetShaderLocationIndex( Shader shader, int shaderLocationIndex, int location )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int location = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	int shaderLocationIndex = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	size_t shaderId = lua_tointeger( L, -1 );
+
+	if ( !validShader( shaderId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	state->shaders[ shaderId ]->locs[ shaderLocationIndex ] = location;
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> location = RL_GetShaderLocationIndex( Shader shader, int shaderLocationIndex )
+
+Get shader location index
+
+- Failure return false
+- Success return int
+*/
+int lcoreGetShaderLocationIndex( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetShaderLocationIndex( Shader shader, int shaderLocationIndex )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int shaderLocationIndex = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	size_t shaderId = lua_tointeger( L, -1 );
+
+	if ( !validShader( shaderId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	lua_pushinteger( L, state->shaders[ shaderId ]->locs[ shaderLocationIndex ] );
 
 	return 1;
 }

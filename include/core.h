@@ -2,6 +2,7 @@
 
 /* Validators. */
 bool validCamera3D( size_t id );
+bool validShader( size_t id );
 /* Window. */
 int lcoreIsWindowReady( lua_State *L );
 int lcoreIsWindowFullscreen( lua_State *L );
@@ -61,6 +62,8 @@ int lcoreBeginShaderMode( lua_State *L );
 int lcoreEndShaderMode( lua_State *L );
 int lcoreGetShaderLocation( lua_State *L );
 int lcoreGetShaderLocationAttrib( lua_State *L );
+int lcoreSetShaderLocationIndex( lua_State *L );
+int lcoreGetShaderLocationIndex( lua_State *L );
 int lcoreSetShaderValueMatrix( lua_State *L );
 int lcoreSetShaderValueTexture( lua_State *L );
 int lcoreSetShaderValue( lua_State *L );

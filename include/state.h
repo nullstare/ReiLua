@@ -62,6 +62,10 @@ typedef struct {
 	Shader **shaders;
 	size_t shaderCount;
 	size_t shaderAlloc;
+		/* Lights. */
+	Light **lights;
+	size_t lightCount;
+	size_t lightAlloc;
 } State;
 
 extern State *state;

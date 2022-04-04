@@ -11,6 +11,8 @@
 #include <string.h>
 #include "raylib.h"
 #include "raymath.h"
+#include "raygui.h"
+#include "rlights.h"
 #include "rlgl.h"
 #include <lua.h>
 #include <lualib.h>

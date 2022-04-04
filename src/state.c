@@ -61,6 +61,10 @@ bool stateInit( const char *exePath ) {
 	state->shaderAlloc = ALLOC_PAGE_SIZE;
 	state->shaderCount = 0;
 	state->shaders = malloc( state->shaderAlloc * sizeof( Shader* ) );
+	/* Lights. */
+	state->lightAlloc = ALLOC_PAGE_SIZE;
+	state->lightCount = 0;
+	state->lights = malloc( state->lightAlloc * sizeof( Light* ) );
 
 	for ( int i = 0; i < ALLOC_PAGE_SIZE; i++ ) {
 		state->images[i] = NULL;
@@ -72,6 +76,7 @@ bool stateInit( const char *exePath ) {
 		state->models[i] = NULL;
 		state->animations[i] = NULL;
 		state->shaders[i] = NULL;
+		state->lights[i] = NULL;
 
 		/* The ones we want to save the first. */
 		if ( 0 < i ) {
@@ -152,6 +157,9 @@ void stateFree() {
 	}
 	for ( int i = 0; i < state->materialCount; ++i ) {
 		if ( state->materials[i] != NULL ) {
+			/* Prevent unloading shader that would result in double free when freeing shaders. */
+			state->materials[i]->shader.id = rlGetShaderIdDefault();
+
 			UnloadMaterial( *state->materials[i] );
 			free( state->materials[i] );
 		}
@@ -166,6 +174,11 @@ void stateFree() {
 		if ( state->shaders[i] != NULL ) {
 			UnloadShader( *state->shaders[i] );
 			free( state->shaders[i] );
+		}
+	}
+	for ( int i = 0; i < state->lightCount; ++i ) {
+		if ( state->lights[i] != NULL ) {
+			free( state->lights[i] );
 		}
 	}
 
@@ -190,5 +203,6 @@ void stateFree() {
 	free( state->models );
 	free( state->animations );
 	free( state->shaders );
+	free( state->lights );
 	free( state );
 }

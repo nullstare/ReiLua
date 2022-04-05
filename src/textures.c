@@ -203,40 +203,6 @@ int ltexturesLoadImageFromScreen( lua_State *L ) {
 }
 
 /*
-> image = RL_GenImageColor( int width, int height, Color color )
-
-Generate image: plain color
-
-- Failure return -1
-- Success return int
-*/
-int ltexturesGenImageColor( lua_State *L ) {
-	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GenImageColor( int width, int height, Color color )" );
-		lua_pushinteger( L, -1 );
-		return 1;
-	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	int height = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	int width = lua_tointeger( L, -1 );
-	int i = 0;
-
-	for ( i = 0; i < state->imageCount; i++ ) {
-		if ( state->images[i] == NULL ) {
-			break;
-		}
-	}
-	state->images[i] = malloc( sizeof( Image ) );
-	*state->images[i] = GenImageColor( width, height, color );
-	lua_pushinteger( L, i );
-	checkImageRealloc( i );
-
-	return 1;
-}
-
-/*
 > success = RL_UnloadImage( Image image )
 
 Unload image from CPU memory ( RAM )
@@ -464,6 +430,255 @@ int ltexturesUnloadRenderTexture( lua_State *L ) {
 	UnloadRenderTexture( *state->renderTextures[ id ] );
 	state->renderTextures[ id ] = NULL;
 	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+## Textures - Image Generation
+*/
+
+/*
+> image = RL_GenImageColor( int width, int height, Color color )
+
+Generate image: plain color
+
+- Failure return -1
+- Success return int
+*/
+int ltexturesGenImageColor( lua_State *L ) {
+	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GenImageColor( int width, int height, Color color )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	Color color = uluaGetColor( L );
+	lua_pop( L, 1 );
+	int height = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	int width = lua_tointeger( L, -1 );
+
+	int i = 0;
+
+	for ( i = 0; i < state->imageCount; i++ ) {
+		if ( state->images[i] == NULL ) {
+			break;
+		}
+	}
+	state->images[i] = malloc( sizeof( Image ) );
+	*state->images[i] = GenImageColor( width, height, color );
+	lua_pushinteger( L, i );
+	checkImageRealloc( i );
+
+	return 1;
+}
+
+/*
+> image = RL_GenImageGradientV( Vector2 size, Color top, Color bottom )
+
+Generate image: vertical gradient
+
+- Failure return -1
+- Success return int
+*/
+int ltexturesGenImageGradientV( lua_State *L ) {
+	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GenImageGradientV( Vector2 size, Color top, Color bottom )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	Color bottom = uluaGetColor( L );
+	lua_pop( L, 1 );
+	Color top = uluaGetColor( L );
+	lua_pop( L, 1 );
+	Vector2 size = uluaGetVector2( L );
+	
+	int i = 0;
+
+	for ( i = 0; i < state->imageCount; i++ ) {
+		if ( state->images[i] == NULL ) {
+			break;
+		}
+	}
+	state->images[i] = malloc( sizeof( Image ) );
+	*state->images[i] = GenImageGradientV( (int)size.x, (int)size.y, top, bottom );
+	lua_pushinteger( L, i );
+	checkImageRealloc( i );
+
+	return 1;
+}
+
+/*
+> image = RL_GenImageGradientH( Vector2 size, Color left, Color right )
+
+Generate image: horizontal gradient
+
+- Failure return -1
+- Success return int
+*/
+int ltexturesGenImageGradientH( lua_State *L ) {
+	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GenImageGradientH( Vector2 size, Color left, Color right )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	Color right = uluaGetColor( L );
+	lua_pop( L, 1 );
+	Color left = uluaGetColor( L );
+	lua_pop( L, 1 );
+	Vector2 size = uluaGetVector2( L );
+	
+	int i = 0;
+
+	for ( i = 0; i < state->imageCount; i++ ) {
+		if ( state->images[i] == NULL ) {
+			break;
+		}
+	}
+	state->images[i] = malloc( sizeof( Image ) );
+	*state->images[i] = GenImageGradientH( (int)size.x, (int)size.y, left, right );
+	lua_pushinteger( L, i );
+	checkImageRealloc( i );
+
+	return 1;
+}
+
+/*
+> image = RL_GenImageGradientRadial( Vector2 size, float density, Color inner, Color outer )
+
+Generate image: radial gradient
+
+- Failure return -1
+- Success return int
+*/
+int ltexturesGenImageGradientRadial( lua_State *L ) {
+	if ( !lua_istable( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GenImageGradientRadial( Vector2 size, float density, Color inner, Color outer )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	Color outer = uluaGetColor( L );
+	lua_pop( L, 1 );
+	Color inner = uluaGetColor( L );
+	lua_pop( L, 1 );
+	float density = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Vector2 size = uluaGetVector2( L );
+	
+	int i = 0;
+
+	for ( i = 0; i < state->imageCount; i++ ) {
+		if ( state->images[i] == NULL ) {
+			break;
+		}
+	}
+	state->images[i] = malloc( sizeof( Image ) );
+	*state->images[i] = GenImageGradientRadial( (int)size.x, (int)size.y, density, inner, outer );
+	lua_pushinteger( L, i );
+	checkImageRealloc( i );
+
+	return 1;
+}
+
+/*
+> image = RL_GenImageChecked( Vector2 size, Vector2 checks, Color col1, Color col2 )
+
+Generate image: checked
+
+- Failure return -1
+- Success return int
+*/
+int ltexturesGenImageChecked( lua_State *L ) {
+	if ( !lua_istable( L, -4 ) || !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GenImageChecked( Vector2 size, Vector2 checks, Color col1, Color col2 )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	Color col2 = uluaGetColor( L );
+	lua_pop( L, 1 );
+	Color col1 = uluaGetColor( L );
+	lua_pop( L, 1 );
+	Vector2 checks = uluaGetVector2( L );
+	lua_pop( L, 1 );
+	Vector2 size = uluaGetVector2( L );
+	
+	int i = 0;
+
+	for ( i = 0; i < state->imageCount; i++ ) {
+		if ( state->images[i] == NULL ) {
+			break;
+		}
+	}
+	state->images[i] = malloc( sizeof( Image ) );
+	*state->images[i] = GenImageChecked( (int)size.x, (int)size.y, (int)checks.x, (int)checks.y, col1, col2 );
+	lua_pushinteger( L, i );
+	checkImageRealloc( i );
+
+	return 1;
+}
+
+/*
+> image = RL_GenImageWhiteNoise( Vector2 size, float factor )
+
+Generate image: white noise
+
+- Failure return -1
+- Success return int
+*/
+int ltexturesGenImageWhiteNoise( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GenImageWhiteNoise( Vector2 size, float factor )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	float factor = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Vector2 size = uluaGetVector2( L );
+	
+	int i = 0;
+
+	for ( i = 0; i < state->imageCount; i++ ) {
+		if ( state->images[i] == NULL ) {
+			break;
+		}
+	}
+	state->images[i] = malloc( sizeof( Image ) );
+	*state->images[i] = GenImageWhiteNoise( (int)size.x, (int)size.y, factor );
+	lua_pushinteger( L, i );
+	checkImageRealloc( i );
+
+	return 1;
+}
+
+/*
+> image = RL_GenImageCellular( Vector2 size, int tileSize )
+
+Generate image: cellular algorithm. Bigger tileSize means bigger cells
+
+- Failure return -1
+- Success return int
+*/
+int ltexturesGenImageCellular( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GenImageCellular( Vector2 size, int tileSize )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	int tileSize = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	Vector2 size = uluaGetVector2( L );
+	
+	int i = 0;
+
+	for ( i = 0; i < state->imageCount; i++ ) {
+		if ( state->images[i] == NULL ) {
+			break;
+		}
+	}
+	state->images[i] = malloc( sizeof( Image ) );
+	*state->images[i] = GenImageCellular( (int)size.x, (int)size.y, tileSize );
+	lua_pushinteger( L, i );
+	checkImageRealloc( i );
 
 	return 1;
 }

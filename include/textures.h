@@ -12,7 +12,6 @@ Texture2D* texturesGetSourceTexture( size_t index );
 int ltexturesLoadImage( lua_State *L );
 int ltexturesLoadImageFromTexture( lua_State *L );
 int ltexturesLoadImageFromScreen( lua_State *L );
-int ltexturesGenImageColor( lua_State *L );
 int ltexturesUnloadImage( lua_State *L );
 int ltexturesExportImage( lua_State *L );
 int ltexturesExportImageAsCode( lua_State *L );
@@ -21,6 +20,14 @@ int ltexturesLoadTextureFromImage( lua_State *L );
 int ltexturesUnloadTexture( lua_State *L );
 int ltexturesLoadRenderTexture( lua_State *L );
 int ltexturesUnloadRenderTexture( lua_State *L );
+/* Image Generation. */
+int ltexturesGenImageColor( lua_State *L );
+int ltexturesGenImageGradientV( lua_State *L );
+int ltexturesGenImageGradientH( lua_State *L );
+int ltexturesGenImageGradientRadial( lua_State *L );
+int ltexturesGenImageChecked( lua_State *L );
+int ltexturesGenImageWhiteNoise( lua_State *L );
+int ltexturesGenImageCellular( lua_State *L );
 /* Image Drawing. */
 int ltexturesImageClearBackground( lua_State *L );
 int ltexturesImageDrawPixel( lua_State *L );

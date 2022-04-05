@@ -633,7 +633,6 @@ void luaRegister() {
 	lua_register( L, "RL_LoadImage", ltexturesLoadImage );
 	lua_register( L, "RL_LoadImageFromTexture", ltexturesLoadImageFromTexture );
 	lua_register( L, "RL_LoadImageFromScreen", ltexturesLoadImageFromScreen );
-	lua_register( L, "RL_GenImageColor", ltexturesGenImageColor );
 	lua_register( L, "RL_UnloadImage", ltexturesUnloadImage );
 	lua_register( L, "RL_ExportImage", ltexturesExportImage );
 	lua_register( L, "RL_ExportImageAsCode", ltexturesExportImageAsCode );
@@ -642,6 +641,14 @@ void luaRegister() {
 	lua_register( L, "RL_UnloadTexture", ltexturesUnloadTexture );
 	lua_register( L, "RL_LoadRenderTexture", ltexturesLoadRenderTexture );
 	lua_register( L, "RL_UnloadRenderTexture", ltexturesUnloadRenderTexture );
+		/* Image Generation. */
+	lua_register( L, "RL_GenImageColor", ltexturesGenImageColor );
+	lua_register( L, "RL_GenImageGradientV", ltexturesGenImageGradientV );
+	lua_register( L, "RL_GenImageGradientH", ltexturesGenImageGradientH );
+	lua_register( L, "RL_GenImageGradientRadial", ltexturesGenImageGradientRadial );
+	lua_register( L, "RL_GenImageChecked", ltexturesGenImageChecked );
+	lua_register( L, "RL_GenImageWhiteNoise", ltexturesGenImageWhiteNoise );
+	lua_register( L, "RL_GenImageCellular", ltexturesGenImageCellular );
 		/* Image Drawing. */
 	lua_register( L, "RL_ImageClearBackground", ltexturesImageClearBackground );
 	lua_register( L, "RL_ImageDrawPixel", ltexturesImageDrawPixel );

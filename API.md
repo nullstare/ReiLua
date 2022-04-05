@@ -1967,15 +1967,6 @@ Load image from screen buffer and ( screenshot )
 
 ---
 
-> image = RL_GenImageColor( int width, int height, Color color )
-
-Generate image: plain color
-
-- Failure return -1
-- Success return int
-
----
-
 > success = RL_UnloadImage( Image image )
 
 Unload image from CPU memory ( RAM )
@@ -2045,6 +2036,73 @@ Unload render texture from GPU memory ( VRAM )
 
 - Failure return false
 - Success return true
+
+---
+
+## Textures - Image Generation
+
+---
+
+> image = RL_GenImageColor( int width, int height, Color color )
+
+Generate image: plain color
+
+- Failure return -1
+- Success return int
+
+---
+
+> image = RL_GenImageGradientV( Vector2 size, Color top, Color bottom )
+
+Generate image: vertical gradient
+
+- Failure return -1
+- Success return int
+
+---
+
+> image = RL_GenImageGradientH( Vector2 size, Color left, Color right )
+
+Generate image: horizontal gradient
+
+- Failure return -1
+- Success return int
+
+---
+
+> image = RL_GenImageGradientRadial( Vector2 size, float density, Color inner, Color outer )
+
+Generate image: radial gradient
+
+- Failure return -1
+- Success return int
+
+---
+
+> image = RL_GenImageChecked( Vector2 size, Vector2 checks, Color col1, Color col2 )
+
+Generate image: checked
+
+- Failure return -1
+- Success return int
+
+---
+
+> image = RL_GenImageWhiteNoise( Vector2 size, float factor )
+
+Generate image: white noise
+
+- Failure return -1
+- Success return int
+
+---
+
+> image = RL_GenImageCellular( Vector2 size, int tileSize )
+
+Generate image: cellular algorithm. Bigger tileSize means bigger cells
+
+- Failure return -1
+- Success return int
 
 ---
 

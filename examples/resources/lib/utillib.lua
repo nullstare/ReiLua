@@ -12,16 +12,16 @@ function utillib.deepCopy( orig )
     if type( orig ) == "table" then
         copy = {}
 
-        for orig_key, orig_value in next, orig, nil do
+        for origKey, origValue in next, orig, nil do
 			-- If object has clone method use that. Mainly for vector libraries.
-			if type( orig_value ) == "table" and type( orig_value.clone ) == "function" then
-				copy[ utillib.deep_copy( orig_key ) ] = orig_value:clone()
+			if type( origValue ) == "table" and type( origValue.clone ) == "function" then
+				copy[ utillib.deepCopy( origKey ) ] = orig_value:clone()
 			else
-				copy[ utillib.deep_copy( orig_key ) ] = utillib.deep_copy( orig_value )
+				copy[ utillib.deepCopy( origKey ) ] = utillib.deepCopy( origValue )
 			end
         end
 
-        setmetatable( copy, utillib.deep_copy( getmetatable( orig ) ) )
+        setmetatable( copy, utillib.deepCopy( getmetatable( orig ) ) )
     else -- number, string, boolean, etc.
         copy = orig
     end
@@ -63,8 +63,6 @@ function utillib.getBit( v, i )
 end
 
 function utillib.utf8Sub( s, i, j )
-	assert( utillib.isstring( s ) )
-
 	i = i or 1
 	j = j or -1
 
@@ -96,10 +94,6 @@ function utillib.round( v )
 end
 
 function utillib.tableLen( t )
-	if not utillib.istable( t ) then
-		return 0
-	end
-
     local count = 0
 
 	for _ in pairs(t) do
@@ -110,8 +104,6 @@ function utillib.tableLen( t )
 end
 
 function utillib.split( str, sep )
-	assert( utillib.isstring( str ) )
-
 	if sep == nil then
 		sep = "%s"
 	end
@@ -126,8 +118,6 @@ function utillib.split( str, sep )
 end
 
 function utillib.wrapAngleDeg( angle )
-	assert( utillib.isnumber( angle ) )
-
 	if angle < 0 then
 		return math.fmod( angle, 360.0 ) + 360.0
 	else
@@ -136,8 +126,6 @@ function utillib.wrapAngleDeg( angle )
 end
 
 function utillib.wrapAngleRad( angle )
-	assert( utillib.isnumber( angle ) )
-
 	if angle < 0 then
 		return math.fmod( angle, PI * 2 ) + PI * 2
 	else
@@ -150,13 +138,13 @@ function utillib.lerp( a, b, f )
 end
 
 function utillib.toBoolean( v )
-	if utillib.isstring( v ) then
+	if type( v ) == "string" then
 		if v == "1" or string.lower( v ) == "true" then
 			return true
 		elseif v == "0" or string.lower( v ) == "false" then
 			return false
 		end
-	elseif utillib.isnumber( v ) then
+	elseif type( v ) == "number" then
 		return 0 < v
 	end
 

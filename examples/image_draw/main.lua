@@ -2,6 +2,8 @@ local monitor = 0
 local texture = -1
 local image = -1
 local catImage = -1
+local catCopy = -1
+local textImage = -1
 
 function init()
 	local mPos = RL_GetMonitorPosition( monitor )
@@ -20,6 +22,17 @@ function init()
 	RL_ImageDrawRectangleLines( image, { 160, 64, 32, 64 }, 2.0, BLUE )
 	RL_ImageDraw( image, catImage, { 143, 25, 230, 250 }, { 200, 200, 230, 250 }, WHITE )
 	RL_ImageDrawTextEx( image, 0, "Hello", { 300, 32 }, 48.0, 1.0, WHITE )
+
+	-- catCopy = RL_ImageCopy( catImage )
+	local src = { 80, 70, 96, 96 }
+	catCopy = RL_ImageFromImage( catImage, src )
+
+	RL_ImageDraw( image, catCopy, src, { 600, 200, src[3], src[4] }, WHITE )
+	-- RL_ImageDraw( image, catCopy, src, src, WHITE )
+
+	textImage = RL_ImageText( 0, "Cat", 10, 4, WHITE )
+	local imageSize = RL_GetImageSize( textImage )
+	RL_ImageDraw( image, textImage, { 0, 0, imageSize[1], imageSize[2] }, { 250, 40, imageSize[1], imageSize[2] }, WHITE )
 
 	texture = RL_LoadTextureFromImage( image )
 end

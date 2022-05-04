@@ -7,8 +7,10 @@ project( ReiLua )
 set( CMAKE_C_STANDARD 99 ) # Requires C99 standard
 
 if( DEBUG )
+	message( Debug )
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -ggdb -std=c99 -Wall -pedantic -fno-common" )
 else()
+	message( Release )
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -std=c99 -Wall -pedantic -fno-common" )
 endif()
 

@@ -666,6 +666,36 @@ void luaRegister() {
 	lua_register( L, "RL_GenImageChecked", ltexturesGenImageChecked );
 	lua_register( L, "RL_GenImageWhiteNoise", ltexturesGenImageWhiteNoise );
 	lua_register( L, "RL_GenImageCellular", ltexturesGenImageCellular );
+		/* Image Manipulation Functions. */
+	lua_register( L, "RL_ImageCopy", ltexturesImageCopy );
+	lua_register( L, "RL_ImageFromImage", ltexturesImageFromImage );
+	lua_register( L, "RL_ImageText", ltexturesImageText );
+	lua_register( L, "RL_ImageFormat", ltexturesImageFormat );
+	lua_register( L, "RL_ImageToPOT", ltexturesImageToPOT );
+	lua_register( L, "RL_ImageCrop", ltexturesImageCrop );
+	lua_register( L, "RL_ImageAlphaCrop", ltexturesImageAlphaCrop );
+	lua_register( L, "RL_ImageAlphaClear", ltexturesImageAlphaClear );
+	lua_register( L, "RL_ImageAlphaMask", ltexturesImageAlphaMask );
+	lua_register( L, "RL_ImageAlphaPremultiply", ltexturesImageAlphaPremultiply );
+	lua_register( L, "RL_ImageResize", ltexturesImageResize );
+	lua_register( L, "RL_ImageResizeNN", ltexturesImageResizeNN );
+	lua_register( L, "RL_ImageResizeCanvas", ltexturesImageResizeCanvas );
+	lua_register( L, "RL_ImageMipmaps", ltexturesImageMipmaps );
+	lua_register( L, "RL_ImageDither", ltexturesImageDither );
+	lua_register( L, "RL_ImageFlipVertical", ltexturesImageFlipVertical );
+	lua_register( L, "RL_ImageFlipHorizontal", ltexturesImageFlipHorizontal );
+	lua_register( L, "RL_ImageRotateCW", ltexturesImageRotateCW );
+	lua_register( L, "RL_ImageRotateCCW", ltexturesImageRotateCCW );
+	lua_register( L, "RL_ImageColorTint", ltexturesImageColorTint );
+	lua_register( L, "RL_ImageColorInvert", ltexturesImageColorInvert );
+	lua_register( L, "RL_ImageColorGrayscale", ltexturesImageColorGrayscale );
+	lua_register( L, "RL_ImageColorContrast", ltexturesImageColorContrast );
+	lua_register( L, "RL_ImageColorBrightness", ltexturesImageColorBrightness );
+	lua_register( L, "RL_ImageColorReplace", ltexturesImageColorReplace );
+	lua_register( L, "RL_LoadImageColors", ltexturesLoadImageColors );
+	lua_register( L, "RL_LoadImagePalette", ltexturesLoadImagePalette );
+	lua_register( L, "RL_GetImageAlphaBorder", ltexturesGetImageAlphaBorder );
+	lua_register( L, "RL_GetImageColor", ltexturesGetImageColor );
 		/* Image Drawing. */
 	lua_register( L, "RL_ImageClearBackground", ltexturesImageClearBackground );
 	lua_register( L, "RL_ImageDrawPixel", ltexturesImageDrawPixel );
@@ -675,6 +705,10 @@ void luaRegister() {
 	lua_register( L, "RL_ImageDrawRectangleLines", ltexturesImageDrawRectangleLines );
 	lua_register( L, "RL_ImageDraw", ltexturesImageDraw );
 	lua_register( L, "RL_ImageDrawTextEx", ltexturesImageDrawTextEx );
+		/* Image Configuration. */
+	lua_register( L, "RL_GetImageSize", ltexturesGetImageSize );
+	lua_register( L, "RL_GetImageMipmaps", ltexturesGetImageMipmaps );
+	lua_register( L, "RL_GetImageFormat", ltexturesGetImageFormat );
 		/* Texture Drawing. */
 	lua_register( L, "RL_DrawTexture", ltexturesDrawTexture );
 	lua_register( L, "RL_DrawTextureRec", ltexturesDrawTextureRec );
@@ -686,11 +720,13 @@ void luaRegister() {
 	lua_register( L, "RL_EndTextureMode", ltexturesEndTextureMode );
 	lua_register( L, "RL_SetTextureSource", ltexturesSetTextureSource );
 	lua_register( L, "RL_GetTextureSource", ltexturesGetTextureSource );
-		/* Conf. */
+		/* Texture Configuration. */
 	lua_register( L, "RL_GenTextureMipmaps", ltexturesGenTextureMipmaps );
 	lua_register( L, "RL_SetTextureFilter", ltexturesSetTextureFilter );
 	lua_register( L, "RL_SetTextureWrap", ltexturesSetTextureWrap );
 	lua_register( L, "RL_GetTextureSize", ltexturesGetTextureSize );
+	lua_register( L, "RL_GetTextureMipmaps", ltexturesGetTextureMipmaps );
+	lua_register( L, "RL_GetTextureFormat", ltexturesGetTextureFormat );
 		/* Color/pixel */
 	lua_register( L, "RL_Fade", ltexturesFade );
 	lua_register( L, "RL_ColorToInt", ltexturesColorToInt );

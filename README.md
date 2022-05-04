@@ -18,7 +18,6 @@ List of some MISSING features that are planned to be included. For specific func
 	* Files drop
 	* VR stereo config functions for VR simulator
 * Textures
-	* Image manipulation functions
 	* Texture update functions
 * Text
 	* Some font loading/unloading functions

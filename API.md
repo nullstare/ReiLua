@@ -2250,6 +2250,271 @@ Generate image: cellular algorithm. Bigger tileSize means bigger cells
 
 ---
 
+## Textures - Image Manipulation Functions
+
+---
+
+> image = RL_ImageCopy( Image image )
+
+Create an image duplicate ( useful for transformations )
+
+- Failure return -1
+- Success return int
+
+---
+
+> image = RL_ImageFromImage( Image image, Rectangle rec )
+
+Create an image from another image piece
+
+- Failure return -1
+- Success return int
+
+---
+
+> image = RL_ImageText( Font font, string text, float fontSize, float spacing, Color tint )
+
+Create an image from text ( custom sprite font )
+
+- Failure return -1
+- Success return int
+
+---
+
+> success = RL_ImageFormat( Image image, int newFormat )
+
+Convert image data to desired format
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageToPOT( Image image, Color fill )
+
+Convert image to POT ( power-of-two )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageCrop( Image image, Rectangle crop )
+
+Crop an image to a defined rectangle
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageAlphaCrop( Image image, float threshold )
+
+Crop image depending on alpha value
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageAlphaClear( Image image, Color color, float threshold )
+
+Clear alpha channel to desired color
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageAlphaMask( Image image, Image alphaMask )
+
+Apply alpha mask to image
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageAlphaPremultiply( Image image )
+
+Premultiply alpha channel
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageResize( Image image, Vector2 size )
+
+Resize image ( Bicubic scaling algorithm )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageResizeNN( Image image, Vector2 size )
+
+Resize image ( Nearest-Neighbor scaling algorithm )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageResizeCanvas( Image image, Vector2 size, Vector2 offset, Color fill )
+
+Resize canvas and fill with color
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageMipmaps( Image image )
+
+Generate all mipmap levels for a provided image
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageDither( Image image, Color bpp )
+
+Dither image data to 16bpp or lower ( Floyd-Steinberg dithering )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageFlipVertical( Image image )
+
+Flip image vertically
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageFlipHorizontal( Image image )
+
+Flip image horizontally
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageRotateCW( Image image )
+
+Rotate image clockwise 90deg
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageRotateCCW( Image image )
+
+Rotate image counter-clockwise 90deg
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageColorTint( Image image, Color color )
+
+Modify image color: tint
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageColorInvert( Image image )
+
+Modify image color: invert
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageColorGrayscale( Image image )
+
+Modify image color: grayscale
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageColorContrast( Image image, float contrast )
+
+Modify image color: contrast ( -100 to 100 )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageColorBrightness( Image image, int brightness )
+
+Modify image color: brightness ( -255 to 255 )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ImageColorReplace( Image image, Color color, Color replace )
+
+Modify image color: replace color
+
+- Failure return false
+- Success return true
+
+---
+
+> colors = RL_LoadImageColors( Image image )
+
+Load color data from image as a Color array ( RGBA - 32bit )
+
+- Failure return false
+- Success return Color{}
+
+---
+
+> colors = RL_LoadImagePalette( Image image, int maxPaletteSize )
+
+Load colors palette from image as a Color array ( RGBA - 32bit )
+
+- Failure return false
+- Success return Color{}
+
+---
+
+> rectangle = RL_GetImageAlphaBorder( Image image, float threshold )
+
+Get image alpha border rectangle
+
+- Failure return false
+- Success return Rectangle
+
+---
+
+> color = RL_GetImageColor( Image image, Vector2 pixelPos )
+
+Get image pixel color at ( x, y ) position
+
+- Failure return false
+- Success return Color
+
+---
+
 ## Textures - Image Drawing
 
 ---
@@ -2323,6 +2588,37 @@ Draw text ( Custom sprite font ) within an image ( Destination )
 
 - Failure return false
 - Success return true
+
+---
+
+## Textures - Image Configuration
+
+---
+
+> size = RL_GetImageSize( Image image )
+
+Get image size
+
+- Failure return nil
+- Success return Vector2
+
+---
+
+> mipmaps = RL_GetImageMipmaps( Image image )
+
+Get image mipmaps. Mipmap levels, 1 by default
+
+- Failure return false
+- Success return int
+
+---
+
+> format = RL_GetImageFormat( Image image )
+
+Get image data format ( PixelFormat type )
+
+- Failure return false
+- Success return int
 
 ---
 
@@ -2416,7 +2712,7 @@ Get current texture source type ( TEXTURE_SOURCE_TEXTURE or TEXTURE_SOURCE_RENDE
 
 ---
 
-## Textures - Configure
+## Textures - Texture Configuration
 
 ---
 
@@ -2453,6 +2749,24 @@ Get texture size
 
 - Failure return nil
 - Success return Vector2
+
+---
+
+> mipmaps = RL_GetTextureMipmaps( Texture2D texture )
+
+Get texture mipmaps. Mipmap levels, 1 by default
+
+- Failure return false
+- Success return int
+
+---
+
+> format = RL_GetTextureFormat( Texture2D texture )
+
+Get texture mipmaps. Mipmap levels, 1 by default
+
+- Failure return false
+- Success return int
 
 ---
 

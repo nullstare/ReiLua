@@ -6,7 +6,6 @@ Backlog {
 	* More and better examples
 
 	* Core
-		* Screen-space-related
 		* Files drop
 	* Text
 		* More Font loading/unloading functions

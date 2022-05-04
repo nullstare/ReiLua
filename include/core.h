@@ -82,7 +82,20 @@ int lcoreGetPrevDirectoryPath( lua_State *L );
 int lcoreGetWorkingDirectory( lua_State *L );
 int lcoreGetDirectoryFiles( lua_State *L );
 int lcoreGetFileModTime( lua_State *L );
-/* Camera. */
+/* Camera2D. */
+int lcoreCreateCamera2D( lua_State *L );
+int lcoreUnloadCamera2D( lua_State *L );
+int lcoreBeginMode2D( lua_State *L );
+int lcoreEndMode2D( lua_State *L );
+int lcoreSetCamera2DTarget( lua_State *L );
+int lcoreSetCamera2DOffset( lua_State *L );
+int lcoreSetCamera2DRotation( lua_State *L );
+int lcoreSetCamera2DZoom( lua_State *L );
+int lcoreGetCamera2DTarget( lua_State *L );
+int lcoreGetCamera2DOffset( lua_State *L );
+int lcoreGetCamera2DRotation( lua_State *L );
+int lcoreGetCamera2DZoom( lua_State *L );
+/* Camera3D. */
 int lcoreCreateCamera3D( lua_State *L );
 int lcoreUnloadCamera3D( lua_State *L );
 int lcoreBeginMode3D( lua_State *L );
@@ -134,4 +147,8 @@ int lcoreGetGesturePinchAngle( lua_State *L );
 /* Screen-space. */
 int lcoreGetMouseRay( lua_State *L );
 int lcoreGetCameraMatrix( lua_State *L );
+int lcoreGetCameraMatrix2D( lua_State *L );
 int lcoreGetWorldToScreen( lua_State *L );
+int lcoreGetWorldToScreenEx( lua_State *L );
+int lcoreGetWorldToScreen2D( lua_State *L );
+int lcoreGetScreenToWorld2D( lua_State *L );

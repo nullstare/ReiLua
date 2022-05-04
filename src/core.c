@@ -4,6 +4,21 @@
 #include "textures.h"
 #include "lua_core.h"
 
+static void checkCamera2DRealloc( int i ) {
+	if ( i == state->camera2DCount ) {
+		state->camera2DCount++;
+	}
+
+	if ( state->camera2DCount == state->camera2DAlloc ) {
+		state->camera2DAlloc += ALLOC_PAGE_SIZE;
+		state->camera2Ds = realloc( state->camera2Ds, state->camera2DAlloc * sizeof( Camera2D* ) );
+
+		for ( i = state->camera2DCount; i < state->camera2DAlloc; i++ ) {
+			state->camera2Ds[i] = NULL;
+		}
+	}
+}
+
 static void checkCamera3DRealloc( int i ) {
 	if ( i == state->camera3DCount ) {
 		state->camera3DCount++;
@@ -34,9 +49,19 @@ static void checkShaderRealloc( int i ) {
 	}
 }
 
+bool validCamera2D( size_t id ) {
+	if ( id < 0 || state->camera2DCount < id || state->camera2Ds[ id ] == NULL ) {
+		TraceLog( LOG_WARNING, "%s %d", "Invalid camera2D", id );
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+
 bool validCamera3D( size_t id ) {
 	if ( id < 0 || state->camera3DCount < id || state->camera3Ds[ id ] == NULL ) {
-		TraceLog( LOG_WARNING, "%s %d", "Invalid camera", id );
+		TraceLog( LOG_WARNING, "%s %d", "Invalid camera3D", id );
 		return false;
 	}
 	else {
@@ -1989,7 +2014,316 @@ int lcoreGetFileModTime( lua_State *L ) {
 }
 
 /*
-## Core - Camera
+## Core - Camera2D
+*/
+
+/*
+> camera2D = RL_CreateCamera2D()
+
+Return camera2D id set to default configuration
+
+- Success return int
+*/
+int lcoreCreateCamera2D( lua_State *L ) {
+	int i = 0;
+
+	for ( i = 0; i < state->camera2DCount; i++ ) {
+		if ( state->camera2Ds[i] == NULL ) {
+			break;
+		}
+	}
+	state->camera2Ds[i] = malloc( sizeof( Camera2D ) );
+	state->camera2Ds[i]->offset = (Vector2){ 0.0, 0.0 };
+	state->camera2Ds[i]->target = (Vector2){ 0.0, 0.0 };
+	state->camera2Ds[i]->rotation = 0.0;
+	state->camera2Ds[i]->zoom = 1.0;
+
+	lua_pushinteger( L, i );
+	checkCamera2DRealloc(i);
+
+	return 1;
+}
+
+/*
+> success = RL_UnloadCamera2D( int Camera2D )
+
+Unload Camera2D
+
+- Failure return false
+- Success return true
+*/
+int lcoreUnloadCamera2D( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_UnloadCamera2D( int Camera2D )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t id = lua_tointeger( L, -1 );
+
+	if ( !validCamera2D( id ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	free( state->camera2Ds[ id ] );
+	state->camera2Ds[ id ] = NULL;
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_BeginMode2D( camera2D camera )
+
+Begin 2D mode with custom camera ( 2D )
+
+- Failure return false
+- Success return true
+*/
+int lcoreBeginMode2D( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_BeginMode2D( camera2D camera )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t id = lua_tointeger( L, -1 );
+
+	if ( !validCamera2D( id ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	BeginMode2D( *state->camera2Ds[ id ] );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> RL_EndMode2D()
+
+Ends 2D mode with custom camera
+*/
+int lcoreEndMode2D( lua_State *L ) {
+	EndMode2D();
+
+	return 1;
+}
+
+/*
+> success = RL_SetCamera2DTarget( camera2D camera, Vector2 target )
+
+Set camera target ( rotation and zoom origin )
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetCamera2DTarget( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetCamera2DTarget( camera2D camera, Vector2 target )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 target = uluaGetVector2( L );
+	size_t cameraId = lua_tointeger( L, -2 );
+
+	if ( !validCamera2D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	state->camera2Ds[ cameraId ]->target = target;
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_SetCamera2DOffset( camera2D camera, Vector2 offset )
+
+Set camera offset ( displacement from target )
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetCamera2DOffset( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetCamera2DOffset( camera2D camera, Vector2 offset )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 offset = uluaGetVector2( L );
+	size_t cameraId = lua_tointeger( L, -2 );
+
+	if ( !validCamera2D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	state->camera2Ds[ cameraId ]->offset = offset;
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_SetCamera2DRotation( camera3D camera, float rotation )
+
+Set camera rotation in degrees
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetCamera2DRotation( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetCamera2DRotation( camera3D camera, float rotation )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, -2 );
+
+	if ( !validCamera2D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	state->camera2Ds[ cameraId ]->rotation = lua_tonumber( L, -1 );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_SetCamera2DZoom( camera3D camera, float zoom )
+
+Set camera zoom ( scaling ), should be 1.0f by default
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetCamera2DZoom( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetCamera2DZoom( camera3D camera, float zoom )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, -2 );
+
+	if ( !validCamera2D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	state->camera2Ds[ cameraId ]->zoom = lua_tonumber( L, -1 );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> target = RL_GetCamera2DTarget( camera2D camera )
+
+Get camera2D target
+
+- Failure return nil
+- Success return Vector2
+*/
+int lcoreGetCamera2DTarget( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetCamera2DTarget( camera2D camera )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, -1 );
+
+	if ( !validCamera2D( cameraId ) ) {
+		lua_pushnil( L );
+		return 1;
+	}
+
+	uluaPushVector2( L, state->camera2Ds[ cameraId ]->target );
+
+	return 1;
+}
+
+/*
+> offset = RL_GetCamera2DOffset( camera2D camera )
+
+Get camera2D offset
+
+- Failure return nil
+- Success return Vector2
+*/
+int lcoreGetCamera2DOffset( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetCamera2DOffset( camera2D camera )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, -1 );
+
+	if ( !validCamera2D( cameraId ) ) {
+		lua_pushnil( L );
+		return 1;
+	}
+
+	uluaPushVector2( L, state->camera2Ds[ cameraId ]->offset );
+
+	return 1;
+}
+
+/*
+> rotation = RL_GetCamera2DRotation( camera2D camera )
+
+Get camera2D rotation
+
+- Failure return nil
+- Success return float
+*/
+int lcoreGetCamera2DRotation( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetCamera2DRotation( camera2D camera )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, -1 );
+
+	if ( !validCamera2D( cameraId ) ) {
+		lua_pushnil( L );
+		return 1;
+	}
+	lua_pushnumber( L, state->camera2Ds[ cameraId ]->rotation );
+
+	return 1;
+}
+
+/*
+> zoom = RL_GetCamera2DZoom( camera2D camera )
+
+Get camera2D zoom
+
+- Failure return nil
+- Success return float
+*/
+int lcoreGetCamera2DZoom( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetCamera2DZoom( camera2D camera )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, -1 );
+
+	if ( !validCamera2D( cameraId ) ) {
+		lua_pushnil( L );
+		return 1;
+	}
+	lua_pushnumber( L, state->camera2Ds[ cameraId ]->zoom );
+
+	return 1;
+}
+
+/*
+## Core - Camera3D
 */
 
 /*
@@ -2008,6 +2342,9 @@ int lcoreCreateCamera3D( lua_State *L ) {
 		}
 	}
 	state->camera3Ds[i] = malloc( sizeof( Camera3D ) );
+	state->camera3Ds[i]->position = (Vector3){ 0.0, 0.0, 0.0 };
+	state->camera3Ds[i]->target = (Vector3){ 0.0, 0.0, 0.0 };
+	state->camera3Ds[i]->up = (Vector3){ 0.0, 0.0, 0.0 };
 	state->camera3Ds[i]->fovy = 45.0f;
 	state->camera3Ds[i]->projection = CAMERA_PERSPECTIVE;
 	SetCameraMode( *state->camera3Ds[i], CAMERA_CUSTOM );
@@ -2049,7 +2386,7 @@ int lcoreUnloadCamera3D( lua_State *L ) {
 /*
 > success = RL_BeginMode3D( camera3D camera )
 
-Initializes 3D mode with custom camera ( 3D )
+Begin 3D mode with custom camera ( 3D )
 
 - Failure return false
 - Success return true
@@ -2463,6 +2800,31 @@ int lcoreGetCameraMatrix( lua_State *L ) {
 }
 
 /*
+> matrix = RL_GetCameraMatrix2D( Camera2D camera )
+
+Get camera 2d transform matrix
+
+- Failure return false
+- Success return Matrix
+*/
+int lcoreGetCameraMatrix2D( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetCameraMatrix2D( Camera2D camera )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, -1 );
+
+	if ( !validCamera2D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushMatrix( L, GetCameraMatrix2D( *state->camera2Ds[ cameraId ] ) );
+
+	return 1;
+}
+
+/*
 > position = RL_GetWorldToScreen( Vector3 position, Camera3D camera )
 
 Get the screen space position for a 3d world space position
@@ -2485,6 +2847,89 @@ int lcoreGetWorldToScreen( lua_State *L ) {
 		return 1;
 	}
 	uluaPushVector2( L, GetWorldToScreen( position, *state->camera3Ds[ cameraId ] ) );
+
+	return 1;
+}
+
+/*
+> position = RL_GetWorldToScreenEx( Vector3 position, Camera3D camera, Vector2 size )
+
+Get size position for a 3d world space position
+
+- Failure return false
+- Success return Vector2
+*/
+int lcoreGetWorldToScreenEx( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetWorldToScreenEx( Vector3 position, Camera3D camera, Vector2 size )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 size = uluaGetVector2( L );
+	lua_pop( L, 1 );
+	size_t cameraId = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	Vector3 position = uluaGetVector3( L );
+
+	if ( !validCamera3D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushVector2( L, GetWorldToScreenEx( position, *state->camera3Ds[ cameraId ], size.x, size.y ) );
+
+	return 1;
+}
+
+/*
+> position = RL_GetWorldToScreen2D( Vector2 position, Camera2D camera )
+
+Get the screen space position for a 2d camera world space position
+
+- Failure return false
+- Success return Vector2
+*/
+int lcoreGetWorldToScreen2D( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetWorldToScreen2D( Vector2 position, Camera2D camera )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	Vector2 position = uluaGetVector2( L );
+
+	if ( !validCamera2D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushVector2( L, GetWorldToScreen2D( position, *state->camera2Ds[ cameraId ] ) );
+
+	return 1;
+}
+
+/*
+> position = RL_GetScreenToWorld2D( Vector2 position, Camera2D camera )
+
+Get the world space position for a 2d camera screen space position
+
+- Failure return false
+- Success return Vector2
+*/
+int lcoreGetScreenToWorld2D( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetScreenToWorld2D( Vector2 position, Camera2D camera )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	Vector2 position = uluaGetVector2( L );
+
+	if ( !validCamera2D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushVector2( L, GetScreenToWorld2D( position, *state->camera2Ds[ cameraId ] ) );
 
 	return 1;
 }

@@ -6,9 +6,7 @@
   Modified by Jussi Viitala (@nullstare) for ReiLua style.
 ]]
 
-local winSize = RL_GetWindowSize()
 local camera = -1
-
 local num_blocks = 15
 
 function init()

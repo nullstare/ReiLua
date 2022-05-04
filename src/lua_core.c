@@ -553,7 +553,20 @@ void luaRegister() {
 	lua_register( L, "RL_GetWorkingDirectory", lcoreGetWorkingDirectory );
 	lua_register( L, "RL_GetDirectoryFiles", lcoreGetDirectoryFiles );
 	lua_register( L, "RL_GetFileModTime", lcoreGetFileModTime );
-		/* Camera. */
+		/* Camera3D. */
+	lua_register( L, "RL_CreateCamera2D", lcoreCreateCamera2D );
+	lua_register( L, "RL_UnloadCamera2D", lcoreUnloadCamera2D );
+	lua_register( L, "RL_BeginMode2D", lcoreBeginMode2D );
+	lua_register( L, "RL_EndMode2D", lcoreEndMode2D );
+	lua_register( L, "RL_SetCamera2DTarget", lcoreSetCamera2DTarget );
+	lua_register( L, "RL_SetCamera2DOffset", lcoreSetCamera2DOffset );
+	lua_register( L, "RL_SetCamera2DRotation", lcoreSetCamera2DRotation );
+	lua_register( L, "RL_SetCamera2DZoom", lcoreSetCamera2DZoom );
+	lua_register( L, "RL_GetCamera2DTarget", lcoreGetCamera2DTarget );
+	lua_register( L, "RL_GetCamera2DOffset", lcoreGetCamera2DOffset );
+	lua_register( L, "RL_GetCamera2DRotation", lcoreGetCamera2DRotation );
+	lua_register( L, "RL_GetCamera2DZoom", lcoreGetCamera2DZoom );
+		/* Camera3D. */
 	lua_register( L, "RL_CreateCamera3D", lcoreCreateCamera3D );
 	lua_register( L, "RL_UnloadCamera3D", lcoreUnloadCamera3D );
 	lua_register( L, "RL_BeginMode3D", lcoreBeginMode3D );
@@ -605,7 +618,11 @@ void luaRegister() {
 		/* Screen-space. */
 	lua_register( L, "RL_GetMouseRay", lcoreGetMouseRay );
 	lua_register( L, "RL_GetCameraMatrix", lcoreGetCameraMatrix );
+	lua_register( L, "RL_GetCameraMatrix2D", lcoreGetCameraMatrix2D );
 	lua_register( L, "RL_GetWorldToScreen", lcoreGetWorldToScreen );
+	lua_register( L, "RL_GetWorldToScreenEx", lcoreGetWorldToScreenEx );
+	lua_register( L, "RL_GetWorldToScreen2D", lcoreGetWorldToScreen2D );
+	lua_register( L, "RL_GetScreenToWorld2D", lcoreGetScreenToWorld2D );
 
 	/* Shapes. */
 		/* Drawing. */

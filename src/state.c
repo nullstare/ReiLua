@@ -37,6 +37,10 @@ bool stateInit( const char *exePath ) {
 	state->soundAlloc = ALLOC_PAGE_SIZE;
 	state->soundCount = 0;
 	state->sounds = malloc( state->soundAlloc * sizeof( Sound* ) );
+	/* Camera2D's. */
+	state->camera2DAlloc = ALLOC_PAGE_SIZE;
+	state->camera2DCount = 0;
+	state->camera2Ds = malloc( state->camera2DAlloc * sizeof( Camera2D* ) );
 	/* Camera3D's. */
 	state->camera3DAlloc = ALLOC_PAGE_SIZE;
 	state->camera3DCount = 0;
@@ -71,6 +75,7 @@ bool stateInit( const char *exePath ) {
 		state->textures[i] = NULL;
 		state->renderTextures[i] = NULL;
 		state->sounds[i] = NULL;
+		state->camera2Ds[i] = NULL;
 		state->camera3Ds[i] = NULL;
 		state->meshes[i] = NULL;
 		state->models[i] = NULL;
@@ -137,6 +142,11 @@ void stateFree() {
 			free( state->sounds[i] );
 		}
 	}
+	for ( int i = 0; i < state->camera2DCount; ++i ) {
+		if ( state->camera2Ds[i] != NULL ) {
+			free( state->camera2Ds[i] );
+		}
+	}
 	for ( int i = 0; i < state->camera3DCount; ++i ) {
 		if ( state->camera3Ds[i] != NULL ) {
 			free( state->camera3Ds[i] );
@@ -197,6 +207,7 @@ void stateFree() {
 	free( state->renderTextures );
 	free( state->fonts );
 	free( state->sounds );
+	free( state->camera2Ds );
 	free( state->camera3Ds );
 	free( state->meshes );
 	free( state->materials );

@@ -1601,7 +1601,115 @@ Get file modification time ( Last write time )
 
 ---
 
-## Core - Camera
+## Core - Camera2D
+
+---
+
+> camera2D = RL_CreateCamera2D()
+
+Return camera2D id set to default configuration
+
+- Success return int
+
+---
+
+> success = RL_UnloadCamera2D( int Camera2D )
+
+Unload Camera2D
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_BeginMode2D( camera2D camera )
+
+Begin 2D mode with custom camera ( 2D )
+
+- Failure return false
+- Success return true
+
+---
+
+> RL_EndMode2D()
+
+Ends 2D mode with custom camera
+
+---
+
+> success = RL_SetCamera2DTarget( camera2D camera, Vector2 target )
+
+Set camera target ( rotation and zoom origin )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_SetCamera2DOffset( camera2D camera, Vector2 offset )
+
+Set camera offset ( displacement from target )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_SetCamera2DRotation( camera3D camera, float rotation )
+
+Set camera rotation in degrees
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_SetCamera2DZoom( camera3D camera, float zoom )
+
+Set camera zoom ( scaling ), should be 1.0f by default
+
+- Failure return false
+- Success return true
+
+---
+
+> target = RL_GetCamera2DTarget( camera2D camera )
+
+Get camera2D target
+
+- Failure return nil
+- Success return Vector2
+
+---
+
+> offset = RL_GetCamera2DOffset( camera2D camera )
+
+Get camera2D offset
+
+- Failure return nil
+- Success return Vector2
+
+---
+
+> rotation = RL_GetCamera2DRotation( camera2D camera )
+
+Get camera2D rotation
+
+- Failure return nil
+- Success return float
+
+---
+
+> zoom = RL_GetCamera2DZoom( camera2D camera )
+
+Get camera2D zoom
+
+- Failure return nil
+- Success return float
+
+---
+
+## Core - Camera3D
 
 ---
 
@@ -1624,7 +1732,7 @@ Unload Camera3D
 
 > success = RL_BeginMode3D( camera3D camera )
 
-Initializes 3D mode with custom camera ( 3D )
+Begin 3D mode with custom camera ( 3D )
 
 - Failure return false
 - Success return true
@@ -1767,9 +1875,45 @@ Get camera transform matrix ( view matrix )
 
 ---
 
+> matrix = RL_GetCameraMatrix2D( Camera2D camera )
+
+Get camera 2d transform matrix
+
+- Failure return false
+- Success return Matrix
+
+---
+
 > position = RL_GetWorldToScreen( Vector3 position, Camera3D camera )
 
 Get the screen space position for a 3d world space position
+
+- Failure return false
+- Success return Vector2
+
+---
+
+> position = RL_GetWorldToScreenEx( Vector3 position, Camera3D camera, Vector2 size )
+
+Get size position for a 3d world space position
+
+- Failure return false
+- Success return Vector2
+
+---
+
+> position = RL_GetWorldToScreen2D( Vector2 position, Camera2D camera )
+
+Get the screen space position for a 2d camera world space position
+
+- Failure return false
+- Success return Vector2
+
+---
+
+> position = RL_GetScreenToWorld2D( Vector2 position, Camera2D camera )
+
+Get the world space position for a 2d camera screen space position
 
 - Failure return false
 - Success return Vector2

@@ -30,6 +30,7 @@ int lmodelsGenMeshTorus( lua_State *L );
 int lmodelsGenMeshKnot( lua_State *L );
 int lmodelsGenMeshHeightmap( lua_State *L );
 int lmodelsGenMeshCustom( lua_State *L );
+int lmodelsUpdateMesh( lua_State *L );
 int lmodelsUnloadMesh( lua_State *L );
 int lmodelsDrawMesh( lua_State *L );
 int lmodelsDrawMeshInstanced( lua_State *L );

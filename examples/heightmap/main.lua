@@ -7,6 +7,7 @@ local tilesetTex = -1
 local heigthImage = -1
 local mesh = -1
 local material = -1
+local lightmap = -1
 
 local grassRec = { 6 * TILE_SIZE, 0 * TILE_SIZE, TILE_SIZE, TILE_SIZE }
 local dirtRec = { 4 * TILE_SIZE, 0 * TILE_SIZE, TILE_SIZE, TILE_SIZE }
@@ -64,6 +65,8 @@ function init()
 
 	material = RL_LoadMaterialDefault()
 	RL_SetTextureSource( TEXTURE_SOURCE_RENDER_TEXTURE )
+	-- RL_GenTextureMipmaps( groundTexture )
+	-- RL_SetTextureFilter( groundTexture, TEXTURE_FILTER_TRILINEAR )
 	RL_SetMaterialTexture( material, MATERIAL_MAP_ALBEDO, groundTexture )
 	RL_SetTextureSource( TEXTURE_SOURCE_TEXTURE )
 

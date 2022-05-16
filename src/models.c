@@ -106,6 +106,20 @@ static bool validAnimation( size_t id ) {
 	}
 }
 
+static int newMesh() {
+	int i = 0;
+
+	for ( i = 0; i < state->meshCount; i++ ) {
+		if ( state->meshes[i] == NULL ) {
+			break;
+		}
+	}
+	state->meshes[i] = malloc( sizeof( Mesh ) );
+	checkMeshRealloc( i );
+
+	return i;
+}
+
 /*
 ## Models - Basic
 */
@@ -683,14 +697,8 @@ int lmodelsGenMeshPoly( lua_State *L ) {
 	}
 	float radius = lua_tonumber( L, -1 );
 	int sides = lua_tointeger( L, -2 );
-	int i = 0;
+	int i = newMesh();
 
-	for ( i = 0; i < state->meshCount; i++ ) {
-		if ( state->meshes[i] == NULL ) {
-			break;
-		}
-	}
-	state->meshes[i] = malloc( sizeof( Mesh ) );
 	*state->meshes[i] = GenMeshPoly( sides, radius );
 	lua_pushinteger( L, i );
 	checkMeshRealloc( i );
@@ -716,14 +724,8 @@ int lmodelsGenMeshPlane( lua_State *L ) {
 	int resX = lua_tointeger( L, -2 );
 	float length = lua_tonumber( L, -3 );
 	float width = lua_tonumber( L, -4 );
-	int i = 0;
+	int i = newMesh();
 
-	for ( i = 0; i < state->meshCount; i++ ) {
-		if ( state->meshes[i] == NULL ) {
-			break;
-		}
-	}
-	state->meshes[i] = malloc( sizeof( Mesh ) );
 	*state->meshes[i] = GenMeshPlane( width, length, resX, resZ );
 	lua_pushinteger( L, i );
 	checkMeshRealloc( i );
@@ -746,14 +748,8 @@ int lmodelsGenMeshCube( lua_State *L ) {
 		return 1;
 	}
 	Vector3 size = uluaGetVector3( L );
-	int i = 0;
+	int i = newMesh();
 
-	for ( i = 0; i < state->meshCount; i++ ) {
-		if ( state->meshes[i] == NULL ) {
-			break;
-		}
-	}
-	state->meshes[i] = malloc( sizeof( Mesh ) );
 	*state->meshes[i] = GenMeshCube( size.x, size.y, size.z );
 	lua_pushinteger( L, i );
 	checkMeshRealloc( i );
@@ -778,14 +774,8 @@ int lmodelsGenMeshSphere( lua_State *L ) {
 	int slices = lua_tointeger( L, -1 );
 	int rings = lua_tointeger( L, -2 );
 	float radius = lua_tonumber( L, -3 );
-	int i = 0;
+	int i = newMesh();
 
-	for ( i = 0; i < state->meshCount; i++ ) {
-		if ( state->meshes[i] == NULL ) {
-			break;
-		}
-	}
-	state->meshes[i] = malloc( sizeof( Mesh ) );
 	*state->meshes[i] = GenMeshSphere( radius, rings, slices );
 	lua_pushinteger( L, i );
 	checkMeshRealloc( i );
@@ -810,14 +800,8 @@ int lmodelsGenMeshCylinder( lua_State *L ) {
 	int slices = lua_tointeger( L, -1 );
 	float height = lua_tonumber( L, -2 );
 	float radius = lua_tonumber( L, -3 );
-	int i = 0;
+	int i = newMesh();
 
-	for ( i = 0; i < state->meshCount; i++ ) {
-		if ( state->meshes[i] == NULL ) {
-			break;
-		}
-	}
-	state->meshes[i] = malloc( sizeof( Mesh ) );
 	*state->meshes[i] = GenMeshCylinder( radius, height, slices);
 	lua_pushinteger( L, i );
 	checkMeshRealloc( i );
@@ -842,14 +826,8 @@ int lmodelsGenMeshCone( lua_State *L ) {
 	int slices = lua_tointeger( L, -1 );
 	float height = lua_tonumber( L, -2 );
 	float radius = lua_tonumber( L, -3 );
-	int i = 0;
-
-	for ( i = 0; i < state->meshCount; i++ ) {
-		if ( state->meshes[i] == NULL ) {
-			break;
-		}
-	}
-	state->meshes[i] = malloc( sizeof( Mesh ) );
+	int i = newMesh();
+	
 	*state->meshes[i] = GenMeshCone( radius, height, slices);
 	lua_pushinteger( L, i );
 	checkMeshRealloc( i );
@@ -875,14 +853,8 @@ int lmodelsGenMeshTorus( lua_State *L ) {
 	int radSeg = lua_tointeger( L, -2 );
 	float size = lua_tonumber( L, -3 );
 	float radius = lua_tonumber( L, -4 );
-	int i = 0;
-
-	for ( i = 0; i < state->meshCount; i++ ) {
-		if ( state->meshes[i] == NULL ) {
-			break;
-		}
-	}
-	state->meshes[i] = malloc( sizeof( Mesh ) );
+	int i = newMesh();
+	
 	*state->meshes[i] = GenMeshTorus( radius, size, radSeg, sides );
 	lua_pushinteger( L, i );
 	checkMeshRealloc( i );
@@ -908,14 +880,8 @@ int lmodelsGenMeshKnot( lua_State *L ) {
 	int radSeg = lua_tointeger( L, -2 );
 	float size = lua_tonumber( L, -3 );
 	float radius = lua_tonumber( L, -4 );
-	int i = 0;
-
-	for ( i = 0; i < state->meshCount; i++ ) {
-		if ( state->meshes[i] == NULL ) {
-			break;
-		}
-	}
-	state->meshes[i] = malloc( sizeof( Mesh ) );
+	int i = newMesh();
+	
 	*state->meshes[i] = GenMeshKnot( radius, size, radSeg, sides );
 	lua_pushinteger( L, i );
 	checkMeshRealloc( i );
@@ -945,16 +911,9 @@ int lmodelsGenMeshHeightmap( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	Image *heightmap = state->images[ imageId ];
-	int i = 0;
-
-	for ( i = 0; i < state->meshCount; i++ ) {
-		if ( state->meshes[i] == NULL ) {
-			break;
-		}
-	}
-	state->meshes[i] = malloc( sizeof( Mesh ) );
+	int i = newMesh();
+	
 	*state->meshes[i] = GenMeshHeightmap( *heightmap, size );
 	lua_pushinteger( L, i );
 	checkMeshRealloc( i );
@@ -963,100 +922,306 @@ int lmodelsGenMeshHeightmap( lua_State *L ) {
 }
 
 /*
-> mesh = RL_GenMeshCustom( Vector3{} vertices, Vector2{} texCoords, Vector3{} normals )
+> mesh = RL_GenMeshCustom( Mesh{}, bool dynamic )
 
-Generate custom mesh
+Generate custom mesh from vertex attribute data and uploads it into a VAO ( if supported ) and VBO
 
 - Failure return -1
 - Success return int
 */
 int lmodelsGenMeshCustom( lua_State *L ) {
-	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GenMeshCustom( Vector3{} vertices, Vector2{} texCoords, Vector3{} normals )" );
+	if ( !lua_istable( L, -2 ) || !lua_isboolean( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GenMeshCustom( Mesh{}, bool dynamic )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
 	Mesh mesh = { 0 };
-	size_t len = uluaGetTableLen( L );
 
-	mesh.vertexCount = len * 3;
-    mesh.triangleCount = len;
-
-	mesh.vertices = (float*)MemAlloc( mesh.vertexCount * 3 * sizeof(float) );
-    mesh.texcoords = (float*)MemAlloc( mesh.vertexCount * 2 * sizeof(float) );
-    mesh.normals = (float*)MemAlloc( mesh.vertexCount * 3 * sizeof(float) );
-	mesh.colors = (unsigned char*)MemAlloc( mesh.vertexCount * 4 * sizeof(unsigned char) );
-
-	/* Normals. */
-
-	int t = lua_gettop( L ), i = 0;
-    lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-        if ( lua_istable( L, -1 ) ) {
-			Vector3 vec = uluaGetVector3( L );
-			mesh.normals[(i*3)+0] = vec.x;
-			mesh.normals[(i*3)+1] = vec.y;
-			mesh.normals[(i*3)+2] = vec.z;
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
+	bool dynamic = lua_toboolean( L, -1 );
 	lua_pop( L, 1 );
 
-	/* TexCoords. */
-
-	t = lua_gettop( L );
-	i = 0;
-    lua_pushnil( L );
+	int t = lua_gettop( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-        if ( lua_istable( L, -1 ) ) {
-			Vector2 vec = uluaGetVector2( L );
-			mesh.texcoords[(i*2)+0] = vec.x;
-			mesh.texcoords[(i*2)+1] = vec.y;
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
-	lua_pop( L, 1 );
+		if ( strcmp( "vertices", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L );
 
-	/* Vertices. */
+			mesh.vertexCount = len;
+			mesh.triangleCount = len / 3;
+			mesh.vertices = (float*)MemAlloc( len * 3 * sizeof(float) );
 
-	t = lua_gettop( L );
-	i = 0;
-    lua_pushnil( L );
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
 
-	while ( lua_next( L, t ) != 0 ) {
-        if ( lua_istable( L, -1 ) ) {
-			Vector3 vec = uluaGetVector3( L );
-			mesh.vertices[(i*3)+0] = vec.x;
-			mesh.vertices[(i*3)+1] = vec.y;
-			mesh.vertices[(i*3)+2] = vec.z;
+			while ( lua_next( L, t2 ) != 0 ) {
+				Vector3 vec = uluaGetVector3( L );
 
-			mesh.colors[(i*4)+0] = (unsigned char)255;
-			mesh.colors[(i*4)+1] = (unsigned char)255;
-			mesh.colors[(i*4)+2] = (unsigned char)255;
-			mesh.colors[(i*4)+3] = (unsigned char)255;
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
-	lua_pop( L, 1 );
-
-	UploadMesh( &mesh, false );
-
-	int j = 0;
-
-	for ( j = 0; j < state->meshCount; j++ ) {
-		if ( state->meshes[j] == NULL ) {
-			break;
+				mesh.vertices[(i*3)+0] = vec.x;
+				mesh.vertices[(i*3)+1] = vec.y;
+				mesh.vertices[(i*3)+2] = vec.z;
+				i++;
+				lua_pop( L, 1 );
+			}
 		}
+		else if ( strcmp( "texcoords", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L );
+
+			mesh.texcoords = (float*)MemAlloc( len * 2 * sizeof(float) );
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				Vector2 vec = uluaGetVector2( L );
+
+				mesh.texcoords[(i*2)+0] = vec.x;
+				mesh.texcoords[(i*2)+1] = vec.y;
+				i++;
+				lua_pop( L, 1 );
+			}
+		}
+		else if ( strcmp( "texcoords2", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L );
+
+			mesh.texcoords2 = (float*)MemAlloc( len * 2 * sizeof(float) );
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				Vector2 vec = uluaGetVector2( L );
+
+				mesh.texcoords2[(i*2)+0] = vec.x;
+				mesh.texcoords2[(i*2)+1] = vec.y;
+				i++;
+				lua_pop( L, 1 );
+			}
+		}
+		else if ( strcmp( "normals", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L );
+
+			mesh.normals = (float*)MemAlloc( len * 3 * sizeof(float) );
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				Vector3 vec = uluaGetVector3( L );
+
+				mesh.normals[(i*3)+0] = vec.x;
+				mesh.normals[(i*3)+1] = vec.y;
+				mesh.normals[(i*3)+2] = vec.z;
+				i++;
+				lua_pop( L, 1 );
+			}
+		}
+		else if ( strcmp( "tangents", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L );
+
+			mesh.tangents = (float*)MemAlloc( len * 4 * sizeof(float) );
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				Vector4 vec = uluaGetVector4( L );
+
+				mesh.tangents[(i*4)+0] = vec.x;
+				mesh.tangents[(i*4)+1] = vec.y;
+				mesh.tangents[(i*4)+2] = vec.z;
+				mesh.tangents[(i*4)+3] = vec.w;
+				i++;
+				lua_pop( L, 1 );
+			}
+		}
+		else if ( strcmp( "colors", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L );
+
+			mesh.colors = (unsigned char*)MemAlloc( len * 4 * sizeof(unsigned char) );
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				Color color = uluaGetColor( L );
+
+				mesh.colors[(i*4)+0] = color.r;
+				mesh.colors[(i*4)+1] = color.g;
+				mesh.colors[(i*4)+2] = color.b;
+				mesh.colors[(i*4)+3] = color.a;
+				i++;
+				lua_pop( L, 1 );
+			}
+		}
+		else if ( strcmp( "indices", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L );
+
+			mesh.indices = (unsigned short*)MemAlloc( len * sizeof(unsigned short) );
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				mesh.indices[i] = (unsigned short)lua_tointeger( L, -1 );
+				i++;
+				lua_pop( L, 1 );
+			}
+		}
+		lua_pop( L, 1 );
 	}
-	state->meshes[j] = malloc( sizeof( Mesh ) );
-	*state->meshes[j] = mesh;
-	lua_pushinteger( L, j );
-	checkMeshRealloc( j );
+	UploadMesh( &mesh, dynamic );
+
+	int i = newMesh();
+	
+	*state->meshes[i] = mesh;
+	lua_pushinteger( L, i );
+	checkMeshRealloc( i );
+
+	return 1;
+}
+
+/*
+> success = RL_UpdateMesh( Mesh{} )
+
+Update mesh vertex data in GPU. ( Mainly intented to be used with custom meshes )
+
+- Failure return false
+- Success return true
+*/
+int lmodelsUpdateMesh( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_UpdateMesh( Mesh{} )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t meshId = lua_tointeger( L, -1 );
+
+	if ( !validMesh( meshId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Mesh *mesh = state->meshes[ meshId ];
+
+	int t = lua_gettop( L );
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		if ( strcmp( "vertices", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L );
+			Vector3 data[ len ];
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 && i < mesh->vertexCount ) {
+				data[i] = uluaGetVector3( L );
+				i++;
+				lua_pop( L, 1 );
+			}
+			UpdateMeshBuffer( *mesh, 0, (void*)data, len * 3 * sizeof( float ), 0 );
+		}
+		else if ( strcmp( "texcoords", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L );
+			Vector2 data[ len ];
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				data[i] = uluaGetVector2( L );
+				i++;
+				lua_pop( L, 1 );
+			}
+			UpdateMeshBuffer( *mesh, 1, (void*)data, len * 2 * sizeof( float ), 0 );
+		}
+		else if ( strcmp( "texcoords2", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L );
+			Vector2 data[ len ];
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				data[i] = uluaGetVector2( L );
+				i++;
+				lua_pop( L, 1 );
+			}
+			UpdateMeshBuffer( *mesh, 5, (void*)data, len * 2 * sizeof( float ), 0 );
+		}
+		else if ( strcmp( "normals", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L );
+			Vector3 data[ len ];
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				data[i] = uluaGetVector3( L );
+				i++;
+				lua_pop( L, 1 );
+			}
+			UpdateMeshBuffer( *mesh, 2, (void*)data, len * 3 * sizeof( float ), 0 );
+		}
+		else if ( strcmp( "tangents", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L );
+			Vector4 data[ len ];
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				data[i] = uluaGetVector4( L );
+				i++;
+				lua_pop( L, 1 );
+			}
+			UpdateMeshBuffer( *mesh, 4, (void*)data, len * 4 * sizeof( float ), 0 );
+		}
+		else if ( strcmp( "colors", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L );
+			Color data[ len ];
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				data[i] = uluaGetColor( L );
+				i++;
+				lua_pop( L, 1 );
+			}
+			UpdateMeshBuffer( *mesh, 3, (void*)data, len * 4 * sizeof(unsigned char), 0 );
+		}
+		else if ( strcmp( "indices", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L );
+			unsigned short data[ len ];
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				data[i] = (unsigned short)lua_tointeger( L, -1 );
+				i++;
+				lua_pop( L, 1 );
+			}
+			UpdateMeshBuffer( *mesh, 6, (void*)data, len * sizeof(unsigned short), 0 );
+		}
+		lua_pop( L, 1 );
+	}
+	lua_pushboolean( L, true );
 
 	return 1;
 }

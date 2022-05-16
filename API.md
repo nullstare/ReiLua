@@ -635,6 +635,18 @@ int id. Defines 3d camera position/orientation
 
 int id. Vertex data defining a mesh
 
+```
+mesh{} = {
+  vertices = { Vector3, ... },
+  texcoords = { Vector2, ... },
+  texcoords2 = { Vector2, ... },
+  normals = { Vector3, ... },
+  tangents = { Vector4, ... },
+  colors = { Color, ... },
+  indices = { int, ... },
+}
+```
+
 ---
 
 > Material = MaterialId
@@ -642,7 +654,7 @@ int id. Vertex data defining a mesh
 int id. Material type
 
 ```
-table = {
+material{} = {
   shader = Shader,
   maps = {
     {
@@ -3200,12 +3212,21 @@ Generate heightmap mesh from image data
 
 ---
 
-> mesh = RL_GenMeshCustom( Vector3{} vertices, Vector2{} texCoords, Vector3{} normals )
+> mesh = RL_GenMeshCustom( Mesh{}, bool dynamic )
 
-Generate custom mesh
+Generate custom mesh from vertex attribute data and uploads it into a VAO ( if supported ) and VBO
 
 - Failure return -1
 - Success return int
+
+---
+
+> success = RL_UpdateMesh( Mesh{} )
+
+Update mesh vertex data in GPU. ( Mainly intented to be used with custom meshes )
+
+- Failure return false
+- Success return true
 
 ---
 

@@ -771,6 +771,7 @@ void luaRegister() {
 	lua_register( L, "RL_GenMeshKnot", lmodelsGenMeshKnot );
 	lua_register( L, "RL_GenMeshHeightmap", lmodelsGenMeshHeightmap );
 	lua_register( L, "RL_GenMeshCustom", lmodelsGenMeshCustom );
+	lua_register( L, "RL_UpdateMesh", lmodelsUpdateMesh );
 	lua_register( L, "RL_UnloadMesh", lmodelsUnloadMesh );
 	lua_register( L, "RL_DrawMesh", lmodelsDrawMesh );
 	lua_register( L, "RL_DrawMeshInstanced", lmodelsDrawMeshInstanced );

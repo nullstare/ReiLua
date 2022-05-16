@@ -95,11 +95,22 @@ int id. Font type, includes texture and chars data\n\n---\n" )
 apiFile:write( "\n> Camera = CameraId\n\
 int id. Defines 3d camera position/orientation\n\n---\n" )
 apiFile:write( "\n> Mesh = MeshId\n\
-int id. Vertex data defining a mesh\n\n---\n" )
+int id. Vertex data defining a mesh\n\
+```\
+mesh{} = {\
+  vertices = { Vector3, ... },\
+  texcoords = { Vector2, ... },\
+  texcoords2 = { Vector2, ... },\
+  normals = { Vector3, ... },\
+  tangents = { Vector4, ... },\
+  colors = { Color, ... },\
+  indices = { int, ... },\
+}\
+```\n\n---\n" )
 apiFile:write( "\n> Material = MaterialId\n\
 int id. Material type\n\
 ```\
-table = {\
+material{} = {\
   shader = Shader,\
   maps = {\
     {\

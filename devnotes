@@ -2,16 +2,12 @@ Current {
 }
 
 Backlog {
-	* More and better examples.
-
 	* Text
 		* More Font loading/unloading functions
 		* Codepoints
 		* String management. At least TextSplit.
 	* Audio
 		* Wave
-
-	* Raymath
 
 	* Physac?
 	* VR?

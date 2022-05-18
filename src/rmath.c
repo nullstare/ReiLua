@@ -12,8 +12,133 @@ inline int imax( int a, int b ) {
 }
 
 /*
+## Math - Utils
+*/
+
+/*
+> result = RL_Clamp( float value, float min, float max )
+
+Clamp float value
+
+- Failure return false
+- Success return float
+*/
+int lmathClamp( lua_State *L ) {
+	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Clamp( float value, float min, float max )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float max = lua_tonumber( L, -1 );
+	float min = lua_tonumber( L, -2 );
+	float value = lua_tonumber( L, -3 );
+
+	lua_pushnumber( L, Clamp( value, min, max ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Lerp( float start, float end, float amount )
+
+Calculate linear interpolation between two floats
+
+- Failure return false
+- Success return float
+*/
+int lmathLerp( lua_State *L ) {
+	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Lerp( float start, float end, float amount )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float amount = lua_tonumber( L, -1 );
+	float end = lua_tonumber( L, -2 );
+	float start = lua_tonumber( L, -3 );
+
+	lua_pushnumber( L, Lerp( start, end, amount ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Normalize( float value, float start, float end )
+
+Normalize input value within input range
+
+- Failure return false
+- Success return float
+*/
+int lmathNormalize( lua_State *L ) {
+	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Normalize( float value, float start, float end )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float end = lua_tonumber( L, -1 );
+	float start = lua_tonumber( L, -2 );
+	float value = lua_tonumber( L, -3 );
+
+	lua_pushnumber( L, Normalize( value, start, end ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Remap( float value, float inputStart, float inputEnd, float outputStart, float outputEnd )
+
+Remap input value within input range to output range
+
+- Failure return false
+- Success return float
+*/
+int lmathRemap( lua_State *L ) {
+	if ( !lua_isnumber( L, -5 ) || !lua_isnumber( L, -4 ) || !lua_isnumber( L, -3 )
+	|| !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Remap( float value, float inputStart, float inputEnd, float outputStart, float outputEnd )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float outputEnd = lua_tonumber( L, -1 );
+	float outputStart = lua_tonumber( L, -2 );
+	float inputEnd = lua_tonumber( L, -3 );
+	float inputStart = lua_tonumber( L, -4 );
+	float value = lua_tonumber( L, -5 );
+
+	lua_pushnumber( L, Remap( value, inputStart, inputEnd, outputStart, outputEnd ) );
+
+	return 1;
+}
+
+/*
 ## Math - Vector2
 */
+
+/*
+> result = RL_Vector2Zero()
+
+Vector with components value 0.0f
+
+- Success return Vector2
+*/
+int lmathVector2Zero( lua_State *L ) {
+	uluaPushVector2( L, Vector2Zero() );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector2One()
+
+Vector with components value 1.0f
+
+- Success return Vector2
+*/
+int lmathVector2One( lua_State *L ) {
+	uluaPushVector2( L, Vector2One() );
+
+	return 1;
+}
 
 /*
 > result = RL_Vector2Add( Vector2 v1, Vector2 v2 )
@@ -34,6 +159,29 @@ int lmathVector2Add( lua_State *L ) {
 	Vector2 v1 = uluaGetVector2( L );
 
 	uluaPushVector2( L, Vector2Add( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector2AddValue( Vector2 v, float add )
+
+Add vector and float value
+
+- Failure return false
+- Success return Vector2
+*/
+int lmathVector2AddValue( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector2AddValue( Vector2 v, float add )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float add = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Vector2 v = uluaGetVector2( L );
+
+	uluaPushVector2( L, Vector2AddValue( v, add ) );
 
 	return 1;
 }
@@ -62,30 +210,30 @@ int lmathVector2Subtract( lua_State *L ) {
 }
 
 /*
-> result = RL_Vector2Multiply( Vector2 v1, Vector2 v2 )
+> result = RL_Vector2SubtractValue( Vector2 v, float sub )
 
-Multiply vector by vector
+Subtract vector by float value
 
 - Failure return false
 - Success return Vector2
 */
-int lmathVector2Multiply( lua_State *L ) {
-	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector2Multiply( Vector2 v1, Vector2 v2 )" );
+int lmathVector2SubtractValue( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector2SubtractValue( Vector2 v, float sub )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Vector2 v2 = uluaGetVector2( L );
+	float sub = lua_tonumber( L, -1 );
 	lua_pop( L, 1 );
-	Vector2 v1 = uluaGetVector2( L );
+	Vector2 v = uluaGetVector2( L );
 
-	uluaPushVector2( L, Vector2Multiply( v1, v2 ) );
+	uluaPushVector2( L, Vector2SubtractValue( v, sub ) );
 
 	return 1;
 }
 
 /*
-> result = RL_Vector2Length( vector2 vector )
+> result = RL_Vector2Length( vector2 v )
 
 Calculate vector length
 
@@ -101,6 +249,27 @@ int lmathVector2Length( lua_State *L ) {
 	Vector2 v = uluaGetVector2( L );
 
 	lua_pushnumber( L, Vector2Length( v ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector2LengthSqr( vector2 v )
+
+Calculate vector square length
+
+- Failure return false
+- Success return float
+*/
+int lmathVector2LengthSqr( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector2LengthSqr( vector2 v )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 v = uluaGetVector2( L );
+
+	lua_pushnumber( L, Vector2LengthSqr( v ) );
 
 	return 1;
 }
@@ -175,6 +344,96 @@ int lmathVector2Angle( lua_State *L ) {
 }
 
 /*
+> result = RL_Vector2Scale( Vector2 v, float scale )
+
+Scale vector ( multiply by value )
+
+- Failure return false
+- Success return Vector2
+*/
+int lmathVector2Scale( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector2Scale( Vector2 v, float scale )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float scale = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Vector2 v = uluaGetVector2( L );
+
+	uluaPushVector2( L, Vector2Scale( v, scale ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector2Multiply( Vector2 v1, Vector2 v2 )
+
+Multiply vector by vector
+
+- Failure return false
+- Success return Vector2
+*/
+int lmathVector2Multiply( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector2Multiply( Vector2 v1, Vector2 v2 )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 v2 = uluaGetVector2( L );
+	lua_pop( L, 1 );
+	Vector2 v1 = uluaGetVector2( L );
+
+	uluaPushVector2( L, Vector2Multiply( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector2Negate( Vector2 v )
+
+Negate vector
+
+- Failure return false
+- Success return Vector2
+*/
+int lmathVector2Negate( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector2Negate( Vector2 v )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 v = uluaGetVector2( L );
+
+	uluaPushVector2( L, Vector2Negate( v ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector2Divide( Vector2 v1, Vector2 v2 )
+
+Divide vector by vector
+
+- Failure return false
+- Success return Vector2
+*/
+int lmathVector2Divide( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector2Divide( Vector2 v1, Vector2 v2 )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 v2 = uluaGetVector2( L );
+	lua_pop( L, 1 );
+	Vector2 v1 = uluaGetVector2( L );
+
+	uluaPushVector2( L, Vector2Divide( v1, v2 ) );
+
+	return 1;
+}
+
+/*
 > result = RL_Vector2Normalize( Vector2 v )
 
 Normalize provided vector
@@ -188,9 +447,9 @@ int lmathVector2Normalize( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Vector2 v = Vector2Normalize( uluaGetVector2( L ) );
+	Vector2 v = uluaGetVector2( L );
 
-	uluaPushVector2( L, v );
+	uluaPushVector2( L, Vector2Normalize( v ) );
 
 	return 1;
 }
@@ -296,7 +555,33 @@ int lmathVector2MoveTowards( lua_State *L ) {
 */
 
 /*
-> result = RL_Vector3CrossProduct( Vector3 v1, Vector3 v2 )
+> result = RL_Vector3Zero()
+
+Vector with components value 0.0f
+
+- Success return Vector3
+*/
+int lmathVector3Zero( lua_State *L ) {
+	uluaPushVector3( L, Vector3Zero() );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector3One()
+
+Vector with components value 1.0f
+
+- Success return Vector3
+*/
+int lmathVector3One( lua_State *L ) {
+	uluaPushVector3( L, Vector3One() );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector3Add( Vector3 v1, Vector3 v2 )
 
 Add two vectors
 
@@ -314,6 +599,29 @@ int lmathVector3Add( lua_State *L ) {
 	Vector3 v1 = uluaGetVector3( L );
 
 	uluaPushVector3( L, Vector3Add( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector3AddValue( Vector3 v, float add )
+
+Add vector and float value
+
+- Failure return false
+- Success return Vector3
+*/
+int lmathVector3AddValue( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3AddValue( Vector3 v, float add )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float add = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Vector3 v = uluaGetVector3( L );
+
+	uluaPushVector3( L, Vector3AddValue( v, add ) );
 
 	return 1;
 }
@@ -337,6 +645,52 @@ int lmathVector3Subtract( lua_State *L ) {
 	Vector3 v1 = uluaGetVector3( L );
 
 	uluaPushVector3( L, Vector3Subtract( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector3SubtractValue( Vector3 v, float sub )
+
+Subtract vector by float value
+
+- Failure return false
+- Success return Vector3
+*/
+int lmathVector3SubtractValue( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3SubtractValue( Vector3 v, float sub )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float sub = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Vector3 v = uluaGetVector3( L );
+
+	uluaPushVector3( L, Vector3SubtractValue( v, sub ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector3Scale( Vector3 v, float scalar )
+
+Multiply vector by scalar
+
+- Failure return false
+- Success return Vector3
+*/
+int lmathVector3Scale( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3Scale( Vector3 v, float scalar )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float scalar = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Vector3 v = uluaGetVector3( L );
+
+	uluaPushVector3( L, Vector3Scale( v, scalar ) );
 
 	return 1;
 }
@@ -497,6 +851,73 @@ int lmathVector3Distance( lua_State *L ) {
 }
 
 /*
+> result = RL_Vector3Angle( Vector3 v1, Vector3 v2 )
+
+Calculate angle between two vectors
+
+- Failure return false
+- Success return float
+*/
+int lmathVector3Angle( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3Angle( Vector3 v1, Vector3 v2 )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 v2 = uluaGetVector3( L );
+	lua_pop( L, 1 );
+	Vector3 v1 = uluaGetVector3( L );
+
+	lua_pushnumber( L, Vector3Angle( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector3Negate( Vector3 v )
+
+Negate provided vector ( invert direction )
+
+- Failure return false
+- Success return Vector3
+*/
+int lmathVector3Negate( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3Negate( Vector3 v )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 v = uluaGetVector3( L );
+
+	uluaPushVector3( L, Vector3Negate( v ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector3Divide( Vector3 v1, Vector3 v2 )
+
+Divide vector by vector
+
+- Failure return false
+- Success return Vector3
+*/
+int lmathVector3Divide( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3Divide( Vector3 v1, Vector3 v2 )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 v2 = uluaGetVector3( L );
+	lua_pop( L, 1 );
+	Vector3 v1 = uluaGetVector3( L );
+
+	uluaPushVector3( L, Vector3Divide( v1, v2 ) );
+
+	return 1;
+}
+
+/*
 > result = RL_Vector3Normalize( Vector3 v )
 
 Normalize provided vector
@@ -505,7 +926,6 @@ Normalize provided vector
 - Success return Vector3
 */
 int lmathVector3Normalize( lua_State *L ) {
-	/* Vector. */
 	if ( !lua_istable( L, -1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3Normalize( Vector3 v )" );
 		lua_pushboolean( L, false );
@@ -640,6 +1060,106 @@ int lmathVector3Reflect( lua_State *L ) {
 }
 
 /*
+> result = RL_Vector3Min( Vector3 v1, Vector3 v2 )
+
+Get min value for each pair of components
+
+- Failure return false
+- Success return Vector3
+*/
+int lmathVector3Min( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3Min( Vector3 v1, Vector3 v2 )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 v2 = uluaGetVector3( L );
+	lua_pop( L, 1 );
+	Vector3 v1 = uluaGetVector3( L );
+
+	uluaPushVector3( L, Vector3Min( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector3Max( Vector3 v1, Vector3 v2 )
+
+Get max value for each pair of components
+
+- Failure return false
+- Success return Vector3
+*/
+int lmathVector3Max( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3Max( Vector3 v1, Vector3 v2 )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 v2 = uluaGetVector3( L );
+	lua_pop( L, 1 );
+	Vector3 v1 = uluaGetVector3( L );
+
+	uluaPushVector3( L, Vector3Max( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector3Barycenter( Vector3 p, Vector3 a, Vector3 b, Vector3 c )
+
+Compute barycenter coordinates ( u, v, w ) for point p with respect to triangle ( a, b, c )
+NOTE: Assumes P is on the plane of the triangle
+
+- Failure return false
+- Success return Vector3
+*/
+int lmathVector3Barycenter( lua_State *L ) {
+	if ( !lua_istable( L, -4 ) || !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3Barycenter( Vector3 p, Vector3 a, Vector3 b, Vector3 c )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 c = uluaGetVector3( L );
+	lua_pop( L, 1 );
+	Vector3 b = uluaGetVector3( L );
+	lua_pop( L, 1 );
+	Vector3 a = uluaGetVector3( L );
+	lua_pop( L, 1 );
+	Vector3 p = uluaGetVector3( L );
+
+	uluaPushVector3( L, Vector3Barycenter( p, a, b, c ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector3Unproject( Vector3 source, Matrix projection, Matrix view )
+
+Projects a Vector3 from screen space into object space
+NOTE: We are avoiding calling other raymath functions despite available
+
+- Failure return false
+- Success return Vector3
+*/
+int lmathVector3Unproject( lua_State *L ) {
+	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3Unproject( Vector3 source, Matrix projection, Matrix view )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Matrix view = uluaGetMatrix( L );
+	lua_pop( L, 1 );
+	Matrix projection = uluaGetMatrix( L );
+	lua_pop( L, 1 );
+	Vector3 source = uluaGetVector3( L );
+
+	uluaPushVector3( L, Vector3Unproject( source, projection, view ) );
+
+	return 1;
+}
+
+/*
 ## Math - Matrix
 */
 
@@ -660,6 +1180,27 @@ int lmathMatrixDeterminant( lua_State *L ) {
 	Matrix mat = uluaGetMatrix( L );
 
 	lua_pushnumber( L, MatrixDeterminant( mat ) );
+
+	return 1;
+}
+
+/*
+> result = RL_MatrixTrace( Matrix mat )
+
+Get the trace of the matrix ( sum of the values along the diagonal )
+
+- Failure return false
+- Success return float
+*/
+int lmathMatrixTrace( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_MatrixTrace( Matrix mat )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Matrix mat = uluaGetMatrix( L );
+
+	lua_pushnumber( L, MatrixTrace( mat ) );
 
 	return 1;
 }
@@ -849,6 +1390,111 @@ int lmathMatrixRotate( lua_State *L ) {
 	Vector3 axis = uluaGetVector3( L );
 
 	uluaPushMatrix( L, MatrixRotate( axis, angle ) );
+
+	return 1;
+}
+
+/*
+> result = RL_MatrixRotateX( float angle )
+
+Get x-rotation matrix ( angle in radians )
+
+- Failure return false
+- Success return Matrix
+*/
+int lmathMatrixRotateX( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_MatrixRotateX( float angle )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float angle = lua_tonumber( L, -1 );
+
+	uluaPushMatrix( L, MatrixRotateX( angle ) );
+
+	return 1;
+}
+
+/*
+> result = RL_MatrixRotateY( float angle )
+
+Get y-rotation matrix ( angle in radians )
+
+- Failure return false
+- Success return Matrix
+*/
+int lmathMatrixRotateY( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_MatrixRotateY( float angle )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float angle = lua_tonumber( L, -1 );
+
+	uluaPushMatrix( L, MatrixRotateY( angle ) );
+
+	return 1;
+}
+
+/*
+> result = RL_MatrixRotateZ( float angle )
+
+Get z-rotation matrix ( angle in radians )
+
+- Failure return false
+- Success return Matrix
+*/
+int lmathMatrixRotateZ( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_MatrixRotateZ( float angle )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float angle = lua_tonumber( L, -1 );
+
+	uluaPushMatrix( L, MatrixRotateZ( angle ) );
+
+	return 1;
+}
+
+/*
+> result = RL_MatrixRotateXYZ( Vector3 angle )
+
+Get xyz-rotation matrix ( angles in radians )
+
+- Failure return false
+- Success return Matrix
+*/
+int lmathMatrixRotateXYZ( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_MatrixRotateXYZ( Vector3 angle )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 angle = uluaGetVector3( L );
+
+	uluaPushMatrix( L, MatrixRotateXYZ( angle ) );
+
+	return 1;
+}
+
+/*
+> result = RL_MatrixRotateZYX( Vector3 angle )
+
+Get zyx-rotation matrix ( angles in radians )
+
+- Failure return false
+- Success return Matrix
+*/
+int lmathMatrixRotateZYX( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_MatrixRotateZYX( Vector3 angle )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 angle = uluaGetVector3( L );
+
+	uluaPushMatrix( L, MatrixRotateZYX( angle ) );
 
 	return 1;
 }

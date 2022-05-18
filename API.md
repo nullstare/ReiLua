@@ -373,6 +373,10 @@ BLUE
 
 PI
 
+DEG2RAD
+
+RAD2DEG
+
 ## Globals - GuiControlState
 
 GUI_STATE_NORMAL
@@ -3681,13 +3685,78 @@ Set volume for music ( 1.0 is max level )
 
 ---
 
+## Math - Utils
+
+---
+
+> result = RL_Clamp( float value, float min, float max )
+
+Clamp float value
+
+- Failure return false
+- Success return float
+
+---
+
+> result = RL_Lerp( float start, float end, float amount )
+
+Calculate linear interpolation between two floats
+
+- Failure return false
+- Success return float
+
+---
+
+> result = RL_Normalize( float value, float start, float end )
+
+Normalize input value within input range
+
+- Failure return false
+- Success return float
+
+---
+
+> result = RL_Remap( float value, float inputStart, float inputEnd, float outputStart, float outputEnd )
+
+Remap input value within input range to output range
+
+- Failure return false
+- Success return float
+
+---
+
 ## Math - Vector2
+
+---
+
+> result = RL_Vector2Zero()
+
+Vector with components value 0.0f
+
+- Success return Vector2
+
+---
+
+> result = RL_Vector2One()
+
+Vector with components value 1.0f
+
+- Success return Vector2
 
 ---
 
 > result = RL_Vector2Add( Vector2 v1, Vector2 v2 )
 
 Add two vectors (v1 + v2)
+
+- Failure return false
+- Success return Vector2
+
+---
+
+> result = RL_Vector2AddValue( Vector2 v, float add )
+
+Add vector and float value
 
 - Failure return false
 - Success return Vector2
@@ -3703,18 +3772,27 @@ Subtract two vectors (v1 - v2)
 
 ---
 
-> result = RL_Vector2Multiply( Vector2 v1, Vector2 v2 )
+> result = RL_Vector2SubtractValue( Vector2 v, float sub )
 
-Multiply vector by vector
+Subtract vector by float value
 
 - Failure return false
 - Success return Vector2
 
 ---
 
-> result = RL_Vector2Length( vector2 vector )
+> result = RL_Vector2Length( vector2 v )
 
 Calculate vector length
+
+- Failure return false
+- Success return float
+
+---
+
+> result = RL_Vector2LengthSqr( vector2 v )
+
+Calculate vector square length
 
 - Failure return false
 - Success return float
@@ -3745,6 +3823,42 @@ Calculate angle from two vectors
 
 - Failure return false
 - Success return float
+
+---
+
+> result = RL_Vector2Scale( Vector2 v, float scale )
+
+Scale vector ( multiply by value )
+
+- Failure return false
+- Success return Vector2
+
+---
+
+> result = RL_Vector2Multiply( Vector2 v1, Vector2 v2 )
+
+Multiply vector by vector
+
+- Failure return false
+- Success return Vector2
+
+---
+
+> result = RL_Vector2Negate( Vector2 v )
+
+Negate vector
+
+- Failure return false
+- Success return Vector2
+
+---
+
+> result = RL_Vector2Divide( Vector2 v1, Vector2 v2 )
+
+Divide vector by vector
+
+- Failure return false
+- Success return Vector2
 
 ---
 
@@ -3797,9 +3911,34 @@ Move Vector towards target
 
 ---
 
-> result = RL_Vector3CrossProduct( Vector3 v1, Vector3 v2 )
+> result = RL_Vector3Zero()
+
+Vector with components value 0.0f
+
+- Success return Vector3
+
+---
+
+> result = RL_Vector3One()
+
+Vector with components value 1.0f
+
+- Success return Vector3
+
+---
+
+> result = RL_Vector3Add( Vector3 v1, Vector3 v2 )
 
 Add two vectors
+
+- Failure return false
+- Success return Vector3
+
+---
+
+> result = RL_Vector3AddValue( Vector3 v, float add )
+
+Add vector and float value
 
 - Failure return false
 - Success return Vector3
@@ -3809,6 +3948,24 @@ Add two vectors
 > result = RL_Vector3Subtract( Vector3 v1, Vector3 v2 )
 
 Subtract two vectors
+
+- Failure return false
+- Success return Vector3
+
+---
+
+> result = RL_Vector3SubtractValue( Vector3 v, float sub )
+
+Subtract vector by float value
+
+- Failure return false
+- Success return Vector3
+
+---
+
+> result = RL_Vector3Scale( Vector3 v, float scalar )
+
+Multiply vector by scalar
 
 - Failure return false
 - Success return Vector3
@@ -3878,6 +4035,33 @@ Calculate distance between two vectors
 
 ---
 
+> result = RL_Vector3Angle( Vector3 v1, Vector3 v2 )
+
+Calculate angle between two vectors
+
+- Failure return false
+- Success return float
+
+---
+
+> result = RL_Vector3Negate( Vector3 v )
+
+Negate provided vector ( invert direction )
+
+- Failure return false
+- Success return Vector3
+
+---
+
+> result = RL_Vector3Divide( Vector3 v1, Vector3 v2 )
+
+Divide vector by vector
+
+- Failure return false
+- Success return Vector3
+
+---
+
 > result = RL_Vector3Normalize( Vector3 v )
 
 Normalize provided vector
@@ -3933,6 +4117,44 @@ Calculate reflected vector to normal
 
 ---
 
+> result = RL_Vector3Min( Vector3 v1, Vector3 v2 )
+
+Get min value for each pair of components
+
+- Failure return false
+- Success return Vector3
+
+---
+
+> result = RL_Vector3Max( Vector3 v1, Vector3 v2 )
+
+Get max value for each pair of components
+
+- Failure return false
+- Success return Vector3
+
+---
+
+> result = RL_Vector3Barycenter( Vector3 p, Vector3 a, Vector3 b, Vector3 c )
+
+Compute barycenter coordinates ( u, v, w ) for point p with respect to triangle ( a, b, c )
+NOTE: Assumes P is on the plane of the triangle
+
+- Failure return false
+- Success return Vector3
+
+---
+
+> result = RL_Vector3Unproject( Vector3 source, Matrix projection, Matrix view )
+
+Projects a Vector3 from screen space into object space
+NOTE: We are avoiding calling other raymath functions despite available
+
+- Failure return false
+- Success return Vector3
+
+---
+
 ## Math - Matrix
 
 ---
@@ -3940,6 +4162,15 @@ Calculate reflected vector to normal
 > result = RL_MatrixDeterminant( Matrix mat )
 
 Compute matrix determinant
+
+- Failure return false
+- Success return float
+
+---
+
+> result = RL_MatrixTrace( Matrix mat )
+
+Get the trace of the matrix ( sum of the values along the diagonal )
 
 - Failure return false
 - Success return float
@@ -4020,6 +4251,51 @@ Get translation matrix
 > result = RL_MatrixRotate( Vector3 axis, float angle )
 
 Create rotation matrix from axis and angle. NOTE: Angle should be provided in radians
+
+- Failure return false
+- Success return Matrix
+
+---
+
+> result = RL_MatrixRotateX( float angle )
+
+Get x-rotation matrix ( angle in radians )
+
+- Failure return false
+- Success return Matrix
+
+---
+
+> result = RL_MatrixRotateY( float angle )
+
+Get y-rotation matrix ( angle in radians )
+
+- Failure return false
+- Success return Matrix
+
+---
+
+> result = RL_MatrixRotateZ( float angle )
+
+Get z-rotation matrix ( angle in radians )
+
+- Failure return false
+- Success return Matrix
+
+---
+
+> result = RL_MatrixRotateXYZ( Vector3 angle )
+
+Get xyz-rotation matrix ( angles in radians )
+
+- Failure return false
+- Success return Matrix
+
+---
+
+> result = RL_MatrixRotateZYX( Vector3 angle )
+
+Get zyx-rotation matrix ( angles in radians )
 
 - Failure return false
 - Success return Matrix

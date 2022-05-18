@@ -29,7 +29,7 @@ List of some MISSING features that are planned to be included. For specific func
 Submodules.
 
 * Raygui ( Done )
-* Raymath ( Mostly done )
+* Raymath ( Done )
 
 ## Usage
 

@@ -202,6 +202,8 @@ void defineGlobals() {
 	assignGlobalColor( BLUE, "BLUE" );
 	/* Math */
 	assignGlobalFloat( PI, "PI" );
+	assignGlobalFloat( DEG2RAD, "DEG2RAD" );
+	assignGlobalFloat( RAD2DEG, "RAD2DEG" );
 	/* GuiControlState */
 	assignGlobalInt( GUI_STATE_NORMAL, "GUI_STATE_NORMAL" );
 	assignGlobalInt( GUI_STATE_FOCUSED, "GUI_STATE_FOCUSED" );
@@ -843,22 +845,40 @@ void luaRegister() {
 	lua_register( L, "RL_SetMusicVolume", laudioSetMusicVolume );
 
 	/* Math. */
+		/* Utils. */
+	lua_register( L, "RL_Clamp", lmathClamp );
+	lua_register( L, "RL_Lerp", lmathLerp );
+	lua_register( L, "RL_Normalize", lmathNormalize );
+	lua_register( L, "RL_Remap", lmathRemap );
 		/* Vector2. */
+	lua_register( L, "RL_Vector2Zero", lmathVector2Zero );
+	lua_register( L, "RL_Vector2One", lmathVector2One );
 	lua_register( L, "RL_Vector2Add", lmathVector2Add );
+	lua_register( L, "RL_Vector2AddValue", lmathVector2AddValue );
 	lua_register( L, "RL_Vector2Subtract", lmathVector2Subtract );
-	lua_register( L, "RL_Vector2Multiply", lmathVector2Multiply );
+	lua_register( L, "RL_Vector2SubtractValue", lmathVector2SubtractValue );
 	lua_register( L, "RL_Vector2Length", lmathVector2Length );
+	lua_register( L, "RL_Vector2LengthSqr", lmathVector2LengthSqr );
 	lua_register( L, "RL_Vector2DotProduct", lmathVector2DotProduct );
 	lua_register( L, "RL_Vector2Distance", lmathVector2Distance );
 	lua_register( L, "RL_Vector2Angle", lmathVector2Angle );
+	lua_register( L, "RL_Vector2Scale", lmathVector2Scale );
+	lua_register( L, "RL_Vector2Multiply", lmathVector2Multiply );
+	lua_register( L, "RL_Vector2Negate", lmathVector2Negate );
+	lua_register( L, "RL_Vector2Divide", lmathVector2Divide );
 	lua_register( L, "RL_Vector2Normalize", lmathVector2Normalize );
 	lua_register( L, "RL_Vector2Lerp", lmathVector2Lerp );
 	lua_register( L, "RL_Vector2Reflect", lmathVector2Reflect );
 	lua_register( L, "RL_Vector2Rotate", lmathVector2Rotate );
 	lua_register( L, "RL_Vector2MoveTowards", lmathVector2MoveTowards );
 		/* Vector3. */
+	lua_register( L, "RL_Vector3Zero", lmathVector3Zero );
+	lua_register( L, "RL_Vector3One", lmathVector3One );
 	lua_register( L, "RL_Vector3Add", lmathVector3Add );
+	lua_register( L, "RL_Vector3AddValue", lmathVector3AddValue );
 	lua_register( L, "RL_Vector3Subtract", lmathVector3Subtract );
+	lua_register( L, "RL_Vector3SubtractValue", lmathVector3SubtractValue );
+	lua_register( L, "RL_Vector3Scale", lmathVector3Scale );
 	lua_register( L, "RL_Vector3Multiply", lmathVector3Multiply );
 	lua_register( L, "RL_Vector3CrossProduct", lmathVector3CrossProduct );
 	lua_register( L, "RL_Vector3Perpendicular", lmathVector3Perpendicular );
@@ -866,14 +886,22 @@ void luaRegister() {
 	lua_register( L, "RL_Vector3LengthSqr", lmathVector3LengthSqr );
 	lua_register( L, "RL_Vector3DotProduct", lmathVector3DotProduct );
 	lua_register( L, "RL_Vector3Distance", lmathVector3Distance );
+	lua_register( L, "RL_Vector3Angle", lmathVector3Angle );
+	lua_register( L, "RL_Vector3Negate", lmathVector3Negate );
+	lua_register( L, "RL_Vector3Divide", lmathVector3Divide );
 	lua_register( L, "RL_Vector3Normalize", lmathVector3Normalize );
 	lua_register( L, "RL_Vector3OrthoNormalize", lmathVector3OrthoNormalize );
 	lua_register( L, "RL_Vector3Transform", lmathVector3Transform );
 	lua_register( L, "RL_Vector3RotateByQuaternion", lmathVector3RotateByQuaternion );
 	lua_register( L, "RL_Vector3Lerp", lmathVector3Lerp );
 	lua_register( L, "RL_Vector3Reflect", lmathVector3Reflect );
+	lua_register( L, "RL_Vector3Min", lmathVector3Min );
+	lua_register( L, "RL_Vector3Max", lmathVector3Max );
+	lua_register( L, "RL_Vector3Barycenter", lmathVector3Barycenter );
+	lua_register( L, "RL_Vector3Unproject", lmathVector3Unproject );
 		/* Matrix. */
 	lua_register( L, "RL_MatrixDeterminant", lmathMatrixDeterminant );
+	lua_register( L, "RL_MatrixTrace", lmathMatrixTrace );
 	lua_register( L, "RL_MatrixTranspose", lmathMatrixTranspose );
 	lua_register( L, "RL_MatrixInvert", lmathMatrixInvert );
 	lua_register( L, "RL_MatrixNormalize", lmathMatrixNormalize );
@@ -883,6 +911,11 @@ void luaRegister() {
 	lua_register( L, "RL_MatrixMultiply", lmathMatrixMultiply );
 	lua_register( L, "RL_MatrixTranslate", lmathMatrixTranslate );
 	lua_register( L, "RL_MatrixRotate", lmathMatrixRotate );
+	lua_register( L, "RL_MatrixRotateX", lmathMatrixRotateX );
+	lua_register( L, "RL_MatrixRotateY", lmathMatrixRotateY );
+	lua_register( L, "RL_MatrixRotateZ", lmathMatrixRotateZ );
+	lua_register( L, "RL_MatrixRotateXYZ", lmathMatrixRotateXYZ );
+	lua_register( L, "RL_MatrixRotateZYX", lmathMatrixRotateZYX );
 	lua_register( L, "RL_MatrixScale", lmathMatrixScale );
 	lua_register( L, "RL_MatrixFrustum", lmathMatrixFrustum );
 	lua_register( L, "RL_MatrixPerspective", lmathMatrixPerspective );

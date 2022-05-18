@@ -2,11 +2,8 @@ Current {
 }
 
 Backlog {
-	* Set reguirement for two arguments in Shader load functions.
-	* More and better examples
+	* More and better examples.
 
-	* Core
-		* Files drop
 	* Text
 		* More Font loading/unloading functions
 		* Codepoints

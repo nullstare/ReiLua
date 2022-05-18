@@ -13,7 +13,9 @@ function init()
 	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
 	RL_SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 	image = RL_GenImageColor( winSize[1], winSize[2], WHITE )
-	catImage = RL_LoadImage( RL_GetBasePath().."../resources/images/cat.png" )
+	-- Test changing working directory.
+	RL_ChangeDirectory( RL_GetBasePath().."../resources" )
+	catImage = RL_LoadImage( RL_GetWorkingDirectory().."/images/cat.png" )
 	RL_ImageClearBackground( image, { 150, 60, 100 } )
 	RL_ImageDrawPixel( image, { 32, 32 }, WHITE )
 	RL_ImageDrawLine( image, { 32, 45 }, { 100, 60 }, GREEN )
@@ -23,12 +25,10 @@ function init()
 	RL_ImageDraw( image, catImage, { 143, 25, 230, 250 }, { 200, 200, 230, 250 }, WHITE )
 	RL_ImageDrawTextEx( image, 0, "Hello", { 300, 32 }, 48.0, 1.0, WHITE )
 
-	-- catCopy = RL_ImageCopy( catImage )
 	local src = { 80, 70, 96, 96 }
 	catCopy = RL_ImageFromImage( catImage, src )
 
 	RL_ImageDraw( image, catCopy, src, { 600, 200, src[3], src[4] }, WHITE )
-	-- RL_ImageDraw( image, catCopy, src, src, WHITE )
 
 	textImage = RL_ImageText( 0, "Cat", 10, 4, WHITE )
 	local imageSize = RL_GetImageSize( textImage )

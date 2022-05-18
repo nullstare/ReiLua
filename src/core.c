@@ -849,29 +849,32 @@ int lcoreEndScissorMode( lua_State *L ) {
 /*
 > shader = RL_LoadShader( string vsFileName, string fsFileName )
 
-Load shader from files and bind default locations
+Load shader from files and bind default locations.
+NOTE: Set nil if no shader
 
 - Failure return -1
 - Success return int
 */
 int lcoreLoadShader( lua_State *L ) {
-	// if ( !lua_isstring( L, -2 ) || !lua_isstring( L, -1 ) ) {
-	// 	TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadShader( string vsFileName, string fsFileName )" );
-	// 	lua_pushinteger( L, -1 );
-	// 	return 1;
-	// }
-
-	char fsFileName[ STRING_LEN ] = { '\0' };
-	char vsFileName[ STRING_LEN ] = { '\0' };
-
-	if ( lua_isstring( L, -1 ) ) {
-		if ( FileExists( lua_tostring( L, -1 ) ) ) {
-			strcpy( fsFileName, lua_tostring( L, -1 ) );
-		}
+	if ( !( lua_isstring( L, -2 ) || lua_isnil( L, -2 ) ) || !( lua_isstring( L, -1 ) || lua_isnil( L, -1 ) ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadShader( string vsFileName, string fsFileName )" );
+		lua_pushinteger( L, -1 );
+		return 1;
 	}
+
+	char *vsFileName = NULL;
+	char *fsFileName = NULL;
+
 	if ( lua_isstring( L, -2 ) ) {
 		if ( FileExists( lua_tostring( L, -2 ) ) ) {
+			vsFileName = malloc( STRING_LEN * sizeof( char ) );
 			strcpy( vsFileName, lua_tostring( L, -2 ) );
+		}
+	}
+	if ( lua_isstring( L, -1 ) ) {
+		if ( FileExists( lua_tostring( L, -1 ) ) ) {
+			fsFileName = malloc( STRING_LEN * sizeof( char ) );
+			strcpy( fsFileName, lua_tostring( L, -1 ) );
 		}
 	}
 
@@ -883,11 +886,16 @@ int lcoreLoadShader( lua_State *L ) {
 		}
 	}
 	state->shaders[i] = malloc( sizeof( Shader ) );
-	// *state->shaders[i] = LoadShader( lua_tostring( L, -2 ), lua_tostring( L, -1 ) );
 	*state->shaders[i] = LoadShader( vsFileName, fsFileName );
-	// *state->shaders[i] = LoadShader( 0, fsFileName );
 	lua_pushinteger( L, i );
 	checkShaderRealloc( i );
+
+	if ( vsFileName != NULL ) {
+		free( vsFileName );
+	}
+	if ( fsFileName != NULL ) {
+		free( fsFileName );
+	}
 
 	return 1;
 }
@@ -896,26 +904,33 @@ int lcoreLoadShader( lua_State *L ) {
 > shader = RL_LoadShaderFromMemory( string vsCode, string fsCode )
 
 Load shader from code strings and bind default locations
+NOTE: Set nil if no shader
 
 - Failure return -1
 - Success return int
 */
 
 int lcoreLoadShaderFromMemory( lua_State *L ) {
-	// if ( !lua_isstring( L, -2 ) || !lua_isstring( L, -1 ) ) {
-	// 	TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadShaderFromMemory( string vsCode, string fsCode )" );
-	// 	lua_pushinteger( L, -1 );
-	// 	return 1;
-	// }
-
-	char fs[ STRING_LEN ] = { '\0' };
-	char vs[ STRING_LEN ] = { '\0' };
-
-	if ( lua_isstring( L, -1 ) ) {
-		strcpy( fs, lua_tostring( L, -1 ) );
+	if ( !( lua_isstring( L, -2 ) || lua_isnil( L, -2 ) ) || !( lua_isstring( L, -1 ) || lua_isnil( L, -1 ) ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadShaderFromMemory( string vsCode, string fsCode )" );
+		lua_pushinteger( L, -1 );
+		return 1;
 	}
+
+	char *vs = NULL;
+	char *fs = NULL;
+
 	if ( lua_isstring( L, -2 ) ) {
+		size_t vsLen = lua_rawlen( L, -2 );
+
+		vs = malloc( vsLen * sizeof( char ) );
 		strcpy( vs, lua_tostring( L, -2 ) );
+	}
+	if ( lua_isstring( L, -1 ) ) {
+		size_t fsLen = lua_rawlen( L, -1 );
+
+		fs = malloc( fsLen * sizeof( char ) );
+		strcpy( fs, lua_tostring( L, -1 ) );
 	}
 
 	int i = 0;
@@ -926,10 +941,16 @@ int lcoreLoadShaderFromMemory( lua_State *L ) {
 		}
 	}
 	state->shaders[i] = malloc( sizeof( Shader ) );
-	// *state->shaders[i] = LoadShaderFromMemory( lua_tostring( L, -2 ), lua_tostring( L, -1 ) );
 	*state->shaders[i] = LoadShaderFromMemory( vs, fs );
 	lua_pushinteger( L, i );
 	checkShaderRealloc( i );
+
+	if ( vs != NULL ) {
+		free( vs );
+	}
+	if ( fs != NULL ) {
+		free( fs );
+	}
 
 	return 1;
 }
@@ -1932,7 +1953,7 @@ int lcoreGetDirectoryPath( lua_State *L ) {
 }
 
 /*
-> filePath = RL_GetPrevDirectoryPath( string dirPath )
+> directory = RL_GetPrevDirectoryPath( string dirPath )
 
 Get previous directory path for a given path ( Uses static string )
 
@@ -1950,19 +1971,13 @@ int lcoreGetPrevDirectoryPath( lua_State *L ) {
 }
 
 /*
-> filePath = RL_GetWorkingDirectory()
+> directory = RL_GetWorkingDirectory()
 
 Get current working directory ( Uses static string )
 
-- Failure return false
 - Success return string
 */
 int lcoreGetWorkingDirectory( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetWorkingDirectory()" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
 	lua_pushstring( L, GetWorkingDirectory() );
 	return 1;
 }
@@ -1991,6 +2006,59 @@ int lcoreGetDirectoryFiles( lua_State *L ) {
     	lua_rawseti( L, -2, i+1 );
 	}
 	ClearDirectoryFiles();
+
+	return 1;
+}
+
+/*
+> success = RL_ChangeDirectory( string directory )
+
+Change working directory, return true on success
+
+- Failure return false
+- Success return true
+*/
+int lcoreChangeDirectory( lua_State *L ) {
+	if ( !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_ChangeDirectory( string directory )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	lua_pushboolean( L, ChangeDirectory( lua_tostring( L, -1 ) ) );
+	return 1;
+}
+
+/*
+> fileDropped = RL_IsFileDropped()
+
+Check if a file has been dropped into window
+
+- Success return bool
+*/
+int lcoreIsFileDropped( lua_State *L ) {
+	lua_pushboolean( L, IsFileDropped() );
+	return 1;
+}
+
+/*
+> files = RL_GetDroppedFiles()
+
+Get dropped files names
+
+- Success return string{}
+*/
+int lcoreGetDroppedFiles( lua_State *L ) {
+	int count = 0;
+	char **files = GetDroppedFiles( &count );
+
+	lua_createtable( L, count, 0 );
+
+	for ( int i = 0; i < count; ++i ) {
+		lua_pushstring( L, files[i] );
+		lua_rawseti( L, -2, i+1 );
+	}
+
+	ClearDroppedFiles();
 
 	return 1;
 }

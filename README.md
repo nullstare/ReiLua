@@ -15,7 +15,6 @@ ReiLua is currently in arbitrary version 0.1 and some planned raylib functionali
 List of some MISSING features that are planned to be included. For specific function, check API.
 
 * Core
-	* Files drop
 	* VR stereo config functions for VR simulator
 * Textures
 	* Texture update functions

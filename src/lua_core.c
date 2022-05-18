@@ -552,6 +552,9 @@ void luaRegister() {
 	lua_register( L, "RL_GetPrevDirectoryPath", lcoreGetPrevDirectoryPath );
 	lua_register( L, "RL_GetWorkingDirectory", lcoreGetWorkingDirectory );
 	lua_register( L, "RL_GetDirectoryFiles", lcoreGetDirectoryFiles );
+	lua_register( L, "RL_ChangeDirectory", lcoreChangeDirectory );
+	lua_register( L, "RL_IsFileDropped", lcoreIsFileDropped );
+	lua_register( L, "RL_GetDroppedFiles", lcoreGetDroppedFiles );
 	lua_register( L, "RL_GetFileModTime", lcoreGetFileModTime );
 		/* Camera3D. */
 	lua_register( L, "RL_CreateCamera2D", lcoreCreateCamera2D );

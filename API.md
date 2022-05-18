@@ -1120,7 +1120,8 @@ End scissor mode
 
 > shader = RL_LoadShader( string vsFileName, string fsFileName )
 
-Load shader from files and bind default locations
+Load shader from files and bind default locations.
+NOTE: Set nil if no shader
 
 - Failure return -1
 - Success return int
@@ -1130,6 +1131,7 @@ Load shader from files and bind default locations
 > shader = RL_LoadShaderFromMemory( string vsCode, string fsCode )
 
 Load shader from code strings and bind default locations
+NOTE: Set nil if no shader
 
 - Failure return -1
 - Success return int
@@ -1577,7 +1579,7 @@ Get full path for a given fileName with path ( Uses static string )
 
 ---
 
-> filePath = RL_GetPrevDirectoryPath( string dirPath )
+> directory = RL_GetPrevDirectoryPath( string dirPath )
 
 Get previous directory path for a given path ( Uses static string )
 
@@ -1586,11 +1588,10 @@ Get previous directory path for a given path ( Uses static string )
 
 ---
 
-> filePath = RL_GetWorkingDirectory()
+> directory = RL_GetWorkingDirectory()
 
 Get current working directory ( Uses static string )
 
-- Failure return false
 - Success return string
 
 ---
@@ -1600,6 +1601,31 @@ Get current working directory ( Uses static string )
 Get filenames in a directory path
 
 - Failure return false
+- Success return string{}
+
+---
+
+> success = RL_ChangeDirectory( string directory )
+
+Change working directory, return true on success
+
+- Failure return false
+- Success return true
+
+---
+
+> fileDropped = RL_IsFileDropped()
+
+Check if a file has been dropped into window
+
+- Success return bool
+
+---
+
+> files = RL_GetDroppedFiles()
+
+Get dropped files names
+
 - Success return string{}
 
 ---

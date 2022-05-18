@@ -81,6 +81,9 @@ int lcoreGetDirectoryPath( lua_State *L );
 int lcoreGetPrevDirectoryPath( lua_State *L );
 int lcoreGetWorkingDirectory( lua_State *L );
 int lcoreGetDirectoryFiles( lua_State *L );
+int lcoreChangeDirectory( lua_State *L );
+int lcoreIsFileDropped( lua_State *L );
+int lcoreGetDroppedFiles( lua_State *L );
 int lcoreGetFileModTime( lua_State *L );
 /* Camera2D. */
 int lcoreCreateCamera2D( lua_State *L );

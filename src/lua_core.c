@@ -888,6 +888,29 @@ void luaRegister() {
 	lua_register( L, "RL_MatrixPerspective", lmathMatrixPerspective );
 	lua_register( L, "RL_MatrixOrtho", lmathMatrixOrtho );
 	lua_register( L, "RL_MatrixLookAt", lmathMatrixLookAt );
+		/* Quaternion. */
+	lua_register( L, "RL_QuaternionAdd", lmathQuaternionAdd );
+	lua_register( L, "RL_QuaternionAddValue", lmathQuaternionAddValue );
+	lua_register( L, "RL_QuaternionSubtract", lmathQuaternionSubtract );
+	lua_register( L, "RL_QuaternionSubtractValue", lmathQuaternionSubtractValue );
+	lua_register( L, "RL_QuaternionIdentity", lmathQuaternionIdentity );
+	lua_register( L, "RL_QuaternionLength", lmathQuaternionLength );
+	lua_register( L, "RL_QuaternionNormalize", lmathQuaternionNormalize );
+	lua_register( L, "RL_QuaternionInvert", lmathQuaternionInvert );
+	lua_register( L, "RL_QuaternionMultiply", lmathQuaternionMultiply );
+	lua_register( L, "RL_QuaternionScale", lmathQuaternionScale );
+	lua_register( L, "RL_QuaternionDivide", lmathQuaternionDivide );
+	lua_register( L, "RL_QuaternionLerp", lmathQuaternionLerp );
+	lua_register( L, "RL_QuaternionNlerp", lmathQuaternionNlerp );
+	lua_register( L, "RL_QuaternionSlerp", lmathQuaternionSlerp );
+	lua_register( L, "RL_QuaternionFromVector3ToVector3", lmathQuaternionFromVector3ToVector3 );
+	lua_register( L, "RL_QuaternionFromMatrix", lmathQuaternionFromMatrix );
+	lua_register( L, "RL_QuaternionToMatrix", lmathQuaternionToMatrix );
+	lua_register( L, "RL_QuaternionFromAxisAngle", lmathQuaternionFromAxisAngle );
+	lua_register( L, "RL_QuaternionToAxisAngle", lmathQuaternionToAxisAngle );
+	lua_register( L, "RL_QuaternionFromEuler", lmathQuaternionFromEuler );
+	lua_register( L, "RL_QuaternionToEuler", lmathQuaternionToEuler );
+	lua_register( L, "RL_QuaternionTransform", lmathQuaternionTransform );
 
 	/* Gui. */
 		/* Global. */
@@ -1343,6 +1366,18 @@ void uluaPushRectangle( lua_State *L, Rectangle rect ) {
     lua_pushnumber( L, rect.width );
     lua_rawseti( L, -2, 3 );
     lua_pushnumber( L, rect.height );
+    lua_rawseti( L, -2, 4 );
+}
+
+void uluaPushQuaternion( lua_State *L, Quaternion quaternion ) {
+	lua_createtable( L, 4, 0 );
+    lua_pushnumber( L, quaternion.x );
+    lua_rawseti( L, -2, 1 );
+    lua_pushnumber( L, quaternion.y );
+    lua_rawseti( L, -2, 2 );
+    lua_pushnumber( L, quaternion.z );
+    lua_rawseti( L, -2, 3 );
+    lua_pushnumber( L, quaternion.w );
     lua_rawseti( L, -2, 4 );
 }
 

@@ -976,3 +976,503 @@ int lmathMatrixLookAt( lua_State *L ) {
 
 	return 1;
 }
+
+/*
+## Math - Quaternion
+*/
+
+/*
+> result = RL_QuaternionAdd( Quaternion q1, Quaternion q2 )
+
+Add two quaternions
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionAdd( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionAdd( Quaternion q1, Quaternion q2 )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Quaternion q2 = uluaGetQuaternion( L );
+	lua_pop( L, 1 );
+	Quaternion q1 = uluaGetQuaternion( L );
+
+	uluaPushQuaternion( L, QuaternionAdd( q1, q2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionAddValue( Quaternion q, float add )
+
+Add quaternion and float value
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionAddValue( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionAddValue( Quaternion q, float add )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float add = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Quaternion q = uluaGetQuaternion( L );
+
+	uluaPushQuaternion( L, QuaternionAddValue( q, add ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionSubtract( Quaternion q1, Quaternion q2 )
+
+Subtract two quaternions
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionSubtract( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionSubtract( Quaternion q1, Quaternion q2 )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Quaternion q2 = uluaGetQuaternion( L );
+	lua_pop( L, 1 );
+	Quaternion q1 = uluaGetQuaternion( L );
+
+	uluaPushQuaternion( L, QuaternionSubtract( q1, q2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionSubtractValue( Quaternion q, float sub )
+
+Subtract quaternion and float value
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionSubtractValue( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionSubtractValue( Quaternion q, float sub )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float sub = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Quaternion q = uluaGetQuaternion( L );
+
+	uluaPushQuaternion( L, QuaternionSubtractValue( q, sub ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionIdentity()
+
+Get identity quaternion
+
+- Success return Quaternion
+*/
+int lmathQuaternionIdentity( lua_State *L ) {
+	uluaPushQuaternion( L, QuaternionIdentity() );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionLength( Quaternion q )
+
+Computes the length of a quaternion
+
+- Failure return false
+- Success return float
+*/
+int lmathQuaternionLength( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionLength( Quaternion q )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Quaternion q = uluaGetQuaternion( L );
+
+	lua_pushnumber( L, QuaternionLength( q ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionNormalize( Quaternion q )
+
+Normalize provided quaternion
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionNormalize( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionNormalize( Quaternion q )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Quaternion q = uluaGetQuaternion( L );
+
+	uluaPushQuaternion( L, QuaternionNormalize( q ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionInvert( Quaternion q )
+
+Invert provided quaternion
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionInvert( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionInvert( Quaternion q )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Quaternion q = uluaGetQuaternion( L );
+
+	uluaPushQuaternion( L, QuaternionInvert( q ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionMultiply( Quaternion q1, Quaternion q2 )
+
+Calculate two quaternion multiplication
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionMultiply( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionMultiply( Quaternion q1, Quaternion q2 )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Quaternion q2 = uluaGetQuaternion( L );
+	lua_pop( L, 1 );
+	Quaternion q1 = uluaGetQuaternion( L );
+
+	uluaPushQuaternion( L, QuaternionMultiply( q1, q2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionScale( Quaternion q, float mul )
+
+Scale quaternion by float value
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionScale( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionScale( Quaternion q, float mul )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float mul = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Quaternion q = uluaGetQuaternion( L );
+
+	uluaPushQuaternion( L, QuaternionScale( q, mul ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionDivide( Quaternion q1, Quaternion q2 )
+
+Divide two quaternions
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionDivide( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionDivide( Quaternion q1, Quaternion q2 )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Quaternion q2 = uluaGetQuaternion( L );
+	lua_pop( L, 1 );
+	Quaternion q1 = uluaGetQuaternion( L );
+
+	uluaPushQuaternion( L, QuaternionDivide( q1, q2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionLerp( Quaternion q1, Quaternion q2, float amount )
+
+Calculate linear interpolation between two quaternions
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionLerp( lua_State *L ) {
+	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionLerp( Quaternion q1, Quaternion q2, float amount )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float amount = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Quaternion q2 = uluaGetQuaternion( L );
+	lua_pop( L, 1 );
+	Quaternion q1 = uluaGetQuaternion( L );
+
+	uluaPushQuaternion( L, QuaternionLerp( q1, q2, amount ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionNlerp( Quaternion q1, Quaternion q2, float amount )
+
+Calculate slerp-optimized interpolation between two quaternions
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionNlerp( lua_State *L ) {
+	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionNlerp( Quaternion q1, Quaternion q2, float amount )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float amount = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Quaternion q2 = uluaGetQuaternion( L );
+	lua_pop( L, 1 );
+	Quaternion q1 = uluaGetQuaternion( L );
+
+	uluaPushQuaternion( L, QuaternionNlerp( q1, q2, amount ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionSlerp( Quaternion q1, Quaternion q2, float amount )
+
+Calculates spherical linear interpolation between two quaternions
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionSlerp( lua_State *L ) {
+	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionSlerp( Quaternion q1, Quaternion q2, float amount )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float amount = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Quaternion q2 = uluaGetQuaternion( L );
+	lua_pop( L, 1 );
+	Quaternion q1 = uluaGetQuaternion( L );
+
+	uluaPushQuaternion( L, QuaternionSlerp( q1, q2, amount ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionFromVector3ToVector3( Vector3 from, Vector3 to )
+
+Calculate quaternion based on the rotation from one vector to another
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionFromVector3ToVector3( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionFromVector3ToVector3( Vector3 from, Vector3 to )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 to = uluaGetVector3( L );
+	lua_pop( L, 1 );
+	Vector3 from = uluaGetVector3( L );
+
+	uluaPushQuaternion( L, QuaternionFromVector3ToVector3( from, to ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionFromMatrix( Matrix mat )
+
+Get a quaternion for a given rotation matrix
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionFromMatrix( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionFromMatrix( Matrix mat )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Matrix mat = uluaGetMatrix( L );
+
+	uluaPushQuaternion( L, QuaternionFromMatrix( mat ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionToMatrix( Quaternion q )
+
+Get a quaternion for a given rotation matrix
+
+- Failure return false
+- Success return Matrix
+*/
+int lmathQuaternionToMatrix( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionToMatrix( Quaternion q )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Quaternion q = uluaGetQuaternion( L );
+
+	uluaPushMatrix( L, QuaternionToMatrix( q ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionFromAxisAngle( Vector3 axis, float angle )
+
+Get rotation quaternion for an angle and axis
+NOTE: angle must be provided in radians
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionFromAxisAngle( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionFromAxisAngle( Vector3 axis, float angle )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float angle = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Vector3 axis = uluaGetVector3( L );
+
+	uluaPushQuaternion( L, QuaternionFromAxisAngle( axis, angle ) );
+
+	return 1;
+}
+
+/*
+> axis, angle = RL_QuaternionToAxisAngle( Quaternion q )
+
+Get the rotation angle and axis for a given quaternion
+
+- Failure return false
+- Success return Vector3, float
+*/
+int lmathQuaternionToAxisAngle( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionToAxisAngle( Quaternion q )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Quaternion q = uluaGetQuaternion( L );
+	float angle = 0.0;
+	Vector3 axis = { 0.0 };
+
+	QuaternionToAxisAngle( q, &axis, &angle );
+
+	uluaPushVector3( L, axis );
+	lua_pushnumber( L, angle );
+
+	return 2;
+}
+
+/*
+> result = RL_QuaternionFromEuler( float pitch, float yaw, float roll )
+
+Get the quaternion equivalent to Euler angles
+NOTE: Rotation order is ZYX
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionFromEuler( lua_State *L ) {
+	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionFromEuler( float pitch, float yaw, float roll )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float roll = lua_tonumber( L, -1 );
+	float yaw = lua_tonumber( L, -2 );
+	float pitch = lua_tonumber( L, -3 );
+
+	uluaPushQuaternion( L, QuaternionFromEuler( pitch, yaw, roll ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionToEuler( Quaternion q )
+
+Get the Euler angles equivalent to quaternion (roll, pitch, yaw)
+NOTE: Angles are returned in a Vector3 struct in radians
+
+- Failure return false
+- Success return Vector3
+*/
+int lmathQuaternionToEuler( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionToEuler( Quaternion q )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Quaternion q = uluaGetQuaternion( L );
+
+	uluaPushVector3( L, QuaternionToEuler( q ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionTransform( Quaternion q, Matrix mat )
+
+Transform a quaternion given a transformation matrix
+
+- Failure return false
+- Success return Quaternion
+*/
+int lmathQuaternionTransform( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionTransform( Quaternion q, Matrix mat )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Matrix mat = uluaGetMatrix( L );
+	lua_pop( L, 1 );
+	Quaternion q = uluaGetQuaternion( L );
+
+	uluaPushQuaternion( L, QuaternionTransform( q, mat ) );
+
+	return 1;
+}

@@ -4071,6 +4071,210 @@ Get camera look-at matrix ( View matrix )
 
 ---
 
+## Math - Quaternion
+
+---
+
+> result = RL_QuaternionAdd( Quaternion q1, Quaternion q2 )
+
+Add two quaternions
+
+- Failure return false
+- Success return Quaternion
+
+---
+
+> result = RL_QuaternionAddValue( Quaternion q, float add )
+
+Add quaternion and float value
+
+- Failure return false
+- Success return Quaternion
+
+---
+
+> result = RL_QuaternionSubtract( Quaternion q1, Quaternion q2 )
+
+Subtract two quaternions
+
+- Failure return false
+- Success return Quaternion
+
+---
+
+> result = RL_QuaternionSubtractValue( Quaternion q, float sub )
+
+Subtract quaternion and float value
+
+- Failure return false
+- Success return Quaternion
+
+---
+
+> result = RL_QuaternionIdentity()
+
+Get identity quaternion
+
+- Success return Quaternion
+
+---
+
+> result = RL_QuaternionLength( Quaternion q )
+
+Computes the length of a quaternion
+
+- Failure return false
+- Success return float
+
+---
+
+> result = RL_QuaternionNormalize( Quaternion q )
+
+Normalize provided quaternion
+
+- Failure return false
+- Success return Quaternion
+
+---
+
+> result = RL_QuaternionInvert( Quaternion q )
+
+Invert provided quaternion
+
+- Failure return false
+- Success return Quaternion
+
+---
+
+> result = RL_QuaternionMultiply( Quaternion q1, Quaternion q2 )
+
+Calculate two quaternion multiplication
+
+- Failure return false
+- Success return Quaternion
+
+---
+
+> result = RL_QuaternionScale( Quaternion q, float mul )
+
+Scale quaternion by float value
+
+- Failure return false
+- Success return Quaternion
+
+---
+
+> result = RL_QuaternionDivide( Quaternion q1, Quaternion q2 )
+
+Divide two quaternions
+
+- Failure return false
+- Success return Quaternion
+
+---
+
+> result = RL_QuaternionLerp( Quaternion q1, Quaternion q2, float amount )
+
+Calculate linear interpolation between two quaternions
+
+- Failure return false
+- Success return Quaternion
+
+---
+
+> result = RL_QuaternionNlerp( Quaternion q1, Quaternion q2, float amount )
+
+Calculate slerp-optimized interpolation between two quaternions
+
+- Failure return false
+- Success return Quaternion
+
+---
+
+> result = RL_QuaternionSlerp( Quaternion q1, Quaternion q2, float amount )
+
+Calculates spherical linear interpolation between two quaternions
+
+- Failure return false
+- Success return Quaternion
+
+---
+
+> result = RL_QuaternionFromVector3ToVector3( Vector3 from, Vector3 to )
+
+Calculate quaternion based on the rotation from one vector to another
+
+- Failure return false
+- Success return Quaternion
+
+---
+
+> result = RL_QuaternionFromMatrix( Matrix mat )
+
+Get a quaternion for a given rotation matrix
+
+- Failure return false
+- Success return Quaternion
+
+---
+
+> result = RL_QuaternionToMatrix( Quaternion q )
+
+Get a quaternion for a given rotation matrix
+
+- Failure return false
+- Success return Matrix
+
+---
+
+> result = RL_QuaternionFromAxisAngle( Vector3 axis, float angle )
+
+Get rotation quaternion for an angle and axis
+NOTE: angle must be provided in radians
+
+- Failure return false
+- Success return Quaternion
+
+---
+
+> axis, angle = RL_QuaternionToAxisAngle( Quaternion q )
+
+Get the rotation angle and axis for a given quaternion
+
+- Failure return false
+- Success return Vector3, float
+
+---
+
+> result = RL_QuaternionFromEuler( float pitch, float yaw, float roll )
+
+Get the quaternion equivalent to Euler angles
+NOTE: Rotation order is ZYX
+
+- Failure return false
+- Success return Quaternion
+
+---
+
+> result = RL_QuaternionToEuler( Quaternion q )
+
+Get the Euler angles equivalent to quaternion (roll, pitch, yaw)
+NOTE: Angles are returned in a Vector3 struct in radians
+
+- Failure return false
+- Success return Vector3
+
+---
+
+> result = RL_QuaternionTransform( Quaternion q, Matrix mat )
+
+Transform a quaternion given a transformation matrix
+
+- Failure return false
+- Success return Quaternion
+
+---
+
 ## Gui - Global
 
 ---

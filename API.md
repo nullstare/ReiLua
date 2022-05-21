@@ -3412,7 +3412,7 @@ Copies material to model material. ( Model material is the material id in models
 
 ---
 
-> success = RL_SetModelMaterial( Model model, Material modelMaterial, Material material )
+> success = RL_SetModelMeshMaterial( Model model, int meshId, int materialId )
 
 Set material for a mesh ( Mesh and material on this model )
 

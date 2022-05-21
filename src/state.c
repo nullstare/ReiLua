@@ -186,11 +186,13 @@ void stateFree() {
 			free( state->shaders[i] );
 		}
 	}
+#if !defined(PLATFORM_RPI) || !defined(PLATFORM_DRM)
 	for ( int i = 0; i < state->lightCount; ++i ) {
 		if ( state->lights[i] != NULL ) {
 			free( state->lights[i] );
 		}
 	}
+#endif
 
 	if ( IsAudioDeviceReady() ) {
 		CloseAudioDevice();

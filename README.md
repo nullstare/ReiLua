@@ -10,7 +10,7 @@ Reilua means fair in finnish.
 
 ## Status
 
-ReiLua is currently in version 0.2 and some planned raylib functionality is still missing but it already has over 400 functions.
+ReiLua is WIP and some planned raylib functionality is still missing but it already has over 400 functions. Current Raylib version 4.0.0.
 
 List of some MISSING features that are planned to be included. For specific function, check API.
 
@@ -75,9 +75,7 @@ Application should now start successfully from executable. All functionality can
 
 ## Building
 
-I think the simplest way would be to statically link Raylib and Lua to the same executable. Specially on Linux this would simplify distribution of games since different distros tend to use different versions of librarys. Of course if you plan to only experiment with it, this isn't so important. At the time of writing ReiLua uses latest Raylib version from master branch. If you use Raylib v4.0.0 release, you will get a lot of undefined reference errors.
-
-//TODO In future these instructions should be set on fixed release versions of Raylib.
+I think the simplest way would be to statically link Raylib and Lua to the same executable. Specially on Linux this would simplify distribution of games since different distros tend to use different versions of librarys. Of course if you plan to only experiment with it, this isn't so important. Current Raylib version 4.0.0.
 
 https://github.com/raysan5/raylib
 
@@ -152,7 +150,11 @@ Not tested, but I guess it should work similarly to Linux.
 
 ### Raspberry Pi
 
-Works best when compiled using PLATFORM=DRM, but Raylib seems to have some problems with the input handling.
+Works best when Raylib is compiled using PLATFORM=DRM. See Raylib build instructions for Raspberry Pi.
+Compile ReiLua with.
+```
+cmake .. -DDRM=ON
+```
 
 ### Web
 

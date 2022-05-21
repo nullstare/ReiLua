@@ -1808,7 +1808,7 @@ int lmodelsSetModelMaterial( lua_State *L ) {
 
 	/* Copy material data instead of using pointer. Pointer would result in double free error. */
 	model->materials[ modelMaterialId ].shader = material->shader;
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_DIFFUSE ] = material->maps[ MATERIAL_MAP_DIFFUSE ];
+	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_ALBEDO ] = material->maps[ MATERIAL_MAP_ALBEDO ];
 	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_METALNESS ] = material->maps[ MATERIAL_MAP_METALNESS ];
 	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_NORMAL ] = material->maps[ MATERIAL_MAP_NORMAL ];
 	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_ROUGHNESS ] = material->maps[ MATERIAL_MAP_ROUGHNESS ];
@@ -1829,7 +1829,7 @@ int lmodelsSetModelMaterial( lua_State *L ) {
 }
 
 /*
-> success = RL_SetModelMaterial( Model model, Material modelMaterial, Material material )
+> success = RL_SetModelMeshMaterial( Model model, int meshId, int materialId )
 
 Set material for a mesh ( Mesh and material on this model )
 
@@ -2245,7 +2245,7 @@ int lmodelsGetRayCollisionModel( lua_State *L ) {
 		lua_pushnil( L );
 		return 1;
 	}
-	uluaPushRayCollision( L, GetRayCollisionModel( ray, *state->models[ modelId ] ) );
+	// uluaPushRayCollision( L, GetRayCollisionModel( ray, *state->models[ modelId ] ) );
 
 	return 1;
 }

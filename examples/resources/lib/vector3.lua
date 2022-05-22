@@ -43,6 +43,10 @@ Vector3.meta = {
 }
 
 function Vector3:new( x, y, z )
+	if type( x ) == "table" then
+		x, y, z = table.unpack( x )
+	end
+
     local o = {
 		x = x,
 		y = y,
@@ -52,14 +56,22 @@ function Vector3:new( x, y, z )
     return o
 end
 
-function Vector3:set( vec )
-	self.x = vec[1]
-	self.y = vec[2]
-	self.z = vec[3]
+function Vector3:set( x, y, z )
+	if type( x ) == "table" then
+		x, y, z = table.unpack( x )
+	end
+
+	self.x = x
+	self.y = y
+	self.z = z
 end
 
 function Vector3:arr()
 	return { self.x, self.y, self.z }
+end
+
+function Vector3:unpack()
+	return self.x, self.y, self.z
 end
 
 function Vector3:clone()
@@ -70,60 +82,81 @@ function Vector3:abs()
 	return Vector3:new( math.abs( self.x ), math.abs( self.y ), math.abs( self.z ) )
 end
 
+function Vector3:min( v2 )
+	return Vector3:new( RL_Vector3Min( self, v2 ) )
+end
+
+function Vector3:max( v2 )
+	return Vector3:new( RL_Vector3Max( self, v2 ) )
+end
+
+function Vector3:addValue( value )
+	return Vector3:new( RL_Vector3AddValue( self, value ) )
+end
+
+function Vector3:subValue( value )
+	return Vector3:new( RL_Vector3SubtractValue( self, value ) )
+end
+
+function Vector3:scale( scalar )
+	return Vector3:new( RL_Vector3Scale( self, scalar ) )
+end
+
 function Vector3:cross( v2 )
-	local r = RL_Vector3CrossProduct( self:arr(), v2:arr() )
-	return Vector3:new( r[1], r[2], r[3] )
+	return Vector3:new( RL_Vector3CrossProduct( self, v2 ) )
 end
 
 function Vector3:perpendicular()
-	local r = RL_Vector3Perpendicular( self:arr() )
-	return Vector3:new( r[1], r[2], r[3] )
+	return Vector3:new( RL_Vector3Perpendicular( self ) )
 end
 
 function Vector3:length()
-	return RL_Vector3Length( self:arr() )
+	return RL_Vector3Length( self )
 end
 
 function Vector3:lengthSqr()
-	return RL_Vector3LengthSqr( self:arr() )
+	return RL_Vector3LengthSqr( self )
 end
 
 function Vector3:dot( v2 )
-	return RL_Vector3DotProduct( self:arr(), v2:arr() )
+	return RL_Vector3DotProduct( self, v2 )
 end
 
 function Vector3:distance( v2 )
-	return RL_Vector3Distance( self:arr(), v2:arr() )
+	return RL_Vector3Distance( self, v2 )
+end
+
+function Vector3:angle( v2 )
+	return RL_Vector3Angle( self, v2 )
+end
+
+function Vector3:negate()
+	return Vector3:new( RL_Vector3Negate( self ) )
 end
 
 function Vector3:normalize()
-	local r = RL_Vector3Normalize( self:arr() )
-	return Vector3:new( r[1], r[2], r[3] )
+	return Vector3:new( RL_Vector3Normalize( self ) )
 end
 
 function Vector3:orthoNormalize( v2 )
-	local r1, r2 = RL_Vector3OrthoNormalize( self:arr(), v2:arr() )
+	local r1, r2 = RL_Vector3OrthoNormalize( self, v2 )
 	return Vector3:new( r1[1], r1[2], r1[3] ), Vector3:new( r2[1], r2[2], r2[3] )
 end
 
 function Vector3:transform( mat )
-	local r = RL_Vector3Transform( self:arr(), mat )
-	return Vector3:new( r[1], r[2], r[3] )
+	return Vector3:new( RL_Vector3Transform( self, mat ) )
 end
 
-function Vector3:rotateByQuaternion( qua )
-	local r = RL_Vector3RotateByQuaternion( self:arr(), qua )
-	return Vector3:new( r[1], r[2], r[3] )
+function Vector3:rotateByQuaternion( q )
+	return Vector3:new( RL_Vector3RotateByQuaternion( self, q ) )
 end
 
 function Vector3:lerp( v2, value )
-	local r = RL_Vector3Lerp( self:arr(), v2:arr(), value )
-	return Vector3:new( r[1], r[2], r[3] )
+	return Vector3:new( RL_Vector3Lerp( self, v2, value ) )
 end
 
 function Vector3:reflect( normal )
-	local r = RL_Vector3Reflect( self:arr(), normal:arr() )
-	return Vector3:new( r[1], r[2], r[3] )
+	return Vector3:new( RL_Vector3Reflect( self, normal ) )
 end
 
 return Vector3

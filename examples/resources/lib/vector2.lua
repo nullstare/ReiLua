@@ -43,6 +43,10 @@ Vector2.meta = {
 }
 
 function Vector2:new( x, y )
+	if type( x ) == "table" then
+		x, y = table.unpack( x )
+	end
+
     local o = {
 		x = x,
 		y = y,
@@ -51,13 +55,21 @@ function Vector2:new( x, y )
     return o
 end
 
-function Vector2:set( vec )
-	self.x = vec[1]
-	self.y = vec[2]
+function Vector2:set( x, y )
+	if type( x ) == "table" then
+		x, y = table.unpack( x )
+	end
+
+	self.x = x
+	self.y = y
 end
 
 function Vector2:arr()
 	return { self.x, self.y }
+end
+
+function Vector2:unpack()
+	return self.x, self.y
 end
 
 function Vector2:clone()
@@ -68,45 +80,64 @@ function Vector2:abs()
 	return Vector2:new( math.abs( self.x ), math.abs( self.y ) )
 end
 
+function Vector2:min( v2 )
+	return Vector2:new( math.min( self.x, v2.x ), math.min( self.y, v2.y ) )
+end
+
+function Vector2:max( v2 )
+	return Vector2:new( math.max( self.x, v2.x ), math.max( self.y, v2.y ) )
+end
+
+function Vector2:addValue( value )
+	return Vector2:new( RL_Vector2AddValue( self, value ) )
+end
+
+function Vector2:subValue( value )
+	return Vector2:new( RL_Vector2SubtractValue( self, value ) )
+end
+
 function Vector2:length()
-	return RL_Vector2Length( self:arr() )
+	return RL_Vector2Length( self )
+end
+
+function Vector2:lengthSqr()
+	return RL_Vector2LengthSqr( self )
 end
 
 function Vector2:dot( v2 )
-	return RL_Vector2DotProduct( self:arr(), v2:arr() )
+	return RL_Vector2DotProduct( self, v2 )
 end
 
 function Vector2:distance( v2 )
-	return RL_Vector2Distance( self:arr(), v2:arr() )
+	return RL_Vector2Distance( self, v2 )
 end
 
 function Vector2:angle( v2 )
-	return RL_Vector2Angle( self:arr(), v2:arr() )
+	return RL_Vector2Angle( self, v2 )
+end
+
+function Vector2:scale( scale )
+	return Vector2:new( RL_Vector2Scale( self, scale ) )
 end
 
 function Vector2:normalize()
-	local r = RL_Vector2Normalize( self:arr() )
-	return Vector2:new( r[1], r[2] )
+	return Vector2:new( RL_Vector2Normalize( self ) )
 end
 
 function Vector2:lerp( v2, value )
-	local r = RL_Vector2Lerp( self:arr(), v2:arr(), value )
-	return Vector2:new( r[1], r[2] )
+	return Vector2:new( RL_Vector2Lerp( self, v2, value ) )
 end
 
 function Vector2:reflect( normal )
-	local r = RL_Vector2Reflect( self:arr(), normal:arr() )
-	return Vector2:new( r[1], r[2] )
+	return Vector2:new( RL_Vector2Reflect( self, normal ) )
 end
 
 function Vector2:rotate( angle )
-	local r = RL_Vector2Rotate( self:arr(), angle )
-	return Vector2:new( r[1], r[2] )
+	return Vector2:new( RL_Vector2Rotate( self, angle ) )
 end
 
 function Vector2:moveTowards( target, maxDistance )
-	local r = RL_Vector2MoveTowards( self:arr(), target:arr(), maxDistance )
-	return Vector2:new( r[1], r[2] )
+	return Vector2:new( RL_Vector2MoveTowards( self, target, maxDistance ) )
 end
 
 return Vector2

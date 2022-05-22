@@ -563,25 +563,25 @@ Raylib structs in Lua
 
 ---
 
-> Vector2 = { 1.0, 1.0 }
+> Vector2 = { 1.0, 1.0 } or { x = 1.0, y = 1.0 }
 
 Vector2 type
 
 ---
 
-> Vector3 = { 1.0, 1.0, 1.0 }
+> Vector3 = { 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0 }
 
 Vector3 type
 
 ---
 
-> Vector4 = { 1.0, 1.0, 1.0, 1.0 }
+> Vector4 = { 1.0, 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0, w = 1.0 }
 
 Vector4 type
 
 ---
 
-> Quaternion = { 1.0, 1.0, 1.0, 1.0 }
+> Quaternion = { 1.0, 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0, w = 1.0 }
 
 Quaternion type
 
@@ -593,13 +593,13 @@ OpenGL style 4x4. Identity matrix example
 
 ---
 
-> Color = { 255, 255, 255, 255 }
+> Color = { 255, 255, 255, 255 } or { r = 255, g = 255, b = 255, a = 255 }
 
 { r, g, b ,a }. Color type, RGBA (32bit)
 
 ---
 
-> Rectangle = { 0.0, 0.0, 1.0, 1.0 }
+> Rectangle = { 0.0, 0.0, 1.0, 1.0 } or { x = 0.0, y = 0.0, width = 1.0, height = 1.0 }
 
 { x, y, w ,h }. Rectangle type
 
@@ -683,7 +683,7 @@ int id. Basic 3d Model type
 
 ---
 
-> Ray = { { 0.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0 } }
+> Ray = { { 0.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0 } } or { position = { 0.0, 0.0, 0.0 }, direction = { 1.0, 0.0, 0.0 } }
 
 { position, direction }. Ray type (useful for raycast)
 
@@ -707,7 +707,7 @@ int id. Basic Sound source and buffer
 
 ---
 
-> NPatchInfo = { { 0, 0, 24, 24 }, 0, 0, 0, 0, NPATCH_NINE_PATCH }
+> NPatchInfo = { { 0, 0, 24, 24 }, 0, 0, 0, 0, NPATCH_NINE_PATCH } or { source = { 0, 0, 24, 24 }, left = 0, top = 0, right = 0, bottom = 0, layout = NPATCH_NINE_PATCH }
 
 { Rectangle source, int left, int top, int right, int bottom, int layout }.
 { Texture source rectangle, Left border offset, Top border offset, Right border offset, Bottom border offset, Layout of the n-patch: 3x3, 1x3 or 3x1 }

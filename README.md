@@ -2,7 +2,7 @@
 
 Idea of this project was to bring the power and simplicity of raylib to easy beginner friendly language like Lua in a very straight forward manner. It is loose binding to Raylib, some functions will not be included and some are added. The idea of pointing "main.lua" file and access functions "init", "process" and "draw" are borrowed from Löve game engine.
 
-Need for boilerplate code is minimal and in true Lua fashion (in better and worse) you don't need to worry about types since all Raylib types are just lua tables and object id's. Also what Lua cannot handle, the engine is simple enough to be fairly easily extended with new functionality or by using Lua C-libraries.
+Need for boilerplate code is minimal and in true Lua fashion (in better and worse) you don't need to worry about strict type rules since all Raylib types are lua tables or object id's. Also what Lua cannot handle, the engine is simple enough to be fairly easily extended with new functionality or by using Lua C-libraries.
 
 ReiLua is not planned to be a one-to-one binding to raylib. If you want more direct bindings, there are other projects like https://github.com/TSnake41/raylib-lua.
 
@@ -10,7 +10,7 @@ Reilua means fair in finnish.
 
 ## Status
 
-ReiLua is WIP and some planned raylib functionality is still missing but it already has over 400 functions. Current Raylib version 4.0.0.
+ReiLua is WIP and some planned raylib functionality is still missing but it already has over 400 functions and should include all functions to make most 2d and 3d games. Current Raylib version 4.0.0.
 
 List of some MISSING features that are planned to be included. For specific function, check API.
 

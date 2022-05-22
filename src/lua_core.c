@@ -1022,27 +1022,43 @@ Color uluaGetColor( lua_State *L ) {
 	int t = lua_gettop( L ), i = 0;
     lua_pushnil( L );
 
-    while ( lua_next( L, t ) != 0 ) {
-        if ( lua_isnumber( L, -1 ) ) {
-            switch ( i ) {
-                case 0:
-                    color.r = (uint8_t)lua_tointeger( L, -1 );
-                    break;
-                case 1:
-                    color.g = (uint8_t)lua_tointeger( L, -1 );
-                    break;
-                case 2:
-                    color.b = (uint8_t)lua_tointeger( L, -1 );
-                    break;
-                case 3:
-                    color.a = (uint8_t)lua_tointeger( L, -1 );
-                    break;
-                default:
-                    break;
-            }
-        }
-        i++;
-        lua_pop( L, 1 );
+	while ( lua_next( L, t ) != 0 ) {
+		if ( lua_isnumber( L, -1 ) ) {
+			if ( lua_isnumber( L, -2 ) ) {
+				switch ( i ) {
+					case 0:
+						color.r = (uint8_t)lua_tointeger( L, -1 );
+						break;
+					case 1:
+						color.g = (uint8_t)lua_tointeger( L, -1 );
+						break;
+					case 2:
+						color.b = (uint8_t)lua_tointeger( L, -1 );
+						break;
+					case 3:
+						color.a = (uint8_t)lua_tointeger( L, -1 );
+						break;
+					default:
+						break;
+				}
+			}
+			else if ( lua_isstring( L, -2 ) ) {
+				if ( strcmp( "r", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					color.r = (uint8_t)lua_tointeger( L, -1 );
+				}
+				else if ( strcmp( "g", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					color.g = (uint8_t)lua_tointeger( L, -1 );
+				}
+				else if ( strcmp( "b", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					color.b = (uint8_t)lua_tointeger( L, -1 );
+				}
+				else if ( strcmp( "a", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					color.a = (uint8_t)lua_tointeger( L, -1 );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
     }
     return color;
 }
@@ -1058,20 +1074,30 @@ Vector2 uluaGetVector2( lua_State *L ) {
     lua_pushnil( L );
 
     while ( lua_next( L, t ) != 0 ) {
-        if ( lua_isnumber( L, -1 ) ) {
-            switch ( i ) {
-                case 0:
-                    vector.x = lua_tonumber( L, -1 );
-                    break;
-                case 1:
-                    vector.y = lua_tonumber( L, -1 );
-                    break;
-                default:
-                    break;
-            }
-        }
-        i++;
-        lua_pop( L, 1 );
+		if ( lua_isnumber( L, -1 ) ) {
+			if ( lua_isnumber( L, -2 ) ) {
+				switch ( i ) {
+					case 0:
+						vector.x = lua_tonumber( L, -1 );
+						break;
+					case 1:
+						vector.y = lua_tonumber( L, -1 );
+						break;
+					default:
+						break;
+				}
+			}
+			else if ( lua_isstring( L, -2 ) ) {
+				if ( strcmp( "x", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					vector.x = lua_tonumber( L, -1 );
+				}
+				else if ( strcmp( "y", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					vector.y = lua_tonumber( L, -1 );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
     }
     return vector;
 }
@@ -1088,19 +1114,32 @@ Vector3 uluaGetVector3( lua_State *L ) {
 
     while ( lua_next( L, t ) != 0 ) {
         if ( lua_isnumber( L, -1 ) ) {
-            switch ( i ) {
-                case 0:
-                    vector.x = lua_tonumber( L, -1 );
-                    break;
-                case 1:
-                    vector.y = lua_tonumber( L, -1 );
-                    break;
-                case 2:
-                    vector.z = lua_tonumber( L, -1 );
-                    break;
-                default:
-                    break;
-            }
+			if ( lua_isnumber( L, -2 ) ) {
+				switch ( i ) {
+					case 0:
+						vector.x = lua_tonumber( L, -1 );
+						break;
+					case 1:
+						vector.y = lua_tonumber( L, -1 );
+						break;
+					case 2:
+						vector.z = lua_tonumber( L, -1 );
+						break;
+					default:
+						break;
+				}
+			}
+			else if ( lua_isstring( L, -2 ) ) {
+				if ( strcmp( "x", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					vector.x = lua_tonumber( L, -1 );
+				}
+				else if ( strcmp( "y", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					vector.y = lua_tonumber( L, -1 );
+				}
+				else if ( strcmp( "z", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					vector.z = lua_tonumber( L, -1 );
+				}
+			}
         }
         i++;
         lua_pop( L, 1 );
@@ -1120,22 +1159,38 @@ Vector4 uluaGetVector4( lua_State *L ) {
 
     while ( lua_next( L, t ) != 0 ) {
         if ( lua_isnumber( L, -1 ) ) {
-            switch ( i ) {
-                case 0:
-                    vector.x = lua_tonumber( L, -1 );
-                    break;
-                case 1:
-                    vector.y = lua_tonumber( L, -1 );
-                    break;
-                case 2:
-                    vector.z = lua_tonumber( L, -1 );
-                    break;
-                case 3:
-                    vector.w = lua_tonumber( L, -1 );
-                    break;
-                default:
-                    break;
-            }
+			if ( lua_isnumber( L, -2 ) ) {
+				switch ( i ) {
+					case 0:
+						vector.x = lua_tonumber( L, -1 );
+						break;
+					case 1:
+						vector.y = lua_tonumber( L, -1 );
+						break;
+					case 2:
+						vector.z = lua_tonumber( L, -1 );
+						break;
+					case 3:
+						vector.w = lua_tonumber( L, -1 );
+						break;
+					default:
+						break;
+				}
+			}
+			else if ( lua_isstring( L, -2 ) ) {
+				if ( strcmp( "x", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					vector.x = lua_tonumber( L, -1 );
+				}
+				else if ( strcmp( "y", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					vector.y = lua_tonumber( L, -1 );
+				}
+				else if ( strcmp( "z", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					vector.z = lua_tonumber( L, -1 );
+				}
+				else if ( strcmp( "w", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					vector.w = lua_tonumber( L, -1 );
+				}
+			}
         }
         i++;
         lua_pop( L, 1 );
@@ -1153,24 +1208,40 @@ Rectangle uluaGetRectangle( lua_State *L ) {
 	int t = lua_gettop( L ), i = 0;
     lua_pushnil( L );
 
-    while ( lua_next( L, t ) != 0 ) {
+	while ( lua_next( L, t ) != 0 ) {
         if ( lua_isnumber( L, -1 ) ) {
-            switch ( i ) {
-                case 0:
-                    rect.x = lua_tonumber( L, -1 );
-                    break;
-                case 1:
-                    rect.y = lua_tonumber( L, -1 );
-                    break;
-                case 2:
-                    rect.width = lua_tonumber( L, -1 );
-                    break;
-                case 3:
-                    rect.height = lua_tonumber( L, -1 );
-                    break;
-                default:
-                    break;
-            }
+			if ( lua_isnumber( L, -2 ) ) {
+				switch ( i ) {
+					case 0:
+						rect.x = lua_tonumber( L, -1 );
+						break;
+					case 1:
+						rect.y = lua_tonumber( L, -1 );
+						break;
+					case 2:
+						rect.width = lua_tonumber( L, -1 );
+						break;
+					case 3:
+						rect.height = lua_tonumber( L, -1 );
+						break;
+					default:
+						break;
+				}
+			}
+			else if ( lua_isstring( L, -2 ) ) {
+				if ( strcmp( "x", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					rect.x = lua_tonumber( L, -1 );
+				}
+				else if ( strcmp( "y", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					rect.y = lua_tonumber( L, -1 );
+				}
+				else if ( strcmp( "width", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					rect.width = lua_tonumber( L, -1 );
+				}
+				else if ( strcmp( "height", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					rect.height = lua_tonumber( L, -1 );
+				}
+			}
         }
         i++;
         lua_pop( L, 1 );
@@ -1190,22 +1261,38 @@ Quaternion uluaGetQuaternion( lua_State *L ) {
 
     while ( lua_next( L, t ) != 0 ) {
         if ( lua_isnumber( L, -1 ) ) {
-            switch ( i ) {
-                case 0:
-                    quaternion.x = lua_tonumber( L, -1 );
-                    break;
-                case 1:
-                    quaternion.y = lua_tonumber( L, -1 );
-                    break;
-                case 2:
-                    quaternion.z = lua_tonumber( L, -1 );
-                    break;
-                case 3:
-                    quaternion.w = lua_tonumber( L, -1 );
-                    break;
-                default:
-                    break;
-            }
+			if ( lua_isnumber( L, -2 ) ) {
+				switch ( i ) {
+					case 0:
+						quaternion.x = lua_tonumber( L, -1 );
+						break;
+					case 1:
+						quaternion.y = lua_tonumber( L, -1 );
+						break;
+					case 2:
+						quaternion.z = lua_tonumber( L, -1 );
+						break;
+					case 3:
+						quaternion.w = lua_tonumber( L, -1 );
+						break;
+					default:
+						break;
+				}
+			}
+			else if ( lua_isstring( L, -2 ) ) {
+				if ( strcmp( "x", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					quaternion.x = lua_tonumber( L, -1 );
+				}
+				else if ( strcmp( "y", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					quaternion.y = lua_tonumber( L, -1 );
+				}
+				else if ( strcmp( "z", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					quaternion.z = lua_tonumber( L, -1 );
+				}
+				else if ( strcmp( "w", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					quaternion.w = lua_tonumber( L, -1 );
+				}
+			}
         }
         i++;
         lua_pop( L, 1 );
@@ -1258,21 +1345,31 @@ BoundingBox uluaGetBoundingBox( lua_State *L ) {
 	int t = lua_gettop( L ), i = 0;
     lua_pushnil( L );
 
-    while ( lua_next( L, t ) != 0 ) {
-        if ( lua_istable( L, -1 ) ) {
-            switch ( i ) {
-                case 0:
-                    box.min = uluaGetVector3( L );
-                    break;
-                case 1:
-                    box.max = uluaGetVector3( L );
-                    break;
-                default:
-                    break;
-            }
-        }
-        i++;
-        lua_pop( L, 1 );
+	while ( lua_next( L, t ) != 0 ) {
+		if ( lua_isnumber( L, -1 ) ) {
+			if ( lua_isnumber( L, -2 ) ) {
+				switch ( i ) {
+					case 0:
+						box.min = uluaGetVector3( L );
+						break;
+					case 1:
+						box.max = uluaGetVector3( L );
+						break;
+					default:
+						break;
+				}
+			}
+			else if ( lua_isstring( L, -2 ) ) {
+				if ( strcmp( "min", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					box.min = uluaGetVector3( L );
+				}
+				else if ( strcmp( "max", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					box.max = uluaGetVector3( L );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
     }
 
 	return box;
@@ -1288,21 +1385,31 @@ Ray uluaGetRay( lua_State *L ) {
 	int t = lua_gettop( L ), i = 0;
     lua_pushnil( L );
 
-    while ( lua_next( L, t ) != 0 ) {
-        if ( lua_istable( L, -1 ) ) {
-            switch ( i ) {
-                case 0:
-                    ray.position = uluaGetVector3( L );
-                    break;
-                case 1:
-                    ray.direction = uluaGetVector3( L );
-                    break;
-                default:
-                    break;
-            }
-        }
-        i++;
-        lua_pop( L, 1 );
+	while ( lua_next( L, t ) != 0 ) {
+		if ( lua_isnumber( L, -1 ) ) {
+			if ( lua_isnumber( L, -2 ) ) {
+				switch ( i ) {
+					case 0:
+						ray.position = uluaGetVector3( L );
+						break;
+					case 1:
+						ray.direction = uluaGetVector3( L );
+						break;
+					default:
+						break;
+				}
+			}
+			else if ( lua_isstring( L, -2 ) ) {
+				if ( strcmp( "position", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					ray.position = uluaGetVector3( L );
+				}
+				else if ( strcmp( "direction", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					ray.direction = uluaGetVector3( L );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
     }
 
 	return ray;
@@ -1318,33 +1425,56 @@ NPatchInfo uluaGetNPatchInfo( lua_State *L ) {
 	int t = lua_gettop( L ), i = 0;
     lua_pushnil( L );
 
-    while ( lua_next( L, t ) != 0 ) {
-		switch ( i ) {
-			case 0:
-				npatch.source = uluaGetRectangle( L );
-				break;
-			case 1:
-				npatch.left = lua_tointeger( L, -1 );
-				break;
-			case 2:
-				npatch.top = lua_tointeger( L, -1 );
-				break;
-			case 3:
-				npatch.right = lua_tointeger( L, -1 );
-				break;
-			case 4:
-				npatch.bottom = lua_tointeger( L, -1 );
-				break;
-			case 5:
-				npatch.layout = lua_tointeger( L, -1 );
-				break;
-			default:
-				break;
+	while ( lua_next( L, t ) != 0 ) {
+		if ( lua_isnumber( L, -1 ) ) {
+			if ( lua_isnumber( L, -2 ) ) {
+				switch ( i ) {
+					case 0:
+						npatch.source = uluaGetRectangle( L );
+						break;
+					case 1:
+						npatch.left = lua_tointeger( L, -1 );
+						break;
+					case 2:
+						npatch.top = lua_tointeger( L, -1 );
+						break;
+					case 3:
+						npatch.right = lua_tointeger( L, -1 );
+						break;
+					case 4:
+						npatch.bottom = lua_tointeger( L, -1 );
+						break;
+					case 5:
+						npatch.layout = lua_tointeger( L, -1 );
+						break;
+					default:
+						break;
+				}
+			}
+			else if ( lua_isstring( L, -2 ) ) {
+				if ( strcmp( "source", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					npatch.source = uluaGetRectangle( L );
+				}
+				else if ( strcmp( "left", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					npatch.left = lua_tointeger( L, -1 );
+				}
+				else if ( strcmp( "top", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					npatch.top = lua_tointeger( L, -1 );
+				}
+				else if ( strcmp( "right", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					npatch.right = lua_tointeger( L, -1 );
+				}
+				else if ( strcmp( "bottom", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					npatch.bottom = lua_tointeger( L, -1 );
+				}
+				else if ( strcmp( "layout", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					npatch.layout = lua_tointeger( L, -1 );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
 		}
-        i++;
-        lua_pop( L, 1 );
     }
-
 	return npatch;
 }
 

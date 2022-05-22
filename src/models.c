@@ -1202,7 +1202,7 @@ int lmodelsUpdateMesh( lua_State *L ) {
 				i++;
 				lua_pop( L, 1 );
 			}
-			UpdateMeshBuffer( *mesh, 3, (void*)data, len * 4 * sizeof(unsigned char), 0 );
+			UpdateMeshBuffer( *mesh, 3, (void*)data, len * 4 * sizeof( unsigned char ), 0 );
 		}
 		else if ( strcmp( "indices", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
 			size_t len = uluaGetTableLen( L );
@@ -1217,7 +1217,7 @@ int lmodelsUpdateMesh( lua_State *L ) {
 				i++;
 				lua_pop( L, 1 );
 			}
-			UpdateMeshBuffer( *mesh, 6, (void*)data, len * sizeof(unsigned short), 0 );
+			UpdateMeshBuffer( *mesh, 6, (void*)data, len * sizeof( unsigned short ), 0 );
 		}
 		lua_pop( L, 1 );
 	}
@@ -2245,7 +2245,7 @@ int lmodelsGetRayCollisionModel( lua_State *L ) {
 		lua_pushnil( L );
 		return 1;
 	}
-	// uluaPushRayCollision( L, GetRayCollisionModel( ray, *state->models[ modelId ] ) );
+	uluaPushRayCollision( L, GetRayCollisionModel( ray, *state->models[ modelId ] ) );
 
 	return 1;
 }

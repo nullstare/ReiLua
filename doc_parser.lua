@@ -70,19 +70,19 @@ srcFile:close()
 apiFile:write( "\n## Types\n\
 Raylib structs in Lua\n\n---\n" )
 
-apiFile:write( "\n> Vector2 = { 1.0, 1.0 }\n\
+apiFile:write( "\n> Vector2 = { 1.0, 1.0 } or { x = 1.0, y = 1.0 }\n\
 Vector2 type\n\n---\n" )
-apiFile:write( "\n> Vector3 = { 1.0, 1.0, 1.0 }\n\
+apiFile:write( "\n> Vector3 = { 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0 }\n\
 Vector3 type\n\n---\n" )
-apiFile:write( "\n> Vector4 = { 1.0, 1.0, 1.0, 1.0 }\n\
+apiFile:write( "\n> Vector4 = { 1.0, 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0, w = 1.0 }\n\
 Vector4 type\n\n---\n" )
-apiFile:write( "\n> Quaternion = { 1.0, 1.0, 1.0, 1.0 }\n\
+apiFile:write( "\n> Quaternion = { 1.0, 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0, w = 1.0 }\n\
 Quaternion type\n\n---\n" )
 apiFile:write( "\n> Matrix = { { 1.0, 0.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0, 0.0 }, { 0.0, 0.0, 1.0, 0.0 }, { 0.0, 0.0, 0.0, 1.0 } }\n\
 OpenGL style 4x4. Identity matrix example\n\n---\n" )
-apiFile:write( "\n> Color = { 255, 255, 255, 255 }\n\
+apiFile:write( "\n> Color = { 255, 255, 255, 255 } or { r = 255, g = 255, b = 255, a = 255 }\n\
 { r, g, b ,a }. Color type, RGBA (32bit)\n\n---\n" )
-apiFile:write( "\n> Rectangle = { 0.0, 0.0, 1.0, 1.0 }\n\
+apiFile:write( "\n> Rectangle = { 0.0, 0.0, 1.0, 1.0 } or { x = 0.0, y = 0.0, width = 1.0, height = 1.0 }\n\
 { x, y, w ,h }. Rectangle type\n\n---\n" )
 apiFile:write( "\n> Image = ImageId\n\
 int id. Image type (multiple pixel formats supported). NOTE: Data stored in CPU memory (RAM)\n\n---\n" )
@@ -128,7 +128,7 @@ material{} = {\
 ```\n\n---\n" )
 apiFile:write( "\n> Model = ModelId\n\
 int id. Basic 3d Model type\n\n---\n" )
-apiFile:write( "\n> Ray = { { 0.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0 } }\n\
+apiFile:write( "\n> Ray = { { 0.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0 } } or { position = { 0.0, 0.0, 0.0 }, direction = { 1.0, 0.0, 0.0 } }\n\
 { position, direction }. Ray type (useful for raycast)\n\n---\n" )
 apiFile:write( "\n> RayCollision = { hit = true, distance = 1.0, point = { 0.0, 0.0, 0.0 }, normal = { 0.0, 0.0, 1.0 } }\n\
 Raycast hit information. NOTE: Data in named keys\n\n---\n" )
@@ -136,7 +136,7 @@ apiFile:write( "\n> BoundingBox = { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } }\n\
 { min, max }. Bounding box type for 3d mesh\n\n---\n" )
 apiFile:write( "\n> Sound = SoundId\n\
 int id. Basic Sound source and buffer\n\n---\n" )
-apiFile:write( "\n> NPatchInfo = { { 0, 0, 24, 24 }, 0, 0, 0, 0, NPATCH_NINE_PATCH }\n\
+apiFile:write( "\n> NPatchInfo = { { 0, 0, 24, 24 }, 0, 0, 0, 0, NPATCH_NINE_PATCH } or { source = { 0, 0, 24, 24 }, left = 0, top = 0, right = 0, bottom = 0, layout = NPATCH_NINE_PATCH }\n\
 { Rectangle source, int left, int top, int right, int bottom, int layout }.\
 { Texture source rectangle, Left border offset, Top border offset, Right border offset, Bottom border offset, Layout of the n-patch: 3x3, 1x3 or 3x1 }\n\n---\n" )
 apiFile:write( "\n> ModelAnimations = ModelAnimationsId\n\

@@ -651,18 +651,13 @@ void luaRegister() {
 	lua_register( L, "RL_GetCollisionRec", lshapesGetCollisionRec );
 
 	/* Textures. */
-		/* File. */
+		/* Image Loading. */
 	lua_register( L, "RL_LoadImage", ltexturesLoadImage );
 	lua_register( L, "RL_LoadImageFromTexture", ltexturesLoadImageFromTexture );
 	lua_register( L, "RL_LoadImageFromScreen", ltexturesLoadImageFromScreen );
 	lua_register( L, "RL_UnloadImage", ltexturesUnloadImage );
 	lua_register( L, "RL_ExportImage", ltexturesExportImage );
 	lua_register( L, "RL_ExportImageAsCode", ltexturesExportImageAsCode );
-	lua_register( L, "RL_LoadTexture", ltexturesLoadTexture );
-	lua_register( L, "RL_LoadTextureFromImage", ltexturesLoadTextureFromImage );
-	lua_register( L, "RL_UnloadTexture", ltexturesUnloadTexture );
-	lua_register( L, "RL_LoadRenderTexture", ltexturesLoadRenderTexture );
-	lua_register( L, "RL_UnloadRenderTexture", ltexturesUnloadRenderTexture );
 		/* Image Generation. */
 	lua_register( L, "RL_GenImageColor", ltexturesGenImageColor );
 	lua_register( L, "RL_GenImageGradientV", ltexturesGenImageGradientV );
@@ -714,6 +709,14 @@ void luaRegister() {
 	lua_register( L, "RL_GetImageSize", ltexturesGetImageSize );
 	lua_register( L, "RL_GetImageMipmaps", ltexturesGetImageMipmaps );
 	lua_register( L, "RL_GetImageFormat", ltexturesGetImageFormat );
+		/* Texture Loading. */
+	lua_register( L, "RL_LoadTexture", ltexturesLoadTexture );
+	lua_register( L, "RL_LoadTextureFromImage", ltexturesLoadTextureFromImage );
+	lua_register( L, "RL_UnloadTexture", ltexturesUnloadTexture );
+	lua_register( L, "RL_LoadRenderTexture", ltexturesLoadRenderTexture );
+	lua_register( L, "RL_UnloadRenderTexture", ltexturesUnloadRenderTexture );
+	lua_register( L, "RL_UpdateTexture", ltexturesUpdateTexture );
+	lua_register( L, "RL_UpdateTextureRec", ltexturesUpdateTextureRec );
 		/* Texture Drawing. */
 	lua_register( L, "RL_DrawTexture", ltexturesDrawTexture );
 	lua_register( L, "RL_DrawTextureRec", ltexturesDrawTextureRec );

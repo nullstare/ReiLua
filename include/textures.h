@@ -8,18 +8,13 @@ bool validTexture( size_t id );
 bool validRenderTexture( size_t id );
 bool validSourceTexture( size_t id );
 Texture2D* texturesGetSourceTexture( size_t index );
-/* File. */
+/* Image Loading. */
 int ltexturesLoadImage( lua_State *L );
 int ltexturesLoadImageFromTexture( lua_State *L );
 int ltexturesLoadImageFromScreen( lua_State *L );
 int ltexturesUnloadImage( lua_State *L );
 int ltexturesExportImage( lua_State *L );
 int ltexturesExportImageAsCode( lua_State *L );
-int ltexturesLoadTexture( lua_State *L );
-int ltexturesLoadTextureFromImage( lua_State *L );
-int ltexturesUnloadTexture( lua_State *L );
-int ltexturesLoadRenderTexture( lua_State *L );
-int ltexturesUnloadRenderTexture( lua_State *L );
 /* Image Generation. */
 int ltexturesGenImageColor( lua_State *L );
 int ltexturesGenImageGradientV( lua_State *L );
@@ -71,6 +66,14 @@ int ltexturesImageDrawTextEx( lua_State *L );
 int ltexturesGetImageSize( lua_State *L );
 int ltexturesGetImageMipmaps( lua_State *L );
 int ltexturesGetImageFormat( lua_State *L );
+/* Texture Loading. */
+int ltexturesLoadTexture( lua_State *L );
+int ltexturesLoadTextureFromImage( lua_State *L );
+int ltexturesUnloadTexture( lua_State *L );
+int ltexturesLoadRenderTexture( lua_State *L );
+int ltexturesUnloadRenderTexture( lua_State *L );
+int ltexturesUpdateTexture( lua_State *L );
+int ltexturesUpdateTextureRec( lua_State *L );
 /* Texture Drawing. */
 int ltexturesDrawTexture( lua_State *L );
 int ltexturesDrawTextureRec( lua_State *L );

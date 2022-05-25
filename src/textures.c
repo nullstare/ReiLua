@@ -132,7 +132,7 @@ Texture2D* texturesGetSourceTexture( size_t index ) {
 }
 
 /*
-## Textures - Load
+## Textures - Image Loading
 */
 
 /*
@@ -278,144 +278,6 @@ int ltexturesExportImageAsCode( lua_State *L ) {
 		return 1;
 	}
 	lua_pushboolean( L, ExportImageAsCode( *state->images[ id ], lua_tostring( L, -1 ) ) );
-
-	return 1;
-}
-
-/*
-> texture = RL_LoadTexture( string fileName )
-
-Load texture from file into GPU memory ( VRAM )
-
-- Failure return -1
-- Success return int
-*/
-int ltexturesLoadTexture( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadTexture( string fileName )" );
-		lua_pushinteger( L, -1 );
-		return 1;
-	}
-
-	if ( FileExists( lua_tostring( L, -1 ) ) ) {
-		int i = newTexture();
-		*state->textures[i] = LoadTexture( lua_tostring( L, -1 ) );
-		lua_pushinteger( L, i );
-		return 1;
-	}
-	else {
-		lua_pushinteger( L, -1 );
-		return 1;
-	}
-}
-
-/*
-> texture = RL_LoadTextureFromImage( Image image )
-
-Load texture from image data
-
-- Failure return -1
-- Success return int
-*/
-int ltexturesLoadTextureFromImage( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadTextureFromImage( Image image )" );
-		lua_pushinteger( L, -1 );
-		return 1;
-	}
-	size_t imageId = lua_tointeger( L, -1 );
-
-	if ( !validImage( imageId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int i = newTexture();
-	*state->textures[i] = LoadTextureFromImage( *state->images[ imageId ] );
-	lua_pushinteger( L, i );
-
-	return 1;
-}
-
-/*
-> success = RL_UnloadTexture( Texture2D texture )
-
-Unload texture from GPU memory ( VRAM )
-
-- Failure return false
-- Success return true
-*/
-int ltexturesUnloadTexture( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_UnloadTexture( Texture2D texture )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t id = lua_tointeger( L, -1 );
-
-	if ( !validTexture( id ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	UnloadTexture( *state->textures[ id ] );
-	state->textures[ id ] = NULL;
-	lua_pushboolean( L, true );
-
-	return 1;
-}
-
-/*
-> renderTexture = RL_LoadRenderTexture( Vector2 size )
-
-Load texture for rendering ( framebuffer )
-
-- Failure return -1
-- Success return int
-*/
-int ltexturesLoadRenderTexture( lua_State *L ) {
-	if ( !lua_istable( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadRenderTexture( Vector2 size )" );
-		lua_pushinteger( L, -1 );
-		return 1;
-	}
-	Vector2 size = uluaGetVector2( L );
-	int i = 0;
-
-	for ( i = 0; i < state->renderTextureCount; i++ ) {
-		if ( state->renderTextures[i] == NULL ) {
-			break;
-		}
-	}
-	state->renderTextures[i] = malloc( sizeof( RenderTexture2D ) );
-	*state->renderTextures[i] = LoadRenderTexture( (int)size.x, (int)size.y );
-	lua_pushinteger( L, i );
-	checkRenderTextureRealloc( i );
-
-	return 1;
-}
-
-/*
-> success = RL_UnloadRenderTexture( RenderTexture2D target )
-
-Unload render texture from GPU memory ( VRAM )
-
-- Failure return false
-- Success return true
-*/
-int ltexturesUnloadRenderTexture( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_UnloadRenderTexture( RenderTexture2D target )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t id = lua_tointeger( L, -1 );
-	
-	if ( !validRenderTexture( id ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	UnloadRenderTexture( *state->renderTextures[ id ] );
-	state->renderTextures[ id ] = NULL;
-	lua_pushboolean( L, true );
 
 	return 1;
 }
@@ -1789,6 +1651,256 @@ int ltexturesGetImageFormat( lua_State *L ) {
 }
 
 /*
+## Textures - Texture Loading
+*/
+
+/*
+> texture = RL_LoadTexture( string fileName )
+
+Load texture from file into GPU memory ( VRAM )
+
+- Failure return -1
+- Success return int
+*/
+int ltexturesLoadTexture( lua_State *L ) {
+	if ( !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadTexture( string fileName )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+
+	if ( FileExists( lua_tostring( L, -1 ) ) ) {
+		int i = newTexture();
+		*state->textures[i] = LoadTexture( lua_tostring( L, -1 ) );
+		lua_pushinteger( L, i );
+		return 1;
+	}
+	else {
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+}
+
+/*
+> texture = RL_LoadTextureFromImage( Image image )
+
+Load texture from image data
+
+- Failure return -1
+- Success return int
+*/
+int ltexturesLoadTextureFromImage( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadTextureFromImage( Image image )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	size_t imageId = lua_tointeger( L, -1 );
+
+	if ( !validImage( imageId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int i = newTexture();
+	*state->textures[i] = LoadTextureFromImage( *state->images[ imageId ] );
+	lua_pushinteger( L, i );
+
+	return 1;
+}
+
+/*
+> success = RL_UnloadTexture( Texture2D texture )
+
+Unload texture from GPU memory ( VRAM )
+
+- Failure return false
+- Success return true
+*/
+int ltexturesUnloadTexture( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_UnloadTexture( Texture2D texture )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t id = lua_tointeger( L, -1 );
+
+	if ( !validTexture( id ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	UnloadTexture( *state->textures[ id ] );
+	state->textures[ id ] = NULL;
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> renderTexture = RL_LoadRenderTexture( Vector2 size )
+
+Load texture for rendering ( framebuffer )
+
+- Failure return -1
+- Success return int
+*/
+int ltexturesLoadRenderTexture( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadRenderTexture( Vector2 size )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	Vector2 size = uluaGetVector2( L );
+	int i = 0;
+
+	for ( i = 0; i < state->renderTextureCount; i++ ) {
+		if ( state->renderTextures[i] == NULL ) {
+			break;
+		}
+	}
+	state->renderTextures[i] = malloc( sizeof( RenderTexture2D ) );
+	*state->renderTextures[i] = LoadRenderTexture( (int)size.x, (int)size.y );
+	lua_pushinteger( L, i );
+	checkRenderTextureRealloc( i );
+
+	return 1;
+}
+
+/*
+> success = RL_UnloadRenderTexture( RenderTexture2D target )
+
+Unload render texture from GPU memory ( VRAM )
+
+- Failure return false
+- Success return true
+*/
+int ltexturesUnloadRenderTexture( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_UnloadRenderTexture( RenderTexture2D target )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t id = lua_tointeger( L, -1 );
+	
+	if ( !validRenderTexture( id ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	UnloadRenderTexture( *state->renderTextures[ id ] );
+	state->renderTextures[ id ] = NULL;
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_UpdateTexture( Texture2D texture, int pixels{ {} } )
+
+Update GPU texture with new data
+NOTE! Should be TEXTURE_SOURCE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
+
+- Failure return false
+- Success return true
+*/
+int ltexturesUpdateTexture( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_UpdateTexture( Texture2D texture, int pixels{ {} } )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t texId = lua_tointeger( L, -2 );
+	
+	if ( !validTexture( texId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t len = uluaGetTableLen( L );
+	unsigned char *pixels = malloc( len * 4 * sizeof( unsigned char ) );
+
+	int t = lua_gettop( L );
+	int i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		size_t colLen = uluaGetTableLen( L );
+
+		int t2 = lua_gettop( L );
+		int j = 0;
+		lua_pushnil( L );
+
+		while ( lua_next( L, t2 ) != 0 ) {
+			*( pixels + ( i * colLen ) + j ) = lua_tointeger( L, -1 );
+
+			j++;
+			lua_pop( L, 1 );
+		}
+		i++;
+		lua_pop( L, 1 );
+	}
+	UpdateTexture( *state->textures[ texId ], pixels );
+	lua_pushboolean( L, true );
+
+	free( pixels );
+
+	return 1;
+}
+
+/*
+> success = RL_UpdateTextureRec( Texture2D texture, Rectangle rec, int pixels{ {} } )
+
+Update GPU texture rectangle with new data
+NOTE! Should be TEXTURE_SOURCE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
+
+- Failure return false
+- Success return true
+*/
+int ltexturesUpdateTextureRec( lua_State *L ) {
+	if ( !lua_isnumber( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_UpdateTextureRec( Texture2D texture, Rectangle rec, int pixels{ {} } )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t texId = lua_tointeger( L, -3 );
+	
+	if ( !validTexture( texId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t len = uluaGetTableLen( L );
+	unsigned char *pixels = malloc( len * 4 * sizeof( unsigned char ) );
+
+	int t = lua_gettop( L );
+	int i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		size_t colLen = uluaGetTableLen( L );
+
+		int t2 = lua_gettop( L );
+		int j = 0;
+		lua_pushnil( L );
+
+		while ( lua_next( L, t2 ) != 0 ) {
+			*( pixels + ( i * colLen ) + j ) = lua_tointeger( L, -1 );
+
+			j++;
+			lua_pop( L, 1 );
+		}
+		i++;
+		lua_pop( L, 1 );
+	}
+	lua_pop( L, 1 ); /* Pixels arg. */
+
+	Rectangle rec = uluaGetRectangle( L );
+
+	UpdateTextureRec( *state->textures[ texId ], rec, pixels );
+	lua_pushboolean( L, true );
+
+	free( pixels );
+
+	return 1;
+}
+
+/*
 ## Textures - Texture Drawing
 */
 
@@ -2490,7 +2602,6 @@ int ltexturesGetPixelColor( lua_State *L ) {
 	lua_pop( L, 1 );
 	size_t texId = lua_tointeger( L, -2 );
 
-	// if ( !validTexture( texId ) ) {
 	if ( !validSourceTexture( texId ) ) {
 		lua_pushboolean( L, false );
 		return 1;

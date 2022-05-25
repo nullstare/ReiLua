@@ -2123,7 +2123,7 @@ Get collision rectangle for two rectangles collision
 
 ---
 
-## Textures - Load
+## Textures - Image Loading
 
 ---
 
@@ -2177,51 +2177,6 @@ Export image as code file defining an array of bytes, returns true on success
 
 - Failure return nil
 - Success return bool
-
----
-
-> texture = RL_LoadTexture( string fileName )
-
-Load texture from file into GPU memory ( VRAM )
-
-- Failure return -1
-- Success return int
-
----
-
-> texture = RL_LoadTextureFromImage( Image image )
-
-Load texture from image data
-
-- Failure return -1
-- Success return int
-
----
-
-> success = RL_UnloadTexture( Texture2D texture )
-
-Unload texture from GPU memory ( VRAM )
-
-- Failure return false
-- Success return true
-
----
-
-> renderTexture = RL_LoadRenderTexture( Vector2 size )
-
-Load texture for rendering ( framebuffer )
-
-- Failure return -1
-- Success return int
-
----
-
-> success = RL_UnloadRenderTexture( RenderTexture2D target )
-
-Unload render texture from GPU memory ( VRAM )
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -2661,6 +2616,75 @@ Get image data format ( PixelFormat type )
 
 - Failure return false
 - Success return int
+
+---
+
+## Textures - Texture Loading
+
+---
+
+> texture = RL_LoadTexture( string fileName )
+
+Load texture from file into GPU memory ( VRAM )
+
+- Failure return -1
+- Success return int
+
+---
+
+> texture = RL_LoadTextureFromImage( Image image )
+
+Load texture from image data
+
+- Failure return -1
+- Success return int
+
+---
+
+> success = RL_UnloadTexture( Texture2D texture )
+
+Unload texture from GPU memory ( VRAM )
+
+- Failure return false
+- Success return true
+
+---
+
+> renderTexture = RL_LoadRenderTexture( Vector2 size )
+
+Load texture for rendering ( framebuffer )
+
+- Failure return -1
+- Success return int
+
+---
+
+> success = RL_UnloadRenderTexture( RenderTexture2D target )
+
+Unload render texture from GPU memory ( VRAM )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_UpdateTexture( Texture2D texture, int pixels{ {} } )
+
+Update GPU texture with new data
+NOTE! Should be TEXTURE_SOURCE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_UpdateTextureRec( Texture2D texture, Rectangle rec, int pixels{ {} } )
+
+Update GPU texture rectangle with new data
+NOTE! Should be TEXTURE_SOURCE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
+
+- Failure return false
+- Success return true
 
 ---
 

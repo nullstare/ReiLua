@@ -45,6 +45,8 @@ Vector2.meta = {
 function Vector2:new( x, y )
 	if type( x ) == "table" then
 		x, y = table.unpack( x )
+	elseif type( x ) == "nil" then
+		x, y = 0, 0
 	end
 
     local o = {

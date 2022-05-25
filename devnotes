@@ -3,7 +3,6 @@ Current {
 
 Backlog {
 	* Text
-		* More Font loading/unloading functions
 		* Codepoints
 		* String management. At least TextSplit.
 	* Audio

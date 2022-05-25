@@ -781,6 +781,10 @@ void luaRegister() {
 	lua_register( L, "RL_DrawMesh", lmodelsDrawMesh );
 	lua_register( L, "RL_DrawMeshInstanced", lmodelsDrawMeshInstanced );
 	lua_register( L, "RL_SetMeshColor", lmodelsSetMeshColor );
+	lua_register( L, "RL_ExportMesh", lmodelsExportMesh );
+	lua_register( L, "RL_GetMeshBoundingBox", lmodelsGetMeshBoundingBox );
+	lua_register( L, "RL_GenMeshTangents", lmodelsGenMeshTangents );
+	lua_register( L, "RL_GenMeshBinormals", lmodelsGenMeshBinormals );
 		/* Material. */
 	lua_register( L, "RL_LoadMaterialDefault", lmodelsLoadMaterialDefault );
 	lua_register( L, "RL_CreateMaterial", lmodelsCreateMaterial );
@@ -1624,6 +1628,28 @@ void uluaPushRayCollision( lua_State *L, RayCollision rayCol ) {
 	lua_setfield( L, -2, "point" );
 	uluaPushVector3( L, rayCol.normal );
 	lua_setfield( L, -2, "normal" );
+}
+
+void uluaPushBoundingBox( lua_State *L, BoundingBox box ) {
+	lua_createtable( L, 2, 0 );
+
+	lua_createtable( L, 3, 0 );
+	lua_pushnumber( L, box.min.x );
+	lua_rawseti( L, -2, 1 );
+	lua_pushnumber( L, box.min.y );
+	lua_rawseti( L, -2, 2 );
+	lua_pushnumber( L, box.min.z );
+	lua_rawseti( L, -2, 3 );
+	lua_rawseti( L, -2, 1 );
+
+	lua_createtable( L, 3, 0 );
+	lua_pushnumber( L, box.max.x );
+	lua_rawseti( L, -2, 1 );
+	lua_pushnumber( L, box.max.y );
+	lua_rawseti( L, -2, 2 );
+	lua_pushnumber( L, box.max.z );
+	lua_rawseti( L, -2, 3 );
+	lua_rawseti( L, -2, 2 );
 }
 
 int uluaGetTableLen( lua_State *L ) {

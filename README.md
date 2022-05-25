@@ -12,24 +12,20 @@ Reilua means fair in finnish.
 
 ReiLua is WIP and some planned raylib functionality is still missing but it already has over 400 functions and should include all functions to make most 2d and 3d games. Current Raylib version 4.0.0.
 
+Included submodules.
+
+* Raygui
+* Raymath
+
 List of some MISSING features that are planned to be included. For specific function, check API.
 
 * Core
 	* VR stereo config functions for VR simulator
 * Textures
 	* Texture update functions
-* Text
-	* Some font loading/unloading functions
 * Audio
 	* Wave
 	* AudioStream management functions
-* Mesh
-	* Some mesh management functions
-
-Submodules.
-
-* Raygui ( Done )
-* Raymath ( Done )
 
 ## Usage
 

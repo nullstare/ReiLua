@@ -35,6 +35,10 @@ int lmodelsUnloadMesh( lua_State *L );
 int lmodelsDrawMesh( lua_State *L );
 int lmodelsDrawMeshInstanced( lua_State *L );
 int lmodelsSetMeshColor( lua_State *L );
+int lmodelsExportMesh( lua_State *L );
+int lmodelsGetMeshBoundingBox( lua_State *L );
+int lmodelsGenMeshTangents( lua_State *L );
+int lmodelsGenMeshBinormals( lua_State *L );
 /* Material. */
 int lmodelsLoadMaterialDefault( lua_State *L );
 int lmodelsCreateMaterial( lua_State *L );

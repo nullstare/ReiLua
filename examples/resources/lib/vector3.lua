@@ -59,6 +59,8 @@ end
 function Vector3:set( x, y, z )
 	if type( x ) == "table" then
 		x, y, z = table.unpack( x )
+	elseif type( x ) == "nil" then
+		x, y, z = 0, 0, 0
 	end
 
 	self.x = x

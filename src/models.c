@@ -1375,6 +1375,108 @@ int lmodelsSetMeshColor( lua_State *L ) {
 }
 
 /*
+> success = RL_ExportMesh( Mesh mesh, string fileName )
+
+Export mesh data to file, returns true on success
+
+- Failure return false
+- Success return true
+*/
+int lmodelsExportMesh( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_ExportMesh( Mesh mesh, string fileName )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t meshId = lua_tointeger( L, -2 );
+
+	if ( !validMesh( meshId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	lua_pushboolean( L, ExportMesh( *state->meshes[ meshId ], lua_tostring( L, -1 ) ) );
+
+	return 1;
+}
+
+/*
+> boundingBox = RL_GetMeshBoundingBox( Mesh mesh )
+
+Compute mesh bounding box limits
+
+- Failure return false
+- Success return BoundingBox
+*/
+int lmodelsGetMeshBoundingBox( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetMeshBoundingBox( Mesh mesh )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t meshId = lua_tointeger( L, -1 );
+
+	if ( !validMesh( meshId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushBoundingBox( L, GetMeshBoundingBox( *state->meshes[ meshId ] ) );
+
+	return 1;
+}
+
+/*
+> success = RL_GenMeshTangents( Mesh mesh )
+
+Compute mesh tangents
+
+- Failure return false
+- Success return true
+*/
+int lmodelsGenMeshTangents( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GenMeshTangents( Mesh mesh )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t meshId = lua_tointeger( L, -1 );
+
+	if ( !validMesh( meshId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	GenMeshTangents( state->meshes[ meshId ] );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_GenMeshBinormals( Mesh mesh )
+
+Compute mesh binormals
+
+- Failure return false
+- Success return true
+*/
+int lmodelsGenMeshBinormals( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GenMeshBinormals( Mesh mesh )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t meshId = lua_tointeger( L, -1 );
+
+	if ( !validMesh( meshId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	GenMeshBinormals( state->meshes[ meshId ] );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
 ## Models - Material
 */
 
@@ -1544,8 +1646,7 @@ int lmodelsSetMaterialTexture( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
-	// SetMaterialTexture( state->materials[ lua_tointeger( L, -3 ) ], lua_tointeger( L, -2 ), *state->textures[ lua_tointeger( L, -1 ) ] );
+	
 	SetMaterialTexture( state->materials[ materialId ], lua_tointeger( L, -2 ), *texturesGetSourceTexture( texId ) );
 	lua_pushboolean( L, true );
 

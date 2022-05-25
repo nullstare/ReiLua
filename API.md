@@ -3297,6 +3297,42 @@ NOTE: Currently only works on custom mesh
 
 ---
 
+> success = RL_ExportMesh( Mesh mesh, string fileName )
+
+Export mesh data to file, returns true on success
+
+- Failure return false
+- Success return true
+
+---
+
+> boundingBox = RL_GetMeshBoundingBox( Mesh mesh )
+
+Compute mesh bounding box limits
+
+- Failure return false
+- Success return BoundingBox
+
+---
+
+> success = RL_GenMeshTangents( Mesh mesh )
+
+Compute mesh tangents
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_GenMeshBinormals( Mesh mesh )
+
+Compute mesh binormals
+
+- Failure return false
+- Success return true
+
+---
+
 ## Models - Material
 
 ---

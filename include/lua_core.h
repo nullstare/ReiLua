@@ -27,5 +27,6 @@ void uluaPushQuaternion( lua_State *L, Quaternion quaternion );
 void uluaPushMatrix( lua_State *L, Matrix matrix );
 void uluaPushRay( lua_State *L, Ray ray );
 void uluaPushRayCollision( lua_State *L, RayCollision rayCol );
+void uluaPushBoundingBox( lua_State *L, BoundingBox box );
 
 int uluaGetTableLen( lua_State *L );

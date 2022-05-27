@@ -558,7 +558,7 @@ void luaRegister() {
 	lua_register( L, "RL_IsFileDropped", lcoreIsFileDropped );
 	lua_register( L, "RL_GetDroppedFiles", lcoreGetDroppedFiles );
 	lua_register( L, "RL_GetFileModTime", lcoreGetFileModTime );
-		/* Camera3D. */
+		/* Camera2D. */
 	lua_register( L, "RL_CreateCamera2D", lcoreCreateCamera2D );
 	lua_register( L, "RL_UnloadCamera2D", lcoreUnloadCamera2D );
 	lua_register( L, "RL_BeginMode2D", lcoreBeginMode2D );

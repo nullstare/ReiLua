@@ -9,7 +9,7 @@ local PLAYER_ACCELL = 5
 local PLAYER_DEACCELL = 5
 local GRAVITY = 6
 local JUMP_STR = 3
-local WALK_ANIM_SPEED = 8
+local WALK_ANIM_SPEED = 12
 
 local tex = RL_LoadTexture( RL_GetBasePath().."../resources/images/arcade_platformerV2.png" )
 local res = Vec2:new( 160, 144 )
@@ -37,7 +37,7 @@ local player = {
 	onFloor = false,
 	frames = {
 		{ 6, 14, 20, 18 },
-		{ 39, 14, 20, 18 },
+		{ 39, 13, 20, 19 },
 		{ 70, 14, 20, 18 },
 		{ 6, 45, 20, 18 },
 		{ 38, 45, 20, 18 },
@@ -269,7 +269,7 @@ local function drawPlayer()
 		if math.abs( player.vel.x ) < 0.1 then
 			player.curFrame = 1
 		else
-			player.animPos = player.animPos + WALK_ANIM_SPEED * math.abs( player.vel.x ) * RL_GetFrameTime()
+			player.animPos = player.animPos + WALK_ANIM_SPEED * ( math.abs( player.vel.x ) / PLAYER_MAXSPEED ) * RL_GetFrameTime()
 			local frame = math.ceil( player.animPos )
 
 			if #player.walkAnimFrames < frame then

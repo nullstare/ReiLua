@@ -103,7 +103,7 @@ end
 local function tileCollision( entity )
 	local vPos = entity.pos + entity.vel -- Future pos with current vel.
 	local vRect = util.tableClone( entity.colRect )
-	local tinySlit = 0.001 -- Tiny slit between collisionRect and tile to prevent getting stuck on all seams.
+	local tinyGap = 0.001 -- Tiny slit between collisionRect and tile to prevent getting stuck on all seams.
 
 	-- Move test rect to predicted position.
 	vRect[1] = vPos.x - vRect[3] / 2
@@ -121,14 +121,14 @@ local function tileCollision( entity )
 			if isTileWall( Vec2:new( tileRect[3], y ) ) then
 				-- Use new_x to push out of tile.
 				local new_x = tileRect[3] * TILE_SIZE - ( entity.colRect[1] + entity.colRect[3] )
-				entity.vel.x = new_x - tinySlit
+				entity.vel.x = new_x - tinyGap
 
 				break
 			end
 		elseif entity.vel.x < 0 then
 			if isTileWall( Vec2:new( tileRect[1], y ) ) then
 				local new_x = ( tileRect[1] * TILE_SIZE + TILE_SIZE ) - entity.colRect[1]
-				entity.vel.x = new_x + tinySlit, 0
+				entity.vel.x = new_x + tinyGap, 0
 
 				break
 			end
@@ -151,7 +151,7 @@ local function tileCollision( entity )
 			if isTileWall( Vec2:new( x, tileRect[4] ) ) then
 				local new_y = tileRect[4] * TILE_SIZE - ( entity.colRect[2] + entity.colRect[4] )
 				-- math.max prevents bounce when hitting right on the corner.
-				entity.vel.y = math.max( new_y - tinySlit, 0 )
+				entity.vel.y = math.max( new_y - tinyGap, 0 )
 				player.onFloor = true
 
 				break
@@ -159,7 +159,7 @@ local function tileCollision( entity )
 		elseif entity.vel.y < 0 then
 			if isTileWall( Vec2:new( x, tileRect[2] ) ) then
 				local new_y = ( tileRect[2] * TILE_SIZE + TILE_SIZE ) - entity.colRect[2]
-				entity.vel.y = new_y + tinySlit
+				entity.vel.y = new_y + tinyGap
 
 				break
 			end

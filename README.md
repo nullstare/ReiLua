@@ -106,7 +106,7 @@ If you now see extremely low res snake racing off the window then you are succes
 
 * Download "w64devkit" from https://github.com/skeeto/w64devkit and "CMake" from https://cmake.org/download/. Install CMake with path environment variables set.
 * Download Raylib source.
-* Run "w64devkit.exe" and navigate( ls == dir ) to "raylib-master/src" folder and run...
+* Run "w64devkit.exe" and navigate( ls == dir ) to "raylib/src" folder and run...
 
 ```
 mingw32-make
@@ -114,9 +114,26 @@ mingw32-make
 
 * You should now have "libraylib.a" file in that folder.
 * Copy that to "ReiLua/lib" folder.
-* I haven't got Lua to compile on Windows so we will download it's binarys from http://luabinaries.sourceforge.net/download.html. Take the one with "Windows x64 DLL and Includes (MingW-w64 6 Built)".
-* Copy "liblua54.a" to "ReiLua/lib" folder.
-* Change it's name to "liblua.a" or change the part in "CMakeLists.txt" where it links to "/lib/liblua.a" to "/lib/liblua54.a".
+* Download Lua source from https://github.com/lua/lua
+* Make following changes to Lua's makefile so we can build on Windows.
+
+```
+MYCFLAGS= $(LOCAL) -std=c99 -DLUA_USE_LINUX -DLUA_USE_READLINE
+# to
+MYCFLAGS= $(LOCAL) -std=c99
+
+# And comment out or remove line.
+MYLIBS= -ldl -lreadline
+```
+
+* Navigate "w64devkit" to Lua folder and build using.
+
+```
+mingw32-make
+```
+
+* There should now be "liblua.a" file in Lua folder.
+* Copy that also to "ReiLua/lib" folder.
 * Navigate to "ReiLua/build" folder on "w64devkit" and run...
 
 ```
@@ -124,11 +141,10 @@ cmake -G "MinGW Makefiles" ..
 
 # Cmake uses NMake Makefiles by default so we will set the Generator to MinGW with -G
 
-mingw32-make.exe
+mingw32-make
 ```
 
 * You should now have "ReiLua.exe".
-* From Lua folder, copy "lua54.dll" to same folder with "ReiLua.exe". Don't change the name of it!
 
 Run example.
 
@@ -149,6 +165,7 @@ Compile ReiLua with.
 ```
 cmake .. -DDRM=ON
 ```
+Note that DRM should be launched from CLI and not in X.
 
 ### Web
 

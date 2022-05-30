@@ -40,6 +40,7 @@ local function reset()
 	-- Set ball to center.
 	ball.pos:set( winSize.x / 2, winSize.y / 2 )
 	-- Short for if math random result 1, set BALL_SPEED otherwise set -BALL_SPEED.
+	-- Could be replaced by normal if statement for easier readability.
 	ball.vel.x = math.random( 0, 1 ) == 1 and BALL_SPEED or -BALL_SPEED
 	-- Start slow.
 	ball.vel.y = 0
@@ -123,7 +124,7 @@ function draw()
 	-- Draw ball. Ball position will be the center in drawCircle.
 	RL_DrawCircle( ball.pos, ball.radius, WHITE )
 
-	-- Draw scire
+	-- Draw score.
     RL_DrawText( 0, playerLeft.score, { 50, 10 }, 40, 2, WHITE )
 	local rightTextSize = Vec2:new( RL_MeasureText( 0, playerRight.score, 40, 2 ) )
     RL_DrawText( 0, playerRight.score, { winSize.x - 50 - rightTextSize.x, 10 }, 40, 2, WHITE )

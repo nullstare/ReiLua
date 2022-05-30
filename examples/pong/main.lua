@@ -34,6 +34,7 @@ local function reset()
 	-- Set ball to center.
 	ball.pos = { winSize[1] / 2, winSize[2] / 2 }
 	-- Short for if math random result 1, set BALL_SPEED otherwise set -BALL_SPEED.
+	-- Could be replaced by normal if statement for easier readability.
 	ball.vel[1] = math.random( 0, 1 ) == 1 and BALL_SPEED or -BALL_SPEED
 	-- Start slow.
 	ball.vel[2] = 0

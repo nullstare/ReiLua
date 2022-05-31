@@ -836,20 +836,41 @@ void luaRegister() {
 	lua_register( L, "RL_MeasureText", ltextMeasureText );
 
 	/* Audio. */
-		/* Sound. */
+		/* Audio device management. */
+	lua_register( L, "RL_SetMasterVolume", laudioSetMasterVolume );
+		/* Wave/Sound Loading. */
 	lua_register( L, "RL_LoadSound", laudioLoadSound );
+	lua_register( L, "RL_LoadWave", laudioLoadWave );
+	lua_register( L, "RL_LoadSoundFromWave", laudioLoadSoundFromWave );
+	lua_register( L, "RL_UnloadSound", laudioUnloadSound );
+	lua_register( L, "RL_UnloadWave", laudioUnloadWave );
+	lua_register( L, "RL_ExportWave", laudioExportWave );
+	lua_register( L, "RL_ExportWaveAsCode", laudioExportWaveAsCode );
+		/* Wave/Sound management */
+	lua_register( L, "RL_PlaySound", laudioPlaySound );
+	lua_register( L, "RL_StopSound", laudioStopSound );
+	lua_register( L, "RL_PauseSound", laudioPauseSound );
+	lua_register( L, "RL_ResumeSound", laudioResumeSound );
 	lua_register( L, "RL_PlaySoundMulti", laudioPlaySoundMulti );
+	lua_register( L, "RL_StopSoundMulti", laudioStopSoundMulti );
+	lua_register( L, "RL_GetSoundsPlaying", laudioGetSoundsPlaying );
+	lua_register( L, "RL_IsSoundPlaying", laudioIsSoundPlaying );
 	lua_register( L, "RL_SetSoundVolume", laudioSetSoundVolume );
 	lua_register( L, "RL_SetSoundPitch", laudioSetSoundPitch );
-	lua_register( L, "RL_UnloadSound", laudioUnloadSound );
-		/* Music. */
+	lua_register( L, "RL_WaveFormat", laudioWaveFormat );
+	lua_register( L, "RL_WaveCopy", laudioWaveCopy );
+	lua_register( L, "RL_WaveCrop", laudioWaveCrop );
+		/* Music management. */
 	lua_register( L, "RL_LoadMusicStream", laudioLoadMusicStream );
 	lua_register( L, "RL_PlayMusicStream", laudioPlayMusicStream );
+	lua_register( L, "RL_IsMusicStreamPlaying", laudioIsMusicStreamPlaying );
 	lua_register( L, "RL_StopMusicStream", laudioStopMusicStream );
 	lua_register( L, "RL_PauseMusicStream", laudioPauseMusicStream );
 	lua_register( L, "RL_ResumeMusicStream", laudioResumeMusicStream );
-	lua_register( L, "RL_IsMusicStreamPlaying", laudioIsMusicStreamPlaying );
 	lua_register( L, "RL_SetMusicVolume", laudioSetMusicVolume );
+	lua_register( L, "RL_SetMusicPitch", laudioSetMusicPitch );
+	lua_register( L, "RL_GetMusicTimeLength", laudioGetMusicTimeLength );
+	lua_register( L, "RL_GetMusicTimePlayed", laudioGetMusicTimePlayed );
 
 	/* Math. */
 		/* Utils. */

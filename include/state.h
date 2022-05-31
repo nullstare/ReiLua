@@ -33,6 +33,10 @@ typedef struct {
 	size_t fontCount;
 	size_t fontAlloc;
 		/* Sounds. */
+	Wave **waves;
+	size_t waveCount;
+	size_t waveAlloc;
+		/* Sounds. */
 	Sound **sounds;
 	size_t soundCount;
 	size_t soundAlloc;

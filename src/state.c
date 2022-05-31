@@ -33,6 +33,10 @@ bool stateInit( const char *exePath ) {
 	state->fontAlloc = ALLOC_PAGE_SIZE;
 	state->fontCount = 1;
 	state->fonts = malloc( state->fontAlloc * sizeof( Font* ) );
+	/* Wavess. */
+	state->waveAlloc = ALLOC_PAGE_SIZE;
+	state->waveCount = 0;
+	state->waves = malloc( state->waveAlloc * sizeof( Wave* ) );
 	/* Sounds. */
 	state->soundAlloc = ALLOC_PAGE_SIZE;
 	state->soundCount = 0;
@@ -74,6 +78,7 @@ bool stateInit( const char *exePath ) {
 		state->images[i] = NULL;
 		state->textures[i] = NULL;
 		state->renderTextures[i] = NULL;
+		state->waves[i] = NULL;
 		state->sounds[i] = NULL;
 		state->camera2Ds[i] = NULL;
 		state->camera3Ds[i] = NULL;
@@ -134,6 +139,12 @@ void stateFree() {
 		if ( state->fonts[i] != NULL ) {
 			UnloadFont( *state->fonts[i] );
 			free( state->fonts[i] );
+		}
+	}
+	for ( int i = 0; i < state->waveCount; ++i ) {
+		if ( state->waves[i] != NULL ) {
+			UnloadWave( *state->waves[i] );
+			free( state->waves[i] );
 		}
 	}
 	for ( int i = 0; i < state->soundCount; ++i ) {
@@ -208,6 +219,7 @@ void stateFree() {
 	free( state->textures );
 	free( state->renderTextures );
 	free( state->fonts );
+	free( state->waves );
 	free( state->sounds );
 	free( state->camera2Ds );
 	free( state->camera3Ds );
@@ -217,5 +229,6 @@ void stateFree() {
 	free( state->animations );
 	free( state->shaders );
 	free( state->lights );
+	free( state->exePath );
 	free( state );
 }

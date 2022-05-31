@@ -3642,7 +3642,20 @@ Get collision info between ray and quad
 
 ---
 
-## Audio - Sounds
+## Audio - Audio device management
+
+---
+
+> success = RL_SetMasterVolume( float volume )
+
+Set master volume ( listener )
+
+- Failure return false
+- Success return true
+
+---
+
+## Audio - Wave/Sound Loading
 
 ---
 
@@ -3655,12 +3668,129 @@ Load sound from file
 
 ---
 
+> wave = RL_LoadWave( string fileName )
+
+Load wave data from file
+
+- Failure return -1
+- Success return int
+
+---
+
+> sound = RL_LoadSoundFromWave( Wave wave )
+
+Load sound from wave data
+
+- Failure return -1
+- Success return int
+
+---
+
+> success = RL_UnloadSound( Sound sound )
+
+Unload sound
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_UnloadWave( Wave wave )
+
+Unload wave data
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ExportWave( Wave wave, string fileName )
+
+Export wave data to file, returns true on success
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ExportWaveAsCode( Wave wave, string fileName )
+
+Export wave sample data to code (.h), returns true on success
+
+- Failure return false
+- Success return true
+
+---
+
+## Audio - Wave/Sound management
+
+---
+
+> success = RL_PlaySound( Sound sound )
+
+Play a sound
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_StopSound( Sound sound )
+
+Stop playing a sound
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_PauseSound( Sound sound )
+
+Pause a sound
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_ResumeSound( Sound sound )
+
+Resume a paused sound
+
+- Failure return false
+- Success return true
+
+---
+
 > success = RL_PlaySoundMulti( Sound sound )
 
 Play a sound ( Using multichannel buffer pool )
 
 - Failure return false
 - Success return true
+
+---
+
+> RL_StopSoundMulti()
+
+Stop any sound playing ( using multichannel buffer pool )
+
+---
+
+> count = RL_GetSoundsPlaying()
+
+Get number of sounds playing in the multichannel
+
+- Success return int
+
+---
+
+> playing = RL_IsSoundPlaying( Sound sound )
+
+Check if a sound is currently playing
+
+- Failure return nil
+- Success return bool
 
 ---
 
@@ -3682,16 +3812,34 @@ Set pitch for a sound ( 1.0 is base level )
 
 ---
 
-> success = RL_UnloadSound( Sound sound )
+> success = RL_WaveFormat( Wave wave, int sampleRate, int sampleSize, int channels )
 
-Unload sound
+Convert wave data to desired format
 
 - Failure return false
 - Success return true
 
 ---
 
-## Audio - Music
+> wave = RL_WaveCopy( Wave wave )
+
+Copy a wave to a new wave
+
+- Failure return -1
+- Success return int
+
+---
+
+> success = RL_WaveCrop( Wave wave, int initSample, int finalSample )
+
+Crop a wave to defined samples range
+
+- Failure return false
+- Success return true
+
+---
+
+## Audio - Music management
 
 ---
 
@@ -3704,35 +3852,44 @@ Load music stream from file
 
 ---
 
-> PlayMusicStream()
+> RL_PlayMusicStream()
 
 Start music playing
 
 ---
 
-> StopMusicStream()
+> playing = RL_PlayMusicStream()
+
+Check if music is playing
+
+- Success return bool
+
+---
+
+> RL_StopMusicStream()
 
 Stop music playing
 
 ---
 
-> PauseMusicStream()
+> RL_PauseMusicStream()
 
 Pause music playing
 
 ---
 
-> ResumeMusicStream()
+> RL_ResumeMusicStream()
 
 Resume playing paused music
 
 ---
 
-> playing = PlayMusicStream()
+> success = RL_SeekMusicStream( float position )
 
-Check if music is playing
+Seek music to a position ( in seconds )
 
-- Success return bool
+- Failure return false
+- Success return true
 
 ---
 
@@ -3742,6 +3899,31 @@ Set volume for music ( 1.0 is max level )
 
 - Failure return false
 - Success return true
+
+---
+
+> success = RL_SetMusicPitch( float pitch )
+
+Set pitch for a music ( 1.0 is base level )
+
+- Failure return false
+- Success return true
+
+---
+
+> length = RL_GetMusicTimeLength()
+
+Get music time length ( in seconds )
+
+- Success return float
+
+---
+
+> played = RL_GetMusicTimePlayed()
+
+Get current music time played ( in seconds )
+
+- Success return float
 
 ---
 

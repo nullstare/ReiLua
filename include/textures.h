@@ -69,8 +69,9 @@ int ltexturesGetImageFormat( lua_State *L );
 /* Texture Loading. */
 int ltexturesLoadTexture( lua_State *L );
 int ltexturesLoadTextureFromImage( lua_State *L );
-int ltexturesUnloadTexture( lua_State *L );
+int ltexturesLoadTextureCubemap( lua_State *L );
 int ltexturesLoadRenderTexture( lua_State *L );
+int ltexturesUnloadTexture( lua_State *L );
 int ltexturesUnloadRenderTexture( lua_State *L );
 int ltexturesUpdateTexture( lua_State *L );
 int ltexturesUpdateTextureRec( lua_State *L );

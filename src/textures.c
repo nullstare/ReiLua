@@ -1709,28 +1709,29 @@ int ltexturesLoadTextureFromImage( lua_State *L ) {
 }
 
 /*
-> success = RL_UnloadTexture( Texture2D texture )
+> texture = RL_LoadTextureCubemap( Image image, int layout )
 
-Unload texture from GPU memory ( VRAM )
+Load cubemap from image, multiple image cubemap layouts supported
 
-- Failure return false
-- Success return true
+- Failure return -1
+- Success return int
 */
-int ltexturesUnloadTexture( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_UnloadTexture( Texture2D texture )" );
-		lua_pushboolean( L, false );
+int ltexturesLoadTextureCubemap( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadTextureCubemap( Image image, int layout )" );
+		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	size_t id = lua_tointeger( L, -1 );
+	int layout = lua_tointeger( L, -1 );
+	size_t imageId = lua_tointeger( L, -2 );
 
-	if ( !validTexture( id ) ) {
+	if ( !validImage( imageId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	UnloadTexture( *state->textures[ id ] );
-	state->textures[ id ] = NULL;
-	lua_pushboolean( L, true );
+	int i = newTexture();
+	*state->textures[i] = LoadTextureCubemap( *state->images[ imageId ], layout );
+	lua_pushinteger( L, i );
 
 	return 1;
 }
@@ -1761,6 +1762,34 @@ int ltexturesLoadRenderTexture( lua_State *L ) {
 	*state->renderTextures[i] = LoadRenderTexture( (int)size.x, (int)size.y );
 	lua_pushinteger( L, i );
 	checkRenderTextureRealloc( i );
+
+	return 1;
+}
+
+
+/*
+> success = RL_UnloadTexture( Texture2D texture )
+
+Unload texture from GPU memory ( VRAM )
+
+- Failure return false
+- Success return true
+*/
+int ltexturesUnloadTexture( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_UnloadTexture( Texture2D texture )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t id = lua_tointeger( L, -1 );
+
+	if ( !validTexture( id ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	UnloadTexture( *state->textures[ id ] );
+	state->textures[ id ] = NULL;
+	lua_pushboolean( L, true );
 
 	return 1;
 }

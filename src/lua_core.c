@@ -31,20 +31,7 @@ static void assignGlobalColor( Color color, const char *name ) {
 
 void defineGlobals() {
 /*DOC_START*/
-	/* Keys */
-	assignGlobalInt( KEY_ENTER, "KEY_ENTER" );
-	assignGlobalInt( KEY_SPACE, "KEY_SPACE" );
-	assignGlobalInt( KEY_ESCAPE, "KEY_ESCAPE" );
-	assignGlobalInt( KEY_ENTER, "KEY_ENTER" );
-	assignGlobalInt( KEY_TAB, "KEY_TAB" );
-	assignGlobalInt( KEY_BACKSPACE, "KEY_BACKSPACE" );
-	assignGlobalInt( KEY_INSERT, "KEY_INSERT" );
-	assignGlobalInt( KEY_DELETE, "KEY_DELETE" );
-	assignGlobalInt( KEY_RIGHT, "KEY_RIGHT" );
-	assignGlobalInt( KEY_LEFT, "KEY_LEFT" );
-	assignGlobalInt( KEY_DOWN, "KEY_DOWN" );
-	assignGlobalInt( KEY_UP, "KEY_UP" );
-	/* WindowFlags */
+	/* ConfigFlags */
 	assignGlobalInt( FLAG_VSYNC_HINT, "FLAG_VSYNC_HINT" );
 	assignGlobalInt( FLAG_FULLSCREEN_MODE, "FLAG_FULLSCREEN_MODE" );
 	assignGlobalInt( FLAG_WINDOW_RESIZABLE, "FLAG_WINDOW_RESIZABLE" );
@@ -59,25 +46,172 @@ void defineGlobals() {
 	assignGlobalInt( FLAG_WINDOW_HIGHDPI, "FLAG_WINDOW_HIGHDPI" );
 	assignGlobalInt( FLAG_MSAA_4X_HINT, "FLAG_MSAA_4X_HINT" );
 	assignGlobalInt( FLAG_INTERLACED_HINT, "FLAG_INTERLACED_HINT" );
-	/* BlendModes */
-	assignGlobalInt( BLEND_ALPHA, "BLEND_ALPHA" );
-	assignGlobalInt( BLEND_ADDITIVE, "BLEND_ADDITIVE" );
-	assignGlobalInt( BLEND_MULTIPLIED, "BLEND_MULTIPLIED" );
-	assignGlobalInt( BLEND_ADD_COLORS, "BLEND_ADD_COLORS" );
-	assignGlobalInt( BLEND_SUBTRACT_COLORS, "BLEND_SUBTRACT_COLORS" );
-	assignGlobalInt( BLEND_CUSTOM, "BLEND_CUSTOM" );
-	/* TextureModes */
-	assignGlobalInt( TEXTURE_SOURCE_TEXTURE, "TEXTURE_SOURCE_TEXTURE" );
-	assignGlobalInt( TEXTURE_SOURCE_RENDER_TEXTURE, "TEXTURE_SOURCE_RENDER_TEXTURE" );
-	/* CameraProjections */
-	assignGlobalInt( CAMERA_PERSPECTIVE, "CAMERA_PERSPECTIVE" );
-	assignGlobalInt( CAMERA_ORTHOGRAPHIC, "CAMERA_ORTHOGRAPHIC" );
-	/* CameraMode */
-	assignGlobalInt( CAMERA_CUSTOM, "CAMERA_CUSTOM" );
-	assignGlobalInt( CAMERA_FREE, "CAMERA_FREE" );
-	assignGlobalInt( CAMERA_ORBITAL, "CAMERA_ORBITAL" );
-	assignGlobalInt( CAMERA_FIRST_PERSON, "CAMERA_FIRST_PERSON" );
-	assignGlobalInt( CAMERA_THIRD_PERSON, "CAMERA_THIRD_PERSON" );
+	/* TraceLogLevel */
+	assignGlobalInt( LOG_ALL, "LOG_ALL" );
+	assignGlobalInt( LOG_TRACE, "LOG_TRACE" );
+	assignGlobalInt( LOG_DEBUG, "LOG_DEBUG" );
+	assignGlobalInt( LOG_INFO, "LOG_INFO" );
+	assignGlobalInt( LOG_WARNING, "LOG_WARNING" );
+	assignGlobalInt( LOG_ERROR, "LOG_ERROR" );
+	assignGlobalInt( LOG_FATAL, "LOG_FATAL" );
+	assignGlobalInt( LOG_NONE, "LOG_NONE" );
+	/* KeyboardKey */
+	assignGlobalInt( KEY_NULL, "KEY_NULL" );
+	assignGlobalInt( KEY_APOSTROPHE, "KEY_APOSTROPHE" );
+	assignGlobalInt( KEY_COMMA, "KEY_COMMA" );
+	assignGlobalInt( KEY_MINUS, "KEY_MINUS" );
+	assignGlobalInt( KEY_PERIOD, "KEY_PERIOD" );
+	assignGlobalInt( KEY_SLASH, "KEY_SLASH" );
+	assignGlobalInt( KEY_ZERO, "KEY_ZERO" );
+	assignGlobalInt( KEY_ONE, "KEY_ONE" );
+	assignGlobalInt( KEY_TWO, "KEY_TWO" );
+	assignGlobalInt( KEY_THREE, "KEY_THREE" );
+	assignGlobalInt( KEY_FOUR, "KEY_FOUR" );
+	assignGlobalInt( KEY_FIVE, "KEY_FIVE" );
+	assignGlobalInt( KEY_SIX, "KEY_SIX" );
+	assignGlobalInt( KEY_SEVEN, "KEY_SEVEN" );
+	assignGlobalInt( KEY_EIGHT, "KEY_EIGHT" );
+	assignGlobalInt( KEY_NINE, "KEY_NINE" );
+	assignGlobalInt( KEY_SEMICOLON, "KEY_SEMICOLON" );
+	assignGlobalInt( KEY_EQUAL, "KEY_EQUAL" );
+	assignGlobalInt( KEY_A, "KEY_A" );
+	assignGlobalInt( KEY_B, "KEY_B" );
+	assignGlobalInt( KEY_C, "KEY_C" );
+	assignGlobalInt( KEY_D, "KEY_D" );
+	assignGlobalInt( KEY_E, "KEY_E" );
+	assignGlobalInt( KEY_F, "KEY_F" );
+	assignGlobalInt( KEY_G, "KEY_G" );
+	assignGlobalInt( KEY_H, "KEY_H" );
+	assignGlobalInt( KEY_I, "KEY_I" );
+	assignGlobalInt( KEY_J, "KEY_J" );
+	assignGlobalInt( KEY_K, "KEY_K" );
+	assignGlobalInt( KEY_L, "KEY_L" );
+	assignGlobalInt( KEY_M, "KEY_M" );
+	assignGlobalInt( KEY_N, "KEY_N" );
+	assignGlobalInt( KEY_O, "KEY_O" );
+	assignGlobalInt( KEY_P, "KEY_P" );
+	assignGlobalInt( KEY_Q, "KEY_Q" );
+	assignGlobalInt( KEY_R, "KEY_R" );
+	assignGlobalInt( KEY_S, "KEY_S" );
+	assignGlobalInt( KEY_T, "KEY_T" );
+	assignGlobalInt( KEY_U, "KEY_U" );
+	assignGlobalInt( KEY_V, "KEY_V" );
+	assignGlobalInt( KEY_W, "KEY_W" );
+	assignGlobalInt( KEY_X, "KEY_X" );
+	assignGlobalInt( KEY_Y, "KEY_Y" );
+	assignGlobalInt( KEY_Z, "KEY_Z" );
+	assignGlobalInt( KEY_LEFT_BRACKET, "KEY_LEFT_BRACKET" );
+	assignGlobalInt( KEY_BACKSLASH, "KEY_BACKSLASH" );
+	assignGlobalInt( KEY_RIGHT_BRACKET, "KEY_RIGHT_BRACKET" );
+	assignGlobalInt( KEY_GRAVE, "KEY_GRAVE" );
+	assignGlobalInt( KEY_SPACE, "KEY_SPACE" );
+	assignGlobalInt( KEY_ESCAPE, "KEY_ESCAPE" );
+	assignGlobalInt( KEY_ENTER, "KEY_ENTER" );
+	assignGlobalInt( KEY_TAB, "KEY_TAB" );
+	assignGlobalInt( KEY_BACKSPACE, "KEY_BACKSPACE" );
+	assignGlobalInt( KEY_INSERT, "KEY_INSERT" );
+	assignGlobalInt( KEY_DELETE, "KEY_DELETE" );
+	assignGlobalInt( KEY_RIGHT, "KEY_RIGHT" );
+	assignGlobalInt( KEY_LEFT, "KEY_LEFT" );
+	assignGlobalInt( KEY_DOWN, "KEY_DOWN" );
+	assignGlobalInt( KEY_UP, "KEY_UP" );
+	assignGlobalInt( KEY_PAGE_UP, "KEY_PAGE_UP" );
+	assignGlobalInt( KEY_PAGE_DOWN, "KEY_PAGE_DOWN" );
+	assignGlobalInt( KEY_HOME, "KEY_HOME" );
+	assignGlobalInt( KEY_END, "KEY_END" );
+	assignGlobalInt( KEY_CAPS_LOCK, "KEY_CAPS_LOCK" );
+	assignGlobalInt( KEY_SCROLL_LOCK, "KEY_SCROLL_LOCK" );
+	assignGlobalInt( KEY_NUM_LOCK, "KEY_NUM_LOCK" );
+	assignGlobalInt( KEY_PRINT_SCREEN, "KEY_PRINT_SCREEN" );
+	assignGlobalInt( KEY_PAUSE, "KEY_PAUSE" );
+	assignGlobalInt( KEY_F1, "KEY_F1" );
+	assignGlobalInt( KEY_F2, "KEY_F2" );
+	assignGlobalInt( KEY_F3, "KEY_F3" );
+	assignGlobalInt( KEY_F4, "KEY_F4" );
+	assignGlobalInt( KEY_F5, "KEY_F5" );
+	assignGlobalInt( KEY_F6, "KEY_F6" );
+	assignGlobalInt( KEY_F7, "KEY_F7" );
+	assignGlobalInt( KEY_F8, "KEY_F8" );
+	assignGlobalInt( KEY_F9, "KEY_F9" );
+	assignGlobalInt( KEY_F10, "KEY_F10" );
+	assignGlobalInt( KEY_F11, "KEY_F11" );
+	assignGlobalInt( KEY_F12, "KEY_F12" );
+	assignGlobalInt( KEY_LEFT_SHIFT, "KEY_LEFT_SHIFT" );
+	assignGlobalInt( KEY_LEFT_CONTROL, "KEY_LEFT_CONTROL" );
+	assignGlobalInt( KEY_LEFT_ALT, "KEY_LEFT_ALT" );
+	assignGlobalInt( KEY_LEFT_SUPER, "KEY_LEFT_SUPER" );
+	assignGlobalInt( KEY_RIGHT_SHIFT, "KEY_RIGHT_SHIFT" );
+	assignGlobalInt( KEY_RIGHT_CONTROL, "KEY_RIGHT_CONTROL" );
+	assignGlobalInt( KEY_RIGHT_ALT, "KEY_RIGHT_ALT" );
+	assignGlobalInt( KEY_RIGHT_SUPER, "KEY_RIGHT_SUPER" );
+	assignGlobalInt( KEY_KB_MENU, "KEY_KB_MENU" );
+	assignGlobalInt( KEY_KP_0, "KEY_KP_0" );
+	assignGlobalInt( KEY_KP_1, "KEY_KP_1" );
+	assignGlobalInt( KEY_KP_2, "KEY_KP_2" );
+	assignGlobalInt( KEY_KP_3, "KEY_KP_3" );
+	assignGlobalInt( KEY_KP_4, "KEY_KP_4" );
+	assignGlobalInt( KEY_KP_5, "KEY_KP_5" );
+	assignGlobalInt( KEY_KP_6, "KEY_KP_6" );
+	assignGlobalInt( KEY_KP_7, "KEY_KP_7" );
+	assignGlobalInt( KEY_KP_8, "KEY_KP_8" );
+	assignGlobalInt( KEY_KP_9, "KEY_KP_9" );
+	assignGlobalInt( KEY_KP_DECIMAL, "KEY_KP_DECIMAL" );
+	assignGlobalInt( KEY_KP_DIVIDE, "KEY_KP_DIVIDE" );
+	assignGlobalInt( KEY_KP_MULTIPLY, "KEY_KP_MULTIPLY" );
+	assignGlobalInt( KEY_KP_SUBTRACT, "KEY_KP_SUBTRACT" );
+	assignGlobalInt( KEY_KP_ADD, "KEY_KP_ADD" );
+	assignGlobalInt( KEY_KP_ENTER, "KEY_KP_ENTER" );
+	assignGlobalInt( KEY_KP_EQUAL, "KEY_KP_EQUAL" );
+	assignGlobalInt( KEY_BACK, "KEY_BACK" );
+	assignGlobalInt( KEY_MENU, "KEY_MENU" );
+	assignGlobalInt( KEY_VOLUME_UP, "KEY_VOLUME_UP" );
+	assignGlobalInt( KEY_VOLUME_DOWN, "KEY_VOLUME_DOWN" );
+	/* MouseButtons */
+	assignGlobalInt( MOUSE_BUTTON_LEFT, "MOUSE_BUTTON_LEFT" );
+	assignGlobalInt( MOUSE_BUTTON_RIGHT, "MOUSE_BUTTON_RIGHT" );
+	assignGlobalInt( MOUSE_BUTTON_MIDDLE, "MOUSE_BUTTON_MIDDLE" );
+	assignGlobalInt( MOUSE_BUTTON_SIDE, "MOUSE_BUTTON_SIDE" );
+	assignGlobalInt( MOUSE_BUTTON_EXTRA, "MOUSE_BUTTON_EXTRA" );
+	assignGlobalInt( MOUSE_BUTTON_FORWARD, "MOUSE_BUTTON_FORWARD" );
+	assignGlobalInt( MOUSE_BUTTON_BACK, "MOUSE_BUTTON_BACK" );
+	/* MouseCursor */
+	assignGlobalInt( MOUSE_CURSOR_DEFAULT, "MOUSE_CURSOR_DEFAULT" );
+	assignGlobalInt( MOUSE_CURSOR_ARROW, "MOUSE_CURSOR_ARROW" );
+	assignGlobalInt( MOUSE_CURSOR_IBEAM, "MOUSE_CURSOR_IBEAM" );
+	assignGlobalInt( MOUSE_CURSOR_CROSSHAIR, "MOUSE_CURSOR_CROSSHAIR" );
+	assignGlobalInt( MOUSE_CURSOR_POINTING_HAND, "MOUSE_CURSOR_POINTING_HAND" );
+	assignGlobalInt( MOUSE_CURSOR_RESIZE_EW, "MOUSE_CURSOR_RESIZE_EW" );
+	assignGlobalInt( MOUSE_CURSOR_RESIZE_NS, "MOUSE_CURSOR_RESIZE_NS" );
+	assignGlobalInt( MOUSE_CURSOR_RESIZE_NWSE, "MOUSE_CURSOR_RESIZE_NWSE" );
+	assignGlobalInt( MOUSE_CURSOR_RESIZE_NESW, "MOUSE_CURSOR_RESIZE_NESW" );
+	assignGlobalInt( MOUSE_CURSOR_RESIZE_ALL, "MOUSE_CURSOR_RESIZE_ALL" );
+	assignGlobalInt( MOUSE_CURSOR_NOT_ALLOWED, "MOUSE_CURSOR_NOT_ALLOWED" );
+	/* GamepadButtons */
+	assignGlobalInt( GAMEPAD_BUTTON_UNKNOWN, "GAMEPAD_BUTTON_UNKNOWN" );
+	assignGlobalInt( GAMEPAD_BUTTON_LEFT_FACE_UP, "GAMEPAD_BUTTON_LEFT_FACE_UP" );
+	assignGlobalInt( GAMEPAD_BUTTON_LEFT_FACE_RIGHT, "GAMEPAD_BUTTON_LEFT_FACE_RIGHT" );
+	assignGlobalInt( GAMEPAD_BUTTON_LEFT_FACE_DOWN, "GAMEPAD_BUTTON_LEFT_FACE_DOWN" );
+	assignGlobalInt( GAMEPAD_BUTTON_LEFT_FACE_LEFT, "GAMEPAD_BUTTON_LEFT_FACE_LEFT" );
+	assignGlobalInt( GAMEPAD_BUTTON_RIGHT_FACE_UP, "GAMEPAD_BUTTON_RIGHT_FACE_UP" );
+	assignGlobalInt( GAMEPAD_BUTTON_RIGHT_FACE_RIGHT, "GAMEPAD_BUTTON_RIGHT_FACE_RIGHT" );
+	assignGlobalInt( GAMEPAD_BUTTON_RIGHT_FACE_DOWN, "GAMEPAD_BUTTON_RIGHT_FACE_DOWN" );
+	assignGlobalInt( GAMEPAD_BUTTON_RIGHT_FACE_LEFT, "GAMEPAD_BUTTON_RIGHT_FACE_LEFT" );
+	assignGlobalInt( GAMEPAD_BUTTON_LEFT_TRIGGER_1, "GAMEPAD_BUTTON_LEFT_TRIGGER_1" );
+	assignGlobalInt( GAMEPAD_BUTTON_LEFT_TRIGGER_2, "GAMEPAD_BUTTON_LEFT_TRIGGER_2" );
+	assignGlobalInt( GAMEPAD_BUTTON_RIGHT_TRIGGER_1, "GAMEPAD_BUTTON_RIGHT_TRIGGER_1" );
+	assignGlobalInt( GAMEPAD_BUTTON_RIGHT_TRIGGER_2, "GAMEPAD_BUTTON_RIGHT_TRIGGER_2" );
+	assignGlobalInt( GAMEPAD_BUTTON_MIDDLE_LEFT, "GAMEPAD_BUTTON_MIDDLE_LEFT" );
+	assignGlobalInt( GAMEPAD_BUTTON_MIDDLE, "GAMEPAD_BUTTON_MIDDLE" );
+	assignGlobalInt( GAMEPAD_BUTTON_MIDDLE_RIGHT, "GAMEPAD_BUTTON_MIDDLE_RIGHT" );
+	assignGlobalInt( GAMEPAD_BUTTON_LEFT_THUMB, "GAMEPAD_BUTTON_LEFT_THUMB" );
+	assignGlobalInt( GAMEPAD_BUTTON_RIGHT_THUMB, "GAMEPAD_BUTTON_RIGHT_THUMB" );
+	/* GamepadAxis */
+	assignGlobalInt( GAMEPAD_AXIS_LEFT_X, "GAMEPAD_AXIS_LEFT_X" );
+	assignGlobalInt( GAMEPAD_AXIS_LEFT_Y, "GAMEPAD_AXIS_LEFT_Y" );
+	assignGlobalInt( GAMEPAD_AXIS_RIGHT_X, "GAMEPAD_AXIS_RIGHT_X" );
+	assignGlobalInt( GAMEPAD_AXIS_RIGHT_Y, "GAMEPAD_AXIS_RIGHT_Y" );
+	assignGlobalInt( GAMEPAD_AXIS_LEFT_TRIGGER, "GAMEPAD_AXIS_LEFT_TRIGGER" );
+	assignGlobalInt( GAMEPAD_AXIS_RIGHT_TRIGGER, "GAMEPAD_AXIS_RIGHT_TRIGGER" );
 	/* MapTypes */
 	assignGlobalInt( MATERIAL_MAP_ALBEDO, "MATERIAL_MAP_ALBEDO" );
 	assignGlobalInt( MATERIAL_MAP_METALNESS, "MATERIAL_MAP_METALNESS" );
@@ -90,31 +224,8 @@ void defineGlobals() {
 	assignGlobalInt( MATERIAL_MAP_IRRADIANCE, "MATERIAL_MAP_IRRADIANCE" );
 	assignGlobalInt( MATERIAL_MAP_PREFILTER, "MATERIAL_MAP_PREFILTER" );
 	assignGlobalInt( MATERIAL_MAP_BRDF, "MATERIAL_MAP_BRDF" );
-	/* TextureFilters */
-	assignGlobalInt( TEXTURE_FILTER_POINT, "TEXTURE_FILTER_POINT" );
-	assignGlobalInt( TEXTURE_FILTER_BILINEAR, "TEXTURE_FILTER_BILINEAR" );
-	assignGlobalInt( TEXTURE_FILTER_TRILINEAR, "TEXTURE_FILTER_TRILINEAR" );
-	assignGlobalInt( TEXTURE_FILTER_ANISOTROPIC_4X, "TEXTURE_FILTER_ANISOTROPIC_4X" );
-	assignGlobalInt( TEXTURE_FILTER_ANISOTROPIC_8X, "TEXTURE_FILTER_ANISOTROPIC_8X" );
-	assignGlobalInt( TEXTURE_FILTER_ANISOTROPIC_16X, "TEXTURE_FILTER_ANISOTROPIC_16X" );
-	/* TextureWrapModes */
-	assignGlobalInt( TEXTURE_WRAP_REPEAT, "TEXTURE_WRAP_REPEAT" );
-	assignGlobalInt( TEXTURE_WRAP_CLAMP, "TEXTURE_WRAP_CLAMP" );
-	assignGlobalInt( TEXTURE_WRAP_MIRROR_REPEAT, "TEXTURE_WRAP_MIRROR_REPEAT" );
-	assignGlobalInt( TEXTURE_WRAP_MIRROR_CLAMP, "TEXTURE_WRAP_MIRROR_CLAMP" );
-	/* TraceLogLevel */
-	assignGlobalInt( LOG_ALL, "LOG_ALL" );
-	assignGlobalInt( LOG_TRACE, "LOG_TRACE" );
-	assignGlobalInt( LOG_DEBUG, "LOG_DEBUG" );
-	assignGlobalInt( LOG_INFO, "LOG_INFO" );
-	assignGlobalInt( LOG_WARNING, "LOG_WARNING" );
-	assignGlobalInt( LOG_ERROR, "LOG_ERROR" );
-	assignGlobalInt( LOG_FATAL, "LOG_FATAL" );
-	assignGlobalInt( LOG_NONE, "LOG_NONE" );
-	/* N-patchLayout */
-	assignGlobalInt( NPATCH_NINE_PATCH, "NPATCH_NINE_PATCH" );
-	assignGlobalInt( NPATCH_THREE_PATCH_VERTICAL, "NPATCH_THREE_PATCH_VERTICAL" );
-	assignGlobalInt( NPATCH_THREE_PATCH_HORIZONTAL, "NPATCH_THREE_PATCH_HORIZONTAL" );
+	assignGlobalInt( MATERIAL_MAP_DIFFUSE, "MATERIAL_MAP_DIFFUSE" );
+	assignGlobalInt( MATERIAL_MAP_SPECULAR, "MATERIAL_MAP_SPECULAR" );
 	/* ShaderLocationIndex */
 	assignGlobalInt( SHADER_LOC_VERTEX_POSITION, "SHADER_LOC_VERTEX_POSITION" );
 	assignGlobalInt( SHADER_LOC_VERTEX_TEXCOORD01, "SHADER_LOC_VERTEX_TEXCOORD01" );
@@ -142,6 +253,8 @@ void defineGlobals() {
 	assignGlobalInt( SHADER_LOC_MAP_IRRADIANCE, "SHADER_LOC_MAP_IRRADIANCE" );
 	assignGlobalInt( SHADER_LOC_MAP_PREFILTER, "SHADER_LOC_MAP_PREFILTER" );
 	assignGlobalInt( SHADER_LOC_MAP_BRDF, "SHADER_LOC_MAP_BRDF" );
+	assignGlobalInt( SHADER_LOC_MAP_DIFFUSE, "SHADER_LOC_MAP_DIFFUSE" );
+	assignGlobalInt( SHADER_LOC_MAP_SPECULAR, "SHADER_LOC_MAP_SPECULAR" );
 	/* ShaderUniformDataType */
 	assignGlobalInt( SHADER_UNIFORM_FLOAT, "SHADER_UNIFORM_FLOAT" );
 	assignGlobalInt( SHADER_UNIFORM_VEC2, "SHADER_UNIFORM_VEC2" );
@@ -157,18 +270,6 @@ void defineGlobals() {
 	assignGlobalInt( SHADER_ATTRIB_VEC2, "SHADER_ATTRIB_VEC2" );
 	assignGlobalInt( SHADER_ATTRIB_VEC3, "SHADER_ATTRIB_VEC3" );
 	assignGlobalInt( SHADER_ATTRIB_VEC4, "SHADER_ATTRIB_VEC4" );
-	/* Gesture */
-	assignGlobalInt( GESTURE_NONE, "GESTURE_NONE" );
-	assignGlobalInt( GESTURE_TAP, "GESTURE_TAP" );
-	assignGlobalInt( GESTURE_DOUBLETAP, "GESTURE_DOUBLETAP" );
-	assignGlobalInt( GESTURE_HOLD, "GESTURE_HOLD" );
-	assignGlobalInt( GESTURE_DRAG, "GESTURE_DRAG" );
-	assignGlobalInt( GESTURE_SWIPE_RIGHT, "GESTURE_SWIPE_RIGHT" );
-	assignGlobalInt( GESTURE_SWIPE_LEFT, "GESTURE_SWIPE_LEFT" );
-	assignGlobalInt( GESTURE_SWIPE_UP, "GESTURE_SWIPE_UP" );
-	assignGlobalInt( GESTURE_SWIPE_DOWN, "GESTURE_SWIPE_DOWN" );
-	assignGlobalInt( GESTURE_PINCH_IN, "GESTURE_PINCH_IN" );
-	assignGlobalInt( GESTURE_PINCH_OUT, "GESTURE_PINCH_OUT" );
 	/* PixelFormats */
 	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_GRAYSCALE, "PIXELFORMAT_UNCOMPRESSED_GRAYSCALE" );
 	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA, "PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA" );
@@ -191,6 +292,64 @@ void defineGlobals() {
 	assignGlobalInt( PIXELFORMAT_COMPRESSED_PVRT_RGBA, "PIXELFORMAT_COMPRESSED_PVRT_RGBA" );
 	assignGlobalInt( PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA, "PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA" );
 	assignGlobalInt( PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA, "PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA" );
+	/* TextureFilters */
+	assignGlobalInt( TEXTURE_FILTER_POINT, "TEXTURE_FILTER_POINT" );
+	assignGlobalInt( TEXTURE_FILTER_BILINEAR, "TEXTURE_FILTER_BILINEAR" );
+	assignGlobalInt( TEXTURE_FILTER_TRILINEAR, "TEXTURE_FILTER_TRILINEAR" );
+	assignGlobalInt( TEXTURE_FILTER_ANISOTROPIC_4X, "TEXTURE_FILTER_ANISOTROPIC_4X" );
+	assignGlobalInt( TEXTURE_FILTER_ANISOTROPIC_8X, "TEXTURE_FILTER_ANISOTROPIC_8X" );
+	assignGlobalInt( TEXTURE_FILTER_ANISOTROPIC_16X, "TEXTURE_FILTER_ANISOTROPIC_16X" );
+	/* TextureWrap */
+	assignGlobalInt( TEXTURE_WRAP_REPEAT, "TEXTURE_WRAP_REPEAT" );
+	assignGlobalInt( TEXTURE_WRAP_CLAMP, "TEXTURE_WRAP_CLAMP" );
+	assignGlobalInt( TEXTURE_WRAP_MIRROR_REPEAT, "TEXTURE_WRAP_MIRROR_REPEAT" );
+	assignGlobalInt( TEXTURE_WRAP_MIRROR_CLAMP, "TEXTURE_WRAP_MIRROR_CLAMP" );
+	/* CubemapLayout */
+	assignGlobalInt( CUBEMAP_LAYOUT_AUTO_DETECT, "CUBEMAP_LAYOUT_AUTO_DETECT" );
+	assignGlobalInt( CUBEMAP_LAYOUT_LINE_VERTICAL, "CUBEMAP_LAYOUT_LINE_VERTICAL" );
+	assignGlobalInt( CUBEMAP_LAYOUT_LINE_HORIZONTAL, "CUBEMAP_LAYOUT_LINE_HORIZONTAL" );
+	assignGlobalInt( CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR, "CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR" );
+	assignGlobalInt( CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE, "CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE" );
+	assignGlobalInt( CUBEMAP_LAYOUT_PANORAMA, "CUBEMAP_LAYOUT_PANORAMA" );
+	/* FontType */
+	assignGlobalInt( FONT_DEFAULT, "FONT_DEFAULT" );
+	assignGlobalInt( FONT_BITMAP, "FONT_BITMAP" );
+	assignGlobalInt( FONT_SDF, "FONT_SDF" );
+	/* BlendModes */
+	assignGlobalInt( BLEND_ALPHA, "BLEND_ALPHA" );
+	assignGlobalInt( BLEND_ADDITIVE, "BLEND_ADDITIVE" );
+	assignGlobalInt( BLEND_MULTIPLIED, "BLEND_MULTIPLIED" );
+	assignGlobalInt( BLEND_ADD_COLORS, "BLEND_ADD_COLORS" );
+	assignGlobalInt( BLEND_SUBTRACT_COLORS, "BLEND_SUBTRACT_COLORS" );
+	assignGlobalInt( BLEND_CUSTOM, "BLEND_CUSTOM" );
+	/* Gesture */
+	assignGlobalInt( GESTURE_NONE, "GESTURE_NONE" );
+	assignGlobalInt( GESTURE_TAP, "GESTURE_TAP" );
+	assignGlobalInt( GESTURE_DOUBLETAP, "GESTURE_DOUBLETAP" );
+	assignGlobalInt( GESTURE_HOLD, "GESTURE_HOLD" );
+	assignGlobalInt( GESTURE_DRAG, "GESTURE_DRAG" );
+	assignGlobalInt( GESTURE_SWIPE_RIGHT, "GESTURE_SWIPE_RIGHT" );
+	assignGlobalInt( GESTURE_SWIPE_LEFT, "GESTURE_SWIPE_LEFT" );
+	assignGlobalInt( GESTURE_SWIPE_UP, "GESTURE_SWIPE_UP" );
+	assignGlobalInt( GESTURE_SWIPE_DOWN, "GESTURE_SWIPE_DOWN" );
+	assignGlobalInt( GESTURE_PINCH_IN, "GESTURE_PINCH_IN" );
+	assignGlobalInt( GESTURE_PINCH_OUT, "GESTURE_PINCH_OUT" );
+	/* CameraMode */
+	assignGlobalInt( CAMERA_CUSTOM, "CAMERA_CUSTOM" );
+	assignGlobalInt( CAMERA_FREE, "CAMERA_FREE" );
+	assignGlobalInt( CAMERA_ORBITAL, "CAMERA_ORBITAL" );
+	assignGlobalInt( CAMERA_FIRST_PERSON, "CAMERA_FIRST_PERSON" );
+	assignGlobalInt( CAMERA_THIRD_PERSON, "CAMERA_THIRD_PERSON" );
+	/* CameraProjections */
+	assignGlobalInt( CAMERA_PERSPECTIVE, "CAMERA_PERSPECTIVE" );
+	assignGlobalInt( CAMERA_ORTHOGRAPHIC, "CAMERA_ORTHOGRAPHIC" );
+	/* N-patchLayout */
+	assignGlobalInt( NPATCH_NINE_PATCH, "NPATCH_NINE_PATCH" );
+	assignGlobalInt( NPATCH_THREE_PATCH_VERTICAL, "NPATCH_THREE_PATCH_VERTICAL" );
+	assignGlobalInt( NPATCH_THREE_PATCH_HORIZONTAL, "NPATCH_THREE_PATCH_HORIZONTAL" );
+	/* TextureModes */
+	assignGlobalInt( TEXTURE_SOURCE_TEXTURE, "TEXTURE_SOURCE_TEXTURE" );
+	assignGlobalInt( TEXTURE_SOURCE_RENDER_TEXTURE, "TEXTURE_SOURCE_RENDER_TEXTURE" );
 	/* Colors */
 	assignGlobalColor( WHITE, "WHITE" );
 	assignGlobalColor( BLACK, "BLACK" );
@@ -213,7 +372,7 @@ void defineGlobals() {
 	assignGlobalInt( GUI_TEXT_ALIGN_LEFT, "GUI_TEXT_ALIGN_LEFT" );
 	assignGlobalInt( GUI_TEXT_ALIGN_CENTER, "GUI_TEXT_ALIGN_CENTER" );
 	assignGlobalInt( GUI_TEXT_ALIGN_RIGHT, "GUI_TEXT_ALIGN_RIGHT" );
-	/* GuiControls */
+	/* GuiControl */
 	assignGlobalInt( DEFAULT, "DEFAULT" );
 	assignGlobalInt( LABEL, "LABEL" );
 	assignGlobalInt( BUTTON, "BUTTON" );
@@ -259,6 +418,13 @@ void defineGlobals() {
 	assignGlobalInt( SLIDER_PADDING, "SLIDER_PADDING" );
 	/* GuiProgressBarProperty */
 	assignGlobalInt( PROGRESS_PADDING, "PROGRESS_PADDING" );
+	/* GuiScrollBarProperty */
+	assignGlobalInt( ARROWS_SIZE, "ARROWS_SIZE" );
+	assignGlobalInt( ARROWS_VISIBLE, "ARROWS_VISIBLE" );
+	assignGlobalInt( SCROLL_SLIDER_PADDING, "SCROLL_SLIDER_PADDING" );
+	assignGlobalInt( SCROLL_SLIDER_SIZE, "SCROLL_SLIDER_SIZE" );
+	assignGlobalInt( SCROLL_PADDING, "SCROLL_PADDING" );
+	assignGlobalInt( SCROLL_SPEED, "SCROLL_SPEED" );
 	/* GuiCheckBoxProperty */
 	assignGlobalInt( CHECK_PADDING, "CHECK_PADDING" );
 	/* GuiComboBoxProperty */
@@ -273,13 +439,6 @@ void defineGlobals() {
 	/* GuiSpinnerProperty */
 	assignGlobalInt( SPIN_BUTTON_WIDTH, "SPIN_BUTTON_WIDTH" );
 	assignGlobalInt( SPIN_BUTTON_SPACING, "SPIN_BUTTON_SPACING" );
-	/* GuiScrollBarProperty */
-	assignGlobalInt( ARROWS_SIZE, "ARROWS_SIZE" );
-	assignGlobalInt( ARROWS_VISIBLE, "ARROWS_VISIBLE" );
-	assignGlobalInt( SCROLL_SLIDER_PADDING, "SCROLL_SLIDER_PADDING" );
-	assignGlobalInt( SCROLL_SLIDER_SIZE, "SCROLL_SLIDER_SIZE" );
-	assignGlobalInt( SCROLL_PADDING, "SCROLL_PADDING" );
-	assignGlobalInt( SCROLL_SPEED, "SCROLL_SPEED" );
 	/* GuiListViewProperty */
 	assignGlobalInt( LIST_ITEMS_HEIGHT, "LIST_ITEMS_HEIGHT" );
 	assignGlobalInt( LIST_ITEMS_SPACING, "LIST_ITEMS_SPACING" );
@@ -712,8 +871,9 @@ void luaRegister() {
 		/* Texture Loading. */
 	lua_register( L, "RL_LoadTexture", ltexturesLoadTexture );
 	lua_register( L, "RL_LoadTextureFromImage", ltexturesLoadTextureFromImage );
-	lua_register( L, "RL_UnloadTexture", ltexturesUnloadTexture );
+	lua_register( L, "RL_LoadTextureCubemap", ltexturesLoadTextureCubemap );
 	lua_register( L, "RL_LoadRenderTexture", ltexturesLoadRenderTexture );
+	lua_register( L, "RL_UnloadTexture", ltexturesUnloadTexture );
 	lua_register( L, "RL_UnloadRenderTexture", ltexturesUnloadRenderTexture );
 	lua_register( L, "RL_UpdateTexture", ltexturesUpdateTexture );
 	lua_register( L, "RL_UpdateTextureRec", ltexturesUpdateTextureRec );

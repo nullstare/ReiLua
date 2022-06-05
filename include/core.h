@@ -115,13 +115,19 @@ int lcoreGetCamera3DFovy( lua_State *L );
 int lcoreGetCamera3DProjection( lua_State *L );
 int lcoreUpdateCamera3D( lua_State *L );
 int lcoreSetCamera3DMode( lua_State *L );
-/* Input. */
+int lcoreSetCameraPanControl( lua_State *L );
+int lcoreSetCameraAltControl( lua_State *L );
+int lcoreSetCameraSmoothZoomControl( lua_State *L );
+int lcoreSetCameraMoveControls( lua_State *L );
+/* Input-related Keyboard. */
 int lcoreIsKeyPressed( lua_State *L );
 int lcoreIsKeyDown( lua_State *L );
 int lcoreIsKeyReleased( lua_State *L );
+int lcoreIsKeyUp( lua_State *L );
 int lcoreGetKeyPressed( lua_State *L );
 int lcoreGetCharPressed( lua_State *L );
 int lcoreSetExitKey( lua_State *L );
+/* Input-related Gamepad. */
 int lcoreIsGamepadAvailable( lua_State *L );
 int lcoreIsGamepadButtonPressed( lua_State *L );
 int lcoreIsGamepadButtonDown( lua_State *L );
@@ -129,16 +135,23 @@ int lcoreIsGamepadButtonReleased( lua_State *L );
 int lcoreGetGamepadAxisCount( lua_State *L );
 int lcoreGetGamepadAxisMovement( lua_State *L );
 int lcoreGetGamepadName( lua_State *L );
+/* Input-related Mouse. */
 int lcoreIsMouseButtonPressed( lua_State *L );
 int lcoreIsMouseButtonDown( lua_State *L );
 int lcoreIsMouseButtonReleased( lua_State *L );
+int lcoreIsMouseButtonUp( lua_State *L );
 int lcoreGetMousePosition( lua_State *L );
 int lcoreGetMouseDelta( lua_State *L );
-int lcoreGetMouseWheelMove( lua_State *L );
 int lcoreSetMousePosition( lua_State *L );
+int lcoreSetMouseOffset( lua_State *L );
+int lcoreSetMouseScale( lua_State *L );
+int lcoreGetMouseWheelMove( lua_State *L );
+int lcoreSetMouseCursor( lua_State *L );
+/* Input-related Touch */
 int lcoreGetTouchPosition( lua_State *L );
 int lcoreGetTouchPointId( lua_State *L );
 int lcoreGetTouchPointCount( lua_State *L );
+/* Input-related Gestures. */
 int lcoreSetGesturesEnabled( lua_State *L );
 int lcoreIsGestureDetected( lua_State *L );
 int lcoreGetGestureDetected( lua_State *L );

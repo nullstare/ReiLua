@@ -1304,7 +1304,7 @@ int lcoreUnloadShader( lua_State *L ) {
 }
 
 /*
-## Core - Input
+## Core - Input-related Keyboard
 */
 
 /*
@@ -1362,6 +1362,24 @@ int lcoreIsKeyReleased( lua_State *L ) {
 }
 
 /*
+> released = RL_IsKeyUp( int key )
+
+Check if a key is NOT being pressed
+
+- Failure return nil
+- Success return bool
+*/
+int lcoreIsKeyUp( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_IsKeyUp( int key )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	lua_pushboolean( L, IsKeyUp( lua_tointeger( L, -1 ) ) );
+	return 1;
+}
+
+/*
 > keycode = RL_GetKeyPressed()
 
 Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
@@ -1402,6 +1420,10 @@ int lcoreSetExitKey( lua_State *L ) {
 
 	return 1;
 }
+
+/*
+## Core - Input-related Gamepad
+*/
 
 /*
 > available = RL_IsGamepadAvailable( int gamepad )
@@ -1530,6 +1552,10 @@ int lcoreGetGamepadName( lua_State *L ) {
 }
 
 /*
+## Core - Input-related Mouse
+*/
+
+/*
 > pressed = RL_IsMouseButtonPressed( int button )
 
 Detect if a mouse button has been pressed once
@@ -1584,6 +1610,24 @@ int lcoreIsMouseButtonReleased( lua_State *L ) {
 }
 
 /*
+> released = RL_IsMouseButtonUp( int button )
+
+Check if a mouse button is NOT being pressed
+
+- Failure return nil
+- Success return bool
+*/
+int lcoreIsMouseButtonUp( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_IsMouseButtonUp( int button )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	lua_pushboolean( L, IsMouseButtonUp( lua_tointeger( L, -1 ) ) );
+	return 1;
+}
+
+/*
 > position = RL_GetMousePosition()
 
 Returns mouse position
@@ -1608,18 +1652,6 @@ int lcoreGetMouseDelta( lua_State *L ) {
 }
 
 /*
-> movement = RL_GetMouseWheelMove()
-
-Returns mouse wheel movement Y
-
-- Success return float
-*/
-int lcoreGetMouseWheelMove( lua_State *L ) {
-	lua_pushnumber( L, GetMouseWheelMove() );
-	return 1;
-}
-
-/*
 > success = RL_SetMousePosition( Vector2 position )
 
 Set mouse position XY
@@ -1640,6 +1672,86 @@ int lcoreSetMousePosition( lua_State *L ) {
 
 	return 1;
 }
+
+/*
+> success = RL_SetMouseOffset( Vector2 offset )
+
+Set mouse offset
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetMouseOffset( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetMouseOffset( Vector2 offset )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 offset = uluaGetVector2( L );
+
+	SetMouseOffset( offset.x, offset.y );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_SetMouseScale( Vector2 scale )
+
+Set mouse scaling
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetMouseScale( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetMouseScale( Vector2 scale )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 scale = uluaGetVector2( L );
+
+	SetMouseScale( scale.x, scale.y );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> movement = RL_GetMouseWheelMove()
+
+Returns mouse wheel movement Y
+
+- Success return float
+*/
+int lcoreGetMouseWheelMove( lua_State *L ) {
+	lua_pushnumber( L, GetMouseWheelMove() );
+	return 1;
+}
+
+/*
+> success = RL_SetMouseCursor( int cursor )
+
+Set mouse cursor
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetMouseCursor( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetMouseCursor( int cursor )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	SetMouseCursor( lua_tointeger( L, -1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+## Core - Input-related Touch
+*/
 
 /*
 > position = RL_GetTouchPosition( int index )
@@ -1691,6 +1803,10 @@ int lcoreGetTouchPointCount( lua_State *L ) {
 
 	return 1;
 }
+
+/*
+## Core - Input-related Gestures
+*/
 
 /*
 > success = RL_SetGesturesEnabled( unsigned int flags )
@@ -2806,6 +2922,94 @@ int lcoreUpdateCamera3D( lua_State *L ) {
 	}
 
 	UpdateCamera( state->camera3Ds[ cameraId ] );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_SetCameraPanControl( int keyPan )
+
+Set camera pan key to combine with mouse movement ( free camera )
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetCameraPanControl( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetCameraPanControl( int keyPan )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	SetCameraPanControl( lua_tointeger( L, -1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_SetCameraAltControl( int keyAlt )
+
+Set camera alt key to combine with mouse movement ( free camera )
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetCameraAltControl( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetCameraAltControl( int keyAlt )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	SetCameraAltControl( lua_tointeger( L, -1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_SetCameraSmoothZoomControl( int keySmoothZoom )
+
+Set camera smooth zoom key to combine with mouse ( free camera )
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetCameraSmoothZoomControl( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetCameraSmoothZoomControl( int keySmoothZoom )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	SetCameraSmoothZoomControl( lua_tointeger( L, -1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_SetCameraMoveControls( int keyFront, int keyBack, int keyRight, int keyLeft, int keyUp, int keyDown )
+
+Set camera move controls ( 1st person and 3rd person cameras )
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetCameraMoveControls( lua_State *L ) {
+	if ( !lua_isnumber( L, -6 ) || !lua_isnumber( L, -5 ) || !lua_isnumber( L, -4 )
+	|| !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetCameraMoveControls( int keyFront, int keyBack, int keyRight, int keyLeft, int keyUp, int keyDown )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int keyDown = lua_tointeger( L, -1 );
+	int keyUp = lua_tointeger( L, -2 );
+	int keyLeft = lua_tointeger( L, -3 );
+	int keyRight = lua_tointeger( L, -4 );
+	int keyBack = lua_tointeger( L, -5 );
+	int keyFront = lua_tointeger( L, -6 );
+
+	SetCameraMoveControls( keyFront, keyBack, keyRight, keyLeft, keyUp, keyDown );
 	lua_pushboolean( L, true );
 
 	return 1;

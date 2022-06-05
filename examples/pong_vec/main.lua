@@ -70,9 +70,9 @@ end
 
 function process( delta )
 	-- Left player controls.
-	if RL_IsKeyDown( string.byte( "W" ) ) and 0 < playerLeft.pos.y then
+	if RL_IsKeyDown( KEY_W ) and 0 < playerLeft.pos.y then
 		playerLeft.pos.y = playerLeft.pos.y - PLAYER_SPEED * delta
-	elseif RL_IsKeyDown( string.byte( "S" ) ) and playerLeft.pos.y + playerLeft.size.y < winSize.y then
+	elseif RL_IsKeyDown( KEY_S ) and playerLeft.pos.y + playerLeft.size.y < winSize.y then
 		playerLeft.pos.y = playerLeft.pos.y + PLAYER_SPEED * delta
 	end
 

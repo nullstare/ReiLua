@@ -747,13 +747,19 @@ void luaRegister() {
 	lua_register( L, "RL_GetCamera3DProjection", lcoreGetCamera3DProjection );
 	lua_register( L, "RL_UpdateCamera3D", lcoreUpdateCamera3D );
 	lua_register( L, "RL_SetCamera3DMode", lcoreSetCamera3DMode );
-		/* Input. */
+	lua_register( L, "RL_SetCameraPanControl", lcoreSetCameraPanControl );
+	lua_register( L, "RL_SetCameraAltControl", lcoreSetCameraAltControl );
+	lua_register( L, "RL_SetCameraSmoothZoomControl", lcoreSetCameraSmoothZoomControl );
+	lua_register( L, "RL_SetCameraMoveControls", lcoreSetCameraMoveControls );
+		/* Input-related Keyboard. */
 	lua_register( L, "RL_IsKeyPressed", lcoreIsKeyPressed );
 	lua_register( L, "RL_IsKeyDown", lcoreIsKeyDown );
 	lua_register( L, "RL_IsKeyReleased", lcoreIsKeyReleased );
+	lua_register( L, "RL_IsKeyUp", lcoreIsKeyUp );
 	lua_register( L, "RL_GetKeyPressed", lcoreGetKeyPressed );
 	lua_register( L, "RL_GetCharPressed", lcoreGetCharPressed );
 	lua_register( L, "RL_SetExitKey", lcoreSetExitKey );
+		/* Input-related Gamepad. */
 	lua_register( L, "RL_IsGamepadAvailable", lcoreIsGamepadAvailable );
 	lua_register( L, "RL_IsGamepadButtonPressed", lcoreIsGamepadButtonPressed );
 	lua_register( L, "RL_IsGamepadButtonDown", lcoreIsGamepadButtonDown );
@@ -761,16 +767,23 @@ void luaRegister() {
 	lua_register( L, "RL_GetGamepadAxisCount", lcoreGetGamepadAxisCount );
 	lua_register( L, "RL_GetGamepadAxisMovement", lcoreGetGamepadAxisMovement );
 	lua_register( L, "RL_GetGamepadName", lcoreGetGamepadName );
+		/* Input-related Mouse. */
 	lua_register( L, "RL_IsMouseButtonPressed", lcoreIsMouseButtonPressed );
 	lua_register( L, "RL_IsMouseButtonDown", lcoreIsMouseButtonDown );
 	lua_register( L, "RL_IsMouseButtonReleased", lcoreIsMouseButtonReleased );
+	lua_register( L, "RL_IsMouseButtonUp", lcoreIsMouseButtonUp );
 	lua_register( L, "RL_GetMousePosition", lcoreGetMousePosition );
 	lua_register( L, "RL_GetMouseDelta", lcoreGetMouseDelta );
-	lua_register( L, "RL_GetMouseWheelMove", lcoreGetMouseWheelMove );
 	lua_register( L, "RL_SetMousePosition", lcoreSetMousePosition );
+	lua_register( L, "RL_SetMouseOffset", lcoreSetMouseOffset );
+	lua_register( L, "RL_SetMouseScale", lcoreSetMouseScale );
+	lua_register( L, "RL_GetMouseWheelMove", lcoreGetMouseWheelMove );
+	lua_register( L, "RL_SetMouseCursor", lcoreSetMouseCursor );
+		/* Input-related Touch */
 	lua_register( L, "RL_GetTouchPosition", lcoreGetTouchPosition );
 	lua_register( L, "RL_GetTouchPointId", lcoreGetTouchPointId );
 	lua_register( L, "RL_GetTouchPointCount", lcoreGetTouchPointCount );
+		/* Input-related Gestures. */
 	lua_register( L, "RL_SetGesturesEnabled", lcoreSetGesturesEnabled );
 	lua_register( L, "RL_IsGestureDetected", lcoreIsGestureDetected );
 	lua_register( L, "RL_GetGestureDetected", lcoreGetGestureDetected );

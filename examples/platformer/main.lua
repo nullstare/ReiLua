@@ -103,7 +103,7 @@ end
 local function tileCollision( entity )
 	local vPos = entity.pos + entity.vel -- Future pos with current vel.
 	local vRect = util.tableClone( entity.colRect )
-	local tinyGap = 0.001 -- Tiny slit between collisionRect and tile to prevent getting stuck on all seams.
+	local tinyGap = 0.001 -- Tiny gap between collisionRect and tile to prevent getting stuck on all seams.
 
 	-- Move test rect to predicted position.
 	vRect[1] = vPos.x - vRect[3] / 2

@@ -1558,7 +1558,7 @@ Unload shader from GPU memory ( VRAM )
 
 ---
 
-## Core - Input
+## Core - Input-related Keyboard
 
 ---
 
@@ -1589,6 +1589,15 @@ Detect if a key has been released once
 
 ---
 
+> released = RL_IsKeyUp( int key )
+
+Check if a key is NOT being pressed
+
+- Failure return nil
+- Success return bool
+
+---
+
 > keycode = RL_GetKeyPressed()
 
 Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
@@ -1608,6 +1617,10 @@ Get char pressed (unicode), call it multiple times for chars queued, returns 0 w
 > RL_SetExitKey( int key )
 
 Set a custom key to exit program ( default is ESC )
+
+---
+
+## Core - Input-related Gamepad
 
 ---
 
@@ -1674,6 +1687,10 @@ Return gamepad internal name id
 
 ---
 
+## Core - Input-related Mouse
+
+---
+
 > pressed = RL_IsMouseButtonPressed( int button )
 
 Detect if a mouse button has been pressed once
@@ -1701,6 +1718,15 @@ Detect if a mouse button has been released once
 
 ---
 
+> released = RL_IsMouseButtonUp( int button )
+
+Check if a mouse button is NOT being pressed
+
+- Failure return nil
+- Success return bool
+
+---
+
 > position = RL_GetMousePosition()
 
 Returns mouse position
@@ -1717,6 +1743,33 @@ Get mouse delta between frames
 
 ---
 
+> success = RL_SetMousePosition( Vector2 position )
+
+Set mouse position XY
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_SetMouseOffset( Vector2 offset )
+
+Set mouse offset
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_SetMouseScale( Vector2 scale )
+
+Set mouse scaling
+
+- Failure return false
+- Success return true
+
+---
+
 > movement = RL_GetMouseWheelMove()
 
 Returns mouse wheel movement Y
@@ -1725,12 +1778,16 @@ Returns mouse wheel movement Y
 
 ---
 
-> success = RL_SetMousePosition( Vector2 position )
+> success = RL_SetMouseCursor( int cursor )
 
-Set mouse position XY
+Set mouse cursor
 
 - Failure return false
 - Success return true
+
+---
+
+## Core - Input-related Touch
 
 ---
 
@@ -1757,6 +1814,10 @@ Get touch point identifier for given index
 Get touch point identifier for given index
 
 - Success return int
+
+---
+
+## Core - Input-related Gestures
 
 ---
 
@@ -2207,6 +2268,42 @@ Get camera projection mode
 > success = RL_UpdateCamera3D( camera3D camera )
 
 Update camera position for selected mode
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_SetCameraPanControl( int keyPan )
+
+Set camera pan key to combine with mouse movement ( free camera )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_SetCameraAltControl( int keyAlt )
+
+Set camera alt key to combine with mouse movement ( free camera )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_SetCameraSmoothZoomControl( int keySmoothZoom )
+
+Set camera smooth zoom key to combine with mouse ( free camera )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_SetCameraMoveControls( int keyFront, int keyBack, int keyRight, int keyLeft, int keyUp, int keyDown )
+
+Set camera move controls ( 1st person and 3rd person cameras )
 
 - Failure return false
 - Success return true

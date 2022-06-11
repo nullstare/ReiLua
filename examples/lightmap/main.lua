@@ -21,7 +21,7 @@ function init()
 	camera = RL_CreateCamera3D()
 	RL_SetCamera3DPosition( camera, { 0, 8, 16 } )
 	RL_SetCamera3DTarget( camera, { 0, 0, 0 } )
-	RL_SetCamera3DUp( camera, { 0, 2, 0 } )
+	RL_SetCamera3DUp( camera, { 0, 1, 0 } )
 	RL_SetCamera3DMode( camera, CAMERA_FREE )
 
 	local ts = PLANE_SIZE

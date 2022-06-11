@@ -351,14 +351,32 @@ void defineGlobals() {
 	assignGlobalInt( TEXTURE_SOURCE_TEXTURE, "TEXTURE_SOURCE_TEXTURE" );
 	assignGlobalInt( TEXTURE_SOURCE_RENDER_TEXTURE, "TEXTURE_SOURCE_RENDER_TEXTURE" );
 	/* Colors */
+	assignGlobalColor( LIGHTGRAY, "LIGHTGRAY" );
+	assignGlobalColor( GRAY, "GRAY" );
+	assignGlobalColor( DARKGRAY, "DARKGRAY" );
+	assignGlobalColor( YELLOW, "YELLOW" );
+	assignGlobalColor( GOLD, "GOLD" );
+	assignGlobalColor( ORANGE, "ORANGE" );
+	assignGlobalColor( PINK, "PINK" );
+	assignGlobalColor( RED, "RED" );
+	assignGlobalColor( MAROON, "MAROON" );
+	assignGlobalColor( GREEN, "GREEN" );
+	assignGlobalColor( LIME, "LIME" );
+	assignGlobalColor( DARKGREEN, "DARKGREEN" );
+	assignGlobalColor( SKYBLUE, "SKYBLUE" );
+	assignGlobalColor( BLUE, "BLUE" );
+	assignGlobalColor( DARKBLUE, "DARKBLUE" );
+	assignGlobalColor( PURPLE, "PURPLE" );
+	assignGlobalColor( VIOLET, "VIOLET" );
+	assignGlobalColor( DARKPURPLE, "DARKPURPLE" );
+	assignGlobalColor( BEIGE, "BEIGE" );
+	assignGlobalColor( BROWN, "BROWN" );
+	assignGlobalColor( DARKBROWN, "DARKBROWN" );
 	assignGlobalColor( WHITE, "WHITE" );
 	assignGlobalColor( BLACK, "BLACK" );
 	assignGlobalColor( BLANK, "BLANK" );
 	assignGlobalColor( MAGENTA, "MAGENTA" );
 	assignGlobalColor( RAYWHITE, "RAYWHITE" );
-	assignGlobalColor( RED, "RED" );
-	assignGlobalColor( GREEN, "GREEN" );
-	assignGlobalColor( BLUE, "BLUE" );
 	/* Math */
 	assignGlobalFloat( PI, "PI" );
 	assignGlobalFloat( DEG2RAD, "DEG2RAD" );

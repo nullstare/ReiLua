@@ -22,7 +22,7 @@ function init()
 	camera = RL_CreateCamera3D()
 	RL_SetCamera3DPosition( camera, { 0, 2, 4 } )
 	RL_SetCamera3DTarget( camera, { 0, 0, 0 } )
-	RL_SetCamera3DUp( camera, { 0, 2, 0 } )
+	RL_SetCamera3DUp( camera, { 0, 1, 0 } )
 	RL_SetCamera3DMode( camera, CAMERA_FREE )
 
 	material = RL_CreateMaterial( {

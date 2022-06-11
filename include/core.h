@@ -38,7 +38,10 @@ int lcoreSetTargetFPS( lua_State *L );
 int lcoreGetFrameTime( lua_State *L );
 int lcoreGetTime( lua_State *L );
 /* Misc. */
+int lcoreTakeScreenshot( lua_State *L );
+int lcoreSetConfigFlags( lua_State *L );
 int lcoreTraceLog( lua_State *L );
+int lcoreSetTraceLogLevel( lua_State *L );
 int lcoreOpenURL( lua_State *L );
 /* Cursor. */
 int lcoreShowCursor( lua_State *L );

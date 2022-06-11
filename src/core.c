@@ -618,6 +618,46 @@ int lcoreGetTime( lua_State *L ) {
 */
 
 /*
+> success = RL_TakeScreenshot( string fileName )
+
+Takes a screenshot of current screen ( filename extension defines format )
+
+- Failure return false
+- Success return true
+*/
+int lcoreTakeScreenshot( lua_State *L ) {
+	if ( !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_TakeScreenshot( string fileName )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	TakeScreenshot( lua_tostring( L, -1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_SetConfigFlags( int flags )
+
+Setup init configuration flags ( view FLAGS )
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetConfigFlags( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetConfigFlags( int flags )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	SetConfigFlags( lua_tointeger( L, -1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
 > success = RL_TraceLog( int logLevel, string text )
 
 Show trace log messages ( LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR... )
@@ -632,6 +672,26 @@ int lcoreTraceLog( lua_State *L ) {
 		return 1;
 	}
 	TraceLog( lua_tointeger( L, -2 ), "%s", lua_tostring( L, -1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_SetTraceLogLevel( int logLevel )
+
+Set the current threshold ( minimum ) log level
+
+- Failure return false
+- Success return true
+*/
+int lcoreSetTraceLogLevel( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetTraceLogLevel( int logLevel )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	SetTraceLogLevel( lua_tointeger( L, -1 ) );
 	lua_pushboolean( L, true );
 
 	return 1;

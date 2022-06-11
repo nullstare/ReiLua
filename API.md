@@ -1355,9 +1355,36 @@ Get elapsed time in seconds since InitWindow()
 
 ---
 
+> success = RL_TakeScreenshot( string fileName )
+
+Takes a screenshot of current screen ( filename extension defines format )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_SetConfigFlags( int flags )
+
+Setup init configuration flags ( view FLAGS )
+
+- Failure return false
+- Success return true
+
+---
+
 > success = RL_TraceLog( int logLevel, string text )
 
 Show trace log messages ( LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR... )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_SetTraceLogLevel( int logLevel )
+
+Set the current threshold ( minimum ) log level
 
 - Failure return false
 - Success return true

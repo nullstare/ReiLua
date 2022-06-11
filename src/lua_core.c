@@ -688,7 +688,10 @@ void luaRegister() {
 	lua_register( L, "RL_GetFrameTime", lcoreGetFrameTime );
 	lua_register( L, "RL_GetTime", lcoreGetTime );
 		/* Misc. */
+	lua_register( L, "RL_TakeScreenshot", lcoreTakeScreenshot );
+	lua_register( L, "RL_SetConfigFlags", lcoreSetConfigFlags );
 	lua_register( L, "RL_TraceLog", lcoreTraceLog );
+	lua_register( L, "RL_SetTraceLogLevel", lcoreSetTraceLogLevel );
 	lua_register( L, "RL_OpenURL", lcoreOpenURL );
 		/* Cursor. */
 	lua_register( L, "RL_ShowCursor", lcoreShowCursor );

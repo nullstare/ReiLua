@@ -30,7 +30,7 @@ function init()
 	RL_SetCamera3DPosition( camera, { 0, 8, 16 } )
 	RL_SetCamera3DTarget( camera, { 0, 0, 0 } )
 	RL_SetCamera3DUp( camera, { 0, 1, 0 } )
-	RL_SetCamera3DMode( camera, CAMERA_FREE )
+	RL_SetCameraMode( camera, CAMERA_FREE )
 
 	heigthImage = RL_LoadImage( RL_GetBasePath().."../resources/images/heightmap.png" )
 

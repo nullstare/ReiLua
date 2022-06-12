@@ -34,6 +34,8 @@ function init()
 	local mSize = RL_GetMonitorSize( monitor )
 	local winSize = { 1920, 1080 }
 
+	RL_SetConfigFlags( FLAG_VSYNC_HINT )
+
 	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
 	RL_SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 	RL_SetWindowSize( winSize )
@@ -41,7 +43,7 @@ function init()
 	RL_SetCamera3DPosition( camera, { 0, 1, 2 } )
 	RL_SetCamera3DTarget( camera, { 0, 0, 0 } )
 	RL_SetCamera3DUp( camera, { 0, 1, 0 } )
-	RL_SetCamera3DMode( camera, CAMERA_FREE )
+	RL_SetCameraMode( camera, CAMERA_FREE )
 
 	calcNormal( tri )
 end

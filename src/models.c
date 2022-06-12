@@ -2140,7 +2140,6 @@ int lmodelsUpdateModelAnimation( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	UpdateModelAnimation( *state->models[ modelId ], state->animations[ animId ]->animations[ lua_tointeger( L, -2 ) ], frame );
 	lua_pushboolean( L, true );
 

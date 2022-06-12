@@ -82,7 +82,7 @@ function init()
 	RL_SetCamera3DPosition( camera, pos )
 	RL_SetCamera3DTarget( camera, { 0, 0, 0 } )
 	RL_SetCamera3DUp( camera, { 0, 1, 0 } )
-	RL_SetCamera3DMode( camera, CAMERA_FIRST_PERSON )
+	RL_SetCameraMode( camera, CAMERA_FIRST_PERSON )
 
 	-- for x = 0, 3 do
 	-- 	for y = 0, 9 do

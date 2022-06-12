@@ -588,6 +588,19 @@ int lcoreSetTargetFPS( lua_State *L ) {
 }
 
 /*
+> FPS = RL_GetFPS()
+
+Get current FPS
+
+- Success return int
+*/
+int lcoreGetFPS( lua_State *L ) {
+	lua_pushinteger( L, GetFPS() );
+
+	return 1;
+}
+
+/*
 > delta = RL_GetFrameTime()
 
 Get time in seconds for last frame drawn ( Delta time )
@@ -2804,16 +2817,16 @@ int lcoreSetCamera3DProjection( lua_State *L ) {
 }
 
 /*
-> success = RL_SetCamera3DMode( camera3D camera, int mode )
+> success = RL_SetCameraMode( camera3D camera, int mode )
 
 Set camera mode ( CAMERA_CUSTOM, CAMERA_FREE, CAMERA_ORBITAL... )
 
 - Failure return false
 - Success return true
 */
-int lcoreSetCamera3DMode( lua_State *L ) {
+int lcoreSetCameraMode( lua_State *L ) {
 	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetCamera3DMode( camera3D camera, int mode )" );
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetCameraMode( camera3D camera, int mode )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}

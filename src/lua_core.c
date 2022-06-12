@@ -685,6 +685,7 @@ void luaRegister() {
 	lua_register( L, "RL_GetClipboardText", lcoreGetClipboardText );
 		/* Timing. */
 	lua_register( L, "RL_SetTargetFPS", lcoreSetTargetFPS );
+	lua_register( L, "RL_GetFPS", lcoreGetFPS );
 	lua_register( L, "RL_GetFrameTime", lcoreGetFrameTime );
 	lua_register( L, "RL_GetTime", lcoreGetTime );
 		/* Misc. */
@@ -767,7 +768,7 @@ void luaRegister() {
 	lua_register( L, "RL_GetCamera3DFovy", lcoreGetCamera3DFovy );
 	lua_register( L, "RL_GetCamera3DProjection", lcoreGetCamera3DProjection );
 	lua_register( L, "RL_UpdateCamera3D", lcoreUpdateCamera3D );
-	lua_register( L, "RL_SetCamera3DMode", lcoreSetCamera3DMode );
+	lua_register( L, "RL_SetCameraMode", lcoreSetCameraMode );
 	lua_register( L, "RL_SetCameraPanControl", lcoreSetCameraPanControl );
 	lua_register( L, "RL_SetCameraAltControl", lcoreSetCameraAltControl );
 	lua_register( L, "RL_SetCameraSmoothZoomControl", lcoreSetCameraSmoothZoomControl );
@@ -824,14 +825,38 @@ void luaRegister() {
 
 	/* Shapes. */
 		/* Drawing. */
+	lua_register( L, "RL_SetShapesTexture", lshapesSetShapesTexture );
 	lua_register( L, "RL_DrawPixel", lshapesDrawPixel );
 	lua_register( L, "RL_DrawLine", lshapesDrawLine );
+	lua_register( L, "RL_DrawLineBezier", lshapesDrawLineBezier );
+	lua_register( L, "RL_DrawLineBezierQuad", lshapesDrawLineBezierQuad );
+	lua_register( L, "RL_DrawLineBezierCubic", lshapesDrawLineBezierCubic );
+	lua_register( L, "RL_DrawLineStrip", lshapesDrawLineStrip );
 	lua_register( L, "RL_DrawCircle", lshapesDrawCircle );
+	lua_register( L, "RL_DrawCircleSector", lshapesDrawCircleSector );
+	lua_register( L, "RL_DrawCircleSectorLines", lshapesDrawCircleSectorLines );
+	lua_register( L, "RL_DrawCircleGradient", lshapesDrawCircleGradient );
 	lua_register( L, "RL_DrawCircleLines", lshapesDrawCircleLines );
+	lua_register( L, "RL_DrawEllipse", lshapesDrawEllipse );
+	lua_register( L, "RL_DrawEllipseLines", lshapesDrawEllipseLines );
+	lua_register( L, "RL_DrawRing", lshapesDrawRing );
+	lua_register( L, "RL_DrawRingLines", lshapesDrawRingLines );
 	lua_register( L, "RL_DrawRectangle", lshapesDrawRectangle );
 	lua_register( L, "RL_DrawRectanglePro", lshapesDrawRectanglePro );
+	lua_register( L, "RL_DrawRectangleGradientV", lshapesDrawRectangleGradientV );
+	lua_register( L, "RL_DrawRectangleGradientH", lshapesDrawRectangleGradientH );
+	lua_register( L, "RL_DrawRectangleGradientEx", lshapesDrawRectangleGradientEx );
+	lua_register( L, "RL_DrawRectangleLines", lshapesDrawRectangleLines );
+	lua_register( L, "RL_DrawRectangleLinesEx", lshapesDrawRectangleLinesEx );
+	lua_register( L, "RL_DrawRectangleRounded", lshapesDrawRectangleRounded );
+	lua_register( L, "RL_DrawRectangleRoundedLines", lshapesDrawRectangleRoundedLines );
 	lua_register( L, "RL_DrawTriangle", lshapesDrawTriangle );
 	lua_register( L, "RL_DrawTriangleLines", lshapesDrawTriangleLines );
+	lua_register( L, "RL_DrawTriangleFan", lshapesDrawTriangleFan );
+	lua_register( L, "RL_DrawTriangleStrip", lshapesDrawTriangleStrip );
+	lua_register( L, "RL_DrawPoly", lshapesDrawPoly );
+	lua_register( L, "RL_DrawPolyLines", lshapesDrawPolyLines );
+	lua_register( L, "RL_DrawPolyLinesEx", lshapesDrawPolyLinesEx );
 		/* Collision. */
 	lua_register( L, "RL_CheckCollisionRecs", lshapesCheckCollisionRecs );
 	lua_register( L, "RL_CheckCollisionCircles", lshapesCheckCollisionCircles );

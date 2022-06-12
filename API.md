@@ -1335,6 +1335,14 @@ Set target FPS ( maximum )
 
 ---
 
+> FPS = RL_GetFPS()
+
+Get current FPS
+
+- Success return int
+
+---
+
 > delta = RL_GetFrameTime()
 
 Get time in seconds for last frame drawn ( Delta time )
@@ -2274,7 +2282,7 @@ Set camera projection mode ( CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC )
 
 ---
 
-> success = RL_SetCamera3DMode( camera3D camera, int mode )
+> success = RL_SetCameraMode( camera3D camera, int mode )
 
 Set camera mode ( CAMERA_CUSTOM, CAMERA_FREE, CAMERA_ORBITAL... )
 
@@ -2444,6 +2452,17 @@ Get the world space position for a 2d camera screen space position
 
 ---
 
+> success = RL_SetShapesTexture( Texture2D texture, Rectangle source )
+
+Set texture and rectangle to be used on shapes drawing
+NOTE: It can be useful when using basic shapes and one single font,
+defining a font char white rectangle would allow drawing everything in a single draw call
+
+- Failure return false
+- Success return true
+
+---
+
 > success = RL_DrawPixel( Vector2 pos, Color color )
 
 Draw a pixel
@@ -2462,6 +2481,42 @@ Draw a line defining thickness
 
 ---
 
+> success = RL_DrawLineBezier( Vector2 startPos, Vector2 endPos, float thickness, Color color )
+
+Draw a line using cubic-bezier curves in-out
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawLineBezier( Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thickness, Color color )
+
+Draw line using quadratic bezier curves with a control point
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawLineBezierCubic( Vector2 startPos, Vector2 endPos, Vector2 startControlPos, Vector2 endControlPos, float thickness, Color color )
+
+Draw line using quadratic bezier curves with a control point
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawLineStrip( Vector2 points{}, int pointsCount, Color color )
+
+Draw lines sequence
+
+- Failure return false
+- Success return true
+
+---
+
 > success = RL_DrawCircle( Vector2 center, float radius, Color color )
 
 Draw a color-filled circle
@@ -2471,9 +2526,72 @@ Draw a color-filled circle
 
 ---
 
+> success = RL_DrawCircleSector( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
+
+Draw a piece of a circle
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawCircleSectorLines( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
+
+Draw circle sector outline
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawCircleGradient( Vector2 center, float radius, Color color1, Color color2 )
+
+Draw a gradient-filled circle
+
+- Failure return false
+- Success return true
+
+---
+
 > success = RL_DrawCircleLines( Vector2 center, float radius, Color color )
 
 Draw circle outline
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawEllipse( Vector2 center, float radiusH, float radiusV, Color color )
+
+Draw ellipse
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawEllipseLines( Vector2 center, float radiusH, float radiusV, Color color )
+
+Draw ellipse outline
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawRing( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
+
+Draw ring
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawRingLines( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
+
+Draw ring outline
 
 - Failure return false
 - Success return true
@@ -2498,6 +2616,69 @@ Draw a color-filled rectangle with pro parameters
 
 ---
 
+> success = RL_DrawRectangleGradientV( Rectangle rectangle, Color color1, Color color2 )
+
+Draw a vertical-gradient-filled rectangle
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawRectangleGradientH( Rectangle rectangle, Color color1, Color color2 )
+
+Draw a horizontal-gradient-filled rectangle
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawRectangleGradientEx( Rectangle rectangle, Color col1, Color col2, Color col3, Color col4 )
+
+Draw a gradient-filled rectangle with custom vertex colors
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawRectangleLines( Rectangle rec, Color color )
+
+Draw rectangle outline
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawRectangleLinesEx( Rectangle rec, int lineThick, Color color )
+
+Draw rectangle outline with extended parameters
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawRectangleRounded( Rectangle rec, float roundness, int segments, Color color )
+
+Draw rectangle with rounded edges
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawRectangleRoundedLines( Rectangle rec, float roundness, int segments, int lineThick, Color color )
+
+Draw rectangle with rounded edges outline
+
+- Failure return false
+- Success return true
+
+---
+
 > success = RL_DrawTriangle( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
 
 Draw a color-filled triangle ( Vertex in counter-clockwise order! )
@@ -2510,6 +2691,51 @@ Draw a color-filled triangle ( Vertex in counter-clockwise order! )
 > success = RL_DrawTriangleLines( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
 
 Draw triangle outline ( Vertex in counter-clockwise order! )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawTriangleFan( Vector2 points{}, int pointsCount, Color color )
+
+Draw a triangle fan defined by points ( first vertex is the center )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawTriangleStrip( Vector2 points{}, int pointsCount, Color color )
+
+Draw a triangle strip defined by points
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawPoly( Vector2 center, int sides, float radius, float rotation, Color color )
+
+Draw a regular polygon ( Vector version )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawPolyLines( Vector2 center, int sides, float radius, float rotation, Color color )
+
+Draw a polygon outline of n sides
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_DrawPolyLinesEx( Vector2 center, int sides, float radius, float rotation, float lineThick, Color color )
+
+Draw a polygon outline of n sides with extended parameters
 
 - Failure return false
 - Success return true

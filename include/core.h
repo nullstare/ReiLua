@@ -35,6 +35,7 @@ int lcoreSetClipboardText( lua_State *L );
 int lcoreGetClipboardText( lua_State *L );
 /* Timing. */
 int lcoreSetTargetFPS( lua_State *L );
+int lcoreGetFPS( lua_State *L );
 int lcoreGetFrameTime( lua_State *L );
 int lcoreGetTime( lua_State *L );
 /* Misc. */
@@ -117,7 +118,7 @@ int lcoreGetCamera3DUp( lua_State *L );
 int lcoreGetCamera3DFovy( lua_State *L );
 int lcoreGetCamera3DProjection( lua_State *L );
 int lcoreUpdateCamera3D( lua_State *L );
-int lcoreSetCamera3DMode( lua_State *L );
+int lcoreSetCameraMode( lua_State *L );
 int lcoreSetCameraPanControl( lua_State *L );
 int lcoreSetCameraAltControl( lua_State *L );
 int lcoreSetCameraSmoothZoomControl( lua_State *L );

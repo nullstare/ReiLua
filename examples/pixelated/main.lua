@@ -47,6 +47,7 @@ function draw()
 		RL_DrawRectangle( { 200, 120, 40, 50 }, { 100, 170, 255 } )
 		RL_DrawTexturePro( tex, { 166, 138, 128, 128 }, { pos[1], pos[2], 128, 128 }, { 16, 16 }, 0.0, WHITE )
 		RL_DrawText( 0, "Cat MIAU!!", { 16, 32 }, 10, 1, { 255, 180, 155 } )
+		RL_DrawTriangle( { 0, 32 }, { 32, 16 }, { 0, 0 }, RED )
 	RL_EndTextureMode()
 
 	RL_SetTextureSource( TEXTURE_SOURCE_RENDER_TEXTURE )

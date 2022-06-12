@@ -2147,6 +2147,61 @@ int lmodelsUpdateModelAnimation( lua_State *L ) {
 }
 
 /*
+> success = RL_UnloadModelAnimations( ModelAnimations animations )
+
+Unload animation data
+
+- Failure return false
+- Success return true
+*/
+int lmodelsUnloadModelAnimations( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_UnloadModelAnimations( ModelAnimations animations )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t animId = lua_tointeger( L, -1 );
+
+	if ( !validAnimation( animId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	UnloadModelAnimation( *state->animations[ animId ]->animations );
+	state->animations[ animId ]->animCount = 0;
+	state->animations[ animId ] = NULL;
+
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> valid = RL_IsModelAnimationValid( Model model, ModelAnimations animations )
+
+Check model animation skeleton match
+
+- Failure return nil
+- Success return bool
+*/
+int lmodelsIsModelAnimationValid( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_IsModelAnimationValid( Model model, ModelAnimations animations )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	size_t animId = lua_tointeger( L, -1 );
+	size_t modelId = lua_tointeger( L, -2 );
+
+	if ( !validModel( modelId ) || !validAnimation( animId ) ) {
+		lua_pushnil( L );
+		return 1;
+	}
+	lua_pushboolean( L, IsModelAnimationValid( *state->models[ modelId ], *state->animations[ animId ]->animations ) );
+
+	return 1;
+}
+
+/*
 > boneCount = RL_GetModelAnimationBoneCount( ModelAnimations animations, int animation )
 
 Return modelAnimation bone count

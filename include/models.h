@@ -61,6 +61,8 @@ int lmodelsGetModelTransform( lua_State *L );
 /* Animations. */
 int lmodelsLoadModelAnimations( lua_State *L );
 int lmodelsUpdateModelAnimation( lua_State *L );
+int lmodelsUnloadModelAnimations( lua_State *L );
+int lmodelsIsModelAnimationValid( lua_State *L );
 int lmodelsGetModelAnimationBoneCount( lua_State *L );
 int lmodelsGetModelAnimationFrameCount( lua_State *L );
 /* Collision. */

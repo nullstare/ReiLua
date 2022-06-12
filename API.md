@@ -4252,6 +4252,24 @@ Update model animation pose
 
 ---
 
+> success = RL_UnloadModelAnimations( ModelAnimations animations )
+
+Unload animation data
+
+- Failure return false
+- Success return true
+
+---
+
+> valid = RL_IsModelAnimationValid( Model model, ModelAnimations animations )
+
+Check model animation skeleton match
+
+- Failure return nil
+- Success return bool
+
+---
+
 > boneCount = RL_GetModelAnimationBoneCount( ModelAnimations animations, int animation )
 
 Return modelAnimation bone count

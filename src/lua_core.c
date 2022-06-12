@@ -1029,6 +1029,8 @@ void luaRegister() {
 		/* Animations. */
 	lua_register( L, "RL_LoadModelAnimations", lmodelsLoadModelAnimations );
 	lua_register( L, "RL_UpdateModelAnimation", lmodelsUpdateModelAnimation );
+	lua_register( L, "RL_UnloadModelAnimations", lmodelsUnloadModelAnimations );
+	lua_register( L, "RL_IsModelAnimationValid", lmodelsIsModelAnimationValid );
 	lua_register( L, "RL_GetModelAnimationBoneCount", lmodelsGetModelAnimationBoneCount );
 	lua_register( L, "RL_GetModelAnimationFrameCount", lmodelsGetModelAnimationFrameCount );
 		/* Collision. */

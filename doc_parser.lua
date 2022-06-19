@@ -32,7 +32,7 @@ apiFile:write( "\n> function draw()\n\
 This function will be called every frame after process and it should have all rendering related functions.\
 Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it.\
 You can still use RL_BeginDrawing() and RL_EndDrawing() manually from anywhere.\n\n---\n" )
-apiFile:write( "\n> function log( message )\n\
+apiFile:write( "\n> function log( logLevel, message )\n\
 This function can be used for custom log message handling.\n\n---\n" )
 
 -- Globals.

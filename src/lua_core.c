@@ -476,13 +476,13 @@ void defineGlobals() {
 }
 
 // Custom logging funtion
-void LogCustom( int msgType, const char *text, va_list args ) {
+void LogCustom( int logLevel, const char *text, va_list args ) {
 	char string[ STRING_LEN ] = {'\0'};
 	char msg[ STRING_LEN ] = {'\0'};
 
 	vsprintf( string, text, args );
 
-    switch ( msgType ) {
+    switch ( logLevel ) {
         case LOG_ALL: sprintf( msg, "ALL: %s", string ); break;
         case LOG_TRACE: sprintf( msg, "TRACE: %s", string ); break;
         case LOG_DEBUG: sprintf( msg, "DEBUG: %s", string ); break;
@@ -499,14 +499,17 @@ void LogCustom( int msgType, const char *text, va_list args ) {
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
+
 	lua_getglobal( L, "log" );
 
     if ( lua_isfunction( L, -1 ) ) {
+        lua_pushinteger( L, logLevel );
         lua_pushstring( L, msg );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
-			TraceLog( LOG_WARNING, "Lua error: %s", lua_tostring( L, -1 ) );
+        if ( lua_pcall( L, 2, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
+			lua_pop( L, -1 );
  	    	return;
         }
     }
@@ -575,7 +578,7 @@ bool luaCallMain() {
 
 	/* Check errors in main.lua */
 	if ( lua_tostring( state->luaState, -1 ) ) {
-		TraceLog( LOG_WARNING, "Lua error: %s\n", lua_tostring( state->luaState, -1 ) );
+		TraceLog( LOG_ERROR, "Lua error: %s\n", lua_tostring( state->luaState, -1 ) );
 	}
 
 	lua_pushcfunction( L, luaTraceback );
@@ -585,12 +588,12 @@ bool luaCallMain() {
 
 	if ( lua_isfunction( L, -1 ) ) {
 		if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
-			TraceLog( LOG_WARNING, "Lua error: %s", lua_tostring( L, -1 ) );
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			return false;
 		}
 	}
 	else {
-		TraceLog( LOG_WARNING, "%s", "No Lua main found!" );
+		TraceLog( LOG_ERROR, "%s", "No Lua main found!" );
         return false;
     }
 	/* Apply custom callback here. */
@@ -611,8 +614,9 @@ void luaCallProcess() {
         lua_pushnumber( L, GetFrameTime() );
 
         if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
-			TraceLog( LOG_WARNING, "Lua error: %s", lua_tostring( L, -1 ) );
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
+			lua_pop( L, -1 );
  	    	return;
         }
     }
@@ -635,8 +639,8 @@ void luaCallDraw() {
 		BeginDrawing();
 
         if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
-			TraceLog( LOG_WARNING, "Lua error: %s", lua_tostring( L, -1 ) );
-			// state->run = false;
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
  	    	return;
         }
 

@@ -80,6 +80,12 @@ local function createMap()
 	tilemap.tiles[1][8] = 6
 end
 
+function log( logLevel, message )
+	if logLevel == LOG_WARNING then
+		error( "Terminated because of warning" )
+	end
+end
+
 function init()
 	local monitorPos = Vec2:new( RL_GetMonitorPosition( monitor ) )
 	local monitorSize = Vec2:new( RL_GetMonitorSize( monitor ) )

@@ -955,7 +955,7 @@ OpenGL style 4x4. Identity matrix example
 
 > Rectangle = { 0.0, 0.0, 1.0, 1.0 } or { x = 0.0, y = 0.0, width = 1.0, height = 1.0 }
 
-{ x, y, w ,h }. Rectangle type
+{ x, y, width ,height }. Rectangle type
 
 ---
 
@@ -2264,7 +2264,7 @@ Set camera up vector ( Rotation over it's axis )
 
 ---
 
-> success = RL_SetCamera3DFovy( camera3D camera, Vector3 fovy )
+> success = RL_SetCamera3DFovy( camera3D camera, float fovy )
 
 Set camera field-of-view apperture in Y ( degrees ) in perspective, used as near plane width in orthographic
 
@@ -4018,6 +4018,7 @@ Draw a 3d mesh with material and transform
 > success = RL_DrawMeshInstanced( Mesh mesh, Material material, Matrix{} transforms, int instances )
 
 Draw multiple mesh instances with material and different transforms
+Note! Untested.
 
 - Failure return false
 - Success return true
@@ -6013,5 +6014,26 @@ Send light properties to shader
 
 - Failure return false
 - Success return true
+
+---
+
+## RLGL - General render state
+
+---
+
+> success = RL_rlSetLineWidth( float width )
+
+Set the line drawing width
+
+- Failure return false
+- Success return true
+
+---
+
+> width = RL_rlGetLineWidth()
+
+Get the line drawing width
+
+- Success return float
 
 ---

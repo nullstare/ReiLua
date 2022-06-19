@@ -10,6 +10,7 @@
 #include "rmath.h"
 #include "rgui.h"
 #include "lights.h"
+#include "lrlgl.h"
 
 static void assignGlobalInt( int value, const char *name ) {
 	lua_State *L = state->luaState;
@@ -1257,6 +1258,10 @@ void luaRegister() {
 		/* Basics. */
 	lua_register( L, "RL_CreateLight", llightsCreateLight );
 	lua_register( L, "RL_UpdateLightValues", llightsUpdateLightValues );
+	/* RLGL */
+		/* General render state. */
+	lua_register( L, "RL_rlSetLineWidth", lrlglSetLineWidth );
+	lua_register( L, "RL_rlGetLineWidth", lrlglGetLineWidth );
 }
 
 /* Lua util functions. */

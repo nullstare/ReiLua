@@ -1284,11 +1284,12 @@ int lmodelsDrawMesh( lua_State *L ) {
 	return 1;
 }
 
-/* TODO Not testet. */
+/* TODO Untested. */
 /*
 > success = RL_DrawMeshInstanced( Mesh mesh, Material material, Matrix{} transforms, int instances )
 
 Draw multiple mesh instances with material and different transforms
+Note! Untested.
 
 - Failure return false
 - Success return true

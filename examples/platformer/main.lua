@@ -84,6 +84,7 @@ function init()
 	local monitorPos = Vec2:new( RL_GetMonitorPosition( monitor ) )
 	local monitorSize = Vec2:new( RL_GetMonitorSize( monitor ) )
 
+	RL_SetConfigFlags( FLAG_VSYNC_HINT )
 	RL_SetWindowTitle( "Platformer" )
 	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
 	RL_SetWindowSize( winSize )
@@ -121,6 +122,7 @@ local function tileCollision( entity )
 			if isTileWall( Vec2:new( tileRect[3], y ) ) then
 				-- Use new_x to push out of tile.
 				local new_x = tileRect[3] * TILE_SIZE - ( entity.colRect[1] + entity.colRect[3] )
+
 				entity.vel.x = new_x - tinyGap
 
 				break
@@ -128,7 +130,7 @@ local function tileCollision( entity )
 		elseif entity.vel.x < 0 then
 			if isTileWall( Vec2:new( tileRect[1], y ) ) then
 				local new_x = ( tileRect[1] * TILE_SIZE + TILE_SIZE ) - entity.colRect[1]
-				entity.vel.x = new_x + tinyGap, 0
+				entity.vel.x = new_x + tinyGap
 
 				break
 			end

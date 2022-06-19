@@ -83,7 +83,7 @@ OpenGL style 4x4. Identity matrix example\n\n---\n" )
 apiFile:write( "\n> Color = { 255, 255, 255, 255 } or { r = 255, g = 255, b = 255, a = 255 }\n\
 { r, g, b ,a }. Color type, RGBA (32bit)\n\n---\n" )
 apiFile:write( "\n> Rectangle = { 0.0, 0.0, 1.0, 1.0 } or { x = 0.0, y = 0.0, width = 1.0, height = 1.0 }\n\
-{ x, y, w ,h }. Rectangle type\n\n---\n" )
+{ x, y, width ,height }. Rectangle type\n\n---\n" )
 apiFile:write( "\n> Image = ImageId\n\
 int id. Image type (multiple pixel formats supported). NOTE: Data stored in CPU memory (RAM)\n\n---\n" )
 apiFile:write( "\n> Texture = TextureId\n\
@@ -154,6 +154,7 @@ local sourceFiles = {
 	"src/rmath.c",
 	"src/rgui.c",
 	"src/lights.c",
+	"src/rlgl.c",
 }
 
 for _, src in ipairs( sourceFiles ) do

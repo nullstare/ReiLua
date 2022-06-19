@@ -2763,7 +2763,7 @@ int lcoreSetCamera3DUp( lua_State *L ) {
 }
 
 /*
-> success = RL_SetCamera3DFovy( camera3D camera, Vector3 fovy )
+> success = RL_SetCamera3DFovy( camera3D camera, float fovy )
 
 Set camera field-of-view apperture in Y ( degrees ) in perspective, used as near plane width in orthographic
 
@@ -2772,7 +2772,7 @@ Set camera field-of-view apperture in Y ( degrees ) in perspective, used as near
 */
 int lcoreSetCamera3DFovy( lua_State *L ) {
 	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetCamera3DFovy( camera3D camera, Vector3 fovy )" );
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetCamera3DFovy( camera3D camera, float fovy )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}

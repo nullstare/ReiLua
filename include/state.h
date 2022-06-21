@@ -13,7 +13,6 @@ typedef struct {
 	bool run;
 	lua_State *luaState;
 	Vector2 resolution;
-	int targetFPS;
 	int textureSource;
 	/* Resources. */
 		/* Images. */

@@ -59,6 +59,7 @@ function init()
 	local mPos = Vec2:new( RL_GetMonitorPosition( monitor ) )
 	local mSize = Vec2:new( RL_GetMonitorSize( monitor ) )
 
+	RL_SetConfigFlags( FLAG_VSYNC_HINT )
 	RL_SetWindowSize( winSize )
 	RL_SetWindowPosition( { mPos.x + mSize.x / 2 - winSize.x / 2, mPos.y + mSize.y / 2 - winSize.y / 2 } )
 	RL_SetWindowTitle( "Pong" )

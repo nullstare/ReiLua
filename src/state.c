@@ -15,7 +15,6 @@ bool stateInit( const char *exePath ) {
 	state->run = true;
 	state->resolution = (Vector2){ 1024, 720 };
 	state->luaState = NULL;
-	state->targetFPS = 60;
 	state->textureSource = TEXTURE_SOURCE_TEXTURE;
 	/* Images. */
 	state->imageAlloc = ALLOC_PAGE_SIZE;
@@ -106,12 +105,10 @@ bool stateInit( const char *exePath ) {
 		state->hasWindow = false;
 		state->run = false;
 	}
-	else {
-		SetTargetFPS( state->targetFPS );
+	if ( state->run ) {
+		InitAudioDevice();
+		state->run = luaInit();
 	}
-
-	InitAudioDevice();
-	state->run = luaInit();
 
 	return state->run;
 }

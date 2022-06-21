@@ -158,11 +158,11 @@ end
 
 --[[ Check if next segment is on left side. There are more mathematically elegant solution to this, but there is
 only four possibilities so we can just check them all. ]]--
-local function onLeft( this, next )
-	return ( vector2IsEqual( this, { 0, -1 } ) and vector2IsEqual( next, { -1, 0 } ) )
-		or ( vector2IsEqual( this, { -1, 0 } ) and vector2IsEqual( next, { 0, 1 } ) )
-		or ( vector2IsEqual( this, { 0, 1 } ) and vector2IsEqual( next, { 1, 0 } ) )
-		or ( vector2IsEqual( this, { 1, 0 } ) and vector2IsEqual( next, { 0, -1 } ) )
+local function onLeft( this, nextSeg )
+	return ( vector2IsEqual( this, { 0, -1 } ) and vector2IsEqual( nextSeg, { -1, 0 } ) )
+		or ( vector2IsEqual( this, { -1, 0 } ) and vector2IsEqual( nextSeg, { 0, 1 } ) )
+		or ( vector2IsEqual( this, { 0, 1 } ) and vector2IsEqual( nextSeg, { 1, 0 } ) )
+		or ( vector2IsEqual( this, { 1, 0 } ) and vector2IsEqual( nextSeg, { 0, -1 } ) )
 end
 
 local function drawSnake()

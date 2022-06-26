@@ -664,7 +664,7 @@ int lcoreSetConfigFlags( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetConfigFlags( lua_tointeger( L, -1 ) );
+	SetConfigFlags( (unsigned int)lua_tointeger( L, -1 ) );
 	lua_pushboolean( L, true );
 
 	return 1;

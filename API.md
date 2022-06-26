@@ -3727,6 +3727,33 @@ Measure string size for Font
 
 ---
 
+> baseSize = RL_GetFontBaseSize( Font font )
+
+Get font baseSize
+
+- Failure return false
+- Success return int
+
+---
+
+> glyphCount = RL_GetFontGlyphCount( Font font )
+
+Get font glyphCount
+
+- Failure return false
+- Success return int
+
+---
+
+> glyphPadding = RL_GetFontGlyphPadding( Font font )
+
+Get font glyphPadding
+
+- Failure return false
+- Success return int
+
+---
+
 ## Models - Basic
 
 ---

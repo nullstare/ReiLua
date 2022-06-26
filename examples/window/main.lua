@@ -5,6 +5,7 @@ local text = "Congrats! You created your first window!"
 
 function init()
 	RL_SetWindowTitle( "First window" )
+	RL_SetWindowState( FLAG_VSYNC_HINT )
 end
 
 function process( delta )

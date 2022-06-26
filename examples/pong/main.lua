@@ -53,6 +53,7 @@ function init()
 	local mPos = RL_GetMonitorPosition( monitor )
 	local mSize = RL_GetMonitorSize( monitor )
 
+	RL_SetWindowState( FLAG_VSYNC_HINT )
 	RL_SetWindowSize( winSize )
 	RL_SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 	RL_SetWindowTitle( "Pong" )

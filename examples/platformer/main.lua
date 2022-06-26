@@ -90,9 +90,9 @@ function init()
 	local monitorPos = Vec2:new( RL_GetMonitorPosition( monitor ) )
 	local monitorSize = Vec2:new( RL_GetMonitorSize( monitor ) )
 
-	RL_SetConfigFlags( FLAG_VSYNC_HINT )
 	RL_SetWindowTitle( "Platformer" )
 	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
+	RL_SetWindowState( FLAG_VSYNC_HINT )
 	RL_SetWindowSize( winSize )
 	RL_SetWindowPosition( { monitorPos.x + monitorSize.x / 2 - winSize.x / 2, monitorPos.y + monitorSize.y / 2 - winSize.y / 2 } )
 

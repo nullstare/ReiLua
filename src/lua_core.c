@@ -529,6 +529,9 @@ bool luaInit() {
 	luaRegister();
 	defineGlobals();
 
+	// SetConfigFlags( FLAG_VSYNC_HINT );
+	// SetWindowState( FLAG_VSYNC_HINT );
+
 	return luaCallMain();
 }
 
@@ -1060,6 +1063,9 @@ void luaRegister() {
 	lua_register( L, "RL_DrawTextPro", ltextDrawTextPro );
 		/* Misc. */
 	lua_register( L, "RL_MeasureText", ltextMeasureText );
+	lua_register( L, "RL_GetFontBaseSize", ltextGetFontBaseSize );
+	lua_register( L, "RL_GetFontGlyphCount", ltextGetFontGlyphCount );
+	lua_register( L, "RL_GetFontGlyphPadding", ltextGetFontGlyphPadding );
 
 	/* Audio. */
 		/* Audio device management. */

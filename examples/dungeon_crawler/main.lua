@@ -74,6 +74,7 @@ function init()
 	RL_SetExitKey( KEY_ESCAPE )
 	-- framebuffer = RL_LoadRenderTexture( res )
 	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
+	RL_SetWindowState( FLAG_VSYNC_HINT )
 	RL_SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 
 	texture = RL_LoadTexture( RL_GetBasePath().."../resources/images/tiles.png" )

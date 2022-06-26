@@ -11,6 +11,7 @@ function init()
 	local winSize = RL_GetWindowSize()
 
 	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
+	RL_SetWindowState( FLAG_VSYNC_HINT )
 	RL_SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 	image = RL_GenImageColor( winSize[1], winSize[2], WHITE )
 	-- Test changing working directory.

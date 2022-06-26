@@ -66,6 +66,7 @@ end
 
 function init()
 	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
+	RL_SetWindowState( FLAG_VSYNC_HINT )
 	RL_SetWindowSize( winSize )
 	RL_SetWindowPosition( { monitorPos[1] + monitorSize[1] / 2 - winSize[1] / 2, monitorPos[2] + monitorSize[2] / 2 - winSize[2] / 2 } )
 	RL_SetWindowTitle( "Snake" )

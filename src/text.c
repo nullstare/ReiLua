@@ -261,3 +261,78 @@ int ltextMeasureText( lua_State *L ) {
 
 	return 1;
 }
+
+/*
+> baseSize = RL_GetFontBaseSize( Font font )
+
+Get font baseSize
+
+- Failure return false
+- Success return int
+*/
+int ltextGetFontBaseSize( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetFontBaseSize( Font font )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t fontId = lua_tointeger( L, -1 );
+
+	if ( !validFont( fontId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	lua_pushinteger( L, state->fonts[ fontId ]->baseSize );
+
+	return 1;
+}
+
+/*
+> glyphCount = RL_GetFontGlyphCount( Font font )
+
+Get font glyphCount
+
+- Failure return false
+- Success return int
+*/
+int ltextGetFontGlyphCount( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetFontGlyphCount( Font font )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t fontId = lua_tointeger( L, -1 );
+
+	if ( !validFont( fontId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	lua_pushinteger( L, state->fonts[ fontId ]->glyphCount );
+
+	return 1;
+}
+
+/*
+> glyphPadding = RL_GetFontGlyphPadding( Font font )
+
+Get font glyphPadding
+
+- Failure return false
+- Success return int
+*/
+int ltextGetFontGlyphPadding( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetFontGlyphPadding( Font font )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t fontId = lua_tointeger( L, -1 );
+
+	if ( !validFont( fontId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	lua_pushinteger( L, state->fonts[ fontId ]->glyphPadding );
+
+	return 1;
+}

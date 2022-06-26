@@ -13,7 +13,7 @@ function utillib.deepCopy( orig )
         copy = {}
 
         for origKey, origValue in next, orig, nil do
-			-- If object has clone method use that. Mainly for vector libraries.
+			-- If object has clone method, use that.
 			if type( origValue ) == "table" and type( origValue.clone ) == "function" then
 				copy[ utillib.deepCopy( origKey ) ] = orig_value:clone()
 			else

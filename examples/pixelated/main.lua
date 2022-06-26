@@ -12,6 +12,7 @@ local winSize = { res[1] * scale, res[2] * scale }
 
 function init()
 	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
+	RL_SetWindowState( FLAG_VSYNC_HINT )
 	RL_SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 	RL_SetWindowSize( winSize )
 	tex = RL_LoadTexture( RL_GetBasePath().."../resources/images/cat.png" )

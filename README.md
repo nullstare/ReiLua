@@ -25,6 +25,7 @@ List of some MISSING features that are planned to be included. For specific func
 	* LoadImageFromMemory
 * Text
 	* LoadFontFromMemory
+	* GlyphInfo
 * Audio
 	* LoadWaveFromMemory
 	* LoadMusicStreamFromMemory

@@ -36,7 +36,7 @@ function process( delta )
 		cameraPos[2] = cameraPos[2] - cameraSpeed * delta
 	end
 	-- Rotate.
-	if RL_IsKeyDown( string.byte( "E" ) ) then
+	if RL_IsKeyDown( string.byte( "E" ) ) then -- Or RL_IsKeyDown( KEY_E )
 		cameraRot = cameraRot + cameraRotSpeed * delta
 	elseif RL_IsKeyDown( string.byte( "Q" ) ) then
 		cameraRot = cameraRot - cameraRotSpeed * delta

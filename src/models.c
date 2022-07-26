@@ -1554,7 +1554,13 @@ int lmodelsCreateMaterial( lua_State *L ) {
 
 								while ( lua_next( L, t4 ) != 0 ) {
 									if ( strcmp( "texture", (char*)lua_tostring( L, -2 ) ) == 0 && lua_isnumber( L, -1 ) ) {
-										state->materials[i]->maps[map].texture = *state->textures[ lua_tointeger( L, -1 ) ];
+										size_t texId = lua_tointeger( L, -1 );
+
+										if ( !validSourceTexture( texId ) ) {
+											lua_pushboolean( L, false );
+											return 1;
+										}
+										state->materials[i]->maps[map].texture = *texturesGetSourceTexture( texId );
 									}
 									else if ( strcmp( "color", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
 										state->materials[i]->maps[map].color = uluaGetColor( L );

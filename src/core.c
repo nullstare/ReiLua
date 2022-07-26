@@ -331,7 +331,7 @@ int lcoreSetWindowState( lua_State *L ) {
 }
 
 /*
-> state = RL_IsWindowState( int flag ) )
+> state = RL_IsWindowState( int flag )
 
 Check if one specific window flag is enabled ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE... )
 

@@ -23,7 +23,7 @@ if( EMSCRIPTEN ) # Web
 	target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/web/liblua.a )
 
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY" )
-  	set( CMAKE_EXECUTABLE_SUFFIX ".html" ) # This line is used to set your executable to build with the emscripten html template so taht you can directly open it.
+  	set( CMAKE_EXECUTABLE_SUFFIX ".html" ) # This line is used to set your executable to build with the emscripten html template so that you can directly open it.
 	set( resources_dir "resources" )
 	set_target_properties( ${PROJECT_NAME} PROPERTIES LINK_FLAGS "--preload-file ${resources_dir}" )
 else() # Desktop
@@ -54,6 +54,7 @@ else() # Desktop
 		target_link_libraries( ${PROJECT_NAME} "-framework Cocoa" )
 		target_link_libraries( ${PROJECT_NAME} "-framework OpenGL" )
 	elseif( WIN32 )
+		set( CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-mwindows" )
 		target_link_libraries( ${PROJECT_NAME} mingw32 opengl32 gdi32 winmm )
 	endif()
 endif()

@@ -49,6 +49,11 @@ local player = {
 	facing = 1,
 }
 
+local kissa = { Vec2:new( 2, 4 ), 23 }
+
+-- print( table.concat( kissa ) )
+print( kissa[1] )
+
 local function createMap()
 	for x = 1, tilemap.size.x do
 		table.insert( tilemap.tiles, {} )

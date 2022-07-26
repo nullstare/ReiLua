@@ -2,6 +2,8 @@ Current {
 }
 
 Backlog {
+	* Audio
+		* Pan (From newer RayLib).
 	* Text
 		* Codepoints
 		* String management. At least TextSplit.

@@ -1285,7 +1285,7 @@ Get image pixel color at ( x, y ) position
 - Success return Color
 */
 int ltexturesGetImageColor( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetImageColor( Image image, Vector2 pixelPos )" );
 		lua_pushboolean( L, false );
 		return 1;

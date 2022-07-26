@@ -34,7 +34,7 @@ function init()
 	textImage = RL_ImageText( 0, "Cat", 10, 4, WHITE )
 	local imageSize = RL_GetImageSize( textImage )
 	RL_ImageDraw( image, textImage, { 0, 0, imageSize[1], imageSize[2] }, { 250, 40, imageSize[1], imageSize[2] }, WHITE )
-
+	
 	texture = RL_LoadTextureFromImage( image )
 end
 

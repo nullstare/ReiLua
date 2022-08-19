@@ -111,6 +111,51 @@ int lmathRemap( lua_State *L ) {
 }
 
 /*
+> result = RL_Wrap( float value, float min, float max )
+
+Wrap input value from min to max
+
+- Failure return false
+- Success return float
+*/
+int lmathWrap( lua_State *L ) {
+	if ( !lua_isnumber( L, -3 )	|| !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Wrap( float value, float min, float max )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float max = lua_tonumber( L, -1 );
+	float min = lua_tonumber( L, -2 );
+	float value = lua_tonumber( L, -3 );
+
+	lua_pushnumber( L, Wrap( value, min, max ) );
+
+	return 1;
+}
+
+/*
+> result = RL_FloatEquals( float x, float y )
+
+Check whether two given floats are almost equal
+
+- Failure return false
+- Success return int
+*/
+int lmathFloatEquals( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_FloatEquals( float x, float y )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float y = lua_tonumber( L, -1 );
+	float x = lua_tonumber( L, -2 );
+
+	lua_pushinteger( L, FloatEquals( x, y ) );
+
+	return 1;
+}
+
+/*
 ## Math - Vector2
 */
 
@@ -321,6 +366,29 @@ int lmathVector2Distance( lua_State *L ) {
 }
 
 /*
+> result = RL_Vector2DistanceSqr( Vector2 v1, Vector2 v2 )
+
+Calculate square distance between two vectors
+
+- Failure return false
+- Success return float
+*/
+int lmathVector2DistanceSqr( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector2DistanceSqr( Vector2 v1, Vector2 v2 )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 v2 = uluaGetVector2( L );
+	lua_pop( L, 1 );
+	Vector2 v1 = uluaGetVector2( L );
+
+	lua_pushnumber( L, Vector2DistanceSqr( v1, v2 ) );
+
+	return 1;
+}
+
+/*
 > result = RL_Vector2Angle( Vector2 v1, Vector2 v2 )
 
 Calculate angle from two vectors
@@ -455,6 +523,29 @@ int lmathVector2Normalize( lua_State *L ) {
 }
 
 /*
+> result = RL_Vector2Transform( Vector2 v, Matrix mat )
+
+Transforms a Vector2 by a given Matrix
+
+- Failure return false
+- Success return Vector2
+*/
+int lmathVector2Transform( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector2Transform( Vector2 v, Matrix mat )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Matrix mat = uluaGetMatrix( L );
+	lua_pop( L, 1 );
+	Vector2 v = uluaGetVector2( L );
+
+	uluaPushVector2( L, Vector2Transform( v, mat ) );
+
+	return 1;
+}
+
+/*
 > result = RL_Vector2Lerp( Vector2 v1, Vector2 v2, float amount )
 
 Calculate linear interpolation between two vectors
@@ -546,6 +637,101 @@ int lmathVector2MoveTowards( lua_State *L ) {
 	Vector2 v1 = uluaGetVector2( L );
 
 	uluaPushVector2( L, Vector2MoveTowards( v1, v2, maxDistance ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector2Invert( Vector2 v )
+
+Invert the given vector
+
+- Failure return false
+- Success return Vector2
+*/
+int lmathVector2Invert( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector2Invert( Vector2 v )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 v = uluaGetVector2( L );
+
+	uluaPushVector2( L, Vector2Invert( v ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector2Clamp( Vector2 v, Vector2 min, Vector2 max )
+
+Clamp the components of the vector between
+min and max values specified by the given vectors
+
+- Failure return false
+- Success return Vector2
+*/
+int lmathVector2Clamp( lua_State *L ) {
+	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector2Clamp( Vector2 v, Vector2 min, Vector2 max )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 max = uluaGetVector2( L );
+	lua_pop( L, 1 );
+	Vector2 min = uluaGetVector2( L );
+	lua_pop( L, 1 );
+	Vector2 v = uluaGetVector2( L );
+
+	uluaPushVector2( L, Vector2Clamp( v, min, max ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector2ClampValue( Vector2 v, float min, float max )
+
+Clamp the magnitude of the vector between two min and max values
+
+- Failure return false
+- Success return Vector2
+*/
+int lmathVector2ClampValue( lua_State *L ) {
+	if ( !lua_istable( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector2ClampValue( Vector2 v, float min, float max )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float max = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	float min = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Vector2 v = uluaGetVector2( L );
+
+	uluaPushVector2( L, Vector2ClampValue( v, min, max ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector2Equals( Vector2 v1, Vector2 v2 )
+
+Check whether two given vectors are almost equal
+
+- Failure return false
+- Success return int
+*/
+int lmathVector2Equals( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector2Equals( Vector2 v1, Vector2 v2 )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 v2 = uluaGetVector2( L );
+	lua_pop( L, 1 );
+	Vector2 v1 = uluaGetVector2( L );
+
+	lua_pushinteger( L, Vector2Equals( v1, v2 ) );
 
 	return 1;
 }
@@ -851,6 +1037,29 @@ int lmathVector3Distance( lua_State *L ) {
 }
 
 /*
+> result = RL_Vector3DistanceSqr( Vector3 v1, Vector3 v2 )
+
+Calculate square distance between two vectors
+
+- Failure return false
+- Success return float
+*/
+int lmathVector3DistanceSqr( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3DistanceSqr( Vector3 v1, Vector3 v2 )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 v2 = uluaGetVector3( L );
+	lua_pop( L, 1 );
+	Vector3 v1 = uluaGetVector3( L );
+
+	lua_pushnumber( L, Vector3DistanceSqr( v1, v2 ) );
+
+	return 1;
+}
+
+/*
 > result = RL_Vector3Angle( Vector3 v1, Vector3 v2 )
 
 Calculate angle between two vectors
@@ -1012,6 +1221,31 @@ int lmathVector3RotateByQuaternion( lua_State *L ) {
 }
 
 /*
+> result = RL_Vector3RotateByAxisAngle( Vector3 v, Vector3 axis, float angle )
+
+Rotates a vector around an axis
+
+- Failure return false
+- Success return Vector3
+*/
+int lmathVector3RotateByAxisAngle( lua_State *L ) {
+	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3RotateByAxisAngle( Vector3 v, Vector3 axis, float angle )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float angle = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Vector3 axis = uluaGetVector3( L );
+	lua_pop( L, 1 );
+	Vector3 v = uluaGetVector3( L );
+
+	uluaPushVector3( L, Vector3RotateByAxisAngle( v, axis, angle ) );
+
+	return 1;
+}
+
+/*
 > result = RL_Vector3Lerp( Vector3 v1, Vector3 v2, float amount )
 
 Calculate linear interpolation between two vectors
@@ -1155,6 +1389,131 @@ int lmathVector3Unproject( lua_State *L ) {
 	Vector3 source = uluaGetVector3( L );
 
 	uluaPushVector3( L, Vector3Unproject( source, projection, view ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector3Invert( Vector3 v )
+
+Invert the given vector
+
+- Failure return false
+- Success return Vector3
+*/
+int lmathVector3Invert( lua_State *L ) {
+	if ( !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3Invert( Vector3 v )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 v = uluaGetVector3( L );
+
+	uluaPushVector3( L, Vector3Invert( v ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector3Clamp( Vector3 v, Vector3 min, Vector3 max )
+
+Clamp the components of the vector between
+min and max values specified by the given vectors
+
+- Failure return false
+- Success return Vector3
+*/
+int lmathVector3Clamp( lua_State *L ) {
+	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3Clamp( Vector3 v, Vector3 min, Vector3 max )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 max = uluaGetVector3( L );
+	lua_pop( L, 1 );
+	Vector3 min = uluaGetVector3( L );
+	lua_pop( L, 1 );
+	Vector3 v = uluaGetVector3( L );
+
+	uluaPushVector3( L, Vector3Clamp( v, min, max ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector3ClampValue( Vector3 v, float min, float max )
+
+Clamp the magnitude of the vector between two values
+
+- Failure return false
+- Success return Vector3
+*/
+int lmathVector3ClampValue( lua_State *L ) {
+	if ( !lua_istable( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3ClampValue( Vector3 v, float min, float max )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float max = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	float min = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Vector3 v = uluaGetVector3( L );
+
+	uluaPushVector3( L, Vector3ClampValue( v, min, max ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector3Equals( Vector3 v1, Vector3 v2 )
+
+Check whether two given vectors are almost equal
+
+- Failure return false
+- Success return int
+*/
+int lmathVector3Equals( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3Equals( Vector3 v1, Vector3 v2 )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 v2 = uluaGetVector3( L );
+	lua_pop( L, 1 );
+	Vector3 v1 = uluaGetVector3( L );
+
+	lua_pushinteger( L, Vector3Equals( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL_Vector3Refract( Vector3 v, Vector3 n, float r )
+
+Compute the direction of a refracted ray where v specifies the
+normalized direction of the incoming ray, n specifies the
+normalized normal vector of the interface of two optical media,
+and r specifies the ratio of the refractive index of the medium
+from where the ray comes to the refractive index of the medium
+on the other side of the surface
+
+- Failure return false
+- Success return Vector3
+*/
+int lmathVector3Refract( lua_State *L ) {
+	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_Vector3Refract( Vector3 v, Vector3 n, float r )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float r = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Vector3 n = uluaGetVector3( L );
+	lua_pop( L, 1 );
+	Vector3 v = uluaGetVector3( L );
+
+	uluaPushVector3( L, Vector3Refract( v, n, r ) );
 
 	return 1;
 }
@@ -2098,6 +2457,29 @@ int lmathQuaternionTransform( lua_State *L ) {
 	Quaternion q = uluaGetQuaternion( L );
 
 	uluaPushQuaternion( L, QuaternionTransform( q, mat ) );
+
+	return 1;
+}
+
+/*
+> result = RL_QuaternionEquals( Quaternion q1, Quaternion q2 )
+
+Check whether two given quaternions are almost equal
+
+- Failure return false
+- Success return int
+*/
+int lmathQuaternionEquals( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_QuaternionEquals( Quaternion q1, Quaternion q2 )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Quaternion q2 = uluaGetQuaternion( L );
+	lua_pop( L, 1 );
+	Quaternion q1 = uluaGetQuaternion( L );
+
+	lua_pushinteger( L, QuaternionEquals( q1, q2 ) );
 
 	return 1;
 }

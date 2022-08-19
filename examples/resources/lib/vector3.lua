@@ -38,7 +38,8 @@ Vector3.meta = {
 		return len
 	end,
 	__eq = function( v1, v2 )
-		return v1.x == v2.x and v1.y == v2.y and v1.z == v2.z
+		-- return v1.x == v2.x and v1.y == v2.y and v1.z == v2.z
+		return RL_Vector3Equals( v1, v2 ) == 1
 	end,
 }
 
@@ -128,6 +129,10 @@ function Vector3:distance( v2 )
 	return RL_Vector3Distance( self, v2 )
 end
 
+function Vector3:distanceSqr( v2 )
+	return RL_Vector3DistanceSqr( self, v2 )
+end
+
 function Vector3:angle( v2 )
 	return RL_Vector3Angle( self, v2 )
 end
@@ -153,12 +158,32 @@ function Vector3:rotateByQuaternion( q )
 	return Vector3:new( RL_Vector3RotateByQuaternion( self, q ) )
 end
 
+function Vector3:rotateByAxisAngle( axis, angle )
+	return Vector3:new( RL_Vector3RotateByAxisAngle( self, axis, angle ) )
+end
+
 function Vector3:lerp( v2, value )
 	return Vector3:new( RL_Vector3Lerp( self, v2, value ) )
 end
 
 function Vector3:reflect( normal )
 	return Vector3:new( RL_Vector3Reflect( self, normal ) )
+end
+
+function Vector3:invert()
+	return Vector3:new( RL_Vector3Invert( self ) )
+end
+
+function Vector3:clamp( min, max )
+	return Vector3:new( RL_Vector3Clamp( self, min, max ) )
+end
+
+function Vector3:clampValue( min, max )
+	return Vector3:new( RL_Vector3ClampValue( self, min, max ) )
+end
+
+function Vector3:equals( v2 )
+	return RL_Vector3Equals( self, v2 )
 end
 
 return Vector3

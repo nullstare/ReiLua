@@ -4726,6 +4726,24 @@ Remap input value within input range to output range
 
 ---
 
+> result = RL_Wrap( float value, float min, float max )
+
+Wrap input value from min to max
+
+- Failure return false
+- Success return float
+
+---
+
+> result = RL_FloatEquals( float x, float y )
+
+Check whether two given floats are almost equal
+
+- Failure return false
+- Success return int
+
+---
+
 ## Math - Vector2
 
 ---
@@ -4818,6 +4836,15 @@ Calculate distance between two vectors
 
 ---
 
+> result = RL_Vector2DistanceSqr( Vector2 v1, Vector2 v2 )
+
+Calculate square distance between two vectors
+
+- Failure return false
+- Success return float
+
+---
+
 > result = RL_Vector2Angle( Vector2 v1, Vector2 v2 )
 
 Calculate angle from two vectors
@@ -4872,6 +4899,15 @@ Normalize provided vector
 
 ---
 
+> result = RL_Vector2Transform( Vector2 v, Matrix mat )
+
+Transforms a Vector2 by a given Matrix
+
+- Failure return false
+- Success return Vector2
+
+---
+
 > result = RL_Vector2Lerp( Vector2 v1, Vector2 v2, float amount )
 
 Calculate linear interpolation between two vectors
@@ -4905,6 +4941,43 @@ Move Vector towards target
 
 - Failure return false
 - Success return Vector2
+
+---
+
+> result = RL_Vector2Invert( Vector2 v )
+
+Invert the given vector
+
+- Failure return false
+- Success return Vector2
+
+---
+
+> result = RL_Vector2Clamp( Vector2 v, Vector2 min, Vector2 max )
+
+Clamp the components of the vector between
+min and max values specified by the given vectors
+
+- Failure return false
+- Success return Vector2
+
+---
+
+> result = RL_Vector2ClampValue( Vector2 v, float min, float max )
+
+Clamp the magnitude of the vector between two min and max values
+
+- Failure return false
+- Success return Vector2
+
+---
+
+> result = RL_Vector2Equals( Vector2 v1, Vector2 v2 )
+
+Check whether two given vectors are almost equal
+
+- Failure return false
+- Success return int
 
 ---
 
@@ -5036,6 +5109,15 @@ Calculate distance between two vectors
 
 ---
 
+> result = RL_Vector3DistanceSqr( Vector3 v1, Vector3 v2 )
+
+Calculate square distance between two vectors
+
+- Failure return false
+- Success return float
+
+---
+
 > result = RL_Vector3Angle( Vector3 v1, Vector3 v2 )
 
 Calculate angle between two vectors
@@ -5100,6 +5182,15 @@ Transform a vector by quaternion rotation
 
 ---
 
+> result = RL_Vector3RotateByAxisAngle( Vector3 v, Vector3 axis, float angle )
+
+Rotates a vector around an axis
+
+- Failure return false
+- Success return Vector3
+
+---
+
 > result = RL_Vector3Lerp( Vector3 v1, Vector3 v2, float amount )
 
 Calculate linear interpolation between two vectors
@@ -5150,6 +5241,57 @@ NOTE: Assumes P is on the plane of the triangle
 
 Projects a Vector3 from screen space into object space
 NOTE: We are avoiding calling other raymath functions despite available
+
+- Failure return false
+- Success return Vector3
+
+---
+
+> result = RL_Vector3Invert( Vector3 v )
+
+Invert the given vector
+
+- Failure return false
+- Success return Vector3
+
+---
+
+> result = RL_Vector3Clamp( Vector3 v, Vector3 min, Vector3 max )
+
+Clamp the components of the vector between
+min and max values specified by the given vectors
+
+- Failure return false
+- Success return Vector3
+
+---
+
+> result = RL_Vector3ClampValue( Vector3 v, float min, float max )
+
+Clamp the magnitude of the vector between two values
+
+- Failure return false
+- Success return Vector3
+
+---
+
+> result = RL_Vector3Equals( Vector3 v1, Vector3 v2 )
+
+Check whether two given vectors are almost equal
+
+- Failure return false
+- Success return int
+
+---
+
+> result = RL_Vector3Refract( Vector3 v, Vector3 n, float r )
+
+Compute the direction of a refracted ray where v specifies the
+normalized direction of the incoming ray, n specifies the
+normalized normal vector of the interface of two optical media,
+and r specifies the ratio of the refractive index of the medium
+from where the ray comes to the refractive index of the medium
+on the other side of the surface
 
 - Failure return false
 - Success return Vector3
@@ -5540,6 +5682,15 @@ Transform a quaternion given a transformation matrix
 
 - Failure return false
 - Success return Quaternion
+
+---
+
+> result = RL_QuaternionEquals( Quaternion q1, Quaternion q2 )
+
+Check whether two given quaternions are almost equal
+
+- Failure return false
+- Success return int
 
 ---
 

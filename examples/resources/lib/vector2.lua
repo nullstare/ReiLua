@@ -38,7 +38,8 @@ Vector2.meta = {
 		return len
 	end,
 	__eq = function( v1, v2 )
-		return v1.x == v2.x and v1.y == v2.y
+		-- return v1.x == v2.x and v1.y == v2.y
+		return RL_Vector2Equals( v1, v2 ) == 1
 	end,
 }
 
@@ -114,6 +115,10 @@ function Vector2:distance( v2 )
 	return RL_Vector2Distance( self, v2 )
 end
 
+function Vector2:distanceSqr( v2 )
+	return RL_Vector2DistanceSqr( self, v2 )
+end
+
 function Vector2:angle( v2 )
 	return RL_Vector2Angle( self, v2 )
 end
@@ -124,6 +129,10 @@ end
 
 function Vector2:normalize()
 	return Vector2:new( RL_Vector2Normalize( self ) )
+end
+
+function Vector2:transform( mat )
+	return Vector2:new( RL_Vector2Transform( self, mat ) )
 end
 
 function Vector2:lerp( v2, value )
@@ -140,6 +149,22 @@ end
 
 function Vector2:moveTowards( target, maxDistance )
 	return Vector2:new( RL_Vector2MoveTowards( self, target, maxDistance ) )
+end
+
+function Vector2:invert()
+	return Vector2:new( RL_Vector2Invert( self ) )
+end
+
+function Vector2:clamp( min, max )
+	return Vector2:new( RL_Vector2Clamp( self, min, max ) )
+end
+
+function Vector2:clampValue( min, max )
+	return Vector2:new( RL_Vector2ClampValue( self, min, max ) )
+end
+
+function Vector2:equals( v2 )
+	return RL_Vector2Equals( self, v2 )
 end
 
 return Vector2

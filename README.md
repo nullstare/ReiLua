@@ -10,7 +10,7 @@ Reilua means fair in finnish.
 
 ## Status
 
-ReiLua is WIP and some planned raylib functionality is still missing but it already has over 400 functions and should include all functions to make most 2d and 3d games. Current Raylib version 4.0.0.
+ReiLua is WIP and some planned raylib functionality is still missing but it already has over 400 functions and should include all functions to make most 2d and 3d games. Current Raylib version 4.2.0.
 
 Included submodules.
 
@@ -75,7 +75,7 @@ Application should now start successfully from executable. All functionality can
 
 ## Building
 
-I think the simplest way would be to statically link Raylib and Lua to the same executable. Specially on Linux this would simplify distribution of games since different distros tend to use different versions of librarys. Of course if you plan to only experiment with it, this isn't so important. Current Raylib version 4.0.0.
+I think the simplest way would be to statically link Raylib and Lua to the same executable. Specially on Linux this would simplify distribution of games since different distros tend to use different versions of librarys. Of course if you plan to only experiment with it, this isn't so important. Current Raylib version 4.2.0.
 
 https://github.com/raysan5/raylib
 

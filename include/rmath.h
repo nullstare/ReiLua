@@ -62,7 +62,6 @@ int lmathMatrixDeterminant( lua_State *L );
 int lmathMatrixTrace( lua_State *L );
 int lmathMatrixTranspose( lua_State *L );
 int lmathMatrixInvert( lua_State *L );
-int lmathMatrixNormalize( lua_State *L );
 int lmathMatrixIdentity( lua_State *L );
 int lmathMatrixAdd( lua_State *L );
 int lmathMatrixSubtract( lua_State *L );

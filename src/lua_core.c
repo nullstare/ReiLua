@@ -383,14 +383,14 @@ void defineGlobals() {
 	assignGlobalFloat( DEG2RAD, "DEG2RAD" );
 	assignGlobalFloat( RAD2DEG, "RAD2DEG" );
 	/* GuiControlState */
-	assignGlobalInt( GUI_STATE_NORMAL, "GUI_STATE_NORMAL" );
-	assignGlobalInt( GUI_STATE_FOCUSED, "GUI_STATE_FOCUSED" );
-	assignGlobalInt( GUI_STATE_PRESSED, "GUI_STATE_PRESSED" );
-	assignGlobalInt( GUI_STATE_DISABLED, "GUI_STATE_DISABLED" );
+	assignGlobalInt( STATE_NORMAL, "STATE_NORMAL" );
+	assignGlobalInt( STATE_FOCUSED, "STATE_FOCUSED" );
+	assignGlobalInt( STATE_PRESSED, "STATE_PRESSED" );
+	assignGlobalInt( STATE_DISABLED, "STATE_DISABLED" );
 	/* GuiTextAlignment */
-	assignGlobalInt( GUI_TEXT_ALIGN_LEFT, "GUI_TEXT_ALIGN_LEFT" );
-	assignGlobalInt( GUI_TEXT_ALIGN_CENTER, "GUI_TEXT_ALIGN_CENTER" );
-	assignGlobalInt( GUI_TEXT_ALIGN_RIGHT, "GUI_TEXT_ALIGN_RIGHT" );
+	assignGlobalInt( TEXT_ALIGN_LEFT, "TEXT_ALIGN_LEFT" );
+	assignGlobalInt( TEXT_ALIGN_CENTER, "TEXT_ALIGN_CENTER" );
+	assignGlobalInt( TEXT_ALIGN_RIGHT, "TEXT_ALIGN_RIGHT" );
 	/* GuiControl */
 	assignGlobalInt( DEFAULT, "DEFAULT" );
 	assignGlobalInt( LABEL, "LABEL" );
@@ -1151,7 +1151,6 @@ void luaRegister() {
 	lua_register( L, "RL_MatrixTrace", lmathMatrixTrace );
 	lua_register( L, "RL_MatrixTranspose", lmathMatrixTranspose );
 	lua_register( L, "RL_MatrixInvert", lmathMatrixInvert );
-	lua_register( L, "RL_MatrixNormalize", lmathMatrixNormalize );
 	lua_register( L, "RL_MatrixIdentity", lmathMatrixIdentity );
 	lua_register( L, "RL_MatrixAdd", lmathMatrixAdd );
 	lua_register( L, "RL_MatrixSubtract", lmathMatrixSubtract );

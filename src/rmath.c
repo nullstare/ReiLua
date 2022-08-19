@@ -1248,27 +1248,6 @@ int lmathMatrixInvert( lua_State *L ) {
 }
 
 /*
-> result = RL_MatrixNormalize( Matrix mat )
-
-Normalize provided matrix
-
-- Failure return false
-- Success return Matrix
-*/
-int lmathMatrixNormalize( lua_State *L ) {
-	if ( !lua_istable( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_MatrixNormalize( Matrix mat )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	Matrix mat = uluaGetMatrix( L );
-
-	uluaPushMatrix( L, MatrixNormalize( mat ) );
-
-	return 1;
-}
-
-/*
 > result = MatrixIdentity()
 
 Get identity matrix

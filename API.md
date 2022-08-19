@@ -733,21 +733,21 @@ RAD2DEG
 
 ## Globals - GuiControlState
 
-GUI_STATE_NORMAL
+STATE_NORMAL
 
-GUI_STATE_FOCUSED
+STATE_FOCUSED
 
-GUI_STATE_PRESSED
+STATE_PRESSED
 
-GUI_STATE_DISABLED
+STATE_DISABLED
 
 ## Globals - GuiTextAlignment
 
-GUI_TEXT_ALIGN_LEFT
+TEXT_ALIGN_LEFT
 
-GUI_TEXT_ALIGN_CENTER
+TEXT_ALIGN_CENTER
 
-GUI_TEXT_ALIGN_RIGHT
+TEXT_ALIGN_RIGHT
 
 ## Globals - GuiControl
 
@@ -1205,7 +1205,7 @@ Set window configuration state using flags ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_R
 
 ---
 
-> state = RL_IsWindowState( int flag ) )
+> state = RL_IsWindowState( int flag )
 
 Check if one specific window flag is enabled ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE... )
 
@@ -2050,9 +2050,9 @@ Get current working directory ( Uses static string )
 
 ---
 
-> fileNames = RL_GetDirectoryFiles( string dirPath )
+> fileNames = RL_LoadDirectoryFiles( string dirPath )
 
-Get filenames in a directory path
+Load directory filepaths
 
 - Failure return false
 - Success return string{}
@@ -2076,9 +2076,9 @@ Check if a file has been dropped into window
 
 ---
 
-> files = RL_GetDroppedFiles()
+> files = RL_LoadDroppedFiles()
 
-Get dropped files names
+Load dropped filepaths
 
 - Success return string{}
 
@@ -4089,15 +4089,6 @@ Compute mesh tangents
 
 ---
 
-> success = RL_GenMeshBinormals( Mesh mesh )
-
-Compute mesh binormals
-
-- Failure return false
-- Success return true
-
----
-
 ## Models - Material
 
 ---
@@ -4365,15 +4356,6 @@ Get collision info between ray and box
 
 ---
 
-> rayCollision = RL_GetRayCollisionModel( Ray ray, Model model )
-
-Get collision info between ray and model
-
-- Failure return nil
-- Success return RayCollision
-
----
-
 > rayCollision = RL_GetRayCollisionMesh( Ray ray, Mesh mesh, Matrix transform )
 
 Get collision info between ray and mesh
@@ -4571,6 +4553,15 @@ Set pitch for a sound ( 1.0 is base level )
 
 ---
 
+> success = RL_SetSoundPan( Sound sound, float pan )
+
+Set pan for a sound ( 0.5 is center )
+
+- Failure return false
+- Success return true
+
+---
+
 > success = RL_WaveFormat( Wave wave, int sampleRate, int sampleSize, int channels )
 
 Convert wave data to desired format
@@ -4664,6 +4655,15 @@ Set volume for music ( 1.0 is max level )
 > success = RL_SetMusicPitch( float pitch )
 
 Set pitch for a music ( 1.0 is base level )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_SetMusicPan( float pan )
+
+Set pan for a music ( 0.5 is center )
 
 - Failure return false
 - Success return true
@@ -5190,15 +5190,6 @@ Transposes provided matrix
 > result = RL_MatrixInvert( Matrix mat )
 
 Invert provided matrix
-
-- Failure return false
-- Success return Matrix
-
----
-
-> result = RL_MatrixNormalize( Matrix mat )
-
-Normalize provided matrix
 
 - Failure return false
 - Success return Matrix

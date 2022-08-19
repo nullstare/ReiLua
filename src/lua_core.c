@@ -529,9 +529,6 @@ bool luaInit() {
 	luaRegister();
 	defineGlobals();
 
-	// SetConfigFlags( FLAG_VSYNC_HINT );
-	// SetWindowState( FLAG_VSYNC_HINT );
-
 	return luaCallMain();
 }
 
@@ -546,7 +543,7 @@ int luaTraceback( lua_State *L ) {
 	lua_getfield( L, -1, "traceback" );
 
 	if ( !lua_isfunction( L, -1 ) ) {
-		lua_pop(L, 2);
+		lua_pop( L, 2 );
 		return 1;
 	}
 
@@ -623,11 +620,6 @@ void luaCallProcess() {
  	    	return;
         }
     }
-    // else {
-	// 	TraceLog( LOG_WARNING, "%s", "No Lua process found!" );
-	// 	state->run = false;
-    //     return;
-    // }
 	lua_pop( L, -1 );
 }
 
@@ -649,11 +641,6 @@ void luaCallDraw() {
 
 		EndDrawing();
     }
-    // else {
-	// 	TraceLog( LOG_WARNING, "%s", "No Lua render found!" );
-	// 	state->run = false;
-    //     return;
-    // }
 	lua_pop( L, -1 );
 }
 
@@ -742,10 +729,10 @@ void luaRegister() {
 	lua_register( L, "RL_GetDirectoryPath", lcoreGetDirectoryPath );
 	lua_register( L, "RL_GetPrevDirectoryPath", lcoreGetPrevDirectoryPath );
 	lua_register( L, "RL_GetWorkingDirectory", lcoreGetWorkingDirectory );
-	lua_register( L, "RL_GetDirectoryFiles", lcoreGetDirectoryFiles );
+	lua_register( L, "RL_LoadDirectoryFiles", lcoreLoadDirectoryFiles );
 	lua_register( L, "RL_ChangeDirectory", lcoreChangeDirectory );
 	lua_register( L, "RL_IsFileDropped", lcoreIsFileDropped );
-	lua_register( L, "RL_GetDroppedFiles", lcoreGetDroppedFiles );
+	lua_register( L, "RL_LoadDroppedFiles", lcoreLoadDroppedFiles );
 	lua_register( L, "RL_GetFileModTime", lcoreGetFileModTime );
 		/* Camera2D. */
 	lua_register( L, "RL_CreateCamera2D", lcoreCreateCamera2D );
@@ -1014,7 +1001,6 @@ void luaRegister() {
 	lua_register( L, "RL_ExportMesh", lmodelsExportMesh );
 	lua_register( L, "RL_GetMeshBoundingBox", lmodelsGetMeshBoundingBox );
 	lua_register( L, "RL_GenMeshTangents", lmodelsGenMeshTangents );
-	lua_register( L, "RL_GenMeshBinormals", lmodelsGenMeshBinormals );
 		/* Material. */
 	lua_register( L, "RL_LoadMaterialDefault", lmodelsLoadMaterialDefault );
 	lua_register( L, "RL_CreateMaterial", lmodelsCreateMaterial );
@@ -1047,7 +1033,6 @@ void luaRegister() {
 	lua_register( L, "RL_CheckCollisionBoxSphere", lmodelsCheckCollisionBoxSphere );
 	lua_register( L, "RL_GetRayCollisionSphere", lmodelsGetRayCollisionSphere );
 	lua_register( L, "RL_GetRayCollisionBox", lmodelsGetRayCollisionBox );
-	lua_register( L, "RL_GetRayCollisionModel", lmodelsGetRayCollisionModel );
 	lua_register( L, "RL_GetRayCollisionMesh", lmodelsGetRayCollisionMesh );
 	lua_register( L, "RL_GetRayCollisionTriangle", lmodelsGetRayCollisionTriangle );
 	lua_register( L, "RL_GetRayCollisionQuad", lmodelsGetRayCollisionQuad );
@@ -1089,6 +1074,7 @@ void luaRegister() {
 	lua_register( L, "RL_IsSoundPlaying", laudioIsSoundPlaying );
 	lua_register( L, "RL_SetSoundVolume", laudioSetSoundVolume );
 	lua_register( L, "RL_SetSoundPitch", laudioSetSoundPitch );
+	lua_register( L, "RL_SetSoundPan", laudioSetSoundPan );
 	lua_register( L, "RL_WaveFormat", laudioWaveFormat );
 	lua_register( L, "RL_WaveCopy", laudioWaveCopy );
 	lua_register( L, "RL_WaveCrop", laudioWaveCrop );
@@ -1101,6 +1087,7 @@ void luaRegister() {
 	lua_register( L, "RL_ResumeMusicStream", laudioResumeMusicStream );
 	lua_register( L, "RL_SetMusicVolume", laudioSetMusicVolume );
 	lua_register( L, "RL_SetMusicPitch", laudioSetMusicPitch );
+	lua_register( L, "RL_SetMusicPan", laudioSetMusicPan );
 	lua_register( L, "RL_GetMusicTimeLength", laudioGetMusicTimeLength );
 	lua_register( L, "RL_GetMusicTimePlayed", laudioGetMusicTimePlayed );
 

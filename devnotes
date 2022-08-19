@@ -2,8 +2,10 @@ Current {
 }
 
 Backlog {
+	* Core
+		* LoadDirectoryFilesEx
 	* Audio
-		* Pan (From newer RayLib).
+		* AudioStream
 	* Text
 		* Codepoints
 		* String management. At least TextSplit.

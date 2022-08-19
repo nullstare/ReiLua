@@ -2172,29 +2172,28 @@ int lcoreGetWorkingDirectory( lua_State *L ) {
 }
 
 /*
-> fileNames = RL_GetDirectoryFiles( string dirPath )
+> fileNames = RL_LoadDirectoryFiles( string dirPath )
 
-Get filenames in a directory path
+Load directory filepaths
 
 - Failure return false
 - Success return string{}
 */
-int lcoreGetDirectoryFiles( lua_State *L ) {
+int lcoreLoadDirectoryFiles( lua_State *L ) {
 	if ( !lua_isstring( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetDirectoryFiles( string dirPath )" );
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadDirectoryFiles( string dirPath )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	int count = 0;
-	char **strings = GetDirectoryFiles( lua_tostring( L, -1 ), &count );
+	FilePathList files = LoadDirectoryFiles( lua_tostring( L, -1 ) );
 
-	lua_createtable( L, count, 0 );
+	lua_createtable( L, files.count, 0 );
 
-	for ( int i = 0; i < count; ++i ) {
-		lua_pushstring( L, strings[i] );
+	for ( int i = 0; i < files.count; ++i ) {
+		lua_pushstring( L, files.paths[i] );
     	lua_rawseti( L, -2, i+1 );
 	}
-	ClearDirectoryFiles();
+	UnloadDirectoryFiles( files );
 
 	return 1;
 }
@@ -2230,24 +2229,22 @@ int lcoreIsFileDropped( lua_State *L ) {
 }
 
 /*
-> files = RL_GetDroppedFiles()
+> files = RL_LoadDroppedFiles()
 
-Get dropped files names
+Load dropped filepaths
 
 - Success return string{}
 */
-int lcoreGetDroppedFiles( lua_State *L ) {
-	int count = 0;
-	char **files = GetDroppedFiles( &count );
+int lcoreLoadDroppedFiles( lua_State *L ) {
+	FilePathList files = LoadDroppedFiles();
 
-	lua_createtable( L, count, 0 );
+	lua_createtable( L, files.count, 0 );
 
-	for ( int i = 0; i < count; ++i ) {
-		lua_pushstring( L, files[i] );
+	for ( int i = 0; i < files.count; ++i ) {
+		lua_pushstring( L, files.paths[i] );
 		lua_rawseti( L, -2, i+1 );
 	}
-
-	ClearDroppedFiles();
+	UnloadDroppedFiles( files );
 
 	return 1;
 }

@@ -38,7 +38,6 @@ int lmodelsSetMeshColor( lua_State *L );
 int lmodelsExportMesh( lua_State *L );
 int lmodelsGetMeshBoundingBox( lua_State *L );
 int lmodelsGenMeshTangents( lua_State *L );
-int lmodelsGenMeshBinormals( lua_State *L );
 /* Material. */
 int lmodelsLoadMaterialDefault( lua_State *L );
 int lmodelsCreateMaterial( lua_State *L );
@@ -71,7 +70,6 @@ int lmodelsCheckCollisionBoxes( lua_State *L );
 int lmodelsCheckCollisionBoxSphere( lua_State *L );
 int lmodelsGetRayCollisionSphere( lua_State *L );
 int lmodelsGetRayCollisionBox( lua_State *L );
-int lmodelsGetRayCollisionModel( lua_State *L );
 int lmodelsGetRayCollisionMesh( lua_State *L );
 int lmodelsGetRayCollisionTriangle( lua_State *L );
 int lmodelsGetRayCollisionQuad( lua_State *L );

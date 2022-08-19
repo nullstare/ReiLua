@@ -1452,32 +1452,6 @@ int lmodelsGenMeshTangents( lua_State *L ) {
 }
 
 /*
-> success = RL_GenMeshBinormals( Mesh mesh )
-
-Compute mesh binormals
-
-- Failure return false
-- Success return true
-*/
-int lmodelsGenMeshBinormals( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GenMeshBinormals( Mesh mesh )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t meshId = lua_tointeger( L, -1 );
-
-	if ( !validMesh( meshId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	GenMeshBinormals( state->meshes[ meshId ] );
-	lua_pushboolean( L, true );
-
-	return 1;
-}
-
-/*
 ## Models - Material
 */
 
@@ -2381,33 +2355,6 @@ int lmodelsGetRayCollisionBox( lua_State *L ) {
 	Ray ray = uluaGetRay( L );
 
 	uluaPushRayCollision( L, GetRayCollisionBox( ray, box ) );
-
-	return 1;
-}
-
-/*
-> rayCollision = RL_GetRayCollisionModel( Ray ray, Model model )
-
-Get collision info between ray and model
-
-- Failure return nil
-- Success return RayCollision
-*/
-int lmodelsGetRayCollisionModel( lua_State *L ) {
-	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetRayCollisionModel( Ray ray, Model model )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	size_t modelId = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	Ray ray = uluaGetRay( L );
-
-	if ( !validModel( modelId ) ) {
-		lua_pushnil( L );
-		return 1;
-	}
-	uluaPushRayCollision( L, GetRayCollisionModel( ray, *state->models[ modelId ] ) );
 
 	return 1;
 }

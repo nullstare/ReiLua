@@ -521,6 +521,30 @@ int laudioSetSoundPitch( lua_State *L ) {
 }
 
 /*
+> success = RL_SetSoundPan( Sound sound, float pan )
+
+Set pan for a sound ( 0.5 is center )
+
+- Failure return false
+- Success return true
+*/
+int laudioSetSoundPan( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetSoundPan( Sound sound, float pitch )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	if ( !validSound( lua_tointeger( L, -2 ) ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	SetSoundPan( *state->sounds[ lua_tointeger( L, -2 ) ], lua_tonumber( L, -1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
 > success = RL_WaveFormat( Wave wave, int sampleRate, int sampleSize, int channels )
 
 Convert wave data to desired format
@@ -751,6 +775,26 @@ Set pitch for a music ( 1.0 is base level )
 int laudioSetMusicPitch( lua_State *L ) {
 	if ( !lua_isnumber( L, -1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetMusicPitch( float pitch )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	SetMusicPitch( state->music, lua_tonumber( L, -1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_SetMusicPan( float pan )
+
+Set pan for a music ( 0.5 is center )
+
+- Failure return false
+- Success return true
+*/
+int laudioSetMusicPan( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetMusicPan( float pan )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}

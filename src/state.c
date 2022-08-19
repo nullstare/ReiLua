@@ -13,7 +13,7 @@ bool stateInit( const char *exePath ) {
 
 	state->hasWindow = true;
 	state->run = true;
-	state->resolution = (Vector2){ 1024, 720 };
+	state->resolution = (Vector2){ 800, 600 };
 	state->luaState = NULL;
 	state->textureSource = TEXTURE_SOURCE_TEXTURE;
 	/* Images. */
@@ -93,7 +93,7 @@ bool stateInit( const char *exePath ) {
 			state->materials[i] = NULL;
 		}
 	}
-	
+
     InitWindow( state->resolution.x, state->resolution.y, "ReiLua" );
 	/* Has to be after InitWindod where opengl context is created. */
 	state->materials[0] = malloc( sizeof( Material ) );

@@ -2,7 +2,6 @@ local pos = { 2, 0.5, 6 }
 local speed = 5.0
 local camera = -1
 local texture = -1
-local mesh = -1
 local textureSize = { 256, 96 }
 local res = { 384, 216 }
 local winSize = RL_GetWindowSize()
@@ -79,7 +78,6 @@ function init()
 
 	texture = RL_LoadTexture( RL_GetBasePath().."../resources/images/tiles.png" )
 	camera = RL_CreateCamera3D()
-	mesh = RL_GenMeshCube( { 1, 2, 1 } )
 	RL_SetCamera3DPosition( camera, pos )
 	RL_SetCamera3DTarget( camera, { 0, 0, 0 } )
 	RL_SetCamera3DUp( camera, { 0, 1, 0 } )

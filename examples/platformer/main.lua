@@ -32,7 +32,7 @@ local tilemap = {
 
 local player = {
 	vel = Vec2:new( 0, 0 ),
-	pos = Vec2:new( 32, 32 ), -- Center down.
+	pos = Vec2:new( 32, 32 ), -- Center bottom.
 	colRect = { 0, 0, 12, 14 },
 	onFloor = false,
 	frames = {
@@ -48,11 +48,6 @@ local player = {
 	animPos = 0.0,
 	facing = 1,
 }
-
-local kissa = { Vec2:new( 2, 4 ), 23 }
-
--- print( table.concat( kissa ) )
-print( kissa[1] )
 
 local function createMap()
 	for x = 1, tilemap.size.x do
@@ -199,16 +194,6 @@ local function playerMovement( delta )
 		end
 	end
 
-	-- Alternative top down movement.
-
-	-- if RL_IsKeyDown( KEY_DOWN ) then
-	-- 	player.vel.y = player.vel.y + PLAYER_ACCELL * delta
-	-- 	moving[2] = true
-	-- elseif RL_IsKeyDown( KEY_UP ) then
-	-- 	player.vel.y = player.vel.y - PLAYER_ACCELL * delta
-	-- 	moving[2] = true
-	-- end
-
 	if RL_IsKeyPressed( KEY_SPACE ) and player.onFloor then
 		player.vel.y = -JUMP_STR
 		player.onFloor = false
@@ -226,18 +211,7 @@ local function playerMovement( delta )
 		end
 	end
 
-	-- if not moving[2] then
-	-- 	if delta * PLAYER_DEACCELL < player.vel.y then
-	-- 		player.vel.y = player.vel.y - PLAYER_DEACCELL * delta
-	-- 	elseif player.vel.y < -delta * PLAYER_DEACCELL then
-	-- 		player.vel.y = player.vel.y + PLAYER_DEACCELL * delta
-	-- 	else
-	-- 		player.vel.y = 0.0
-	-- 	end
-	-- end
-	
 	player.vel.x = util.clamp( player.vel.x, -PLAYER_MAXSPEED, PLAYER_MAXSPEED )
-	-- player.vel.y = util.clamp( player.vel.y, -PLAYER_MAXSPEED, PLAYER_MAXSPEED )
 
 	player.vel.y = player.vel.y + GRAVITY * delta
 

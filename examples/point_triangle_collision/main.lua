@@ -45,6 +45,8 @@ function init()
 	RL_SetCameraMode( camera, CAMERA_FREE )
 
 	calcNormal( tri )
+
+	texture = RL_LoadTexture( RL_GetBasePath().."../resources/images/tile.png" )
 end
 
 local function checkCollisionPointTriangle( p, a, b, c, n )

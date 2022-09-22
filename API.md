@@ -4017,7 +4017,8 @@ Generate custom mesh from vertex attribute data and uploads it into a VAO ( if s
 
 > success = RL_UpdateMesh( Mesh{} )
 
-Update mesh vertex data in GPU. ( Mainly intented to be used with custom meshes )
+Update mesh vertex data in GPU.
+Note! Mainly intented to be used with custom meshes.
 
 - Failure return false
 - Success return true

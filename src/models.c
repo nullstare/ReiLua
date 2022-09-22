@@ -567,7 +567,7 @@ Note! Could be replaced something like "DrawPlaneTextureRec"
 - Success return true
 */
 int lmodelDrawQuad3DTexture( lua_State *L ) {
-	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, -4 ) || !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_DrawQuad3DTexture( texture, Vector3{} vertices, Vector2{} texCoords, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -605,6 +605,10 @@ int lmodelDrawQuad3DTexture( lua_State *L ) {
         lua_pop( L, 1 );
     }
 	lua_pop( L, 1 );
+
+	//TODO Normals. maybe something like Vector3Normalize(Vector3CrossProduct(Vector3Subtract(vB, vA), Vector3Subtract(vC, vA)));
+
+	/* Texture. */
 	size_t texId = lua_tointeger( L, -1 );
 
 	if ( !validSourceTexture( texId ) ) {
@@ -612,11 +616,9 @@ int lmodelDrawQuad3DTexture( lua_State *L ) {
 		return 1;
 	}
 
-	// Draw.
+	/* Draw. */
 	rlCheckRenderBatchLimit( 4 );
 	rlSetTexture( texturesGetSourceTexture( texId )->id );
-
-	//TODO Normals. maybe something like Vector3Normalize(Vector3CrossProduct(Vector3Subtract(vB, vA), Vector3Subtract(vC, vA)));
 
 	rlBegin( RL_QUADS );
         rlColor4ub( color.r, color.g, color.b, color.a );
@@ -1091,7 +1093,8 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 /*
 > success = RL_UpdateMesh( Mesh{} )
 
-Update mesh vertex data in GPU. ( Mainly intented to be used with custom meshes )
+Update mesh vertex data in GPU.
+Note! Mainly intented to be used with custom meshes.
 
 - Failure return false
 - Success return true

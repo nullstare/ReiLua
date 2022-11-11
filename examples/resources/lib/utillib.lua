@@ -1,4 +1,4 @@
--- Define useful global stuff.
+-- Define useful global functions.
 
 local utillib = {}
 
@@ -41,7 +41,7 @@ function utillib.clamp( val, min, max )
 	return math.max( min, math.min( val, max ) )
 end
 
--- Returns changed value ( value to be changed, index, bit )
+-- Returns changed value ( value to be changed, index, state( bool ) )
 function utillib.setBit( v, i, b )
 	if b then
 		return v | 1 << i
@@ -93,6 +93,7 @@ function utillib.round( v )
 	return math.tointeger( v + 0.5 - ( v + 0.5 ) % 1 )
 end
 
+-- Use with dictionary style tables.
 function utillib.tableLen( t )
     local count = 0
 
@@ -149,6 +150,17 @@ function utillib.toBoolean( v )
 	end
 
 	return false
+end
+
+-- Print table content.
+function utillib.printt( t )
+	print( tostring(t).." = {" )
+
+	for i, item in pairs( t ) do
+		print( "\t"..tostring(i).." = "..tostring( item ) )
+	end
+
+	print( "}" )
 end
 
 return utillib

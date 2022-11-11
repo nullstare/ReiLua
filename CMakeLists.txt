@@ -55,6 +55,7 @@ else() # Desktop
 		target_link_libraries( ${PROJECT_NAME} "-framework Cocoa" )
 		target_link_libraries( ${PROJECT_NAME} "-framework OpenGL" )
 	elseif( WIN32 )
+		# Remove this to get console.
 		set( CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-mwindows" )
 		target_link_libraries( ${PROJECT_NAME} mingw32 opengl32 gdi32 winmm )
 	endif()

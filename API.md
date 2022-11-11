@@ -6207,3 +6207,264 @@ Get the line drawing width
 - Success return float
 
 ---
+
+## Easings - Linear Easing functions
+
+---
+
+> value = RL_EaseLinear( float t, float b, float c, float d )
+
+Ease linear
+
+- Failure return false
+- Success return float
+
+---
+
+## Easings - Sine Easing functions
+
+---
+
+> value = RL_EaseSineIn( float t, float b, float c, float d )
+
+Ease sine in
+
+- Failure return false
+- Success return float
+
+---
+
+> value = RL_EaseSineOut( float t, float b, float c, float d )
+
+Ease sine out
+
+- Failure return false
+- Success return float
+
+---
+
+> value = RL_EaseSineInOut( float t, float b, float c, float d )
+
+Ease sine in out
+
+- Failure return false
+- Success return float
+
+---
+
+## Easings - Circular Easing functions
+
+---
+
+> value = RL_EaseCircIn( float t, float b, float c, float d )
+
+Ease circle in
+
+- Failure return false
+- Success return float
+
+---
+
+> value = RL_EaseCircOut( float t, float b, float c, float d )
+
+Ease circle out
+
+- Failure return false
+- Success return float
+
+---
+
+> value = RL_EaseCircInOut( float t, float b, float c, float d )
+
+Ease circle in out
+
+- Failure return false
+- Success return float
+
+---
+
+## Easings - Cubic Easing functions
+
+---
+
+> value = RL_EaseCubicIn( float t, float b, float c, float d )
+
+Ease cubic in
+
+- Failure return false
+- Success return float
+
+---
+
+> value = RL_EaseCubicOut( float t, float b, float c, float d )
+
+Ease cubic out
+
+- Failure return false
+- Success return float
+
+---
+
+> value = RL_EaseCubicInOut( float t, float b, float c, float d )
+
+Ease cubic in out
+
+- Failure return false
+- Success return float
+
+---
+
+## Easings - Quadratic Easing functions
+
+---
+
+> value = RL_EaseQuadIn( float t, float b, float c, float d )
+
+Ease quadratic in
+
+- Failure return false
+- Success return float
+
+---
+
+> value = RL_EaseQuadOut( float t, float b, float c, float d )
+
+Ease quadratic out
+
+- Failure return false
+- Success return float
+
+---
+
+> value = RL_EaseQuadInOut( float t, float b, float c, float d )
+
+Ease quadratic in out
+
+- Failure return false
+- Success return float
+
+---
+
+## Easings - Exponential Easing functions
+
+---
+
+> value = RL_EaseExpoIn( float t, float b, float c, float d )
+
+Ease exponential in
+
+- Failure return false
+- Success return float
+
+---
+
+> value = RL_EaseExpoOut( float t, float b, float c, float d )
+
+Ease exponential out
+
+- Failure return false
+- Success return float
+
+---
+
+> value = RL_EaseExpoInOut( float t, float b, float c, float d )
+
+Ease exponential in out
+
+- Failure return false
+- Success return float
+
+---
+
+## Easings - Back Easing functions
+
+---
+
+> value = RL_EaseBackIn( float t, float b, float c, float d )
+
+Ease back in
+
+- Failure return false
+- Success return float
+
+---
+
+> value = RL_EaseBackOut( float t, float b, float c, float d )
+
+Ease back out
+
+- Failure return false
+- Success return float
+
+---
+
+> value = RL_EaseBackInOut( float t, float b, float c, float d )
+
+Ease back in out
+
+- Failure return false
+- Success return float
+
+---
+
+## Easings - Bounce Easing functions
+
+---
+
+> value = RL_EaseBounceIn( float t, float b, float c, float d )
+
+Ease bounce in
+
+- Failure return false
+- Success return float
+
+---
+
+> value = RL_EaseBounceOut( float t, float b, float c, float d )
+
+Ease bounce out
+
+- Failure return false
+- Success return float
+
+---
+
+> value = RL_EaseBounceInOut( float t, float b, float c, float d )
+
+Ease bounce in out
+
+- Failure return false
+- Success return float
+
+---
+
+## Easings - Elastic Easing functions
+
+---
+
+> value = RL_EaseElasticIn( float t, float b, float c, float d )
+
+Ease elastic in
+
+- Failure return false
+- Success return float
+
+---
+
+> value = RL_EaseElasticOut( float t, float b, float c, float d )
+
+Ease elastic out
+
+- Failure return false
+- Success return float
+
+---
+
+> value = RL_EaseElasticInOut( float t, float b, float c, float d )
+
+Ease elastic in out
+
+- Failure return false
+- Success return float
+
+---

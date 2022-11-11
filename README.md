@@ -16,6 +16,7 @@ Included submodules.
 
 * Raygui
 * Raymath
+* Easings
 
 List of some MISSING features that are planned to be included. For specific function, check API.
 
@@ -72,6 +73,14 @@ GameFolder
 ```
 
 Application should now start successfully from executable. All functionality can be found in "API".
+
+## Interpreter Mode
+
+ReiLua can also be used to run single lua file using interpreter mode with arguments -i or --interpret. Given file will be called with dofile. Usage example:
+
+```
+./Reilua -i hello.lua
+```
 
 ## Building
 

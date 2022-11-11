@@ -155,6 +155,7 @@ local sourceFiles = {
 	"src/rgui.c",
 	"src/lights.c",
 	"src/rlgl.c",
+	"src/easings.c",
 }
 
 for _, src in ipairs( sourceFiles ) do

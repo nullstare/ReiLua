@@ -13,11 +13,25 @@ inline static void printVersion() {
 
 int main( int argn, const char **argc ) {
 	char exePath[ STRING_LEN ] = { '\0' };
+	bool interpret_mode = false;
 
 	if ( 1 < argn ) {
 		if ( strcmp( argc[1], "--version" ) == 0 || strcmp( argc[1], "-v" ) == 0 ) {
 			printVersion();
 			return 1;
+		}
+		else if ( strcmp( argc[1], "--help" ) == 0 || strcmp( argc[1], "-h" ) == 0 ) {
+			printf(
+"Usage: ReiLua [Options] [Directory to main.lua or main]\nOptions:\n-h --help\tThis help\n-v --version\tShow ReiLua version\n-i --interpret\tInterpret mode [File name]\n" );
+
+			return 1;
+		}
+		else if ( strcmp( argc[1], "--interpret" ) == 0 || strcmp( argc[1], "-i" ) == 0 ) {
+			interpret_mode = true;
+
+			if ( 2 < argn ) {
+				sprintf( exePath, "%s/%s", GetWorkingDirectory(), argc[2] );
+			}
 		}
 		else{
 			sprintf( exePath, "%s/%s", GetWorkingDirectory(), argc[1] );
@@ -26,19 +40,29 @@ int main( int argn, const char **argc ) {
 	else {
 		sprintf( exePath, "%s/", GetWorkingDirectory() );
 	}
-	printVersion();
-	stateInit( exePath );
 
-	while ( state->run ) {
-		if ( WindowShouldClose() ) {
-			state->run = false;
-		}
-		if ( IsAudioDeviceReady() ) {
-			UpdateMusicStream( state->music );
-		}
-		luaCallProcess();
-		luaCallDraw();
+	if ( interpret_mode ) {
+		stateInitInterpret();
+		luaL_dofile( state->luaState, exePath );
 	}
+	else {
+		printVersion();
+		stateInit( exePath );
+		luaRegister();
+		state->run = luaCallMain();
+
+		while ( state->run ) {
+			if ( WindowShouldClose() ) {
+				state->run = false;
+			}
+			if ( IsAudioDeviceReady() ) {
+				UpdateMusicStream( state->music );
+			}
+			luaCallProcess();
+			luaCallDraw();
+		}
+	}
+
 	stateFree();
 
 	return 1;

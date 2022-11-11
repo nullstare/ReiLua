@@ -108,9 +108,18 @@ bool stateInit( const char *exePath ) {
 	if ( state->run ) {
 		InitAudioDevice();
 		state->run = luaInit();
+		// luaRegister();
+		// defineGlobals();
+
+		state->run = luaInit();
 	}
 
 	return state->run;
+}
+
+bool stateInitInterpret() {
+	state = malloc( sizeof( State ) );
+	luaInit();
 }
 
 void stateFree() {

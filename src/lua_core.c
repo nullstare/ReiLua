@@ -11,6 +11,7 @@
 #include "rgui.h"
 #include "lights.h"
 #include "lrlgl.h"
+#include "reasings.h"
 
 static void assignGlobalInt( int value, const char *name ) {
 	lua_State *L = state->luaState;
@@ -526,10 +527,10 @@ bool luaInit() {
 
 		return false;
 	}
-	luaRegister();
+	// luaRegister();
 	defineGlobals();
 
-	return luaCallMain();
+	return true;
 }
 
 int luaTraceback( lua_State *L ) {
@@ -592,8 +593,9 @@ bool luaCallMain() {
 			return false;
 		}
 	}
+	//TODO Should this be removed?
 	else {
-		TraceLog( LOG_ERROR, "%s", "No Lua main found!" );
+		TraceLog( LOG_ERROR, "%s", "No Lua init found!" );
         return false;
     }
 	/* Apply custom callback here. */
@@ -1265,14 +1267,52 @@ void luaRegister() {
 	lua_register( L, "RL_GuiSetIconPixel", lguiGuiSetIconPixel );
 	lua_register( L, "RL_GuiClearIconPixel", lguiGuiClearIconPixel );
 	lua_register( L, "RL_GuiCheckIconPixel", lguiGuiCheckIconPixel );
+
 	/* Lights */
 		/* Basics. */
 	lua_register( L, "RL_CreateLight", llightsCreateLight );
 	lua_register( L, "RL_UpdateLightValues", llightsUpdateLightValues );
+
 	/* RLGL */
 		/* General render state. */
-	lua_register( L, "RL_rlSetLineWidth", lrlglSetLineWidth );
-	lua_register( L, "RL_rlGetLineWidth", lrlglGetLineWidth );
+	lua_register( L, "RL_rlglSetLineWidth", lrlglSetLineWidth );
+	lua_register( L, "RL_rlglGetLineWidth", lrlglGetLineWidth );
+
+	/* Easings */
+		/* Linear Easing functions. */
+	lua_register( L, "RL_EaseLinear", leasingsEaseLinear );
+		/* Sine Easing functions. */
+	lua_register( L, "RL_EaseSineIn", leasingsEaseSineIn );
+	lua_register( L, "RL_EaseSineOut", leasingsEaseSineOut );
+	lua_register( L, "RL_EaseSineInOut", leasingsEaseSineInOut );
+		/* Circular Easing functions. */
+	lua_register( L, "RL_EaseCircIn", leasingsEaseCircIn );
+	lua_register( L, "RL_EaseCircOut", leasingsEaseCircOut );
+	lua_register( L, "RL_EaseCircInOut", leasingsEaseCircInOut );
+		/* Cubic Easing functions. */
+	lua_register( L, "RL_EaseCubicIn", leasingsEaseCubicIn );
+	lua_register( L, "RL_EaseCubicOut", leasingsEaseCubicOut );
+	lua_register( L, "RL_EaseCubicInOut", leasingsEaseCubicInOut );
+		/* Quadratic Easing functions. */
+	lua_register( L, "RL_EaseQuadIn", leasingsEaseQuadIn );
+	lua_register( L, "RL_EaseQuadOut", leasingsEaseQuadOut );
+	lua_register( L, "RL_EaseQuadInOut", leasingsEaseQuadInOut );
+		/* Exponential Easing functions. */
+	lua_register( L, "RL_EaseExpoIn", leasingsEaseExpoIn );
+	lua_register( L, "RL_EaseExpoOut", leasingsEaseExpoOut );
+	lua_register( L, "RL_EaseExpoInOut", leasingsEaseExpoInOut );
+		/* Back Easing functions. */
+	lua_register( L, "RL_EaseBackIn", leasingsEaseBackIn );
+	lua_register( L, "RL_EaseBackOut", leasingsEaseBackOut );
+	lua_register( L, "RL_EaseBackInOut", leasingsEaseBackInOut );
+		/* Bounce Easing functions. */
+	lua_register( L, "RL_EaseBounceIn", leasingsEaseBounceIn );
+	lua_register( L, "RL_EaseBounceOut", leasingsEaseBounceOut );
+	lua_register( L, "RL_EaseBounceInOut", leasingsEaseBounceInOut );
+		/* Elastic Easing functions. */
+	lua_register( L, "RL_EaseElasticIn", leasingsEaseElasticIn );
+	lua_register( L, "RL_EaseElasticOut", leasingsEaseElasticOut );
+	lua_register( L, "RL_EaseElasticInOut", leasingsEaseElasticInOut );
 }
 
 /* Lua util functions. */

@@ -5,7 +5,7 @@ local texture = -1
 local textureSize = { 256, 96 }
 local res = { 384, 216 }
 local winSize = RL_GetWindowSize()
-local winScale = 5
+local winScale = 4
 local framebuffer = -1
 
 local TILE_SIZE = 32

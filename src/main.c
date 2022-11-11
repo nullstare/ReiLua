@@ -43,7 +43,17 @@ int main( int argn, const char **argc ) {
 
 	if ( interpret_mode ) {
 		stateInitInterpret();
-		luaL_dofile( state->luaState, exePath );
+
+		lua_State *L = state->luaState;
+		lua_pushcfunction( L, luaTraceback );
+		int tracebackidx = lua_gettop( L );
+
+		luaL_loadfile( L, exePath );
+
+		if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			return false;
+		}
 	}
 	else {
 		printVersion();

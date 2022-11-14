@@ -527,7 +527,6 @@ bool luaInit() {
 
 		return false;
 	}
-	// luaRegister();
 	defineGlobals();
 
 	return true;

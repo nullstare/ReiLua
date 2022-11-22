@@ -549,7 +549,7 @@ Draw a vertical-gradient-filled rectangle
 - Success return true
 */
 int lshapesDrawRectangleGradientV( lua_State *L ) {
-	if ( !lua_istable( L, -4 ) || !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_DrawRectangleGradientV( Rectangle rectangle, Color color1, Color color2 )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -575,7 +575,7 @@ Draw a horizontal-gradient-filled rectangle
 - Success return true
 */
 int lshapesDrawRectangleGradientH( lua_State *L ) {
-	if ( !lua_istable( L, -4 ) || !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_DrawRectangleGradientH( Rectangle rectangle, Color color1, Color color2 )" );
 		lua_pushboolean( L, false );
 		return 1;

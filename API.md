@@ -31,6 +31,12 @@ This function can be used for custom log message handling.
 
 ---
 
+> function exit()
+
+This function will be called on program close. Cleanup could be done here.
+
+---
+
 ## Globals - ConfigFlags
 
 FLAG_VSYNC_HINT

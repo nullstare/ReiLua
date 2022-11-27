@@ -71,6 +71,7 @@ int main( int argn, const char **argc ) {
 			luaCallProcess();
 			luaCallDraw();
 		}
+		luaCallExit();
 	}
 
 	stateFree();

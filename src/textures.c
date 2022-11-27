@@ -2099,6 +2099,7 @@ int ltexturesDrawTextureNPatch( lua_State *L ) {
 	Rectangle dest = uluaGetRectangle( L );
 	lua_pop( L, 1 );
 	NPatchInfo nPatchInfo = uluaGetNPatchInfo( L );
+
 	lua_pop( L, 1 );
 	size_t texId = lua_tointeger( L, -1 );
 

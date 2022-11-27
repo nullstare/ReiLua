@@ -645,6 +645,23 @@ void luaCallDraw() {
 	lua_pop( L, -1 );
 }
 
+void luaCallExit() {
+	lua_State *L = state->luaState;
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop(L);
+	
+    lua_getglobal( L, "exit" );
+
+    if ( lua_isfunction( L, -1 ) ) {
+        if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+ 	    	return;
+        }
+    }
+	lua_pop( L, -1 );
+}
+
 void luaRegister() {
 	lua_State *L = state->luaState;
 
@@ -1730,54 +1747,53 @@ NPatchInfo uluaGetNPatchInfo( lua_State *L ) {
     lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-		if ( lua_isnumber( L, -1 ) ) {
-			if ( lua_isnumber( L, -2 ) ) {
-				switch ( i ) {
-					case 0:
-						npatch.source = uluaGetRectangle( L );
-						break;
-					case 1:
-						npatch.left = lua_tointeger( L, -1 );
-						break;
-					case 2:
-						npatch.top = lua_tointeger( L, -1 );
-						break;
-					case 3:
-						npatch.right = lua_tointeger( L, -1 );
-						break;
-					case 4:
-						npatch.bottom = lua_tointeger( L, -1 );
-						break;
-					case 5:
-						npatch.layout = lua_tointeger( L, -1 );
-						break;
-					default:
-						break;
-				}
-			}
-			else if ( lua_isstring( L, -2 ) ) {
-				if ( strcmp( "source", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+		/* Do not check type since there should be table and ints. */
+		if ( lua_isnumber( L, -2 ) ) {
+			switch ( i ) {
+				case 0:
 					npatch.source = uluaGetRectangle( L );
-				}
-				else if ( strcmp( "left", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					break;
+				case 1:
 					npatch.left = lua_tointeger( L, -1 );
-				}
-				else if ( strcmp( "top", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					break;
+				case 2:
 					npatch.top = lua_tointeger( L, -1 );
-				}
-				else if ( strcmp( "right", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					break;
+				case 3:
 					npatch.right = lua_tointeger( L, -1 );
-				}
-				else if ( strcmp( "bottom", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					break;
+				case 4:
 					npatch.bottom = lua_tointeger( L, -1 );
-				}
-				else if ( strcmp( "layout", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					break;
+				case 5:
 					npatch.layout = lua_tointeger( L, -1 );
-				}
+					break;
+				default:
+					break;
 			}
-			i++;
-			lua_pop( L, 1 );
 		}
+		else if ( lua_isstring( L, -2 ) ) {
+			if ( strcmp( "source", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				npatch.source = uluaGetRectangle( L );
+			}
+			else if ( strcmp( "left", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				npatch.left = lua_tointeger( L, -1 );
+			}
+			else if ( strcmp( "top", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				npatch.top = lua_tointeger( L, -1 );
+			}
+			else if ( strcmp( "right", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				npatch.right = lua_tointeger( L, -1 );
+			}
+			else if ( strcmp( "bottom", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				npatch.bottom = lua_tointeger( L, -1 );
+			}
+			else if ( strcmp( "layout", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				npatch.layout = lua_tointeger( L, -1 );
+			}
+		}
+		i++;
+		lua_pop( L, 1 );
     }
 	return npatch;
 }

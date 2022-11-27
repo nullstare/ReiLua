@@ -5,6 +5,8 @@ KEY CHANGES:
 	- ADDED: This changelog.
 	- ADDED: Lua interpreter mode.
 	- ADDED: Easings extra module.
+	- ADDED: exit function.
+	- FIX: uluaGetNPatchInfo fix for RL_DrawTextureNPatch. Guess this was never tested and did not work at all >:E.
 
 Detailed changes:
 ADDED: Help argument.

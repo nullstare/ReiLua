@@ -5,6 +5,7 @@ int luaTraceback( lua_State *L );
 bool luaCallMain();
 void luaCallProcess();
 void luaCallDraw();
+void luaCallExit();
 void luaRegister();
 /* Lua Util functions */
 Color uluaGetColor( lua_State *L );

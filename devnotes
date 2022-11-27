@@ -2,13 +2,9 @@ Current {
 }
 
 Backlog {
-	* Core
-		* LoadDirectoryFilesEx
 	* Audio
-		* AudioStream
+		* AudioStream.
 	* Text
-		* Codepoints
-		* String management. At least TextSplit.
-
-	* VR?
+		* Codepoints?
+	* VR.
 }

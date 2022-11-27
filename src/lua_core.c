@@ -748,6 +748,7 @@ void luaRegister() {
 	lua_register( L, "RL_GetPrevDirectoryPath", lcoreGetPrevDirectoryPath );
 	lua_register( L, "RL_GetWorkingDirectory", lcoreGetWorkingDirectory );
 	lua_register( L, "RL_LoadDirectoryFiles", lcoreLoadDirectoryFiles );
+	lua_register( L, "RL_LoadDirectoryFilesEx", lcoreLoadDirectoryFilesEx );
 	lua_register( L, "RL_ChangeDirectory", lcoreChangeDirectory );
 	lua_register( L, "RL_IsFileDropped", lcoreIsFileDropped );
 	lua_register( L, "RL_LoadDroppedFiles", lcoreLoadDroppedFiles );

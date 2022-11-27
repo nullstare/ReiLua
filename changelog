@@ -13,3 +13,5 @@ ADDED: Help argument.
 CHANGED: Changed fuction name RL_rlSetLineWidth to RL_rlglSetLineWidth.
 CHANGED: Changed fuction name RL_rlGetLineWidth to RL_rlglGetLineWidth.
 FIX: DrawRectangleGradient V and H expecting wrong amount of arguments.
+ADDED: RL_LoadDirectoryFilesEx.
+ADDED: Flag option (-s) for doc_parser.lua for exporting module APIs to separate files.

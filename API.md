@@ -2065,6 +2065,15 @@ Load directory filepaths
 
 ---
 
+> fileNames = RL_LoadDirectoryFilesEx( string basePath, string filter, bool scanSubdirs )
+
+Load directory filepaths with extension filtering and recursive directory scan
+
+- Failure return false
+- Success return string{}
+
+---
+
 > success = RL_ChangeDirectory( string directory )
 
 Change working directory, return true on success

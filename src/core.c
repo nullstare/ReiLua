@@ -2199,6 +2199,33 @@ int lcoreLoadDirectoryFiles( lua_State *L ) {
 }
 
 /*
+> fileNames = RL_LoadDirectoryFilesEx( string basePath, string filter, bool scanSubdirs )
+
+Load directory filepaths with extension filtering and recursive directory scan
+
+- Failure return false
+- Success return string{}
+*/
+int lcoreLoadDirectoryFilesEx( lua_State *L ) {
+	if ( !lua_isstring( L, -3 ) || !lua_isstring( L, -2 ) || !lua_isboolean( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadDirectoryFilesEx( string dirPath )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	FilePathList files = LoadDirectoryFilesEx( lua_tostring( L, -3 ), lua_tostring( L, -2 ), lua_toboolean( L, -1 ) );
+
+	lua_createtable( L, files.count, 0 );
+
+	for ( int i = 0; i < files.count; ++i ) {
+		lua_pushstring( L, files.paths[i] );
+    	lua_rawseti( L, -2, i+1 );
+	}
+	UnloadDirectoryFiles( files );
+
+	return 1;
+}
+
+/*
 > success = RL_ChangeDirectory( string directory )
 
 Change working directory, return true on success

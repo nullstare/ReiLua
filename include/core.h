@@ -85,6 +85,7 @@ int lcoreGetDirectoryPath( lua_State *L );
 int lcoreGetPrevDirectoryPath( lua_State *L );
 int lcoreGetWorkingDirectory( lua_State *L );
 int lcoreLoadDirectoryFiles( lua_State *L );
+int lcoreLoadDirectoryFilesEx( lua_State *L );
 int lcoreChangeDirectory( lua_State *L );
 int lcoreIsFileDropped( lua_State *L );
 int lcoreLoadDroppedFiles( lua_State *L );

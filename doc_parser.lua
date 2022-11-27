@@ -1,5 +1,12 @@
 --Create api.md file from c sources.
 
+-- Export each module as separate .md file.
+local separate = false
+
+if arg[1] ~= nil and arg[1] == "-s" then
+	separate = true
+end
+
 local function split( str, sep )
 	if sep == nil then
 		sep = "%s"
@@ -34,6 +41,8 @@ Note: Engine will call Raylib functions 'BeginDrawing()' before this function ca
 You can still use RL_BeginDrawing() and RL_EndDrawing() manually from anywhere.\n\n---\n" )
 apiFile:write( "\n> function log( logLevel, message )\n\
 This function can be used for custom log message handling.\n\n---\n" )
+apiFile:write( "\n> function exit()\n\
+This function will be called on program close. Cleanup could be done here.\n\n---\n" )
 
 -- Globals.
 
@@ -142,26 +151,34 @@ apiFile:write( "\n> NPatchInfo = { { 0, 0, 24, 24 }, 0, 0, 0, 0, NPATCH_NINE_PAT
 apiFile:write( "\n> ModelAnimations = ModelAnimationsId\n\
 int id. ModelAnimations\n\n---\n" )
 
+if separate then
+	apiFile:close()
+end
+
 -- Functions.
 
 local sourceFiles = {
-	"src/core.c",
-	"src/shapes.c",
-	"src/textures.c",
-	"src/text.c",
-	"src/models.c",
-	"src/audio.c",
-	"src/rmath.c",
-	"src/rgui.c",
-	"src/lights.c",
-	"src/rlgl.c",
-	"src/easings.c",
+	"core",
+	"shapes",
+	"textures",
+	"text",
+	"models",
+	"audio",
+	"rmath",
+	"rgui",
+	"lights",
+	"rlgl",
+	"easings",
 }
 
 for _, src in ipairs( sourceFiles ) do
-	srcFile = io.open( src, "r" )
+	srcFile = io.open( "src/"..src..".c", "r" )
 	local line = ""
 	local p = false
+
+	if separate then
+		apiFile = io.open( src..".md", "w" )
+	end
 
 	repeat
 		line = srcFile:read( "*l" )
@@ -182,6 +199,12 @@ for _, src in ipairs( sourceFiles ) do
 	until line == nil
 
 	srcFile:close()
+
+	if separate then
+		apiFile:close()
+	end
 end
 
-apiFile:close()
+if not separate then
+	apiFile:close()
+end

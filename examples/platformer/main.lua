@@ -1,7 +1,7 @@
 package.path = package.path..";"..RL_GetBasePath().."../resources/lib/?.lua"
 
-util = require "utillib"
-Vec2 = require "vector2"
+util = require( "utillib" )
+Vec2 = require( "vector2" )
 
 local TILE_SIZE = 16
 local PLAYER_MAXSPEED = 1.5

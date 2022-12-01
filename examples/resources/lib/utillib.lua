@@ -163,4 +163,17 @@ function utillib.printt( t )
 	print( "}" )
 end
 
+-- Move secuence of elements inside table.
+function utillib.tableMove( t, src, len, dest )
+    local copy = table.move( t, src, src + len - 1, 1, {} )
+
+    if src >= dest then
+        table.move( t, dest, src - 1, dest + len )
+    else 
+        table.move( t, src + len, dest + len - 1, src )
+    end
+
+    table.move( copy, 1, len, dest, t )
+end
+
 return utillib

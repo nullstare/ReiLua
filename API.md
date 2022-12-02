@@ -2505,7 +2505,7 @@ Draw a line using cubic-bezier curves in-out
 
 ---
 
-> success = RL_DrawLineBezier( Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thickness, Color color )
+> success = RL_DrawLineBezierQuad( Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thickness, Color color )
 
 Draw line using quadratic bezier curves with a control point
 

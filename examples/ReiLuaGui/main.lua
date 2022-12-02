@@ -3,26 +3,32 @@ package.path = package.path..";"..RL_GetBasePath().."../resources/lib/?.lua"
 util = require( "utillib" )
 Vec2 = require( "vector2" )
 Rect = require( "rectangle" )
+Color = require( "color" )
 Gui = require( "gui" )
 
-local textColor = BLACK
-local textPos = { 192, 200 }
-local imageFont = -1
-
 local container = {}
+-- local circleTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/circle.png" )
+local circleTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/plain-circle.png" )
+local checkTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/check-mark.png" )
+
+RL_GenTextureMipmaps( circleTexture )
+RL_GenTextureMipmaps( checkTexture )
+RL_SetTextureFilter( circleTexture, TEXTURE_FILTER_TRILINEAR )
+RL_SetTextureFilter( checkTexture, TEXTURE_FILTER_TRILINEAR )
 
 function initGui()
 	-- local label = Gui.label:new( { text = "Dog", bounds = { 32, 32, 96, 96 }, drawBounds = true, Haling = Gui.ALING.CENTER, Valing = Gui.ALING.TOP } )
-	local panel = Gui.panel:new( { bounds = Rect:new( 60, 32, 128, 128 ) } )
+	local panel = Gui.element:new( { bounds = Rect:new( 60, 32, 128, 128 ), drawBounds = true } )
+
 	container = Gui.container:new( {
 		bounds = Rect:new( 256, 120, 128, 128 ),
-		drawBounds = true,
+		-- spacing = 4,
 		-- Haling = Gui.ALING.LEFT,
 		-- Haling = Gui.ALING.CENTER,
 		-- Valing = Gui.ALING.CENTER,
 		-- type = Gui.CONTAINER.HORIZONTAL,
-		-- scrollPos = Vec2:new( 0, 0 ),
 		scrollable = true,
+		showScrollbar = true,
 	} )
 
 	-- local container = Gui.container:new( { bounds = Rect:new( 256, 120, 128, 128 ), drawBounds = true, type = Gui.CONTAINER.HORIZONTAL } )
@@ -30,63 +36,67 @@ function initGui()
 	-- local itemBounds = { 0, 0, container.bounds.width - container.spacing * 2, 36 }
 	local itemBounds = Rect:new( 0, 0, 64, 36 )
 
-	container:add( Gui.label:new( {
-		text = "Dog",
-		bounds = itemBounds:clone(),
-		onClicked = function() panel:setPosition( Vec2:new( 500, 80 ) ) end,
-		onMouseOver = function( self ) self.color = RED end,
-		notMouseOver = function( self ) self.color = BLACK end,
-		drawBounds = true,
-	} ) )
-
-	container:add( Gui.label:new( {
-		text = "Cat",
-		-- bounds = itemBounds:clone(),
-		bounds = Rect:new( 0, 0, 78, 24 ),
+	local dog = Gui.element:new( {
+		bounds = Rect:new( 0, 0, 128, 36 ),
 		onClicked = function() panel:setPosition( Vec2:new( 290, 120 ) ) end,
-		onMouseOver = function( self ) self.color = RED end,
-		notMouseOver = function( self ) self.color = BLACK end,
+		onMouseOver = function( self ) self.items[1].color = RED end,
+		notMouseOver = function( self ) self.items[1].color = BLACK end,
 		drawBounds = true,
-	} ) )
+	} )
+
+	dog:add( Gui.text:new( { text = "Dog", HAling = Gui.ALING.LEFT } ) )
+	dog:add( Gui.texture:new( { bounds = Rect:new( 0, 0, 24, 24 ), texture = circleTexture, HAling = Gui.ALING.RIGHT, color = Color:new( 150, 150, 255 ) } ) )
+	dog:add( Gui.texture:new( { bounds = Rect:new( 0, 0, 24, 24 ), texture = checkTexture, HAling = Gui.ALING.RIGHT, visible = true } ) )
+	-- dog:add( Gui.text:new( { text = "Cat", HAling = Gui.ALING.RIGHT } ) )
+	-- dog:add( Gui.shape:new( { bounds = Rect:new( 0, 0, 128, 36 ), shape = Gui.SHAPE.RECTANGLE_ROUNDED, color = Color:new( GREEN ) } ) )
+
+	container:add( dog )
+
+	-- container:add( Gui.element:new( {
+	-- 	text = "Cat",
+	-- 	bounds = Rect:new( 0, 0, 78, 24 ),
+	-- 	onClicked = function() panel:setPosition( Vec2:new( 290, 120 ) ) end,
+	-- 	onMouseOver = function( self ) self.color = RED end,
+	-- 	notMouseOver = function( self ) self.color = BLACK end,
+	-- 	drawBounds = true,
+	-- } ) )
 
 	for i = 1, 5 do
-		container:add( Gui.label:new( {
-			text = "Giraffe",
-			bounds = Rect:new( 0, 0, 100, 30 ),
+		local element = Gui.element:new( {
+			bounds = Rect:new( 0, 0, 120, 30 ),
 			onClicked = function() panel:setPosition( Vec2:new( 340, 380 ) ) end,
-			onMouseOver = function( self ) self.color = RED end,
-			notMouseOver = function( self ) self.color = BLACK end,
+			onMouseOver = function( self ) self.color = Color:new( DARKBLUE ) end,
+			notMouseOver = function( self ) self.color = Color:new( LIGHTGRAY ) end,
 			drawBounds = true,
-		} ) )
+		} )
+
+		element:add( Gui.text:new( { text = "Giraffe" } ) )
+		container:add( element )
 	end
 
 	local container2 = Gui.container:new( {
-		bounds = Rect:new( 400, 120, 154, 30 ),
-		drawBounds = true,
-		-- Haling = Gui.ALING.LEFT,
-		-- Haling = Gui.ALING.CENTER,
-		-- Valing = Gui.ALING.CENTER,
+		bounds = Rect:new( 0, 0, 154, 64 ),
 		type = Gui.CONTAINER.HORIZONTAL,
 	} )
 
-	container2:add( Gui.label:new( {
-		text = "Dog",
+	local element = Gui.element:new( {
 		bounds = itemBounds:clone(),
-		-- onClicked = function() panel:setPosition( Vec2:new( 500, 80 ) ) end,
-		onMouseOver = function( self ) self.color = RED end,
-		notMouseOver = function( self ) self.color = BLACK end,
+		onMouseOver = function( self ) self.color = Color:new( DARKBLUE ) end,
+		notMouseOver = function( self ) self.color = Color:new( LIGHTGRAY ) end,
 		drawBounds = true,
-	} ) )
-
-	container2:add( Gui.label:new( {
-		text = "Cat",
-		-- bounds = itemBounds:clone(),
+	} )
+	element:add( Gui.text:new( { text = "Dog" } ) )
+	container2:add( element )
+	
+	element = Gui.element:new( {
 		bounds = Rect:new( 0, 0, 78, 24 ),
-		-- onClicked = function() panel:setPosition( Vec2:new( 290, 120 ) ) end,
-		onMouseOver = function( self ) self.color = RED end,
-		notMouseOver = function( self ) self.color = BLACK end,
+		-- bounds = Rect:new( 0, 0, 78, 64 ),
+		onMouseOver = function( self ) self.color = Color:new( DARKBLUE ) end,
+		notMouseOver = function( self ) self.color = Color:new( LIGHTGRAY ) end,
 		drawBounds = true,
-	} ) )
+	} )
+	element:add( Gui.text:new( { text = "Cat" } ) )
+	container2:add( element )
 
 	container:add( container2 )
 
@@ -110,17 +120,7 @@ function init()
 end
 
 function process( delta )
-	if RL_IsKeyDown( KEY_RIGHT ) then
-		container:scroll( Vec2:new( container._scrollRect.x + 50 * delta, 0 ) )
-	elseif RL_IsKeyDown( KEY_LEFT ) then
-		container:scroll( Vec2:new( container._scrollRect.x - 50 * delta, 0 ) )
-	elseif RL_IsKeyDown( KEY_UP ) then
-		container:scroll( Vec2:new( 0, container._scrollRect.y - 50 * delta ) )
-	elseif RL_IsKeyDown( KEY_DOWN ) then
-		container:scroll( Vec2:new( 0, container._scrollRect.y + 50 * delta ) )
-	end
-
-	Gui.process( RL_GetMousePosition() )
+	Gui.process( Vec2:new( RL_GetMousePosition() ) )
 end
 
 function draw()

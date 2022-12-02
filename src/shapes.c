@@ -118,7 +118,7 @@ int lshapesDrawLineBezier( lua_State *L ) {
 }
 
 /*
-> success = RL_DrawLineBezier( Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thickness, Color color )
+> success = RL_DrawLineBezierQuad( Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thickness, Color color )
 
 Draw line using quadratic bezier curves with a control point
 
@@ -371,7 +371,7 @@ Draw ellipse
 - Success return true
 */
 int lshapesDrawEllipse( lua_State *L ) {
-	if ( !lua_istable( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_DrawEllipse( Vector2 center, float radiusH, float radiusV, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -399,7 +399,7 @@ Draw ellipse outline
 - Success return true
 */
 int lshapesDrawEllipseLines( lua_State *L ) {
-	if ( !lua_istable( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_DrawEllipseLines( Vector2 center, float radiusH, float radiusV, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;

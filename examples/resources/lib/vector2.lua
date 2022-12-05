@@ -49,12 +49,12 @@ function Vector2:new( x, y )
 		x, y = 0, 0
 	end
 
-    local o = {
-		x = x,
-		y = y,
-	}
-	setmetatable( o, Vector2.meta )
-    return o
+	local object = setmetatable( {}, Vector2.meta )
+
+	object.x = x
+	object.y = y
+
+	return object
 end
 
 function Vector2:set( x, y )

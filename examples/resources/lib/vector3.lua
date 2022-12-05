@@ -47,13 +47,13 @@ function Vector3:new( x, y, z )
 		x, y, z = table.unpack( x )
 	end
 
-    local o = {
-		x = x,
-		y = y,
-		z = z,
-	}
-	setmetatable( o, Vector3.meta )
-    return o
+	local object = setmetatable( {}, Vector3.meta )
+
+	object.x = x
+	object.y = y
+	object.z = z
+
+	return object
 end
 
 function Vector3:set( x, y, z )

@@ -49,14 +49,14 @@ function Rectangle:new( x, y, width, height )
 		x, y, width, height = 0, 0, 0, 0
 	end
 
-    local o = {
-		x = x,
-		y = y,
-		width = width,
-		height = height,
-	}
-	setmetatable( o, Rectangle.meta )
-    return o
+	local object = setmetatable( {}, Rectangle.meta )
+
+	object.x = x
+	object.y = y
+	object.width = width
+	object.height = height
+
+    return object
 end
 
 function Rectangle:set( x, y, width, height )

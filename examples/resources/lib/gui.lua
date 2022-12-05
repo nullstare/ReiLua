@@ -30,6 +30,7 @@ Gui = {
 		RECTANGLE_ROUNDED_LINES = 8,
 	},
 
+	mouseButton = MOUSE_BUTTON_LEFT,
 	font = 0,
 	fontSize = 30,
 	padding = 2,
@@ -37,7 +38,7 @@ Gui = {
 	scrollbarWidth = 8,
 	scrollAmount = 10,
 
-	_elements = {},
+	_cells = {},
 	_mousePos = Vec2:new( 0, 0 ), -- Last mouse position that was passed to Gui.process.
 	heldCallback = nil,
 }
@@ -55,25 +56,8 @@ function Gui.process( mousePosition )
 
 	Gui._mousePos = mousePosition
 
-	for _, element in ipairs( Gui._elements ) do
-		if element.notMouseOver ~= nil then
-			element:notMouseOver()
-		end
-		-- Mousewheel scrolling. Note this would be detected through other elements.
-		if mouseWheel ~= 0 and element.scrollable and RL_CheckCollisionPointRec( mousePosition, element.bounds ) then
-			local pos = Vec2:new( element._scrollRect.x, element._scrollRect.y )
-			local scrollVec = Vec2:new( 0, element.scrollAmount * mouseWheel )
-
-			if RL_IsKeyDown( KEY_LEFT_SHIFT ) then
-				scrollVec = Vec2:new( element.scrollAmount * mouseWheel, 0 )
-			end
-
-			element:scroll( pos - scrollVec )
-		end
-	end
-	
 	if Gui.heldCallback ~= nil then
-		if RL_IsMouseButtonDown( MOUSE_BUTTON_LEFT ) then
+		if RL_IsMouseButtonDown( Gui.mouseButton ) then
 			Gui.heldCallback()
 		else
 			Gui.heldCallback = nil
@@ -81,25 +65,49 @@ function Gui.process( mousePosition )
 
 		return
 	end
+
 	-- Go backwards on process check so we trigger the top most ui first and stop there.
-	for i = #Gui._elements, 1, -1 do
-		local element = Gui._elements[i]
+	local foundFirst = false
 
-		if element.isMouseOver ~= nil and element:isMouseOver( mousePosition ) and not element.disabled then
-			if RL_IsMouseButtonPressed( MOUSE_BUTTON_LEFT ) and element.onClicked ~= nil then
-				element:onClicked()
+	for i = #Gui._cells, 1, -1 do
+		local cell = Gui._cells[i]
+
+		if not foundFirst and cell.isMouseOver ~= nil and cell:isMouseOver( mousePosition ) and not cell.disabled then
+			-- On clicked.
+			if RL_IsMouseButtonPressed( Gui.mouseButton ) and cell.onClicked ~= nil then
+				cell:onClicked()
 			end
-			if RL_IsMouseButtonDown( MOUSE_BUTTON_LEFT ) and element.onHeld ~= nil then
-				element:onHeld()
+			-- On held.
+			if RL_IsMouseButtonDown( Gui.mouseButton ) and cell.onHeld ~= nil then
+				cell:onHeld()
+			end
+			-- Mouse wheel scrolling.
+			if mouseWheel ~= 0 then
+				if cell._parent ~= nil and cell._parent.scrollable then
+					cell = cell._parent
+				end
+
+				if cell.scrollable then
+					local pos = Vec2:new( cell._scrollRect.x, cell._scrollRect.y )
+					local scrollVec = Vec2:new( 0, cell.scrollAmount * mouseWheel )
+		
+					if RL_IsKeyDown( KEY_LEFT_SHIFT ) then
+						scrollVec = Vec2:new( cell.scrollAmount * mouseWheel, 0 )
+					end
+		
+					cell:scroll( pos - scrollVec )
+				end
 			end
 
-			break
+			foundFirst = true
+		elseif cell.notMouseOver ~= nil then
+			cell:notMouseOver()
 		end
 	end
 end
 
 function Gui.draw()
-	for _, element in ipairs( Gui._elements ) do
+	for _, element in ipairs( Gui._cells ) do
 		if element.draw ~= nil and element.visible then
 			element:draw()
 		end
@@ -114,25 +122,25 @@ Text = {}
 Text.__index = Text
 
 function Text:new( set )
-    local o = {
-		bounds = Rect:new( 0, 0, 0, 0 ),
-		HAling = setProperty( set, "HAling", Gui.ALING.LEFT ),
-		VAling = setProperty( set, "VAling", Gui.ALING.BOTTOM ),
+	local object = setmetatable( {}, Text )
 
-		font = setProperty( set, "font", Gui.font ),
-		text = setProperty( set, "text", "" ),
-		fontSize = setProperty( set, "fontSize", Gui.fontSize ),
-		spacing = setProperty( set, "spacing", Gui.spacing ),
-		color = setProperty( set, "color", Color:new( BLACK ) ),
-		maxTextLen = setProperty( set, "maxTextLen", nil ),
+	object.bounds = Rect:new( 0, 0, 0, 0 )
+	object.HAling = setProperty( set, "HAling", Gui.ALING.LEFT )
+	object.VAling = setProperty( set, "VAling", Gui.ALING.BOTTOM )
 
-		visible = setProperty( set, "visible", true ),
-		_parent = nil,
-	}
-	setmetatable( o, self )
-	o:set( o.text ) -- To measure bounds.
+	object.font = setProperty( set, "font", Gui.font )
+	object.text = setProperty( set, "text", "" )
+	object.fontSize = setProperty( set, "fontSize", Gui.fontSize )
+	object.spacing = setProperty( set, "spacing", Gui.spacing )
+	object.color = setProperty( set, "color", Color:new( BLACK ) )
+	object.maxTextLen = setProperty( set, "maxTextLen", nil )
 
-    return o
+	object.visible = setProperty( set, "visible", true )
+	object._parent = nil
+
+	object:set( object.text )
+
+	return object
 end
 
 function Text:set( text )
@@ -153,7 +161,7 @@ function Text:draw()
 		return
 	end
 
-	RL_DrawText( self.font, self.text, { self.parent.bounds.x + self.bounds.x, self.parent.bounds.y + self.bounds.y }, self.fontSize, self.spacing, self.color )
+	RL_DrawText( self.font, self.text, { self._prante.bounds.x + self.bounds.x, self._prante.bounds.y + self.bounds.y }, self.fontSize, self.spacing, self.color )
 end
 
 -- Texture.
@@ -162,25 +170,24 @@ Texture = {}
 Texture.__index = Texture
 
 function Texture:new( set )
-    local o = {
-		bounds = setProperty( set, "bounds", Rect:new( 0, 0, 0, 0 ) ),
-		HAling = setProperty( set, "HAling", Gui.ALING.LEFT ),
-		VAling = setProperty( set, "VAling", Gui.ALING.CENTER ),
+	local object = setmetatable( {}, Texture )
 
-		texture = setProperty( set, "texture", nil ),
-		source = setProperty( set, "source", Rect:new( 0, 0, 0, 0 ) ),
-		origin = setProperty( set, "origin", Vec2:new( 0, 0 ) ),
-		rotation = setProperty( set, "rotation", 0 ),
-		color = setProperty( set, "color", Color:new( WHITE ) ),
+	object.bounds = setProperty( set, "bounds", Rect:new( 0, 0, 0, 0 ) )
+	object.HAling = setProperty( set, "HAling", Gui.ALING.LEFT )
+	object.VAling = setProperty( set, "VAling", Gui.ALING.CENTER )
 
-		visible = setProperty( set, "visible", true ),
-		_parent = nil,
-	}
+	object.texture = setProperty( set, "texture", nil )
+	object.source = setProperty( set, "source", Rect:new( 0, 0, 0, 0 ) )
+	object.origin = setProperty( set, "origin", Vec2:new( 0, 0 ) )
+	object.rotation = setProperty( set, "rotation", 0 )
+	object.color = setProperty( set, "color", Color:new( WHITE ) )
 
-	setmetatable( o, self )
-	o:set( o.texture ) -- To measure bounds.
+	object.visible = setProperty( set, "visible", true )
+	object._parent = nil
 
-    return o
+	object:set( object.texture ) -- To measure bounds.
+
+    return object
 end
 
 function Texture:set( texture )
@@ -208,8 +215,8 @@ function Texture:draw()
 	end
 
 	local dst = {
-		self.bounds.x + self.parent.bounds.x,
-		self.bounds.y + self.parent.bounds.y,
+		self.bounds.x + self._prante.bounds.x,
+		self.bounds.y + self._prante.bounds.y,
 		self.bounds.width,
 		self.bounds.height
 	}
@@ -223,35 +230,35 @@ Shape = {}
 Shape.__index = Shape
 
 function Shape:new( set )
-    local o = {
-		bounds = setProperty( set, "bounds", Rect:new( 0, 0, 0, 0 ) ),
-		HAling = setProperty( set, "HAling", Gui.ALING.LEFT ),
-		VAling = setProperty( set, "VAling", Gui.ALING.CENTER ),
+	local object = setmetatable( {}, Shape )
 
-		shape = setProperty( set, "shape", Gui.SHAPE.RECTANGLE ),
-		-- Line.
-		startPos = setProperty( set, "startPos", Vec2:new( 0, 0 ) ),
-		endPos = setProperty( set, "endPos", Vec2:new( 0, 0 ) ),
-		thickness = setProperty( set, "thickness", 3.0 ),
-		-- Circle.
-		center = setProperty( set, "center", Vec2:new( 0, 0 ) ),
-		radius = setProperty( set, "radius", 0 ),
-		-- Ellipse.
-		radiusH = setProperty( set, "radiusH", 0 ),
-		radiusV = setProperty( set, "radiusV", 0 ),
-		-- Rectangle rounded.
-		roundness = setProperty( set, "roundness", 1 ),
-		segments = setProperty( set, "segments", 4 ),
+	object.bounds = setProperty( set, "bounds", Rect:new( 0, 0, 0, 0 ) )
+	object.HAling = setProperty( set, "HAling", Gui.ALING.LEFT )
+	object.VAling = setProperty( set, "VAling", Gui.ALING.CENTER )
 
-		color = setProperty( set, "color", Color:new( WHITE ) ),
+	object.shape = setProperty( set, "shape", Gui.SHAPE.RECTANGLE )
+	-- Line.
+	object.startPos = setProperty( set, "startPos", Vec2:new( 0, 0 ) )
+	object.endPos = setProperty( set, "endPos", Vec2:new( 0, 0 ) )
+	object.thickness = setProperty( set, "thickness", 3.0 )
+	-- Circle.
+	object.center = setProperty( set, "center", Vec2:new( 0, 0 ) )
+	object.radius = setProperty( set, "radius", 0 )
+	-- Ellipse.
+	object.radiusH = setProperty( set, "radiusH", 0 )
+	object.radiusV = setProperty( set, "radiusV", 0 )
+	-- Rectangle rounded.
+	object.roundness = setProperty( set, "roundness", 1 )
+	object.segments = setProperty( set, "segments", 4 )
 
-		visible = setProperty( set, "visible", true ),
-		_parent = nil,
-	}
-	setmetatable( o, self )
-	o:set( o.shape )
+	object.color = setProperty( set, "color", Color:new( WHITE ) )
 
-    return o
+	object.visible = setProperty( set, "visible", true )
+	object._parent = nil
+
+	object:set( object.shape )
+
+    return object
 end
 
 -- Set to default shape values.
@@ -274,7 +281,7 @@ function Shape:draw()
 		return
 	end
 
-	local pos = Vec2:new( self.parent.bounds.x, self.parent.bounds.y )
+	local pos = Vec2:new( self._prante.bounds.x, self._prante.bounds.y )
 
 	if self.shape == Gui.SHAPE.LINE then
 		RL_DrawLine( self.startPos + pos, self.endPos + pos, self.thickness, self.color )
@@ -305,28 +312,29 @@ Element = {}
 Element.__index = Element
 
 function Element:new( set )
-    local o = {
-		_ID = #Gui._elements + 1,
-		bounds = setProperty( set, "bounds", Rect:new( 0, 0, 0, 0 ) ),
-		padding = setProperty( set, "padding", Gui.padding ),
-		visible = setProperty( set, "visible", true ),
-		disabled = setProperty( set, "disabled", false ),
-		drawBounds = setProperty( set, "drawBounds", false ),
-		color = setProperty( set, "color", Color:new( GRAY ) ),
+	local object = setmetatable( {}, Element )
 
-		items = {},
-		
-		_visibilityBounds = nil,
-		-- Callbacks.
-		onMouseOver = setProperty( set, "onMouseOver", nil ),
-		notMouseOver = setProperty( set, "notMouseOver", nil ),
-		onClicked = setProperty( set, "onClicked", nil ),
-		onHeld = setProperty( set, "onHeld", nil ),
-	}
-	setmetatable( o, self )
-	table.insert( Gui._elements, o )
+	object._ID = #Gui._cells + 1
+	object.bounds = setProperty( set, "bounds", Rect:new( 0, 0, 0, 0 ) )
+	object.padding = setProperty( set, "padding", Gui.padding )
+	object.visible = setProperty( set, "visible", true )
+	object.disabled = setProperty( set, "disabled", false )
+	object.drawBounds = setProperty( set, "drawBounds", false )
+	object.color = setProperty( set, "color", Color:new( GRAY ) )
 
-    return o
+	object.items = {}
+	
+	object._visibilityBounds = nil
+	-- Callbacks.
+	object.onMouseOver = setProperty( set, "onMouseOver", nil )
+	object.notMouseOver = setProperty( set, "notMouseOver", nil )
+	object.onClicked = setProperty( set, "onClicked", nil )
+	object.onHeld = setProperty( set, "onHeld", nil )
+	object._parent = nil
+
+	table.insert( Gui._cells, object )
+
+    return object
 end
 
 function Element:update()
@@ -358,7 +366,7 @@ end
 
 function Element:add( item )
 	table.insert( self.items, item )
-	item.parent = self
+	item._prante = self
 	self:update()
 end
 
@@ -407,15 +415,15 @@ function Element:draw()
 end
 
 function Element:delete()
-	table.remove( Gui._elements, self._ID )
+	table.remove( Gui._cells, self._ID )
 end
 
 function Element:set2Top()
-	util.tableMove( Gui._elements, self._ID, 1, #Gui._elements )
+	util.tableMove( Gui._cells, self._ID, 1, #Gui._cells )
 end
 
 function Element:set2Back()
-	util.tableMove( Gui._elements, self._ID, 1, 1 )
+	util.tableMove( Gui._cells, self._ID, 1, 1 )
 end
 
 -- Container.
@@ -424,37 +432,36 @@ Container = {}
 Container.__index = Container
 
 function Container:new( set )
-    local o = {
-		_ID = #Gui._elements + 1,
-		bounds = setProperty( set, "bounds", Rect:new( 0, 0, 0, 0 ) ),
-		spacing = setProperty( set, "spacing", Gui.spacing ),
-		type = setProperty( set, "type", Gui.CONTAINER.VERTICAL ),
-		HAling = setProperty( set, "HAling", Gui.ALING.LEFT ),
-		VAling = setProperty( set, "VAling", Gui.ALING.TOP ),
+	local object = setmetatable( {}, Container )
 
-		visible = setProperty( set, "visible", true ),
-		disabled = setProperty( set, "disabled", false ),
-		-- drawBounds = setProperty( set, "drawBounds", false ),
-		-- color = setProperty( set, "color", Color:new( DARKGRAY ) ),
-		scrollable = setProperty( set, "scrollable", false ),
-		showScrollbar = setProperty( set, "showScrollbar", false ),
-		scrollbarWidth = setProperty( set, "scrollbarWidth", Gui.scrollbarWidth ),
-		scrollAmount = setProperty( set, "scrollAmount", Gui.scrollAmount ), -- When using mouse scroll.
-		
-		cells = {},
-		
-		_visibilityBounds = nil, -- Will give this to it's children.
-		_scrollRect = Rect:new( 0, 0, 0, 0 ),
-		_VScrollbarRect = Rect:new( 0, 0, 0, 0 ),
-		_HScrollbarRect = Rect:new( 0, 0, 0, 0 ),
+	object._ID = #Gui._cells + 1
+	object.bounds = setProperty( set, "bounds", Rect:new( 0, 0, 0, 0 ) )
+	object.spacing = setProperty( set, "spacing", Gui.spacing )
+	object.type = setProperty( set, "type", Gui.CONTAINER.VERTICAL )
+	object.HAling = setProperty( set, "HAling", Gui.ALING.LEFT )
+	object.VAling = setProperty( set, "VAling", Gui.ALING.TOP )
 
-		_VScrollbar = nil,
-		_HScrollbar = nil,
-	}
-	setmetatable( o, self )
-	table.insert( Gui._elements, o )
+	object.visible = setProperty( set, "visible", true )
+	object.disabled = setProperty( set, "disabled", false )
+	object.scrollable = setProperty( set, "scrollable", false )
+	object.showScrollbar = setProperty( set, "showScrollbar", false )
+	object.scrollbarWidth = setProperty( set, "scrollbarWidth", Gui.scrollbarWidth )
+	object.scrollAmount = setProperty( set, "scrollAmount", Gui.scrollAmount ) -- When using mouse scroll.
+	
+	object.cells = {}
+	
+	object._visibilityBounds = nil -- Will give this to it's children.
+	object._scrollRect = Rect:new( 0, 0, 0, 0 )
+	object._VScrollbarRect = Rect:new( 0, 0, 0, 0 )
+	object._HScrollbarRect = Rect:new( 0, 0, 0, 0 )
 
-    return o
+	object._VScrollbar = nil
+	object._HScrollbar = nil
+	object._parent = nil
+
+	table.insert( Gui._cells, object )
+
+    return object
 end
 
 function Container:setPosition( pos )
@@ -468,6 +475,19 @@ function Container:add( cell )
 	table.insert( self.cells, cell )
 
 	self:update()
+
+	-- Highest container becomes the parent.
+	if self._parent ~= nil then
+		cell._parent = self._parent
+	else
+		cell._parent = self
+	end
+
+	if cell.cells ~= nil then
+		for _, sCell in ipairs( cell.cells ) do
+			sCell._parent = cell._parent
+		end
+	end
 
 	if cell.update ~= nil then
 		cell:update()
@@ -501,21 +521,21 @@ function Container:mouseScroll( v )
 	self:scroll( mousePos )
 end
 
--- function Container:isMouseOver( mousePosition )
--- 	-- print( "Over container" )
--- 	local over = RL_CheckCollisionPointRec( mousePosition, self.bounds )
 
--- 	if over and self._visibilityBounds ~= nil then
--- 		over = RL_CheckCollisionPointRec( mousePosition, self._visibilityBounds )
--- 		print( "Over container" )
--- 	end
+-- //TODO Add this
+function Container:isMouseOver( mousePosition )
+	local over = RL_CheckCollisionPointRec( mousePosition, self.bounds )
 
--- 	-- if over and self.onMouseOver ~= nil then
--- 	-- 	self:onMouseOver()
--- 	-- end
+	if over and self._visibilityBounds ~= nil then
+		over = RL_CheckCollisionPointRec( mousePosition, self._visibilityBounds )
+	end
 
--- 	-- return over
--- end
+	if over and self.onMouseOver ~= nil then
+		self:onMouseOver()
+	end
+
+	return over
+end
 
 function Container:updateScrollbar()
 	if self.bounds.height < self._scrollRect.height then
@@ -631,20 +651,8 @@ function Container:update()
 	end
 end
 
-function Container:draw()
-	-- if self.drawBounds then
-		-- RL_DrawRectangle( self.bounds, self.color )
-		-- RL_DrawRectangleLines( {
-		-- 	self.bounds.x - self._scrollRect.x,
-		-- 	self.bounds.y - self._scrollRect.y,
-		-- 	self._scrollRect.width,
-		-- 	self._scrollRect.height,
-		-- }, RED )
-	-- end
-end
-
 function Container:delete()
-	table.remove( Gui._elements, self._ID )
+	table.remove( Gui._cells, self._ID )
 end
 
 --Assingments.

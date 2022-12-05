@@ -53,14 +53,14 @@ function Color:new( r, g, b, a )
 		a = 255
 	end
 
-    local o = {
-		r = r,
-		g = g,
-		b = b,
-		a = a,
-	}
-	setmetatable( o, Color.meta )
-    return o
+	local object = setmetatable( {}, Color.meta )
+
+	object.r = r
+	object.g = g
+	object.b = b
+	object.a = a
+
+    return object
 end
 
 function Color:set( r, g, b, a )

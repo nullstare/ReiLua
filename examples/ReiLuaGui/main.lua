@@ -10,6 +10,7 @@ local container = {}
 -- local circleTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/circle.png" )
 local circleTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/plain-circle.png" )
 local checkTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/check-mark.png" )
+local textInput
 
 RL_GenTextureMipmaps( circleTexture )
 RL_GenTextureMipmaps( checkTexture )
@@ -22,7 +23,8 @@ function initGui()
 
 	container = Gui.container:new( {
 		bounds = Rect:new( 256, 120, 128, 128 ),
-		-- spacing = 4,
+		-- spacing = 14,
+		-- drawScrollRect = true,
 		-- Haling = Gui.ALING.LEFT,
 		-- Haling = Gui.ALING.CENTER,
 		-- Valing = Gui.ALING.CENTER,
@@ -101,6 +103,21 @@ function initGui()
 	container:add( container2 )
 
 	panel:set2Top()
+
+	-- Text input.
+
+	textInput = Gui.element:new( {
+		bounds = Rect:new( 64, 360, 300, 32 ),
+		drawBounds = true,
+		color = Color:new( LIGHTGRAY ),
+		onClicked = function() Gui.setInputFocus( textInput ) end,
+		inputFocus = function() textInput.color = Color:new( BLUE ) end,
+		-- inputFocus = function() container:delete() end,
+		-- inputFocus = function() panel:set2Back() end,
+		inputUnfocus = function() textInput.color = Color:new( LIGHTGRAY ) end,
+	} )
+
+	textInput:add( Gui.text:new( { text = "", maxTextLen = 16, allowLineBreak = false } ) )
 end
 
 function init()
@@ -108,7 +125,6 @@ function init()
 	local mPos = RL_GetMonitorPosition( monitor )
 	local mSize = RL_GetMonitorSize( monitor )
 	winSize = RL_GetWindowSize()
-	-- local winSize = { 1920, 1080 }
 
 	RL_SetWindowTitle( "ReiLua Gui" )
 	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
@@ -127,4 +143,5 @@ function draw()
 	RL_ClearBackground( RAYWHITE )
 
 	Gui.draw()
+	RL_DrawText( 0, "Work in progress GuiLib test.", { 10, 10 }, 30, 4, BLACK )
 end

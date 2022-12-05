@@ -5,6 +5,16 @@ Color = require( "color" )
 
 -- NOTE!!! Work in progress! Do not use.
 
+--[[
+	To add repeat inputs to the keys pressed buffer, you could add GLFW_REPEAT in railib rcore.c in function "KeyCallback" by changing:
+
+	if ((CORE.Input.Keyboard.keyPressedQueueCount < MAX_KEY_PRESSED_QUEUE) && (action == GLFW_PRESS))
+	To
+	if ((CORE.Input.Keyboard.keyPressedQueueCount < MAX_KEY_PRESSED_QUEUE) && (action == GLFW_PRESS || action == GLFW_REPEAT))
+
+	Now GLFW_REPEAT can be read by "RL_GetKeyPressed".
+]]
+
 Gui = {
 	ALING = {
 		NONE = 0,
@@ -40,8 +50,12 @@ Gui = {
 
 	_cells = {},
 	_mousePos = Vec2:new( 0, 0 ), -- Last mouse position that was passed to Gui.process.
-	heldCallback = nil,
+	_heldCallback = nil,
+	_inputElement = nil,
+	_inputItem = nil, -- Must be type Text.
 }
+
+local readyToUnfocusInput = false -- Guard to not unfocus input immediately.
 
 local function setProperty( set, property, default )
 	if set ~= nil and set[ property ] ~= nil then
@@ -51,58 +65,146 @@ local function setProperty( set, property, default )
 	return default
 end
 
+function Gui.setInputFocus( element, itemID )
+	itemID = itemID or 1
+
+	Gui._inputElement = element
+	Gui._inputItem = element.items[ itemID ]
+
+	if element.inputFocus ~= nil then
+		element.inputFocus()
+	end
+
+	readyToUnfocusInput = false
+end
+
+function Gui.inputUnfocus()
+	if Gui._inputElement ~= nil then
+		Gui._inputElement.inputUnfocus()
+	end
+
+	Gui._inputElement = nil
+	Gui._inputItem = nil
+end
+
+function Gui.getId( cell )
+	for id, c in ipairs( Gui._cells ) do
+		if cell == c then
+			return id
+		end
+	end
+
+	return nil
+end
+
+function Gui.delete( cell )
+	local id = Gui.getId( cell )
+
+	if id ~= nil then
+		table.remove( Gui._cells, id )
+	end
+end
+
+function Gui.set2Top( cell )
+	util.tableMove( Gui._cells, Gui.getId( cell ), 1, #Gui._cells )
+end
+
+function Gui.set2Back( cell )
+	util.tableMove( Gui._cells, Gui.getId( cell ), 1, 1 )
+end
+
 function Gui.process( mousePosition )
 	local mouseWheel = RL_GetMouseWheelMove()
 
 	Gui._mousePos = mousePosition
 
-	if Gui.heldCallback ~= nil then
+	if Gui._heldCallback ~= nil then
 		if RL_IsMouseButtonDown( Gui.mouseButton ) then
-			Gui.heldCallback()
+			Gui._heldCallback()
 		else
-			Gui.heldCallback = nil
+			Gui._heldCallback = nil
 		end
 
 		return
 	end
 
-	-- Go backwards on process check so we trigger the top most ui first and stop there.
 	local foundFirst = false
-
+	
+	-- Go backwards on process check so we trigger the top most ui first and stop there.
 	for i = #Gui._cells, 1, -1 do
 		local cell = Gui._cells[i]
 
-		if not foundFirst and cell.isMouseOver ~= nil and cell:isMouseOver( mousePosition ) and not cell.disabled then
-			-- On clicked.
-			if RL_IsMouseButtonPressed( Gui.mouseButton ) and cell.onClicked ~= nil then
-				cell:onClicked()
-			end
-			-- On held.
-			if RL_IsMouseButtonDown( Gui.mouseButton ) and cell.onHeld ~= nil then
-				cell:onHeld()
-			end
-			-- Mouse wheel scrolling.
-			if mouseWheel ~= 0 then
-				if cell._parent ~= nil and cell._parent.scrollable then
-					cell = cell._parent
+		if cell ~= nil then
+			if not foundFirst and cell.isMouseOver ~= nil and cell:isMouseOver( mousePosition ) and not cell.disabled then
+				-- On clicked.
+				if RL_IsMouseButtonPressed( Gui.mouseButton ) and cell.onClicked ~= nil then
+					cell:onClicked()
 				end
-
-				if cell.scrollable then
-					local pos = Vec2:new( cell._scrollRect.x, cell._scrollRect.y )
-					local scrollVec = Vec2:new( 0, cell.scrollAmount * mouseWheel )
-		
-					if RL_IsKeyDown( KEY_LEFT_SHIFT ) then
-						scrollVec = Vec2:new( cell.scrollAmount * mouseWheel, 0 )
+				-- On held.
+				if RL_IsMouseButtonDown( Gui.mouseButton ) and cell.onHeld ~= nil then
+					cell:onHeld()
+				end
+				-- Mouse wheel scrolling.
+				if mouseWheel ~= 0 then
+					if cell._parent ~= nil and cell._parent.scrollable then
+						cell = cell._parent
 					end
-		
-					cell:scroll( pos - scrollVec )
+	
+					if cell.scrollable then
+						local pos = Vec2:new( cell._scrollRect.x, cell._scrollRect.y )
+						local scrollVec = Vec2:new( 0, cell.scrollAmount * mouseWheel )
+			
+						if RL_IsKeyDown( KEY_LEFT_SHIFT ) then
+							scrollVec = Vec2:new( cell.scrollAmount * mouseWheel, 0 )
+						end
+			
+						cell:scroll( pos - scrollVec )
+					end
+				end
+	
+				foundFirst = true
+			elseif cell.notMouseOver ~= nil then
+				cell:notMouseOver()
+			end
+		end
+	end
+
+	-- Text input.
+	if Gui._inputItem ~= nil then
+		repeat
+			local char = RL_GetCharPressed()
+
+			if 0 < char then
+				if utf8.len( Gui._inputItem.text ) < Gui._inputItem.maxTextLen then
+					Gui._inputItem.text = Gui._inputItem.text..utf8.char( char )
 				end
 			end
 
-			foundFirst = true
-		elseif cell.notMouseOver ~= nil then
-			cell:notMouseOver()
+		until char == 0
+
+		repeat
+			local key = RL_GetKeyPressed()
+
+			if 0 < key then
+				if key == KEY_BACKSPACE then
+					Gui._inputItem.text = util.utf8Sub( Gui._inputItem.text, 0, utf8.len( Gui._inputItem.text ) - 1 )
+				elseif key == KEY_ENTER or key == KEY_KP_ENTER then
+					if Gui._inputItem.allowLineBreak then
+						Gui._inputItem.text = Gui._inputItem.text.."\n"
+					else
+						Gui.inputUnfocus()
+					end
+				elseif key == KEY_ESCAPE then
+					Gui.inputUnfocus()
+				end
+			end
+		until key == 0
+
+		if readyToUnfocusInput and RL_IsMouseButtonPressed( Gui.mouseButton ) then
+			Gui.inputUnfocus()
 		end
+
+		readyToUnfocusInput = true
 	end
 end
 
@@ -134,6 +236,7 @@ function Text:new( set )
 	object.spacing = setProperty( set, "spacing", Gui.spacing )
 	object.color = setProperty( set, "color", Color:new( BLACK ) )
 	object.maxTextLen = setProperty( set, "maxTextLen", nil )
+	object.allowLineBreak = setProperty( set, "allowLineBreak", false )
 
 	object.visible = setProperty( set, "visible", true )
 	object._parent = nil
@@ -314,7 +417,7 @@ Element.__index = Element
 function Element:new( set )
 	local object = setmetatable( {}, Element )
 
-	object._ID = #Gui._cells + 1
+	-- object._ID = #Gui._cells + 1
 	object.bounds = setProperty( set, "bounds", Rect:new( 0, 0, 0, 0 ) )
 	object.padding = setProperty( set, "padding", Gui.padding )
 	object.visible = setProperty( set, "visible", true )
@@ -330,6 +433,8 @@ function Element:new( set )
 	object.notMouseOver = setProperty( set, "notMouseOver", nil )
 	object.onClicked = setProperty( set, "onClicked", nil )
 	object.onHeld = setProperty( set, "onHeld", nil )
+	object.inputFocus = setProperty( set, "inputFocus", nil )
+	object.inputUnfocus = setProperty( set, "inputUnfocus", nil )
 	object._parent = nil
 
 	table.insert( Gui._cells, object )
@@ -415,15 +520,15 @@ function Element:draw()
 end
 
 function Element:delete()
-	table.remove( Gui._cells, self._ID )
+	Gui.delete( self )
 end
 
 function Element:set2Top()
-	util.tableMove( Gui._cells, self._ID, 1, #Gui._cells )
+	Gui.set2Top( self )
 end
 
 function Element:set2Back()
-	util.tableMove( Gui._cells, self._ID, 1, 1 )
+	Gui.set2Back( self )
 end
 
 -- Container.
@@ -434,7 +539,7 @@ Container.__index = Container
 function Container:new( set )
 	local object = setmetatable( {}, Container )
 
-	object._ID = #Gui._cells + 1
+	-- object._ID = #Gui._cells + 1
 	object.bounds = setProperty( set, "bounds", Rect:new( 0, 0, 0, 0 ) )
 	object.spacing = setProperty( set, "spacing", Gui.spacing )
 	object.type = setProperty( set, "type", Gui.CONTAINER.VERTICAL )
@@ -447,6 +552,7 @@ function Container:new( set )
 	object.showScrollbar = setProperty( set, "showScrollbar", false )
 	object.scrollbarWidth = setProperty( set, "scrollbarWidth", Gui.scrollbarWidth )
 	object.scrollAmount = setProperty( set, "scrollAmount", Gui.scrollAmount ) -- When using mouse scroll.
+	object.drawScrollRect = setProperty( set, "drawScrollRect", false )
 	
 	object.cells = {}
 	
@@ -576,7 +682,7 @@ function Container:update()
 				padding = 0,
 				drawBounds = true,
 				color = Color:new( GRAY ),
-				onClicked = function() Gui.heldCallback = function() self:mouseScroll( Vec2:new( 0, 1 ) ) end end,
+				onClicked = function() Gui._heldCallback = function() self:mouseScroll( Vec2:new( 0, 1 ) ) end end,
 			} )
 
 			self._VScrollbar:add( Gui.shape:new( {
@@ -593,7 +699,7 @@ function Container:update()
 				padding = 0,
 				drawBounds = true,
 				color = Color:new( GRAY ),
-				onClicked = function() Gui.heldCallback = function() self:mouseScroll( Vec2:new( 1, 0 ) ) end end,
+				onClicked = function() Gui._heldCallback = function() self:mouseScroll( Vec2:new( 1, 0 ) ) end end,
 			} )
 
 			self._HScrollbar:add( Gui.shape:new( {
@@ -652,7 +758,60 @@ function Container:update()
 end
 
 function Container:delete()
-	table.remove( Gui._cells, self._ID )
+	for _, cell in ipairs( self.cells ) do
+		cell:delete()
+	end
+	
+	if self._VScrollbar ~= nil then
+		Gui.delete( self._VScrollbar )
+	end
+	if self._HScrollbar ~= nil then
+		Gui.delete( self._HScrollbar )
+	end
+
+	Gui.delete( self )
+end
+
+function Container:set2Top()
+	Gui.set2Top( self )
+
+	for _, cell in ipairs( self.cells ) do
+		cell:set2Top()
+	end
+	
+	if self._VScrollbar ~= nil then
+		Gui.set2Top( self._VScrollbar )
+	end
+	if self._HScrollbar ~= nil then
+		Gui.set2Top( self._HScrollbar )
+	end
+end
+
+function Container:set2Back()
+	if self._VScrollbar ~= nil then
+		Gui.set2Back( self._VScrollbar )
+	end
+	if self._HScrollbar ~= nil then
+		Gui.set2Back( self._HScrollbar )
+	end
+	
+	for _, cell in ipairs( self.cells ) do
+		cell:set2Back()
+	end
+	
+	Gui.set2Back( self )
+end
+
+function Container:draw()
+	if self.drawScrollRect then
+		RL_DrawRectangleLines( {
+			self.bounds.x - self._scrollRect.x,
+			self.bounds.y - self._scrollRect.y,
+			self._scrollRect.width,
+			self._scrollRect.height,
+		},
+		RED )
+	end
 end
 
 --Assingments.

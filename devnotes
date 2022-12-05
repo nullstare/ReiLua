@@ -1,13 +1,12 @@
 Current {
 	* ReiLuaGui
-		* Mouse wheel scrolling can be detected through other elements.
-			* Could try putting container over all of it's content elements and having it's onOver function not breaking loop.
-		* Text input.
 		* Movable window.
-		* Grid container.
-		* Calculator.
-		* Grid icon window.
-		* File explorer.
+		* Grid aling for container. Could use bounds of the first cell.
+
+		* Examples:
+			* Calculator.
+			* Grid icon window.
+			* File explorer.
 }
 
 Backlog {

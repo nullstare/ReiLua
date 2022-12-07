@@ -3,8 +3,6 @@ Rect = require( "rectangle" )
 Vec2 = require( "vector2" )
 Color = require( "color" )
 
--- NOTE!!! Work in progress! Do not use.
-
 --[[
 	To add repeat inputs to the keys pressed buffer, you could add GLFW_REPEAT in railib rcore.c in function "KeyCallback" by changing:
 
@@ -43,15 +41,16 @@ Gui = {
 
 	mouseButton = MOUSE_BUTTON_LEFT,
 	font = 0,
-	fontSize = 30,
+	fontSize = 20,
 	padding = 2,
 	spacing = 4,
 	scrollbarWidth = 8,
 	scrollAmount = 10,
 
+	heldCallback = nil,
+
 	_cells = {},
 	_mousePos = Vec2:new( 0, 0 ), -- Last mouse position that was passed to Gui.process.
-	_heldCallback = nil,
 	_inputElement = nil,
 	_inputItem = nil, -- Must be type Text.
 }
@@ -119,11 +118,11 @@ function Gui.process( mousePosition )
 
 	Gui._mousePos = mousePosition
 
-	if Gui._heldCallback ~= nil then
+	if Gui.heldCallback ~= nil then
 		if RL_IsMouseButtonDown( Gui.mouseButton ) then
-			Gui._heldCallback()
+			Gui.heldCallback()
 		else
-			Gui._heldCallback = nil
+			Gui.heldCallback = nil
 		end
 
 		return
@@ -265,7 +264,7 @@ function Text:draw()
 		return
 	end
 
-	RL_DrawText( self.font, self.text, { self._prante.bounds.x + self.bounds.x, self._prante.bounds.y + self.bounds.y }, self.fontSize, self.spacing, self.color )
+	RL_DrawText( self.font, self.text, { self._parent.bounds.x + self.bounds.x, self._parent.bounds.y + self.bounds.y }, self.fontSize, self.spacing, self.color )
 end
 
 -- Texture.
@@ -285,6 +284,7 @@ function Texture:new( set )
 	object.origin = setProperty( set, "origin", Vec2:new( 0, 0 ) )
 	object.rotation = setProperty( set, "rotation", 0 )
 	object.color = setProperty( set, "color", Color:new( WHITE ) )
+	object.nPatchInfo = setProperty( set, "nPatchInfo", nil )
 
 	object.visible = setProperty( set, "visible", true )
 	object._parent = nil
@@ -319,13 +319,17 @@ function Texture:draw()
 	end
 
 	local dst = {
-		self.bounds.x + self._prante.bounds.x,
-		self.bounds.y + self._prante.bounds.y,
+		self.bounds.x + self._parent.bounds.x,
+		self.bounds.y + self._parent.bounds.y,
 		self.bounds.width,
 		self.bounds.height
 	}
 
-	RL_DrawTexturePro( self.texture, self.source, dst, self.origin, self.rotation, self.color )
+	if self.nPatchInfo ~= nil then
+		RL_DrawTextureNPatch( self.texture, self.nPatchInfo, dst, self.origin, self.rotation, self.color )
+	else
+		RL_DrawTexturePro( self.texture, self.source, dst, self.origin, self.rotation, self.color )
+	end
 end
 
 -- Shape.
@@ -385,7 +389,7 @@ function Shape:draw()
 		return
 	end
 
-	local pos = Vec2:new( self._prante.bounds.x, self._prante.bounds.y )
+	local pos = Vec2:new( self._parent.bounds.x, self._parent.bounds.y )
 
 	if self.shape == Gui.SHAPE.LINE then
 		RL_DrawLine( self.startPos + pos, self.endPos + pos, self.thickness, self.color )
@@ -472,7 +476,7 @@ end
 
 function Element:add( item )
 	table.insert( self.items, item )
-	item._prante = self
+	item._parent = self
 	self:update()
 end
 
@@ -686,7 +690,7 @@ function Container:update()
 				padding = 0,
 				drawBounds = true,
 				color = Color:new( GRAY ),
-				onClicked = function() Gui._heldCallback = function() self:mouseScroll( Vec2:new( 0, 1 ) ) end end,
+				onClicked = function() Gui.heldCallback = function() self:mouseScroll( Vec2:new( 0, 1 ) ) end end,
 			} )
 
 			self._VScrollbar:add( Gui.shape:new( {
@@ -703,7 +707,7 @@ function Container:update()
 				padding = 0,
 				drawBounds = true,
 				color = Color:new( GRAY ),
-				onClicked = function() Gui._heldCallback = function() self:mouseScroll( Vec2:new( 1, 0 ) ) end end,
+				onClicked = function() Gui.heldCallback = function() self:mouseScroll( Vec2:new( 1, 0 ) ) end end,
 			} )
 
 			self._HScrollbar:add( Gui.shape:new( {

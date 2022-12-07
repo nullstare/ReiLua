@@ -145,7 +145,7 @@ apiFile:write( "\n> BoundingBox = { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } }\n\
 { min, max }. Bounding box type for 3d mesh\n\n---\n" )
 apiFile:write( "\n> Sound = SoundId\n\
 int id. Basic Sound source and buffer\n\n---\n" )
-apiFile:write( "\n> NPatchInfo = { { 0, 0, 24, 24 }, 0, 0, 0, 0, NPATCH_NINE_PATCH } or { source = { 0, 0, 24, 24 }, left = 0, top = 0, right = 0, bottom = 0, layout = NPATCH_NINE_PATCH }\n\
+apiFile:write( "\n> NPatchInfo = { { 0, 0, 24, 24 }, 8, 8, 8, 8, NPATCH_NINE_PATCH } or { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = NPATCH_NINE_PATCH }\n\
 { Rectangle source, int left, int top, int right, int bottom, int layout }.\
 { Texture source rectangle, Left border offset, Top border offset, Right border offset, Bottom border offset, Layout of the n-patch: 3x3, 1x3 or 3x1 }\n\n---\n" )
 apiFile:write( "\n> ModelAnimations = ModelAnimationsId\n\

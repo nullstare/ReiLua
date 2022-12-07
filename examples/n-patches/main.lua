@@ -4,7 +4,7 @@ local origin = { 0.0, 0.0 }
 -- local ninePatchInfo = { { 0.0, 0.0, 24.0, 24.0 }, 8, 8, 8, 8, NPATCH_NINE_PATCH }
 local ninePatchInfo = { source = { 0, 0, 24.0, 24.0 }, left = 8, top = 8, right = 8, bottom = 8, layout = NPATCH_NINE_PATCH }
 
-local nPatchTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/n-patch.png" )
+local nPatchTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/ui_border.png" )
 
 function init()
 	RL_SetWindowTitle( "N-Patches" )

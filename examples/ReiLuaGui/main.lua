@@ -10,6 +10,7 @@ local container = {}
 -- local circleTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/circle.png" )
 local circleTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/plain-circle.png" )
 local checkTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/check-mark.png" )
+local borderTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/ui_border.png" )
 local textInput
 
 RL_GenTextureMipmaps( circleTexture )
@@ -29,8 +30,8 @@ function initGui()
 		-- HAling = Gui.ALING.CENTER,
 		-- type = Gui.CONTAINER.HORIZONTAL,
 		-- VAling = Gui.ALING.CENTER,
-		type = Gui.CONTAINER.GRID,
-		columns = 2,
+		-- type = Gui.CONTAINER.GRID,
+		-- columns = 2,
 		-- rows = 2,
 		scrollable = true,
 		showScrollbar = true,
@@ -50,6 +51,16 @@ function initGui()
 	} )
 
 	dog:add( Gui.text:new( { text = "Dog", HAling = Gui.ALING.LEFT } ) )
+
+	dog:add( Gui.texture:new( {
+		bounds = dog.bounds:clone(),
+		texture = borderTexture,
+		HAling = Gui.ALING.CENTER,
+		VAling = Gui.ALING.CENTER,
+		visible = true,
+		nPatchInfo = { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = NPATCH_NINE_PATCH },
+	} ) )
+
 	dog:add( Gui.texture:new( { bounds = Rect:new( 0, 0, 24, 24 ), texture = circleTexture, HAling = Gui.ALING.RIGHT, color = Color:new( 150, 150, 255 ) } ) )
 	dog:add( Gui.texture:new( { bounds = Rect:new( 0, 0, 24, 24 ), texture = checkTexture, HAling = Gui.ALING.RIGHT, visible = true } ) )
 	-- dog:add( Gui.text:new( { text = "Cat", HAling = Gui.ALING.RIGHT } ) )

@@ -1,9 +1,7 @@
 Current {
 	* ReiLuaGui
-		* Movable window.
-		* Grid aling for container. Could use bounds of the first cell.
-
 		* Examples:
+			* Movable window.
 			* Calculator.
 			* Grid icon window.
 			* File explorer.

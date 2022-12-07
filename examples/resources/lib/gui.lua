@@ -25,8 +25,9 @@ Gui = {
 		BOTTOM = 2,
 	},
 	CONTAINER = {
-		HORIZONTAL = 1,
-		VERTICAL = 2,
+		HORIZONTAL = 0,
+		VERTICAL = 1,
+		GRID = 2,
 	},
 	SHAPE = {
 		LINE = 0,
@@ -553,6 +554,9 @@ function Container:new( set )
 	object.scrollbarWidth = setProperty( set, "scrollbarWidth", Gui.scrollbarWidth )
 	object.scrollAmount = setProperty( set, "scrollAmount", Gui.scrollAmount ) -- When using mouse scroll.
 	object.drawScrollRect = setProperty( set, "drawScrollRect", false )
+	-- For grid container. Do not set both.
+	object.columns = setProperty( set, "columns", nil )
+	object.rows = setProperty( set, "rows", nil )
 	
 	object.cells = {}
 	
@@ -712,6 +716,8 @@ function Container:update()
 		end
 	end
 
+	local cellRect = Rect:new( 0, 0, 0, 0 ) -- Used in grid container. Use pos as cell pos.
+
 	for i, cell in ipairs( self.cells ) do
 		if self._visibilityBounds ~= nil then
 			cell._visibilityBounds = self._visibilityBounds
@@ -745,6 +751,31 @@ function Container:update()
 			self._scrollRect.height = math.max( self._scrollRect.height, pos.y + cell.bounds.height + self.spacing - self.bounds.y )
 
 			pos.x = pos.x + cell.bounds.width + self.spacing
+		elseif self.type == Gui.CONTAINER.GRID then
+			-- Use size of first cell.
+			if i == 1 then
+				cellRect.width = cell.bounds.width
+				cellRect.height = cell.bounds.height
+			end
+
+			if self.columns ~= nil then
+				cellRect.x = (i-1) % self.columns
+				cellRect.y = math.floor( (i-1) / self.columns )
+			elseif self.rows ~= nil then
+				cellRect.x = math.floor( (i-1) / self.rows )
+				cellRect.y = (i-1) % self.rows
+			end
+
+			local cellPos = Vec2:new(
+				pos.x + cellRect.x * ( cellRect.width + self.spacing ),
+				pos.y + cellRect.y * ( cellRect.height + self.spacing )
+			)
+
+			cell.bounds.x = cellPos.x - self._scrollRect.x
+			cell.bounds.y = cellPos.y - self._scrollRect.y
+
+			self._scrollRect.width = math.max( self._scrollRect.width, cellPos.x + cellRect.width + self.spacing - self.bounds.x )
+			self._scrollRect.height = math.max( self._scrollRect.height, cellPos.y + cellRect.height + self.spacing - self.bounds.y )
 		end
 
 		if cell.update ~= nil then

@@ -2244,6 +2244,24 @@ int lcoreChangeDirectory( lua_State *L ) {
 }
 
 /*
+> isFile = RL_IsPathFile( string path )
+
+Check if a given path is a file or a directory
+
+- Failure return nil
+- Success return bool
+*/
+int lcoreIsPathFile( lua_State *L ) {
+	if ( !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_IsPathFile( string path )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	lua_pushboolean( L, IsPathFile( lua_tostring( L, -1 ) ) );
+	return 1;
+}
+
+/*
 > fileDropped = RL_IsFileDropped()
 
 Check if a file has been dropped into window

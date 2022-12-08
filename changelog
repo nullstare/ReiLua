@@ -7,7 +7,9 @@ KEY CHANGES:
 	- ADDED: Easings extra module.
 	- ADDED: exit function.
 	- FIXED: uluaGetNPatchInfo fix for RL_DrawTextureNPatch. Guess this was never tested and did not work at all >:E.
+	- ADDED: Flag option (-s) for doc_parser.lua for exporting module APIs to separate files.
 	- ADDED: ReiLuaGui.
+	- ADDED: ReiLuaGui Examples.
 
 Detailed changes:
 ADDED: Help argument.
@@ -15,7 +17,7 @@ CHANGED: Changed fuction name RL_rlSetLineWidth to RL_rlglSetLineWidth.
 CHANGED: Changed fuction name RL_rlGetLineWidth to RL_rlglGetLineWidth.
 FIXED: DrawRectangleGradient V and H expecting wrong arguments.
 ADDED: RL_LoadDirectoryFilesEx.
-ADDED: Flag option (-s) for doc_parser.lua for exporting module APIs to separate files.
 FIXED: RL_DrawLineBezierQuad was called RL_DrawLineBezier in API.
 ADDED: Color lib.
 FIXED: RL_DrawEllipse and RL_DrawEllipseLines expecting wrong arguments.
+ADDED: RL_IsPathFile.

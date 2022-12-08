@@ -2083,6 +2083,15 @@ Change working directory, return true on success
 
 ---
 
+> isFile = RL_IsPathFile( string path )
+
+Check if a given path is a file or a directory
+
+- Failure return nil
+- Success return bool
+
+---
+
 > fileDropped = RL_IsFileDropped()
 
 Check if a file has been dropped into window

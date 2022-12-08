@@ -140,7 +140,7 @@ function init()
 	local mSize = RL_GetMonitorSize( monitor )
 	winSize = RL_GetWindowSize()
 
-	RL_SetWindowTitle( "ReiLua Gui" )
+	RL_SetWindowTitle( "ReiLuaGui Test" )
 	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
 	RL_SetWindowState( FLAG_VSYNC_HINT )
 	RL_SetWindowSize( winSize )

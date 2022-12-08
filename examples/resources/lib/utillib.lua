@@ -152,6 +152,10 @@ function utillib.toBoolean( v )
 	return false
 end
 
+function utillib.boo2Number( bool )
+	return bool and 1 or 0
+end
+
 -- Print table content.
 function utillib.printt( t )
 	print( tostring(t).." = {" )

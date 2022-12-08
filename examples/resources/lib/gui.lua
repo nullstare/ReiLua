@@ -226,7 +226,7 @@ Text.__index = Text
 function Text:new( set )
 	local object = setmetatable( {}, Text )
 
-	object.bounds = Rect:new( 0, 0, 0, 0 )
+	object.bounds = setProperty( set, "bounds", Rect:new( 0, 0, 0, 0 ) )
 	object.HAling = setProperty( set, "HAling", Gui.ALING.LEFT )
 	object.VAling = setProperty( set, "VAling", Gui.ALING.BOTTOM )
 
@@ -557,6 +557,8 @@ function Container:new( set )
 	object.showScrollbar = setProperty( set, "showScrollbar", false )
 	object.scrollbarWidth = setProperty( set, "scrollbarWidth", Gui.scrollbarWidth )
 	object.scrollAmount = setProperty( set, "scrollAmount", Gui.scrollAmount ) -- When using mouse scroll.
+	object.color = setProperty( set, "color", Color:new( WHITE ) )
+	object.drawBounds = setProperty( set, "drawBounds", false )
 	object.drawScrollRect = setProperty( set, "drawScrollRect", false )
 	-- For grid container. Do not set both.
 	object.columns = setProperty( set, "columns", nil )
@@ -661,6 +663,12 @@ function Container:updateScrollbar()
 		self._VScrollbar.items[1].bounds.width = self.scrollbarWidth
 		self._VScrollbar.items[1].bounds.height = self.bounds.height / self._scrollRect.height * self.bounds.height
 		self._VScrollbar.items[1].bounds.y = self._scrollRect.y / self._scrollRect.height * self.bounds.height
+
+		self._VScrollbar.visible = self.visible
+		self._VScrollbar.disabled = self.disabled
+	else
+		self._VScrollbar.visible = false
+		self._VScrollbar.disabled = true
 	end
 	
 	if self.bounds.width < self._scrollRect.width then
@@ -672,6 +680,12 @@ function Container:updateScrollbar()
 		self._HScrollbar.items[1].bounds.width = self.bounds.width / self._scrollRect.width * self.bounds.width
 		self._HScrollbar.items[1].bounds.height = self.scrollbarWidth
 		self._HScrollbar.items[1].bounds.x = self._scrollRect.x / self._scrollRect.width * self.bounds.width
+
+		self._HScrollbar.visible = self.visible
+		self._HScrollbar.disabled = self.disabled
+	else
+		self._HScrollbar.visible = false
+		self._HScrollbar.disabled = true
 	end
 end
 
@@ -726,6 +740,9 @@ function Container:update()
 		if self._visibilityBounds ~= nil then
 			cell._visibilityBounds = self._visibilityBounds
 		end
+
+		cell.visible = self.visible
+		cell.disabled = self.disabled
 
 		if self.type == Gui.CONTAINER.VERTICAL then
 			if self.HAling == Gui.ALING.CENTER then
@@ -838,6 +855,10 @@ function Container:set2Back()
 end
 
 function Container:draw()
+	if self.drawBounds then
+		RL_DrawRectangle( self.bounds, self.color )
+	end
+
 	if self.drawScrollRect then
 		RL_DrawRectangleLines( {
 			self.bounds.x - self._scrollRect.x,

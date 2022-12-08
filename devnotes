@@ -1,10 +1,4 @@
 Current {
-	* ReiLuaGui
-		* Examples:
-			* Movable window.
-			* Calculator.
-			* Grid icon window.
-			* File explorer.
 }
 
 Backlog {

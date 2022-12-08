@@ -1,28 +1,3 @@
-package.path = package.path..";"..RL_GetBasePath().."../resources/lib/?.lua"
-
-util = require( "utillib" )
-Vec2 = require( "vector2" )
-Rect = require( "rectangle" )
-Color = require( "color" )
-Gui = require( "gui" )
-
--- Textures.
-
-local cancelTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/cancel.png" )
-local borderTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/ui_border.png" )
-local bgrTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/ui_bgr.png" )
-
-RL_GenTextureMipmaps( cancelTexture )
-RL_GenTextureMipmaps( bgrTexture )
-
-RL_SetTextureFilter( cancelTexture, TEXTURE_FILTER_TRILINEAR )
-RL_SetTextureFilter( bgrTexture, TEXTURE_FILTER_TRILINEAR )
-
-RL_SetTextureWrap( borderTexture, TEXTURE_WRAP_REPEAT )
-RL_SetTextureWrap( bgrTexture, TEXTURE_WRAP_REPEAT )
-
--- Calculator definition.
-
 Calculator = {}
 Calculator.__index = Calculator
 
@@ -38,7 +13,7 @@ function Calculator:new( pos )
 	object.windowRect = Rect:new( pos.x, pos.y, 196, 244 )
 	object.dragPos = Vec2:new( 0, 0 )
 
-	-- Handle
+	-- Handle.
 
 	object.handle = Gui.element:new( {
 		bounds = Rect:new( 0, 0, object.windowRect.width, object.HANDLE_HIGHT ),
@@ -133,8 +108,8 @@ function Calculator:new( pos )
 			table.insert( object.buttons, Gui.element:new( {
 				bounds = Rect:new( 0, 0, 40, 32 ),
 				drawBounds = true,
-				onMouseOver = function( self ) self.color = Color:new( LIGHTGRAY ) end,
-				notMouseOver = function( self ) self.color = Color:new( GRAY ) end,
+				onMouseOver = function( self ) self.color = Color:new( WHITE ) end,
+				notMouseOver = function( self ) self.color = Color:new( LIGHTGRAY ) end,
 			} ) )
 
 			object.buttons[ #object.buttons ].pos = Vec2:new( 8 + x * 46, object.HANDLE_HIGHT + object.DISPLAY_HIGHT + 16 + y * 38 )
@@ -304,51 +279,4 @@ function Calculator:equals()
 	self:updateDisplay()
 end
 
--- End of calculator definition.
-
-local calculator = nil
-local calculator2 = nil
-local showButton = nil
-
-function initGui()
-	showButton = Gui.element:new( {
-		bounds = Rect:new( 0, 0, 96, 32 ),
-		drawBounds = true,
-		onClicked = function()
-			calculator:setVisible( true )
-			calculator2:setVisible( true )
-		end,
-		onMouseOver = function( self ) self.color = Color:new( LIGHTGRAY ) end,
-		notMouseOver = function( self ) self.color = Color:new( GRAY ) end,
-	} )
-
-	showButton:add( Gui.text:new( { text = "Show", VAling = Gui.ALING.CENTER, HAling = Gui.ALING.CENTER } ) )
-
-	calculator = Calculator:new( Vec2:new( 128, 96 ) )
-	calculator2 = Calculator:new( Vec2:new( 340, 96 ) )
-end
-
-function init()
-	local monitor = 0
-	local mPos = RL_GetMonitorPosition( monitor )
-	local mSize = RL_GetMonitorSize( monitor )
-	winSize = RL_GetWindowSize()
-
-	RL_SetWindowTitle( "Calculator" )
-	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
-	RL_SetWindowState( FLAG_VSYNC_HINT )
-	RL_SetWindowSize( winSize )
-	RL_SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
-
-	initGui()
-end
-
-function process( delta )
-	Gui.process( Vec2:new( RL_GetMousePosition() ) )
-end
-
-function draw()
-	RL_ClearBackground( RAYWHITE )
-
-	Gui.draw()
-end
+return Calculator

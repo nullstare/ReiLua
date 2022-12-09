@@ -4070,7 +4070,6 @@ Draw a 3d mesh with material and transform
 > success = RL_DrawMeshInstanced( Mesh mesh, Material material, Matrix{} transforms, int instances )
 
 Draw multiple mesh instances with material and different transforms
-Note! Untested.
 
 - Failure return false
 - Success return true
@@ -4165,6 +4164,15 @@ Set color for a material map type
 > success = RL_SetMaterialValue( Material material, int mapType, float value )
 
 Set value for a material map type
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL_SetMaterialShader( Material material, Shader shader )
+
+Set shader for material
 
 - Failure return false
 - Success return true
@@ -5363,7 +5371,7 @@ Invert provided matrix
 
 ---
 
-> result = MatrixIdentity()
+> result = RL_MatrixIdentity()
 
 Get identity matrix
 

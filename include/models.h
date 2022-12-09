@@ -45,6 +45,7 @@ int lmodelsUnloadMaterial( lua_State *L );
 int lmodelsSetMaterialTexture( lua_State *L );
 int lmodelsSetMaterialColor( lua_State *L );
 int lmodelsSetMaterialValue( lua_State *L );
+int lmodelsSetMaterialShader( lua_State *L );
 /* Model. */
 int lmodelsLoadModel( lua_State *L );
 int lmodelsLoadModelFromMesh( lua_State *L );

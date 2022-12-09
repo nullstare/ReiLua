@@ -1,3 +1,6 @@
+-- Forked from raylib-lua example by TSnake41
+-- https://github.com/TSnake41/raylib-lua/blob/master/examples/textures_bunnymark.lua
+
 local MAX_BUNNIES = 100000
 
 -- This is the maximum amount of elements (quads) per batch
@@ -39,8 +42,6 @@ function Bunny:update()
 	end
 end
 
--- Init
-
 function init()
 	RL_SetWindowState( FLAG_VSYNC_HINT )
 	RL_SetWindowSize( { screenWidth, screenHeight } )
@@ -50,8 +51,6 @@ function init()
 	texSize = RL_GetTextureSize( texBunny )
 end
 
--- Update
-
 function process( delta )
 	if RL_IsMouseButtonDown( 0 ) then
 	 	-- Create more bunnies
@@ -59,7 +58,7 @@ function process( delta )
 			if #bunnies < MAX_BUNNIES then
 				local speed = { math.random( -250, 250 ) / 60, math.random( -250, 250 ) / 60 }
 				local color = { math.random( 50, 240 ), math.random( 80, 240 ), math.random( 100, 240 ), 255 }
-				table.insert( bunnies, Bunny:new( RL_GetMousePosition(), speed, color) )
+				table.insert( bunnies, Bunny:new( RL_GetMousePosition(), speed, color ) )
 			end
 		end
 	end
@@ -68,8 +67,6 @@ function process( delta )
 	  	bunnies[i]:update()
 	end
 end
-
-  -- Draw
 
 function draw()
 	RL_ClearBackground( RAYWHITE )

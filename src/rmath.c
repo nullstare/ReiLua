@@ -1607,7 +1607,7 @@ int lmathMatrixInvert( lua_State *L ) {
 }
 
 /*
-> result = MatrixIdentity()
+> result = RL_MatrixIdentity()
 
 Get identity matrix
 

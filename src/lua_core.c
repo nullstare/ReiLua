@@ -1028,6 +1028,7 @@ void luaRegister() {
 	lua_register( L, "RL_SetMaterialTexture", lmodelsSetMaterialTexture );
 	lua_register( L, "RL_SetMaterialColor", lmodelsSetMaterialColor );
 	lua_register( L, "RL_SetMaterialValue", lmodelsSetMaterialValue );
+	lua_register( L, "RL_SetMaterialShader", lmodelsSetMaterialShader );
 		/* Model. */
 	lua_register( L, "RL_LoadModel", lmodelsLoadModel );
 	lua_register( L, "RL_LoadModelFromMesh", lmodelsLoadModelFromMesh );

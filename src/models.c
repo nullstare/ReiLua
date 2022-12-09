@@ -1287,12 +1287,10 @@ int lmodelsDrawMesh( lua_State *L ) {
 	return 1;
 }
 
-/* TODO Untested. */
 /*
 > success = RL_DrawMeshInstanced( Mesh mesh, Material material, Matrix{} transforms, int instances )
 
 Draw multiple mesh instances with material and different transforms
-Note! Untested.
 
 - Failure return false
 - Success return true
@@ -1305,14 +1303,14 @@ int lmodelsDrawMeshInstanced( lua_State *L ) {
 	}
 	int instances = lua_tointeger( L, -1 );
 	lua_pop( L, 1 );
-	Matrix matrises[ instances ];
+	Matrix transforms[ instances ];
 
 	int t = lua_gettop( L ), i = 0;
     lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
         if ( lua_istable( L, -1 ) ) {
-			matrises[i] = uluaGetMatrix( L );
+			transforms[i] = uluaGetMatrix( L );
         }
         i++;
         lua_pop( L, 1 );
@@ -1326,7 +1324,7 @@ int lmodelsDrawMeshInstanced( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	DrawMeshInstanced( *state->meshes[ meshId ], *state->materials[ materialId ], matrises, instances );
+	DrawMeshInstanced( *state->meshes[ meshId ], *state->materials[ materialId ], transforms, instances );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -1694,6 +1692,35 @@ int lmodelsSetMaterialValue( lua_State *L ) {
 	}
 
 	state->materials[ materialId ]->maps[ mapType ].value = value;
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL_SetMaterialShader( Material material, Shader shader )
+
+Set shader for material
+
+- Failure return false
+- Success return true
+*/
+int lmodelsSetMaterialShader( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_SetMaterialShader( Material material, Shader shader )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t shaderId = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	size_t materialId = lua_tointeger( L, -1 );
+
+	if ( !validMaterial( materialId || !validShader( shaderId ) ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	state->materials[ materialId ]->shader = *state->shaders[ shaderId ];
 	lua_pushboolean( L, true );
 
 	return 1;

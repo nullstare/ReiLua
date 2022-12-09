@@ -45,7 +45,7 @@ Gui = {
 	padding = 2,
 	spacing = 4,
 	scrollbarWidth = 8,
-	scrollAmount = 10,
+	scrollAmount = 20,
 
 	heldCallback = nil,
 

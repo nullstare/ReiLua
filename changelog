@@ -10,6 +10,7 @@ KEY CHANGES:
 	- ADDED: Flag option (-s) for doc_parser.lua for exporting module APIs to separate files.
 	- ADDED: ReiLuaGui.
 	- ADDED: ReiLuaGui Examples.
+	- ADDED: Draw Mesh Instanced Example.
 
 Detailed changes:
 ADDED: Help argument.
@@ -21,3 +22,4 @@ FIXED: RL_DrawLineBezierQuad was called RL_DrawLineBezier in API.
 ADDED: Color lib.
 FIXED: RL_DrawEllipse and RL_DrawEllipseLines expecting wrong arguments.
 ADDED: RL_IsPathFile.
+ADDED: RL_SetMaterialShader.

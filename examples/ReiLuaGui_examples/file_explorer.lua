@@ -201,7 +201,7 @@ function FileExplorer:fileSelect( file )
 end
 
 function FileExplorer:openFile()
-	print( self.file )
+	print( self.file, RL_GetFileLength( self.file ) )
 end
 
 function FileExplorer:updateFiles()

@@ -7,4 +7,6 @@ Backlog {
 	* Text
 		* Codepoints?
 	* VR.
+	* Core.
+		* Compression/Encoding functionality.
 }

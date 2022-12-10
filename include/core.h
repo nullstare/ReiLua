@@ -78,6 +78,7 @@ int lcoreGetBasePath( lua_State *L );
 int lcoreFileExists( lua_State *L );
 int lcoreDirectoryExists( lua_State *L );
 int lcoreIsFileExtension( lua_State *L );
+int lcoreGetFileLength( lua_State *L );
 int lcoreGetFileExtension( lua_State *L );
 int lcoreGetFileName( lua_State *L );
 int lcoreGetFileNameWithoutExt( lua_State *L );

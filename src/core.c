@@ -2070,6 +2070,24 @@ int lcoreIsFileExtension( lua_State *L ) {
 }
 
 /*
+> length = RL_GetFileLength( string fileName )
+
+Get file length in bytes ( NOTE: GetFileSize() conflicts with windows.h )
+
+- Failure return false
+- Success return int
+*/
+int lcoreGetFileLength( lua_State *L ) {
+	if ( !lua_isstring( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetFileLength( string fileName )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	lua_pushinteger( L, GetFileLength( lua_tostring( L, -1 ) ) );
+	return 1;
+}
+
+/*
 > extension = RL_GetFileExtension( string fileName )
 
 Get pointer to extension for a filename string ( Includes dot: '.png' )

@@ -741,6 +741,7 @@ void luaRegister() {
 	lua_register( L, "RL_FileExists", lcoreFileExists );
 	lua_register( L, "RL_DirectoryExists", lcoreDirectoryExists );
 	lua_register( L, "RL_IsFileExtension", lcoreIsFileExtension );
+	lua_register( L, "RL_GetFileLength", lcoreGetFileLength );
 	lua_register( L, "RL_GetFileExtension", lcoreGetFileExtension );
 	lua_register( L, "RL_GetFileName", lcoreGetFileName );
 	lua_register( L, "RL_GetFileNameWithoutExt", lcoreGetFileNameWithoutExt );

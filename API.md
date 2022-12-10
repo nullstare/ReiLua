@@ -2003,6 +2003,15 @@ Check file extension ( Including point: .png, .wav )
 
 ---
 
+> length = RL_GetFileLength( string fileName )
+
+Get file length in bytes ( NOTE: GetFileSize() conflicts with windows.h )
+
+- Failure return false
+- Success return int
+
+---
+
 > extension = RL_GetFileExtension( string fileName )
 
 Get pointer to extension for a filename string ( Includes dot: '.png' )

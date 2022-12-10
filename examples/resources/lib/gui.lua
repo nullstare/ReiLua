@@ -51,7 +51,7 @@ Gui = {
 
 	_cells = {},
 	_mousePos = Vec2:new( 0, 0 ), -- Last mouse position that was passed to Gui.process.
-	_inputElement = nil,
+	_inputElement = nil, -- Element that has the input text item.
 	_inputItem = nil, -- Must be type Text.
 }
 
@@ -637,8 +637,6 @@ function Container:mouseScroll( v )
 	self:scroll( mousePos )
 end
 
-
--- //TODO Add this
 function Container:isMouseOver( mousePosition )
 	local over = RL_CheckCollisionPointRec( mousePosition, self.bounds )
 

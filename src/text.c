@@ -63,6 +63,35 @@ int ltextLoadFont( lua_State *L ) {
 }
 
 /*
+> font = RL_LoadFontEx( string fileName, int fontSize )
+
+Load font from file with extended parameters. Loading the default character set
+
+- Failure return -1
+- Success return int
+*/
+int ltextLoadFontEx( lua_State *L ) {
+	if ( !lua_isstring( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_LoadFontEx( string fileName, int fontSize )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	int i = 0;
+
+	for ( i = 0; i < state->fontCount; i++ ) {
+		if ( state->fonts[i] == NULL ) {
+			break;
+		}
+	}
+	state->fonts[i] = malloc( sizeof( Font ) );
+	*state->fonts[i] = LoadFontEx( lua_tostring( L, -2 ), lua_tointeger( L, - 1 ), NULL, 0 );
+	lua_pushinteger( L, i );
+	checkFontRealloc( i );
+
+	return 1;
+}
+
+/*
 > font = RL_LoadFontFromImage( Image image, Color key, int firstChar )
 
 Load font from Image ( XNA style )

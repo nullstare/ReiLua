@@ -1062,6 +1062,7 @@ void luaRegister() {
 	/* Text. */
 		/* Loading. */
 	lua_register( L, "RL_LoadFont", ltextLoadFont );
+	lua_register( L, "RL_LoadFontEx", ltextLoadFontEx );
 	lua_register( L, "RL_LoadFontFromImage", ltextLoadFontFromImage );
 	lua_register( L, "RL_UnloadFont", ltextUnloadFont );
 		/* Drawing. */

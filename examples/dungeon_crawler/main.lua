@@ -9,6 +9,7 @@ local winScale = 4
 local framebuffer = -1
 
 local TILE_SIZE = 32
+local TILE_VERTEX_COLORS = { WHITE, WHITE, WHITE, WHITE }
 
 local FLOOR = 1
 local CEILING = 2
@@ -105,22 +106,22 @@ function draw()
 		-- Floor and ceiling.
 		for x = 0, 3 do
 			for y = 0, 10 do
-				RL_DrawQuad3DTexture( texture, getTileVer( x, y, FLOOR ), getTexCoords( 1, 0 ), WHITE )
-				RL_DrawQuad3DTexture( texture, getTileVer( x, y, CEILING ), getTexCoords( 2, 0 ), WHITE )
+				RL_DrawQuad3DTexture( texture, getTileVer( x, y, FLOOR ), getTexCoords( 1, 0 ), TILE_VERTEX_COLORS )
+				RL_DrawQuad3DTexture( texture, getTileVer( x, y, CEILING ), getTexCoords( 2, 0 ), TILE_VERTEX_COLORS )
 			end
 		end
 		-- Walls.
-		RL_DrawQuad3DTexture( texture, getTileVer( 0, 0, WALL_N ), getTexCoords( 0, 0 ), WHITE )
-		RL_DrawQuad3DTexture( texture, getTileVer( 1, 0, WALL_N ), getTexCoords( 0, 2 ), WHITE )
-		RL_DrawQuad3DTexture( texture, getTileVer( 2, 0, WALL_N ), getTexCoords( 2, 2 ), WHITE )
-		RL_DrawQuad3DTexture( texture, getTileVer( 3, 0, WALL_N ), getTexCoords( 0, 0 ), WHITE )
+		RL_DrawQuad3DTexture( texture, getTileVer( 0, 0, WALL_N ), getTexCoords( 0, 0 ), TILE_VERTEX_COLORS )
+		RL_DrawQuad3DTexture( texture, getTileVer( 1, 0, WALL_N ), getTexCoords( 0, 2 ), TILE_VERTEX_COLORS )
+		RL_DrawQuad3DTexture( texture, getTileVer( 2, 0, WALL_N ), getTexCoords( 2, 2 ), TILE_VERTEX_COLORS )
+		RL_DrawQuad3DTexture( texture, getTileVer( 3, 0, WALL_N ), getTexCoords( 0, 0 ), TILE_VERTEX_COLORS )
 
 		for x = 0, 3 do
-			RL_DrawQuad3DTexture( texture, getTileVer( x, 10, WALL_S ), getTexCoords( 0, 0 ), WHITE )
+			RL_DrawQuad3DTexture( texture, getTileVer( x, 10, WALL_S ), getTexCoords( 0, 0 ), TILE_VERTEX_COLORS )
 		end
 		for y = 0, 10 do
-			RL_DrawQuad3DTexture( texture, getTileVer( 0, y, WALL_W ), getTexCoords( 0, 0 ), WHITE )
-			RL_DrawQuad3DTexture( texture, getTileVer( 3, y, WALL_E ), getTexCoords( 0, 0 ), WHITE )
+			RL_DrawQuad3DTexture( texture, getTileVer( 0, y, WALL_W ), getTexCoords( 0, 0 ), TILE_VERTEX_COLORS )
+			RL_DrawQuad3DTexture( texture, getTileVer( 3, y, WALL_E ), getTexCoords( 0, 0 ), TILE_VERTEX_COLORS )
 		end
 
 		drawSprites()

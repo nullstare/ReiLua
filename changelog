@@ -11,6 +11,7 @@ KEY CHANGES:
 	- ADDED: ReiLuaGui.
 	- ADDED: ReiLuaGui Examples.
 	- ADDED: Draw Mesh Instanced Example.
+	- CHANGED: RL_DrawQuad3DTexture now takes vertex colors instead of just single color.
 
 Detailed changes:
 ADDED: Help argument.
@@ -24,3 +25,4 @@ FIXED: RL_DrawEllipse and RL_DrawEllipseLines expecting wrong arguments.
 ADDED: RL_IsPathFile.
 ADDED: RL_SetMaterialShader.
 ADDED: RL_GetFileLength.
+ADDED: RL_LoadFontEx.

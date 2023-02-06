@@ -3698,6 +3698,15 @@ Load font from file into GPU memory ( VRAM )
 
 ---
 
+> font = RL_LoadFontEx( string fileName, int fontSize )
+
+Load font from file with extended parameters. Loading the default character set
+
+- Failure return -1
+- Success return int
+
+---
+
 > font = RL_LoadFontFromImage( Image image, Color key, int firstChar )
 
 Load font from Image ( XNA style )
@@ -3926,10 +3935,9 @@ Draw a plane XZ
 
 ---
 
-> success = RL_DrawQuad3DTexture( texture, Vector3{} vertices, Vector2{} texCoords, Color color )
+> success = RL_DrawQuad3DTexture( texture, Vector3{} vertices, Vector2{} texCoords, Color{} colors )
 
-Draw 3D quad texture using vertices and texture coordinates. Texture coordinates opengl style 0.0 - 1.0.
-Note! Could be replaced something like "DrawPlaneTextureRec"
+Draw 3D textured quad. ( Texture coordinates opengl style 0.0 - 1.0 ).
 
 - Failure return false
 - Success return true

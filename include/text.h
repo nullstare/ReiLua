@@ -4,6 +4,7 @@
 bool validFont( size_t id );
 /* Loading. */
 int ltextLoadFont( lua_State *L );
+int ltextLoadFontEx( lua_State *L );
 int ltextLoadFontFromImage( lua_State *L );
 int ltextUnloadFont( lua_State *L );
 /* Drawing. */

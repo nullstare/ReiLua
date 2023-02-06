@@ -1247,7 +1247,7 @@ int lcoreSetShaderValue( lua_State *L ) {
 	}
 	int uniformType = lua_tointeger( L, -1 );
 	lua_pop( L, 1 );
-
+	
 	/* Read values. */
 	size_t valueCount = uluaGetTableLen( L );
 	float floats[ valueCount ];

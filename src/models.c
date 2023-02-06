@@ -558,27 +558,39 @@ int lmodelsDrawPlane( lua_State *L ) {
 }
 
 /*
-> success = RL_DrawQuad3DTexture( texture, Vector3{} vertices, Vector2{} texCoords, Color color )
+> success = RL_DrawQuad3DTexture( texture, Vector3{} vertices, Vector2{} texCoords, Color{} colors )
 
-Draw 3D quad texture using vertices and texture coordinates. Texture coordinates opengl style 0.0 - 1.0.
-Note! Could be replaced something like "DrawPlaneTextureRec"
+Draw 3D textured quad. ( Texture coordinates opengl style 0.0 - 1.0 ).
 
 - Failure return false
 - Success return true
 */
 int lmodelDrawQuad3DTexture( lua_State *L ) {
 	if ( !lua_isnumber( L, -4 ) || !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_DrawQuad3DTexture( texture, Vector3{} vertices, Vector2{} texCoords, Color color )" );
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_DrawQuad3DTexture( texture, Vector3{} vertices, Vector2{} texCoords, Color{} colors )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
+
+	/* Colors. */
+	Color colors[4] = { 0 };
+
+	int t = lua_gettop( L ), i = 0;
+    lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+        if ( lua_istable( L, -1 ) && i < 4 ) {
+			colors[i] = uluaGetColor( L );
+        }
+        i++;
+        lua_pop( L, 1 );
+    }
 	lua_pop( L, 1 );
 
 	/* TexCoords. */
 	Vector2 texcoords[4] = { 0 };
 
-	int t = lua_gettop( L ), i = 0;
+	t = lua_gettop( L ), i = 0;
     lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
@@ -621,10 +633,9 @@ int lmodelDrawQuad3DTexture( lua_State *L ) {
 	rlSetTexture( texturesGetSourceTexture( texId )->id );
 
 	rlBegin( RL_QUADS );
-        rlColor4ub( color.r, color.g, color.b, color.a );
-
 		for ( i = 0; i < 4; ++i ) {
 			rlTexCoord2f( texcoords[i].x, texcoords[i].y );
+        	rlColor4ub( colors[i].r, colors[i].g, colors[i].b, colors[i].a );
 			rlVertex3f( vertices[i].x, vertices[i].y, vertices[i].z );
 		}
 	rlEnd();

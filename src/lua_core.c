@@ -323,6 +323,7 @@ void defineGlobals() {
 	assignGlobalInt( BLEND_MULTIPLIED, "BLEND_MULTIPLIED" );
 	assignGlobalInt( BLEND_ADD_COLORS, "BLEND_ADD_COLORS" );
 	assignGlobalInt( BLEND_SUBTRACT_COLORS, "BLEND_SUBTRACT_COLORS" );
+	assignGlobalInt( BLEND_ALPHA_PREMULTIPLY, "BLEND_ALPHA_PREMULTIPLY" );
 	assignGlobalInt( BLEND_CUSTOM, "BLEND_CUSTOM" );
 	/* Gesture */
 	assignGlobalInt( GESTURE_NONE, "GESTURE_NONE" );

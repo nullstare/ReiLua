@@ -26,3 +26,5 @@ ADDED: RL_IsPathFile.
 ADDED: RL_SetMaterialShader.
 ADDED: RL_GetFileLength.
 ADDED: RL_LoadFontEx.
+FIXED: RL_ImageAlphaClear expecting wrong arguments.
+ADDED: BLEND_ALPHA_PREMULTIPLY

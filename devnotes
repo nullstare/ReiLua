@@ -2,10 +2,11 @@ Current {
 }
 
 Backlog {
+	* Text
+		* Ability to set font texture filtering.
+		* Codepoints?
 	* Audio
 		* AudioStream.
-	* Text
-		* Codepoints?
 	* VR.
 	* Core.
 		* Compression/Encoding functionality.

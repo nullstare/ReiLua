@@ -695,9 +695,9 @@ int ltexturesImageAlphaClear( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
 	float threshold = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Color color = uluaGetColor( L );
 	lua_pop( L, 1 );
 	size_t imageId = lua_tointeger( L, -1 );
 
@@ -1765,7 +1765,6 @@ int ltexturesLoadRenderTexture( lua_State *L ) {
 
 	return 1;
 }
-
 
 /*
 > success = RL_UnloadTexture( Texture2D texture )

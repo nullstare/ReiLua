@@ -286,7 +286,7 @@ local function drawPlayer()
 end
 
 function draw()
-	RL_ClearBackground( BLACK )
+	RL_ClearBackground( RED )
 
 	RL_SetTextureSource( TEXTURE_SOURCE_TEXTURE )
 	RL_BeginTextureMode( framebuffer )

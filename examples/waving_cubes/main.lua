@@ -13,7 +13,7 @@ function init()
 	local monitor = 0
 	local mPos = RL_GetMonitorPosition( monitor )
 	local mSize = RL_GetMonitorSize( monitor )
-	local winSize = RL_GetWindowSize()
+	local winSize = RL_GetScreenSize()
 	
 	RL_SetWindowTitle( "Waving cubes" )
 	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )

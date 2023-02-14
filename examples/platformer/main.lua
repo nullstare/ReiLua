@@ -222,7 +222,7 @@ end
 
 function process( delta )
 	if RL_IsWindowResized() then
-		winSize:set( RL_GetWindowSize() )
+		winSize:set( RL_GetScreenSize() )
 	end
 
 	playerMovement( delta )

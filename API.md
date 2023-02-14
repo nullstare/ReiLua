@@ -617,6 +617,8 @@ BLEND_ADD_COLORS
 
 BLEND_SUBTRACT_COLORS
 
+BLEND_ALPHA_PREMULTIPLY
+
 BLEND_CUSTOM
 
 ## Globals - Gesture
@@ -1194,9 +1196,9 @@ Get window position on monitor
 
 ---
 
-> size = RL_GetWindowPosition()
+> size = RL_GetScreenSize()
 
-Get window size
+Get screen size
 
 - Success return Vector2
 

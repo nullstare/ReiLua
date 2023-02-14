@@ -22,7 +22,7 @@ function init()
 	local monitor = 0
 	local mPos = RL_GetMonitorPosition( monitor )
 	local mSize = RL_GetMonitorSize( monitor )
-	local winSize = RL_GetWindowSize()
+	local winSize = RL_GetScreenSize()
 
 	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
 	RL_SetWindowSize( winSize )

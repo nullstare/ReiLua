@@ -681,7 +681,7 @@ void luaRegister() {
 	lua_register( L, "RL_GetMonitorPosition", lcoreGetMonitorPosition );
 	lua_register( L, "RL_GetMonitorSize", lcoreGetMonitorSize );
 	lua_register( L, "RL_GetWindowPosition", lcoreGetWindowPosition );
-	lua_register( L, "RL_GetWindowSize", lcoreGetWindowSize );
+	lua_register( L, "RL_GetScreenSize", lcoreGetScreenSize );
 	lua_register( L, "RL_SetWindowState", lcoreSetWindowState );
 	lua_register( L, "RL_IsWindowState", lcoreIsWindowState );
 	lua_register( L, "RL_ClearWindowState", lcoreClearWindowState );

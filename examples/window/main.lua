@@ -11,7 +11,7 @@ end
 function process( delta )
 	if RL_IsKeyPressed( KEY_ENTER ) then
 		local textSize = RL_MeasureText( 0, text, 20, 2 )
-		local winSize = RL_GetWindowSize()
+		local winSize = RL_GetScreenSize()
 
 		textColor = BLUE
 		textPos = { winSize[1] / 2 - textSize[1] / 2, winSize[2] / 2 - textSize[2] / 2 }

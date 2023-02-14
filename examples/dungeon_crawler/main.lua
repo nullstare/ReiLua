@@ -4,7 +4,7 @@ local camera = -1
 local texture = -1
 local textureSize = { 256, 96 }
 local res = { 384, 216 }
-local winSize = RL_GetWindowSize()
+local winSize = RL_GetScreenSize()
 local winScale = 4
 local framebuffer = -1
 

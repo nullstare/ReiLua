@@ -17,7 +17,7 @@ int lcoreSetWindowMinSize( lua_State *L );
 int lcoreGetMonitorPosition( lua_State *L );
 int lcoreGetMonitorSize( lua_State *L );
 int lcoreGetWindowPosition( lua_State *L );
-int lcoreGetWindowSize( lua_State *L );
+int lcoreGetScreenSize( lua_State *L );
 int lcoreSetWindowState( lua_State *L );
 int lcoreIsWindowState( lua_State *L );
 int lcoreClearWindowState( lua_State *L );

@@ -298,13 +298,13 @@ int lcoreGetWindowPosition( lua_State *L ) {
 }
 
 /*
-> size = RL_GetWindowPosition()
+> size = RL_GetScreenSize()
 
-Get window size
+Get screen size
 
 - Success return Vector2
 */
-int lcoreGetWindowSize( lua_State *L ) {
+int lcoreGetScreenSize( lua_State *L ) {
 	Vector2 size = (Vector2){ GetScreenWidth(), GetScreenHeight() };
 	uluaPushVector2( L, size );
 

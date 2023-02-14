@@ -34,7 +34,7 @@ function process( delta )
 	end
 
 	if RL_IsWindowResized() then
-		winSize = RL_GetWindowSize()
+		winSize = RL_GetScreenSize()
 	end
 end
 

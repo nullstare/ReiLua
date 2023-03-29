@@ -29,3 +29,5 @@ ADDED: RL_LoadFontEx.
 FIXED: RL_ImageAlphaClear expecting wrong arguments.
 ADDED: BLEND_ALPHA_PREMULTIPLY.
 CHANGED: RL_GetWindowSize renamed to RL_GetScreenSize.
+ADDED: RL_GetKeyName and RL_GetKeyScancode. GLFW Functions.
+ADDED: KEY_UNKNOWN.

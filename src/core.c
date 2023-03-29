@@ -1495,6 +1495,69 @@ int lcoreSetExitKey( lua_State *L ) {
 }
 
 /*
+> keyName = RL_GetKeyName( int key, int scancode )
+
+This function returns the name of the specified printable key, encoded as UTF-8.
+This is typically the character that key would produce without any modifier keys,
+intended for displaying key bindings to the user. For dead keys, it is typically
+the diacritic it would add to a character.
+
+Do not use this function for text input. You will break text input for many
+languages even if it happens to work for yours.
+
+If the key is KEY_UNKNOWN, the scancode is used to identify the key,
+otherwise the scancode is ignored. If you specify a non-printable key,
+or KEY_UNKNOWN and a scancode that maps to a non-printable key,
+this function returns nil but does not emit an error.
+
+- Failure return -1
+- Success return string or nil
+*/
+int lcoreGetKeyName( lua_State *L ) {
+	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetKeyName( int key, int scancode )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	int scancode = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	int key = lua_tointeger( L, -1 );
+
+	const char *keyName = glfwGetKeyName( key, scancode );
+
+	if ( keyName != NULL ) {
+		lua_pushstring( L, keyName );
+	}
+	else {
+		lua_pushnil( L );
+	}
+
+	return 1;
+}
+
+/*
+> scancode = RL_GetKeyScancode( int key )
+
+This function returns the platform-specific scancode of the specified key.
+If the key is KEY_UNKNOWN or does not exist on the keyboard this method will return -1.
+
+- Failure return nil
+- Success return int
+*/
+int lcoreGetKeyScancode( lua_State *L ) {
+	if ( !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_GetKeyScancode( int key )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	int scancode = glfwGetKeyScancode( lua_tointeger( L, -1 ) );
+
+	lua_pushinteger( L, scancode );
+
+	return 1;
+}
+
+/*
 ## Core - Input-related Gamepad
 */
 

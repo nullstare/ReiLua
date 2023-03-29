@@ -134,6 +134,8 @@ int lcoreIsKeyUp( lua_State *L );
 int lcoreGetKeyPressed( lua_State *L );
 int lcoreGetCharPressed( lua_State *L );
 int lcoreSetExitKey( lua_State *L );
+int lcoreGetKeyName( lua_State *L );
+int lcoreGetKeyScancode( lua_State *L );
 /* Input-related Gamepad. */
 int lcoreIsGamepadAvailable( lua_State *L );
 int lcoreIsGamepadButtonPressed( lua_State *L );

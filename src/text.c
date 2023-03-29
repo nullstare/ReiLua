@@ -112,6 +112,7 @@ int ltextLoadFontFromImage( lua_State *L ) {
 			break;
 		}
 	}
+	
 	int firstChar = lua_tointeger( L, -1 );
 	lua_pop( L, 1 );
 	Color key = uluaGetColor( L );

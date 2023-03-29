@@ -15,6 +15,8 @@
 #include "raygui.h"
 #include "rlights.h"
 #include "rlgl.h"
+#include "glfw3.h"
+#include "glfw3native.h"
 #include <lua.h>
 #include <lualib.h>
 #include <lauxlib.h>

@@ -58,6 +58,7 @@ void defineGlobals() {
 	assignGlobalInt( LOG_FATAL, "LOG_FATAL" );
 	assignGlobalInt( LOG_NONE, "LOG_NONE" );
 	/* KeyboardKey */
+	assignGlobalInt( GLFW_KEY_UNKNOWN, "KEY_UNKNOWN" );
 	assignGlobalInt( KEY_NULL, "KEY_NULL" );
 	assignGlobalInt( KEY_APOSTROPHE, "KEY_APOSTROPHE" );
 	assignGlobalInt( KEY_COMMA, "KEY_COMMA" );
@@ -798,6 +799,8 @@ void luaRegister() {
 	lua_register( L, "RL_GetKeyPressed", lcoreGetKeyPressed );
 	lua_register( L, "RL_GetCharPressed", lcoreGetCharPressed );
 	lua_register( L, "RL_SetExitKey", lcoreSetExitKey );
+	lua_register( L, "RL_GetKeyName", lcoreGetKeyName );
+	lua_register( L, "RL_GetKeyScancode", lcoreGetKeyScancode );
 		/* Input-related Gamepad. */
 	lua_register( L, "RL_IsGamepadAvailable", lcoreIsGamepadAvailable );
 	lua_register( L, "RL_IsGamepadButtonPressed", lcoreIsGamepadButtonPressed );

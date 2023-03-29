@@ -30,7 +30,7 @@ if( EMSCRIPTEN ) # Web
 else() # Desktop
 	if( SHARED )
 		message( Shared )
-		find_package( raylib 4.0 REQUIRED ) # Requires at least version 4.0
+		# find_package( raylib 4.0 REQUIRED ) # Requires at least version 4.0
 		target_link_libraries( ${PROJECT_NAME} raylib )
 		target_link_libraries( ${PROJECT_NAME} lua )
 	else()

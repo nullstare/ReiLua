@@ -71,14 +71,14 @@ end
 function draw()
 	RL_ClearBackground( RAYWHITE )
 
-	for i = 1, #bunnies do
+	for _, bunny in ipairs( bunnies ) do
 		-- NOTE: When internal batch buffer limit is reached (MAX_BATCH_ELEMENTS),
 		-- a draw call is launched and buffer starts being filled again;
 		-- before issuing a draw call, updated vertex data from internal CPU buffer is send to GPU...
 		-- Process of sending data is costly and it could happen that GPU data has not been completely
 		-- processed for drawing while new data is tried to be sent (updating current in-use buffers)
 		-- it could generates a stall and consequently a frame drop, limiting the number of drawn bunnies
-		RL_DrawTexture( texBunny, { bunnies[i].position[1], bunnies[i].position[2] }, bunnies[i].color );
+		RL_DrawTexture( texBunny, { bunny.position[1], bunny.position[2] }, bunny.color )
 	end
 
 	RL_DrawRectangle( { 0, 0, screenWidth, 40 }, BLACK)

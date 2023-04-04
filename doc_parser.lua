@@ -3,7 +3,7 @@
 -- Export each module as separate .md file.
 local separate = false
 
-if arg[1] ~= nil and arg[1] == "-s" then
+if arg ~= nil and arg[1] ~= nil and arg[1] == "-s" then
 	separate = true
 end
 

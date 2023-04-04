@@ -32,7 +32,7 @@ bool stateInit( const char *exePath ) {
 	state->fontAlloc = ALLOC_PAGE_SIZE;
 	state->fontCount = 1;
 	state->fonts = malloc( state->fontAlloc * sizeof( Font* ) );
-	/* Wavess. */
+	/* Waves. */
 	state->waveAlloc = ALLOC_PAGE_SIZE;
 	state->waveCount = 0;
 	state->waves = malloc( state->waveAlloc * sizeof( Wave* ) );
@@ -167,7 +167,6 @@ void stateFree() {
 	}
 	for ( int i = 0; i < state->modelCount; ++i ) {
 		if ( state->models[i] != NULL ) {
-			// UnloadModel( *state->models[i] );
 			UnloadModelKeepMeshes( *state->models[i] );
 			free( state->models[i] );
 		}
@@ -199,7 +198,8 @@ void stateFree() {
 			free( state->shaders[i] );
 		}
 	}
-#if !defined(PLATFORM_RPI) || !defined(PLATFORM_DRM)
+	
+#if !defined( PLATFORM_RPI ) || !defined( PLATFORM_DRM )
 	for ( int i = 0; i < state->lightCount; ++i ) {
 		if ( state->lights[i] != NULL ) {
 			free( state->lights[i] );

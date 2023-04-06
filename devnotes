@@ -4,16 +4,24 @@ Current {
 }
 
 Backlog {
-	* Raymath 
-		* Vector2LineAngle
+	* IsWaveReady and others like that.
+
 	* rlgl
-		* More low level functions.
+		* More low level functions. Could be usefull now when draw polygon is removed.
 	* Text
 		* Ability to set font texture filtering.
 		* Codepoints?
 	* Audio
 		* AudioStream.
-	* VR.
 	* Core.
 		* Compression/Encoding functionality.
+		* SetWindowIcons.
+	* Textures
+		* GenImagePerlinNoise
+		* GenImageText
+		* ImageDrawCircleLines
+		* ImageBlurGaussian
+	* Models
+		* DrawCapsule and DrawCapsuleWires
+		* LoadMaterials
 }

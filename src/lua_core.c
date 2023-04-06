@@ -914,6 +914,7 @@ void luaRegister() {
 	assingGlobalFunction( "CheckCollisionPointRec", lshapesCheckCollisionPointRec );
 	assingGlobalFunction( "CheckCollisionPointCircle", lshapesCheckCollisionPointCircle );
 	assingGlobalFunction( "CheckCollisionPointTriangle", lshapesCheckCollisionPointTriangle );
+	assingGlobalFunction( "CheckCollisionPointPoly", lshapesCheckCollisionPointPoly );
 	assingGlobalFunction( "CheckCollisionLines", lshapesCheckCollisionLines );
 	assingGlobalFunction( "CheckCollisionPointLine", lshapesCheckCollisionPointLine );
 	assingGlobalFunction( "GetCollisionRec", lshapesGetCollisionRec );
@@ -1011,6 +1012,9 @@ void luaRegister() {
 	assingGlobalFunction( "ColorFromNormalized", ltexturesColorFromNormalized );
 	assingGlobalFunction( "ColorToHSV", ltexturesColorToHSV );
 	assingGlobalFunction( "ColorFromHSV", ltexturesColorFromHSV );
+	assingGlobalFunction( "ColorTint", ltexturesColorTint );
+	assingGlobalFunction( "ColorBrightness", ltexturesColorBrightness );
+	assingGlobalFunction( "ColorContrast", ltexturesColorContrast );
 	assingGlobalFunction( "ColorAlpha", ltexturesColorAlpha );
 	assingGlobalFunction( "ColorAlphaBlend", ltexturesColorAlphaBlend );
 	assingGlobalFunction( "GetColor", ltexturesGetColor );

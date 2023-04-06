@@ -1106,6 +1106,41 @@ int lshapesCheckCollisionPointTriangle( lua_State *L ) {
 }
 
 /*
+> collision = RL.CheckCollisionPointPoly( Vector2 point, Vector2{} points )
+
+Check if point is within a polygon described by array of vertices
+
+- Failure return nil
+- Success return bool
+*/
+int lshapesCheckCollisionPointPoly( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.CheckCollisionPointPoly( Vector2 point, Vector2{} points )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	int pointCount = uluaGetTableLen( L );
+	Vector2 points[ pointCount ];
+
+	int t = lua_gettop( L );
+	int i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		points[i] = uluaGetVector2( L );
+		i++;
+		lua_pop( L, 1 );
+	}
+	lua_pop( L, 1 );
+
+	Vector2 point = uluaGetVector2( L );
+	
+	lua_pushboolean( L, CheckCollisionPointPoly( point, points, pointCount ) );
+
+	return 1;
+}
+
+/*
 > collision, position = RL.CheckCollisionLines( Vector2 startPos1, Vector2 endPos1, Vector2 startPos2, Vector2 endPos2 )
 
 Check the collision between two lines defined by two points each, returns collision point by reference

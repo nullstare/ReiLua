@@ -2449,6 +2449,75 @@ int ltexturesColorFromHSV( lua_State *L ) {
 }
 
 /*
+> color = RL.ColorTint( Color color, Color tint )
+
+Get color multiplied with another color
+
+- Failure return false
+- Success return Color
+*/
+int ltexturesColorTint( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ColorTint( Color color, Color tint )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Color tint = uluaGetColor( L );
+	lua_pop( L, 1 );
+	Color color = uluaGetColor( L );
+
+	uluaPushColor( L, ColorTint( color, tint ) );
+
+	return 1;
+}
+
+/*
+> color = RL.ColorBrightness( Color color, float factor )
+
+Get color with brightness correction, brightness factor goes from -1.0f to 1.0f
+
+- Failure return false
+- Success return Color
+*/
+int ltexturesColorBrightness( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ColorBrightness( Color color, float factor )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float factor = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Color color = uluaGetColor( L );
+
+	uluaPushColor( L, ColorBrightness( color, factor ) );
+
+	return 1;
+}
+
+/*
+> color = RL.ColorContrast( Color color, float contrast )
+
+Get color with contrast correction, contrast values between -1.0f and 1.0f
+
+- Failure return false
+- Success return Color
+*/
+int ltexturesColorContrast( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ColorContrast( Color color, float contrast )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float contrast = lua_tonumber( L, -1 );
+	lua_pop( L, 1 );
+	Color color = uluaGetColor( L );
+
+	uluaPushColor( L, ColorContrast( color, contrast ) );
+
+	return 1;
+}
+
+/*
 > color = RL.ColorAlpha( Color color, float alpha )
 
 Returns color with alpha applied, alpha goes from 0.0f to 1.0f

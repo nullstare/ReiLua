@@ -24,6 +24,10 @@ Detailed changes:
 	- ADDED: UpdateCamera3DPro. Same as UpdateCameraPro in raylib.
 	- ADDED: BLEND_CUSTOM_SEPARATE.
 	- ADDED: Vector2LineAngle
+	- ADDED: CheckCollisionPointPoly
+	- ADDED: ColorTint
+	- ADDED: ColorBrightness
+	- ADDED: ColorContrast
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

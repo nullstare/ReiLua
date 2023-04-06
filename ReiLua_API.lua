@@ -1989,6 +1989,14 @@ function RL.CheckCollisionPointCircle( point, center, radius ) end
 ---@return any collision 
 function RL.CheckCollisionPointTriangle( point, p1, p2, p3 ) end
 
+---Check if point is within a polygon described by array of vertices
+---- Failure return nil
+---- Success return bool
+---@param point table
+---@param points any
+---@return any collision 
+function RL.CheckCollisionPointPoly( point, points ) end
+
 ---Check the collision between two lines defined by two points each, returns collision point by reference
 ---- Failure return nil
 ---- Success return bool, Vector2
@@ -2687,6 +2695,30 @@ function RL.ColorToHSV( color ) end
 ---@param value number
 ---@return any color 
 function RL.ColorFromHSV( hue, saturation, value ) end
+
+---Get color multiplied with another color
+---- Failure return false
+---- Success return Color
+---@param color table
+---@param tint table
+---@return any color 
+function RL.ColorTint( color, tint ) end
+
+---Get color with brightness correction, brightness factor goes from -1.0f to 1.0f
+---- Failure return false
+---- Success return Color
+---@param color table
+---@param factor number
+---@return any color 
+function RL.ColorBrightness( color, factor ) end
+
+---Get color with contrast correction, contrast values between -1.0f and 1.0f
+---- Failure return false
+---- Success return Color
+---@param color table
+---@param contrast number
+---@return any color 
+function RL.ColorContrast( color, contrast ) end
 
 ---Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 ---- Failure return false

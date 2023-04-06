@@ -2831,6 +2831,15 @@ Check if point is inside a triangle
 
 ---
 
+> collision = RL.CheckCollisionPointPoly( Vector2 point, Vector2{} points )
+
+Check if point is within a polygon described by array of vertices
+
+- Failure return nil
+- Success return bool
+
+---
+
 > collision, position = RL.CheckCollisionLines( Vector2 startPos1, Vector2 endPos1, Vector2 startPos2, Vector2 endPos2 )
 
 Check the collision between two lines defined by two points each, returns collision point by reference
@@ -3614,6 +3623,33 @@ Returns HSV values for a Color, hue [0..360], saturation/value [0..1]
 > color = RL.ColorFromHSV( float hue, float saturation, float value )
 
 Returns a Color from HSV values, hue [0..360], saturation/value [0..1]
+
+- Failure return false
+- Success return Color
+
+---
+
+> color = RL.ColorTint( Color color, Color tint )
+
+Get color multiplied with another color
+
+- Failure return false
+- Success return Color
+
+---
+
+> color = RL.ColorBrightness( Color color, float factor )
+
+Get color with brightness correction, brightness factor goes from -1.0f to 1.0f
+
+- Failure return false
+- Success return Color
+
+---
+
+> color = RL.ColorContrast( Color color, float contrast )
+
+Get color with contrast correction, contrast values between -1.0f and 1.0f
 
 - Failure return false
 - Success return Color

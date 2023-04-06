@@ -40,6 +40,7 @@ int lshapesCheckCollisionCircleRec( lua_State *L );
 int lshapesCheckCollisionPointRec( lua_State *L );
 int lshapesCheckCollisionPointCircle( lua_State *L );
 int lshapesCheckCollisionPointTriangle( lua_State *L );
+int lshapesCheckCollisionPointPoly( lua_State *L );
 int lshapesCheckCollisionLines( lua_State *L );
 int lshapesCheckCollisionPointLine( lua_State *L );
 int lshapesGetCollisionRec( lua_State *L );

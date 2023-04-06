@@ -621,6 +621,8 @@ BLEND_ALPHA_PREMULTIPLY
 
 BLEND_CUSTOM
 
+BLEND_CUSTOM_SEPARATE
+
 ## Globals - Gesture
 
 GESTURE_NONE
@@ -2212,7 +2214,7 @@ Set camera offset ( displacement from target )
 
 ---
 
-> success = RL.SetCamera2DRotation( camera3D camera, float rotation )
+> success = RL.SetCamera2DRotation( camera2D camera, float rotation )
 
 Set camera rotation in degrees
 
@@ -2221,7 +2223,7 @@ Set camera rotation in degrees
 
 ---
 
-> success = RL.SetCamera2DZoom( camera3D camera, float zoom )
+> success = RL.SetCamera2DZoom( camera2D camera, float zoom )
 
 Set camera zoom ( scaling ), should be 1.0f by default
 
@@ -2347,15 +2349,6 @@ Set camera projection mode ( CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC )
 
 ---
 
-> success = RL.SetCameraMode( camera3D camera, int mode )
-
-Set camera mode ( CAMERA_CUSTOM, CAMERA_FREE, CAMERA_ORBITAL... )
-
-- Failure return false
-- Success return true
-
----
-
 > position = RL.GetCamera3DPosition( camera3D camera )
 
 Get camera position
@@ -2401,7 +2394,7 @@ Get camera projection mode
 
 ---
 
-> success = RL.UpdateCamera3D( camera3D camera )
+> success = RL.UpdateCamera3D( camera3D camera, int mode )
 
 Update camera position for selected mode
 
@@ -2410,36 +2403,9 @@ Update camera position for selected mode
 
 ---
 
-> success = RL.SetCameraPanControl( int keyPan )
+> success = RL.UpdateCamera3DPro( camera3D camera, Vector3 movement, Vector3 rotation, float zoom )
 
-Set camera pan key to combine with mouse movement ( free camera )
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.SetCameraAltControl( int keyAlt )
-
-Set camera alt key to combine with mouse movement ( free camera )
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.SetCameraSmoothZoomControl( int keySmoothZoom )
-
-Set camera smooth zoom key to combine with mouse ( free camera )
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.SetCameraMoveControls( int keyFront, int keyBack, int keyRight, int keyLeft, int keyUp, int keyDown )
-
-Set camera move controls ( 1st person and 3rd person cameras )
+Update camera movement, movement/rotation values should be provided by user
 
 - Failure return false
 - Success return true
@@ -3488,15 +3454,6 @@ Draw a part of a texture defined by a rectangle
 
 ---
 
-> success = RL.DrawTextureTiled( Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, float scale, Color tint )
-
-Draw part of a texture ( defined by a rectangle ) with rotation and scale tiled into dest
-
-- Failure return false
-- Success return true
-
----
-
 > success = RL.DrawTexturePro( Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint )
 
 Draw a part of a texture defined by a rectangle with "pro" parameters
@@ -3509,15 +3466,6 @@ Draw a part of a texture defined by a rectangle with "pro" parameters
 > success = RL.DrawTextureNPatch( Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint )
 
 Draws a texture ( or part of it ) that stretches or shrinks nicely
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.DrawTexturePoly( Texture2D texture, Vector2 center, Vector2{} points, Vector2{} texcoords, int pointsCount, Color tint )
-
-Draw a textured polygon ( Convex )
 
 - Failure return false
 - Success return true
@@ -4585,29 +4533,6 @@ Resume a paused sound
 
 ---
 
-> success = RL.PlaySoundMulti( Sound sound )
-
-Play a sound ( Using multichannel buffer pool )
-
-- Failure return false
-- Success return true
-
----
-
-> RL.StopSoundMulti()
-
-Stop any sound playing ( using multichannel buffer pool )
-
----
-
-> count = RL.GetSoundsPlaying()
-
-Get number of sounds playing in the multichannel
-
-- Success return int
-
----
-
 > playing = RL.IsSoundPlaying( Sound sound )
 
 Check if a sound is currently playing
@@ -4930,6 +4855,17 @@ Calculate square distance between two vectors
 > result = RL.Vector2Angle( Vector2 v1, Vector2 v2 )
 
 Calculate angle from two vectors
+
+- Failure return false
+- Success return float
+
+---
+
+> result = RL.Vector2LineAngle( Vector2 start, Vector2 end )
+
+Calculate angle defined by a two vectors line.
+NOTE: Parameters need to be normalized.
+Current implementation should be aligned with glm::angle.
 
 - Failure return false
 - Success return float

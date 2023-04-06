@@ -1,13 +1,29 @@
 ------------------------------------------------------------------------
-Release:	ReiLua version 0.5.0		Using Raylib 4.2
+Release:	ReiLua version 0.5.0		Using Raylib 4.5
 ------------------------------------------------------------------------
 KEY CHANGES:
 	- CHANGED: All ReiLua global variables and functions are now stored in global RL table.
 	- CHANGED: All examples are now changed to use new RL table method.
 	- ADDED: doc_parser creates also ReiLua_API.lua that can be used in projects with Lua Language Server.
+	- CHANGED: Switched to Raylib vertion 4.5. Removed some functions and added others. Main changes to camera3D.
 
 Detailed changes:
 	- FIXED: uluaGetRay was looking for integers instead of tables.
+	- REMOVED: SetCameraMode.
+	- REMOVED: SetCameraPanControl.
+	- REMOVED: SetCameraAltControl.
+	- REMOVED: SetCameraSmoothZoomControl.
+	- REMOVED: SetCameraMoveControls.
+	- REMOVED: DrawTextureTiled.
+	- REMOVED: DrawTexturePoly.
+	- REMOVED: DrawCubeTexture.
+	- REMOVED: PlaySoundMulti.
+	- REMOVED: StopSoundMulti.
+	- REMOVED: GetSoundsPlaying.
+	- CHANGED: UpdateCamera3D now takes int mode parameter. Same as UpdateCamera in raylib.
+	- ADDED: UpdateCamera3DPro. Same as UpdateCameraPro in raylib.
+	- ADDED: BLEND_CUSTOM_SEPARATE.
+	- ADDED: Vector2LineAngle
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

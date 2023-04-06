@@ -2547,7 +2547,7 @@ int lcoreSetCamera2DOffset( lua_State *L ) {
 }
 
 /*
-> success = RL.SetCamera2DRotation( camera3D camera, float rotation )
+> success = RL.SetCamera2DRotation( camera2D camera, float rotation )
 
 Set camera rotation in degrees
 
@@ -2556,7 +2556,7 @@ Set camera rotation in degrees
 */
 int lcoreSetCamera2DRotation( lua_State *L ) {
 	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera2DRotation( camera3D camera, float rotation )" );
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera2DRotation( camera2D camera, float rotation )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2574,7 +2574,7 @@ int lcoreSetCamera2DRotation( lua_State *L ) {
 }
 
 /*
-> success = RL.SetCamera2DZoom( camera3D camera, float zoom )
+> success = RL.SetCamera2DZoom( camera2D camera, float zoom )
 
 Set camera zoom ( scaling ), should be 1.0f by default
 
@@ -2583,7 +2583,7 @@ Set camera zoom ( scaling ), should be 1.0f by default
 */
 int lcoreSetCamera2DZoom( lua_State *L ) {
 	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera2DZoom( camera3D camera, float zoom )" );
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera2DZoom( camera2D camera, float zoom )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2727,7 +2727,6 @@ int lcoreCreateCamera3D( lua_State *L ) {
 	state->camera3Ds[i]->up = (Vector3){ 0.0, 0.0, 0.0 };
 	state->camera3Ds[i]->fovy = 45.0f;
 	state->camera3Ds[i]->projection = CAMERA_PERSPECTIVE;
-	SetCameraMode( *state->camera3Ds[i], CAMERA_CUSTOM );
 
 	lua_pushinteger( L, i );
 	checkCamera3DRealloc(i);
@@ -2940,33 +2939,6 @@ int lcoreSetCamera3DProjection( lua_State *L ) {
 }
 
 /*
-> success = RL.SetCameraMode( camera3D camera, int mode )
-
-Set camera mode ( CAMERA_CUSTOM, CAMERA_FREE, CAMERA_ORBITAL... )
-
-- Failure return false
-- Success return true
-*/
-int lcoreSetCameraMode( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCameraMode( camera3D camera, int mode )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, -2 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-
-	SetCameraMode( *state->camera3Ds[ cameraId ], lua_tointeger( L, -1 ) );
-	lua_pushboolean( L, true );
-
-	return 1;
-}
-
-/*
 > position = RL.GetCamera3DPosition( camera3D camera )
 
 Get camera position
@@ -3097,7 +3069,7 @@ int lcoreGetCamera3DProjection( lua_State *L ) {
 }
 
 /*
-> success = RL.UpdateCamera3D( camera3D camera )
+> success = RL.UpdateCamera3D( camera3D camera, int mode )
 
 Update camera position for selected mode
 
@@ -3105,11 +3077,14 @@ Update camera position for selected mode
 - Success return true
 */
 int lcoreUpdateCamera3D( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UpdateCamera3D( camera3D camera )" );
+	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UpdateCamera3D( camera3D camera, int mode )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
+
+	int mode = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
 	size_t cameraId = lua_tointeger( L, -1 );
 
 	if ( !validCamera3D( cameraId ) ) {
@@ -3117,95 +3092,41 @@ int lcoreUpdateCamera3D( lua_State *L ) {
 		return 1;
 	}
 
-	UpdateCamera( state->camera3Ds[ cameraId ] );
+	UpdateCamera( state->camera3Ds[ cameraId ], mode );
 	lua_pushboolean( L, true );
 
 	return 1;
 }
 
 /*
-> success = RL.SetCameraPanControl( int keyPan )
+> success = RL.UpdateCamera3DPro( camera3D camera, Vector3 movement, Vector3 rotation, float zoom )
 
-Set camera pan key to combine with mouse movement ( free camera )
-
-- Failure return false
-- Success return true
-*/
-int lcoreSetCameraPanControl( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCameraPanControl( int keyPan )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	SetCameraPanControl( lua_tointeger( L, -1 ) );
-	lua_pushboolean( L, true );
-
-	return 1;
-}
-
-/*
-> success = RL.SetCameraAltControl( int keyAlt )
-
-Set camera alt key to combine with mouse movement ( free camera )
+Update camera movement, movement/rotation values should be provided by user
 
 - Failure return false
 - Success return true
 */
-int lcoreSetCameraAltControl( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCameraAltControl( int keyAlt )" );
+int lcoreUpdateCamera3DPro( lua_State *L ) {
+	if ( !lua_isnumber( L, -4 ) || !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UpdateCamera3DPro( camera3D camera, Vector3 movement, Vector3 rotation, float zoom )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetCameraAltControl( lua_tointeger( L, -1 ) );
-	lua_pushboolean( L, true );
 
-	return 1;
-}
+	float zoom = lua_tointeger( L, -1 );
+	lua_pop( L, 1 );
+	Vector3 rotation = uluaGetVector3( L );
+	lua_pop( L, 1 );
+	Vector3 movement = uluaGetVector3( L );
+	lua_pop( L, 1 );
+	size_t cameraId = lua_tointeger( L, -1 );
 
-/*
-> success = RL.SetCameraSmoothZoomControl( int keySmoothZoom )
-
-Set camera smooth zoom key to combine with mouse ( free camera )
-
-- Failure return false
-- Success return true
-*/
-int lcoreSetCameraSmoothZoomControl( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCameraSmoothZoomControl( int keySmoothZoom )" );
+	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetCameraSmoothZoomControl( lua_tointeger( L, -1 ) );
-	lua_pushboolean( L, true );
 
-	return 1;
-}
-
-/*
-> success = RL.SetCameraMoveControls( int keyFront, int keyBack, int keyRight, int keyLeft, int keyUp, int keyDown )
-
-Set camera move controls ( 1st person and 3rd person cameras )
-
-- Failure return false
-- Success return true
-*/
-int lcoreSetCameraMoveControls( lua_State *L ) {
-	if ( !lua_isnumber( L, -6 ) || !lua_isnumber( L, -5 ) || !lua_isnumber( L, -4 )
-	|| !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCameraMoveControls( int keyFront, int keyBack, int keyRight, int keyLeft, int keyUp, int keyDown )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int keyDown = lua_tointeger( L, -1 );
-	int keyUp = lua_tointeger( L, -2 );
-	int keyLeft = lua_tointeger( L, -3 );
-	int keyRight = lua_tointeger( L, -4 );
-	int keyBack = lua_tointeger( L, -5 );
-	int keyFront = lua_tointeger( L, -6 );
-
-	SetCameraMoveControls( keyFront, keyBack, keyRight, keyLeft, keyUp, keyDown );
+	UpdateCameraPro( state->camera3Ds[ cameraId ], movement, rotation, zoom );
 	lua_pushboolean( L, true );
 
 	return 1;

@@ -36,7 +36,6 @@ function RL.init()
 	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
 	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
 	RL.SetCamera3DFovy( camera, 45 )
-	RL.SetCameraMode( camera, RL.CAMERA_ORBITAL )
 
 	-- Define mesh to be instanced
 	cube = RL.GenMeshCube( { 1, 1, 1 } )
@@ -84,7 +83,7 @@ function RL.init()
 end
 
 function RL.process( delta )
-	RL.UpdateCamera3D( camera )
+	RL.UpdateCamera3D( camera, RL.CAMERA_ORBITAL )
 
 	-- Update the light shader with the camera view position
 	local loc = RL.GetShaderLocationIndex( shader, RL.SHADER_LOC_VECTOR_VIEW )

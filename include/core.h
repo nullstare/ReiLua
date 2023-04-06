@@ -121,11 +121,12 @@ int lcoreGetCamera3DUp( lua_State *L );
 int lcoreGetCamera3DFovy( lua_State *L );
 int lcoreGetCamera3DProjection( lua_State *L );
 int lcoreUpdateCamera3D( lua_State *L );
-int lcoreSetCameraMode( lua_State *L );
-int lcoreSetCameraPanControl( lua_State *L );
-int lcoreSetCameraAltControl( lua_State *L );
-int lcoreSetCameraSmoothZoomControl( lua_State *L );
-int lcoreSetCameraMoveControls( lua_State *L );
+int lcoreUpdateCamera3DPro( lua_State *L );
+// int lcoreSetCameraMode( lua_State *L );
+// int lcoreSetCameraPanControl( lua_State *L );
+// int lcoreSetCameraAltControl( lua_State *L );
+// int lcoreSetCameraSmoothZoomControl( lua_State *L );
+// int lcoreSetCameraMoveControls( lua_State *L );
 /* Input-related Keyboard. */
 int lcoreIsKeyPressed( lua_State *L );
 int lcoreIsKeyDown( lua_State *L );

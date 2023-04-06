@@ -81,7 +81,6 @@ function RL.init()
 	RL.SetCamera3DPosition( camera, pos )
 	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
 	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
-	RL.SetCameraMode( camera, RL.CAMERA_FIRST_PERSON )
 
 	-- for x = 0, 3 do
 	-- 	for y = 0, 9 do
@@ -94,9 +93,9 @@ function RL.init()
 end
 
 function RL.draw()
-	RL.UpdateCamera3D( camera )
+	RL.UpdateCamera3D( camera, RL.CAMERA_FIRST_PERSON )
 	pos = RL.GetCamera3DPosition( camera )
-	
+
 	-- RL.BeginTextureMode( framebuffer )
 	RL.ClearBackground( { 100, 150, 150 } )
 

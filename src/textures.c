@@ -1997,46 +1997,6 @@ int ltexturesDrawTextureRec( lua_State *L ) {
 }
 
 /*
-> success = RL.DrawTextureTiled( Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, float scale, Color tint )
-
-Draw part of a texture ( defined by a rectangle ) with rotation and scale tiled into dest
-
-- Failure return false
-- Success return true
-*/
-int ltexturesDrawTextureTiled( lua_State *L ) {
-	if ( !lua_isnumber( L, -7 ) || !lua_istable( L, -6 ) || !lua_istable( L, -5 ) || !lua_istable( L, -4 )
-	|| !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTextureTiled( Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, float scale, Color tint )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	float scale = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	float rot = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector2 origin = uluaGetVector2( L );
-	lua_pop( L, 1 );
-	Rectangle dstRect = uluaGetRectangle( L );
-	lua_pop( L, 1 );
-	Rectangle srcRect = uluaGetRectangle( L );
-	lua_pop( L, 1 );
-	size_t texId = lua_tointeger( L, -1 );
-
-	if ( !validSourceTexture( texId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-
-	DrawTextureTiled( *texturesGetSourceTexture( texId ), srcRect, dstRect, origin, rot, scale, color );
-	lua_pushboolean( L, true );
-
-	return 1;
-}
-
-/*
 > success = RL.DrawTexturePro( Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint )
 
 Draw a part of a texture defined by a rectangle with "pro" parameters
@@ -2107,64 +2067,6 @@ int ltexturesDrawTextureNPatch( lua_State *L ) {
 		return 1;
 	}
 	DrawTextureNPatch( *texturesGetSourceTexture( texId ), nPatchInfo, dest, origin, rotation, tint );
-	lua_pushboolean( L, true );
-
-	return 1;
-}
-
-/*
-> success = RL.DrawTexturePoly( Texture2D texture, Vector2 center, Vector2{} points, Vector2{} texcoords, int pointsCount, Color tint )
-
-Draw a textured polygon ( Convex )
-
-- Failure return false
-- Success return true
-*/
-int ltexturesDrawTexturePoly( lua_State *L ) {
-	if ( !lua_isnumber( L, -6 ) || !lua_istable( L, -5 ) || !lua_istable( L, -4 )
-	|| !lua_istable( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTexturePoly( Texture2D texture, Vector2 center, Vector2 points{}, Vector2 texcoords{}, int pointsCount, Color tint )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	int pointsCount = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	Vector2 texCoords[ pointsCount ];
-
-	int t = lua_gettop( L ), i = 0;
-	lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-		texCoords[i] = uluaGetVector2( L );
-		i++;
-		lua_pop( L, 1 );
-	}
-	lua_pop( L, 1 );
-
-	Vector2 points[ pointsCount ];
-
-	t = lua_gettop( L );
-	i = 0;
-	lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-		points[i] = uluaGetVector2( L );
-		i++;
-		lua_pop( L, 1 );
-	}
-	lua_pop( L, 1 );
-	Vector2 center = uluaGetVector2( L );
-	lua_pop( L, 1 );
-	size_t texId = lua_tointeger( L, -1 );
-
-	if ( !validSourceTexture( texId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-
-	DrawTexturePoly( *texturesGetSourceTexture( texId ), center, points, texCoords, pointsCount, color );
 	lua_pushboolean( L, true );
 
 	return 1;

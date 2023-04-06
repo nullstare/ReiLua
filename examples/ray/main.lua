@@ -31,7 +31,6 @@ function RL.init()
 	RL.SetCamera3DPosition( camera, { 0, 2, 4 } )
 	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
 	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
-	RL.SetCameraMode( camera, RL.CAMERA_FREE )
 
 	sphereMesh = RL.GenMeshSphere( 1.0, 8, 10 )
 
@@ -47,7 +46,7 @@ end
 
 function RL.draw()
 	RL.ClearBackground( { 100, 150, 100 } )
-	RL.UpdateCamera3D( camera )
+	RL.UpdateCamera3D( camera, RL.CAMERA_FIRST_PERSON )
 
 	RL.BeginMode3D( camera )
 		RL.DrawGrid( 8, 1 )

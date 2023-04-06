@@ -341,6 +341,7 @@ void defineGlobals() {
 	assignGlobalInt( BLEND_SUBTRACT_COLORS, "BLEND_SUBTRACT_COLORS" );
 	assignGlobalInt( BLEND_ALPHA_PREMULTIPLY, "BLEND_ALPHA_PREMULTIPLY" );
 	assignGlobalInt( BLEND_CUSTOM, "BLEND_CUSTOM" );
+	assignGlobalInt( BLEND_CUSTOM_SEPARATE, "BLEND_CUSTOM_SEPARATE" );
 	/* Gesture */
 	assignGlobalInt( GESTURE_NONE, "GESTURE_NONE" );
 	assignGlobalInt( GESTURE_TAP, "GESTURE_TAP" );
@@ -814,11 +815,12 @@ void luaRegister() {
 	assingGlobalFunction( "GetCamera3DFovy", lcoreGetCamera3DFovy );
 	assingGlobalFunction( "GetCamera3DProjection", lcoreGetCamera3DProjection );
 	assingGlobalFunction( "UpdateCamera3D", lcoreUpdateCamera3D );
-	assingGlobalFunction( "SetCameraMode", lcoreSetCameraMode );
-	assingGlobalFunction( "SetCameraPanControl", lcoreSetCameraPanControl );
-	assingGlobalFunction( "SetCameraAltControl", lcoreSetCameraAltControl );
-	assingGlobalFunction( "SetCameraSmoothZoomControl", lcoreSetCameraSmoothZoomControl );
-	assingGlobalFunction( "SetCameraMoveControls", lcoreSetCameraMoveControls );
+	assingGlobalFunction( "UpdateCamera3DPro", lcoreUpdateCamera3DPro );
+	// assingGlobalFunction( "SetCameraMode", lcoreSetCameraMode );
+	// assingGlobalFunction( "SetCameraPanControl", lcoreSetCameraPanControl );
+	// assingGlobalFunction( "SetCameraAltControl", lcoreSetCameraAltControl );
+	// assingGlobalFunction( "SetCameraSmoothZoomControl", lcoreSetCameraSmoothZoomControl );
+	// assingGlobalFunction( "SetCameraMoveControls", lcoreSetCameraMoveControls );
 		/* Input-related Keyboard. */
 	assingGlobalFunction( "IsKeyPressed", lcoreIsKeyPressed );
 	assingGlobalFunction( "IsKeyDown", lcoreIsKeyDown );
@@ -987,10 +989,10 @@ void luaRegister() {
 		/* Texture Drawing. */
 	assingGlobalFunction( "DrawTexture", ltexturesDrawTexture );
 	assingGlobalFunction( "DrawTextureRec", ltexturesDrawTextureRec );
-	assingGlobalFunction( "DrawTextureTiled", ltexturesDrawTextureTiled );
+	// assingGlobalFunction( "DrawTextureTiled", ltexturesDrawTextureTiled );
 	assingGlobalFunction( "DrawTexturePro", ltexturesDrawTexturePro );
 	assingGlobalFunction( "DrawTextureNPatch", ltexturesDrawTextureNPatch );
-	assingGlobalFunction( "DrawTexturePoly", ltexturesDrawTexturePoly );
+	// assingGlobalFunction( "DrawTexturePoly", ltexturesDrawTexturePoly );
 	assingGlobalFunction( "BeginTextureMode", ltexturesBeginTextureMode );
 	assingGlobalFunction( "EndTextureMode", ltexturesEndTextureMode );
 	assingGlobalFunction( "SetTextureSource", ltexturesSetTextureSource );
@@ -1023,7 +1025,7 @@ void luaRegister() {
 	assingGlobalFunction( "DrawTriangle3D", lmodelsDrawTriangle3D );
 	assingGlobalFunction( "DrawCube", lmodelsDrawCube );
 	assingGlobalFunction( "DrawCubeWires", lmodelsDrawCubeWires );
-	assingGlobalFunction( "DrawCubeTexture", lmodelsDrawCubeTexture );
+	// assingGlobalFunction( "DrawCubeTexture", lmodelsDrawCubeTexture );
 	assingGlobalFunction( "DrawSphere", lmodelsDrawSphere );
 	assingGlobalFunction( "DrawSphereEx", lmodelsDrawSphereEx );
 	assingGlobalFunction( "DrawSphereWires", lmodelsDrawSphereWires );
@@ -1123,9 +1125,9 @@ void luaRegister() {
 	assingGlobalFunction( "StopSound", laudioStopSound );
 	assingGlobalFunction( "PauseSound", laudioPauseSound );
 	assingGlobalFunction( "ResumeSound", laudioResumeSound );
-	assingGlobalFunction( "PlaySoundMulti", laudioPlaySoundMulti );
-	assingGlobalFunction( "StopSoundMulti", laudioStopSoundMulti );
-	assingGlobalFunction( "GetSoundsPlaying", laudioGetSoundsPlaying );
+	// assingGlobalFunction( "PlaySoundMulti", laudioPlaySoundMulti );
+	// assingGlobalFunction( "StopSoundMulti", laudioStopSoundMulti );
+	// assingGlobalFunction( "GetSoundsPlaying", laudioGetSoundsPlaying );
 	assingGlobalFunction( "IsSoundPlaying", laudioIsSoundPlaying );
 	assingGlobalFunction( "SetSoundVolume", laudioSetSoundVolume );
 	assingGlobalFunction( "SetSoundPitch", laudioSetSoundPitch );
@@ -1167,6 +1169,7 @@ void luaRegister() {
 	assingGlobalFunction( "Vector2Distance", lmathVector2Distance );
 	assingGlobalFunction( "Vector2DistanceSqr", lmathVector2DistanceSqr );
 	assingGlobalFunction( "Vector2Angle", lmathVector2Angle );
+	assingGlobalFunction( "Vector2LineAngle", lmathVector2LineAngle );
 	assingGlobalFunction( "Vector2Scale", lmathVector2Scale );
 	assingGlobalFunction( "Vector2Multiply", lmathVector2Multiply );
 	assingGlobalFunction( "Vector2Negate", lmathVector2Negate );

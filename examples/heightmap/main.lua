@@ -31,7 +31,7 @@ function RL.init()
 	RL.SetCamera3DPosition( camera, { 0, 8, 16 } )
 	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
 	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
-	RL.SetCameraMode( camera, RL.CAMERA_FREE )
+	-- RL.SetCameraMode( camera, RL.CAMERA_FREE )
 
 	heigthImage = RL.LoadImage( RL.GetBasePath().."../resources/images/heightmap.png" )
 
@@ -58,7 +58,7 @@ function RL.init()
 				RL.DrawTextureRec( tilesetTex, dirtBottomRec, { pos[1] * TILE_SIZE, pos[2] * TILE_SIZE }, RL.WHITE )
 			else
 				RL.DrawTextureRec( tilesetTex, grassRec, { pos[1] * TILE_SIZE, pos[2] * TILE_SIZE }, RL.WHITE )
-			end 
+			end
 		end
 	end
 
@@ -67,7 +67,7 @@ function RL.init()
 	material = RL.LoadMaterialDefault()
 	RL.SetTextureSource( RL.TEXTURE_SOURCE_RENDER_TEXTURE )
 	-- RL.GenTextureMipmaps( groundTexture )
-	-- RL.SetTextureFilter( groundTexture, TEXTURE_FILTER_TRILINEAR )
+	-- RL.SetTextureFilter( groundTexture, RL.TEXTURE_FILTER_TRILINEAR )
 	RL.SetMaterialTexture( material, RL.MATERIAL_MAP_ALBEDO, groundTexture )
 	RL.SetTextureSource( RL.TEXTURE_SOURCE_TEXTURE )
 
@@ -76,8 +76,8 @@ end
 
 function RL.draw()
 	RL.ClearBackground( { 100, 150, 100 } )
-	RL.UpdateCamera3D( camera )
-	
+	RL.UpdateCamera3D( camera, RL.CAMERA_FIRST_PERSON )
+
 	RL.BeginMode3D( camera )
 		RL.DrawMesh( mesh, material, matrix )
 	RL.EndMode3D()

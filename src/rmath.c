@@ -412,6 +412,31 @@ int lmathVector2Angle( lua_State *L ) {
 }
 
 /*
+> result = RL.Vector2LineAngle( Vector2 start, Vector2 end )
+
+Calculate angle defined by a two vectors line.
+NOTE: Parameters need to be normalized.
+Current implementation should be aligned with glm::angle.
+
+- Failure return false
+- Success return float
+*/
+int lmathVector2LineAngle( lua_State *L ) {
+	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2LineAngle( Vector2 start, Vector2 end )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 end = uluaGetVector2( L );
+	lua_pop( L, 1 );
+	Vector2 start = uluaGetVector2( L );
+
+	lua_pushnumber( L, Vector2LineAngle( start, end ) );
+
+	return 1;
+}
+
+/*
 > result = RL.Vector2Scale( Vector2 v, float scale )
 
 Scale vector ( multiply by value )

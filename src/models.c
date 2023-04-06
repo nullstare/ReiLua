@@ -120,6 +120,26 @@ static int newMesh() {
 	return i;
 }
 
+// Unload model (but not meshes) from memory (RAM and/or VRAM)
+void UnloadModelKeepMeshes( Model model ) {
+    // Unload materials maps
+    // NOTE: As the user could be sharing shaders and textures between models,
+    // we don't unload the material but just free it's maps,
+    // the user is responsible for freeing models shaders and textures
+    for (int i = 0; i < model.materialCount; i++) RL_FREE(model.materials[i].maps);
+
+    // Unload arrays
+    RL_FREE(model.meshes);
+    RL_FREE(model.materials);
+    RL_FREE(model.meshMaterial);
+
+    // Unload animation data
+    RL_FREE(model.bones);
+    RL_FREE(model.bindPose);
+
+    TRACELOG(LOG_INFO, "MODEL: Unloaded model (but not meshes) from RAM and VRAM");
+}
+
 /*
 ## Models - Basic
 */
@@ -292,30 +312,30 @@ Draw cube textured
 - Failure return false
 - Success return true
 */
-int lmodelsDrawCubeTexture( lua_State *L ) {
-	if ( !lua_isnumber( L, -4 ) || !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCubeTexture( Texture2D texture, Vector3 position, Vector3 size, Color color )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	Vector3 size = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Vector3 pos = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	size_t texId = lua_tointeger( L, -1 );
+// int lmodelsDrawCubeTexture( lua_State *L ) {
+// 	if ( !lua_isnumber( L, -4 ) || !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+// 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCubeTexture( Texture2D texture, Vector3 position, Vector3 size, Color color )" );
+// 		lua_pushboolean( L, false );
+// 		return 1;
+// 	}
+// 	Color color = uluaGetColor( L );
+// 	lua_pop( L, 1 );
+// 	Vector3 size = uluaGetVector3( L );
+// 	lua_pop( L, 1 );
+// 	Vector3 pos = uluaGetVector3( L );
+// 	lua_pop( L, 1 );
+// 	size_t texId = lua_tointeger( L, -1 );
 
-	if ( !validSourceTexture( texId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
+// 	if ( !validSourceTexture( texId ) ) {
+// 		lua_pushboolean( L, false );
+// 		return 1;
+// 	}
 
- 	DrawCubeTexture( *texturesGetSourceTexture( texId ), pos, size.x, size.y, size.z, color );
-	lua_pushboolean( L, true );
+//  	DrawCubeTexture( *texturesGetSourceTexture( texId ), pos, size.x, size.y, size.z, color );
+// 	lua_pushboolean( L, true );
 
-	return 1;
-}
+// 	return 1;
+// }
 
 /*
 > success = RL.DrawSphere( Vector3 centerPos, float radius, Color color )

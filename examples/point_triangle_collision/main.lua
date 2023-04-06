@@ -19,7 +19,7 @@ local point = {
 	pos = Vec3:new( 0.2, 0.3, 0.2 ),
 	radius = 0.05,
 	lineLen = 0.5,
-	color = RED,
+	color = RL.RED,
 }
 
 local debugText = ""
@@ -41,7 +41,6 @@ function RL.init()
 	RL.SetCamera3DPosition( camera, { 0, 1, 2 } )
 	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
 	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
-	RL.SetCameraMode( camera, RL.CAMERA_FREE )
 
 	calcNormal( tri )
 end
@@ -103,7 +102,6 @@ end
 
 function RL.draw()
 	RL.ClearBackground( { 100, 150, 100 } )
-	RL.UpdateCamera3D( camera )
 
 	RL.BeginMode3D( camera )
 		RL.DrawGrid( 8, 1 )

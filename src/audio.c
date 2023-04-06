@@ -398,56 +398,6 @@ int laudioResumeSound( lua_State *L ) {
 }
 
 /*
-> success = RL.PlaySoundMulti( Sound sound )
-
-Play a sound ( Using multichannel buffer pool )
-
-- Failure return false
-- Success return true
-*/
-int laudioPlaySoundMulti( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.PlaySoundMulti( Sound sound )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t soundId = lua_tointeger( L, -1 );
-
-	if ( !validSound( soundId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	PlaySoundMulti( *state->sounds[ soundId ] );
-	lua_pushboolean( L, true );
-
-	return 1;
-}
-
-/*
-> RL.StopSoundMulti()
-
-Stop any sound playing ( using multichannel buffer pool )
-*/
-int laudioStopSoundMulti( lua_State *L ) {
-	StopSoundMulti();
-
-	return 0;
-}
-
-/*
-> count = RL.GetSoundsPlaying()
-
-Get number of sounds playing in the multichannel
-
-- Success return int
-*/
-int laudioGetSoundsPlaying( lua_State *L ) {
-	lua_pushinteger( L, GetSoundsPlaying() );
-
-	return 1;
-}
-
-/*
 > playing = RL.IsSoundPlaying( Sound sound )
 
 Check if a sound is currently playing

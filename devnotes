@@ -1,8 +1,13 @@
 Current {
-	* Set RL. for the rest of the examples.
+	* ReiLua camera3D lib.
+	* Check new functions from https://github.com/raysan5/raylib/blob/master/CHANGELOG
 }
 
 Backlog {
+	* Raymath 
+		* Vector2LineAngle
+	* rlgl
+		* More low level functions.
 	* Text
 		* Ability to set font texture filtering.
 		* Codepoints?

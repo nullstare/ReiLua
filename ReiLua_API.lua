@@ -344,6 +344,7 @@ RL.BLEND_ADD_COLORS=3
 RL.BLEND_SUBTRACT_COLORS=4
 RL.BLEND_ALPHA_PREMULTIPLY=5
 RL.BLEND_CUSTOM=6
+RL.BLEND_CUSTOM_SEPARATE=7
 
 -- Globals - Gesture
 
@@ -1495,14 +1496,6 @@ function RL.SetCamera3DFovy( camera, fovy ) end
 ---@return any success 
 function RL.SetCamera3DProjection( camera, projection ) end
 
----Set camera mode ( CAMERA_CUSTOM, CAMERA_FREE, CAMERA_ORBITAL... )
----- Failure return false
----- Success return true
----@param camera any
----@param mode integer
----@return any success 
-function RL.SetCameraMode( camera, mode ) end
-
 ---Get camera position
 ---- Failure return nil
 ---- Success return Vector3
@@ -1542,41 +1535,19 @@ function RL.GetCamera3DProjection( camera ) end
 ---- Failure return false
 ---- Success return true
 ---@param camera any
+---@param mode integer
 ---@return any success 
-function RL.UpdateCamera3D( camera ) end
+function RL.UpdateCamera3D( camera, mode ) end
 
----Set camera pan key to combine with mouse movement ( free camera )
+---Update camera movement, movement/rotation values should be provided by user
 ---- Failure return false
 ---- Success return true
----@param keyPan integer
+---@param camera any
+---@param movement table
+---@param rotation table
+---@param zoom number
 ---@return any success 
-function RL.SetCameraPanControl( keyPan ) end
-
----Set camera alt key to combine with mouse movement ( free camera )
----- Failure return false
----- Success return true
----@param keyAlt integer
----@return any success 
-function RL.SetCameraAltControl( keyAlt ) end
-
----Set camera smooth zoom key to combine with mouse ( free camera )
----- Failure return false
----- Success return true
----@param keySmoothZoom integer
----@return any success 
-function RL.SetCameraSmoothZoomControl( keySmoothZoom ) end
-
----Set camera move controls ( 1st person and 3rd person cameras )
----- Failure return false
----- Success return true
----@param keyFront integer
----@param keyBack integer
----@param keyRight integer
----@param keyLeft integer
----@param keyUp integer
----@param keyDown integer
----@return any success 
-function RL.SetCameraMoveControls( keyFront, keyBack, keyRight, keyLeft, keyUp, keyDown ) end
+function RL.UpdateCamera3DPro( camera, movement, rotation, zoom ) end
 
 -- Core - Screen-space
 
@@ -2577,19 +2548,6 @@ function RL.DrawTexture( texture, position, tint ) end
 ---@return any success 
 function RL.DrawTextureRec( texture, source, position, tint ) end
 
----Draw part of a texture ( defined by a rectangle ) with rotation and scale tiled into dest
----- Failure return false
----- Success return true
----@param texture any
----@param source table
----@param dest table
----@param origin table
----@param rotation number
----@param scale number
----@param tint table
----@return any success 
-function RL.DrawTextureTiled( texture, source, dest, origin, rotation, scale, tint ) end
-
 ---Draw a part of a texture defined by a rectangle with "pro" parameters
 ---- Failure return false
 ---- Success return true
@@ -2613,18 +2571,6 @@ function RL.DrawTexturePro( texture, source, dest, origin, rotation, tint ) end
 ---@param tint table
 ---@return any success 
 function RL.DrawTextureNPatch( texture, nPatchInfo, dest, origin, rotation, tint ) end
-
----Draw a textured polygon ( Convex )
----- Failure return false
----- Success return true
----@param texture any
----@param center table
----@param points any
----@param texcoords any
----@param pointsCount integer
----@param tint table
----@return any success 
-function RL.DrawTexturePoly( texture, center, points, texcoords, pointsCount, tint ) end
 
 ---Begin drawing to render texture
 ---- Failure return false
@@ -3597,22 +3543,6 @@ function RL.PauseSound( sound ) end
 ---@return any success 
 function RL.ResumeSound( sound ) end
 
----Play a sound ( Using multichannel buffer pool )
----- Failure return false
----- Success return true
----@param sound any
----@return any success 
-function RL.PlaySoundMulti( sound ) end
-
----Stop any sound playing ( using multichannel buffer pool )
----@return any RL.StopSoundMulti
-function  RL.StopSoundMulti() end
-
----Get number of sounds playing in the multichannel
----- Success return int
----@return any count 
-function RL.GetSoundsPlaying() end
-
 ---Check if a sound is currently playing
 ---- Failure return nil
 ---- Success return bool
@@ -3884,6 +3814,16 @@ function RL.Vector2DistanceSqr( v1, v2 ) end
 ---@param v2 table
 ---@return any result 
 function RL.Vector2Angle( v1, v2 ) end
+
+---Calculate angle defined by a two vectors line.
+---NOTE: Parameters need to be normalized.
+---Current implementation should be aligned with glm::angle.
+---- Failure return false
+---- Success return float
+---@param start table
+---@param end table
+---@return any result 
+function RL.Vector2LineAngle( start, end ) end
 
 ---Scale vector ( multiply by value )
 ---- Failure return false

@@ -2,6 +2,7 @@
 #include "state.h"
 #include "lua_core.h"
 #include "textures.h"
+#include "models.h"
 
 State *state;
 
@@ -167,7 +168,9 @@ void stateFree() {
 	}
 	for ( int i = 0; i < state->modelCount; ++i ) {
 		if ( state->models[i] != NULL ) {
+			//TODO Test if UnloadModel causes segfaults on exit.
 			UnloadModelKeepMeshes( *state->models[i] );
+			// UnloadModel( *state->models[i] );
 			free( state->models[i] );
 		}
 	}

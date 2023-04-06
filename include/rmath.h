@@ -23,6 +23,7 @@ int lmathVector2DotProduct( lua_State *L );
 int lmathVector2Distance( lua_State *L );
 int lmathVector2DistanceSqr( lua_State *L );
 int lmathVector2Angle( lua_State *L );
+int lmathVector2LineAngle( lua_State *L );
 int lmathVector2Scale( lua_State *L );
 int lmathVector2Multiply( lua_State *L );
 int lmathVector2Negate( lua_State *L );

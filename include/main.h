@@ -3,9 +3,9 @@
 #define STRING_LEN 1024
 
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 4
+#define VERSION_MINOR 5
 #define VERSION_PATCH 0
-#define VERSION_DEV 0
+#define VERSION_DEV 1
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -10,7 +10,7 @@ Color = require( "color" )
 	To
 	if ((CORE.Input.Keyboard.keyPressedQueueCount < MAX_KEY_PRESSED_QUEUE) && (action == GLFW_PRESS || action == GLFW_REPEAT))
 
-	Now GLFW_REPEAT can be read by "RL_GetKeyPressed".
+	Now GLFW_REPEAT can be read by "RL.GetKeyPressed".
 ]]
 
 Gui = {
@@ -39,7 +39,7 @@ Gui = {
 		RECTANGLE_ROUNDED_LINES = 8,
 	},
 
-	mouseButton = MOUSE_BUTTON_LEFT,
+	mouseButton = RL.MOUSE_BUTTON_LEFT,
 	font = 0,
 	fontSize = 20,
 	padding = 2,
@@ -114,12 +114,12 @@ function Gui.set2Back( cell )
 end
 
 function Gui.process( mousePosition )
-	local mouseWheel = RL_GetMouseWheelMove()
+	local mouseWheel = RL.GetMouseWheelMove()
 
 	Gui._mousePos = mousePosition
 
 	if Gui.heldCallback ~= nil then
-		if RL_IsMouseButtonDown( Gui.mouseButton ) then
+		if RL.IsMouseButtonDown( Gui.mouseButton ) then
 			Gui.heldCallback()
 		else
 			Gui.heldCallback = nil
@@ -129,7 +129,7 @@ function Gui.process( mousePosition )
 	end
 
 	local foundFirst = false
-	
+
 	-- Go backwards on process check so we trigger the top most ui first and stop there.
 	for i = #Gui._cells, 1, -1 do
 		local cell = Gui._cells[i]
@@ -137,11 +137,11 @@ function Gui.process( mousePosition )
 		if cell ~= nil then
 			if not foundFirst and cell.isMouseOver ~= nil and cell:isMouseOver( mousePosition ) and not cell.disabled then
 				-- On clicked.
-				if RL_IsMouseButtonPressed( Gui.mouseButton ) and cell.onClicked ~= nil then
+				if RL.IsMouseButtonPressed( Gui.mouseButton ) and cell.onClicked ~= nil then
 					cell:onClicked()
 				end
 				-- On held.
-				if RL_IsMouseButtonDown( Gui.mouseButton ) and cell.onHeld ~= nil then
+				if RL.IsMouseButtonDown( Gui.mouseButton ) and cell.onHeld ~= nil then
 					cell:onHeld()
 				end
 				-- Mouse wheel scrolling.
@@ -149,19 +149,19 @@ function Gui.process( mousePosition )
 					if cell._parent ~= nil and cell._parent.scrollable then
 						cell = cell._parent
 					end
-	
+
 					if cell.scrollable then
 						local pos = Vec2:new( cell._scrollRect.x, cell._scrollRect.y )
 						local scrollVec = Vec2:new( 0, cell.scrollAmount * mouseWheel )
-			
-						if RL_IsKeyDown( KEY_LEFT_SHIFT ) then
+
+						if RL.IsKeyDown( RL.KEY_LEFT_SHIFT ) then
 							scrollVec = Vec2:new( cell.scrollAmount * mouseWheel, 0 )
 						end
-			
+
 						cell:scroll( pos - scrollVec )
 					end
 				end
-	
+
 				foundFirst = true
 			elseif cell.notMouseOver ~= nil then
 				cell:notMouseOver()
@@ -172,7 +172,7 @@ function Gui.process( mousePosition )
 	-- Text input.
 	if Gui._inputItem ~= nil then
 		repeat
-			local char = RL_GetCharPressed()
+			local char = RL.GetCharPressed()
 
 			if 0 < char then
 				if utf8.len( Gui._inputItem.text ) < Gui._inputItem.maxTextLen then
@@ -183,24 +183,24 @@ function Gui.process( mousePosition )
 		until char == 0
 
 		repeat
-			local key = RL_GetKeyPressed()
+			local key = RL.GetKeyPressed()
 
 			if 0 < key then
-				if key == KEY_BACKSPACE then
+				if key == RL.KEY_BACKSPACE then
 					Gui._inputItem.text = util.utf8Sub( Gui._inputItem.text, 0, utf8.len( Gui._inputItem.text ) - 1 )
-				elseif key == KEY_ENTER or key == KEY_KP_ENTER then
+				elseif key == RL.KEY_ENTER or key == RL.KEY_KP_ENTER then
 					if Gui._inputItem.allowLineBreak then
 						Gui._inputItem.text = Gui._inputItem.text.."\n"
 					else
 						Gui.inputUnfocus()
 					end
-				elseif key == KEY_ESCAPE then
+				elseif key == RL.KEY_ESCAPE then
 					Gui.inputUnfocus()
 				end
 			end
 		until key == 0
 
-		if readyToUnfocusInput and RL_IsMouseButtonPressed( Gui.mouseButton ) then
+		if readyToUnfocusInput and RL.IsMouseButtonPressed( Gui.mouseButton ) then
 			Gui.inputUnfocus()
 		end
 
@@ -234,7 +234,7 @@ function Text:new( set )
 	object.text = setProperty( set, "text", "" )
 	object.fontSize = setProperty( set, "fontSize", Gui.fontSize )
 	object.spacing = setProperty( set, "spacing", Gui.spacing )
-	object.color = setProperty( set, "color", Color:new( BLACK ) )
+	object.color = setProperty( set, "color", Color:new( RL.BLACK ) )
 	object.maxTextLen = setProperty( set, "maxTextLen", nil )
 	object.allowLineBreak = setProperty( set, "allowLineBreak", false )
 
@@ -253,7 +253,7 @@ function Text:set( text )
 		self.text = text
 	end
 
-	local textSize = Vec2:new( RL_MeasureText( self.font, self.text, self.fontSize, self.spacing ) )
+	local textSize = Vec2:new( RL.MeasureText( self.font, self.text, self.fontSize, self.spacing ) )
 
 	self.bounds.width = textSize.x
 	self.bounds.height = textSize.y
@@ -264,7 +264,7 @@ function Text:draw()
 		return
 	end
 
-	RL_DrawText( self.font, self.text, { self._parent.bounds.x + self.bounds.x, self._parent.bounds.y + self.bounds.y }, self.fontSize, self.spacing, self.color )
+	RL.DrawText( self.font, self.text, { self._parent.bounds.x + self.bounds.x, self._parent.bounds.y + self.bounds.y }, self.fontSize, self.spacing, self.color )
 end
 
 -- Texture.
@@ -283,7 +283,7 @@ function Texture:new( set )
 	object.source = setProperty( set, "source", Rect:new( 0, 0, 0, 0 ) )
 	object.origin = setProperty( set, "origin", Vec2:new( 0, 0 ) )
 	object.rotation = setProperty( set, "rotation", 0 )
-	object.color = setProperty( set, "color", Color:new( WHITE ) )
+	object.color = setProperty( set, "color", Color:new( RL.WHITE ) )
 	object.nPatchInfo = setProperty( set, "nPatchInfo", nil )
 
 	object.visible = setProperty( set, "visible", true )
@@ -299,7 +299,7 @@ function Texture:set( texture )
 		return
 	end
 
-	local texSize = Vec2:new( RL_GetTextureSize( texture ) )
+	local texSize = Vec2:new( RL.GetTextureSize( texture ) )
 
 	if self.bounds.width == 0 or self.bounds.height == 0 then
 		self.bounds.width = texSize.x
@@ -326,9 +326,9 @@ function Texture:draw()
 	}
 
 	if self.nPatchInfo ~= nil then
-		RL_DrawTextureNPatch( self.texture, self.nPatchInfo, dst, self.origin, self.rotation, self.color )
+		RL.DrawTextureNPatch( self.texture, self.nPatchInfo, dst, self.origin, self.rotation, self.color )
 	else
-		RL_DrawTexturePro( self.texture, self.source, dst, self.origin, self.rotation, self.color )
+		RL.DrawTexturePro( self.texture, self.source, dst, self.origin, self.rotation, self.color )
 	end
 end
 
@@ -359,7 +359,7 @@ function Shape:new( set )
 	object.roundness = setProperty( set, "roundness", 1 )
 	object.segments = setProperty( set, "segments", 4 )
 
-	object.color = setProperty( set, "color", Color:new( WHITE ) )
+	object.color = setProperty( set, "color", Color:new( RL.WHITE ) )
 
 	object.visible = setProperty( set, "visible", true )
 	object._parent = nil
@@ -392,23 +392,23 @@ function Shape:draw()
 	local pos = Vec2:new( self._parent.bounds.x, self._parent.bounds.y )
 
 	if self.shape == Gui.SHAPE.LINE then
-		RL_DrawLine( self.startPos + pos, self.endPos + pos, self.thickness, self.color )
+		RL.DrawLine( self.startPos + pos, self.endPos + pos, self.thickness, self.color )
 	elseif self.shape == Gui.SHAPE.CIRCLE then
-		RL_DrawCircle( self.center + pos, self.radius, self.color )
+		RL.DrawCircle( self.center + pos, self.radius, self.color )
 	elseif self.shape == Gui.SHAPE.CIRCLE_LINES then
-		RL_DrawCircleLines( self.center + pos, self.radius, self.color )
+		RL.DrawCircleLines( self.center + pos, self.radius, self.color )
 	elseif self.shape == Gui.SHAPE.ELLIPSE then
-		RL_DrawEllipse( self.center + pos, self.radiusH, self.radiusV, self.color )
+		RL.DrawEllipse( self.center + pos, self.radiusH, self.radiusV, self.color )
 	elseif self.shape == Gui.SHAPE.ELLIPSE_LINES then
-		RL_DrawEllipseLines( self.center + pos, self.radiusH, self.radiusV, self.color )
+		RL.DrawEllipseLines( self.center + pos, self.radiusH, self.radiusV, self.color )
 	elseif self.shape == Gui.SHAPE.RECTANGLE then
-		RL_DrawRectangle( { self.bounds.x + pos.x, self.bounds.y + pos.y, self.bounds.width, self.bounds.height }, self.color )
+		RL.DrawRectangle( { self.bounds.x + pos.x, self.bounds.y + pos.y, self.bounds.width, self.bounds.height }, self.color )
 	elseif self.shape == Gui.SHAPE.RECTANGLE_LINES then
-		RL_DrawRectangleLines( { self.bounds.x + pos.x, self.bounds.y + pos.y, self.bounds.width, self.bounds.height }, self.color )
+		RL.DrawRectangleLines( { self.bounds.x + pos.x, self.bounds.y + pos.y, self.bounds.width, self.bounds.height }, self.color )
 	elseif self.shape == Gui.SHAPE.RECTANGLE_ROUNDED then
-		RL_DrawRectangleRounded( { self.bounds.x + pos.x, self.bounds.y + pos.y, self.bounds.width, self.bounds.height }, self.roundness, self.segments, self.color )
+		RL.DrawRectangleRounded( { self.bounds.x + pos.x, self.bounds.y + pos.y, self.bounds.width, self.bounds.height }, self.roundness, self.segments, self.color )
 	elseif self.shape == Gui.SHAPE.RECTANGLE_ROUNDED_LINES then
-		RL_DrawRectangleRoundedLines( { self.bounds.x + pos.x, self.bounds.y + pos.y, self.bounds.width, self.bounds.height }, self.roundness, self.segments, self.thickness, self.color )
+		RL.DrawRectangleRoundedLines( { self.bounds.x + pos.x, self.bounds.y + pos.y, self.bounds.width, self.bounds.height }, self.roundness, self.segments, self.thickness, self.color )
 	end
 end
 
@@ -428,10 +428,10 @@ function Element:new( set )
 	object.visible = setProperty( set, "visible", true )
 	object.disabled = setProperty( set, "disabled", false )
 	object.drawBounds = setProperty( set, "drawBounds", false )
-	object.color = setProperty( set, "color", Color:new( GRAY ) )
+	object.color = setProperty( set, "color", Color:new( RL.GRAY ) )
 
 	object.items = {}
-	
+
 	object._visibilityBounds = nil
 	-- Callbacks.
 	object.onMouseOver = setProperty( set, "onMouseOver", nil )
@@ -481,10 +481,10 @@ function Element:add( item )
 end
 
 function Element:isMouseOver( mousePosition )
-	local over = RL_CheckCollisionPointRec( mousePosition, self.bounds )
+	local over = RL.CheckCollisionPointRec( mousePosition, self.bounds )
 
 	if over and self._visibilityBounds ~= nil then
-		over = RL_CheckCollisionPointRec( mousePosition, self._visibilityBounds )
+		over = RL.CheckCollisionPointRec( mousePosition, self._visibilityBounds )
 	end
 
 	if over and self.onMouseOver ~= nil then
@@ -498,7 +498,7 @@ function Element:draw()
 	local usedScissor = false
 
 	if self._visibilityBounds ~= nil then
-		local rect = Rect:new( RL_GetCollisionRec( self.bounds, self._visibilityBounds ) )
+		local rect = Rect:new( RL.GetCollisionRec( self.bounds, self._visibilityBounds ) )
 
 		-- Use scissor mode only on partyally visible.
 		if rect.width == 0 and rect.height == 0 then
@@ -506,12 +506,12 @@ function Element:draw()
 		elseif math.floor( rect.width ) ~= math.floor( self.bounds.width )
 		or math.floor( rect.height ) ~= math.floor( self.bounds.height ) then
 			usedScissor = true
-			RL_BeginScissorMode( self._visibilityBounds )
+			RL.BeginScissorMode( self._visibilityBounds )
 		end
 	end
-	
+
 	if self.drawBounds then
-		RL_DrawRectangle( self.bounds, self.color )
+		RL.DrawRectangle( self.bounds, self.color )
 	end
 
 	for _, item in ipairs( self.items ) do
@@ -519,7 +519,7 @@ function Element:draw()
 	end
 
 	if usedScissor then
-		RL_EndScissorMode()
+		RL.EndScissorMode()
 	end
 
 end
@@ -557,15 +557,15 @@ function Container:new( set )
 	object.showScrollbar = setProperty( set, "showScrollbar", false )
 	object.scrollbarWidth = setProperty( set, "scrollbarWidth", Gui.scrollbarWidth )
 	object.scrollAmount = setProperty( set, "scrollAmount", Gui.scrollAmount ) -- When using mouse scroll.
-	object.color = setProperty( set, "color", Color:new( WHITE ) )
+	object.color = setProperty( set, "color", Color:new( RL.WHITE ) )
 	object.drawBounds = setProperty( set, "drawBounds", false )
 	object.drawScrollRect = setProperty( set, "drawScrollRect", false )
 	-- For grid container. Do not set both.
 	object.columns = setProperty( set, "columns", nil )
 	object.rows = setProperty( set, "rows", nil )
-	
+
 	object.cells = {}
-	
+
 	object._visibilityBounds = nil -- Will give this to it's children.
 	object._scrollRect = Rect:new( 0, 0, 0, 0 )
 	object._VScrollbarRect = Rect:new( 0, 0, 0, 0 )
@@ -638,10 +638,10 @@ function Container:mouseScroll( v )
 end
 
 function Container:isMouseOver( mousePosition )
-	local over = RL_CheckCollisionPointRec( mousePosition, self.bounds )
+	local over = RL.CheckCollisionPointRec( mousePosition, self.bounds )
 
 	if over and self._visibilityBounds ~= nil then
-		over = RL_CheckCollisionPointRec( mousePosition, self._visibilityBounds )
+		over = RL.CheckCollisionPointRec( mousePosition, self._visibilityBounds )
 	end
 
 	if over and self.onMouseOver ~= nil then
@@ -668,7 +668,7 @@ function Container:updateScrollbar()
 		self._VScrollbar.visible = false
 		self._VScrollbar.disabled = true
 	end
-	
+
 	if self.bounds.width < self._scrollRect.width then
 		self._HScrollbar.bounds.width = self.bounds.width
 		self._HScrollbar.bounds.height = self.scrollbarWidth
@@ -701,7 +701,7 @@ function Container:update()
 			self._VScrollbar = Element:new( {
 				padding = 0,
 				drawBounds = true,
-				color = Color:new( GRAY ),
+				color = Color:new( RL.GRAY ),
 				onClicked = function() Gui.heldCallback = function() self:mouseScroll( Vec2:new( 0, 1 ) ) end end,
 			} )
 
@@ -710,7 +710,7 @@ function Container:update()
 				VAling = Gui.ALING.NONE,
 				bounds = Rect:new( 0, 0, 0, 0 ),
 				shape = Gui.SHAPE.RECTANGLE_ROUNDED,
-				color = Color:new( LIGHTGRAY ),
+				color = Color:new( RL.LIGHTGRAY ),
 			} ) )
 		end
 
@@ -718,7 +718,7 @@ function Container:update()
 			self._HScrollbar = Element:new( {
 				padding = 0,
 				drawBounds = true,
-				color = Color:new( GRAY ),
+				color = Color:new( RL.GRAY ),
 				onClicked = function() Gui.heldCallback = function() self:mouseScroll( Vec2:new( 1, 0 ) ) end end,
 			} )
 
@@ -727,7 +727,7 @@ function Container:update()
 				VAling = Gui.ALING.CENTER,
 				bounds = Rect:new( 0, 0, 0, 0 ),
 				shape = Gui.SHAPE.RECTANGLE_ROUNDED,
-				color = Color:new( LIGHTGRAY ),
+				color = Color:new( RL.LIGHTGRAY ),
 			} ) )
 		end
 	end
@@ -748,7 +748,7 @@ function Container:update()
 			elseif self.HAling == Gui.ALING.RIGHT then
 				pos.x = self.bounds.x + self.bounds.width - cell.bounds.width - self.spacing
 			end
-			
+
 			cell.bounds.x = pos.x - self._scrollRect.x
 			cell.bounds.y = pos.y - self._scrollRect.y
 
@@ -811,7 +811,7 @@ function Container:delete()
 	for _, cell in ipairs( self.cells ) do
 		cell:delete()
 	end
-	
+
 	if self._VScrollbar ~= nil then
 		Gui.delete( self._VScrollbar )
 	end
@@ -828,7 +828,7 @@ function Container:set2Top()
 	for _, cell in ipairs( self.cells ) do
 		cell:set2Top()
 	end
-	
+
 	if self._VScrollbar ~= nil then
 		Gui.set2Top( self._VScrollbar )
 	end
@@ -844,27 +844,27 @@ function Container:set2Back()
 	if self._HScrollbar ~= nil then
 		Gui.set2Back( self._HScrollbar )
 	end
-	
+
 	for _, cell in ipairs( self.cells ) do
 		cell:set2Back()
 	end
-	
+
 	Gui.set2Back( self )
 end
 
 function Container:draw()
 	if self.drawBounds then
-		RL_DrawRectangle( self.bounds, self.color )
+		RL.DrawRectangle( self.bounds, self.color )
 	end
 
 	if self.drawScrollRect then
-		RL_DrawRectangleLines( {
+		RL.DrawRectangleLines( {
 			self.bounds.x - self._scrollRect.x,
 			self.bounds.y - self._scrollRect.y,
 			self._scrollRect.width,
 			self._scrollRect.height,
 		},
-		RED )
+		RL.RED )
 	end
 end
 

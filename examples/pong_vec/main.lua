@@ -1,6 +1,6 @@
 -- Pong example using Vector2 library.
 
-package.path = package.path..";"..RL_GetBasePath().."../resources/lib/?.lua"
+package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
 Vec2 = require "vector2"
 
@@ -54,33 +54,33 @@ local function ballHit( padPos, padSize )
 	ball.vel.y = BALL_SPEED * relHitPos / padSize.y * 2
 end
 
-function init()
+function RL.init()
 	-- Set window to center of monitor.
-	local mPos = Vec2:new( RL_GetMonitorPosition( monitor ) )
-	local mSize = Vec2:new( RL_GetMonitorSize( monitor ) )
+	local mPos = Vec2:new( RL.GetMonitorPosition( monitor ) )
+	local mSize = Vec2:new( RL.GetMonitorSize( monitor ) )
 
-	RL_SetConfigFlags( FLAG_VSYNC_HINT )
-	RL_SetWindowSize( winSize )
-	RL_SetWindowPosition( { mPos.x + mSize.x / 2 - winSize.x / 2, mPos.y + mSize.y / 2 - winSize.y / 2 } )
-	RL_SetWindowTitle( "Pong" )
+	RL.SetConfigFlags( RL.FLAG_VSYNC_HINT )
+	RL.SetWindowSize( winSize )
+	RL.SetWindowPosition( { mPos.x + mSize.x / 2 - winSize.x / 2, mPos.y + mSize.y / 2 - winSize.y / 2 } )
+	RL.SetWindowTitle( "Pong" )
 
 	-- Initialize ball pos.
 	math.randomseed( os.time() )
 	reset()
 end
 
-function process( delta )
+function RL.process( delta )
 	-- Left player controls.
-	if RL_IsKeyDown( KEY_W ) and 0 < playerLeft.pos.y then
+	if RL.IsKeyDown( RL.KEY_W ) and 0 < playerLeft.pos.y then
 		playerLeft.pos.y = playerLeft.pos.y - PLAYER_SPEED * delta
-	elseif RL_IsKeyDown( KEY_S ) and playerLeft.pos.y + playerLeft.size.y < winSize.y then
+	elseif RL.IsKeyDown( RL.KEY_S ) and playerLeft.pos.y + playerLeft.size.y < winSize.y then
 		playerLeft.pos.y = playerLeft.pos.y + PLAYER_SPEED * delta
 	end
 
 	-- Right player controls.
-	if RL_IsKeyDown( KEY_UP ) and 0 < playerRight.pos.y then
+	if RL.IsKeyDown( RL.KEY_UP ) and 0 < playerRight.pos.y then
 		playerRight.pos.y = playerRight.pos.y - PLAYER_SPEED * delta
-	elseif RL_IsKeyDown( KEY_DOWN ) and playerRight.pos.y + playerRight.size.y < winSize.y then
+	elseif RL.IsKeyDown( RL.KEY_DOWN ) and playerRight.pos.y + playerRight.size.y < winSize.y then
 		playerRight.pos.y = playerRight.pos.y + PLAYER_SPEED * delta
 	end
 
@@ -99,9 +99,9 @@ function process( delta )
 	local playerRightRect = { playerRight.pos.x, playerRight.pos.y,
 							  playerRight.size.x, playerRight.size.y }
 
-	if RL_CheckCollisionCircleRec( ball.pos, ball.radius, playerLeftRect ) and ball.vel.x < 0 then
+	if RL.CheckCollisionCircleRec( ball.pos, ball.radius, playerLeftRect ) and ball.vel.x < 0 then
 		ballHit( playerLeft.pos, playerLeft.size )
-	elseif RL_CheckCollisionCircleRec( ball.pos, ball.radius, playerRightRect ) and 0 < ball.vel.x then
+	elseif RL.CheckCollisionCircleRec( ball.pos, ball.radius, playerRightRect ) and 0 < ball.vel.x then
 		ballHit( playerRight.pos, playerRight.size )
 	end
 
@@ -115,18 +115,18 @@ function process( delta )
 	end
 end
 
-function draw()
-	RL_ClearBackground( BLACK )
+function RL.draw()
+	RL.ClearBackground( RL.BLACK )
 
 	-- Draw players.
-	RL_DrawRectangle( { playerLeft.pos.x, playerLeft.pos.y, playerLeft.size.x, playerLeft.size.y }, WHITE )
-	RL_DrawRectangle( { playerRight.pos.x, playerRight.pos.y, playerRight.size.x, playerRight.size.y }, WHITE )
+	RL.DrawRectangle( { playerLeft.pos.x, playerLeft.pos.y, playerLeft.size.x, playerLeft.size.y }, RL.WHITE )
+	RL.DrawRectangle( { playerRight.pos.x, playerRight.pos.y, playerRight.size.x, playerRight.size.y }, RL.WHITE )
 
 	-- Draw ball. Ball position will be the center in drawCircle.
-	RL_DrawCircle( ball.pos, ball.radius, WHITE )
+	RL.DrawCircle( ball.pos, ball.radius, RL.WHITE )
 
 	-- Draw score.
-    RL_DrawText( 0, playerLeft.score, { 50, 10 }, 40, 2, WHITE )
-	local rightTextSize = Vec2:new( RL_MeasureText( 0, playerRight.score, 40, 2 ) )
-    RL_DrawText( 0, playerRight.score, { winSize.x - 50 - rightTextSize.x, 10 }, 40, 2, WHITE )
+    RL.DrawText( 0, playerLeft.score, { 50, 10 }, 40, 2, RL.WHITE )
+	local rightTextSize = Vec2:new( RL.MeasureText( 0, playerRight.score, 40, 2 ) )
+    RL.DrawText( 0, playerRight.score, { winSize.x - 50 - rightTextSize.x, 10 }, 40, 2, RL.WHITE )
 end

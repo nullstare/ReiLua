@@ -8,7 +8,7 @@
 */
 
 /*
-> success = RL_rlSetLineWidth( float width )
+> success = RL.rlSetLineWidth( float width )
 
 Set the line drawing width
 
@@ -17,7 +17,7 @@ Set the line drawing width
 */
 int lrlglSetLineWidth( lua_State *L ) {
 	if ( !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_rlSetLineWidth( float width )" );
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlSetLineWidth( float width )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -28,7 +28,7 @@ int lrlglSetLineWidth( lua_State *L ) {
 }
 
 /*
-> width = RL_rlGetLineWidth()
+> width = RL.rlGetLineWidth()
 
 Get the line drawing width
 

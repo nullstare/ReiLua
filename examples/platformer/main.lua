@@ -1,7 +1,13 @@
-package.path = package.path..";"..RL_GetBasePath().."../resources/lib/?.lua"
+package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
-util = require( "utillib" )
+Util = require( "utillib" )
 Vec2 = require( "vector2" )
+
+-- print( "RL", RL, #RL )
+
+-- for i, v in pairs( RL ) do
+-- 	print( i, v )
+-- end
 
 local TILE_SIZE = 16
 local PLAYER_MAXSPEED = 1.5
@@ -11,11 +17,11 @@ local GRAVITY = 6
 local JUMP_STR = 3
 local WALK_ANIM_SPEED = 12
 
-local tex = RL_LoadTexture( RL_GetBasePath().."../resources/images/arcade_platformerV2.png" )
+local tex = RL.LoadTexture( RL.GetBasePath().."../resources/images/arcade_platformerV2.png" )
 local res = Vec2:new( 160, 144 )
 local winScale = 5
 local winSize = res:scale( winScale )
-local framebuffer = RL_LoadRenderTexture( res )
+local framebuffer = RL.LoadRenderTexture( res )
 local monitor = 0
 local tilemap = {
 	size = Vec2:new( res.x / TILE_SIZE, res.y / TILE_SIZE ),
@@ -80,21 +86,21 @@ local function createMap()
 	tilemap.tiles[1][8] = 6
 end
 
-function init()
-	local monitorPos = Vec2:new( RL_GetMonitorPosition( monitor ) )
-	local monitorSize = Vec2:new( RL_GetMonitorSize( monitor ) )
+function RL.init()
+	local monitorPos = Vec2:new( RL.GetMonitorPosition( monitor ) )
+	local monitorSize = Vec2:new( RL.GetMonitorSize( monitor ) )
 
-	RL_SetWindowTitle( "Platformer" )
-	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
-	RL_SetWindowState( FLAG_VSYNC_HINT )
-	RL_SetWindowSize( winSize )
-	RL_SetWindowPosition( { monitorPos.x + monitorSize.x / 2 - winSize.x / 2, monitorPos.y + monitorSize.y / 2 - winSize.y / 2 } )
+	RL.SetWindowTitle( "Platformer" )
+	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
+	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
+	RL.SetWindowSize( winSize )
+	RL.SetWindowPosition( { monitorPos.x + monitorSize.x / 2 - winSize.x / 2, monitorPos.y + monitorSize.y / 2 - winSize.y / 2 } )
 
 	createMap()
 end
 
 local function isTileWall( pos )
-	if RL_CheckCollisionPointRec( { pos.x, pos.y }, { 0, 0, tilemap.size.x - 1, tilemap.size.y - 1 } ) then
+	if RL.CheckCollisionPointRec( { pos.x, pos.y }, { 0, 0, tilemap.size.x - 1, tilemap.size.y - 1 } ) then
 		return 0 < tilemap.tiles[ pos.x + 1 ][ pos.y + 1 ]
 	else
 		return false
@@ -103,7 +109,7 @@ end
 
 local function tileCollision( entity )
 	local vPos = entity.pos + entity.vel -- Future pos with current vel.
-	local vRect = util.tableClone( entity.colRect )
+	local vRect = Util.tableClone( entity.colRect )
 	local tinyGap = 0.001 -- Tiny gap between collisionRect and tile to prevent getting stuck on all seams.
 
 	-- Move test rect to predicted position.
@@ -172,14 +178,14 @@ end
 local function playerMovement( delta )
 	local moving = { false, false }
 
-	if RL_IsKeyDown( KEY_RIGHT ) then
+	if RL.IsKeyDown( RL.KEY_RIGHT ) then
 		player.vel.x = player.vel.x + PLAYER_ACCELL * delta
 		moving[1] = true
 
 		if 0 < player.vel.x then
 			player.facing = 1
 		end
-	elseif RL_IsKeyDown( KEY_LEFT ) then
+	elseif RL.IsKeyDown( RL.KEY_LEFT ) then
 		player.vel.x = player.vel.x - PLAYER_ACCELL * delta
 		moving[1] = true
 
@@ -188,7 +194,7 @@ local function playerMovement( delta )
 		end
 	end
 
-	if RL_IsKeyPressed( KEY_SPACE ) and player.onFloor then
+	if RL.IsKeyPressed( RL.KEY_SPACE ) and player.onFloor then
 		player.vel.y = -JUMP_STR
 		player.onFloor = false
 	end
@@ -205,7 +211,7 @@ local function playerMovement( delta )
 		end
 	end
 
-	player.vel.x = util.clamp( player.vel.x, -PLAYER_MAXSPEED, PLAYER_MAXSPEED )
+	player.vel.x = Util.clamp( player.vel.x, -PLAYER_MAXSPEED, PLAYER_MAXSPEED )
 
 	player.vel.y = player.vel.y + GRAVITY * delta
 
@@ -220,16 +226,16 @@ local function playerMovement( delta )
 	player.colRect[2] = player.pos.y - player.colRect[4]
 end
 
-function process( delta )
-	if RL_IsWindowResized() then
-		winSize:set( RL_GetScreenSize() )
+function RL.process( delta )
+	if RL.IsWindowResized() then
+		winSize:set( RL.GetScreenSize() )
 	end
 
 	playerMovement( delta )
 end
 
 local function drawMap()
-	RL_DrawTextureRec( tex, { 0, 160, res.x, res.y }, { 0, 0 }, WHITE )
+	RL.DrawTextureRec( tex, { 0, 160, res.x, res.y }, { 0, 0 }, RL.WHITE )
 
 	for x = 1, tilemap.size.x do
 		for y = 1, tilemap.size.y do
@@ -237,7 +243,7 @@ local function drawMap()
 			local pos = Vec2:new( x - 1, y - 1 )
 
 			if 0 < tile then
-				RL_DrawTextureRec( tex, tilemap.tileRects[ tile ], { pos.x * TILE_SIZE, pos.y * TILE_SIZE }, WHITE )
+				RL.DrawTextureRec( tex, tilemap.tileRects[ tile ], { pos.x * TILE_SIZE, pos.y * TILE_SIZE }, RL.WHITE )
 			end
 		end
 	end
@@ -250,7 +256,7 @@ local function drawPlayer()
 		if math.abs( player.vel.x ) < 0.1 then
 			player.curFrame = 1
 		else
-			player.animPos = player.animPos + WALK_ANIM_SPEED * ( math.abs( player.vel.x ) / PLAYER_MAXSPEED ) * RL_GetFrameTime()
+			player.animPos = player.animPos + WALK_ANIM_SPEED * ( math.abs( player.vel.x ) / PLAYER_MAXSPEED ) * RL.GetFrameTime()
 			local frame = math.ceil( player.animPos )
 
 			if #player.walkAnimFrames < frame then
@@ -270,7 +276,7 @@ local function drawPlayer()
 
 	-- Draw rect.
 
-	local src = util.tableClone( player.frames[ player.curFrame ] )
+	local src = Util.tableClone( player.frames[ player.curFrame ] )
 	local dst = {
 		player.pos.x - src[3] / 2,
 		player.pos.y - src[4],
@@ -282,19 +288,19 @@ local function drawPlayer()
 		src[3] = -src[3]
 	end
 
-	RL_DrawTexturePro( tex, src, dst, { 0, 0 }, 0.0, WHITE )
+	RL.DrawTexturePro( tex, src, dst, { 0, 0 }, 0.0, RL.WHITE )
 end
 
-function draw()
-	RL_ClearBackground( RED )
+function RL.draw()
+	RL.ClearBackground( RL.RED )
 
-	RL_SetTextureSource( TEXTURE_SOURCE_TEXTURE )
-	RL_BeginTextureMode( framebuffer )
+	RL.SetTextureSource( RL.TEXTURE_SOURCE_TEXTURE )
+	RL.BeginTextureMode( framebuffer )
 		drawMap()
 		drawPlayer()
-	RL_EndTextureMode()
+	RL.EndTextureMode()
 
-	RL_SetTextureSource( TEXTURE_SOURCE_RENDER_TEXTURE )
-	RL_DrawTexturePro( framebuffer, { 0, 0, res.x, -res.y }, { 0, 0, winSize.x, winSize.y }, { 0, 0 }, 0.0, WHITE )
-	RL_SetTextureSource( TEXTURE_SOURCE_TEXTURE )
+	RL.SetTextureSource( RL.TEXTURE_SOURCE_RENDER_TEXTURE )
+	RL.DrawTexturePro( framebuffer, { 0, 0, res.x, -res.y }, { 0, 0, winSize.x, winSize.y }, { 0, 0 }, 0.0, RL.WHITE )
+	RL.SetTextureSource( RL.TEXTURE_SOURCE_TEXTURE )
 end

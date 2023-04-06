@@ -1,4 +1,4 @@
-package.path = package.path..";"..RL_GetBasePath().."../resources/lib/?.lua"
+package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
 util = require "utillib"
 Vec2 = require "vector2"
@@ -8,7 +8,6 @@ local MOVE_SPEED = 0.5
 
 local monitor = 0
 local camera = -1
-local texture = -1
 local tri = {
 	a = Vec3:new( 0, 0, 0 ),
 	-- a = Vec3:new( 0, 1, 0 ),
@@ -26,27 +25,25 @@ local point = {
 local debugText = ""
 
 local function calcNormal( tri )
-	tri.normal = Vec3:new( RL_Vector3Normalize( RL_Vector3CrossProduct( tri.b - tri.a, tri.c - tri.a ) ) )
+	tri.normal = Vec3:new( RL.Vector3Normalize( RL.Vector3CrossProduct( tri.b - tri.a, tri.c - tri.a ) ) )
 end
 
-function init()
-	local mPos = RL_GetMonitorPosition( monitor )
-	local mSize = RL_GetMonitorSize( monitor )
+function RL.init()
+	local mPos = RL.GetMonitorPosition( monitor )
+	local mSize = RL.GetMonitorSize( monitor )
 	local winSize = { 1920, 1080 }
 
-	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
-	RL_SetWindowState( FLAG_VSYNC_HINT )
-	RL_SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
-	RL_SetWindowSize( winSize )
-	camera = RL_CreateCamera3D()
-	RL_SetCamera3DPosition( camera, { 0, 1, 2 } )
-	RL_SetCamera3DTarget( camera, { 0, 0, 0 } )
-	RL_SetCamera3DUp( camera, { 0, 1, 0 } )
-	RL_SetCameraMode( camera, CAMERA_FREE )
+	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
+	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
+	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
+	RL.SetWindowSize( winSize )
+	camera = RL.CreateCamera3D()
+	RL.SetCamera3DPosition( camera, { 0, 1, 2 } )
+	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
+	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
+	RL.SetCameraMode( camera, RL.CAMERA_FREE )
 
 	calcNormal( tri )
-
-	texture = RL_LoadTexture( RL_GetBasePath().."../resources/images/tile.png" )
 end
 
 local function checkCollisionPointTriangle( p, a, b, c, n )
@@ -78,48 +75,48 @@ local function checkCollisionPointTriangle( p, a, b, c, n )
 	return 0.0 < result.x and 0.0 < result.y and 0.0 < result.z and distance < 0.0, distance
 end
 
-function process( delta )
+function RL.process( delta )
 	debugText = ""
 
-	if RL_IsKeyDown( string.byte( "D" ) ) then
+	if RL.IsKeyDown( string.byte( "D" ) ) then
 		point.pos.x = point.pos.x + MOVE_SPEED * delta
-	elseif RL_IsKeyDown( string.byte( "A" ) ) then
+	elseif RL.IsKeyDown( string.byte( "A" ) ) then
 		point.pos.x = point.pos.x - MOVE_SPEED * delta
 	end
-	if RL_IsKeyDown( string.byte( "S" ) ) then
+	if RL.IsKeyDown( string.byte( "S" ) ) then
 		point.pos.z = point.pos.z + MOVE_SPEED * delta
-	elseif RL_IsKeyDown( string.byte( "W" ) ) then
+	elseif RL.IsKeyDown( string.byte( "W" ) ) then
 		point.pos.z = point.pos.z - MOVE_SPEED * delta
 	end
-	if RL_IsKeyDown( string.byte( "R" ) ) then
+	if RL.IsKeyDown( string.byte( "R" ) ) then
 		point.pos.y = point.pos.y + MOVE_SPEED * delta
-	elseif RL_IsKeyDown( string.byte( "F" ) ) then
+	elseif RL.IsKeyDown( string.byte( "F" ) ) then
 		point.pos.y = point.pos.y - MOVE_SPEED * delta
 	end
 
 	if checkCollisionPointTriangle( point.pos, tri.a, tri.b, tri.c, tri.normal ) then
-		point.color = RED
+		point.color = RL.RED
 	else
-		point.color = GREEN
+		point.color = RL.GREEN
 	end
 end
 
-function draw()
-	RL_ClearBackground( { 100, 150, 100 } )
-	RL_UpdateCamera3D( camera )
-	
-	RL_BeginMode3D( camera )
-		RL_DrawGrid( 8, 1 )
-		RL_DrawTriangle3D( tri.a, tri.b, tri.c, { 200, 100, 100 } )
+function RL.draw()
+	RL.ClearBackground( { 100, 150, 100 } )
+	RL.UpdateCamera3D( camera )
 
-		RL_DrawLine3D( { point.pos.x - point.lineLen, point.pos.y, point.pos.z },
-					   { point.pos.x + point.lineLen, point.pos.y, point.pos.z }, BLUE )
-		RL_DrawLine3D( { point.pos.x, point.pos.y - point.lineLen, point.pos.z },
-					   { point.pos.x, point.pos.y + point.lineLen, point.pos.z }, BLUE )
-		RL_DrawLine3D( { point.pos.x, point.pos.y, point.pos.z - point.lineLen },
-					   { point.pos.x, point.pos.y, point.pos.z + point.lineLen }, BLUE )
-		RL_DrawSphereWires( point.pos, point.radius, 3, 8, point.color )
-	RL_EndMode3D()
+	RL.BeginMode3D( camera )
+		RL.DrawGrid( 8, 1 )
+		RL.DrawTriangle3D( tri.a, tri.b, tri.c, { 200, 100, 100 } )
 
-	RL_DrawText( 0, debugText, { 10, 10 }, 30, 4, WHITE )
+		RL.DrawLine3D( { point.pos.x - point.lineLen, point.pos.y, point.pos.z },
+					   { point.pos.x + point.lineLen, point.pos.y, point.pos.z }, RL.BLUE )
+		RL.DrawLine3D( { point.pos.x, point.pos.y - point.lineLen, point.pos.z },
+					   { point.pos.x, point.pos.y + point.lineLen, point.pos.z }, RL.BLUE )
+		RL.DrawLine3D( { point.pos.x, point.pos.y, point.pos.z - point.lineLen },
+					   { point.pos.x, point.pos.y, point.pos.z + point.lineLen }, RL.BLUE )
+		RL.DrawSphereWires( point.pos, point.radius, 3, 8, point.color )
+	RL.EndMode3D()
+
+	RL.DrawText( 0, debugText, { 10, 10 }, 30, 4, RL.WHITE )
 end

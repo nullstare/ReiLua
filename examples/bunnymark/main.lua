@@ -42,23 +42,23 @@ function Bunny:update()
 	end
 end
 
-function init()
-	RL_SetWindowState( FLAG_VSYNC_HINT )
-	RL_SetWindowSize( { screenWidth, screenHeight } )
-	RL_SetWindowTitle( "raylib [textures] example - bunnymark" )
+function RL.init()
+	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
+	RL.SetWindowSize( { screenWidth, screenHeight } )
+	RL.SetWindowTitle( "raylib [textures] example - bunnymark" )
 	-- Load bunny texture
-	texBunny = RL_LoadTexture( RL_GetBasePath().."../resources/images/wabbit_alpha.png" )
-	texSize = RL_GetTextureSize( texBunny )
+	texBunny = RL.LoadTexture( RL.GetBasePath().."../resources/images/wabbit_alpha.png" )
+	texSize = RL.GetTextureSize( texBunny )
 end
 
-function process( delta )
-	if RL_IsMouseButtonDown( 0 ) then
+function RL.process( delta )
+	if RL.IsMouseButtonDown( 0 ) then
 	 	-- Create more bunnies
 		for i = 1, 100 do
 			if #bunnies < MAX_BUNNIES then
 				local speed = { math.random( -250, 250 ) / 60, math.random( -250, 250 ) / 60 }
 				local color = { math.random( 50, 240 ), math.random( 80, 240 ), math.random( 100, 240 ), 255 }
-				table.insert( bunnies, Bunny:new( RL_GetMousePosition(), speed, color ) )
+				table.insert( bunnies, Bunny:new( RL.GetMousePosition(), speed, color ) )
 			end
 		end
 	end
@@ -68,8 +68,8 @@ function process( delta )
 	end
 end
 
-function draw()
-	RL_ClearBackground( RAYWHITE )
+function RL.draw()
+	RL.ClearBackground( RL.RAYWHITE )
 
 	for _, bunny in ipairs( bunnies ) do
 		-- NOTE: When internal batch buffer limit is reached (MAX_BATCH_ELEMENTS),
@@ -78,11 +78,11 @@ function draw()
 		-- Process of sending data is costly and it could happen that GPU data has not been completely
 		-- processed for drawing while new data is tried to be sent (updating current in-use buffers)
 		-- it could generates a stall and consequently a frame drop, limiting the number of drawn bunnies
-		RL_DrawTexture( texBunny, { bunny.position[1], bunny.position[2] }, bunny.color )
+		RL.DrawTexture( texBunny, { bunny.position[1], bunny.position[2] }, bunny.color )
 	end
 
-	RL_DrawRectangle( { 0, 0, screenWidth, 40 }, BLACK)
-	RL_DrawText( 0, "bunnies: " .. #bunnies, { 120, 10 }, 20, 2, GREEN )
-	RL_DrawText( 0, "batched draw calls: " .. math.ceil( 1 + #bunnies / MAX_BATCH_ELEMENTS ), { 320, 10 }, 20, 2, RED )
-	RL_DrawFPS( { 10, 10 } )
+	RL.DrawRectangle( { 0, 0, screenWidth, 40 }, RL.BLACK)
+	RL.DrawText( 0, "bunnies: " .. #bunnies, { 120, 10 }, 20, 2, RL.GREEN )
+	RL.DrawText( 0, "batched draw calls: " .. math.ceil( 1 + #bunnies / MAX_BATCH_ELEMENTS ), { 320, 10 }, 20, 2, RL.RED )
+	RL.DrawFPS( { 10, 10 } )
 end

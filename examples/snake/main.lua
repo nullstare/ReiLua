@@ -7,8 +7,8 @@ local STATE = { TITLE = 0, GAME = 1, OVER = 2 } -- Enum wannabe.
 -- Resources
 local framebuffer = -1
 local monitor = 0
-local monitorPos = RL_GetMonitorPosition( monitor )
-local monitorSize = RL_GetMonitorSize( monitor )
+local monitorPos = RL.GetMonitorPosition( monitor )
+local monitorSize = RL.GetMonitorSize( monitor )
 local winScale = 6
 local winSize = { RESOLUTION[1] * winScale, RESOLUTION[2] * winScale }
 local gameState = STATE.GAME
@@ -64,18 +64,18 @@ end
 
 -- Init.
 
-function init()
-	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
-	RL_SetWindowState( FLAG_VSYNC_HINT )
-	RL_SetWindowSize( winSize )
-	RL_SetWindowPosition( { monitorPos[1] + monitorSize[1] / 2 - winSize[1] / 2, monitorPos[2] + monitorSize[2] / 2 - winSize[2] / 2 } )
-	RL_SetWindowTitle( "Snake" )
-	RL_SetWindowIcon( RL_LoadImage( RL_GetBasePath().."../resources/images/apple.png" ) )
+function RL.init()
+	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
+	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
+	RL.SetWindowSize( winSize )
+	RL.SetWindowPosition( { monitorPos[1] + monitorSize[1] / 2 - winSize[1] / 2, monitorPos[2] + monitorSize[2] / 2 - winSize[2] / 2 } )
+	RL.SetWindowTitle( "Snake" )
+	RL.SetWindowIcon( RL.LoadImage( RL.GetBasePath().."../resources/images/apple.png" ) )
 
-	framebuffer = RL_LoadRenderTexture( RESOLUTION )
-	grassTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/grass.png" )
-	snakeTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/snake.png" )
-	appleTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/apple.png" )
+	framebuffer = RL.LoadRenderTexture( RESOLUTION )
+	grassTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/grass.png" )
+	snakeTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/snake.png" )
+	appleTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/apple.png" )
 
 	setSnake()
 	setApplePos()
@@ -122,25 +122,25 @@ local function moveSnake()
 	moveTimer = moveTimer + 1.0
 end
 
-function process( delta )
+function RL.process( delta )
 	if gameState == STATE.GAME then -- Run game.
 		-- Controls.
-		if RL_IsKeyPressed( KEY_RIGHT ) and 0 <= snake.heading[1] then
+		if RL.IsKeyPressed( RL.KEY_RIGHT ) and 0 <= snake.heading[1] then
 			snake.control = { 1, 0 }
-		elseif RL_IsKeyPressed( KEY_LEFT ) and snake.heading[1] <= 0 then
+		elseif RL.IsKeyPressed( RL.KEY_LEFT ) and snake.heading[1] <= 0 then
 			snake.control = { -1, 0 }
-		elseif RL_IsKeyPressed( KEY_DOWN ) and 0 <= snake.heading[2] then
+		elseif RL.IsKeyPressed( RL.KEY_DOWN ) and 0 <= snake.heading[2] then
 			snake.control = { 0, 1 }
-		elseif RL_IsKeyPressed( KEY_UP ) and snake.heading[2] <= 0 then
+		elseif RL.IsKeyPressed( RL.KEY_UP ) and snake.heading[2] <= 0 then
 			snake.control = { 0, -1 }
 		end
-	
+
 		moveTimer = moveTimer - gameSpeed * delta
-	
+
 		if moveTimer <= 0.0 then
 			moveSnake()
 		end
-	elseif gameState == STATE.OVER and RL_IsKeyPressed( KEY_ENTER ) then -- Reset game.
+	elseif gameState == STATE.OVER and RL.IsKeyPressed( RL.KEY_ENTER ) then -- Reset game.
 		setSnake()
 		setApplePos()
 		gameState = STATE.GAME
@@ -152,7 +152,7 @@ end
 local function drawGrass()
 	for y = 0, LEVEL_SIZE - 1 do
 		for x = 0, LEVEL_SIZE - 1 do
-			RL_DrawTexture( grassTexture, { x * TILE_SIZE, y * TILE_SIZE }, WHITE )
+			RL.DrawTexture( grassTexture, { x * TILE_SIZE, y * TILE_SIZE }, RL.WHITE )
 		end
 	end
 end
@@ -168,14 +168,14 @@ end
 
 local function drawSnake()
 	for i, seg in ipairs( snake.segments ) do
-		local angle = math.deg( RL_Vector2Angle( { 0, 0 }, seg.heading ) )
+		local angle = math.deg( RL.Vector2Angle( { 0, 0 }, seg.heading ) )
 		local source = { 16, 0, 8, 8 }
 
 		if i == 1 then -- Tail segment. Yes tail is actually the 'first' segment.
 			source[1] = 8
 
 			if 1 < #snake.segments then
-				angle = math.deg( RL_Vector2Angle( { 0, 0 }, snake.segments[ 2 ].heading ) )
+				angle = math.deg( RL.Vector2Angle( { 0, 0 }, snake.segments[ 2 ].heading ) )
 			end
 		elseif i < #snake.segments and not vector2IsEqual( seg.heading, snake.segments[ i+1 ].heading ) then -- Turned middle segments.
 			source[1] = 0
@@ -191,34 +191,34 @@ local function drawSnake()
 			end
 		end
 		-- Notice that we set the origin to center { 4, 4 } that acts as pivot point. We also have to adjust our dest position by 4.
-		RL_DrawTexturePro( snakeTexture, source, { seg.pos[1] * TILE_SIZE + 4, seg.pos[2] * TILE_SIZE + 4, 8, 8 }, { 4, 4 }, angle, WHITE )
+		RL.DrawTexturePro( snakeTexture, source, { seg.pos[1] * TILE_SIZE + 4, seg.pos[2] * TILE_SIZE + 4, 8, 8 }, { 4, 4 }, angle, RL.WHITE )
 	end
 	-- Let's draw the head last to keep it on top.
-	local angle = math.deg( RL_Vector2Angle( { 0, 0 }, snake.heading ) )
-	RL_DrawTexturePro( snakeTexture, { 24, 0, 8, 8 }, { snake.headPos[1] * TILE_SIZE + 4, snake.headPos[2] * TILE_SIZE + 4, 8, 8 }, { 4, 4 }, angle, WHITE )
+	local angle = math.deg( RL.Vector2Angle( { 0, 0 }, snake.heading ) )
+	RL.DrawTexturePro( snakeTexture, { 24, 0, 8, 8 }, { snake.headPos[1] * TILE_SIZE + 4, snake.headPos[2] * TILE_SIZE + 4, 8, 8 }, { 4, 4 }, angle, RL.WHITE )
 end
 
 local function drawApple()
-	RL_DrawTexture( appleTexture, { applePos[1] * TILE_SIZE, applePos[2] * TILE_SIZE }, WHITE )
+	RL.DrawTexture( appleTexture, { applePos[1] * TILE_SIZE, applePos[2] * TILE_SIZE }, RL.WHITE )
 end
 
-function draw()
+function RL.draw()
 	-- Clear the window to black.
-	RL_ClearBackground( BLACK )
+	RL.ClearBackground( RL.BLACK )
 	-- Draw to framebuffer.
-	RL_BeginTextureMode( framebuffer )
-		RL_ClearBackground( BLACK )
+	RL.BeginTextureMode( framebuffer )
+		RL.ClearBackground( RL.BLACK )
 		drawGrass()
 		drawSnake()
 		drawApple()
 
 		if gameState == STATE.OVER then
-			RL_DrawText( 0, "Press Enter to\nrestart", { 10, 10 }, 10, 2, WHITE )
+			RL.DrawText( 0, "Press Enter to\nrestart", { 10, 10 }, 10, 2, RL.WHITE )
 		end
-	RL_EndTextureMode()
+	RL.EndTextureMode()
 	
 	-- Draw framebuffer to window.
-	RL_SetTextureSource( TEXTURE_SOURCE_RENDER_TEXTURE )
-	RL_DrawTexturePro( framebuffer, { 0, 0, RESOLUTION[1], -RESOLUTION[2] }, { 0, 0, winSize[1], winSize[2] }, { 0, 0 }, 0.0, WHITE )
-	RL_SetTextureSource( TEXTURE_SOURCE_TEXTURE )
+	RL.SetTextureSource( RL.TEXTURE_SOURCE_RENDER_TEXTURE )
+	RL.DrawTexturePro( framebuffer, { 0, 0, RESOLUTION[1], -RESOLUTION[2] }, { 0, 0, winSize[1], winSize[2] }, { 0, 0 }, 0.0, RL.WHITE )
+	RL.SetTextureSource( RL.TEXTURE_SOURCE_TEXTURE )
 end

@@ -1,5 +1,5 @@
-package.path = package.path..";"..RL_GetBasePath().."?.lua"
-package.path = package.path..";"..RL_GetBasePath().."../resources/lib/?.lua"
+package.path = package.path..";"..RL.GetBasePath().."?.lua"
+package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
 util = require( "utillib" )
 Vec2 = require( "vector2" )
@@ -13,29 +13,29 @@ FileExplorer = require( "file_explorer" )
 -- Textures.
 
 -- Note that textures are global.
-cancelTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/cancel.png" )
-backTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/previous-button.png" )
-folderTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/open-folder.png" )
-filesTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/files.png" )
-borderTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/ui_border.png" )
-bgrTexture = RL_LoadTexture( RL_GetBasePath().."../resources/images/ui_bgr.png" )
+cancelTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/cancel.png" )
+backTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/previous-button.png" )
+folderTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/open-folder.png" )
+filesTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/files.png" )
+borderTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/ui_border.png" )
+bgrTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/ui_bgr.png" )
 
-RL_GenTextureMipmaps( cancelTexture )
-RL_GenTextureMipmaps( backTexture )
-RL_GenTextureMipmaps( folderTexture )
-RL_GenTextureMipmaps( filesTexture )
-RL_GenTextureMipmaps( borderTexture )
-RL_GenTextureMipmaps( bgrTexture )
+RL.GenTextureMipmaps( cancelTexture )
+RL.GenTextureMipmaps( backTexture )
+RL.GenTextureMipmaps( folderTexture )
+RL.GenTextureMipmaps( filesTexture )
+RL.GenTextureMipmaps( borderTexture )
+RL.GenTextureMipmaps( bgrTexture )
 
-RL_SetTextureFilter( cancelTexture, TEXTURE_FILTER_TRILINEAR )
-RL_SetTextureFilter( backTexture, TEXTURE_FILTER_TRILINEAR )
-RL_SetTextureFilter( folderTexture, TEXTURE_FILTER_TRILINEAR )
-RL_SetTextureFilter( filesTexture, TEXTURE_FILTER_TRILINEAR )
-RL_SetTextureFilter( borderTexture, TEXTURE_FILTER_TRILINEAR )
-RL_SetTextureFilter( bgrTexture, TEXTURE_FILTER_TRILINEAR )
+RL.SetTextureFilter( cancelTexture, RL.TEXTURE_FILTER_TRILINEAR )
+RL.SetTextureFilter( backTexture, RL.TEXTURE_FILTER_TRILINEAR )
+RL.SetTextureFilter( folderTexture, RL.TEXTURE_FILTER_TRILINEAR )
+RL.SetTextureFilter( filesTexture, RL.TEXTURE_FILTER_TRILINEAR )
+RL.SetTextureFilter( borderTexture, RL.TEXTURE_FILTER_TRILINEAR )
+RL.SetTextureFilter( bgrTexture, RL.TEXTURE_FILTER_TRILINEAR )
 
-RL_SetTextureWrap( borderTexture, TEXTURE_WRAP_REPEAT )
-RL_SetTextureWrap( bgrTexture, TEXTURE_WRAP_REPEAT )
+RL.SetTextureWrap( borderTexture, RL.TEXTURE_WRAP_REPEAT )
+RL.SetTextureWrap( bgrTexture, RL.TEXTURE_WRAP_REPEAT )
 
 -- End of calculator definition.
 
@@ -51,8 +51,8 @@ function initGui()
 			calculator:setVisible( true )
 			fileExplorer:setVisible( true )
 		end,
-		onMouseOver = function( self ) self.color = Color:new( LIGHTGRAY ) end,
-		notMouseOver = function( self ) self.color = Color:new( GRAY ) end,
+		onMouseOver = function( self ) self.color = Color:new( RL.LIGHTGRAY ) end,
+		notMouseOver = function( self ) self.color = Color:new( RL.GRAY ) end,
 	} )
 
 	showButton:add( Gui.text:new( { text = "Show", VAling = Gui.ALING.CENTER, HAling = Gui.ALING.CENTER } ) )
@@ -61,27 +61,27 @@ function initGui()
 	fileExplorer = FileExplorer:new( Vec2:new( 280, 96 ) )
 end
 
-function init()
+function RL.init()
 	local monitor = 0
-	local mPos = RL_GetMonitorPosition( monitor )
-	local mSize = RL_GetMonitorSize( monitor )
-	winSize = RL_GetScreenSize()
+	local mPos = RL.GetMonitorPosition( monitor )
+	local mSize = RL.GetMonitorSize( monitor )
+	winSize = RL.GetScreenSize()
 
-	RL_SetWindowTitle( "ReiLuaGui examples" )
-	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
-	RL_SetWindowState( FLAG_VSYNC_HINT )
-	RL_SetWindowSize( winSize )
-	RL_SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
+	RL.SetWindowTitle( "ReiLuaGui examples" )
+	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
+	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
+	RL.SetWindowSize( winSize )
+	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 
 	initGui()
 end
 
-function process( delta )
-	Gui.process( Vec2:new( RL_GetMousePosition() ) )
+function RL.process( delta )
+	Gui.process( Vec2:new( RL.GetMousePosition() ) )
 end
 
-function draw()
-	RL_ClearBackground( RAYWHITE )
+function RL.draw()
+	RL.ClearBackground( RL.RAYWHITE )
 
 	Gui.draw()
 end

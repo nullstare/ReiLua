@@ -1,8 +1,8 @@
 ## About
 
-Idea of this project was to bring the power and simplicity of raylib to easy beginner friendly language like Lua in a very straight forward manner. It is loose binding to Raylib, some functions will not be included and some are added. The idea of pointing "main.lua" file and access functions "init", "process" and "draw" are borrowed from Löve game engine.
+Idea of this project was to bring the power and simplicity of raylib to easy beginner friendly language like Lua in a very straight forward manner. It is loose binding to Raylib, some functions will not be included and some are added. The idea of pointing "main.lua" file and access functions "init", "process" and "draw" are borrowed from Löve game framework.
 
-Need for boilerplate code is minimal and in true Lua fashion (in better and worse) you don't need to worry about strict type rules since all Raylib types are lua tables or object id's. Also what Lua cannot handle, the engine is simple enough to be fairly easily extended with new functionality or by using Lua C-libraries.
+Need for boilerplate code is minimal and in true Lua fashion (in better and worse) you don't need to worry about strict type rules since all Raylib types are lua tables or object id's. Also what Lua cannot handle, the framework is simple enough to be fairly easily extended with new functionality or by using Lua C-libraries.
 
 ReiLua is not planned to be a one-to-one binding to raylib. If you want more direct bindings, there are other projects like https://github.com/TSnake41/raylib-lua.
 
@@ -35,33 +35,33 @@ List of some MISSING features that are planned to be included. For specific func
 
 ## Usage
 
-Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are three global Lua functions that the engine will call, 'init', 'process' and 'draw'.
+Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.process', 'RL.draw', 'RL.log' and 'RL.exit'.
 
 Example of basic "main.lua" file that will show basic windows with text.
 
 ```
-local textColor = BLACK
+local textColor = RL.BLACK
 local textPos = { 192, 200 }
 
-function init()
-	RL_SetWindowTitle( "First window" )
+function RL.init()
+	RL.SetWindowTitle( "First window" )
 end
 
-function process( delta )
-	if RL_IsKeyPressed( KEY_ENTER ) then
+function RL.process( delta )
+	if RL.IsKeyPressed( RL.KEY_ENTER ) then
 		textColor = BLUE
 		textPos = { 230, 230 }
 	end
 
-	if RL_IsKeyPressed( KEY_SPACE ) then
-		textColor = BLACK
+	if RL.IsKeyPressed( RL.KEY_SPACE ) then
+		textColor = RL.BLACK
 		textPos = { 192, 200 }
 	end
 end
 
-function draw()
-	RL_ClearBackground( RAYWHITE )
-    RL_DrawText( 0, "Congrats! You created your first window!", textPos, 20, 2, textColor )
+function RL.draw()
+	RL.ClearBackground( RL.RAYWHITE )
+    RL.DrawText( 0, "Congrats! You created your first window!", textPos, 20, 2, textColor )
 end
 ```
 
@@ -74,6 +74,7 @@ GameFolder
 ```
 
 Application should now start successfully from executable. All functionality can be found in "API".
+ReiLua_API.lua can be put into project folder to provide annotations when using Lua Language Server.
 
 ## Interpreter Mode
 
@@ -81,6 +82,14 @@ ReiLua can also be used to run single lua file using interpreter mode with argum
 
 ```
 ./Reilua -i hello.lua
+```
+
+## Generate API
+
+Generate API.md and ReiLua_API.lua from build folder with command.
+
+```
+./Reilua -i ../doc_parser.lua
 ```
 
 ## Building

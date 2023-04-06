@@ -38,7 +38,7 @@ Vector2.meta = {
 		return len
 	end,
 	__eq = function( v1, v2 )
-		return RL_Vector2Equals( v1, v2 ) == 1
+		return RL.Vector2Equals( v1, v2 ) == 1
 	end,
 }
 
@@ -91,79 +91,79 @@ function Vector2:max( v2 )
 end
 
 function Vector2:addValue( value )
-	return Vector2:new( RL_Vector2AddValue( self, value ) )
+	return Vector2:new( RL.Vector2AddValue( self, value ) )
 end
 
 function Vector2:subValue( value )
-	return Vector2:new( RL_Vector2SubtractValue( self, value ) )
+	return Vector2:new( RL.Vector2SubtractValue( self, value ) )
 end
 
 function Vector2:length()
-	return RL_Vector2Length( self )
+	return RL.Vector2Length( self )
 end
 
 function Vector2:lengthSqr()
-	return RL_Vector2LengthSqr( self )
+	return RL.Vector2LengthSqr( self )
 end
 
 function Vector2:dot( v2 )
-	return RL_Vector2DotProduct( self, v2 )
+	return RL.Vector2DotProduct( self, v2 )
 end
 
 function Vector2:distance( v2 )
-	return RL_Vector2Distance( self, v2 )
+	return RL.Vector2Distance( self, v2 )
 end
 
 function Vector2:distanceSqr( v2 )
-	return RL_Vector2DistanceSqr( self, v2 )
+	return RL.Vector2DistanceSqr( self, v2 )
 end
 
 function Vector2:angle( v2 )
-	return RL_Vector2Angle( self, v2 )
+	return RL.Vector2Angle( self, v2 )
 end
 
 function Vector2:scale( scale )
-	return Vector2:new( RL_Vector2Scale( self, scale ) )
+	return Vector2:new( RL.Vector2Scale( self, scale ) )
 end
 
 function Vector2:normalize()
-	return Vector2:new( RL_Vector2Normalize( self ) )
+	return Vector2:new( RL.Vector2Normalize( self ) )
 end
 
 function Vector2:transform( mat )
-	return Vector2:new( RL_Vector2Transform( self, mat ) )
+	return Vector2:new( RL.Vector2Transform( self, mat ) )
 end
 
 function Vector2:lerp( v2, value )
-	return Vector2:new( RL_Vector2Lerp( self, v2, value ) )
+	return Vector2:new( RL.Vector2Lerp( self, v2, value ) )
 end
 
 function Vector2:reflect( normal )
-	return Vector2:new( RL_Vector2Reflect( self, normal ) )
+	return Vector2:new( RL.Vector2Reflect( self, normal ) )
 end
 
 function Vector2:rotate( angle )
-	return Vector2:new( RL_Vector2Rotate( self, angle ) )
+	return Vector2:new( RL.Vector2Rotate( self, angle ) )
 end
 
 function Vector2:moveTowards( target, maxDistance )
-	return Vector2:new( RL_Vector2MoveTowards( self, target, maxDistance ) )
+	return Vector2:new( RL.Vector2MoveTowards( self, target, maxDistance ) )
 end
 
 function Vector2:invert()
-	return Vector2:new( RL_Vector2Invert( self ) )
+	return Vector2:new( RL.Vector2Invert( self ) )
 end
 
 function Vector2:clamp( min, max )
-	return Vector2:new( RL_Vector2Clamp( self, min, max ) )
+	return Vector2:new( RL.Vector2Clamp( self, min, max ) )
 end
 
 function Vector2:clampValue( min, max )
-	return Vector2:new( RL_Vector2ClampValue( self, min, max ) )
+	return Vector2:new( RL.Vector2ClampValue( self, min, max ) )
 end
 
 function Vector2:equals( v2 )
-	return RL_Vector2Equals( self, v2 )
+	return RL.Vector2Equals( self, v2 )
 end
 
 return Vector2

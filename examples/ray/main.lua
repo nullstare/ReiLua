@@ -4,17 +4,17 @@ local ray = { { 0.5, 0, 4 }, { 0.1, 0, -1 } }
 
 local function setupWindow()
 	local monitor = 0
-	local mPos = RL_GetMonitorPosition( monitor )
-	local mSize = RL_GetMonitorSize( monitor )
-	local winSize = RL_GetScreenSize()
+	local mPos = RL.GetMonitorPosition( monitor )
+	local mSize = RL.GetMonitorSize( monitor )
+	local winSize = RL.GetScreenSize()
 
-	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
-	RL_SetWindowState( FLAG_VSYNC_HINT )
-	RL_SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
+	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
+	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
+	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 end
 
 function ray_collision()
-	local rayCol = RL_GetRayCollisionMesh( ray, sphereMesh, RL_MatrixIdentity() )
+	local rayCol = RL.GetRayCollisionMesh( ray, sphereMesh, RL.MatrixIdentity() )
 
 	if rayCol ~= nil and rayCol.hit then
 		print( "hit", rayCol.hit )
@@ -24,35 +24,35 @@ function ray_collision()
 	end
 end
 
-function init()
+function RL.init()
 	setupWindow()
 
-	camera = RL_CreateCamera3D()
-	RL_SetCamera3DPosition( camera, { 0, 2, 4 } )
-	RL_SetCamera3DTarget( camera, { 0, 0, 0 } )
-	RL_SetCamera3DUp( camera, { 0, 1, 0 } )
-	RL_SetCameraMode( camera, CAMERA_FREE )
+	camera = RL.CreateCamera3D()
+	RL.SetCamera3DPosition( camera, { 0, 2, 4 } )
+	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
+	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
+	RL.SetCameraMode( camera, RL.CAMERA_FREE )
 
-	sphereMesh = RL_GenMeshSphere( 1.0, 8, 10 )
+	sphereMesh = RL.GenMeshSphere( 1.0, 8, 10 )
 
 	ray_collision()
 end
 
-function process( delta )
-	if RL_IsMouseButtonPressed( 0 ) then
-		ray = RL_GetMouseRay( RL_GetMousePosition(), camera )
+function RL.process( delta )
+	if RL.IsMouseButtonPressed( 0 ) then
+		ray = RL.GetMouseRay( RL.GetMousePosition(), camera )
 		ray_collision()
 	end
 end
 
-function draw()
-	RL_ClearBackground( { 100, 150, 100 } )
-	RL_UpdateCamera3D( camera )
-	
-	RL_BeginMode3D( camera )
-		RL_DrawGrid( 8, 1 )
-		RL_DrawRay( ray, { 255, 100, 100 } )
+function RL.draw()
+	RL.ClearBackground( { 100, 150, 100 } )
+	RL.UpdateCamera3D( camera )
 
-		RL_DrawMesh( sphereMesh, 0, RL_MatrixIdentity() )
-	RL_EndMode3D()
+	RL.BeginMode3D( camera )
+		RL.DrawGrid( 8, 1 )
+		RL.DrawRay( ray, { 255, 100, 100 } )
+
+		RL.DrawMesh( sphereMesh, 0, RL.MatrixIdentity() )
+	RL.EndMode3D()
 end

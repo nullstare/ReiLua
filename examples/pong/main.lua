@@ -27,7 +27,7 @@ local function reset()
 	-- Initialize player positions.
 	playerLeft.pos[1] = playerLeft.size[1]
 	playerLeft.pos[2] = winSize[2] / 2 - playerLeft.size[2] / 2
-	
+
 	playerRight.pos[1] = winSize[1] - playerRight.size[1] * 2
 	playerRight.pos[2] = winSize[2] / 2 - playerRight.size[2] / 2
 
@@ -48,33 +48,33 @@ local function ballHit( padPos, padSize )
 	ball.vel[2] = BALL_SPEED * relHitPos / padSize[2] * 2
 end
 
-function init()
+function RL.init()
 	-- Set window to center of monitor.
-	local mPos = RL_GetMonitorPosition( monitor )
-	local mSize = RL_GetMonitorSize( monitor )
+	local mPos = RL.GetMonitorPosition( monitor )
+	local mSize = RL.GetMonitorSize( monitor )
 
-	RL_SetWindowState( FLAG_VSYNC_HINT )
-	RL_SetWindowSize( winSize )
-	RL_SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
-	RL_SetWindowTitle( "Pong" )
+	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
+	RL.SetWindowSize( winSize )
+	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
+	RL.SetWindowTitle( "Pong" )
 
 	-- Initialize ball pos.
 	math.randomseed( os.time() )
 	reset()
 end
 
-function process( delta )
+function RL.process( delta )
 	-- Left player controls.
-	if RL_IsKeyDown( string.byte( "W" ) ) and 0 < playerLeft.pos[2] then
+	if RL.IsKeyDown( string.byte( "W" ) ) and 0 < playerLeft.pos[2] then
 		playerLeft.pos[2] = playerLeft.pos[2] - PLAYER_SPEED * delta
-	elseif RL_IsKeyDown( string.byte( "S" ) ) and playerLeft.pos[2] + playerLeft.size[2] < winSize[2] then
+	elseif RL.IsKeyDown( string.byte( "S" ) ) and playerLeft.pos[2] + playerLeft.size[2] < winSize[2] then
 		playerLeft.pos[2] = playerLeft.pos[2] + PLAYER_SPEED * delta
 	end
 
 	-- Right player controls.
-	if RL_IsKeyDown( KEY_UP ) and 0 < playerRight.pos[2] then
+	if RL.IsKeyDown( RL.KEY_UP ) and 0 < playerRight.pos[2] then
 		playerRight.pos[2] = playerRight.pos[2] - PLAYER_SPEED * delta
-	elseif RL_IsKeyDown( KEY_DOWN ) and playerRight.pos[2] + playerRight.size[2] < winSize[2] then
+	elseif RL.IsKeyDown( RL.KEY_DOWN ) and playerRight.pos[2] + playerRight.size[2] < winSize[2] then
 		playerRight.pos[2] = playerRight.pos[2] + PLAYER_SPEED * delta
 	end
 
@@ -94,9 +94,9 @@ function process( delta )
 	local playerRightRect = { playerRight.pos[1], playerRight.pos[2],
 							  playerRight.size[1], playerRight.size[2] }
 
-	if RL_CheckCollisionCircleRec( ball.pos, ball.radius, playerLeftRect ) and ball.vel[1] < 0 then
+	if RL.CheckCollisionCircleRec( ball.pos, ball.radius, playerLeftRect ) and ball.vel[1] < 0 then
 		ballHit( playerLeft.pos, playerLeft.size )
-	elseif RL_CheckCollisionCircleRec( ball.pos, ball.radius, playerRightRect ) and 0 < ball.vel[1] then
+	elseif RL.CheckCollisionCircleRec( ball.pos, ball.radius, playerRightRect ) and 0 < ball.vel[1] then
 		ballHit( playerRight.pos, playerRight.size )
 	end
 
@@ -110,18 +110,18 @@ function process( delta )
 	end
 end
 
-function draw()
-	RL_ClearBackground( BLACK )
+function RL.draw()
+	RL.ClearBackground( RL.BLACK )
 
 	-- Draw players.
-	RL_DrawRectangle( { playerLeft.pos[1], playerLeft.pos[2], playerLeft.size[1], playerLeft.size[2] }, WHITE )
-	RL_DrawRectangle( { playerRight.pos[1], playerRight.pos[2], playerRight.size[1], playerRight.size[2] }, WHITE )
+	RL.DrawRectangle( { playerLeft.pos[1], playerLeft.pos[2], playerLeft.size[1], playerLeft.size[2] }, RL.WHITE )
+	RL.DrawRectangle( { playerRight.pos[1], playerRight.pos[2], playerRight.size[1], playerRight.size[2] }, RL.WHITE )
 
 	-- Draw ball. Ball position will be the center in drawCircle.
-	RL_DrawCircle( ball.pos, ball.radius, WHITE )
+	RL.DrawCircle( ball.pos, ball.radius, RL.WHITE )
 
 	-- Draw scire
-    RL_DrawText( 0, playerLeft.score, { 50, 10 }, 40, 2, WHITE )
-	local rightTextSize = RL_MeasureText( 0, playerRight.score, 40, 2 )
-    RL_DrawText( 0, playerRight.score, { winSize[1] - 50 - rightTextSize[1], 10 }, 40, 2, WHITE )
+    RL.DrawText( 0, playerLeft.score, { 50, 10 }, 40, 2, RL.WHITE )
+	local rightTextSize = RL.MeasureText( 0, playerRight.score, 40, 2 )
+    RL.DrawText( 0, playerRight.score, { winSize[1] - 50 - rightTextSize[1], 10 }, 40, 2, RL.WHITE )
 end

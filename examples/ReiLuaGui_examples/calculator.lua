@@ -20,7 +20,7 @@ function Calculator:new( pos )
 		padding = 10,
 		onClicked = function()
 			object:set2Top()
-			object.dragPos = Vec2:new( RL_GetMousePosition() ) - Vec2:new( object.handle.bounds.x, object.handle.bounds.y )
+			object.dragPos = Vec2:new( RL.GetMousePosition() ) - Vec2:new( object.handle.bounds.x, object.handle.bounds.y )
 			Gui.heldCallback = function() object:drag() end
 		end,
 	} )
@@ -30,7 +30,7 @@ function Calculator:new( pos )
 		texture = bgrTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
-		color = Color:new( LIGHTGRAY ),
+		color = Color:new( RL.LIGHTGRAY ),
 	} ) )
 	
 	object.handle:add( Gui.texture:new( {
@@ -38,8 +38,8 @@ function Calculator:new( pos )
 		texture = borderTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
-		color = Color:new( LIGHTGRAY ),
-		nPatchInfo = { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = NPATCH_NINE_PATCH },
+		color = Color:new( RL.LIGHTGRAY ),
+		nPatchInfo = { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = RL.NPATCH_NINE_PATCH },
 	} ) )
 
 	object.handle:add( Gui.text:new( { text = "Calculator", fontSize = 20, VAling = Gui.ALING.CENTER } ) )
@@ -51,8 +51,8 @@ function Calculator:new( pos )
 		onClicked = function()
 			object:setVisible( false )
 		end,
-		onMouseOver = function( self ) self.items[1].color = Color:new( WHITE ) end,
-		notMouseOver = function( self ) self.items[1].color = Color:new( BLACK ) end,
+		onMouseOver = function( self ) self.items[1].color = Color:new( RL.WHITE ) end,
+		notMouseOver = function( self ) self.items[1].color = Color:new( RL.BLACK ) end,
 	} )
 
 	object.closeButton:add( Gui.texture:new( {
@@ -73,7 +73,7 @@ function Calculator:new( pos )
 		texture = bgrTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
-		color = Color:new( GRAY ),
+		color = Color:new( RL.GRAY ),
 	} ) )
 
 	object.panel:add( Gui.texture:new( {
@@ -81,8 +81,8 @@ function Calculator:new( pos )
 		texture = borderTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
-		color = Color:new( LIGHTGRAY ),
-		nPatchInfo = { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = NPATCH_NINE_PATCH },
+		color = Color:new( RL.LIGHTGRAY ),
+		nPatchInfo = { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = RL.NPATCH_NINE_PATCH },
 	} ) )
 
 	-- Display.
@@ -91,13 +91,13 @@ function Calculator:new( pos )
 		bounds = Rect:new( 0, 0, object.windowRect.width - 16, object.DISPLAY_HIGHT ),
 		padding = 10,
 		drawBounds = true,
-		color = Color:new( WHITE )
+		color = Color:new( RL.WHITE )
 	} )
 
 	object.display:add( Gui.text:new( { text = "", fontSize = 30, VAling = Gui.ALING.CENTER, maxTextLen = 8 } ) )
 
 	-- Buttons.
-	
+
 	local buttonStrings = { "7", "8", "9", "/", "4", "5", "6", "*", "1", "2", "3", "-", "0", "C", "=", "+" }
 	object.buttons = {}
 
@@ -108,8 +108,8 @@ function Calculator:new( pos )
 			table.insert( object.buttons, Gui.element:new( {
 				bounds = Rect:new( 0, 0, 40, 32 ),
 				drawBounds = true,
-				onMouseOver = function( self ) self.color = Color:new( WHITE ) end,
-				notMouseOver = function( self ) self.color = Color:new( LIGHTGRAY ) end,
+				onMouseOver = function( self ) self.color = Color:new( RL.WHITE ) end,
+				notMouseOver = function( self ) self.color = Color:new( RL.LIGHTGRAY ) end,
 			} ) )
 
 			object.buttons[ #object.buttons ].pos = Vec2:new( 8 + x * 46, object.HANDLE_HIGHT + object.DISPLAY_HIGHT + 16 + y * 38 )
@@ -161,7 +161,7 @@ function Calculator:setPosition( pos )
 end
 
 function Calculator:drag()
-	local mousePos = Vec2:new( RL_GetMousePosition() )
+	local mousePos = Vec2:new( RL.GetMousePosition() )
 	local winPos = Vec2:new( self.handle.bounds.x, self.handle.bounds.y )
 
 	self:setPosition( mousePos - self.dragPos )
@@ -173,13 +173,13 @@ function Calculator:setVisible( visible )
 
 	self.closeButton.visible = visible
 	self.closeButton.disabled = not visible
-	
+
 	self.panel.visible = visible
 	self.panel.disabled = not visible
 
 	self.display.visible = visible
 	self.display.disabled = not visible
-	
+
 	for _, button in ipairs( self.buttons ) do
 		button.visible = visible
 		button.disabled = not visible
@@ -188,7 +188,7 @@ end
 
 function Calculator:set2Top()
 	self.panel:set2Top()
-	
+
 	for _, button in ipairs( self.buttons ) do
 		button:set2Top()
 	end

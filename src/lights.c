@@ -37,7 +37,7 @@ bool validLight( size_t id ) {
 */
 
 /*
-> light = RL_CreateLight( int type, Vector3 position, Vector3 target, Color color, Shader shader )
+> light = RL.CreateLight( int type, Vector3 position, Vector3 target, Color color, Shader shader )
 
 Create a light and get shader locations
 
@@ -46,7 +46,7 @@ Create a light and get shader locations
 */
 int llightsCreateLight( lua_State *L ) {
 	if ( !lua_isnumber( L, -5 ) || !lua_istable( L, -4 ) || !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_CreateLight( int type, Vector3 position, Vector3 target, Color color, Shader shader )" );
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.CreateLight( int type, Vector3 position, Vector3 target, Color color, Shader shader )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -76,7 +76,7 @@ int llightsCreateLight( lua_State *L ) {
 }
 
 /*
-> success = RL_UpdateLightValues( Shader shader, Light light )
+> success = RL.UpdateLightValues( Shader shader, Light light )
 
 Send light properties to shader
 
@@ -85,7 +85,7 @@ Send light properties to shader
 */
 int llightsUpdateLightValues( lua_State *L ) {
 	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL_UpdateLightValues( Shader shader, Light light )" );
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UpdateLightValues( Shader shader, Light light )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}

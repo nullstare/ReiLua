@@ -16,22 +16,37 @@
 static void assignGlobalInt( int value, const char *name ) {
 	lua_State *L = state->luaState;
 	lua_pushinteger( L, value );
-	lua_setglobal( L, name );
+	// lua_setglobal( L, name );
+	lua_setfield( L, -2, name );
 }
 
 static void assignGlobalFloat( float value, const char *name ) {
 	lua_State *L = state->luaState;
 	lua_pushnumber( L, value );
-	lua_setglobal( L, name );
+	// lua_setglobal( L, name );
+	lua_setfield( L, -2, name );
 }
 
 static void assignGlobalColor( Color color, const char *name ) {
 	lua_State *L = state->luaState;
 	uluaPushColor( L, color );
-	lua_setglobal( L, name );
+	// lua_setglobal( L, name );
+	lua_setfield( L, -2, name );
+}
+
+static void assingGlobalFunction( const char *name, int ( *functionPtr )( lua_State* ) ) {
+	lua_State *L = state->luaState;
+	lua_pushcfunction( L, functionPtr );
+	lua_setfield( L, -2, name );
 }
 
 void defineGlobals() {
+	lua_State *L = state->luaState;
+
+	lua_newtable( state->luaState );
+	lua_setglobal( L, "RL" );
+	lua_getglobal( L, "RL" );
+
 /*DOC_START*/
 	/* ConfigFlags */
 	assignGlobalInt( FLAG_VSYNC_HINT, "FLAG_VSYNC_HINT" );
@@ -476,6 +491,8 @@ void defineGlobals() {
 	assignGlobalInt( LIGHT_DIRECTIONAL, "LIGHT_DIRECTIONAL" );
 	assignGlobalInt( LIGHT_POINT, "LIGHT_POINT" );
 /*DOC_END*/
+
+	lua_pop( L, -1 );
 }
 
 // Custom logging funtion
@@ -586,7 +603,9 @@ bool luaCallMain() {
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
 
-	lua_getglobal( L, "init" );
+	// lua_getglobal( L, "init" );
+	lua_getglobal( L, "RL" );
+	lua_getfield ( L, -1, "init" );
 
 	if ( lua_isfunction( L, -1 ) ) {
 		if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
@@ -599,6 +618,7 @@ bool luaCallMain() {
 		TraceLog( LOG_ERROR, "%s", "No Lua init found!" );
         return false;
     }
+	lua_pop( L, -1 );
 	/* Apply custom callback here. */
 	SetTraceLogCallback( LogCustom );
 
@@ -611,7 +631,9 @@ void luaCallProcess() {
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop(L);
 	
-    lua_getglobal( L, "process" );
+    // lua_getglobal( L, "process" );
+	lua_getglobal( L, "RL" );
+	lua_getfield ( L, -1, "process" );
 
     if ( lua_isfunction( L, -1 ) ) {
         lua_pushnumber( L, GetFrameTime() );
@@ -631,7 +653,9 @@ void luaCallDraw() {
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop(L);
 	
-    lua_getglobal( L, "draw" );
+    // lua_getglobal( L, "draw" );
+	lua_getglobal( L, "RL" );
+	lua_getfield ( L, -1, "draw" );
 
     if ( lua_isfunction( L, -1 ) ) {
 		BeginDrawing();
@@ -652,7 +676,9 @@ void luaCallExit() {
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop(L);
 	
-    lua_getglobal( L, "exit" );
+    // lua_getglobal( L, "exit" );
+	lua_getglobal( L, "RL" );
+	lua_getfield ( L, -1, "exit" );
 
     if ( lua_isfunction( L, -1 ) ) {
         if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
@@ -666,678 +692,682 @@ void luaCallExit() {
 
 void luaRegister() {
 	lua_State *L = state->luaState;
+	lua_getglobal( L, "RL" );
 
 	/* Core. */
 		/* Window. */
-	lua_register( L, "RL_IsWindowReady", lcoreIsWindowReady );
-	lua_register( L, "RL_IsWindowFullscreen", lcoreIsWindowFullscreen );
-	lua_register( L, "RL_IsWindowHidden", lcoreIsWindowHidden );
-	lua_register( L, "RL_IsWindowMinimized", lcoreIsWindowMinimized );
-	lua_register( L, "RL_IsWindowMaximized", lcoreIsWindowMaximized );
-	lua_register( L, "RL_IsWindowFocused", lcoreIsWindowFocused );
-	lua_register( L, "RL_SetWindowMonitor", lcoreSetWindowMonitor );
-	lua_register( L, "RL_SetWindowPosition", lcoreSetWindowPosition );
-	lua_register( L, "RL_SetWindowSize", lcoreSetWindowSize );
-	lua_register( L, "RL_SetWindowMinSize", lcoreSetWindowMinSize );
-	lua_register( L, "RL_GetMonitorPosition", lcoreGetMonitorPosition );
-	lua_register( L, "RL_GetMonitorSize", lcoreGetMonitorSize );
-	lua_register( L, "RL_GetWindowPosition", lcoreGetWindowPosition );
-	lua_register( L, "RL_GetScreenSize", lcoreGetScreenSize );
-	lua_register( L, "RL_SetWindowState", lcoreSetWindowState );
-	lua_register( L, "RL_IsWindowState", lcoreIsWindowState );
-	lua_register( L, "RL_ClearWindowState", lcoreClearWindowState );
-	lua_register( L, "RL_IsWindowResized", lcoreIsWindowResized );
-	lua_register( L, "RL_SetWindowIcon", lcoreSetWindowIcon );
-	lua_register( L, "RL_SetWindowTitle", lcoreSetWindowTitle );
-	lua_register( L, "RL_GetMonitorCount", lcoreGetMonitorCount );
-	lua_register( L, "RL_GetCurrentMonitor", lcoreGetCurrentMonitor );
-	lua_register( L, "RL_GetMonitorPhysicalSize", lcoreGetMonitorPhysicalSize );
-	lua_register( L, "RL_GetMonitorRefreshRate", lcoreGetMonitorRefreshRate );
-	lua_register( L, "RL_GetWindowScaleDPI", lcoreGetWindowScaleDPI );
-	lua_register( L, "RL_GetMonitorName", lcoreGetMonitorName );
-	lua_register( L, "RL_CloseWindow", lcoreCloseWindow );
-	lua_register( L, "RL_SetClipboardText", lcoreSetClipboardText );
-	lua_register( L, "RL_GetClipboardText", lcoreGetClipboardText );
+
+	assingGlobalFunction( "IsWindowReady", lcoreIsWindowReady );
+	assingGlobalFunction( "IsWindowFullscreen", lcoreIsWindowFullscreen );
+	assingGlobalFunction( "IsWindowHidden", lcoreIsWindowHidden );
+	assingGlobalFunction( "IsWindowMinimized", lcoreIsWindowMinimized );
+	assingGlobalFunction( "IsWindowMaximized", lcoreIsWindowMaximized );
+	assingGlobalFunction( "IsWindowFocused", lcoreIsWindowFocused );
+	assingGlobalFunction( "SetWindowMonitor", lcoreSetWindowMonitor );
+	assingGlobalFunction( "SetWindowPosition", lcoreSetWindowPosition );
+	assingGlobalFunction( "SetWindowSize", lcoreSetWindowSize );
+	assingGlobalFunction( "SetWindowMinSize", lcoreSetWindowMinSize );
+	assingGlobalFunction( "GetMonitorPosition", lcoreGetMonitorPosition );
+	assingGlobalFunction( "GetMonitorSize", lcoreGetMonitorSize );
+	assingGlobalFunction( "GetWindowPosition", lcoreGetWindowPosition );
+	assingGlobalFunction( "GetScreenSize", lcoreGetScreenSize );
+	assingGlobalFunction( "SetWindowState", lcoreSetWindowState );
+	assingGlobalFunction( "IsWindowState", lcoreIsWindowState );
+	assingGlobalFunction( "ClearWindowState", lcoreClearWindowState );
+	assingGlobalFunction( "IsWindowResized", lcoreIsWindowResized );
+	assingGlobalFunction( "SetWindowIcon", lcoreSetWindowIcon );
+	assingGlobalFunction( "SetWindowTitle", lcoreSetWindowTitle );
+	assingGlobalFunction( "GetMonitorCount", lcoreGetMonitorCount );
+	assingGlobalFunction( "GetCurrentMonitor", lcoreGetCurrentMonitor );
+	assingGlobalFunction( "GetMonitorPhysicalSize", lcoreGetMonitorPhysicalSize );
+	assingGlobalFunction( "GetMonitorRefreshRate", lcoreGetMonitorRefreshRate );
+	assingGlobalFunction( "GetWindowScaleDPI", lcoreGetWindowScaleDPI );
+	assingGlobalFunction( "GetMonitorName", lcoreGetMonitorName );
+	assingGlobalFunction( "CloseWindow", lcoreCloseWindow );
+	assingGlobalFunction( "SetClipboardText", lcoreSetClipboardText );
+	assingGlobalFunction( "GetClipboardText", lcoreGetClipboardText );
 		/* Timing. */
-	lua_register( L, "RL_SetTargetFPS", lcoreSetTargetFPS );
-	lua_register( L, "RL_GetFPS", lcoreGetFPS );
-	lua_register( L, "RL_GetFrameTime", lcoreGetFrameTime );
-	lua_register( L, "RL_GetTime", lcoreGetTime );
+	assingGlobalFunction( "SetTargetFPS", lcoreSetTargetFPS );
+	assingGlobalFunction( "GetFPS", lcoreGetFPS );
+	assingGlobalFunction( "GetFrameTime", lcoreGetFrameTime );
+	assingGlobalFunction( "GetTime", lcoreGetTime );
 		/* Misc. */
-	lua_register( L, "RL_TakeScreenshot", lcoreTakeScreenshot );
-	lua_register( L, "RL_SetConfigFlags", lcoreSetConfigFlags );
-	lua_register( L, "RL_TraceLog", lcoreTraceLog );
-	lua_register( L, "RL_SetTraceLogLevel", lcoreSetTraceLogLevel );
-	lua_register( L, "RL_OpenURL", lcoreOpenURL );
+	assingGlobalFunction( "TakeScreenshot", lcoreTakeScreenshot );
+	assingGlobalFunction( "SetConfigFlags", lcoreSetConfigFlags );
+	assingGlobalFunction( "TraceLog", lcoreTraceLog );
+	assingGlobalFunction( "SetTraceLogLevel", lcoreSetTraceLogLevel );
+	assingGlobalFunction( "OpenURL", lcoreOpenURL );
 		/* Cursor. */
-	lua_register( L, "RL_ShowCursor", lcoreShowCursor );
-	lua_register( L, "RL_HideCursor", lcoreHideCursor );
-	lua_register( L, "RL_IsCursorHidden", lcoreIsCursorHidden );
-	lua_register( L, "RL_EnableCursor", lcoreEnableCursor );
-	lua_register( L, "RL_DisableCursor", lcoreDisableCursor );
-	lua_register( L, "RL_IsCursorOnScreen", lcoreIsCursorOnScreen );
+	assingGlobalFunction( "ShowCursor", lcoreShowCursor );
+	assingGlobalFunction( "HideCursor", lcoreHideCursor );
+	assingGlobalFunction( "IsCursorHidden", lcoreIsCursorHidden );
+	assingGlobalFunction( "EnableCursor", lcoreEnableCursor );
+	assingGlobalFunction( "DisableCursor", lcoreDisableCursor );
+	assingGlobalFunction( "IsCursorOnScreen", lcoreIsCursorOnScreen );
 		/* Drawing. */
-	lua_register( L, "RL_ClearBackground", lcoreClearBackground );
-	lua_register( L, "RL_BeginDrawing", lcoreBeginDrawing );
-	lua_register( L, "RL_EndDrawing", lcoreEndDrawing );
-	lua_register( L, "RL_BeginBlendMode", lcoreBeginBlendMode );
-	lua_register( L, "RL_EndBlendMode", lcoreEndBlendMode );
-	lua_register( L, "RL_BeginScissorMode", lcoreBeginScissorMode );
-	lua_register( L, "RL_EndScissorMode", lcoreEndScissorMode );
+	assingGlobalFunction( "ClearBackground", lcoreClearBackground );
+	assingGlobalFunction( "BeginDrawing", lcoreBeginDrawing );
+	assingGlobalFunction( "EndDrawing", lcoreEndDrawing );
+	assingGlobalFunction( "BeginBlendMode", lcoreBeginBlendMode );
+	assingGlobalFunction( "EndBlendMode", lcoreEndBlendMode );
+	assingGlobalFunction( "BeginScissorMode", lcoreBeginScissorMode );
+	assingGlobalFunction( "EndScissorMode", lcoreEndScissorMode );
 		/* Shader. */
-	lua_register( L, "RL_LoadShader", lcoreLoadShader );
-	lua_register( L, "RL_LoadShaderFromMemory", lcoreLoadShaderFromMemory );
-	lua_register( L, "RL_BeginShaderMode", lcoreBeginShaderMode );
-	lua_register( L, "RL_EndShaderMode", lcoreEndShaderMode );
-	lua_register( L, "RL_GetShaderLocation", lcoreGetShaderLocation );
-	lua_register( L, "RL_GetShaderLocationAttrib", lcoreGetShaderLocationAttrib );
-	lua_register( L, "RL_SetShaderLocationIndex", lcoreSetShaderLocationIndex );
-	lua_register( L, "RL_GetShaderLocationIndex", lcoreGetShaderLocationIndex );
-	lua_register( L, "RL_SetShaderValueMatrix", lcoreSetShaderValueMatrix );
-	lua_register( L, "RL_SetShaderValueTexture", lcoreSetShaderValueTexture );
-	lua_register( L, "RL_SetShaderValue", lcoreSetShaderValue );
-	lua_register( L, "RL_SetShaderValueV", lcoreSetShaderValueV );
-	lua_register( L, "RL_UnloadShader", lcoreUnloadShader );
+	assingGlobalFunction( "LoadShader", lcoreLoadShader );
+	assingGlobalFunction( "LoadShaderFromMemory", lcoreLoadShaderFromMemory );
+	assingGlobalFunction( "BeginShaderMode", lcoreBeginShaderMode );
+	assingGlobalFunction( "EndShaderMode", lcoreEndShaderMode );
+	assingGlobalFunction( "GetShaderLocation", lcoreGetShaderLocation );
+	assingGlobalFunction( "GetShaderLocationAttrib", lcoreGetShaderLocationAttrib );
+	assingGlobalFunction( "SetShaderLocationIndex", lcoreSetShaderLocationIndex );
+	assingGlobalFunction( "GetShaderLocationIndex", lcoreGetShaderLocationIndex );
+	assingGlobalFunction( "SetShaderValueMatrix", lcoreSetShaderValueMatrix );
+	assingGlobalFunction( "SetShaderValueTexture", lcoreSetShaderValueTexture );
+	assingGlobalFunction( "SetShaderValue", lcoreSetShaderValue );
+	assingGlobalFunction( "SetShaderValueV", lcoreSetShaderValueV );
+	assingGlobalFunction( "UnloadShader", lcoreUnloadShader );
 		/* File. */
-	lua_register( L, "RL_GetBasePath", lcoreGetBasePath );
-	lua_register( L, "RL_FileExists", lcoreFileExists );
-	lua_register( L, "RL_DirectoryExists", lcoreDirectoryExists );
-	lua_register( L, "RL_IsFileExtension", lcoreIsFileExtension );
-	lua_register( L, "RL_GetFileLength", lcoreGetFileLength );
-	lua_register( L, "RL_GetFileExtension", lcoreGetFileExtension );
-	lua_register( L, "RL_GetFileName", lcoreGetFileName );
-	lua_register( L, "RL_GetFileNameWithoutExt", lcoreGetFileNameWithoutExt );
-	lua_register( L, "RL_GetDirectoryPath", lcoreGetDirectoryPath );
-	lua_register( L, "RL_GetPrevDirectoryPath", lcoreGetPrevDirectoryPath );
-	lua_register( L, "RL_GetWorkingDirectory", lcoreGetWorkingDirectory );
-	lua_register( L, "RL_LoadDirectoryFiles", lcoreLoadDirectoryFiles );
-	lua_register( L, "RL_LoadDirectoryFilesEx", lcoreLoadDirectoryFilesEx );
-	lua_register( L, "RL_ChangeDirectory", lcoreChangeDirectory );
-	lua_register( L, "RL_IsPathFile", lcoreIsPathFile );
-	lua_register( L, "RL_IsFileDropped", lcoreIsFileDropped );
-	lua_register( L, "RL_LoadDroppedFiles", lcoreLoadDroppedFiles );
-	lua_register( L, "RL_GetFileModTime", lcoreGetFileModTime );
+	assingGlobalFunction( "GetBasePath", lcoreGetBasePath );
+	assingGlobalFunction( "FileExists", lcoreFileExists );
+	assingGlobalFunction( "DirectoryExists", lcoreDirectoryExists );
+	assingGlobalFunction( "IsFileExtension", lcoreIsFileExtension );
+	assingGlobalFunction( "GetFileLength", lcoreGetFileLength );
+	assingGlobalFunction( "GetFileExtension", lcoreGetFileExtension );
+	assingGlobalFunction( "GetFileName", lcoreGetFileName );
+	assingGlobalFunction( "GetFileNameWithoutExt", lcoreGetFileNameWithoutExt );
+	assingGlobalFunction( "GetDirectoryPath", lcoreGetDirectoryPath );
+	assingGlobalFunction( "GetPrevDirectoryPath", lcoreGetPrevDirectoryPath );
+	assingGlobalFunction( "GetWorkingDirectory", lcoreGetWorkingDirectory );
+	assingGlobalFunction( "LoadDirectoryFiles", lcoreLoadDirectoryFiles );
+	assingGlobalFunction( "LoadDirectoryFilesEx", lcoreLoadDirectoryFilesEx );
+	assingGlobalFunction( "ChangeDirectory", lcoreChangeDirectory );
+	assingGlobalFunction( "IsPathFile", lcoreIsPathFile );
+	assingGlobalFunction( "IsFileDropped", lcoreIsFileDropped );
+	assingGlobalFunction( "LoadDroppedFiles", lcoreLoadDroppedFiles );
+	assingGlobalFunction( "GetFileModTime", lcoreGetFileModTime );
 		/* Camera2D. */
-	lua_register( L, "RL_CreateCamera2D", lcoreCreateCamera2D );
-	lua_register( L, "RL_UnloadCamera2D", lcoreUnloadCamera2D );
-	lua_register( L, "RL_BeginMode2D", lcoreBeginMode2D );
-	lua_register( L, "RL_EndMode2D", lcoreEndMode2D );
-	lua_register( L, "RL_SetCamera2DTarget", lcoreSetCamera2DTarget );
-	lua_register( L, "RL_SetCamera2DOffset", lcoreSetCamera2DOffset );
-	lua_register( L, "RL_SetCamera2DRotation", lcoreSetCamera2DRotation );
-	lua_register( L, "RL_SetCamera2DZoom", lcoreSetCamera2DZoom );
-	lua_register( L, "RL_GetCamera2DTarget", lcoreGetCamera2DTarget );
-	lua_register( L, "RL_GetCamera2DOffset", lcoreGetCamera2DOffset );
-	lua_register( L, "RL_GetCamera2DRotation", lcoreGetCamera2DRotation );
-	lua_register( L, "RL_GetCamera2DZoom", lcoreGetCamera2DZoom );
+	assingGlobalFunction( "CreateCamera2D", lcoreCreateCamera2D );
+	assingGlobalFunction( "UnloadCamera2D", lcoreUnloadCamera2D );
+	assingGlobalFunction( "BeginMode2D", lcoreBeginMode2D );
+	assingGlobalFunction( "EndMode2D", lcoreEndMode2D );
+	assingGlobalFunction( "SetCamera2DTarget", lcoreSetCamera2DTarget );
+	assingGlobalFunction( "SetCamera2DOffset", lcoreSetCamera2DOffset );
+	assingGlobalFunction( "SetCamera2DRotation", lcoreSetCamera2DRotation );
+	assingGlobalFunction( "SetCamera2DZoom", lcoreSetCamera2DZoom );
+	assingGlobalFunction( "GetCamera2DTarget", lcoreGetCamera2DTarget );
+	assingGlobalFunction( "GetCamera2DOffset", lcoreGetCamera2DOffset );
+	assingGlobalFunction( "GetCamera2DRotation", lcoreGetCamera2DRotation );
+	assingGlobalFunction( "GetCamera2DZoom", lcoreGetCamera2DZoom );
 		/* Camera3D. */
-	lua_register( L, "RL_CreateCamera3D", lcoreCreateCamera3D );
-	lua_register( L, "RL_UnloadCamera3D", lcoreUnloadCamera3D );
-	lua_register( L, "RL_BeginMode3D", lcoreBeginMode3D );
-	lua_register( L, "RL_EndMode3D", lcoreEndMode3D );
-	lua_register( L, "RL_SetCamera3DPosition", lcoreSetCamera3DPosition );
-	lua_register( L, "RL_SetCamera3DTarget", lcoreSetCamera3DTarget );
-	lua_register( L, "RL_SetCamera3DUp", lcoreSetCamera3DUp );
-	lua_register( L, "RL_SetCamera3DFovy", lcoreSetCamera3DFovy );
-	lua_register( L, "RL_SetCamera3DProjection", lcoreSetCamera3DProjection );
-	lua_register( L, "RL_GetCamera3DPosition", lcoreGetCamera3DPosition );
-	lua_register( L, "RL_GetCamera3DTarget", lcoreGetCamera3DTarget );
-	lua_register( L, "RL_GetCamera3DUp", lcoreGetCamera3DUp );
-	lua_register( L, "RL_GetCamera3DFovy", lcoreGetCamera3DFovy );
-	lua_register( L, "RL_GetCamera3DProjection", lcoreGetCamera3DProjection );
-	lua_register( L, "RL_UpdateCamera3D", lcoreUpdateCamera3D );
-	lua_register( L, "RL_SetCameraMode", lcoreSetCameraMode );
-	lua_register( L, "RL_SetCameraPanControl", lcoreSetCameraPanControl );
-	lua_register( L, "RL_SetCameraAltControl", lcoreSetCameraAltControl );
-	lua_register( L, "RL_SetCameraSmoothZoomControl", lcoreSetCameraSmoothZoomControl );
-	lua_register( L, "RL_SetCameraMoveControls", lcoreSetCameraMoveControls );
+	assingGlobalFunction( "CreateCamera3D", lcoreCreateCamera3D );
+	assingGlobalFunction( "UnloadCamera3D", lcoreUnloadCamera3D );
+	assingGlobalFunction( "BeginMode3D", lcoreBeginMode3D );
+	assingGlobalFunction( "EndMode3D", lcoreEndMode3D );
+	assingGlobalFunction( "SetCamera3DPosition", lcoreSetCamera3DPosition );
+	assingGlobalFunction( "SetCamera3DTarget", lcoreSetCamera3DTarget );
+	assingGlobalFunction( "SetCamera3DUp", lcoreSetCamera3DUp );
+	assingGlobalFunction( "SetCamera3DFovy", lcoreSetCamera3DFovy );
+	assingGlobalFunction( "SetCamera3DProjection", lcoreSetCamera3DProjection );
+	assingGlobalFunction( "GetCamera3DPosition", lcoreGetCamera3DPosition );
+	assingGlobalFunction( "GetCamera3DTarget", lcoreGetCamera3DTarget );
+	assingGlobalFunction( "GetCamera3DUp", lcoreGetCamera3DUp );
+	assingGlobalFunction( "GetCamera3DFovy", lcoreGetCamera3DFovy );
+	assingGlobalFunction( "GetCamera3DProjection", lcoreGetCamera3DProjection );
+	assingGlobalFunction( "UpdateCamera3D", lcoreUpdateCamera3D );
+	assingGlobalFunction( "SetCameraMode", lcoreSetCameraMode );
+	assingGlobalFunction( "SetCameraPanControl", lcoreSetCameraPanControl );
+	assingGlobalFunction( "SetCameraAltControl", lcoreSetCameraAltControl );
+	assingGlobalFunction( "SetCameraSmoothZoomControl", lcoreSetCameraSmoothZoomControl );
+	assingGlobalFunction( "SetCameraMoveControls", lcoreSetCameraMoveControls );
 		/* Input-related Keyboard. */
-	lua_register( L, "RL_IsKeyPressed", lcoreIsKeyPressed );
-	lua_register( L, "RL_IsKeyDown", lcoreIsKeyDown );
-	lua_register( L, "RL_IsKeyReleased", lcoreIsKeyReleased );
-	lua_register( L, "RL_IsKeyUp", lcoreIsKeyUp );
-	lua_register( L, "RL_GetKeyPressed", lcoreGetKeyPressed );
-	lua_register( L, "RL_GetCharPressed", lcoreGetCharPressed );
-	lua_register( L, "RL_SetExitKey", lcoreSetExitKey );
-	lua_register( L, "RL_GetKeyName", lcoreGetKeyName );
-	lua_register( L, "RL_GetKeyScancode", lcoreGetKeyScancode );
+	assingGlobalFunction( "IsKeyPressed", lcoreIsKeyPressed );
+	assingGlobalFunction( "IsKeyDown", lcoreIsKeyDown );
+	assingGlobalFunction( "IsKeyReleased", lcoreIsKeyReleased );
+	assingGlobalFunction( "IsKeyUp", lcoreIsKeyUp );
+	assingGlobalFunction( "GetKeyPressed", lcoreGetKeyPressed );
+	assingGlobalFunction( "GetCharPressed", lcoreGetCharPressed );
+	assingGlobalFunction( "SetExitKey", lcoreSetExitKey );
+	assingGlobalFunction( "GetKeyName", lcoreGetKeyName );
+	assingGlobalFunction( "GetKeyScancode", lcoreGetKeyScancode );
 		/* Input-related Gamepad. */
-	lua_register( L, "RL_IsGamepadAvailable", lcoreIsGamepadAvailable );
-	lua_register( L, "RL_IsGamepadButtonPressed", lcoreIsGamepadButtonPressed );
-	lua_register( L, "RL_IsGamepadButtonDown", lcoreIsGamepadButtonDown );
-	lua_register( L, "RL_IsGamepadButtonReleased", lcoreIsGamepadButtonReleased );
-	lua_register( L, "RL_GetGamepadAxisCount", lcoreGetGamepadAxisCount );
-	lua_register( L, "RL_GetGamepadAxisMovement", lcoreGetGamepadAxisMovement );
-	lua_register( L, "RL_GetGamepadName", lcoreGetGamepadName );
+	assingGlobalFunction( "IsGamepadAvailable", lcoreIsGamepadAvailable );
+	assingGlobalFunction( "IsGamepadButtonPressed", lcoreIsGamepadButtonPressed );
+	assingGlobalFunction( "IsGamepadButtonDown", lcoreIsGamepadButtonDown );
+	assingGlobalFunction( "IsGamepadButtonReleased", lcoreIsGamepadButtonReleased );
+	assingGlobalFunction( "GetGamepadAxisCount", lcoreGetGamepadAxisCount );
+	assingGlobalFunction( "GetGamepadAxisMovement", lcoreGetGamepadAxisMovement );
+	assingGlobalFunction( "GetGamepadName", lcoreGetGamepadName );
 		/* Input-related Mouse. */
-	lua_register( L, "RL_IsMouseButtonPressed", lcoreIsMouseButtonPressed );
-	lua_register( L, "RL_IsMouseButtonDown", lcoreIsMouseButtonDown );
-	lua_register( L, "RL_IsMouseButtonReleased", lcoreIsMouseButtonReleased );
-	lua_register( L, "RL_IsMouseButtonUp", lcoreIsMouseButtonUp );
-	lua_register( L, "RL_GetMousePosition", lcoreGetMousePosition );
-	lua_register( L, "RL_GetMouseDelta", lcoreGetMouseDelta );
-	lua_register( L, "RL_SetMousePosition", lcoreSetMousePosition );
-	lua_register( L, "RL_SetMouseOffset", lcoreSetMouseOffset );
-	lua_register( L, "RL_SetMouseScale", lcoreSetMouseScale );
-	lua_register( L, "RL_GetMouseWheelMove", lcoreGetMouseWheelMove );
-	lua_register( L, "RL_SetMouseCursor", lcoreSetMouseCursor );
+	assingGlobalFunction( "IsMouseButtonPressed", lcoreIsMouseButtonPressed );
+	assingGlobalFunction( "IsMouseButtonDown", lcoreIsMouseButtonDown );
+	assingGlobalFunction( "IsMouseButtonReleased", lcoreIsMouseButtonReleased );
+	assingGlobalFunction( "IsMouseButtonUp", lcoreIsMouseButtonUp );
+	assingGlobalFunction( "GetMousePosition", lcoreGetMousePosition );
+	assingGlobalFunction( "GetMouseDelta", lcoreGetMouseDelta );
+	assingGlobalFunction( "SetMousePosition", lcoreSetMousePosition );
+	assingGlobalFunction( "SetMouseOffset", lcoreSetMouseOffset );
+	assingGlobalFunction( "SetMouseScale", lcoreSetMouseScale );
+	assingGlobalFunction( "GetMouseWheelMove", lcoreGetMouseWheelMove );
+	assingGlobalFunction( "SetMouseCursor", lcoreSetMouseCursor );
 		/* Input-related Touch */
-	lua_register( L, "RL_GetTouchPosition", lcoreGetTouchPosition );
-	lua_register( L, "RL_GetTouchPointId", lcoreGetTouchPointId );
-	lua_register( L, "RL_GetTouchPointCount", lcoreGetTouchPointCount );
+	assingGlobalFunction( "GetTouchPosition", lcoreGetTouchPosition );
+	assingGlobalFunction( "GetTouchPointId", lcoreGetTouchPointId );
+	assingGlobalFunction( "GetTouchPointCount", lcoreGetTouchPointCount );
 		/* Input-related Gestures. */
-	lua_register( L, "RL_SetGesturesEnabled", lcoreSetGesturesEnabled );
-	lua_register( L, "RL_IsGestureDetected", lcoreIsGestureDetected );
-	lua_register( L, "RL_GetGestureDetected", lcoreGetGestureDetected );
-	lua_register( L, "RL_GetGestureHoldDuration", lcoreGetGestureHoldDuration );
-	lua_register( L, "RL_GetGestureDragVector", lcoreGetGestureDragVector );
-	lua_register( L, "RL_GetGestureDragAngle", lcoreGetGestureDragAngle );
-	lua_register( L, "RL_GetGesturePinchVector", lcoreGetGesturePinchVector );
-	lua_register( L, "RL_GetGesturePinchAngle", lcoreGetGesturePinchAngle );
+	assingGlobalFunction( "SetGesturesEnabled", lcoreSetGesturesEnabled );
+	assingGlobalFunction( "IsGestureDetected", lcoreIsGestureDetected );
+	assingGlobalFunction( "GetGestureDetected", lcoreGetGestureDetected );
+	assingGlobalFunction( "GetGestureHoldDuration", lcoreGetGestureHoldDuration );
+	assingGlobalFunction( "GetGestureDragVector", lcoreGetGestureDragVector );
+	assingGlobalFunction( "GetGestureDragAngle", lcoreGetGestureDragAngle );
+	assingGlobalFunction( "GetGesturePinchVector", lcoreGetGesturePinchVector );
+	assingGlobalFunction( "GetGesturePinchAngle", lcoreGetGesturePinchAngle );
 		/* Screen-space. */
-	lua_register( L, "RL_GetMouseRay", lcoreGetMouseRay );
-	lua_register( L, "RL_GetCameraMatrix", lcoreGetCameraMatrix );
-	lua_register( L, "RL_GetCameraMatrix2D", lcoreGetCameraMatrix2D );
-	lua_register( L, "RL_GetWorldToScreen", lcoreGetWorldToScreen );
-	lua_register( L, "RL_GetWorldToScreenEx", lcoreGetWorldToScreenEx );
-	lua_register( L, "RL_GetWorldToScreen2D", lcoreGetWorldToScreen2D );
-	lua_register( L, "RL_GetScreenToWorld2D", lcoreGetScreenToWorld2D );
+	assingGlobalFunction( "GetMouseRay", lcoreGetMouseRay );
+	assingGlobalFunction( "GetCameraMatrix", lcoreGetCameraMatrix );
+	assingGlobalFunction( "GetCameraMatrix2D", lcoreGetCameraMatrix2D );
+	assingGlobalFunction( "GetWorldToScreen", lcoreGetWorldToScreen );
+	assingGlobalFunction( "GetWorldToScreenEx", lcoreGetWorldToScreenEx );
+	assingGlobalFunction( "GetWorldToScreen2D", lcoreGetWorldToScreen2D );
+	assingGlobalFunction( "GetScreenToWorld2D", lcoreGetScreenToWorld2D );
 
 	/* Shapes. */
 		/* Drawing. */
-	lua_register( L, "RL_SetShapesTexture", lshapesSetShapesTexture );
-	lua_register( L, "RL_DrawPixel", lshapesDrawPixel );
-	lua_register( L, "RL_DrawLine", lshapesDrawLine );
-	lua_register( L, "RL_DrawLineBezier", lshapesDrawLineBezier );
-	lua_register( L, "RL_DrawLineBezierQuad", lshapesDrawLineBezierQuad );
-	lua_register( L, "RL_DrawLineBezierCubic", lshapesDrawLineBezierCubic );
-	lua_register( L, "RL_DrawLineStrip", lshapesDrawLineStrip );
-	lua_register( L, "RL_DrawCircle", lshapesDrawCircle );
-	lua_register( L, "RL_DrawCircleSector", lshapesDrawCircleSector );
-	lua_register( L, "RL_DrawCircleSectorLines", lshapesDrawCircleSectorLines );
-	lua_register( L, "RL_DrawCircleGradient", lshapesDrawCircleGradient );
-	lua_register( L, "RL_DrawCircleLines", lshapesDrawCircleLines );
-	lua_register( L, "RL_DrawEllipse", lshapesDrawEllipse );
-	lua_register( L, "RL_DrawEllipseLines", lshapesDrawEllipseLines );
-	lua_register( L, "RL_DrawRing", lshapesDrawRing );
-	lua_register( L, "RL_DrawRingLines", lshapesDrawRingLines );
-	lua_register( L, "RL_DrawRectangle", lshapesDrawRectangle );
-	lua_register( L, "RL_DrawRectanglePro", lshapesDrawRectanglePro );
-	lua_register( L, "RL_DrawRectangleGradientV", lshapesDrawRectangleGradientV );
-	lua_register( L, "RL_DrawRectangleGradientH", lshapesDrawRectangleGradientH );
-	lua_register( L, "RL_DrawRectangleGradientEx", lshapesDrawRectangleGradientEx );
-	lua_register( L, "RL_DrawRectangleLines", lshapesDrawRectangleLines );
-	lua_register( L, "RL_DrawRectangleLinesEx", lshapesDrawRectangleLinesEx );
-	lua_register( L, "RL_DrawRectangleRounded", lshapesDrawRectangleRounded );
-	lua_register( L, "RL_DrawRectangleRoundedLines", lshapesDrawRectangleRoundedLines );
-	lua_register( L, "RL_DrawTriangle", lshapesDrawTriangle );
-	lua_register( L, "RL_DrawTriangleLines", lshapesDrawTriangleLines );
-	lua_register( L, "RL_DrawTriangleFan", lshapesDrawTriangleFan );
-	lua_register( L, "RL_DrawTriangleStrip", lshapesDrawTriangleStrip );
-	lua_register( L, "RL_DrawPoly", lshapesDrawPoly );
-	lua_register( L, "RL_DrawPolyLines", lshapesDrawPolyLines );
-	lua_register( L, "RL_DrawPolyLinesEx", lshapesDrawPolyLinesEx );
+	assingGlobalFunction( "SetShapesTexture", lshapesSetShapesTexture );
+	assingGlobalFunction( "DrawPixel", lshapesDrawPixel );
+	assingGlobalFunction( "DrawLine", lshapesDrawLine );
+	assingGlobalFunction( "DrawLineBezier", lshapesDrawLineBezier );
+	assingGlobalFunction( "DrawLineBezierQuad", lshapesDrawLineBezierQuad );
+	assingGlobalFunction( "DrawLineBezierCubic", lshapesDrawLineBezierCubic );
+	assingGlobalFunction( "DrawLineStrip", lshapesDrawLineStrip );
+	assingGlobalFunction( "DrawCircle", lshapesDrawCircle );
+	assingGlobalFunction( "DrawCircleSector", lshapesDrawCircleSector );
+	assingGlobalFunction( "DrawCircleSectorLines", lshapesDrawCircleSectorLines );
+	assingGlobalFunction( "DrawCircleGradient", lshapesDrawCircleGradient );
+	assingGlobalFunction( "DrawCircleLines", lshapesDrawCircleLines );
+	assingGlobalFunction( "DrawEllipse", lshapesDrawEllipse );
+	assingGlobalFunction( "DrawEllipseLines", lshapesDrawEllipseLines );
+	assingGlobalFunction( "DrawRing", lshapesDrawRing );
+	assingGlobalFunction( "DrawRingLines", lshapesDrawRingLines );
+	assingGlobalFunction( "DrawRectangle", lshapesDrawRectangle );
+	assingGlobalFunction( "DrawRectanglePro", lshapesDrawRectanglePro );
+	assingGlobalFunction( "DrawRectangleGradientV", lshapesDrawRectangleGradientV );
+	assingGlobalFunction( "DrawRectangleGradientH", lshapesDrawRectangleGradientH );
+	assingGlobalFunction( "DrawRectangleGradientEx", lshapesDrawRectangleGradientEx );
+	assingGlobalFunction( "DrawRectangleLines", lshapesDrawRectangleLines );
+	assingGlobalFunction( "DrawRectangleLinesEx", lshapesDrawRectangleLinesEx );
+	assingGlobalFunction( "DrawRectangleRounded", lshapesDrawRectangleRounded );
+	assingGlobalFunction( "DrawRectangleRoundedLines", lshapesDrawRectangleRoundedLines );
+	assingGlobalFunction( "DrawTriangle", lshapesDrawTriangle );
+	assingGlobalFunction( "DrawTriangleLines", lshapesDrawTriangleLines );
+	assingGlobalFunction( "DrawTriangleFan", lshapesDrawTriangleFan );
+	assingGlobalFunction( "DrawTriangleStrip", lshapesDrawTriangleStrip );
+	assingGlobalFunction( "DrawPoly", lshapesDrawPoly );
+	assingGlobalFunction( "DrawPolyLines", lshapesDrawPolyLines );
+	assingGlobalFunction( "DrawPolyLinesEx", lshapesDrawPolyLinesEx );
 		/* Collision. */
-	lua_register( L, "RL_CheckCollisionRecs", lshapesCheckCollisionRecs );
-	lua_register( L, "RL_CheckCollisionCircles", lshapesCheckCollisionCircles );
-	lua_register( L, "RL_CheckCollisionCircleRec", lshapesCheckCollisionCircleRec );
-	lua_register( L, "RL_CheckCollisionPointRec", lshapesCheckCollisionPointRec );
-	lua_register( L, "RL_CheckCollisionPointCircle", lshapesCheckCollisionPointCircle );
-	lua_register( L, "RL_CheckCollisionPointTriangle", lshapesCheckCollisionPointTriangle );
-	lua_register( L, "RL_CheckCollisionLines", lshapesCheckCollisionLines );
-	lua_register( L, "RL_CheckCollisionPointLine", lshapesCheckCollisionPointLine );
-	lua_register( L, "RL_GetCollisionRec", lshapesGetCollisionRec );
+	assingGlobalFunction( "CheckCollisionRecs", lshapesCheckCollisionRecs );
+	assingGlobalFunction( "CheckCollisionCircles", lshapesCheckCollisionCircles );
+	assingGlobalFunction( "CheckCollisionCircleRec", lshapesCheckCollisionCircleRec );
+	assingGlobalFunction( "CheckCollisionPointRec", lshapesCheckCollisionPointRec );
+	assingGlobalFunction( "CheckCollisionPointCircle", lshapesCheckCollisionPointCircle );
+	assingGlobalFunction( "CheckCollisionPointTriangle", lshapesCheckCollisionPointTriangle );
+	assingGlobalFunction( "CheckCollisionLines", lshapesCheckCollisionLines );
+	assingGlobalFunction( "CheckCollisionPointLine", lshapesCheckCollisionPointLine );
+	assingGlobalFunction( "GetCollisionRec", lshapesGetCollisionRec );
 
 	/* Textures. */
 		/* Image Loading. */
-	lua_register( L, "RL_LoadImage", ltexturesLoadImage );
-	lua_register( L, "RL_LoadImageFromTexture", ltexturesLoadImageFromTexture );
-	lua_register( L, "RL_LoadImageFromScreen", ltexturesLoadImageFromScreen );
-	lua_register( L, "RL_UnloadImage", ltexturesUnloadImage );
-	lua_register( L, "RL_ExportImage", ltexturesExportImage );
-	lua_register( L, "RL_ExportImageAsCode", ltexturesExportImageAsCode );
+	assingGlobalFunction( "LoadImage", ltexturesLoadImage );
+	assingGlobalFunction( "LoadImageFromTexture", ltexturesLoadImageFromTexture );
+	assingGlobalFunction( "LoadImageFromScreen", ltexturesLoadImageFromScreen );
+	assingGlobalFunction( "UnloadImage", ltexturesUnloadImage );
+	assingGlobalFunction( "ExportImage", ltexturesExportImage );
+	assingGlobalFunction( "ExportImageAsCode", ltexturesExportImageAsCode );
 		/* Image Generation. */
-	lua_register( L, "RL_GenImageColor", ltexturesGenImageColor );
-	lua_register( L, "RL_GenImageGradientV", ltexturesGenImageGradientV );
-	lua_register( L, "RL_GenImageGradientH", ltexturesGenImageGradientH );
-	lua_register( L, "RL_GenImageGradientRadial", ltexturesGenImageGradientRadial );
-	lua_register( L, "RL_GenImageChecked", ltexturesGenImageChecked );
-	lua_register( L, "RL_GenImageWhiteNoise", ltexturesGenImageWhiteNoise );
-	lua_register( L, "RL_GenImageCellular", ltexturesGenImageCellular );
+	assingGlobalFunction( "GenImageColor", ltexturesGenImageColor );
+	assingGlobalFunction( "GenImageGradientV", ltexturesGenImageGradientV );
+	assingGlobalFunction( "GenImageGradientH", ltexturesGenImageGradientH );
+	assingGlobalFunction( "GenImageGradientRadial", ltexturesGenImageGradientRadial );
+	assingGlobalFunction( "GenImageChecked", ltexturesGenImageChecked );
+	assingGlobalFunction( "GenImageWhiteNoise", ltexturesGenImageWhiteNoise );
+	assingGlobalFunction( "GenImageCellular", ltexturesGenImageCellular );
 		/* Image Manipulation Functions. */
-	lua_register( L, "RL_ImageCopy", ltexturesImageCopy );
-	lua_register( L, "RL_ImageFromImage", ltexturesImageFromImage );
-	lua_register( L, "RL_ImageText", ltexturesImageText );
-	lua_register( L, "RL_ImageFormat", ltexturesImageFormat );
-	lua_register( L, "RL_ImageToPOT", ltexturesImageToPOT );
-	lua_register( L, "RL_ImageCrop", ltexturesImageCrop );
-	lua_register( L, "RL_ImageAlphaCrop", ltexturesImageAlphaCrop );
-	lua_register( L, "RL_ImageAlphaClear", ltexturesImageAlphaClear );
-	lua_register( L, "RL_ImageAlphaMask", ltexturesImageAlphaMask );
-	lua_register( L, "RL_ImageAlphaPremultiply", ltexturesImageAlphaPremultiply );
-	lua_register( L, "RL_ImageResize", ltexturesImageResize );
-	lua_register( L, "RL_ImageResizeNN", ltexturesImageResizeNN );
-	lua_register( L, "RL_ImageResizeCanvas", ltexturesImageResizeCanvas );
-	lua_register( L, "RL_ImageMipmaps", ltexturesImageMipmaps );
-	lua_register( L, "RL_ImageDither", ltexturesImageDither );
-	lua_register( L, "RL_ImageFlipVertical", ltexturesImageFlipVertical );
-	lua_register( L, "RL_ImageFlipHorizontal", ltexturesImageFlipHorizontal );
-	lua_register( L, "RL_ImageRotateCW", ltexturesImageRotateCW );
-	lua_register( L, "RL_ImageRotateCCW", ltexturesImageRotateCCW );
-	lua_register( L, "RL_ImageColorTint", ltexturesImageColorTint );
-	lua_register( L, "RL_ImageColorInvert", ltexturesImageColorInvert );
-	lua_register( L, "RL_ImageColorGrayscale", ltexturesImageColorGrayscale );
-	lua_register( L, "RL_ImageColorContrast", ltexturesImageColorContrast );
-	lua_register( L, "RL_ImageColorBrightness", ltexturesImageColorBrightness );
-	lua_register( L, "RL_ImageColorReplace", ltexturesImageColorReplace );
-	lua_register( L, "RL_LoadImageColors", ltexturesLoadImageColors );
-	lua_register( L, "RL_LoadImagePalette", ltexturesLoadImagePalette );
-	lua_register( L, "RL_GetImageAlphaBorder", ltexturesGetImageAlphaBorder );
-	lua_register( L, "RL_GetImageColor", ltexturesGetImageColor );
+	assingGlobalFunction( "ImageCopy", ltexturesImageCopy );
+	assingGlobalFunction( "ImageFromImage", ltexturesImageFromImage );
+	assingGlobalFunction( "ImageText", ltexturesImageText );
+	assingGlobalFunction( "ImageFormat", ltexturesImageFormat );
+	assingGlobalFunction( "ImageToPOT", ltexturesImageToPOT );
+	assingGlobalFunction( "ImageCrop", ltexturesImageCrop );
+	assingGlobalFunction( "ImageAlphaCrop", ltexturesImageAlphaCrop );
+	assingGlobalFunction( "ImageAlphaClear", ltexturesImageAlphaClear );
+	assingGlobalFunction( "ImageAlphaMask", ltexturesImageAlphaMask );
+	assingGlobalFunction( "ImageAlphaPremultiply", ltexturesImageAlphaPremultiply );
+	assingGlobalFunction( "ImageResize", ltexturesImageResize );
+	assingGlobalFunction( "ImageResizeNN", ltexturesImageResizeNN );
+	assingGlobalFunction( "ImageResizeCanvas", ltexturesImageResizeCanvas );
+	assingGlobalFunction( "ImageMipmaps", ltexturesImageMipmaps );
+	assingGlobalFunction( "ImageDither", ltexturesImageDither );
+	assingGlobalFunction( "ImageFlipVertical", ltexturesImageFlipVertical );
+	assingGlobalFunction( "ImageFlipHorizontal", ltexturesImageFlipHorizontal );
+	assingGlobalFunction( "ImageRotateCW", ltexturesImageRotateCW );
+	assingGlobalFunction( "ImageRotateCCW", ltexturesImageRotateCCW );
+	assingGlobalFunction( "ImageColorTint", ltexturesImageColorTint );
+	assingGlobalFunction( "ImageColorInvert", ltexturesImageColorInvert );
+	assingGlobalFunction( "ImageColorGrayscale", ltexturesImageColorGrayscale );
+	assingGlobalFunction( "ImageColorContrast", ltexturesImageColorContrast );
+	assingGlobalFunction( "ImageColorBrightness", ltexturesImageColorBrightness );
+	assingGlobalFunction( "ImageColorReplace", ltexturesImageColorReplace );
+	assingGlobalFunction( "LoadImageColors", ltexturesLoadImageColors );
+	assingGlobalFunction( "LoadImagePalette", ltexturesLoadImagePalette );
+	assingGlobalFunction( "GetImageAlphaBorder", ltexturesGetImageAlphaBorder );
+	assingGlobalFunction( "GetImageColor", ltexturesGetImageColor );
 		/* Image Drawing. */
-	lua_register( L, "RL_ImageClearBackground", ltexturesImageClearBackground );
-	lua_register( L, "RL_ImageDrawPixel", ltexturesImageDrawPixel );
-	lua_register( L, "RL_ImageDrawLine", ltexturesImageDrawLine );
-	lua_register( L, "RL_ImageDrawCircle", ltexturesImageDrawCircle );
-	lua_register( L, "RL_ImageDrawRectangle", ltexturesImageDrawRectangle );
-	lua_register( L, "RL_ImageDrawRectangleLines", ltexturesImageDrawRectangleLines );
-	lua_register( L, "RL_ImageDraw", ltexturesImageDraw );
-	lua_register( L, "RL_ImageDrawTextEx", ltexturesImageDrawTextEx );
+	assingGlobalFunction( "ImageClearBackground", ltexturesImageClearBackground );
+	assingGlobalFunction( "ImageDrawPixel", ltexturesImageDrawPixel );
+	assingGlobalFunction( "ImageDrawLine", ltexturesImageDrawLine );
+	assingGlobalFunction( "ImageDrawCircle", ltexturesImageDrawCircle );
+	assingGlobalFunction( "ImageDrawRectangle", ltexturesImageDrawRectangle );
+	assingGlobalFunction( "ImageDrawRectangleLines", ltexturesImageDrawRectangleLines );
+	assingGlobalFunction( "ImageDraw", ltexturesImageDraw );
+	assingGlobalFunction( "ImageDrawTextEx", ltexturesImageDrawTextEx );
 		/* Image Configuration. */
-	lua_register( L, "RL_GetImageSize", ltexturesGetImageSize );
-	lua_register( L, "RL_GetImageMipmaps", ltexturesGetImageMipmaps );
-	lua_register( L, "RL_GetImageFormat", ltexturesGetImageFormat );
+	assingGlobalFunction( "GetImageSize", ltexturesGetImageSize );
+	assingGlobalFunction( "GetImageMipmaps", ltexturesGetImageMipmaps );
+	assingGlobalFunction( "GetImageFormat", ltexturesGetImageFormat );
 		/* Texture Loading. */
-	lua_register( L, "RL_LoadTexture", ltexturesLoadTexture );
-	lua_register( L, "RL_LoadTextureFromImage", ltexturesLoadTextureFromImage );
-	lua_register( L, "RL_LoadTextureCubemap", ltexturesLoadTextureCubemap );
-	lua_register( L, "RL_LoadRenderTexture", ltexturesLoadRenderTexture );
-	lua_register( L, "RL_UnloadTexture", ltexturesUnloadTexture );
-	lua_register( L, "RL_UnloadRenderTexture", ltexturesUnloadRenderTexture );
-	lua_register( L, "RL_UpdateTexture", ltexturesUpdateTexture );
-	lua_register( L, "RL_UpdateTextureRec", ltexturesUpdateTextureRec );
+	assingGlobalFunction( "LoadTexture", ltexturesLoadTexture );
+	assingGlobalFunction( "LoadTextureFromImage", ltexturesLoadTextureFromImage );
+	assingGlobalFunction( "LoadTextureCubemap", ltexturesLoadTextureCubemap );
+	assingGlobalFunction( "LoadRenderTexture", ltexturesLoadRenderTexture );
+	assingGlobalFunction( "UnloadTexture", ltexturesUnloadTexture );
+	assingGlobalFunction( "UnloadRenderTexture", ltexturesUnloadRenderTexture );
+	assingGlobalFunction( "UpdateTexture", ltexturesUpdateTexture );
+	assingGlobalFunction( "UpdateTextureRec", ltexturesUpdateTextureRec );
 		/* Texture Drawing. */
-	lua_register( L, "RL_DrawTexture", ltexturesDrawTexture );
-	lua_register( L, "RL_DrawTextureRec", ltexturesDrawTextureRec );
-	lua_register( L, "RL_DrawTextureTiled", ltexturesDrawTextureTiled );
-	lua_register( L, "RL_DrawTexturePro", ltexturesDrawTexturePro );
-	lua_register( L, "RL_DrawTextureNPatch", ltexturesDrawTextureNPatch );
-	lua_register( L, "RL_DrawTexturePoly", ltexturesDrawTexturePoly );
-	lua_register( L, "RL_BeginTextureMode", ltexturesBeginTextureMode );
-	lua_register( L, "RL_EndTextureMode", ltexturesEndTextureMode );
-	lua_register( L, "RL_SetTextureSource", ltexturesSetTextureSource );
-	lua_register( L, "RL_GetTextureSource", ltexturesGetTextureSource );
+	assingGlobalFunction( "DrawTexture", ltexturesDrawTexture );
+	assingGlobalFunction( "DrawTextureRec", ltexturesDrawTextureRec );
+	assingGlobalFunction( "DrawTextureTiled", ltexturesDrawTextureTiled );
+	assingGlobalFunction( "DrawTexturePro", ltexturesDrawTexturePro );
+	assingGlobalFunction( "DrawTextureNPatch", ltexturesDrawTextureNPatch );
+	assingGlobalFunction( "DrawTexturePoly", ltexturesDrawTexturePoly );
+	assingGlobalFunction( "BeginTextureMode", ltexturesBeginTextureMode );
+	assingGlobalFunction( "EndTextureMode", ltexturesEndTextureMode );
+	assingGlobalFunction( "SetTextureSource", ltexturesSetTextureSource );
+	assingGlobalFunction( "GetTextureSource", ltexturesGetTextureSource );
 		/* Texture Configuration. */
-	lua_register( L, "RL_GenTextureMipmaps", ltexturesGenTextureMipmaps );
-	lua_register( L, "RL_SetTextureFilter", ltexturesSetTextureFilter );
-	lua_register( L, "RL_SetTextureWrap", ltexturesSetTextureWrap );
-	lua_register( L, "RL_GetTextureSize", ltexturesGetTextureSize );
-	lua_register( L, "RL_GetTextureMipmaps", ltexturesGetTextureMipmaps );
-	lua_register( L, "RL_GetTextureFormat", ltexturesGetTextureFormat );
+	assingGlobalFunction( "GenTextureMipmaps", ltexturesGenTextureMipmaps );
+	assingGlobalFunction( "SetTextureFilter", ltexturesSetTextureFilter );
+	assingGlobalFunction( "SetTextureWrap", ltexturesSetTextureWrap );
+	assingGlobalFunction( "GetTextureSize", ltexturesGetTextureSize );
+	assingGlobalFunction( "GetTextureMipmaps", ltexturesGetTextureMipmaps );
+	assingGlobalFunction( "GetTextureFormat", ltexturesGetTextureFormat );
 		/* Color/pixel */
-	lua_register( L, "RL_Fade", ltexturesFade );
-	lua_register( L, "RL_ColorToInt", ltexturesColorToInt );
-	lua_register( L, "RL_ColorNormalize", ltexturesColorNormalize );
-	lua_register( L, "RL_ColorFromNormalized", ltexturesColorFromNormalized );
-	lua_register( L, "RL_ColorToHSV", ltexturesColorToHSV );
-	lua_register( L, "RL_ColorFromHSV", ltexturesColorFromHSV );
-	lua_register( L, "RL_ColorAlpha", ltexturesColorAlpha );
-	lua_register( L, "RL_ColorAlphaBlend", ltexturesColorAlphaBlend );
-	lua_register( L, "RL_GetColor", ltexturesGetColor );
-	lua_register( L, "RL_GetPixelColor", ltexturesGetPixelColor );
-	lua_register( L, "RL_GetPixelDataSize", ltexturesGetPixelDataSize );
+	assingGlobalFunction( "Fade", ltexturesFade );
+	assingGlobalFunction( "ColorToInt", ltexturesColorToInt );
+	assingGlobalFunction( "ColorNormalize", ltexturesColorNormalize );
+	assingGlobalFunction( "ColorFromNormalized", ltexturesColorFromNormalized );
+	assingGlobalFunction( "ColorToHSV", ltexturesColorToHSV );
+	assingGlobalFunction( "ColorFromHSV", ltexturesColorFromHSV );
+	assingGlobalFunction( "ColorAlpha", ltexturesColorAlpha );
+	assingGlobalFunction( "ColorAlphaBlend", ltexturesColorAlphaBlend );
+	assingGlobalFunction( "GetColor", ltexturesGetColor );
+	assingGlobalFunction( "GetPixelColor", ltexturesGetPixelColor );
+	assingGlobalFunction( "GetPixelDataSize", ltexturesGetPixelDataSize );
 
 	/* Models. */
 		/* Basic. */
-	lua_register( L, "RL_DrawLine3D", lmodelsDrawLine3D );
-	lua_register( L, "RL_DrawPoint3D", lmodelsDrawPoint3D );
-	lua_register( L, "RL_DrawCircle3D", lmodelsDrawCircle3D );
-	lua_register( L, "RL_DrawTriangle3D", lmodelsDrawTriangle3D );
-	lua_register( L, "RL_DrawCube", lmodelsDrawCube );
-	lua_register( L, "RL_DrawCubeWires", lmodelsDrawCubeWires );
-	lua_register( L, "RL_DrawCubeTexture", lmodelsDrawCubeTexture );
-	lua_register( L, "RL_DrawSphere", lmodelsDrawSphere );
-	lua_register( L, "RL_DrawSphereEx", lmodelsDrawSphereEx );
-	lua_register( L, "RL_DrawSphereWires", lmodelsDrawSphereWires );
-	lua_register( L, "RL_DrawCylinder", lmodelsDrawCylinder );
-	lua_register( L, "RL_DrawCylinderEx", lmodelsDrawCylinderEx );
-	lua_register( L, "RL_DrawCylinderWires", lmodelsDrawCylinderWires );
-	lua_register( L, "RL_DrawCylinderWiresEx", lmodelsDrawCylinderWiresEx );
-	lua_register( L, "RL_DrawPlane", lmodelsDrawPlane );
-	lua_register( L, "RL_DrawQuad3DTexture", lmodelDrawQuad3DTexture );
-	lua_register( L, "RL_DrawRay", lmodelsDrawRay );
-	lua_register( L, "RL_DrawGrid", lmodelsDrawGrid );
+	assingGlobalFunction( "DrawLine3D", lmodelsDrawLine3D );
+	assingGlobalFunction( "DrawPoint3D", lmodelsDrawPoint3D );
+	assingGlobalFunction( "DrawCircle3D", lmodelsDrawCircle3D );
+	assingGlobalFunction( "DrawTriangle3D", lmodelsDrawTriangle3D );
+	assingGlobalFunction( "DrawCube", lmodelsDrawCube );
+	assingGlobalFunction( "DrawCubeWires", lmodelsDrawCubeWires );
+	assingGlobalFunction( "DrawCubeTexture", lmodelsDrawCubeTexture );
+	assingGlobalFunction( "DrawSphere", lmodelsDrawSphere );
+	assingGlobalFunction( "DrawSphereEx", lmodelsDrawSphereEx );
+	assingGlobalFunction( "DrawSphereWires", lmodelsDrawSphereWires );
+	assingGlobalFunction( "DrawCylinder", lmodelsDrawCylinder );
+	assingGlobalFunction( "DrawCylinderEx", lmodelsDrawCylinderEx );
+	assingGlobalFunction( "DrawCylinderWires", lmodelsDrawCylinderWires );
+	assingGlobalFunction( "DrawCylinderWiresEx", lmodelsDrawCylinderWiresEx );
+	assingGlobalFunction( "DrawPlane", lmodelsDrawPlane );
+	assingGlobalFunction( "DrawQuad3DTexture", lmodelDrawQuad3DTexture );
+	assingGlobalFunction( "DrawRay", lmodelsDrawRay );
+	assingGlobalFunction( "DrawGrid", lmodelsDrawGrid );
 		/* Mesh. */
-	lua_register( L, "RL_GenMeshPoly", lmodelsGenMeshPoly );
-	lua_register( L, "RL_GenMeshPlane", lmodelsGenMeshPlane );
-	lua_register( L, "RL_GenMeshCube", lmodelsGenMeshCube );
-	lua_register( L, "RL_GenMeshSphere", lmodelsGenMeshSphere );
-	lua_register( L, "RL_GenMeshCylinder", lmodelsGenMeshCylinder );
-	lua_register( L, "RL_GenMeshCone", lmodelsGenMeshCone );
-	lua_register( L, "RL_GenMeshTorus", lmodelsGenMeshTorus );
-	lua_register( L, "RL_GenMeshKnot", lmodelsGenMeshKnot );
-	lua_register( L, "RL_GenMeshHeightmap", lmodelsGenMeshHeightmap );
-	lua_register( L, "RL_GenMeshCustom", lmodelsGenMeshCustom );
-	lua_register( L, "RL_UpdateMesh", lmodelsUpdateMesh );
-	lua_register( L, "RL_UnloadMesh", lmodelsUnloadMesh );
-	lua_register( L, "RL_DrawMesh", lmodelsDrawMesh );
-	lua_register( L, "RL_DrawMeshInstanced", lmodelsDrawMeshInstanced );
-	lua_register( L, "RL_SetMeshColor", lmodelsSetMeshColor );
-	lua_register( L, "RL_ExportMesh", lmodelsExportMesh );
-	lua_register( L, "RL_GetMeshBoundingBox", lmodelsGetMeshBoundingBox );
-	lua_register( L, "RL_GenMeshTangents", lmodelsGenMeshTangents );
+	assingGlobalFunction( "GenMeshPoly", lmodelsGenMeshPoly );
+	assingGlobalFunction( "GenMeshPlane", lmodelsGenMeshPlane );
+	assingGlobalFunction( "GenMeshCube", lmodelsGenMeshCube );
+	assingGlobalFunction( "GenMeshSphere", lmodelsGenMeshSphere );
+	assingGlobalFunction( "GenMeshCylinder", lmodelsGenMeshCylinder );
+	assingGlobalFunction( "GenMeshCone", lmodelsGenMeshCone );
+	assingGlobalFunction( "GenMeshTorus", lmodelsGenMeshTorus );
+	assingGlobalFunction( "GenMeshKnot", lmodelsGenMeshKnot );
+	assingGlobalFunction( "GenMeshHeightmap", lmodelsGenMeshHeightmap );
+	assingGlobalFunction( "GenMeshCustom", lmodelsGenMeshCustom );
+	assingGlobalFunction( "UpdateMesh", lmodelsUpdateMesh );
+	assingGlobalFunction( "UnloadMesh", lmodelsUnloadMesh );
+	assingGlobalFunction( "DrawMesh", lmodelsDrawMesh );
+	assingGlobalFunction( "DrawMeshInstanced", lmodelsDrawMeshInstanced );
+	assingGlobalFunction( "SetMeshColor", lmodelsSetMeshColor );
+	assingGlobalFunction( "ExportMesh", lmodelsExportMesh );
+	assingGlobalFunction( "GetMeshBoundingBox", lmodelsGetMeshBoundingBox );
+	assingGlobalFunction( "GenMeshTangents", lmodelsGenMeshTangents );
 		/* Material. */
-	lua_register( L, "RL_LoadMaterialDefault", lmodelsLoadMaterialDefault );
-	lua_register( L, "RL_CreateMaterial", lmodelsCreateMaterial );
-	lua_register( L, "RL_UnloadMaterial", lmodelsUnloadMaterial );
-	lua_register( L, "RL_SetMaterialTexture", lmodelsSetMaterialTexture );
-	lua_register( L, "RL_SetMaterialColor", lmodelsSetMaterialColor );
-	lua_register( L, "RL_SetMaterialValue", lmodelsSetMaterialValue );
-	lua_register( L, "RL_SetMaterialShader", lmodelsSetMaterialShader );
+	assingGlobalFunction( "LoadMaterialDefault", lmodelsLoadMaterialDefault );
+	assingGlobalFunction( "CreateMaterial", lmodelsCreateMaterial );
+	assingGlobalFunction( "UnloadMaterial", lmodelsUnloadMaterial );
+	assingGlobalFunction( "SetMaterialTexture", lmodelsSetMaterialTexture );
+	assingGlobalFunction( "SetMaterialColor", lmodelsSetMaterialColor );
+	assingGlobalFunction( "SetMaterialValue", lmodelsSetMaterialValue );
+	assingGlobalFunction( "SetMaterialShader", lmodelsSetMaterialShader );
 		/* Model. */
-	lua_register( L, "RL_LoadModel", lmodelsLoadModel );
-	lua_register( L, "RL_LoadModelFromMesh", lmodelsLoadModelFromMesh );
-	lua_register( L, "RL_UnloadModel", lmodelsUnloadModel );
-	lua_register( L, "RL_DrawModel", lmodelsDrawModel );
-	lua_register( L, "RL_DrawModelEx", lmodelsDrawModelEx );
-	lua_register( L, "RL_SetModelMaterial", lmodelsSetModelMaterial );
-	lua_register( L, "RL_SetModelMeshMaterial", lmodelsSetModelMeshMaterial );
-	lua_register( L, "RL_DrawBillboard", lmodelsDrawBillboard );
-	lua_register( L, "RL_DrawBillboardRec", lmodelsDrawBillboardRec );
-	lua_register( L, "RL_SetModelTransform", lmodelsSetModelTransform );
-	lua_register( L, "RL_GetModelTransform", lmodelsGetModelTransform );
+	assingGlobalFunction( "LoadModel", lmodelsLoadModel );
+	assingGlobalFunction( "LoadModelFromMesh", lmodelsLoadModelFromMesh );
+	assingGlobalFunction( "UnloadModel", lmodelsUnloadModel );
+	assingGlobalFunction( "DrawModel", lmodelsDrawModel );
+	assingGlobalFunction( "DrawModelEx", lmodelsDrawModelEx );
+	assingGlobalFunction( "SetModelMaterial", lmodelsSetModelMaterial );
+	assingGlobalFunction( "SetModelMeshMaterial", lmodelsSetModelMeshMaterial );
+	assingGlobalFunction( "DrawBillboard", lmodelsDrawBillboard );
+	assingGlobalFunction( "DrawBillboardRec", lmodelsDrawBillboardRec );
+	assingGlobalFunction( "SetModelTransform", lmodelsSetModelTransform );
+	assingGlobalFunction( "GetModelTransform", lmodelsGetModelTransform );
 		/* Animations. */
-	lua_register( L, "RL_LoadModelAnimations", lmodelsLoadModelAnimations );
-	lua_register( L, "RL_UpdateModelAnimation", lmodelsUpdateModelAnimation );
-	lua_register( L, "RL_UnloadModelAnimations", lmodelsUnloadModelAnimations );
-	lua_register( L, "RL_IsModelAnimationValid", lmodelsIsModelAnimationValid );
-	lua_register( L, "RL_GetModelAnimationBoneCount", lmodelsGetModelAnimationBoneCount );
-	lua_register( L, "RL_GetModelAnimationFrameCount", lmodelsGetModelAnimationFrameCount );
+	assingGlobalFunction( "LoadModelAnimations", lmodelsLoadModelAnimations );
+	assingGlobalFunction( "UpdateModelAnimation", lmodelsUpdateModelAnimation );
+	assingGlobalFunction( "UnloadModelAnimations", lmodelsUnloadModelAnimations );
+	assingGlobalFunction( "IsModelAnimationValid", lmodelsIsModelAnimationValid );
+	assingGlobalFunction( "GetModelAnimationBoneCount", lmodelsGetModelAnimationBoneCount );
+	assingGlobalFunction( "GetModelAnimationFrameCount", lmodelsGetModelAnimationFrameCount );
 		/* Collision. */
-	lua_register( L, "RL_CheckCollisionSpheres", lmodelsCheckCollisionSpheres );
-	lua_register( L, "RL_CheckCollisionBoxes", lmodelsCheckCollisionBoxes );
-	lua_register( L, "RL_CheckCollisionBoxSphere", lmodelsCheckCollisionBoxSphere );
-	lua_register( L, "RL_GetRayCollisionSphere", lmodelsGetRayCollisionSphere );
-	lua_register( L, "RL_GetRayCollisionBox", lmodelsGetRayCollisionBox );
-	lua_register( L, "RL_GetRayCollisionMesh", lmodelsGetRayCollisionMesh );
-	lua_register( L, "RL_GetRayCollisionTriangle", lmodelsGetRayCollisionTriangle );
-	lua_register( L, "RL_GetRayCollisionQuad", lmodelsGetRayCollisionQuad );
+	assingGlobalFunction( "CheckCollisionSpheres", lmodelsCheckCollisionSpheres );
+	assingGlobalFunction( "CheckCollisionBoxes", lmodelsCheckCollisionBoxes );
+	assingGlobalFunction( "CheckCollisionBoxSphere", lmodelsCheckCollisionBoxSphere );
+	assingGlobalFunction( "GetRayCollisionSphere", lmodelsGetRayCollisionSphere );
+	assingGlobalFunction( "GetRayCollisionBox", lmodelsGetRayCollisionBox );
+	assingGlobalFunction( "GetRayCollisionMesh", lmodelsGetRayCollisionMesh );
+	assingGlobalFunction( "GetRayCollisionTriangle", lmodelsGetRayCollisionTriangle );
+	assingGlobalFunction( "GetRayCollisionQuad", lmodelsGetRayCollisionQuad );
 
 	/* Text. */
 		/* Loading. */
-	lua_register( L, "RL_LoadFont", ltextLoadFont );
-	lua_register( L, "RL_LoadFontEx", ltextLoadFontEx );
-	lua_register( L, "RL_LoadFontFromImage", ltextLoadFontFromImage );
-	lua_register( L, "RL_UnloadFont", ltextUnloadFont );
+	assingGlobalFunction( "LoadFont", ltextLoadFont );
+	assingGlobalFunction( "LoadFontEx", ltextLoadFontEx );
+	assingGlobalFunction( "LoadFontFromImage", ltextLoadFontFromImage );
+	assingGlobalFunction( "UnloadFont", ltextUnloadFont );
 		/* Drawing. */
-	lua_register( L, "RL_DrawFPS", ltextDrawFPS );
-	lua_register( L, "RL_DrawText", ltextDrawText );
-	lua_register( L, "RL_DrawTextPro", ltextDrawTextPro );
+	assingGlobalFunction( "DrawFPS", ltextDrawFPS );
+	assingGlobalFunction( "DrawText", ltextDrawText );
+	assingGlobalFunction( "DrawTextPro", ltextDrawTextPro );
 		/* Misc. */
-	lua_register( L, "RL_MeasureText", ltextMeasureText );
-	lua_register( L, "RL_GetFontBaseSize", ltextGetFontBaseSize );
-	lua_register( L, "RL_GetFontGlyphCount", ltextGetFontGlyphCount );
-	lua_register( L, "RL_GetFontGlyphPadding", ltextGetFontGlyphPadding );
+	assingGlobalFunction( "MeasureText", ltextMeasureText );
+	assingGlobalFunction( "GetFontBaseSize", ltextGetFontBaseSize );
+	assingGlobalFunction( "GetFontGlyphCount", ltextGetFontGlyphCount );
+	assingGlobalFunction( "GetFontGlyphPadding", ltextGetFontGlyphPadding );
 
 	/* Audio. */
 		/* Audio device management. */
-	lua_register( L, "RL_SetMasterVolume", laudioSetMasterVolume );
+	assingGlobalFunction( "SetMasterVolume", laudioSetMasterVolume );
 		/* Wave/Sound Loading. */
-	lua_register( L, "RL_LoadSound", laudioLoadSound );
-	lua_register( L, "RL_LoadWave", laudioLoadWave );
-	lua_register( L, "RL_LoadSoundFromWave", laudioLoadSoundFromWave );
-	lua_register( L, "RL_UnloadSound", laudioUnloadSound );
-	lua_register( L, "RL_UnloadWave", laudioUnloadWave );
-	lua_register( L, "RL_ExportWave", laudioExportWave );
-	lua_register( L, "RL_ExportWaveAsCode", laudioExportWaveAsCode );
+	assingGlobalFunction( "LoadSound", laudioLoadSound );
+	assingGlobalFunction( "LoadWave", laudioLoadWave );
+	assingGlobalFunction( "LoadSoundFromWave", laudioLoadSoundFromWave );
+	assingGlobalFunction( "UnloadSound", laudioUnloadSound );
+	assingGlobalFunction( "UnloadWave", laudioUnloadWave );
+	assingGlobalFunction( "ExportWave", laudioExportWave );
+	assingGlobalFunction( "ExportWaveAsCode", laudioExportWaveAsCode );
 		/* Wave/Sound management */
-	lua_register( L, "RL_PlaySound", laudioPlaySound );
-	lua_register( L, "RL_StopSound", laudioStopSound );
-	lua_register( L, "RL_PauseSound", laudioPauseSound );
-	lua_register( L, "RL_ResumeSound", laudioResumeSound );
-	lua_register( L, "RL_PlaySoundMulti", laudioPlaySoundMulti );
-	lua_register( L, "RL_StopSoundMulti", laudioStopSoundMulti );
-	lua_register( L, "RL_GetSoundsPlaying", laudioGetSoundsPlaying );
-	lua_register( L, "RL_IsSoundPlaying", laudioIsSoundPlaying );
-	lua_register( L, "RL_SetSoundVolume", laudioSetSoundVolume );
-	lua_register( L, "RL_SetSoundPitch", laudioSetSoundPitch );
-	lua_register( L, "RL_SetSoundPan", laudioSetSoundPan );
-	lua_register( L, "RL_WaveFormat", laudioWaveFormat );
-	lua_register( L, "RL_WaveCopy", laudioWaveCopy );
-	lua_register( L, "RL_WaveCrop", laudioWaveCrop );
+	assingGlobalFunction( "PlaySound", laudioPlaySound );
+	assingGlobalFunction( "StopSound", laudioStopSound );
+	assingGlobalFunction( "PauseSound", laudioPauseSound );
+	assingGlobalFunction( "ResumeSound", laudioResumeSound );
+	assingGlobalFunction( "PlaySoundMulti", laudioPlaySoundMulti );
+	assingGlobalFunction( "StopSoundMulti", laudioStopSoundMulti );
+	assingGlobalFunction( "GetSoundsPlaying", laudioGetSoundsPlaying );
+	assingGlobalFunction( "IsSoundPlaying", laudioIsSoundPlaying );
+	assingGlobalFunction( "SetSoundVolume", laudioSetSoundVolume );
+	assingGlobalFunction( "SetSoundPitch", laudioSetSoundPitch );
+	assingGlobalFunction( "SetSoundPan", laudioSetSoundPan );
+	assingGlobalFunction( "WaveFormat", laudioWaveFormat );
+	assingGlobalFunction( "WaveCopy", laudioWaveCopy );
+	assingGlobalFunction( "WaveCrop", laudioWaveCrop );
 		/* Music management. */
-	lua_register( L, "RL_LoadMusicStream", laudioLoadMusicStream );
-	lua_register( L, "RL_PlayMusicStream", laudioPlayMusicStream );
-	lua_register( L, "RL_IsMusicStreamPlaying", laudioIsMusicStreamPlaying );
-	lua_register( L, "RL_StopMusicStream", laudioStopMusicStream );
-	lua_register( L, "RL_PauseMusicStream", laudioPauseMusicStream );
-	lua_register( L, "RL_ResumeMusicStream", laudioResumeMusicStream );
-	lua_register( L, "RL_SetMusicVolume", laudioSetMusicVolume );
-	lua_register( L, "RL_SetMusicPitch", laudioSetMusicPitch );
-	lua_register( L, "RL_SetMusicPan", laudioSetMusicPan );
-	lua_register( L, "RL_GetMusicTimeLength", laudioGetMusicTimeLength );
-	lua_register( L, "RL_GetMusicTimePlayed", laudioGetMusicTimePlayed );
+	assingGlobalFunction( "LoadMusicStream", laudioLoadMusicStream );
+	assingGlobalFunction( "PlayMusicStream", laudioPlayMusicStream );
+	assingGlobalFunction( "IsMusicStreamPlaying", laudioIsMusicStreamPlaying );
+	assingGlobalFunction( "StopMusicStream", laudioStopMusicStream );
+	assingGlobalFunction( "PauseMusicStream", laudioPauseMusicStream );
+	assingGlobalFunction( "ResumeMusicStream", laudioResumeMusicStream );
+	assingGlobalFunction( "SetMusicVolume", laudioSetMusicVolume );
+	assingGlobalFunction( "SetMusicPitch", laudioSetMusicPitch );
+	assingGlobalFunction( "SetMusicPan", laudioSetMusicPan );
+	assingGlobalFunction( "GetMusicTimeLength", laudioGetMusicTimeLength );
+	assingGlobalFunction( "GetMusicTimePlayed", laudioGetMusicTimePlayed );
 
 	/* Math. */
 		/* Utils. */
-	lua_register( L, "RL_Clamp", lmathClamp );
-	lua_register( L, "RL_Lerp", lmathLerp );
-	lua_register( L, "RL_Normalize", lmathNormalize );
-	lua_register( L, "RL_Remap", lmathRemap );
-	lua_register( L, "RL_Wrap", lmathWrap );
-	lua_register( L, "RL_FloatEquals", lmathFloatEquals );
+	assingGlobalFunction( "Clamp", lmathClamp );
+	assingGlobalFunction( "Lerp", lmathLerp );
+	assingGlobalFunction( "Normalize", lmathNormalize );
+	assingGlobalFunction( "Remap", lmathRemap );
+	assingGlobalFunction( "Wrap", lmathWrap );
+	assingGlobalFunction( "FloatEquals", lmathFloatEquals );
 		/* Vector2. */
-	lua_register( L, "RL_Vector2Zero", lmathVector2Zero );
-	lua_register( L, "RL_Vector2One", lmathVector2One );
-	lua_register( L, "RL_Vector2Add", lmathVector2Add );
-	lua_register( L, "RL_Vector2AddValue", lmathVector2AddValue );
-	lua_register( L, "RL_Vector2Subtract", lmathVector2Subtract );
-	lua_register( L, "RL_Vector2SubtractValue", lmathVector2SubtractValue );
-	lua_register( L, "RL_Vector2Length", lmathVector2Length );
-	lua_register( L, "RL_Vector2LengthSqr", lmathVector2LengthSqr );
-	lua_register( L, "RL_Vector2DotProduct", lmathVector2DotProduct );
-	lua_register( L, "RL_Vector2Distance", lmathVector2Distance );
-	lua_register( L, "RL_Vector2DistanceSqr", lmathVector2DistanceSqr );
-	lua_register( L, "RL_Vector2Angle", lmathVector2Angle );
-	lua_register( L, "RL_Vector2Scale", lmathVector2Scale );
-	lua_register( L, "RL_Vector2Multiply", lmathVector2Multiply );
-	lua_register( L, "RL_Vector2Negate", lmathVector2Negate );
-	lua_register( L, "RL_Vector2Divide", lmathVector2Divide );
-	lua_register( L, "RL_Vector2Normalize", lmathVector2Normalize );
-	lua_register( L, "RL_Vector2Transform", lmathVector2Transform );
-	lua_register( L, "RL_Vector2Lerp", lmathVector2Lerp );
-	lua_register( L, "RL_Vector2Reflect", lmathVector2Reflect );
-	lua_register( L, "RL_Vector2Rotate", lmathVector2Rotate );
-	lua_register( L, "RL_Vector2MoveTowards", lmathVector2MoveTowards );
-	lua_register( L, "RL_Vector2Invert", lmathVector2Invert );
-	lua_register( L, "RL_Vector2Clamp", lmathVector2Clamp );
-	lua_register( L, "RL_Vector2ClampValue", lmathVector2ClampValue );
-	lua_register( L, "RL_Vector2Equals", lmathVector2Equals );
+	assingGlobalFunction( "Vector2Zero", lmathVector2Zero );
+	assingGlobalFunction( "Vector2One", lmathVector2One );
+	assingGlobalFunction( "Vector2Add", lmathVector2Add );
+	assingGlobalFunction( "Vector2AddValue", lmathVector2AddValue );
+	assingGlobalFunction( "Vector2Subtract", lmathVector2Subtract );
+	assingGlobalFunction( "Vector2SubtractValue", lmathVector2SubtractValue );
+	assingGlobalFunction( "Vector2Length", lmathVector2Length );
+	assingGlobalFunction( "Vector2LengthSqr", lmathVector2LengthSqr );
+	assingGlobalFunction( "Vector2DotProduct", lmathVector2DotProduct );
+	assingGlobalFunction( "Vector2Distance", lmathVector2Distance );
+	assingGlobalFunction( "Vector2DistanceSqr", lmathVector2DistanceSqr );
+	assingGlobalFunction( "Vector2Angle", lmathVector2Angle );
+	assingGlobalFunction( "Vector2Scale", lmathVector2Scale );
+	assingGlobalFunction( "Vector2Multiply", lmathVector2Multiply );
+	assingGlobalFunction( "Vector2Negate", lmathVector2Negate );
+	assingGlobalFunction( "Vector2Divide", lmathVector2Divide );
+	assingGlobalFunction( "Vector2Normalize", lmathVector2Normalize );
+	assingGlobalFunction( "Vector2Transform", lmathVector2Transform );
+	assingGlobalFunction( "Vector2Lerp", lmathVector2Lerp );
+	assingGlobalFunction( "Vector2Reflect", lmathVector2Reflect );
+	assingGlobalFunction( "Vector2Rotate", lmathVector2Rotate );
+	assingGlobalFunction( "Vector2MoveTowards", lmathVector2MoveTowards );
+	assingGlobalFunction( "Vector2Invert", lmathVector2Invert );
+	assingGlobalFunction( "Vector2Clamp", lmathVector2Clamp );
+	assingGlobalFunction( "Vector2ClampValue", lmathVector2ClampValue );
+	assingGlobalFunction( "Vector2Equals", lmathVector2Equals );
 		/* Vector3. */
-	lua_register( L, "RL_Vector3Zero", lmathVector3Zero );
-	lua_register( L, "RL_Vector3One", lmathVector3One );
-	lua_register( L, "RL_Vector3Add", lmathVector3Add );
-	lua_register( L, "RL_Vector3AddValue", lmathVector3AddValue );
-	lua_register( L, "RL_Vector3Subtract", lmathVector3Subtract );
-	lua_register( L, "RL_Vector3SubtractValue", lmathVector3SubtractValue );
-	lua_register( L, "RL_Vector3Scale", lmathVector3Scale );
-	lua_register( L, "RL_Vector3Multiply", lmathVector3Multiply );
-	lua_register( L, "RL_Vector3CrossProduct", lmathVector3CrossProduct );
-	lua_register( L, "RL_Vector3Perpendicular", lmathVector3Perpendicular );
-	lua_register( L, "RL_Vector3Length", lmathVector3Length );
-	lua_register( L, "RL_Vector3LengthSqr", lmathVector3LengthSqr );
-	lua_register( L, "RL_Vector3DotProduct", lmathVector3DotProduct );
-	lua_register( L, "RL_Vector3Distance", lmathVector3Distance );
-	lua_register( L, "RL_Vector3DistanceSqr", lmathVector3DistanceSqr );
-	lua_register( L, "RL_Vector3Angle", lmathVector3Angle );
-	lua_register( L, "RL_Vector3Negate", lmathVector3Negate );
-	lua_register( L, "RL_Vector3Divide", lmathVector3Divide );
-	lua_register( L, "RL_Vector3Normalize", lmathVector3Normalize );
-	lua_register( L, "RL_Vector3OrthoNormalize", lmathVector3OrthoNormalize );
-	lua_register( L, "RL_Vector3Transform", lmathVector3Transform );
-	lua_register( L, "RL_Vector3RotateByQuaternion", lmathVector3RotateByQuaternion );
-	lua_register( L, "RL_Vector3Lerp", lmathVector3Lerp );
-	lua_register( L, "RL_Vector3Reflect", lmathVector3Reflect );
-	lua_register( L, "RL_Vector3Min", lmathVector3Min );
-	lua_register( L, "RL_Vector3Max", lmathVector3Max );
-	lua_register( L, "RL_Vector3Barycenter", lmathVector3Barycenter );
-	lua_register( L, "RL_Vector3Unproject", lmathVector3Unproject );
-	lua_register( L, "RL_Vector3Invert", lmathVector3Invert );
-	lua_register( L, "RL_Vector3Clamp", lmathVector3Clamp );
-	lua_register( L, "RL_Vector3ClampValue", lmathVector3ClampValue );
-	lua_register( L, "RL_Vector3Equals", lmathVector3Equals );
-	lua_register( L, "RL_Vector3Refract", lmathVector3Refract );
+	assingGlobalFunction( "Vector3Zero", lmathVector3Zero );
+	assingGlobalFunction( "Vector3One", lmathVector3One );
+	assingGlobalFunction( "Vector3Add", lmathVector3Add );
+	assingGlobalFunction( "Vector3AddValue", lmathVector3AddValue );
+	assingGlobalFunction( "Vector3Subtract", lmathVector3Subtract );
+	assingGlobalFunction( "Vector3SubtractValue", lmathVector3SubtractValue );
+	assingGlobalFunction( "Vector3Scale", lmathVector3Scale );
+	assingGlobalFunction( "Vector3Multiply", lmathVector3Multiply );
+	assingGlobalFunction( "Vector3CrossProduct", lmathVector3CrossProduct );
+	assingGlobalFunction( "Vector3Perpendicular", lmathVector3Perpendicular );
+	assingGlobalFunction( "Vector3Length", lmathVector3Length );
+	assingGlobalFunction( "Vector3LengthSqr", lmathVector3LengthSqr );
+	assingGlobalFunction( "Vector3DotProduct", lmathVector3DotProduct );
+	assingGlobalFunction( "Vector3Distance", lmathVector3Distance );
+	assingGlobalFunction( "Vector3DistanceSqr", lmathVector3DistanceSqr );
+	assingGlobalFunction( "Vector3Angle", lmathVector3Angle );
+	assingGlobalFunction( "Vector3Negate", lmathVector3Negate );
+	assingGlobalFunction( "Vector3Divide", lmathVector3Divide );
+	assingGlobalFunction( "Vector3Normalize", lmathVector3Normalize );
+	assingGlobalFunction( "Vector3OrthoNormalize", lmathVector3OrthoNormalize );
+	assingGlobalFunction( "Vector3Transform", lmathVector3Transform );
+	assingGlobalFunction( "Vector3RotateByQuaternion", lmathVector3RotateByQuaternion );
+	assingGlobalFunction( "Vector3Lerp", lmathVector3Lerp );
+	assingGlobalFunction( "Vector3Reflect", lmathVector3Reflect );
+	assingGlobalFunction( "Vector3Min", lmathVector3Min );
+	assingGlobalFunction( "Vector3Max", lmathVector3Max );
+	assingGlobalFunction( "Vector3Barycenter", lmathVector3Barycenter );
+	assingGlobalFunction( "Vector3Unproject", lmathVector3Unproject );
+	assingGlobalFunction( "Vector3Invert", lmathVector3Invert );
+	assingGlobalFunction( "Vector3Clamp", lmathVector3Clamp );
+	assingGlobalFunction( "Vector3ClampValue", lmathVector3ClampValue );
+	assingGlobalFunction( "Vector3Equals", lmathVector3Equals );
+	assingGlobalFunction( "Vector3Refract", lmathVector3Refract );
 		/* Matrix. */
-	lua_register( L, "RL_MatrixDeterminant", lmathMatrixDeterminant );
-	lua_register( L, "RL_MatrixTrace", lmathMatrixTrace );
-	lua_register( L, "RL_MatrixTranspose", lmathMatrixTranspose );
-	lua_register( L, "RL_MatrixInvert", lmathMatrixInvert );
-	lua_register( L, "RL_MatrixIdentity", lmathMatrixIdentity );
-	lua_register( L, "RL_MatrixAdd", lmathMatrixAdd );
-	lua_register( L, "RL_MatrixSubtract", lmathMatrixSubtract );
-	lua_register( L, "RL_MatrixMultiply", lmathMatrixMultiply );
-	lua_register( L, "RL_MatrixTranslate", lmathMatrixTranslate );
-	lua_register( L, "RL_MatrixRotate", lmathMatrixRotate );
-	lua_register( L, "RL_MatrixRotateX", lmathMatrixRotateX );
-	lua_register( L, "RL_MatrixRotateY", lmathMatrixRotateY );
-	lua_register( L, "RL_MatrixRotateZ", lmathMatrixRotateZ );
-	lua_register( L, "RL_MatrixRotateXYZ", lmathMatrixRotateXYZ );
-	lua_register( L, "RL_MatrixRotateZYX", lmathMatrixRotateZYX );
-	lua_register( L, "RL_MatrixScale", lmathMatrixScale );
-	lua_register( L, "RL_MatrixFrustum", lmathMatrixFrustum );
-	lua_register( L, "RL_MatrixPerspective", lmathMatrixPerspective );
-	lua_register( L, "RL_MatrixOrtho", lmathMatrixOrtho );
-	lua_register( L, "RL_MatrixLookAt", lmathMatrixLookAt );
+	assingGlobalFunction( "MatrixDeterminant", lmathMatrixDeterminant );
+	assingGlobalFunction( "MatrixTrace", lmathMatrixTrace );
+	assingGlobalFunction( "MatrixTranspose", lmathMatrixTranspose );
+	assingGlobalFunction( "MatrixInvert", lmathMatrixInvert );
+	assingGlobalFunction( "MatrixIdentity", lmathMatrixIdentity );
+	assingGlobalFunction( "MatrixAdd", lmathMatrixAdd );
+	assingGlobalFunction( "MatrixSubtract", lmathMatrixSubtract );
+	assingGlobalFunction( "MatrixMultiply", lmathMatrixMultiply );
+	assingGlobalFunction( "MatrixTranslate", lmathMatrixTranslate );
+	assingGlobalFunction( "MatrixRotate", lmathMatrixRotate );
+	assingGlobalFunction( "MatrixRotateX", lmathMatrixRotateX );
+	assingGlobalFunction( "MatrixRotateY", lmathMatrixRotateY );
+	assingGlobalFunction( "MatrixRotateZ", lmathMatrixRotateZ );
+	assingGlobalFunction( "MatrixRotateXYZ", lmathMatrixRotateXYZ );
+	assingGlobalFunction( "MatrixRotateZYX", lmathMatrixRotateZYX );
+	assingGlobalFunction( "MatrixScale", lmathMatrixScale );
+	assingGlobalFunction( "MatrixFrustum", lmathMatrixFrustum );
+	assingGlobalFunction( "MatrixPerspective", lmathMatrixPerspective );
+	assingGlobalFunction( "MatrixOrtho", lmathMatrixOrtho );
+	assingGlobalFunction( "MatrixLookAt", lmathMatrixLookAt );
 		/* Quaternion. */
-	lua_register( L, "RL_QuaternionAdd", lmathQuaternionAdd );
-	lua_register( L, "RL_QuaternionAddValue", lmathQuaternionAddValue );
-	lua_register( L, "RL_QuaternionSubtract", lmathQuaternionSubtract );
-	lua_register( L, "RL_QuaternionSubtractValue", lmathQuaternionSubtractValue );
-	lua_register( L, "RL_QuaternionIdentity", lmathQuaternionIdentity );
-	lua_register( L, "RL_QuaternionLength", lmathQuaternionLength );
-	lua_register( L, "RL_QuaternionNormalize", lmathQuaternionNormalize );
-	lua_register( L, "RL_QuaternionInvert", lmathQuaternionInvert );
-	lua_register( L, "RL_QuaternionMultiply", lmathQuaternionMultiply );
-	lua_register( L, "RL_QuaternionScale", lmathQuaternionScale );
-	lua_register( L, "RL_QuaternionDivide", lmathQuaternionDivide );
-	lua_register( L, "RL_QuaternionLerp", lmathQuaternionLerp );
-	lua_register( L, "RL_QuaternionNlerp", lmathQuaternionNlerp );
-	lua_register( L, "RL_QuaternionSlerp", lmathQuaternionSlerp );
-	lua_register( L, "RL_QuaternionFromVector3ToVector3", lmathQuaternionFromVector3ToVector3 );
-	lua_register( L, "RL_QuaternionFromMatrix", lmathQuaternionFromMatrix );
-	lua_register( L, "RL_QuaternionToMatrix", lmathQuaternionToMatrix );
-	lua_register( L, "RL_QuaternionFromAxisAngle", lmathQuaternionFromAxisAngle );
-	lua_register( L, "RL_QuaternionToAxisAngle", lmathQuaternionToAxisAngle );
-	lua_register( L, "RL_QuaternionFromEuler", lmathQuaternionFromEuler );
-	lua_register( L, "RL_QuaternionToEuler", lmathQuaternionToEuler );
-	lua_register( L, "RL_QuaternionTransform", lmathQuaternionTransform );
-	lua_register( L, "RL_QuaternionEquals", lmathQuaternionEquals );
+	assingGlobalFunction( "QuaternionAdd", lmathQuaternionAdd );
+	assingGlobalFunction( "QuaternionAddValue", lmathQuaternionAddValue );
+	assingGlobalFunction( "QuaternionSubtract", lmathQuaternionSubtract );
+	assingGlobalFunction( "QuaternionSubtractValue", lmathQuaternionSubtractValue );
+	assingGlobalFunction( "QuaternionIdentity", lmathQuaternionIdentity );
+	assingGlobalFunction( "QuaternionLength", lmathQuaternionLength );
+	assingGlobalFunction( "QuaternionNormalize", lmathQuaternionNormalize );
+	assingGlobalFunction( "QuaternionInvert", lmathQuaternionInvert );
+	assingGlobalFunction( "QuaternionMultiply", lmathQuaternionMultiply );
+	assingGlobalFunction( "QuaternionScale", lmathQuaternionScale );
+	assingGlobalFunction( "QuaternionDivide", lmathQuaternionDivide );
+	assingGlobalFunction( "QuaternionLerp", lmathQuaternionLerp );
+	assingGlobalFunction( "QuaternionNlerp", lmathQuaternionNlerp );
+	assingGlobalFunction( "QuaternionSlerp", lmathQuaternionSlerp );
+	assingGlobalFunction( "QuaternionFromVector3ToVector3", lmathQuaternionFromVector3ToVector3 );
+	assingGlobalFunction( "QuaternionFromMatrix", lmathQuaternionFromMatrix );
+	assingGlobalFunction( "QuaternionToMatrix", lmathQuaternionToMatrix );
+	assingGlobalFunction( "QuaternionFromAxisAngle", lmathQuaternionFromAxisAngle );
+	assingGlobalFunction( "QuaternionToAxisAngle", lmathQuaternionToAxisAngle );
+	assingGlobalFunction( "QuaternionFromEuler", lmathQuaternionFromEuler );
+	assingGlobalFunction( "QuaternionToEuler", lmathQuaternionToEuler );
+	assingGlobalFunction( "QuaternionTransform", lmathQuaternionTransform );
+	assingGlobalFunction( "QuaternionEquals", lmathQuaternionEquals );
 
 	/* Gui. */
 		/* Global. */
-	lua_register( L, "RL_GuiEnable", lguiGuiEnable );
-	lua_register( L, "RL_GuiDisable", lguiGuiDisable );
-	lua_register( L, "RL_GuiLock", lguiGuiLock );
-	lua_register( L, "RL_GuiUnlock", lguiGuiUnlock );
-	lua_register( L, "RL_GuiIsLocked", lguiGuiIsLocked );
-	lua_register( L, "RL_GuiFade", lguiGuiFade );
-	lua_register( L, "RL_GuiSetState", lguiGuiSetState );
-	lua_register( L, "RL_GuiGetState", lguiGuiGetState );
+	assingGlobalFunction( "GuiEnable", lguiGuiEnable );
+	assingGlobalFunction( "GuiDisable", lguiGuiDisable );
+	assingGlobalFunction( "GuiLock", lguiGuiLock );
+	assingGlobalFunction( "GuiUnlock", lguiGuiUnlock );
+	assingGlobalFunction( "GuiIsLocked", lguiGuiIsLocked );
+	assingGlobalFunction( "GuiFade", lguiGuiFade );
+	assingGlobalFunction( "GuiSetState", lguiGuiSetState );
+	assingGlobalFunction( "GuiGetState", lguiGuiGetState );
 		/* Font. */
-	lua_register( L, "RL_GuiSetFont", lguiGuiSetFont );
+	assingGlobalFunction( "GuiSetFont", lguiGuiSetFont );
 		/* Style. */
-	lua_register( L, "RL_GuiSetStyle", lguiGuiSetStyle );
-	lua_register( L, "RL_GuiGetStyle", lguiGuiGetStyle );
-	lua_register( L, "RL_GuiLoadStyle", lguiGuiLoadStyle );
-	lua_register( L, "RL_GuiLoadStyleDefault", lguiGuiLoadStyleDefault );
+	assingGlobalFunction( "GuiSetStyle", lguiGuiSetStyle );
+	assingGlobalFunction( "GuiGetStyle", lguiGuiGetStyle );
+	assingGlobalFunction( "GuiLoadStyle", lguiGuiLoadStyle );
+	assingGlobalFunction( "GuiLoadStyleDefault", lguiGuiLoadStyleDefault );
 		/* Container. */
-	lua_register( L, "RL_GuiWindowBox", lguiGuiWindowBox );
-	lua_register( L, "RL_GuiGroupBox", lguiGuiGroupBox );
-	lua_register( L, "RL_GuiLine", lguiGuiLine );
-	lua_register( L, "RL_GuiPanel", lguiGuiPanel );
-	lua_register( L, "RL_GuiScrollPanel", lguiGuiScrollPanel );
+	assingGlobalFunction( "GuiWindowBox", lguiGuiWindowBox );
+	assingGlobalFunction( "GuiGroupBox", lguiGuiGroupBox );
+	assingGlobalFunction( "GuiLine", lguiGuiLine );
+	assingGlobalFunction( "GuiPanel", lguiGuiPanel );
+	assingGlobalFunction( "GuiScrollPanel", lguiGuiScrollPanel );
 		/* Basic. */
-	lua_register( L, "RL_GuiLabel", lguiGuiLabel );
-	lua_register( L, "RL_GuiButton", lguiGuiButton );
-	lua_register( L, "RL_GuiLabelButton", lguiGuiLabelButton );
-	lua_register( L, "RL_GuiToggle", lguiGuiToggle );
-	lua_register( L, "RL_GuiToggleGroup", lguiGuiToggleGroup );
-	lua_register( L, "RL_GuiCheckBox", lguiGuiCheckBox );
-	lua_register( L, "RL_GuiComboBox", lguiGuiComboBox );
-	lua_register( L, "RL_GuiTextBox", lguiGuiTextBox );
-	lua_register( L, "RL_GuiTextBoxMulti", lguiGuiTextBoxMulti );
-	lua_register( L, "RL_GuiSpinner", lguiGuiSpinner );
-	lua_register( L, "RL_GuiValueBox", lguiGuiValueBox );
-	lua_register( L, "RL_GuiSlider", lguiGuiSlider );
-	lua_register( L, "RL_GuiSliderBar", lguiGuiSliderBar );
-	lua_register( L, "RL_GuiProgressBar", lguiGuiProgressBar );
-	lua_register( L, "RL_GuiScrollBar", lguiGuiScrollBar );
-	lua_register( L, "RL_GuiDropdownBox", lguiGuiDropdownBox );
-	lua_register( L, "RL_GuiStatusBar", lguiGuiStatusBar );
-	lua_register( L, "RL_GuiDummyRec", lguiGuiDummyRec );
-	lua_register( L, "RL_GuiGrid", lguiGuiGrid );
+	assingGlobalFunction( "GuiLabel", lguiGuiLabel );
+	assingGlobalFunction( "GuiButton", lguiGuiButton );
+	assingGlobalFunction( "GuiLabelButton", lguiGuiLabelButton );
+	assingGlobalFunction( "GuiToggle", lguiGuiToggle );
+	assingGlobalFunction( "GuiToggleGroup", lguiGuiToggleGroup );
+	assingGlobalFunction( "GuiCheckBox", lguiGuiCheckBox );
+	assingGlobalFunction( "GuiComboBox", lguiGuiComboBox );
+	assingGlobalFunction( "GuiTextBox", lguiGuiTextBox );
+	assingGlobalFunction( "GuiTextBoxMulti", lguiGuiTextBoxMulti );
+	assingGlobalFunction( "GuiSpinner", lguiGuiSpinner );
+	assingGlobalFunction( "GuiValueBox", lguiGuiValueBox );
+	assingGlobalFunction( "GuiSlider", lguiGuiSlider );
+	assingGlobalFunction( "GuiSliderBar", lguiGuiSliderBar );
+	assingGlobalFunction( "GuiProgressBar", lguiGuiProgressBar );
+	assingGlobalFunction( "GuiScrollBar", lguiGuiScrollBar );
+	assingGlobalFunction( "GuiDropdownBox", lguiGuiDropdownBox );
+	assingGlobalFunction( "GuiStatusBar", lguiGuiStatusBar );
+	assingGlobalFunction( "GuiDummyRec", lguiGuiDummyRec );
+	assingGlobalFunction( "GuiGrid", lguiGuiGrid );
 		/* Advanced. */
-	lua_register( L, "RL_GuiListView", lguiGuiListView );
-	lua_register( L, "RL_GuiListViewEx", lguiGuiListViewEx );
-	lua_register( L, "RL_GuiMessageBox", lguiGuiMessageBox );
-	lua_register( L, "RL_GuiTextInputBox", lguiGuiTextInputBox );
-	lua_register( L, "RL_GuiColorPicker", lguiGuiColorPicker );
-	lua_register( L, "RL_GuiColorPanel", lguiGuiColorPanel );
-	lua_register( L, "RL_GuiColorBarAlpha", lguiGuiColorBarAlpha );
-	lua_register( L, "RL_GuiColorBarHue", lguiGuiColorBarHue );
+	assingGlobalFunction( "GuiListView", lguiGuiListView );
+	assingGlobalFunction( "GuiListViewEx", lguiGuiListViewEx );
+	assingGlobalFunction( "GuiMessageBox", lguiGuiMessageBox );
+	assingGlobalFunction( "GuiTextInputBox", lguiGuiTextInputBox );
+	assingGlobalFunction( "GuiColorPicker", lguiGuiColorPicker );
+	assingGlobalFunction( "GuiColorPanel", lguiGuiColorPanel );
+	assingGlobalFunction( "GuiColorBarAlpha", lguiGuiColorBarAlpha );
+	assingGlobalFunction( "GuiColorBarHue", lguiGuiColorBarHue );
 		/* Icons. */
-	lua_register( L, "RL_GuiIconText", lguiGuiIconText );
-	lua_register( L, "RL_GuiDrawIcon", lguiGuiDrawIcon );
-	lua_register( L, "RL_GuiSetIconScale", lguiGuiSetIconScale );
-	lua_register( L, "RL_GuiSetIconPixel", lguiGuiSetIconPixel );
-	lua_register( L, "RL_GuiClearIconPixel", lguiGuiClearIconPixel );
-	lua_register( L, "RL_GuiCheckIconPixel", lguiGuiCheckIconPixel );
+	assingGlobalFunction( "GuiIconText", lguiGuiIconText );
+	assingGlobalFunction( "GuiDrawIcon", lguiGuiDrawIcon );
+	assingGlobalFunction( "GuiSetIconScale", lguiGuiSetIconScale );
+	assingGlobalFunction( "GuiSetIconPixel", lguiGuiSetIconPixel );
+	assingGlobalFunction( "GuiClearIconPixel", lguiGuiClearIconPixel );
+	assingGlobalFunction( "GuiCheckIconPixel", lguiGuiCheckIconPixel );
 
 	/* Lights */
 		/* Basics. */
-	lua_register( L, "RL_CreateLight", llightsCreateLight );
-	lua_register( L, "RL_UpdateLightValues", llightsUpdateLightValues );
+	assingGlobalFunction( "CreateLight", llightsCreateLight );
+	assingGlobalFunction( "UpdateLightValues", llightsUpdateLightValues );
 
 	/* RLGL */
 		/* General render state. */
-	lua_register( L, "RL_rlglSetLineWidth", lrlglSetLineWidth );
-	lua_register( L, "RL_rlglGetLineWidth", lrlglGetLineWidth );
+	assingGlobalFunction( "rlglSetLineWidth", lrlglSetLineWidth );
+	assingGlobalFunction( "rlglGetLineWidth", lrlglGetLineWidth );
 
 	/* Easings */
 		/* Linear Easing functions. */
-	lua_register( L, "RL_EaseLinear", leasingsEaseLinear );
+	assingGlobalFunction( "EaseLinear", leasingsEaseLinear );
 		/* Sine Easing functions. */
-	lua_register( L, "RL_EaseSineIn", leasingsEaseSineIn );
-	lua_register( L, "RL_EaseSineOut", leasingsEaseSineOut );
-	lua_register( L, "RL_EaseSineInOut", leasingsEaseSineInOut );
+	assingGlobalFunction( "EaseSineIn", leasingsEaseSineIn );
+	assingGlobalFunction( "EaseSineOut", leasingsEaseSineOut );
+	assingGlobalFunction( "EaseSineInOut", leasingsEaseSineInOut );
 		/* Circular Easing functions. */
-	lua_register( L, "RL_EaseCircIn", leasingsEaseCircIn );
-	lua_register( L, "RL_EaseCircOut", leasingsEaseCircOut );
-	lua_register( L, "RL_EaseCircInOut", leasingsEaseCircInOut );
+	assingGlobalFunction( "EaseCircIn", leasingsEaseCircIn );
+	assingGlobalFunction( "EaseCircOut", leasingsEaseCircOut );
+	assingGlobalFunction( "EaseCircInOut", leasingsEaseCircInOut );
 		/* Cubic Easing functions. */
-	lua_register( L, "RL_EaseCubicIn", leasingsEaseCubicIn );
-	lua_register( L, "RL_EaseCubicOut", leasingsEaseCubicOut );
-	lua_register( L, "RL_EaseCubicInOut", leasingsEaseCubicInOut );
+	assingGlobalFunction( "EaseCubicIn", leasingsEaseCubicIn );
+	assingGlobalFunction( "EaseCubicOut", leasingsEaseCubicOut );
+	assingGlobalFunction( "EaseCubicInOut", leasingsEaseCubicInOut );
 		/* Quadratic Easing functions. */
-	lua_register( L, "RL_EaseQuadIn", leasingsEaseQuadIn );
-	lua_register( L, "RL_EaseQuadOut", leasingsEaseQuadOut );
-	lua_register( L, "RL_EaseQuadInOut", leasingsEaseQuadInOut );
+	assingGlobalFunction( "EaseQuadIn", leasingsEaseQuadIn );
+	assingGlobalFunction( "EaseQuadOut", leasingsEaseQuadOut );
+	assingGlobalFunction( "EaseQuadInOut", leasingsEaseQuadInOut );
 		/* Exponential Easing functions. */
-	lua_register( L, "RL_EaseExpoIn", leasingsEaseExpoIn );
-	lua_register( L, "RL_EaseExpoOut", leasingsEaseExpoOut );
-	lua_register( L, "RL_EaseExpoInOut", leasingsEaseExpoInOut );
+	assingGlobalFunction( "EaseExpoIn", leasingsEaseExpoIn );
+	assingGlobalFunction( "EaseExpoOut", leasingsEaseExpoOut );
+	assingGlobalFunction( "EaseExpoInOut", leasingsEaseExpoInOut );
 		/* Back Easing functions. */
-	lua_register( L, "RL_EaseBackIn", leasingsEaseBackIn );
-	lua_register( L, "RL_EaseBackOut", leasingsEaseBackOut );
-	lua_register( L, "RL_EaseBackInOut", leasingsEaseBackInOut );
+	assingGlobalFunction( "EaseBackIn", leasingsEaseBackIn );
+	assingGlobalFunction( "EaseBackOut", leasingsEaseBackOut );
+	assingGlobalFunction( "EaseBackInOut", leasingsEaseBackInOut );
 		/* Bounce Easing functions. */
-	lua_register( L, "RL_EaseBounceIn", leasingsEaseBounceIn );
-	lua_register( L, "RL_EaseBounceOut", leasingsEaseBounceOut );
-	lua_register( L, "RL_EaseBounceInOut", leasingsEaseBounceInOut );
+	assingGlobalFunction( "EaseBounceIn", leasingsEaseBounceIn );
+	assingGlobalFunction( "EaseBounceOut", leasingsEaseBounceOut );
+	assingGlobalFunction( "EaseBounceInOut", leasingsEaseBounceInOut );
 		/* Elastic Easing functions. */
-	lua_register( L, "RL_EaseElasticIn", leasingsEaseElasticIn );
-	lua_register( L, "RL_EaseElasticOut", leasingsEaseElasticOut );
-	lua_register( L, "RL_EaseElasticInOut", leasingsEaseElasticInOut );
+	assingGlobalFunction( "EaseElasticIn", leasingsEaseElasticIn );
+	assingGlobalFunction( "EaseElasticOut", leasingsEaseElasticOut );
+	assingGlobalFunction( "EaseElasticInOut", leasingsEaseElasticInOut );
+
+	lua_pop( L, -1 );
 }
 
 /* Lua util functions. */
@@ -1716,7 +1746,7 @@ Ray uluaGetRay( lua_State *L ) {
     lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-		if ( lua_isnumber( L, -1 ) ) {
+		if ( lua_istable( L, -1 ) ) {
 			if ( lua_isnumber( L, -2 ) ) {
 				switch ( i ) {
 					case 0:

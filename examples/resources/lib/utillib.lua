@@ -15,7 +15,7 @@ function utillib.deepCopy( orig )
         for origKey, origValue in next, orig, nil do
 			-- If object has clone method, use that.
 			if type( origValue ) == "table" and type( origValue.clone ) == "function" then
-				copy[ utillib.deepCopy( origKey ) ] = orig_value:clone()
+				copy[ utillib.deepCopy( origKey ) ] = origValue:clone()
 			else
 				copy[ utillib.deepCopy( origKey ) ] = utillib.deepCopy( origValue )
 			end
@@ -128,9 +128,9 @@ end
 
 function utillib.wrapAngleRad( angle )
 	if angle < 0 then
-		return math.fmod( angle, PI * 2 ) + PI * 2
+		return math.fmod( angle, RL.PI * 2 ) + RL.PI * 2
 	else
-		return math.fmod( angle, PI * 2 )
+		return math.fmod( angle, RL.PI * 2 )
 	end
 end
 

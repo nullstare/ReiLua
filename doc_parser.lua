@@ -1,4 +1,4 @@
---Create api.md file from c sources.
+--Create api.md and ReiLua_API.lua files from c sources.
 
 -- Export each module as separate .md file.
 local separate = false
@@ -21,7 +21,65 @@ local function split( str, sep )
 	return t
 end
 
-local apiFile = io.open( "API.md", "w" )
+local function getParamType( param )
+	if param == "Color" or param == "Vector2" or param == "Vector3" or param == "Vector4"
+	or param == "Quaternion" or param == "Matrix" or param == "Rectangle" then
+		return "table"
+	elseif param == "float" then
+		return "number"
+	elseif param == "int" then
+		return "integer"
+	elseif param == "string" then
+		return "string"
+	elseif param == "bool" then
+		return "boolean"
+	else
+		return "any"
+	end
+end
+
+local function parseFunction( line )
+	local splitted = split( line, "(" )
+	local parString = splitted[2]:sub(2)
+	parString = parString:sub( 1, #parString - 2 )
+	local parameters = split( parString, "," )
+	local str = ""
+	local parStr = ""
+
+	for i, par in ipairs( parameters ) do
+		local sepPar = split( par, " " )
+		parStr = parStr..sepPar[2]
+		str = str.."---@param "..sepPar[2].." "
+		str = str..getParamType( sepPar[1] ).."\n"
+
+		if i < #parameters then
+			parStr = parStr..", "
+		end
+	end
+
+	local returnsAndFuncName = split( splitted[1], "=" )
+
+	for i, ret in ipairs( split( returnsAndFuncName[1]:sub(3), "," ) ) do
+		if ret:sub( 1, 1 ) == " " then
+			ret = ret:sub(2)
+		end
+
+		str = str.."---@return any "..ret.."\n"
+	end
+
+	str = str.."function "..returnsAndFuncName[ #returnsAndFuncName ]:sub(2)
+
+	if parStr ~= "" then
+		str = str.."( "..parStr.." )"
+	else
+		str = str.."()"
+	end
+
+	return str.." end\n"
+end
+
+local apiFile = io.open( "../API.md", "w" )
+local luaApiFile = io.open( "../ReiLua_API.lua", "w" )
 
 -- Header
 apiFile:write( "# ReiLua API\n" )
@@ -29,24 +87,40 @@ apiFile:write( "# ReiLua API\n" )
 -- Usage.
 
 apiFile:write( "\n## Usage\n" )
-apiFile:write( "\nApplication needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where \"main.lua\" is located can be given as argument. There are three global Lua functions that the engine will call, 'init', 'process' and 'draw'.\n" )
+apiFile:write( "\nApplication needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where \"main.lua\" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.process', 'RL.draw', 'RL.log' and 'RL.exit'.\n" )
 
-apiFile:write( "\n---\n> function init()\n\
-This function will be called first when 'main.lua' is found\n\n---\n" )
-apiFile:write( "\n> function process( delta )\n\
-This function will be called every frame during execution. It will get time duration from last frame on argument 'delta'\n\n---\n" )
-apiFile:write( "\n> function draw()\n\
-This function will be called every frame after process and it should have all rendering related functions.\
-Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it.\
-You can still use RL_BeginDrawing() and RL_EndDrawing() manually from anywhere.\n\n---\n" )
-apiFile:write( "\n> function log( logLevel, message )\n\
-This function can be used for custom log message handling.\n\n---\n" )
-apiFile:write( "\n> function exit()\n\
-This function will be called on program close. Cleanup could be done here.\n\n---\n" )
+local FUNC_DESC = {
+	init = "This function will be called first when 'main.lua' is found",
+	process = "This function will be called every frame during execution. It will get time duration from last frame on argument 'delta'",
+	draw = "This function will be called every frame after process and it should have all rendering related functions. Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it. You can still use RL.BeginDrawing() and RL.EndDrawing() manually from anywhere.",
+	log = "This function can be used for custom log message handling.",
+	exit = "This function will be called on program close. Cleanup could be done here.",
+}
+
+apiFile:write( "\n---\n> function RL.init()\n\n"..FUNC_DESC.init.."\n\n---\n" )
+apiFile:write( "\n> function RL.process( delta )\n\n"..FUNC_DESC.process.."\n\n---\n" )
+apiFile:write( "\n> function RL.draw()\n\n"..FUNC_DESC.draw.."\n\n---\n" )
+apiFile:write( "\n> function RL.log( logLevel, message )\n\n"..FUNC_DESC.log.."\n\n---\n" )
+apiFile:write( "\n> function RL.exit()\n\n"..FUNC_DESC.exit.."\n\n---\n" )
+
+luaApiFile:write( "-- Put this file into your project folder to provide annotations when using Lua language server.\n\n" )
+luaApiFile:write( "RL={}\n\n" )
+luaApiFile:write( "-- Functions.\n\n" )
+
+luaApiFile:write(
+"---"..FUNC_DESC.init.."\nfunction RL.init() end\n" )
+luaApiFile:write(
+"---"..FUNC_DESC.process.."\n---@param delta number\nfunction RL.process( delta ) end\n" )
+luaApiFile:write(
+"---"..FUNC_DESC.draw.."\nfunction RL.draw() end\n" )
+luaApiFile:write(
+"---"..FUNC_DESC.log.."\n---@param logLevel integer\n---@param message string\nfunction RL.log( logLevel, message ) end\n" )
+luaApiFile:write(
+"---"..FUNC_DESC.exit.."\nfunction RL.exit() end\n" )
 
 -- Globals.
 
-local srcFile = io.open( "src/lua_core.c", "r" )
+local srcFile = io.open( "../src/lua_core.c", "r" )
 local writing = false
 
 repeat
@@ -61,9 +135,26 @@ repeat
 	if writing then
 		if lineSplit[1] == "\t/*" then
 			apiFile:write( "\n## Globals - "..lineSplit[2].."\n" )
+			luaApiFile:write( "\n-- Globals - "..lineSplit[2].."\n\n" )
 		else
 			-- Remove comma from the end.
-			apiFile:write( "\n"..lineSplit[2]:sub( 1, -2 ).."\n" )
+			local globalName = lineSplit[2]:sub( 1, -2 )
+
+			apiFile:write( "\n"..globalName.."\n" )
+			local value = RL[ globalName ]
+
+			globalName = "RL."..globalName
+
+			if value == nil then
+				luaApiFile:write( globalName.."=nil\n" )
+			elseif type( value ) == "table" then
+				-- All tables are colors.
+				luaApiFile:write( globalName.."={"
+					..math.tointeger( value[1] )..","..math.tointeger( value[2] )..","
+					..math.tointeger( value[3] )..","..math.tointeger( value[4] ).."}\n" )
+			else
+				luaApiFile:write( globalName.."="..value.."\n" )
+			end
 		end
 	end
 
@@ -172,8 +263,9 @@ local sourceFiles = {
 }
 
 for _, src in ipairs( sourceFiles ) do
-	srcFile = io.open( "src/"..src..".c", "r" )
+	srcFile = io.open( "../src/"..src..".c", "r" )
 	local line = ""
+	local funcStr = ""
 	local p = false
 
 	if separate then
@@ -186,12 +278,22 @@ for _, src in ipairs( sourceFiles ) do
 		if line == "*/" then
 			p = false
 			apiFile:write( "\n---\n" )
+			luaApiFile:write( funcStr.."\n" )
+			funcStr = ""
 		end
-		
+
 		if p then
 			apiFile:write( line.."\n" )
+
+			if line:sub( 1, 2 ) == "##" then
+				luaApiFile:write( "-- "..line:sub( 4 ).."\n" )
+			elseif line:sub( 1, 1 ) == ">" then
+				funcStr =  parseFunction( line )
+			elseif line:sub( 1, 1 ) ~= "" then
+				luaApiFile:write( "---"..line.."\n" )
+			end
 		end
-		
+
 		if line == "/*" then
 			p = true
 			apiFile:write( "\n" )

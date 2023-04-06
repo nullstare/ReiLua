@@ -38,7 +38,7 @@ Vector3.meta = {
 		return len
 	end,
 	__eq = function( v1, v2 )
-		return RL_Vector3Equals( v1, v2 ) == 1
+		return RL.Vector3Equals( v1, v2 ) == 1
 	end,
 }
 
@@ -85,104 +85,104 @@ function Vector3:abs()
 end
 
 function Vector3:min( v2 )
-	return Vector3:new( RL_Vector3Min( self, v2 ) )
+	return Vector3:new( RL.Vector3Min( self, v2 ) )
 end
 
 function Vector3:max( v2 )
-	return Vector3:new( RL_Vector3Max( self, v2 ) )
+	return Vector3:new( RL.Vector3Max( self, v2 ) )
 end
 
 function Vector3:addValue( value )
-	return Vector3:new( RL_Vector3AddValue( self, value ) )
+	return Vector3:new( RL.Vector3AddValue( self, value ) )
 end
 
 function Vector3:subValue( value )
-	return Vector3:new( RL_Vector3SubtractValue( self, value ) )
+	return Vector3:new( RL.Vector3SubtractValue( self, value ) )
 end
 
 function Vector3:scale( scalar )
-	return Vector3:new( RL_Vector3Scale( self, scalar ) )
+	return Vector3:new( RL.Vector3Scale( self, scalar ) )
 end
 
 function Vector3:cross( v2 )
-	return Vector3:new( RL_Vector3CrossProduct( self, v2 ) )
+	return Vector3:new( RL.Vector3CrossProduct( self, v2 ) )
 end
 
 function Vector3:perpendicular()
-	return Vector3:new( RL_Vector3Perpendicular( self ) )
+	return Vector3:new( RL.Vector3Perpendicular( self ) )
 end
 
 function Vector3:length()
-	return RL_Vector3Length( self )
+	return RL.Vector3Length( self )
 end
 
 function Vector3:lengthSqr()
-	return RL_Vector3LengthSqr( self )
+	return RL.Vector3LengthSqr( self )
 end
 
 function Vector3:dot( v2 )
-	return RL_Vector3DotProduct( self, v2 )
+	return RL.Vector3DotProduct( self, v2 )
 end
 
 function Vector3:distance( v2 )
-	return RL_Vector3Distance( self, v2 )
+	return RL.Vector3Distance( self, v2 )
 end
 
 function Vector3:distanceSqr( v2 )
-	return RL_Vector3DistanceSqr( self, v2 )
+	return RL.Vector3DistanceSqr( self, v2 )
 end
 
 function Vector3:angle( v2 )
-	return RL_Vector3Angle( self, v2 )
+	return RL.Vector3Angle( self, v2 )
 end
 
 function Vector3:negate()
-	return Vector3:new( RL_Vector3Negate( self ) )
+	return Vector3:new( RL.Vector3Negate( self ) )
 end
 
 function Vector3:normalize()
-	return Vector3:new( RL_Vector3Normalize( self ) )
+	return Vector3:new( RL.Vector3Normalize( self ) )
 end
 
 function Vector3:orthoNormalize( v2 )
-	local r1, r2 = RL_Vector3OrthoNormalize( self, v2 )
+	local r1, r2 = RL.Vector3OrthoNormalize( self, v2 )
 	return Vector3:new( r1[1], r1[2], r1[3] ), Vector3:new( r2[1], r2[2], r2[3] )
 end
 
 function Vector3:transform( mat )
-	return Vector3:new( RL_Vector3Transform( self, mat ) )
+	return Vector3:new( RL.Vector3Transform( self, mat ) )
 end
 
 function Vector3:rotateByQuaternion( q )
-	return Vector3:new( RL_Vector3RotateByQuaternion( self, q ) )
+	return Vector3:new( RL.Vector3RotateByQuaternion( self, q ) )
 end
 
 function Vector3:rotateByAxisAngle( axis, angle )
-	return Vector3:new( RL_Vector3RotateByAxisAngle( self, axis, angle ) )
+	return Vector3:new( RL.Vector3RotateByAxisAngle( self, axis, angle ) )
 end
 
 function Vector3:lerp( v2, value )
-	return Vector3:new( RL_Vector3Lerp( self, v2, value ) )
+	return Vector3:new( RL.Vector3Lerp( self, v2, value ) )
 end
 
 function Vector3:reflect( normal )
-	return Vector3:new( RL_Vector3Reflect( self, normal ) )
+	return Vector3:new( RL.Vector3Reflect( self, normal ) )
 end
 
 function Vector3:invert()
-	return Vector3:new( RL_Vector3Invert( self ) )
+	return Vector3:new( RL.Vector3Invert( self ) )
 end
 
 function Vector3:clamp( min, max )
-	return Vector3:new( RL_Vector3Clamp( self, min, max ) )
+	return Vector3:new( RL.Vector3Clamp( self, min, max ) )
 end
 
 function Vector3:clampValue( min, max )
-	return Vector3:new( RL_Vector3ClampValue( self, min, max ) )
+	return Vector3:new( RL.Vector3ClampValue( self, min, max ) )
 end
 
 function Vector3:equals( v2 )
-	return RL_Vector3Equals( self, v2 )
+	return RL.Vector3Equals( self, v2 )
 end
 
 return Vector3

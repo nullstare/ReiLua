@@ -2,36 +2,34 @@
 
 ## Usage
 
-Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are three global Lua functions that the engine will call, 'init', 'process' and 'draw'.
+Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.process', 'RL.draw', 'RL.log' and 'RL.exit'.
 
 ---
-> function init()
+> function RL.init()
 
 This function will be called first when 'main.lua' is found
 
 ---
 
-> function process( delta )
+> function RL.process( delta )
 
 This function will be called every frame during execution. It will get time duration from last frame on argument 'delta'
 
 ---
 
-> function draw()
+> function RL.draw()
 
-This function will be called every frame after process and it should have all rendering related functions.
-Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it.
-You can still use RL_BeginDrawing() and RL_EndDrawing() manually from anywhere.
+This function will be called every frame after process and it should have all rendering related functions. Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it. You can still use RL.BeginDrawing() and RL.EndDrawing() manually from anywhere.
 
 ---
 
-> function log( logLevel, message )
+> function RL.log( logLevel, message )
 
 This function can be used for custom log message handling.
 
 ---
 
-> function exit()
+> function RL.exit()
 
 This function will be called on program close. Cleanup could be done here.
 
@@ -1088,7 +1086,7 @@ int id. ModelAnimations
 
 ---
 
-> state = RL_IsWindowReady()
+> state = RL.IsWindowReady()
 
 Check if window has been initialized successfully
 
@@ -1096,7 +1094,7 @@ Check if window has been initialized successfully
 
 ---
 
-> state = RL_IsWindowFullscreen()
+> state = RL.IsWindowFullscreen()
 
 Check if window is currently fullscreen
 
@@ -1104,7 +1102,7 @@ Check if window is currently fullscreen
 
 ---
 
-> state = RL_IsWindowHidden()
+> state = RL.IsWindowHidden()
 
 Check if window is currently hidden ( only PLATFORM_DESKTOP )
 
@@ -1112,7 +1110,7 @@ Check if window is currently hidden ( only PLATFORM_DESKTOP )
 
 ---
 
-> state = RL_IsWindowMinimized()
+> state = RL.IsWindowMinimized()
 
 Check if window is currently minimized ( only PLATFORM_DESKTOP )
 
@@ -1120,7 +1118,7 @@ Check if window is currently minimized ( only PLATFORM_DESKTOP )
 
 ---
 
-> state = RL_IsWindowMaximized()
+> state = RL.IsWindowMaximized()
 
 Check if window is currently maximized ( only PLATFORM_DESKTOP )
 
@@ -1128,7 +1126,7 @@ Check if window is currently maximized ( only PLATFORM_DESKTOP )
 
 ---
 
-> state = RL_IsWindowFocused()
+> state = RL.IsWindowFocused()
 
 Check if window is currently focused ( only PLATFORM_DESKTOP )
 
@@ -1136,7 +1134,7 @@ Check if window is currently focused ( only PLATFORM_DESKTOP )
 
 ---
 
-> success = RL_SetWindowMonitor( int monitor )
+> success = RL.SetWindowMonitor( int monitor )
 
 Set monitor for the current window (fullscreen mode)
 
@@ -1145,7 +1143,7 @@ Set monitor for the current window (fullscreen mode)
 
 ---
 
-> success = RL_SetWindowPosition( Vector2 pos )
+> success = RL.SetWindowPosition( Vector2 pos )
 
 Set window position on screen
 
@@ -1154,7 +1152,7 @@ Set window position on screen
 
 ---
 
-> success = RL_SetWindowSize( Vector2 size )
+> success = RL.SetWindowSize( Vector2 size )
 
 Set window dimensions
 
@@ -1163,7 +1161,7 @@ Set window dimensions
 
 ---
 
-> success = RL_SetWindowMinSize( Vector2 size )
+> success = RL.SetWindowMinSize( Vector2 size )
 
 Set window minimum dimensions ( for FLAG_WINDOW_RESIZABLE )
 
@@ -1172,7 +1170,7 @@ Set window minimum dimensions ( for FLAG_WINDOW_RESIZABLE )
 
 ---
 
-> position = RL_GetMonitorPosition( int monitor )
+> position = RL.GetMonitorPosition( int monitor )
 
 Get specified monitor position
 
@@ -1181,7 +1179,7 @@ Get specified monitor position
 
 ---
 
-> size = RL_GetMonitorSize( int monitor )
+> size = RL.GetMonitorSize( int monitor )
 
 Get specified monitor size
 
@@ -1190,7 +1188,7 @@ Get specified monitor size
 
 ---
 
-> position = RL_GetWindowPosition()
+> position = RL.GetWindowPosition()
 
 Get window position on monitor
 
@@ -1198,7 +1196,7 @@ Get window position on monitor
 
 ---
 
-> size = RL_GetScreenSize()
+> size = RL.GetScreenSize()
 
 Get screen size
 
@@ -1206,7 +1204,7 @@ Get screen size
 
 ---
 
-> success = RL_SetWindowState( int flag )
+> success = RL.SetWindowState( int flag )
 
 Set window configuration state using flags ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE... )
 
@@ -1215,7 +1213,7 @@ Set window configuration state using flags ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_R
 
 ---
 
-> state = RL_IsWindowState( int flag )
+> state = RL.IsWindowState( int flag )
 
 Check if one specific window flag is enabled ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE... )
 
@@ -1224,7 +1222,7 @@ Check if one specific window flag is enabled ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW
 
 ---
 
-> resized = RL_ClearWindowState( int flag )
+> resized = RL.ClearWindowState( int flag )
 
 Clear window configuration state flags ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE... )
 
@@ -1232,7 +1230,7 @@ Clear window configuration state flags ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZ
 
 ---
 
-> resized = RL_IsWindowResized()
+> resized = RL.IsWindowResized()
 
 Check if window has been resized from last frame
 
@@ -1240,7 +1238,7 @@ Check if window has been resized from last frame
 
 ---
 
-> success = RL_SetWindowIcon( Image image )
+> success = RL.SetWindowIcon( Image image )
 
 Set icon for window ( Only PLATFORM_DESKTOP )
 
@@ -1249,7 +1247,7 @@ Set icon for window ( Only PLATFORM_DESKTOP )
 
 ---
 
-> success = RL_SetWindowTitle( string title )
+> success = RL.SetWindowTitle( string title )
 
 Set title for window ( Only PLATFORM_DESKTOP )
 
@@ -1258,7 +1256,7 @@ Set title for window ( Only PLATFORM_DESKTOP )
 
 ---
 
-> count = RL_GetMonitorCount()
+> count = RL.GetMonitorCount()
 
 Get number of connected monitors
 
@@ -1266,7 +1264,7 @@ Get number of connected monitors
 
 ---
 
-> monitor = RL_GetCurrentMonitor()
+> monitor = RL.GetCurrentMonitor()
 
 Get current connected monitor
 
@@ -1274,7 +1272,7 @@ Get current connected monitor
 
 ---
 
-> size = RL_GetMonitorPhysicalSize( int monitor )
+> size = RL.GetMonitorPhysicalSize( int monitor )
 
 Get specified monitor physical size in millimetres
 
@@ -1283,7 +1281,7 @@ Get specified monitor physical size in millimetres
 
 ---
 
-> size = RL_GetMonitorRefreshRate( int monitor )
+> size = RL.GetMonitorRefreshRate( int monitor )
 
 Get specified monitor refresh rate
 
@@ -1292,7 +1290,7 @@ Get specified monitor refresh rate
 
 ---
 
-> scale = RL_GetWindowScaleDPI()
+> scale = RL.GetWindowScaleDPI()
 
 Get window scale DPI factor
 
@@ -1300,7 +1298,7 @@ Get window scale DPI factor
 
 ---
 
-> name = RL_GetMonitorName( int monitor )
+> name = RL.GetMonitorName( int monitor )
 
 Get the human-readable, UTF-8 encoded name of the monitor
 
@@ -1309,13 +1307,13 @@ Get the human-readable, UTF-8 encoded name of the monitor
 
 ---
 
-> RL_CloseWindow()
+> RL.CloseWindow()
 
 Close window and unload OpenGL context and free all resources
 
 ---
 
-> success = RL_SetClipboardText( string text )
+> success = RL.SetClipboardText( string text )
 
 Set clipboard text content
 
@@ -1324,7 +1322,7 @@ Set clipboard text content
 
 ---
 
-> text = RL_GetClipboardText()
+> text = RL.GetClipboardText()
 
 Get clipboard text content
 
@@ -1336,7 +1334,7 @@ Get clipboard text content
 
 ---
 
-> success = RL_SetTargetFPS( int fps )
+> success = RL.SetTargetFPS( int fps )
 
 Set target FPS ( maximum )
 
@@ -1345,7 +1343,7 @@ Set target FPS ( maximum )
 
 ---
 
-> FPS = RL_GetFPS()
+> FPS = RL.GetFPS()
 
 Get current FPS
 
@@ -1353,7 +1351,7 @@ Get current FPS
 
 ---
 
-> delta = RL_GetFrameTime()
+> delta = RL.GetFrameTime()
 
 Get time in seconds for last frame drawn ( Delta time )
 
@@ -1361,7 +1359,7 @@ Get time in seconds for last frame drawn ( Delta time )
 
 ---
 
-> time = RL_GetTime()
+> time = RL.GetTime()
 
 Get elapsed time in seconds since InitWindow()
 
@@ -1373,7 +1371,7 @@ Get elapsed time in seconds since InitWindow()
 
 ---
 
-> success = RL_TakeScreenshot( string fileName )
+> success = RL.TakeScreenshot( string fileName )
 
 Takes a screenshot of current screen ( filename extension defines format )
 
@@ -1382,7 +1380,7 @@ Takes a screenshot of current screen ( filename extension defines format )
 
 ---
 
-> success = RL_SetConfigFlags( int flags )
+> success = RL.SetConfigFlags( int flags )
 
 Setup init configuration flags ( view FLAGS )
 
@@ -1391,7 +1389,7 @@ Setup init configuration flags ( view FLAGS )
 
 ---
 
-> success = RL_TraceLog( int logLevel, string text )
+> success = RL.TraceLog( int logLevel, string text )
 
 Show trace log messages ( LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR... )
 
@@ -1400,7 +1398,7 @@ Show trace log messages ( LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR... )
 
 ---
 
-> success = RL_SetTraceLogLevel( int logLevel )
+> success = RL.SetTraceLogLevel( int logLevel )
 
 Set the current threshold ( minimum ) log level
 
@@ -1409,7 +1407,7 @@ Set the current threshold ( minimum ) log level
 
 ---
 
-> success = RL_OpenURL( string url )
+> success = RL.OpenURL( string url )
 
 Open URL with default system browser ( If available )
 
@@ -1422,19 +1420,19 @@ Open URL with default system browser ( If available )
 
 ---
 
-> RL_ShowCursor()
+> RL.ShowCursor()
 
 Shows cursor
 
 ---
 
-> RL_HideCursor()
+> RL.HideCursor()
 
 Hides cursor
 
 ---
 
-> hidden = RL_IsCursorHidden()
+> hidden = RL.IsCursorHidden()
 
 Check if cursor is not visible
 
@@ -1442,19 +1440,19 @@ Check if cursor is not visible
 
 ---
 
-> RL_EnableCursor()
+> RL.EnableCursor()
 
 Enables cursor (unlock cursor)
 
 ---
 
-> RL_DisableCursor()
+> RL.DisableCursor()
 
 Disables cursor (lock cursor)
 
 ---
 
-> onSreen = RL_IsCursorOnScreen()
+> onSreen = RL.IsCursorOnScreen()
 
 Check if cursor is on the screen
 
@@ -1466,7 +1464,7 @@ Check if cursor is on the screen
 
 ---
 
-> success = RL_ClearBackground( Color color )
+> success = RL.ClearBackground( Color color )
 
 Set background color ( framebuffer clear color )
 
@@ -1475,19 +1473,19 @@ Set background color ( framebuffer clear color )
 
 ---
 
-> RL_BeginDrawing()
+> RL.BeginDrawing()
 
 Setup canvas ( framebuffer ) to start drawing
 
 ---
 
-> RL_EndDrawing()
+> RL.EndDrawing()
 
 End canvas drawing and swap buffers ( double buffering )
 
 ---
 
-> success = RL_BeginBlendMode( int mode )
+> success = RL.BeginBlendMode( int mode )
 
 Begin blending mode ( BLEND_ALPHA, BLEND_ADDITIVE, BLEND_MULTIPLIED... )
 
@@ -1496,13 +1494,13 @@ Begin blending mode ( BLEND_ALPHA, BLEND_ADDITIVE, BLEND_MULTIPLIED... )
 
 ---
 
-> RL_EndBlendMode()
+> RL.EndBlendMode()
 
 End blending mode ( reset to default: BLEND_ALPHA )
 
 ---
 
-> success = RL_BeginScissorMode( Rectangle rectange )
+> success = RL.BeginScissorMode( Rectangle rectange )
 
 Begin scissor mode ( define screen area for following drawing )
 
@@ -1511,7 +1509,7 @@ Begin scissor mode ( define screen area for following drawing )
 
 ---
 
-> RL_EndScissorMode()
+> RL.EndScissorMode()
 
 End scissor mode
 
@@ -1521,7 +1519,7 @@ End scissor mode
 
 ---
 
-> shader = RL_LoadShader( string vsFileName, string fsFileName )
+> shader = RL.LoadShader( string vsFileName, string fsFileName )
 
 Load shader from files and bind default locations.
 NOTE: Set nil if no shader
@@ -1531,7 +1529,7 @@ NOTE: Set nil if no shader
 
 ---
 
-> shader = RL_LoadShaderFromMemory( string vsCode, string fsCode )
+> shader = RL.LoadShaderFromMemory( string vsCode, string fsCode )
 
 Load shader from code strings and bind default locations
 NOTE: Set nil if no shader
@@ -1541,7 +1539,7 @@ NOTE: Set nil if no shader
 
 ---
 
-> success = RL_BeginShaderMode( Shader shader )
+> success = RL.BeginShaderMode( Shader shader )
 
 Begin custom shader drawing
 
@@ -1550,13 +1548,13 @@ Begin custom shader drawing
 
 ---
 
-> EndShaderMode()
+> RL.EndShaderMode()
 
 End custom shader drawing ( use default shader )
 
 ---
 
-> location = RL_GetShaderLocation( Shader shader, string uniformName )
+> location = RL.GetShaderLocation( Shader shader, string uniformName )
 
 Get shader uniform location
 
@@ -1565,7 +1563,7 @@ Get shader uniform location
 
 ---
 
-> location = RL_GetShaderLocationAttrib( Shader shader, string attribName )
+> location = RL.GetShaderLocationAttrib( Shader shader, string attribName )
 
 Get shader attribute location
 
@@ -1574,7 +1572,7 @@ Get shader attribute location
 
 ---
 
-> success = RL_SetShaderLocationIndex( Shader shader, int shaderLocationIndex, int location )
+> success = RL.SetShaderLocationIndex( Shader shader, int shaderLocationIndex, int location )
 
 Set shader location index
 
@@ -1583,7 +1581,7 @@ Set shader location index
 
 ---
 
-> location = RL_GetShaderLocationIndex( Shader shader, int shaderLocationIndex )
+> location = RL.GetShaderLocationIndex( Shader shader, int shaderLocationIndex )
 
 Get shader location index
 
@@ -1592,7 +1590,7 @@ Get shader location index
 
 ---
 
-> success = RL_SetShaderValueMatrix( Shader shader, int locIndex, Matrix mat )
+> success = RL.SetShaderValueMatrix( Shader shader, int locIndex, Matrix mat )
 
 Set shader uniform value ( matrix 4x4 )
 
@@ -1601,7 +1599,7 @@ Set shader uniform value ( matrix 4x4 )
 
 ---
 
-> success = RL_SetShaderValueTexture( Shader shader, int locIndex, Texture2D texture )
+> success = RL.SetShaderValueTexture( Shader shader, int locIndex, Texture2D texture )
 
 Set shader uniform value for texture ( sampler2d )
 
@@ -1610,7 +1608,7 @@ Set shader uniform value for texture ( sampler2d )
 
 ---
 
-> success = RL_SetShaderValue( Shader shader, int locIndex, number{} values, int uniformType )
+> success = RL.SetShaderValue( Shader shader, int locIndex, number{} values, int uniformType )
 
 Set shader uniform value
 NOTE: Even one value should be in table
@@ -1620,7 +1618,7 @@ NOTE: Even one value should be in table
 
 ---
 
-> success = RL_SetShaderValueV( Shader shader, int locIndex, number{} values, int uniformType, int count )
+> success = RL.SetShaderValueV( Shader shader, int locIndex, number{} values, int uniformType, int count )
 
 Set shader uniform value vector
 NOTE: Even one value should be in table
@@ -1630,7 +1628,7 @@ NOTE: Even one value should be in table
 
 ---
 
-> success = RL_UnloadShader( Shader shader )
+> success = RL.UnloadShader( Shader shader )
 
 Unload shader from GPU memory ( VRAM )
 
@@ -1643,7 +1641,7 @@ Unload shader from GPU memory ( VRAM )
 
 ---
 
-> pressed = RL_IsKeyPressed( int key )
+> pressed = RL.IsKeyPressed( int key )
 
 Detect if a key has been pressed once
 
@@ -1652,7 +1650,7 @@ Detect if a key has been pressed once
 
 ---
 
-> pressed = RL_IsKeyDown( int key )
+> pressed = RL.IsKeyDown( int key )
 
 Detect if a key is being pressed
 
@@ -1661,7 +1659,7 @@ Detect if a key is being pressed
 
 ---
 
-> released = RL_IsKeyReleased( int key )
+> released = RL.IsKeyReleased( int key )
 
 Detect if a key has been released once
 
@@ -1670,7 +1668,7 @@ Detect if a key has been released once
 
 ---
 
-> released = RL_IsKeyUp( int key )
+> released = RL.IsKeyUp( int key )
 
 Check if a key is NOT being pressed
 
@@ -1679,7 +1677,7 @@ Check if a key is NOT being pressed
 
 ---
 
-> keycode = RL_GetKeyPressed()
+> keycode = RL.GetKeyPressed()
 
 Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
 
@@ -1687,7 +1685,7 @@ Get key pressed (keycode), call it multiple times for keys queued, returns 0 whe
 
 ---
 
-> unicode = RL_GetCharPressed()
+> unicode = RL.GetCharPressed()
 
 Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
 
@@ -1695,13 +1693,13 @@ Get char pressed (unicode), call it multiple times for chars queued, returns 0 w
 
 ---
 
-> RL_SetExitKey( int key )
+> RL.SetExitKey( int key )
 
 Set a custom key to exit program ( default is ESC )
 
 ---
 
-> keyName = RL_GetKeyName( int key, int scancode )
+> keyName = RL.GetKeyName( int key, int scancode )
 
 This function returns the name of the specified printable key, encoded as UTF-8.
 This is typically the character that key would produce without any modifier keys,
@@ -1721,7 +1719,7 @@ this function returns nil but does not emit an error.
 
 ---
 
-> scancode = RL_GetKeyScancode( int key )
+> scancode = RL.GetKeyScancode( int key )
 
 This function returns the platform-specific scancode of the specified key.
 If the key is KEY_UNKNOWN or does not exist on the keyboard this method will return -1.
@@ -1735,7 +1733,7 @@ If the key is KEY_UNKNOWN or does not exist on the keyboard this method will ret
 
 ---
 
-> available = RL_IsGamepadAvailable( int gamepad )
+> available = RL.IsGamepadAvailable( int gamepad )
 
 Detect if a gamepad is available
 
@@ -1744,7 +1742,7 @@ Detect if a gamepad is available
 
 ---
 
-> pressed = RL_IsGamepadButtonPressed( int gamepad, int button )
+> pressed = RL.IsGamepadButtonPressed( int gamepad, int button )
 
 Detect if a gamepad button has been pressed once
 
@@ -1753,7 +1751,7 @@ Detect if a gamepad button has been pressed once
 
 ---
 
-> pressed = RL_IsGamepadButtonDown( int gamepad, int button )
+> pressed = RL.IsGamepadButtonDown( int gamepad, int button )
 
 Detect if a gamepad button is being pressed
 
@@ -1762,7 +1760,7 @@ Detect if a gamepad button is being pressed
 
 ---
 
-> released = RL_IsGamepadButtonReleased( int gamepad, int button )
+> released = RL.IsGamepadButtonReleased( int gamepad, int button )
 
 Detect if a gamepad button has been released once
 
@@ -1771,7 +1769,7 @@ Detect if a gamepad button has been released once
 
 ---
 
-> count = RL_GetGamepadAxisCount( int gamepad )
+> count = RL.GetGamepadAxisCount( int gamepad )
 
 Return gamepad axis count for a gamepad
 
@@ -1780,7 +1778,7 @@ Return gamepad axis count for a gamepad
 
 ---
 
-> value = RL_GetGamepadAxisMovement( int gamepad, int axis )
+> value = RL.GetGamepadAxisMovement( int gamepad, int axis )
 
 Return axis movement value for a gamepad axis
 
@@ -1789,7 +1787,7 @@ Return axis movement value for a gamepad axis
 
 ---
 
-> name = RL_GetGamepadName( int gamepad )
+> name = RL.GetGamepadName( int gamepad )
 
 Return gamepad internal name id
 
@@ -1802,7 +1800,7 @@ Return gamepad internal name id
 
 ---
 
-> pressed = RL_IsMouseButtonPressed( int button )
+> pressed = RL.IsMouseButtonPressed( int button )
 
 Detect if a mouse button has been pressed once
 
@@ -1811,7 +1809,7 @@ Detect if a mouse button has been pressed once
 
 ---
 
-> pressed = RL_IsMouseButtonDown( int button )
+> pressed = RL.IsMouseButtonDown( int button )
 
 Detect if a mouse button is being pressed
 
@@ -1820,7 +1818,7 @@ Detect if a mouse button is being pressed
 
 ---
 
-> released = RL_IsMouseButtonReleased( int button )
+> released = RL.IsMouseButtonReleased( int button )
 
 Detect if a mouse button has been released once
 
@@ -1829,7 +1827,7 @@ Detect if a mouse button has been released once
 
 ---
 
-> released = RL_IsMouseButtonUp( int button )
+> released = RL.IsMouseButtonUp( int button )
 
 Check if a mouse button is NOT being pressed
 
@@ -1838,7 +1836,7 @@ Check if a mouse button is NOT being pressed
 
 ---
 
-> position = RL_GetMousePosition()
+> position = RL.GetMousePosition()
 
 Returns mouse position
 
@@ -1846,7 +1844,7 @@ Returns mouse position
 
 ---
 
-> position = RL_GetMouseDelta()
+> position = RL.GetMouseDelta()
 
 Get mouse delta between frames
 
@@ -1854,7 +1852,7 @@ Get mouse delta between frames
 
 ---
 
-> success = RL_SetMousePosition( Vector2 position )
+> success = RL.SetMousePosition( Vector2 position )
 
 Set mouse position XY
 
@@ -1863,7 +1861,7 @@ Set mouse position XY
 
 ---
 
-> success = RL_SetMouseOffset( Vector2 offset )
+> success = RL.SetMouseOffset( Vector2 offset )
 
 Set mouse offset
 
@@ -1872,7 +1870,7 @@ Set mouse offset
 
 ---
 
-> success = RL_SetMouseScale( Vector2 scale )
+> success = RL.SetMouseScale( Vector2 scale )
 
 Set mouse scaling
 
@@ -1881,7 +1879,7 @@ Set mouse scaling
 
 ---
 
-> movement = RL_GetMouseWheelMove()
+> movement = RL.GetMouseWheelMove()
 
 Returns mouse wheel movement Y
 
@@ -1889,7 +1887,7 @@ Returns mouse wheel movement Y
 
 ---
 
-> success = RL_SetMouseCursor( int cursor )
+> success = RL.SetMouseCursor( int cursor )
 
 Set mouse cursor
 
@@ -1902,7 +1900,7 @@ Set mouse cursor
 
 ---
 
-> position = RL_GetTouchPosition( int index )
+> position = RL.GetTouchPosition( int index )
 
 Get touch position XY for a touch point index ( relative to screen size )
 
@@ -1911,7 +1909,7 @@ Get touch position XY for a touch point index ( relative to screen size )
 
 ---
 
-> id = RL_GetTouchPointId( int index )
+> id = RL.GetTouchPointId( int index )
 
 Get touch point identifier for given index
 
@@ -1920,7 +1918,7 @@ Get touch point identifier for given index
 
 ---
 
-> count = RL_GetTouchPointCount()
+> count = RL.GetTouchPointCount()
 
 Get touch point identifier for given index
 
@@ -1932,7 +1930,7 @@ Get touch point identifier for given index
 
 ---
 
-> success = RL_SetGesturesEnabled( unsigned int flags )
+> success = RL.SetGesturesEnabled( unsigned int flags )
 
 Enable a set of gestures using flags
 
@@ -1941,7 +1939,7 @@ Enable a set of gestures using flags
 
 ---
 
-> detected = RL_IsGestureDetected( int gesture )
+> detected = RL.IsGestureDetected( int gesture )
 
 Check if a gesture have been detected
 
@@ -1950,7 +1948,7 @@ Check if a gesture have been detected
 
 ---
 
-> gesture = RL_GetGestureDetected()
+> gesture = RL.GetGestureDetected()
 
 Get latest detected gesture
 
@@ -1958,7 +1956,7 @@ Get latest detected gesture
 
 ---
 
-> time = RL_GetGestureHoldDuration()
+> time = RL.GetGestureHoldDuration()
 
 Get gesture hold time in milliseconds
 
@@ -1966,7 +1964,7 @@ Get gesture hold time in milliseconds
 
 ---
 
-> vector = RL_GetGestureDragVector()
+> vector = RL.GetGestureDragVector()
 
 Get gesture drag vector
 
@@ -1974,7 +1972,7 @@ Get gesture drag vector
 
 ---
 
-> angle = RL_GetGestureDragAngle()
+> angle = RL.GetGestureDragAngle()
 
 Get gesture drag angle
 
@@ -1982,7 +1980,7 @@ Get gesture drag angle
 
 ---
 
-> vector = RL_GetGesturePinchVector()
+> vector = RL.GetGesturePinchVector()
 
 Get gesture pinch delta
 
@@ -1990,7 +1988,7 @@ Get gesture pinch delta
 
 ---
 
-> angle = RL_GetGesturePinchAngle()
+> angle = RL.GetGesturePinchAngle()
 
 Get gesture pinch angle
 
@@ -2002,7 +2000,7 @@ Get gesture pinch angle
 
 ---
 
-> path = RL_GetBasePath()
+> path = RL.GetBasePath()
 
 Return game directory ( where main.lua is located )
 
@@ -2010,7 +2008,7 @@ Return game directory ( where main.lua is located )
 
 ---
 
-> fileExists = RL_FileExists( string fileName )
+> fileExists = RL.FileExists( string fileName )
 
 Check if file exists
 
@@ -2019,7 +2017,7 @@ Check if file exists
 
 ---
 
-> dirExists = RL_DirectoryExists( string dirPath )
+> dirExists = RL.DirectoryExists( string dirPath )
 
 Check if a directory path exists
 
@@ -2028,7 +2026,7 @@ Check if a directory path exists
 
 ---
 
-> hasFileExtension = RL_IsFileExtension( string fileName, string ext )
+> hasFileExtension = RL.IsFileExtension( string fileName, string ext )
 
 Check file extension ( Including point: .png, .wav )
 
@@ -2037,7 +2035,7 @@ Check file extension ( Including point: .png, .wav )
 
 ---
 
-> length = RL_GetFileLength( string fileName )
+> length = RL.GetFileLength( string fileName )
 
 Get file length in bytes ( NOTE: GetFileSize() conflicts with windows.h )
 
@@ -2046,7 +2044,7 @@ Get file length in bytes ( NOTE: GetFileSize() conflicts with windows.h )
 
 ---
 
-> extension = RL_GetFileExtension( string fileName )
+> extension = RL.GetFileExtension( string fileName )
 
 Get pointer to extension for a filename string ( Includes dot: '.png' )
 
@@ -2055,7 +2053,7 @@ Get pointer to extension for a filename string ( Includes dot: '.png' )
 
 ---
 
-> filePath = RL_GetFileName( string filePath )
+> filePath = RL.GetFileName( string filePath )
 
 Get pointer to filename for a path string
 
@@ -2064,7 +2062,7 @@ Get pointer to filename for a path string
 
 ---
 
-> filePath = RL_GetFileNameWithoutExt( string filePath )
+> filePath = RL.GetFileNameWithoutExt( string filePath )
 
 Get filename string without extension ( Uses static string )
 
@@ -2073,7 +2071,7 @@ Get filename string without extension ( Uses static string )
 
 ---
 
-> filePath = RL_GetDirectoryPath( string filePath )
+> filePath = RL.GetDirectoryPath( string filePath )
 
 Get full path for a given fileName with path ( Uses static string )
 
@@ -2082,7 +2080,7 @@ Get full path for a given fileName with path ( Uses static string )
 
 ---
 
-> directory = RL_GetPrevDirectoryPath( string dirPath )
+> directory = RL.GetPrevDirectoryPath( string dirPath )
 
 Get previous directory path for a given path ( Uses static string )
 
@@ -2091,7 +2089,7 @@ Get previous directory path for a given path ( Uses static string )
 
 ---
 
-> directory = RL_GetWorkingDirectory()
+> directory = RL.GetWorkingDirectory()
 
 Get current working directory ( Uses static string )
 
@@ -2099,7 +2097,7 @@ Get current working directory ( Uses static string )
 
 ---
 
-> fileNames = RL_LoadDirectoryFiles( string dirPath )
+> fileNames = RL.LoadDirectoryFiles( string dirPath )
 
 Load directory filepaths
 
@@ -2108,7 +2106,7 @@ Load directory filepaths
 
 ---
 
-> fileNames = RL_LoadDirectoryFilesEx( string basePath, string filter, bool scanSubdirs )
+> fileNames = RL.LoadDirectoryFilesEx( string basePath, string filter, bool scanSubdirs )
 
 Load directory filepaths with extension filtering and recursive directory scan
 
@@ -2117,7 +2115,7 @@ Load directory filepaths with extension filtering and recursive directory scan
 
 ---
 
-> success = RL_ChangeDirectory( string directory )
+> success = RL.ChangeDirectory( string directory )
 
 Change working directory, return true on success
 
@@ -2126,7 +2124,7 @@ Change working directory, return true on success
 
 ---
 
-> isFile = RL_IsPathFile( string path )
+> isFile = RL.IsPathFile( string path )
 
 Check if a given path is a file or a directory
 
@@ -2135,7 +2133,7 @@ Check if a given path is a file or a directory
 
 ---
 
-> fileDropped = RL_IsFileDropped()
+> fileDropped = RL.IsFileDropped()
 
 Check if a file has been dropped into window
 
@@ -2143,7 +2141,7 @@ Check if a file has been dropped into window
 
 ---
 
-> files = RL_LoadDroppedFiles()
+> files = RL.LoadDroppedFiles()
 
 Load dropped filepaths
 
@@ -2151,7 +2149,7 @@ Load dropped filepaths
 
 ---
 
-> time = RL_GetFileModTime( string fileName )
+> time = RL.GetFileModTime( string fileName )
 
 Get file modification time ( Last write time )
 
@@ -2164,7 +2162,7 @@ Get file modification time ( Last write time )
 
 ---
 
-> camera2D = RL_CreateCamera2D()
+> camera2D = RL.CreateCamera2D()
 
 Return camera2D id set to default configuration
 
@@ -2172,7 +2170,7 @@ Return camera2D id set to default configuration
 
 ---
 
-> success = RL_UnloadCamera2D( int Camera2D )
+> success = RL.UnloadCamera2D( int Camera2D )
 
 Unload Camera2D
 
@@ -2181,7 +2179,7 @@ Unload Camera2D
 
 ---
 
-> success = RL_BeginMode2D( camera2D camera )
+> success = RL.BeginMode2D( camera2D camera )
 
 Begin 2D mode with custom camera ( 2D )
 
@@ -2190,13 +2188,13 @@ Begin 2D mode with custom camera ( 2D )
 
 ---
 
-> RL_EndMode2D()
+> RL.EndMode2D()
 
 Ends 2D mode with custom camera
 
 ---
 
-> success = RL_SetCamera2DTarget( camera2D camera, Vector2 target )
+> success = RL.SetCamera2DTarget( camera2D camera, Vector2 target )
 
 Set camera target ( rotation and zoom origin )
 
@@ -2205,7 +2203,7 @@ Set camera target ( rotation and zoom origin )
 
 ---
 
-> success = RL_SetCamera2DOffset( camera2D camera, Vector2 offset )
+> success = RL.SetCamera2DOffset( camera2D camera, Vector2 offset )
 
 Set camera offset ( displacement from target )
 
@@ -2214,7 +2212,7 @@ Set camera offset ( displacement from target )
 
 ---
 
-> success = RL_SetCamera2DRotation( camera3D camera, float rotation )
+> success = RL.SetCamera2DRotation( camera3D camera, float rotation )
 
 Set camera rotation in degrees
 
@@ -2223,7 +2221,7 @@ Set camera rotation in degrees
 
 ---
 
-> success = RL_SetCamera2DZoom( camera3D camera, float zoom )
+> success = RL.SetCamera2DZoom( camera3D camera, float zoom )
 
 Set camera zoom ( scaling ), should be 1.0f by default
 
@@ -2232,7 +2230,7 @@ Set camera zoom ( scaling ), should be 1.0f by default
 
 ---
 
-> target = RL_GetCamera2DTarget( camera2D camera )
+> target = RL.GetCamera2DTarget( camera2D camera )
 
 Get camera2D target
 
@@ -2241,7 +2239,7 @@ Get camera2D target
 
 ---
 
-> offset = RL_GetCamera2DOffset( camera2D camera )
+> offset = RL.GetCamera2DOffset( camera2D camera )
 
 Get camera2D offset
 
@@ -2250,7 +2248,7 @@ Get camera2D offset
 
 ---
 
-> rotation = RL_GetCamera2DRotation( camera2D camera )
+> rotation = RL.GetCamera2DRotation( camera2D camera )
 
 Get camera2D rotation
 
@@ -2259,7 +2257,7 @@ Get camera2D rotation
 
 ---
 
-> zoom = RL_GetCamera2DZoom( camera2D camera )
+> zoom = RL.GetCamera2DZoom( camera2D camera )
 
 Get camera2D zoom
 
@@ -2272,7 +2270,7 @@ Get camera2D zoom
 
 ---
 
-> camera = RL_CreateCamera3D()
+> camera = RL.CreateCamera3D()
 
 Return camera3D id set to default configuration
 
@@ -2280,7 +2278,7 @@ Return camera3D id set to default configuration
 
 ---
 
-> success = RL_UnloadCamera3D( int Camera3D )
+> success = RL.UnloadCamera3D( int Camera3D )
 
 Unload Camera3D
 
@@ -2289,7 +2287,7 @@ Unload Camera3D
 
 ---
 
-> success = RL_BeginMode3D( camera3D camera )
+> success = RL.BeginMode3D( camera3D camera )
 
 Begin 3D mode with custom camera ( 3D )
 
@@ -2298,22 +2296,22 @@ Begin 3D mode with custom camera ( 3D )
 
 ---
 
-> RL_EndMode3D()
+> RL.EndMode3D()
 
 Ends 3D mode and returns to default 2D orthographic mode
 
 ---
 
-> success = RL_SetCamera3DPosition( camera3D camera, Vector3 position )
+> success = RL.SetCamera3DPosition( camera3D camera, Vector3 position )
 
-Set camera position ( Remember to call "RL_UpdateCamera3D()" to apply changes )
+Set camera position ( Remember to call "RL.UpdateCamera3D()" to apply changes )
 
 - Failure return false
 - Success return true
 
 ---
 
-> success = RL_SetCamera3DTarget( camera3D camera, Vector3 target )
+> success = RL.SetCamera3DTarget( camera3D camera, Vector3 target )
 
 Set camera target it looks-at
 
@@ -2322,7 +2320,7 @@ Set camera target it looks-at
 
 ---
 
-> success = RL_SetCamera3DUp( camera3D camera, Vector3 up )
+> success = RL.SetCamera3DUp( camera3D camera, Vector3 up )
 
 Set camera up vector ( Rotation over it's axis )
 
@@ -2331,7 +2329,7 @@ Set camera up vector ( Rotation over it's axis )
 
 ---
 
-> success = RL_SetCamera3DFovy( camera3D camera, float fovy )
+> success = RL.SetCamera3DFovy( camera3D camera, float fovy )
 
 Set camera field-of-view apperture in Y ( degrees ) in perspective, used as near plane width in orthographic
 
@@ -2340,7 +2338,7 @@ Set camera field-of-view apperture in Y ( degrees ) in perspective, used as near
 
 ---
 
-> success = RL_SetCamera3DProjection( camera3D camera, int projection )
+> success = RL.SetCamera3DProjection( camera3D camera, int projection )
 
 Set camera projection mode ( CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC )
 
@@ -2349,7 +2347,7 @@ Set camera projection mode ( CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC )
 
 ---
 
-> success = RL_SetCameraMode( camera3D camera, int mode )
+> success = RL.SetCameraMode( camera3D camera, int mode )
 
 Set camera mode ( CAMERA_CUSTOM, CAMERA_FREE, CAMERA_ORBITAL... )
 
@@ -2358,7 +2356,7 @@ Set camera mode ( CAMERA_CUSTOM, CAMERA_FREE, CAMERA_ORBITAL... )
 
 ---
 
-> position = RL_GetCamera3DPosition( camera3D camera )
+> position = RL.GetCamera3DPosition( camera3D camera )
 
 Get camera position
 
@@ -2367,7 +2365,7 @@ Get camera position
 
 ---
 
-> target = RL_GetCamera3DTarget( camera3D camera )
+> target = RL.GetCamera3DTarget( camera3D camera )
 
 Get camera target it looks-at
 
@@ -2376,7 +2374,7 @@ Get camera target it looks-at
 
 ---
 
-> up = RL_GetCamera3DUp( camera3D camera )
+> up = RL.GetCamera3DUp( camera3D camera )
 
 Get camera up vector ( Rotation over it's axis )
 
@@ -2385,7 +2383,7 @@ Get camera up vector ( Rotation over it's axis )
 
 ---
 
-> fovy = RL_GetCamera3DFovy( camera3D camera )
+> fovy = RL.GetCamera3DFovy( camera3D camera )
 
 Get camera field-of-view apperture in Y ( degrees ) in perspective, used as near plane width in orthographic
 
@@ -2394,7 +2392,7 @@ Get camera field-of-view apperture in Y ( degrees ) in perspective, used as near
 
 ---
 
-> projection = RL_GetCamera3DProjection( camera3D camera )
+> projection = RL.GetCamera3DProjection( camera3D camera )
 
 Get camera projection mode
 
@@ -2403,7 +2401,7 @@ Get camera projection mode
 
 ---
 
-> success = RL_UpdateCamera3D( camera3D camera )
+> success = RL.UpdateCamera3D( camera3D camera )
 
 Update camera position for selected mode
 
@@ -2412,7 +2410,7 @@ Update camera position for selected mode
 
 ---
 
-> success = RL_SetCameraPanControl( int keyPan )
+> success = RL.SetCameraPanControl( int keyPan )
 
 Set camera pan key to combine with mouse movement ( free camera )
 
@@ -2421,7 +2419,7 @@ Set camera pan key to combine with mouse movement ( free camera )
 
 ---
 
-> success = RL_SetCameraAltControl( int keyAlt )
+> success = RL.SetCameraAltControl( int keyAlt )
 
 Set camera alt key to combine with mouse movement ( free camera )
 
@@ -2430,7 +2428,7 @@ Set camera alt key to combine with mouse movement ( free camera )
 
 ---
 
-> success = RL_SetCameraSmoothZoomControl( int keySmoothZoom )
+> success = RL.SetCameraSmoothZoomControl( int keySmoothZoom )
 
 Set camera smooth zoom key to combine with mouse ( free camera )
 
@@ -2439,7 +2437,7 @@ Set camera smooth zoom key to combine with mouse ( free camera )
 
 ---
 
-> success = RL_SetCameraMoveControls( int keyFront, int keyBack, int keyRight, int keyLeft, int keyUp, int keyDown )
+> success = RL.SetCameraMoveControls( int keyFront, int keyBack, int keyRight, int keyLeft, int keyUp, int keyDown )
 
 Set camera move controls ( 1st person and 3rd person cameras )
 
@@ -2452,7 +2450,7 @@ Set camera move controls ( 1st person and 3rd person cameras )
 
 ---
 
-> ray = RL_GetMouseRay( Vector2 mousePosition, Camera3D camera )
+> ray = RL.GetMouseRay( Vector2 mousePosition, Camera3D camera )
 
 Get a ray trace from mouse position
 
@@ -2461,7 +2459,7 @@ Get a ray trace from mouse position
 
 ---
 
-> matrix = RL_GetCameraMatrix( Camera3D camera )
+> matrix = RL.GetCameraMatrix( Camera3D camera )
 
 Get camera transform matrix ( view matrix )
 
@@ -2470,7 +2468,7 @@ Get camera transform matrix ( view matrix )
 
 ---
 
-> matrix = RL_GetCameraMatrix2D( Camera2D camera )
+> matrix = RL.GetCameraMatrix2D( Camera2D camera )
 
 Get camera 2d transform matrix
 
@@ -2479,7 +2477,7 @@ Get camera 2d transform matrix
 
 ---
 
-> position = RL_GetWorldToScreen( Vector3 position, Camera3D camera )
+> position = RL.GetWorldToScreen( Vector3 position, Camera3D camera )
 
 Get the screen space position for a 3d world space position
 
@@ -2488,7 +2486,7 @@ Get the screen space position for a 3d world space position
 
 ---
 
-> position = RL_GetWorldToScreenEx( Vector3 position, Camera3D camera, Vector2 size )
+> position = RL.GetWorldToScreenEx( Vector3 position, Camera3D camera, Vector2 size )
 
 Get size position for a 3d world space position
 
@@ -2497,7 +2495,7 @@ Get size position for a 3d world space position
 
 ---
 
-> position = RL_GetWorldToScreen2D( Vector2 position, Camera2D camera )
+> position = RL.GetWorldToScreen2D( Vector2 position, Camera2D camera )
 
 Get the screen space position for a 2d camera world space position
 
@@ -2506,7 +2504,7 @@ Get the screen space position for a 2d camera world space position
 
 ---
 
-> position = RL_GetScreenToWorld2D( Vector2 position, Camera2D camera )
+> position = RL.GetScreenToWorld2D( Vector2 position, Camera2D camera )
 
 Get the world space position for a 2d camera screen space position
 
@@ -2519,7 +2517,7 @@ Get the world space position for a 2d camera screen space position
 
 ---
 
-> success = RL_SetShapesTexture( Texture2D texture, Rectangle source )
+> success = RL.SetShapesTexture( Texture2D texture, Rectangle source )
 
 Set texture and rectangle to be used on shapes drawing
 NOTE: It can be useful when using basic shapes and one single font,
@@ -2530,7 +2528,7 @@ defining a font char white rectangle would allow drawing everything in a single 
 
 ---
 
-> success = RL_DrawPixel( Vector2 pos, Color color )
+> success = RL.DrawPixel( Vector2 pos, Color color )
 
 Draw a pixel
 
@@ -2539,7 +2537,7 @@ Draw a pixel
 
 ---
 
-> success = RL_DrawLine( Vector2 startPos, Vector2 endPos, float thickness, Color color )
+> success = RL.DrawLine( Vector2 startPos, Vector2 endPos, float thickness, Color color )
 
 Draw a line defining thickness
 
@@ -2548,7 +2546,7 @@ Draw a line defining thickness
 
 ---
 
-> success = RL_DrawLineBezier( Vector2 startPos, Vector2 endPos, float thickness, Color color )
+> success = RL.DrawLineBezier( Vector2 startPos, Vector2 endPos, float thickness, Color color )
 
 Draw a line using cubic-bezier curves in-out
 
@@ -2557,7 +2555,7 @@ Draw a line using cubic-bezier curves in-out
 
 ---
 
-> success = RL_DrawLineBezierQuad( Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thickness, Color color )
+> success = RL.DrawLineBezierQuad( Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thickness, Color color )
 
 Draw line using quadratic bezier curves with a control point
 
@@ -2566,7 +2564,7 @@ Draw line using quadratic bezier curves with a control point
 
 ---
 
-> success = RL_DrawLineBezierCubic( Vector2 startPos, Vector2 endPos, Vector2 startControlPos, Vector2 endControlPos, float thickness, Color color )
+> success = RL.DrawLineBezierCubic( Vector2 startPos, Vector2 endPos, Vector2 startControlPos, Vector2 endControlPos, float thickness, Color color )
 
 Draw line using quadratic bezier curves with a control point
 
@@ -2575,7 +2573,7 @@ Draw line using quadratic bezier curves with a control point
 
 ---
 
-> success = RL_DrawLineStrip( Vector2 points{}, int pointsCount, Color color )
+> success = RL.DrawLineStrip( Vector2{} points, int pointsCount, Color color )
 
 Draw lines sequence
 
@@ -2584,7 +2582,7 @@ Draw lines sequence
 
 ---
 
-> success = RL_DrawCircle( Vector2 center, float radius, Color color )
+> success = RL.DrawCircle( Vector2 center, float radius, Color color )
 
 Draw a color-filled circle
 
@@ -2593,7 +2591,7 @@ Draw a color-filled circle
 
 ---
 
-> success = RL_DrawCircleSector( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
+> success = RL.DrawCircleSector( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
 
 Draw a piece of a circle
 
@@ -2602,7 +2600,7 @@ Draw a piece of a circle
 
 ---
 
-> success = RL_DrawCircleSectorLines( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
+> success = RL.DrawCircleSectorLines( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
 
 Draw circle sector outline
 
@@ -2611,7 +2609,7 @@ Draw circle sector outline
 
 ---
 
-> success = RL_DrawCircleGradient( Vector2 center, float radius, Color color1, Color color2 )
+> success = RL.DrawCircleGradient( Vector2 center, float radius, Color color1, Color color2 )
 
 Draw a gradient-filled circle
 
@@ -2620,7 +2618,7 @@ Draw a gradient-filled circle
 
 ---
 
-> success = RL_DrawCircleLines( Vector2 center, float radius, Color color )
+> success = RL.DrawCircleLines( Vector2 center, float radius, Color color )
 
 Draw circle outline
 
@@ -2629,7 +2627,7 @@ Draw circle outline
 
 ---
 
-> success = RL_DrawEllipse( Vector2 center, float radiusH, float radiusV, Color color )
+> success = RL.DrawEllipse( Vector2 center, float radiusH, float radiusV, Color color )
 
 Draw ellipse
 
@@ -2638,7 +2636,7 @@ Draw ellipse
 
 ---
 
-> success = RL_DrawEllipseLines( Vector2 center, float radiusH, float radiusV, Color color )
+> success = RL.DrawEllipseLines( Vector2 center, float radiusH, float radiusV, Color color )
 
 Draw ellipse outline
 
@@ -2647,7 +2645,7 @@ Draw ellipse outline
 
 ---
 
-> success = RL_DrawRing( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
+> success = RL.DrawRing( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
 
 Draw ring
 
@@ -2656,7 +2654,7 @@ Draw ring
 
 ---
 
-> success = RL_DrawRingLines( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
+> success = RL.DrawRingLines( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
 
 Draw ring outline
 
@@ -2665,7 +2663,7 @@ Draw ring outline
 
 ---
 
-> success = RL_DrawRectangle( Rectangle rec, Color color )
+> success = RL.DrawRectangle( Rectangle rec, Color color )
 
 Draw a color-filled rectangle
 
@@ -2674,7 +2672,7 @@ Draw a color-filled rectangle
 
 ---
 
-> success = RL_DrawRectanglePro( Rectangle rec, Vector2 origin, float rotation, Color color )
+> success = RL.DrawRectanglePro( Rectangle rec, Vector2 origin, float rotation, Color color )
 
 Draw a color-filled rectangle with pro parameters
 
@@ -2683,7 +2681,7 @@ Draw a color-filled rectangle with pro parameters
 
 ---
 
-> success = RL_DrawRectangleGradientV( Rectangle rectangle, Color color1, Color color2 )
+> success = RL.DrawRectangleGradientV( Rectangle rectangle, Color color1, Color color2 )
 
 Draw a vertical-gradient-filled rectangle
 
@@ -2692,7 +2690,7 @@ Draw a vertical-gradient-filled rectangle
 
 ---
 
-> success = RL_DrawRectangleGradientH( Rectangle rectangle, Color color1, Color color2 )
+> success = RL.DrawRectangleGradientH( Rectangle rectangle, Color color1, Color color2 )
 
 Draw a horizontal-gradient-filled rectangle
 
@@ -2701,7 +2699,7 @@ Draw a horizontal-gradient-filled rectangle
 
 ---
 
-> success = RL_DrawRectangleGradientEx( Rectangle rectangle, Color col1, Color col2, Color col3, Color col4 )
+> success = RL.DrawRectangleGradientEx( Rectangle rectangle, Color col1, Color col2, Color col3, Color col4 )
 
 Draw a gradient-filled rectangle with custom vertex colors
 
@@ -2710,7 +2708,7 @@ Draw a gradient-filled rectangle with custom vertex colors
 
 ---
 
-> success = RL_DrawRectangleLines( Rectangle rec, Color color )
+> success = RL.DrawRectangleLines( Rectangle rec, Color color )
 
 Draw rectangle outline
 
@@ -2719,7 +2717,7 @@ Draw rectangle outline
 
 ---
 
-> success = RL_DrawRectangleLinesEx( Rectangle rec, int lineThick, Color color )
+> success = RL.DrawRectangleLinesEx( Rectangle rec, int lineThick, Color color )
 
 Draw rectangle outline with extended parameters
 
@@ -2728,7 +2726,7 @@ Draw rectangle outline with extended parameters
 
 ---
 
-> success = RL_DrawRectangleRounded( Rectangle rec, float roundness, int segments, Color color )
+> success = RL.DrawRectangleRounded( Rectangle rec, float roundness, int segments, Color color )
 
 Draw rectangle with rounded edges
 
@@ -2737,7 +2735,7 @@ Draw rectangle with rounded edges
 
 ---
 
-> success = RL_DrawRectangleRoundedLines( Rectangle rec, float roundness, int segments, int lineThick, Color color )
+> success = RL.DrawRectangleRoundedLines( Rectangle rec, float roundness, int segments, int lineThick, Color color )
 
 Draw rectangle with rounded edges outline
 
@@ -2746,7 +2744,7 @@ Draw rectangle with rounded edges outline
 
 ---
 
-> success = RL_DrawTriangle( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
+> success = RL.DrawTriangle( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
 
 Draw a color-filled triangle ( Vertex in counter-clockwise order! )
 
@@ -2755,7 +2753,7 @@ Draw a color-filled triangle ( Vertex in counter-clockwise order! )
 
 ---
 
-> success = RL_DrawTriangleLines( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
+> success = RL.DrawTriangleLines( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
 
 Draw triangle outline ( Vertex in counter-clockwise order! )
 
@@ -2764,7 +2762,7 @@ Draw triangle outline ( Vertex in counter-clockwise order! )
 
 ---
 
-> success = RL_DrawTriangleFan( Vector2 points{}, int pointsCount, Color color )
+> success = RL.DrawTriangleFan( Vector2{} points, int pointsCount, Color color )
 
 Draw a triangle fan defined by points ( first vertex is the center )
 
@@ -2773,7 +2771,7 @@ Draw a triangle fan defined by points ( first vertex is the center )
 
 ---
 
-> success = RL_DrawTriangleStrip( Vector2 points{}, int pointsCount, Color color )
+> success = RL.DrawTriangleStrip( Vector2{} points, int pointsCount, Color color )
 
 Draw a triangle strip defined by points
 
@@ -2782,7 +2780,7 @@ Draw a triangle strip defined by points
 
 ---
 
-> success = RL_DrawPoly( Vector2 center, int sides, float radius, float rotation, Color color )
+> success = RL.DrawPoly( Vector2 center, int sides, float radius, float rotation, Color color )
 
 Draw a regular polygon ( Vector version )
 
@@ -2791,7 +2789,7 @@ Draw a regular polygon ( Vector version )
 
 ---
 
-> success = RL_DrawPolyLines( Vector2 center, int sides, float radius, float rotation, Color color )
+> success = RL.DrawPolyLines( Vector2 center, int sides, float radius, float rotation, Color color )
 
 Draw a polygon outline of n sides
 
@@ -2800,7 +2798,7 @@ Draw a polygon outline of n sides
 
 ---
 
-> success = RL_DrawPolyLinesEx( Vector2 center, int sides, float radius, float rotation, float lineThick, Color color )
+> success = RL.DrawPolyLinesEx( Vector2 center, int sides, float radius, float rotation, float lineThick, Color color )
 
 Draw a polygon outline of n sides with extended parameters
 
@@ -2813,7 +2811,7 @@ Draw a polygon outline of n sides with extended parameters
 
 ---
 
-> collision = RL_CheckCollisionRecs( Rectangle rec1, Rectangle rec2 )
+> collision = RL.CheckCollisionRecs( Rectangle rec1, Rectangle rec2 )
 
 Check collision between two rectangles
 
@@ -2822,7 +2820,7 @@ Check collision between two rectangles
 
 ---
 
-> collision = RL_CheckCollisionCircles( Vector2 center1, float radius1, Vector2 center2, float radius2 )
+> collision = RL.CheckCollisionCircles( Vector2 center1, float radius1, Vector2 center2, float radius2 )
 
 Check collision between two circles
 
@@ -2831,7 +2829,7 @@ Check collision between two circles
 
 ---
 
-> collision = RL_CheckCollisionCircleRec( Vector2 center, float radius, Rectangle rec )
+> collision = RL.CheckCollisionCircleRec( Vector2 center, float radius, Rectangle rec )
 
 Check collision between circle and rectangle
 
@@ -2840,7 +2838,7 @@ Check collision between circle and rectangle
 
 ---
 
-> collision = RL_CheckCollisionPointRec( Vector2 point, Rectangle rec )
+> collision = RL.CheckCollisionPointRec( Vector2 point, Rectangle rec )
 
 Check if point is inside rectangle
 
@@ -2849,7 +2847,7 @@ Check if point is inside rectangle
 
 ---
 
-> collision = RL_CheckCollisionPointCircle( Vector2 point, Vector2 center, float radius )
+> collision = RL.CheckCollisionPointCircle( Vector2 point, Vector2 center, float radius )
 
 Check if point is inside circle
 
@@ -2858,7 +2856,7 @@ Check if point is inside circle
 
 ---
 
-> collision = RL_CheckCollisionPointTriangle( Vector2 point, Vector2 p1, Vector2 p2, Vector2 p3 )
+> collision = RL.CheckCollisionPointTriangle( Vector2 point, Vector2 p1, Vector2 p2, Vector2 p3 )
 
 Check if point is inside a triangle
 
@@ -2867,7 +2865,7 @@ Check if point is inside a triangle
 
 ---
 
-> collision, position = RL_CheckCollisionLines( Vector2 startPos1, Vector2 endPos1, Vector2 startPos2, Vector2 endPos2 )
+> collision, position = RL.CheckCollisionLines( Vector2 startPos1, Vector2 endPos1, Vector2 startPos2, Vector2 endPos2 )
 
 Check the collision between two lines defined by two points each, returns collision point by reference
 
@@ -2876,7 +2874,7 @@ Check the collision between two lines defined by two points each, returns collis
 
 ---
 
-> collision = RL_CheckCollisionPointLine( Vector2 point, Vector2 p1, Vector2 p2, int threshold )
+> collision = RL.CheckCollisionPointLine( Vector2 point, Vector2 p1, Vector2 p2, int threshold )
 
 Check if point belongs to line created between two points [p1] and [p2] with defined margin in pixels [threshold]
 
@@ -2885,7 +2883,7 @@ Check if point belongs to line created between two points [p1] and [p2] with def
 
 ---
 
-> rectangle = RL_GetCollisionRec( Rectangle rec1, Rectangle rec2 )
+> rectangle = RL.GetCollisionRec( Rectangle rec1, Rectangle rec2 )
 
 Get collision rectangle for two rectangles collision
 
@@ -2898,7 +2896,7 @@ Get collision rectangle for two rectangles collision
 
 ---
 
-> image = RL_LoadImage( string fileName )
+> image = RL.LoadImage( string fileName )
 
 Load image from file into CPU memory ( RAM )
 
@@ -2907,7 +2905,7 @@ Load image from file into CPU memory ( RAM )
 
 ---
 
-> image = RL_LoadImageFromTexture( Texture2D texture )
+> image = RL.LoadImageFromTexture( Texture2D texture )
 
 Load image from GPU texture data
 
@@ -2916,7 +2914,7 @@ Load image from GPU texture data
 
 ---
 
-> image = RL_LoadImageFromScreen()
+> image = RL.LoadImageFromScreen()
 
 Load image from screen buffer and ( screenshot )
 
@@ -2924,7 +2922,7 @@ Load image from screen buffer and ( screenshot )
 
 ---
 
-> success = RL_UnloadImage( Image image )
+> success = RL.UnloadImage( Image image )
 
 Unload image from CPU memory ( RAM )
 
@@ -2933,7 +2931,7 @@ Unload image from CPU memory ( RAM )
 
 ---
 
-> success = RL_ExportImage( Image image, string fileName )
+> success = RL.ExportImage( Image image, string fileName )
 
 Export image data to file, returns true on success
 
@@ -2942,7 +2940,7 @@ Export image data to file, returns true on success
 
 ---
 
-> success = RL_ExportImageAsCode( Image image, string fileName )
+> success = RL.ExportImageAsCode( Image image, string fileName )
 
 Export image as code file defining an array of bytes, returns true on success
 
@@ -2955,7 +2953,7 @@ Export image as code file defining an array of bytes, returns true on success
 
 ---
 
-> image = RL_GenImageColor( int width, int height, Color color )
+> image = RL.GenImageColor( int width, int height, Color color )
 
 Generate image: plain color
 
@@ -2964,7 +2962,7 @@ Generate image: plain color
 
 ---
 
-> image = RL_GenImageGradientV( Vector2 size, Color top, Color bottom )
+> image = RL.GenImageGradientV( Vector2 size, Color top, Color bottom )
 
 Generate image: vertical gradient
 
@@ -2973,7 +2971,7 @@ Generate image: vertical gradient
 
 ---
 
-> image = RL_GenImageGradientH( Vector2 size, Color left, Color right )
+> image = RL.GenImageGradientH( Vector2 size, Color left, Color right )
 
 Generate image: horizontal gradient
 
@@ -2982,7 +2980,7 @@ Generate image: horizontal gradient
 
 ---
 
-> image = RL_GenImageGradientRadial( Vector2 size, float density, Color inner, Color outer )
+> image = RL.GenImageGradientRadial( Vector2 size, float density, Color inner, Color outer )
 
 Generate image: radial gradient
 
@@ -2991,7 +2989,7 @@ Generate image: radial gradient
 
 ---
 
-> image = RL_GenImageChecked( Vector2 size, Vector2 checks, Color col1, Color col2 )
+> image = RL.GenImageChecked( Vector2 size, Vector2 checks, Color col1, Color col2 )
 
 Generate image: checked
 
@@ -3000,7 +2998,7 @@ Generate image: checked
 
 ---
 
-> image = RL_GenImageWhiteNoise( Vector2 size, float factor )
+> image = RL.GenImageWhiteNoise( Vector2 size, float factor )
 
 Generate image: white noise
 
@@ -3009,7 +3007,7 @@ Generate image: white noise
 
 ---
 
-> image = RL_GenImageCellular( Vector2 size, int tileSize )
+> image = RL.GenImageCellular( Vector2 size, int tileSize )
 
 Generate image: cellular algorithm. Bigger tileSize means bigger cells
 
@@ -3022,7 +3020,7 @@ Generate image: cellular algorithm. Bigger tileSize means bigger cells
 
 ---
 
-> image = RL_ImageCopy( Image image )
+> image = RL.ImageCopy( Image image )
 
 Create an image duplicate ( useful for transformations )
 
@@ -3031,7 +3029,7 @@ Create an image duplicate ( useful for transformations )
 
 ---
 
-> image = RL_ImageFromImage( Image image, Rectangle rec )
+> image = RL.ImageFromImage( Image image, Rectangle rec )
 
 Create an image from another image piece
 
@@ -3040,7 +3038,7 @@ Create an image from another image piece
 
 ---
 
-> image = RL_ImageText( Font font, string text, float fontSize, float spacing, Color tint )
+> image = RL.ImageText( Font font, string text, float fontSize, float spacing, Color tint )
 
 Create an image from text ( custom sprite font )
 
@@ -3049,7 +3047,7 @@ Create an image from text ( custom sprite font )
 
 ---
 
-> success = RL_ImageFormat( Image image, int newFormat )
+> success = RL.ImageFormat( Image image, int newFormat )
 
 Convert image data to desired format
 
@@ -3058,7 +3056,7 @@ Convert image data to desired format
 
 ---
 
-> success = RL_ImageToPOT( Image image, Color fill )
+> success = RL.ImageToPOT( Image image, Color fill )
 
 Convert image to POT ( power-of-two )
 
@@ -3067,7 +3065,7 @@ Convert image to POT ( power-of-two )
 
 ---
 
-> success = RL_ImageCrop( Image image, Rectangle crop )
+> success = RL.ImageCrop( Image image, Rectangle crop )
 
 Crop an image to a defined rectangle
 
@@ -3076,7 +3074,7 @@ Crop an image to a defined rectangle
 
 ---
 
-> success = RL_ImageAlphaCrop( Image image, float threshold )
+> success = RL.ImageAlphaCrop( Image image, float threshold )
 
 Crop image depending on alpha value
 
@@ -3085,7 +3083,7 @@ Crop image depending on alpha value
 
 ---
 
-> success = RL_ImageAlphaClear( Image image, Color color, float threshold )
+> success = RL.ImageAlphaClear( Image image, Color color, float threshold )
 
 Clear alpha channel to desired color
 
@@ -3094,7 +3092,7 @@ Clear alpha channel to desired color
 
 ---
 
-> success = RL_ImageAlphaMask( Image image, Image alphaMask )
+> success = RL.ImageAlphaMask( Image image, Image alphaMask )
 
 Apply alpha mask to image
 
@@ -3103,7 +3101,7 @@ Apply alpha mask to image
 
 ---
 
-> success = RL_ImageAlphaPremultiply( Image image )
+> success = RL.ImageAlphaPremultiply( Image image )
 
 Premultiply alpha channel
 
@@ -3112,7 +3110,7 @@ Premultiply alpha channel
 
 ---
 
-> success = RL_ImageResize( Image image, Vector2 size )
+> success = RL.ImageResize( Image image, Vector2 size )
 
 Resize image ( Bicubic scaling algorithm )
 
@@ -3121,7 +3119,7 @@ Resize image ( Bicubic scaling algorithm )
 
 ---
 
-> success = RL_ImageResizeNN( Image image, Vector2 size )
+> success = RL.ImageResizeNN( Image image, Vector2 size )
 
 Resize image ( Nearest-Neighbor scaling algorithm )
 
@@ -3130,7 +3128,7 @@ Resize image ( Nearest-Neighbor scaling algorithm )
 
 ---
 
-> success = RL_ImageResizeCanvas( Image image, Vector2 size, Vector2 offset, Color fill )
+> success = RL.ImageResizeCanvas( Image image, Vector2 size, Vector2 offset, Color fill )
 
 Resize canvas and fill with color
 
@@ -3139,7 +3137,7 @@ Resize canvas and fill with color
 
 ---
 
-> success = RL_ImageMipmaps( Image image )
+> success = RL.ImageMipmaps( Image image )
 
 Generate all mipmap levels for a provided image
 
@@ -3148,7 +3146,7 @@ Generate all mipmap levels for a provided image
 
 ---
 
-> success = RL_ImageDither( Image image, Color bpp )
+> success = RL.ImageDither( Image image, Color bpp )
 
 Dither image data to 16bpp or lower ( Floyd-Steinberg dithering )
 
@@ -3157,7 +3155,7 @@ Dither image data to 16bpp or lower ( Floyd-Steinberg dithering )
 
 ---
 
-> success = RL_ImageFlipVertical( Image image )
+> success = RL.ImageFlipVertical( Image image )
 
 Flip image vertically
 
@@ -3166,7 +3164,7 @@ Flip image vertically
 
 ---
 
-> success = RL_ImageFlipHorizontal( Image image )
+> success = RL.ImageFlipHorizontal( Image image )
 
 Flip image horizontally
 
@@ -3175,7 +3173,7 @@ Flip image horizontally
 
 ---
 
-> success = RL_ImageRotateCW( Image image )
+> success = RL.ImageRotateCW( Image image )
 
 Rotate image clockwise 90deg
 
@@ -3184,7 +3182,7 @@ Rotate image clockwise 90deg
 
 ---
 
-> success = RL_ImageRotateCCW( Image image )
+> success = RL.ImageRotateCCW( Image image )
 
 Rotate image counter-clockwise 90deg
 
@@ -3193,7 +3191,7 @@ Rotate image counter-clockwise 90deg
 
 ---
 
-> success = RL_ImageColorTint( Image image, Color color )
+> success = RL.ImageColorTint( Image image, Color color )
 
 Modify image color: tint
 
@@ -3202,7 +3200,7 @@ Modify image color: tint
 
 ---
 
-> success = RL_ImageColorInvert( Image image )
+> success = RL.ImageColorInvert( Image image )
 
 Modify image color: invert
 
@@ -3211,7 +3209,7 @@ Modify image color: invert
 
 ---
 
-> success = RL_ImageColorGrayscale( Image image )
+> success = RL.ImageColorGrayscale( Image image )
 
 Modify image color: grayscale
 
@@ -3220,7 +3218,7 @@ Modify image color: grayscale
 
 ---
 
-> success = RL_ImageColorContrast( Image image, float contrast )
+> success = RL.ImageColorContrast( Image image, float contrast )
 
 Modify image color: contrast ( -100 to 100 )
 
@@ -3229,7 +3227,7 @@ Modify image color: contrast ( -100 to 100 )
 
 ---
 
-> success = RL_ImageColorBrightness( Image image, int brightness )
+> success = RL.ImageColorBrightness( Image image, int brightness )
 
 Modify image color: brightness ( -255 to 255 )
 
@@ -3238,7 +3236,7 @@ Modify image color: brightness ( -255 to 255 )
 
 ---
 
-> success = RL_ImageColorReplace( Image image, Color color, Color replace )
+> success = RL.ImageColorReplace( Image image, Color color, Color replace )
 
 Modify image color: replace color
 
@@ -3247,7 +3245,7 @@ Modify image color: replace color
 
 ---
 
-> colors = RL_LoadImageColors( Image image )
+> colors = RL.LoadImageColors( Image image )
 
 Load color data from image as a Color array ( RGBA - 32bit )
 
@@ -3256,7 +3254,7 @@ Load color data from image as a Color array ( RGBA - 32bit )
 
 ---
 
-> colors = RL_LoadImagePalette( Image image, int maxPaletteSize )
+> colors = RL.LoadImagePalette( Image image, int maxPaletteSize )
 
 Load colors palette from image as a Color array ( RGBA - 32bit )
 
@@ -3265,7 +3263,7 @@ Load colors palette from image as a Color array ( RGBA - 32bit )
 
 ---
 
-> rectangle = RL_GetImageAlphaBorder( Image image, float threshold )
+> rectangle = RL.GetImageAlphaBorder( Image image, float threshold )
 
 Get image alpha border rectangle
 
@@ -3274,7 +3272,7 @@ Get image alpha border rectangle
 
 ---
 
-> color = RL_GetImageColor( Image image, Vector2 pixelPos )
+> color = RL.GetImageColor( Image image, Vector2 pixelPos )
 
 Get image pixel color at ( x, y ) position
 
@@ -3287,7 +3285,7 @@ Get image pixel color at ( x, y ) position
 
 ---
 
-> success = RL_ImageClearBackground( Image dst, Color color )
+> success = RL.ImageClearBackground( Image dst, Color color )
 
 Clear image background with given color
 
@@ -3296,7 +3294,7 @@ Clear image background with given color
 
 ---
 
-> success = RL_ImageDrawPixel( Image dst, Vector2 position, Color color )
+> success = RL.ImageDrawPixel( Image dst, Vector2 position, Color color )
 
 Draw pixel within an image
 
@@ -3305,7 +3303,7 @@ Draw pixel within an image
 
 ---
 
-> success = RL_ImageDrawLine( Image dst, Vector2 start, Vector2 end, Color color )
+> success = RL.ImageDrawLine( Image dst, Vector2 start, Vector2 end, Color color )
 
 Draw line within an image
 
@@ -3314,7 +3312,7 @@ Draw line within an image
 
 ---
 
-> success = RL_ImageDrawCircle( Image dst, Vector2 center, int radius, Color color )
+> success = RL.ImageDrawCircle( Image dst, Vector2 center, int radius, Color color )
 
 Draw circle within an image
 
@@ -3323,7 +3321,7 @@ Draw circle within an image
 
 ---
 
-> success = RL_ImageDrawRectangle( Image dst, Rectangle rec, Color color )
+> success = RL.ImageDrawRectangle( Image dst, Rectangle rec, Color color )
 
 Draw rectangle within an image
 
@@ -3332,7 +3330,7 @@ Draw rectangle within an image
 
 ---
 
-> success = RL_DrawRectangleLines( Image dst, Rectangle rec, int thick, Color color )
+> success = RL.ImageDrawRectangleLines( Image dst, Rectangle rec, int thick, Color color )
 
 Draw rectangle lines within an image
 
@@ -3341,7 +3339,7 @@ Draw rectangle lines within an image
 
 ---
 
-> success = RL_ImageDraw( Image dst, Image src, Rectangle srcRec, Rectangle dstRec, Color tint )
+> success = RL.ImageDraw( Image dst, Image src, Rectangle srcRec, Rectangle dstRec, Color tint )
 
 Draw a source image within a destination image ( Tint applied to source )
 
@@ -3350,7 +3348,7 @@ Draw a source image within a destination image ( Tint applied to source )
 
 ---
 
-> success = RL_ImageDrawTextEx( Image dst, Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
+> success = RL.ImageDrawTextEx( Image dst, Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
 
 Draw text ( Custom sprite font ) within an image ( Destination )
 
@@ -3363,7 +3361,7 @@ Draw text ( Custom sprite font ) within an image ( Destination )
 
 ---
 
-> size = RL_GetImageSize( Image image )
+> size = RL.GetImageSize( Image image )
 
 Get image size
 
@@ -3372,7 +3370,7 @@ Get image size
 
 ---
 
-> mipmaps = RL_GetImageMipmaps( Image image )
+> mipmaps = RL.GetImageMipmaps( Image image )
 
 Get image mipmaps. Mipmap levels, 1 by default
 
@@ -3381,7 +3379,7 @@ Get image mipmaps. Mipmap levels, 1 by default
 
 ---
 
-> format = RL_GetImageFormat( Image image )
+> format = RL.GetImageFormat( Image image )
 
 Get image data format ( PixelFormat type )
 
@@ -3394,7 +3392,7 @@ Get image data format ( PixelFormat type )
 
 ---
 
-> texture = RL_LoadTexture( string fileName )
+> texture = RL.LoadTexture( string fileName )
 
 Load texture from file into GPU memory ( VRAM )
 
@@ -3403,7 +3401,7 @@ Load texture from file into GPU memory ( VRAM )
 
 ---
 
-> texture = RL_LoadTextureFromImage( Image image )
+> texture = RL.LoadTextureFromImage( Image image )
 
 Load texture from image data
 
@@ -3412,7 +3410,7 @@ Load texture from image data
 
 ---
 
-> texture = RL_LoadTextureCubemap( Image image, int layout )
+> texture = RL.LoadTextureCubemap( Image image, int layout )
 
 Load cubemap from image, multiple image cubemap layouts supported
 
@@ -3421,7 +3419,7 @@ Load cubemap from image, multiple image cubemap layouts supported
 
 ---
 
-> renderTexture = RL_LoadRenderTexture( Vector2 size )
+> renderTexture = RL.LoadRenderTexture( Vector2 size )
 
 Load texture for rendering ( framebuffer )
 
@@ -3430,7 +3428,7 @@ Load texture for rendering ( framebuffer )
 
 ---
 
-> success = RL_UnloadTexture( Texture2D texture )
+> success = RL.UnloadTexture( Texture2D texture )
 
 Unload texture from GPU memory ( VRAM )
 
@@ -3439,7 +3437,7 @@ Unload texture from GPU memory ( VRAM )
 
 ---
 
-> success = RL_UnloadRenderTexture( RenderTexture2D target )
+> success = RL.UnloadRenderTexture( RenderTexture2D target )
 
 Unload render texture from GPU memory ( VRAM )
 
@@ -3448,7 +3446,7 @@ Unload render texture from GPU memory ( VRAM )
 
 ---
 
-> success = RL_UpdateTexture( Texture2D texture, int pixels{ {} } )
+> success = RL.UpdateTexture( Texture2D texture, int{} pixels )
 
 Update GPU texture with new data
 NOTE! Should be TEXTURE_SOURCE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
@@ -3458,7 +3456,7 @@ NOTE! Should be TEXTURE_SOURCE_TEXTURE. Pixel should be in format { { 255, 255, 
 
 ---
 
-> success = RL_UpdateTextureRec( Texture2D texture, Rectangle rec, int pixels{ {} } )
+> success = RL.UpdateTextureRec( Texture2D texture, Rectangle rec, int{} pixels )
 
 Update GPU texture rectangle with new data
 NOTE! Should be TEXTURE_SOURCE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
@@ -3472,7 +3470,7 @@ NOTE! Should be TEXTURE_SOURCE_TEXTURE. Pixel should be in format { { 255, 255, 
 
 ---
 
-> success = RL_DrawTexture( Texture2D texture, Vector2 position, Color tint )
+> success = RL.DrawTexture( Texture2D texture, Vector2 position, Color tint )
 
 Draw a Texture2D
 
@@ -3481,7 +3479,7 @@ Draw a Texture2D
 
 ---
 
-> success = RL_DrawTextureRec( Texture2D texture, Rectangle source, Vector2 position, Color tint )
+> success = RL.DrawTextureRec( Texture2D texture, Rectangle source, Vector2 position, Color tint )
 
 Draw a part of a texture defined by a rectangle
 
@@ -3490,7 +3488,7 @@ Draw a part of a texture defined by a rectangle
 
 ---
 
-> success = RL_DrawTextureTiled( Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, float scale, Color tint )
+> success = RL.DrawTextureTiled( Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, float scale, Color tint )
 
 Draw part of a texture ( defined by a rectangle ) with rotation and scale tiled into dest
 
@@ -3499,7 +3497,7 @@ Draw part of a texture ( defined by a rectangle ) with rotation and scale tiled 
 
 ---
 
-> success = RL_DrawTexturePro( Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint )
+> success = RL.DrawTexturePro( Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint )
 
 Draw a part of a texture defined by a rectangle with "pro" parameters
 
@@ -3508,7 +3506,7 @@ Draw a part of a texture defined by a rectangle with "pro" parameters
 
 ---
 
-> success = RL_DrawTextureNPatch( Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint )
+> success = RL.DrawTextureNPatch( Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint )
 
 Draws a texture ( or part of it ) that stretches or shrinks nicely
 
@@ -3517,7 +3515,7 @@ Draws a texture ( or part of it ) that stretches or shrinks nicely
 
 ---
 
-> success = RL_DrawTexturePoly( Texture2D texture, Vector2 center, Vector2{} points, Vector2{} texcoords, int pointsCount, Color tint )
+> success = RL.DrawTexturePoly( Texture2D texture, Vector2 center, Vector2{} points, Vector2{} texcoords, int pointsCount, Color tint )
 
 Draw a textured polygon ( Convex )
 
@@ -3526,7 +3524,7 @@ Draw a textured polygon ( Convex )
 
 ---
 
-> success = RL_BeginTextureMode( RenderTexture2D target )
+> success = RL.BeginTextureMode( RenderTexture2D target )
 
 Begin drawing to render texture
 
@@ -3535,13 +3533,13 @@ Begin drawing to render texture
 
 ---
 
-> RL_EndTextureMode()
+> RL.EndTextureMode()
 
 Ends drawing to render texture
 
 ---
 
-> success = RL_SetTextureSource( int textureSource )
+> success = RL.SetTextureSource( int textureSource )
 
 Set what texture source to use ( TEXTURE_SOURCE_TEXTURE or TEXTURE_SOURCE_RENDER_TEXTURE )
 
@@ -3550,7 +3548,7 @@ Set what texture source to use ( TEXTURE_SOURCE_TEXTURE or TEXTURE_SOURCE_RENDER
 
 ---
 
-> textureSource = RL_GetTextureSource()
+> textureSource = RL.GetTextureSource()
 
 Get current texture source type ( TEXTURE_SOURCE_TEXTURE or TEXTURE_SOURCE_RENDER_TEXTURE )
 
@@ -3562,7 +3560,7 @@ Get current texture source type ( TEXTURE_SOURCE_TEXTURE or TEXTURE_SOURCE_RENDE
 
 ---
 
-> success = RL_GenTextureMipmaps( Texture2D texture )
+> success = RL.GenTextureMipmaps( Texture2D texture )
 
 Generate GPU mipmaps for a texture
 
@@ -3571,7 +3569,7 @@ Generate GPU mipmaps for a texture
 
 ---
 
-> success = RL_SetTextureFilter( Texture2D texture, int filter )
+> success = RL.SetTextureFilter( Texture2D texture, int filter )
 
 Set texture scaling filter mode ( TEXTURE_FILTER_POINT, TEXTURE_FILTER_BILINEAR... )
 
@@ -3580,7 +3578,7 @@ Set texture scaling filter mode ( TEXTURE_FILTER_POINT, TEXTURE_FILTER_BILINEAR.
 
 ---
 
-> success = RL_SetTextureWrap( Texture2D texture, int wrap )
+> success = RL.SetTextureWrap( Texture2D texture, int wrap )
 
 Set texture wrapping mode ( TEXTURE_WRAP_REPEAT, TEXTURE_WRAP_CLAMP... )
 
@@ -3589,7 +3587,7 @@ Set texture wrapping mode ( TEXTURE_WRAP_REPEAT, TEXTURE_WRAP_CLAMP... )
 
 ---
 
-> size = RL_GetTextureSize( Texture2D texture )
+> size = RL.GetTextureSize( Texture2D texture )
 
 Get texture size
 
@@ -3598,7 +3596,7 @@ Get texture size
 
 ---
 
-> mipmaps = RL_GetTextureMipmaps( Texture2D texture )
+> mipmaps = RL.GetTextureMipmaps( Texture2D texture )
 
 Get texture mipmaps. Mipmap levels, 1 by default
 
@@ -3607,7 +3605,7 @@ Get texture mipmaps. Mipmap levels, 1 by default
 
 ---
 
-> format = RL_GetTextureFormat( Texture2D texture )
+> format = RL.GetTextureFormat( Texture2D texture )
 
 Get texture mipmaps. Mipmap levels, 1 by default
 
@@ -3620,7 +3618,7 @@ Get texture mipmaps. Mipmap levels, 1 by default
 
 ---
 
-> color = RL_Fade( Color color, float alpha )
+> color = RL.Fade( Color color, float alpha )
 
 Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 
@@ -3629,7 +3627,7 @@ Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 
 ---
 
-> value = RL_ColorToInt( Color color )
+> value = RL.ColorToInt( Color color )
 
 Returns hexadecimal value for a Color
 
@@ -3638,7 +3636,7 @@ Returns hexadecimal value for a Color
 
 ---
 
-> color = RL_ColorNormalize( Color color )
+> color = RL.ColorNormalize( Color color )
 
 Returns Color normalized as float [0..1]
 
@@ -3647,7 +3645,7 @@ Returns Color normalized as float [0..1]
 
 ---
 
-> color = RL_ColorFromNormalized( Vector4 normalized )
+> color = RL.ColorFromNormalized( Vector4 normalized )
 
 Color from normalized values [0..1]
 
@@ -3656,7 +3654,7 @@ Color from normalized values [0..1]
 
 ---
 
-> HSV = RL_ColorToHSV( Color color )
+> HSV = RL.ColorToHSV( Color color )
 
 Returns HSV values for a Color, hue [0..360], saturation/value [0..1]
 
@@ -3665,7 +3663,7 @@ Returns HSV values for a Color, hue [0..360], saturation/value [0..1]
 
 ---
 
-> color = RL_ColorFromHSV( float hue, float saturation, float value )
+> color = RL.ColorFromHSV( float hue, float saturation, float value )
 
 Returns a Color from HSV values, hue [0..360], saturation/value [0..1]
 
@@ -3674,7 +3672,7 @@ Returns a Color from HSV values, hue [0..360], saturation/value [0..1]
 
 ---
 
-> color = RL_ColorAlpha( Color color, float alpha )
+> color = RL.ColorAlpha( Color color, float alpha )
 
 Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 
@@ -3683,7 +3681,7 @@ Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 
 ---
 
-> color = RL_ColorAlphaBlend( Color dst, Color src, Color tint )
+> color = RL.ColorAlphaBlend( Color dst, Color src, Color tint )
 
 Returns src alpha-blended into dst color with tint
 
@@ -3692,7 +3690,7 @@ Returns src alpha-blended into dst color with tint
 
 ---
 
-> Color = RL_GetColor( unsigned int hexValue )
+> Color = RL.GetColor( unsigned int hexValue )
 
 Get Color structure from hexadecimal value
 
@@ -3701,7 +3699,7 @@ Get Color structure from hexadecimal value
 
 ---
 
-> Color = RL_GetPixelColor( Texture2D texture, Vector2 position )
+> Color = RL.GetPixelColor( Texture2D texture, Vector2 position )
 
 Get pixel color from source texture
 
@@ -3710,7 +3708,7 @@ Get pixel color from source texture
 
 ---
 
-> size = RL_GetPixelDataSize( int width, int height, int format )
+> size = RL.GetPixelDataSize( int width, int height, int format )
 
 Get pixel data size in bytes for certain format
 
@@ -3723,7 +3721,7 @@ Get pixel data size in bytes for certain format
 
 ---
 
-> font = RL_LoadFont( string fileName )
+> font = RL.LoadFont( string fileName )
 
 Load font from file into GPU memory ( VRAM )
 
@@ -3732,7 +3730,7 @@ Load font from file into GPU memory ( VRAM )
 
 ---
 
-> font = RL_LoadFontEx( string fileName, int fontSize )
+> font = RL.LoadFontEx( string fileName, int fontSize )
 
 Load font from file with extended parameters. Loading the default character set
 
@@ -3741,7 +3739,7 @@ Load font from file with extended parameters. Loading the default character set
 
 ---
 
-> font = RL_LoadFontFromImage( Image image, Color key, int firstChar )
+> font = RL.LoadFontFromImage( Image image, Color key, int firstChar )
 
 Load font from Image ( XNA style )
 
@@ -3750,7 +3748,7 @@ Load font from Image ( XNA style )
 
 ---
 
-> success = RL_UnloadFont( Font font )
+> success = RL.UnloadFont( Font font )
 
 Unload Font from GPU memory ( VRAM )
 
@@ -3763,7 +3761,7 @@ Unload Font from GPU memory ( VRAM )
 
 ---
 
-> success = RL_DrawFPS( Vector2 pos )
+> success = RL.DrawFPS( Vector2 pos )
 
 Draw current FPS
 
@@ -3772,7 +3770,7 @@ Draw current FPS
 
 ---
 
-> success = RL_DrawText( Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
+> success = RL.DrawText( Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
 
 Draw text using font and additional parameters
 
@@ -3781,7 +3779,7 @@ Draw text using font and additional parameters
 
 ---
 
-> success = RL_DrawTextPro( Font font, string text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint )
+> success = RL.DrawTextPro( Font font, string text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint )
 
 Draw text using Font and pro parameters ( rotation )
 
@@ -3794,7 +3792,7 @@ Draw text using Font and pro parameters ( rotation )
 
 ---
 
-> size = RL_MeasureText( Font font, string text, float fontSize, float spacing )
+> size = RL.MeasureText( Font font, string text, float fontSize, float spacing )
 
 Measure string size for Font
 
@@ -3803,7 +3801,7 @@ Measure string size for Font
 
 ---
 
-> baseSize = RL_GetFontBaseSize( Font font )
+> baseSize = RL.GetFontBaseSize( Font font )
 
 Get font baseSize
 
@@ -3812,7 +3810,7 @@ Get font baseSize
 
 ---
 
-> glyphCount = RL_GetFontGlyphCount( Font font )
+> glyphCount = RL.GetFontGlyphCount( Font font )
 
 Get font glyphCount
 
@@ -3821,7 +3819,7 @@ Get font glyphCount
 
 ---
 
-> glyphPadding = RL_GetFontGlyphPadding( Font font )
+> glyphPadding = RL.GetFontGlyphPadding( Font font )
 
 Get font glyphPadding
 
@@ -3834,7 +3832,7 @@ Get font glyphPadding
 
 ---
 
-> success = RL_DrawLine3D( Vector3 startPos, Vector3 endPos, Color color )
+> success = RL.DrawLine3D( Vector3 startPos, Vector3 endPos, Color color )
 
 Draw a line in 3D world space
 
@@ -3843,7 +3841,7 @@ Draw a line in 3D world space
 
 ---
 
-> success = RL_DrawPoint3D( Vector3 position, Color color )
+> success = RL.DrawPoint3D( Vector3 position, Color color )
 
 Draw a point in 3D space, actually a small line
 
@@ -3852,7 +3850,7 @@ Draw a point in 3D space, actually a small line
 
 ---
 
-> success = RL_DrawCircle3D( Vector3 center, float radius, Vector3 rotationAxis, float rotationAngle, Color color )
+> success = RL.DrawCircle3D( Vector3 center, float radius, Vector3 rotationAxis, float rotationAngle, Color color )
 
 Draw a circle in 3D world space
 
@@ -3861,7 +3859,7 @@ Draw a circle in 3D world space
 
 ---
 
-> success = RL_DrawTriangle3D( Vector3 v1, Vector3 v2, Vector3 v3, Color color )
+> success = RL.DrawTriangle3D( Vector3 v1, Vector3 v2, Vector3 v3, Color color )
 
 Draw a color-filled triangle ( Vertex in counter-clockwise order! )
 
@@ -3870,7 +3868,7 @@ Draw a color-filled triangle ( Vertex in counter-clockwise order! )
 
 ---
 
-> success = RL_DrawCube( Vector3 position, Vector3 size, Color color )
+> success = RL.DrawCube( Vector3 position, Vector3 size, Color color )
 
 Draw cube
 
@@ -3879,7 +3877,7 @@ Draw cube
 
 ---
 
-> success = RL_DrawCubeWires( Vector3 position, Vector3 size, Color color )
+> success = RL.DrawCubeWires( Vector3 position, Vector3 size, Color color )
 
 Draw cube wires
 
@@ -3888,7 +3886,7 @@ Draw cube wires
 
 ---
 
-> success = RL_DrawCubeTexture( Texture2D texture, Vector3 position, Vector3 size, Color color )
+> success = RL.DrawCubeTexture( Texture2D texture, Vector3 position, Vector3 size, Color color )
 
 Draw cube textured
 
@@ -3897,7 +3895,7 @@ Draw cube textured
 
 ---
 
-> success = RL_DrawSphere( Vector3 centerPos, float radius, Color color )
+> success = RL.DrawSphere( Vector3 centerPos, float radius, Color color )
 
 Draw sphere
 
@@ -3906,7 +3904,7 @@ Draw sphere
 
 ---
 
-> success = RL_DrawSphereEx( Vector3 centerPos, float radius, int rings, int slices, Color color )
+> success = RL.DrawSphereEx( Vector3 centerPos, float radius, int rings, int slices, Color color )
 
 Draw sphere with extended parameters
 
@@ -3915,7 +3913,7 @@ Draw sphere with extended parameters
 
 ---
 
-> success = RL_DrawSphereWires( Vector3 centerPos, float radius, int rings, int slices, Color color )
+> success = RL.DrawSphereWires( Vector3 centerPos, float radius, int rings, int slices, Color color )
 
 Draw sphere wires
 
@@ -3924,7 +3922,7 @@ Draw sphere wires
 
 ---
 
-> success = RL_DrawCylinder( Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color )
+> success = RL.DrawCylinder( Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color )
 
 Draw a cylinder/cone
 
@@ -3933,7 +3931,7 @@ Draw a cylinder/cone
 
 ---
 
-> success = RL_DrawCylinderEx( Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, Color color )
+> success = RL.DrawCylinderEx( Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, Color color )
 
 Draw a cylinder with base at startPos and top at endPos
 
@@ -3942,7 +3940,7 @@ Draw a cylinder with base at startPos and top at endPos
 
 ---
 
-> success = RL_DrawCylinderWires( Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color )
+> success = RL.DrawCylinderWires( Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color )
 
 Draw a cylinder/cone wires
 
@@ -3951,7 +3949,7 @@ Draw a cylinder/cone wires
 
 ---
 
-> success = RL_DrawCylinderWiresEx( Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, Color color )
+> success = RL.DrawCylinderWiresEx( Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, Color color )
 
 Draw a cylinder wires with base at startPos and top at endPos
 
@@ -3960,7 +3958,7 @@ Draw a cylinder wires with base at startPos and top at endPos
 
 ---
 
-> success = RL_DrawPlane( Vector3 centerPos, Vector2 size, Color color )
+> success = RL.DrawPlane( Vector3 centerPos, Vector2 size, Color color )
 
 Draw a plane XZ
 
@@ -3969,7 +3967,7 @@ Draw a plane XZ
 
 ---
 
-> success = RL_DrawQuad3DTexture( texture, Vector3{} vertices, Vector2{} texCoords, Color{} colors )
+> success = RL.DrawQuad3DTexture( Texture2D texture, Vector3{} vertices, Vector2{} texCoords, Color{} colors )
 
 Draw 3D textured quad. ( Texture coordinates opengl style 0.0 - 1.0 ).
 
@@ -3978,7 +3976,7 @@ Draw 3D textured quad. ( Texture coordinates opengl style 0.0 - 1.0 ).
 
 ---
 
-> success = RL_DrawRay( Ray ray, Color color )
+> success = RL.DrawRay( Ray ray, Color color )
 
 Draw a ray line
 
@@ -3987,7 +3985,7 @@ Draw a ray line
 
 ---
 
-> success = RL_DrawGrid( int slices, float spacing )
+> success = RL.DrawGrid( int slices, float spacing )
 
 Draw a grid ( Centered at ( 0, 0, 0 ) )
 
@@ -4000,7 +3998,7 @@ Draw a grid ( Centered at ( 0, 0, 0 ) )
 
 ---
 
-> mesh = RL_GenMeshPoly( int sides, float radius )
+> mesh = RL.GenMeshPoly( int sides, float radius )
 
 Generate polygonal mesh
 
@@ -4009,7 +4007,7 @@ Generate polygonal mesh
 
 ---
 
-> mesh = RL_GenMeshPlane( float width, float length, int resX, int resZ )
+> mesh = RL.GenMeshPlane( float width, float length, int resX, int resZ )
 
 Generate plane mesh ( With subdivisions )
 
@@ -4018,7 +4016,7 @@ Generate plane mesh ( With subdivisions )
 
 ---
 
-> mesh = RL_GenMeshCube( Vector3 size )
+> mesh = RL.GenMeshCube( Vector3 size )
 
 Generate cuboid mesh
 
@@ -4027,7 +4025,7 @@ Generate cuboid mesh
 
 ---
 
-> mesh = RL_GenMeshSphere( float radius, int rings, int slices )
+> mesh = RL.GenMeshSphere( float radius, int rings, int slices )
 
 Generate sphere mesh ( Standard sphere )
 
@@ -4036,7 +4034,7 @@ Generate sphere mesh ( Standard sphere )
 
 ---
 
-> mesh = RL_GenMeshCylinder( float radius, float height, int slices )
+> mesh = RL.GenMeshCylinder( float radius, float height, int slices )
 
 Generate cylinder mesh
 
@@ -4045,7 +4043,7 @@ Generate cylinder mesh
 
 ---
 
-> mesh = RL_GenMeshCone( float radius, float height, int slices )
+> mesh = RL.GenMeshCone( float radius, float height, int slices )
 
 Generate cone/pyramid mesh
 
@@ -4054,7 +4052,7 @@ Generate cone/pyramid mesh
 
 ---
 
-> mesh = RL_GenMeshTorus( float radius, float size, int radSeg, int sides )
+> mesh = RL.GenMeshTorus( float radius, float size, int radSeg, int sides )
 
 Generate torus mesh
 
@@ -4063,7 +4061,7 @@ Generate torus mesh
 
 ---
 
-> mesh = RL_GenMeshKnot( float radius, float size, int radSeg, int sides )
+> mesh = RL.GenMeshKnot( float radius, float size, int radSeg, int sides )
 
 Generate torus mesh
 
@@ -4072,7 +4070,7 @@ Generate torus mesh
 
 ---
 
-> mesh = RL_GenMeshHeightmap( Image heightmap, Vector3 size )
+> mesh = RL.GenMeshHeightmap( Image heightmap, Vector3 size )
 
 Generate heightmap mesh from image data
 
@@ -4081,7 +4079,7 @@ Generate heightmap mesh from image data
 
 ---
 
-> mesh = RL_GenMeshCustom( Mesh{}, bool dynamic )
+> mesh = RL.GenMeshCustom( Mesh{} mesh, bool dynamic )
 
 Generate custom mesh from vertex attribute data and uploads it into a VAO ( if supported ) and VBO
 
@@ -4090,7 +4088,7 @@ Generate custom mesh from vertex attribute data and uploads it into a VAO ( if s
 
 ---
 
-> success = RL_UpdateMesh( Mesh{} )
+> success = RL.UpdateMesh( Mesh{} mesh )
 
 Update mesh vertex data in GPU.
 Note! Mainly intented to be used with custom meshes.
@@ -4100,7 +4098,7 @@ Note! Mainly intented to be used with custom meshes.
 
 ---
 
-> success = RL_UnloadMesh( Mesh mesh )
+> success = RL.UnloadMesh( Mesh mesh )
 
 Unload mesh data from CPU and GPU
 
@@ -4109,7 +4107,7 @@ Unload mesh data from CPU and GPU
 
 ---
 
-> success = RL_DrawMesh( Mesh mesh, Material material, Matrix transform )
+> success = RL.DrawMesh( Mesh mesh, Material material, Matrix transform )
 
 Draw a 3d mesh with material and transform
 
@@ -4118,7 +4116,7 @@ Draw a 3d mesh with material and transform
 
 ---
 
-> success = RL_DrawMeshInstanced( Mesh mesh, Material material, Matrix{} transforms, int instances )
+> success = RL.DrawMeshInstanced( Mesh mesh, Material material, Matrix{} transforms, int instances )
 
 Draw multiple mesh instances with material and different transforms
 
@@ -4127,7 +4125,7 @@ Draw multiple mesh instances with material and different transforms
 
 ---
 
-> success = RL_SetMeshColor( Mesh mesh, Color color )
+> success = RL.SetMeshColor( Mesh mesh, Color color )
 
 Updades mesh color vertex attribute buffer
 NOTE: Currently only works on custom mesh
@@ -4137,7 +4135,7 @@ NOTE: Currently only works on custom mesh
 
 ---
 
-> success = RL_ExportMesh( Mesh mesh, string fileName )
+> success = RL.ExportMesh( Mesh mesh, string fileName )
 
 Export mesh data to file, returns true on success
 
@@ -4146,7 +4144,7 @@ Export mesh data to file, returns true on success
 
 ---
 
-> boundingBox = RL_GetMeshBoundingBox( Mesh mesh )
+> boundingBox = RL.GetMeshBoundingBox( Mesh mesh )
 
 Compute mesh bounding box limits
 
@@ -4155,7 +4153,7 @@ Compute mesh bounding box limits
 
 ---
 
-> success = RL_GenMeshTangents( Mesh mesh )
+> success = RL.GenMeshTangents( Mesh mesh )
 
 Compute mesh tangents
 
@@ -4168,7 +4166,7 @@ Compute mesh tangents
 
 ---
 
-> material = RL_LoadMaterialDefault()
+> material = RL.LoadMaterialDefault()
 
 Load default material
 
@@ -4176,7 +4174,7 @@ Load default material
 
 ---
 
-> material = RL_CreateMaterial( material{} )
+> material = RL.CreateMaterial( Material{} material )
 
 Load material from table. See material table definition
 
@@ -4185,7 +4183,7 @@ Load material from table. See material table definition
 
 ---
 
-> success = RL_UnloadMaterial( Material material )
+> success = RL.UnloadMaterial( Material material )
 
 Unload material from GPU memory ( VRAM )
 
@@ -4194,7 +4192,7 @@ Unload material from GPU memory ( VRAM )
 
 ---
 
-> success = RL_SetMaterialTexture( Material material, int mapType, Texture2D texture )
+> success = RL.SetMaterialTexture( Material material, int mapType, Texture2D texture )
 
 Set texture for a material map type ( MATERIAL_MAP_ALBEDO, MATERIAL_MAP_METALNESS... )
 
@@ -4203,7 +4201,7 @@ Set texture for a material map type ( MATERIAL_MAP_ALBEDO, MATERIAL_MAP_METALNES
 
 ---
 
-> success = RL_SetMaterialColor( Material material, int mapType, Color color )
+> success = RL.SetMaterialColor( Material material, int mapType, Color color )
 
 Set color for a material map type
 
@@ -4212,7 +4210,7 @@ Set color for a material map type
 
 ---
 
-> success = RL_SetMaterialValue( Material material, int mapType, float value )
+> success = RL.SetMaterialValue( Material material, int mapType, float value )
 
 Set value for a material map type
 
@@ -4221,7 +4219,7 @@ Set value for a material map type
 
 ---
 
-> success = RL_SetMaterialShader( Material material, Shader shader )
+> success = RL.SetMaterialShader( Material material, Shader shader )
 
 Set shader for material
 
@@ -4234,7 +4232,7 @@ Set shader for material
 
 ---
 
-> model = RL_LoadModel( string fileName )
+> model = RL.LoadModel( string fileName )
 
 Load model from files ( Meshes and materials )
 
@@ -4243,7 +4241,7 @@ Load model from files ( Meshes and materials )
 
 ---
 
-> model = RL_LoadModelFromMesh( Mesh mesh )
+> model = RL.LoadModelFromMesh( Mesh mesh )
 
 Load model from generated mesh ( Default material )
 
@@ -4252,7 +4250,7 @@ Load model from generated mesh ( Default material )
 
 ---
 
-> success = RL_UnloadModel( Model model )
+> success = RL.UnloadModel( Model model )
 
 Unload model ( Including meshes ) from memory ( RAM and/or VRAM )
 
@@ -4261,7 +4259,7 @@ Unload model ( Including meshes ) from memory ( RAM and/or VRAM )
 
 ---
 
-> success = RL_DrawModel( Model model, Vector3 position, float scale, Color tint )
+> success = RL.DrawModel( Model model, Vector3 position, float scale, Color tint )
 
 Draw a model ( With texture if set )
 
@@ -4270,7 +4268,7 @@ Draw a model ( With texture if set )
 
 ---
 
-> success = RL_DrawModelEx( Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint )
+> success = RL.DrawModelEx( Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint )
 
 Draw a model with extended parameters
 
@@ -4279,7 +4277,7 @@ Draw a model with extended parameters
 
 ---
 
-> success = RL_SetModelMaterial( Model model, Material modelMaterial, Material material )
+> success = RL.SetModelMaterial( Model model, Material modelMaterial, Material material )
 
 Copies material to model material. ( Model material is the material id in models. Material can be deleted if not used elsewhere )
 
@@ -4288,7 +4286,7 @@ Copies material to model material. ( Model material is the material id in models
 
 ---
 
-> success = RL_SetModelMeshMaterial( Model model, int meshId, int materialId )
+> success = RL.SetModelMeshMaterial( Model model, int meshId, int materialId )
 
 Set material for a mesh ( Mesh and material on this model )
 
@@ -4297,7 +4295,7 @@ Set material for a mesh ( Mesh and material on this model )
 
 ---
 
-> success = RL_DrawBillboard( Camera camera, Texture2D texture, Vector3 position, float size, Color tint )
+> success = RL.DrawBillboard( Camera camera, Texture2D texture, Vector3 position, float size, Color tint )
 
 Draw a billboard texture
 
@@ -4306,7 +4304,7 @@ Draw a billboard texture
 
 ---
 
-> success = RL_DrawBillboardRec( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Color tint )
+> success = RL.DrawBillboardRec( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Color tint )
 
 Draw a billboard texture defined by source
 
@@ -4315,7 +4313,7 @@ Draw a billboard texture defined by source
 
 ---
 
-> success = RL_SetModelTransform( Model model, Matrix transform )
+> success = RL.SetModelTransform( Model model, Matrix transform )
 
 Set model transform matrix
 
@@ -4324,7 +4322,7 @@ Set model transform matrix
 
 ---
 
-> transform = RL_GetModelTransform( Model model )
+> transform = RL.GetModelTransform( Model model )
 
 Get model transform matrix
 
@@ -4337,7 +4335,7 @@ Get model transform matrix
 
 ---
 
-> animations, animationCount = RL_LoadModelAnimations( string fileName )
+> animations, animationCount = RL.LoadModelAnimations( string fileName )
 
 Load model animations from file
 
@@ -4346,7 +4344,7 @@ Load model animations from file
 
 ---
 
-> success = RL_UpdateModelAnimation( Model model, ModelAnimations animations, int animation, int frame )
+> success = RL.UpdateModelAnimation( Model model, ModelAnimations animations, int animation, int frame )
 
 Update model animation pose
 
@@ -4355,7 +4353,7 @@ Update model animation pose
 
 ---
 
-> success = RL_UnloadModelAnimations( ModelAnimations animations )
+> success = RL.UnloadModelAnimations( ModelAnimations animations )
 
 Unload animation data
 
@@ -4364,7 +4362,7 @@ Unload animation data
 
 ---
 
-> valid = RL_IsModelAnimationValid( Model model, ModelAnimations animations )
+> valid = RL.IsModelAnimationValid( Model model, ModelAnimations animations )
 
 Check model animation skeleton match
 
@@ -4373,7 +4371,7 @@ Check model animation skeleton match
 
 ---
 
-> boneCount = RL_GetModelAnimationBoneCount( ModelAnimations animations, int animation )
+> boneCount = RL.GetModelAnimationBoneCount( ModelAnimations animations, int animation )
 
 Return modelAnimation bone count
 
@@ -4382,7 +4380,7 @@ Return modelAnimation bone count
 
 ---
 
-> frameCount = RL_GetModelAnimationFrameCount( ModelAnimations animations, int animation )
+> frameCount = RL.GetModelAnimationFrameCount( ModelAnimations animations, int animation )
 
 Return modelAnimation frame count
 
@@ -4395,7 +4393,7 @@ Return modelAnimation frame count
 
 ---
 
-> collision = RL_CheckCollisionSpheres( Vector3 center1, float radius1, Vector3 center2, float radius2 )
+> collision = RL.CheckCollisionSpheres( Vector3 center1, float radius1, Vector3 center2, float radius2 )
 
 Check collision between two spheres
 
@@ -4404,7 +4402,7 @@ Check collision between two spheres
 
 ---
 
-> collision = RL_CheckCollisionBoxes( BoundingBox box1, BoundingBox box2 )
+> collision = RL.CheckCollisionBoxes( BoundingBox box1, BoundingBox box2 )
 
 Check collision between two bounding boxes
 
@@ -4413,7 +4411,7 @@ Check collision between two bounding boxes
 
 ---
 
-> collision = RL_CheckCollisionBoxSphere( BoundingBox box, Vector3 center, float radius )
+> collision = RL.CheckCollisionBoxSphere( BoundingBox box, Vector3 center, float radius )
 
 Check collision between box and sphere
 
@@ -4422,7 +4420,7 @@ Check collision between box and sphere
 
 ---
 
-> rayCollision = RL_GetRayCollisionSphere( Ray ray, Vector3 center, float radius )
+> rayCollision = RL.GetRayCollisionSphere( Ray ray, Vector3 center, float radius )
 
 Get collision info between ray and sphere. ( RayCollision is Lua table of { hit, distance, point, normal } )
 
@@ -4431,7 +4429,7 @@ Get collision info between ray and sphere. ( RayCollision is Lua table of { hit,
 
 ---
 
-> rayCollision = RL_GetRayCollisionBox( Ray ray, BoundingBox box )
+> rayCollision = RL.GetRayCollisionBox( Ray ray, BoundingBox box )
 
 Get collision info between ray and box
 
@@ -4440,7 +4438,7 @@ Get collision info between ray and box
 
 ---
 
-> rayCollision = RL_GetRayCollisionMesh( Ray ray, Mesh mesh, Matrix transform )
+> rayCollision = RL.GetRayCollisionMesh( Ray ray, Mesh mesh, Matrix transform )
 
 Get collision info between ray and mesh
 
@@ -4449,7 +4447,7 @@ Get collision info between ray and mesh
 
 ---
 
-> rayCollision = RL_GetRayCollisionTriangle( Ray ray, Vector3 p1, Vector3 p2, Vector3 p3 )
+> rayCollision = RL.GetRayCollisionTriangle( Ray ray, Vector3 p1, Vector3 p2, Vector3 p3 )
 
 Get collision info between ray and triangle
 
@@ -4458,7 +4456,7 @@ Get collision info between ray and triangle
 
 ---
 
-> rayCollision = RL_GetRayCollisionQuad( Ray ray, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4 )
+> rayCollision = RL.GetRayCollisionQuad( Ray ray, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4 )
 
 Get collision info between ray and quad
 
@@ -4471,7 +4469,7 @@ Get collision info between ray and quad
 
 ---
 
-> success = RL_SetMasterVolume( float volume )
+> success = RL.SetMasterVolume( float volume )
 
 Set master volume ( listener )
 
@@ -4484,7 +4482,7 @@ Set master volume ( listener )
 
 ---
 
-> sound = RL_LoadSound( string fileName )
+> sound = RL.LoadSound( string fileName )
 
 Load sound from file
 
@@ -4493,7 +4491,7 @@ Load sound from file
 
 ---
 
-> wave = RL_LoadWave( string fileName )
+> wave = RL.LoadWave( string fileName )
 
 Load wave data from file
 
@@ -4502,7 +4500,7 @@ Load wave data from file
 
 ---
 
-> sound = RL_LoadSoundFromWave( Wave wave )
+> sound = RL.LoadSoundFromWave( Wave wave )
 
 Load sound from wave data
 
@@ -4511,7 +4509,7 @@ Load sound from wave data
 
 ---
 
-> success = RL_UnloadSound( Sound sound )
+> success = RL.UnloadSound( Sound sound )
 
 Unload sound
 
@@ -4520,7 +4518,7 @@ Unload sound
 
 ---
 
-> success = RL_UnloadWave( Wave wave )
+> success = RL.UnloadWave( Wave wave )
 
 Unload wave data
 
@@ -4529,7 +4527,7 @@ Unload wave data
 
 ---
 
-> success = RL_ExportWave( Wave wave, string fileName )
+> success = RL.ExportWave( Wave wave, string fileName )
 
 Export wave data to file, returns true on success
 
@@ -4538,7 +4536,7 @@ Export wave data to file, returns true on success
 
 ---
 
-> success = RL_ExportWaveAsCode( Wave wave, string fileName )
+> success = RL.ExportWaveAsCode( Wave wave, string fileName )
 
 Export wave sample data to code (.h), returns true on success
 
@@ -4551,7 +4549,7 @@ Export wave sample data to code (.h), returns true on success
 
 ---
 
-> success = RL_PlaySound( Sound sound )
+> success = RL.PlaySound( Sound sound )
 
 Play a sound
 
@@ -4560,7 +4558,7 @@ Play a sound
 
 ---
 
-> success = RL_StopSound( Sound sound )
+> success = RL.StopSound( Sound sound )
 
 Stop playing a sound
 
@@ -4569,7 +4567,7 @@ Stop playing a sound
 
 ---
 
-> success = RL_PauseSound( Sound sound )
+> success = RL.PauseSound( Sound sound )
 
 Pause a sound
 
@@ -4578,7 +4576,7 @@ Pause a sound
 
 ---
 
-> success = RL_ResumeSound( Sound sound )
+> success = RL.ResumeSound( Sound sound )
 
 Resume a paused sound
 
@@ -4587,7 +4585,7 @@ Resume a paused sound
 
 ---
 
-> success = RL_PlaySoundMulti( Sound sound )
+> success = RL.PlaySoundMulti( Sound sound )
 
 Play a sound ( Using multichannel buffer pool )
 
@@ -4596,13 +4594,13 @@ Play a sound ( Using multichannel buffer pool )
 
 ---
 
-> RL_StopSoundMulti()
+> RL.StopSoundMulti()
 
 Stop any sound playing ( using multichannel buffer pool )
 
 ---
 
-> count = RL_GetSoundsPlaying()
+> count = RL.GetSoundsPlaying()
 
 Get number of sounds playing in the multichannel
 
@@ -4610,7 +4608,7 @@ Get number of sounds playing in the multichannel
 
 ---
 
-> playing = RL_IsSoundPlaying( Sound sound )
+> playing = RL.IsSoundPlaying( Sound sound )
 
 Check if a sound is currently playing
 
@@ -4619,7 +4617,7 @@ Check if a sound is currently playing
 
 ---
 
-> success = RL_SetSoundVolume( Sound sound, float volume )
+> success = RL.SetSoundVolume( Sound sound, float volume )
 
 Set volume for a sound ( 1.0 is max level )
 
@@ -4628,7 +4626,7 @@ Set volume for a sound ( 1.0 is max level )
 
 ---
 
-> success = RL_SetSoundPitch( Sound sound, float pitch )
+> success = RL.SetSoundPitch( Sound sound, float pitch )
 
 Set pitch for a sound ( 1.0 is base level )
 
@@ -4637,7 +4635,7 @@ Set pitch for a sound ( 1.0 is base level )
 
 ---
 
-> success = RL_SetSoundPan( Sound sound, float pan )
+> success = RL.SetSoundPan( Sound sound, float pan )
 
 Set pan for a sound ( 0.5 is center )
 
@@ -4646,7 +4644,7 @@ Set pan for a sound ( 0.5 is center )
 
 ---
 
-> success = RL_WaveFormat( Wave wave, int sampleRate, int sampleSize, int channels )
+> success = RL.WaveFormat( Wave wave, int sampleRate, int sampleSize, int channels )
 
 Convert wave data to desired format
 
@@ -4655,7 +4653,7 @@ Convert wave data to desired format
 
 ---
 
-> wave = RL_WaveCopy( Wave wave )
+> wave = RL.WaveCopy( Wave wave )
 
 Copy a wave to a new wave
 
@@ -4664,7 +4662,7 @@ Copy a wave to a new wave
 
 ---
 
-> success = RL_WaveCrop( Wave wave, int initSample, int finalSample )
+> success = RL.WaveCrop( Wave wave, int initSample, int finalSample )
 
 Crop a wave to defined samples range
 
@@ -4677,7 +4675,7 @@ Crop a wave to defined samples range
 
 ---
 
-> success = RL_LoadMusicStream( string fileName )
+> success = RL.LoadMusicStream( string fileName )
 
 Load music stream from file
 
@@ -4686,13 +4684,13 @@ Load music stream from file
 
 ---
 
-> RL_PlayMusicStream()
+> RL.PlayMusicStream()
 
 Start music playing
 
 ---
 
-> playing = RL_PlayMusicStream()
+> playing = RL.IsMusicStreamPlaying()
 
 Check if music is playing
 
@@ -4700,25 +4698,25 @@ Check if music is playing
 
 ---
 
-> RL_StopMusicStream()
+> RL.StopMusicStream()
 
 Stop music playing
 
 ---
 
-> RL_PauseMusicStream()
+> RL.PauseMusicStream()
 
 Pause music playing
 
 ---
 
-> RL_ResumeMusicStream()
+> RL.ResumeMusicStream()
 
 Resume playing paused music
 
 ---
 
-> success = RL_SeekMusicStream( float position )
+> success = RL.SeekMusicStream( float position )
 
 Seek music to a position ( in seconds )
 
@@ -4727,7 +4725,7 @@ Seek music to a position ( in seconds )
 
 ---
 
-> success = RL_SetMusicVolume( float volume )
+> success = RL.SetMusicVolume( float volume )
 
 Set volume for music ( 1.0 is max level )
 
@@ -4736,7 +4734,7 @@ Set volume for music ( 1.0 is max level )
 
 ---
 
-> success = RL_SetMusicPitch( float pitch )
+> success = RL.SetMusicPitch( float pitch )
 
 Set pitch for a music ( 1.0 is base level )
 
@@ -4745,7 +4743,7 @@ Set pitch for a music ( 1.0 is base level )
 
 ---
 
-> success = RL_SetMusicPan( float pan )
+> success = RL.SetMusicPan( float pan )
 
 Set pan for a music ( 0.5 is center )
 
@@ -4754,7 +4752,7 @@ Set pan for a music ( 0.5 is center )
 
 ---
 
-> length = RL_GetMusicTimeLength()
+> length = RL.GetMusicTimeLength()
 
 Get music time length ( in seconds )
 
@@ -4762,7 +4760,7 @@ Get music time length ( in seconds )
 
 ---
 
-> played = RL_GetMusicTimePlayed()
+> played = RL.GetMusicTimePlayed()
 
 Get current music time played ( in seconds )
 
@@ -4774,7 +4772,7 @@ Get current music time played ( in seconds )
 
 ---
 
-> result = RL_Clamp( float value, float min, float max )
+> result = RL.Clamp( float value, float min, float max )
 
 Clamp float value
 
@@ -4783,7 +4781,7 @@ Clamp float value
 
 ---
 
-> result = RL_Lerp( float start, float end, float amount )
+> result = RL.Lerp( float start, float end, float amount )
 
 Calculate linear interpolation between two floats
 
@@ -4792,7 +4790,7 @@ Calculate linear interpolation between two floats
 
 ---
 
-> result = RL_Normalize( float value, float start, float end )
+> result = RL.Normalize( float value, float start, float end )
 
 Normalize input value within input range
 
@@ -4801,7 +4799,7 @@ Normalize input value within input range
 
 ---
 
-> result = RL_Remap( float value, float inputStart, float inputEnd, float outputStart, float outputEnd )
+> result = RL.Remap( float value, float inputStart, float inputEnd, float outputStart, float outputEnd )
 
 Remap input value within input range to output range
 
@@ -4810,7 +4808,7 @@ Remap input value within input range to output range
 
 ---
 
-> result = RL_Wrap( float value, float min, float max )
+> result = RL.Wrap( float value, float min, float max )
 
 Wrap input value from min to max
 
@@ -4819,7 +4817,7 @@ Wrap input value from min to max
 
 ---
 
-> result = RL_FloatEquals( float x, float y )
+> result = RL.FloatEquals( float x, float y )
 
 Check whether two given floats are almost equal
 
@@ -4832,7 +4830,7 @@ Check whether two given floats are almost equal
 
 ---
 
-> result = RL_Vector2Zero()
+> result = RL.Vector2Zero()
 
 Vector with components value 0.0f
 
@@ -4840,7 +4838,7 @@ Vector with components value 0.0f
 
 ---
 
-> result = RL_Vector2One()
+> result = RL.Vector2One()
 
 Vector with components value 1.0f
 
@@ -4848,7 +4846,7 @@ Vector with components value 1.0f
 
 ---
 
-> result = RL_Vector2Add( Vector2 v1, Vector2 v2 )
+> result = RL.Vector2Add( Vector2 v1, Vector2 v2 )
 
 Add two vectors (v1 + v2)
 
@@ -4857,7 +4855,7 @@ Add two vectors (v1 + v2)
 
 ---
 
-> result = RL_Vector2AddValue( Vector2 v, float add )
+> result = RL.Vector2AddValue( Vector2 v, float add )
 
 Add vector and float value
 
@@ -4866,7 +4864,7 @@ Add vector and float value
 
 ---
 
-> result = RL_Vector2Subtract( Vector2 v1, Vector2 v2 )
+> result = RL.Vector2Subtract( Vector2 v1, Vector2 v2 )
 
 Subtract two vectors (v1 - v2)
 
@@ -4875,7 +4873,7 @@ Subtract two vectors (v1 - v2)
 
 ---
 
-> result = RL_Vector2SubtractValue( Vector2 v, float sub )
+> result = RL.Vector2SubtractValue( Vector2 v, float sub )
 
 Subtract vector by float value
 
@@ -4884,7 +4882,7 @@ Subtract vector by float value
 
 ---
 
-> result = RL_Vector2Length( vector2 v )
+> result = RL.Vector2Length( vector2 v )
 
 Calculate vector length
 
@@ -4893,7 +4891,7 @@ Calculate vector length
 
 ---
 
-> result = RL_Vector2LengthSqr( vector2 v )
+> result = RL.Vector2LengthSqr( vector2 v )
 
 Calculate vector square length
 
@@ -4902,7 +4900,7 @@ Calculate vector square length
 
 ---
 
-> result = RL_Vector2DotProduct( Vector2 v1, Vector2 v2 )
+> result = RL.Vector2DotProduct( Vector2 v1, Vector2 v2 )
 
 Calculate two vectors dot product
 
@@ -4911,7 +4909,7 @@ Calculate two vectors dot product
 
 ---
 
-> result = RL_Vector2Distance( Vector2 v1, Vector2 v2 )
+> result = RL.Vector2Distance( Vector2 v1, Vector2 v2 )
 
 Calculate distance between two vectors
 
@@ -4920,7 +4918,7 @@ Calculate distance between two vectors
 
 ---
 
-> result = RL_Vector2DistanceSqr( Vector2 v1, Vector2 v2 )
+> result = RL.Vector2DistanceSqr( Vector2 v1, Vector2 v2 )
 
 Calculate square distance between two vectors
 
@@ -4929,7 +4927,7 @@ Calculate square distance between two vectors
 
 ---
 
-> result = RL_Vector2Angle( Vector2 v1, Vector2 v2 )
+> result = RL.Vector2Angle( Vector2 v1, Vector2 v2 )
 
 Calculate angle from two vectors
 
@@ -4938,7 +4936,7 @@ Calculate angle from two vectors
 
 ---
 
-> result = RL_Vector2Scale( Vector2 v, float scale )
+> result = RL.Vector2Scale( Vector2 v, float scale )
 
 Scale vector ( multiply by value )
 
@@ -4947,7 +4945,7 @@ Scale vector ( multiply by value )
 
 ---
 
-> result = RL_Vector2Multiply( Vector2 v1, Vector2 v2 )
+> result = RL.Vector2Multiply( Vector2 v1, Vector2 v2 )
 
 Multiply vector by vector
 
@@ -4956,7 +4954,7 @@ Multiply vector by vector
 
 ---
 
-> result = RL_Vector2Negate( Vector2 v )
+> result = RL.Vector2Negate( Vector2 v )
 
 Negate vector
 
@@ -4965,7 +4963,7 @@ Negate vector
 
 ---
 
-> result = RL_Vector2Divide( Vector2 v1, Vector2 v2 )
+> result = RL.Vector2Divide( Vector2 v1, Vector2 v2 )
 
 Divide vector by vector
 
@@ -4974,7 +4972,7 @@ Divide vector by vector
 
 ---
 
-> result = RL_Vector2Normalize( Vector2 v )
+> result = RL.Vector2Normalize( Vector2 v )
 
 Normalize provided vector
 
@@ -4983,7 +4981,7 @@ Normalize provided vector
 
 ---
 
-> result = RL_Vector2Transform( Vector2 v, Matrix mat )
+> result = RL.Vector2Transform( Vector2 v, Matrix mat )
 
 Transforms a Vector2 by a given Matrix
 
@@ -4992,7 +4990,7 @@ Transforms a Vector2 by a given Matrix
 
 ---
 
-> result = RL_Vector2Lerp( Vector2 v1, Vector2 v2, float amount )
+> result = RL.Vector2Lerp( Vector2 v1, Vector2 v2, float amount )
 
 Calculate linear interpolation between two vectors
 
@@ -5001,7 +4999,7 @@ Calculate linear interpolation between two vectors
 
 ---
 
-> result = RL_Vector2Reflect( Vector2 v, Vector2 normal )
+> result = RL.Vector2Reflect( Vector2 v, Vector2 normal )
 
 Calculate reflected vector to normal
 
@@ -5010,7 +5008,7 @@ Calculate reflected vector to normal
 
 ---
 
-> result = RL_Vector2Rotate( Vector2 v, float angle )
+> result = RL.Vector2Rotate( Vector2 v, float angle )
 
 Rotate vector by angle
 
@@ -5019,7 +5017,7 @@ Rotate vector by angle
 
 ---
 
-> result = RL_Vector2MoveTowards( Vector2 v, Vector2 target, float maxDistance )
+> result = RL.Vector2MoveTowards( Vector2 v, Vector2 target, float maxDistance )
 
 Move Vector towards target
 
@@ -5028,7 +5026,7 @@ Move Vector towards target
 
 ---
 
-> result = RL_Vector2Invert( Vector2 v )
+> result = RL.Vector2Invert( Vector2 v )
 
 Invert the given vector
 
@@ -5037,7 +5035,7 @@ Invert the given vector
 
 ---
 
-> result = RL_Vector2Clamp( Vector2 v, Vector2 min, Vector2 max )
+> result = RL.Vector2Clamp( Vector2 v, Vector2 min, Vector2 max )
 
 Clamp the components of the vector between
 min and max values specified by the given vectors
@@ -5047,7 +5045,7 @@ min and max values specified by the given vectors
 
 ---
 
-> result = RL_Vector2ClampValue( Vector2 v, float min, float max )
+> result = RL.Vector2ClampValue( Vector2 v, float min, float max )
 
 Clamp the magnitude of the vector between two min and max values
 
@@ -5056,7 +5054,7 @@ Clamp the magnitude of the vector between two min and max values
 
 ---
 
-> result = RL_Vector2Equals( Vector2 v1, Vector2 v2 )
+> result = RL.Vector2Equals( Vector2 v1, Vector2 v2 )
 
 Check whether two given vectors are almost equal
 
@@ -5069,7 +5067,7 @@ Check whether two given vectors are almost equal
 
 ---
 
-> result = RL_Vector3Zero()
+> result = RL.Vector3Zero()
 
 Vector with components value 0.0f
 
@@ -5077,7 +5075,7 @@ Vector with components value 0.0f
 
 ---
 
-> result = RL_Vector3One()
+> result = RL.Vector3One()
 
 Vector with components value 1.0f
 
@@ -5085,7 +5083,7 @@ Vector with components value 1.0f
 
 ---
 
-> result = RL_Vector3Add( Vector3 v1, Vector3 v2 )
+> result = RL.Vector3Add( Vector3 v1, Vector3 v2 )
 
 Add two vectors
 
@@ -5094,7 +5092,7 @@ Add two vectors
 
 ---
 
-> result = RL_Vector3AddValue( Vector3 v, float add )
+> result = RL.Vector3AddValue( Vector3 v, float add )
 
 Add vector and float value
 
@@ -5103,7 +5101,7 @@ Add vector and float value
 
 ---
 
-> result = RL_Vector3Subtract( Vector3 v1, Vector3 v2 )
+> result = RL.Vector3Subtract( Vector3 v1, Vector3 v2 )
 
 Subtract two vectors
 
@@ -5112,7 +5110,7 @@ Subtract two vectors
 
 ---
 
-> result = RL_Vector3SubtractValue( Vector3 v, float sub )
+> result = RL.Vector3SubtractValue( Vector3 v, float sub )
 
 Subtract vector by float value
 
@@ -5121,7 +5119,7 @@ Subtract vector by float value
 
 ---
 
-> result = RL_Vector3Scale( Vector3 v, float scalar )
+> result = RL.Vector3Scale( Vector3 v, float scalar )
 
 Multiply vector by scalar
 
@@ -5130,7 +5128,7 @@ Multiply vector by scalar
 
 ---
 
-> result = RL_Vector3Multiply( Vector3 v1, Vector3 v2 )
+> result = RL.Vector3Multiply( Vector3 v1, Vector3 v2 )
 
 Multiply vector by vector
 
@@ -5139,7 +5137,7 @@ Multiply vector by vector
 
 ---
 
-> result = RL_Vector3CrossProduct( Vector3 v1, Vector3 v2 )
+> result = RL.Vector3CrossProduct( Vector3 v1, Vector3 v2 )
 
 Calculate two vectors cross product
 
@@ -5148,7 +5146,7 @@ Calculate two vectors cross product
 
 ---
 
-> result = RL_Vector3Perpendicular( Vector3 v )
+> result = RL.Vector3Perpendicular( Vector3 v )
 
 Calculate one vector perpendicular vector
 
@@ -5157,7 +5155,7 @@ Calculate one vector perpendicular vector
 
 ---
 
-> result = RL_Vector3Length( Vector3 v )
+> result = RL.Vector3Length( Vector3 v )
 
 Calculate vector length
 
@@ -5166,7 +5164,7 @@ Calculate vector length
 
 ---
 
-> result = RL_Vector3LengthSqr( Vector3 v )
+> result = RL.Vector3LengthSqr( Vector3 v )
 
 Calculate vector square length
 
@@ -5175,7 +5173,7 @@ Calculate vector square length
 
 ---
 
-> result = RL_Vector3DotProduct( Vector3 v1, Vector3 v2 )
+> result = RL.Vector3DotProduct( Vector3 v1, Vector3 v2 )
 
 Calculate two vectors dot product
 
@@ -5184,7 +5182,7 @@ Calculate two vectors dot product
 
 ---
 
-> result = RL_Vector3Distance( Vector3 v1, Vector3 v2 )
+> result = RL.Vector3Distance( Vector3 v1, Vector3 v2 )
 
 Calculate distance between two vectors
 
@@ -5193,7 +5191,7 @@ Calculate distance between two vectors
 
 ---
 
-> result = RL_Vector3DistanceSqr( Vector3 v1, Vector3 v2 )
+> result = RL.Vector3DistanceSqr( Vector3 v1, Vector3 v2 )
 
 Calculate square distance between two vectors
 
@@ -5202,7 +5200,7 @@ Calculate square distance between two vectors
 
 ---
 
-> result = RL_Vector3Angle( Vector3 v1, Vector3 v2 )
+> result = RL.Vector3Angle( Vector3 v1, Vector3 v2 )
 
 Calculate angle between two vectors
 
@@ -5211,7 +5209,7 @@ Calculate angle between two vectors
 
 ---
 
-> result = RL_Vector3Negate( Vector3 v )
+> result = RL.Vector3Negate( Vector3 v )
 
 Negate provided vector ( invert direction )
 
@@ -5220,7 +5218,7 @@ Negate provided vector ( invert direction )
 
 ---
 
-> result = RL_Vector3Divide( Vector3 v1, Vector3 v2 )
+> result = RL.Vector3Divide( Vector3 v1, Vector3 v2 )
 
 Divide vector by vector
 
@@ -5229,7 +5227,7 @@ Divide vector by vector
 
 ---
 
-> result = RL_Vector3Normalize( Vector3 v )
+> result = RL.Vector3Normalize( Vector3 v )
 
 Normalize provided vector
 
@@ -5238,7 +5236,7 @@ Normalize provided vector
 
 ---
 
-> v1, v2 = RL_Vector3OrthoNormalize( Vector3 v1, Vector3 v2 )
+> v1, v2 = RL.Vector3OrthoNormalize( Vector3 v1, Vector3 v2 )
 
 Orthonormalize provided vectors. Makes vectors normalized and orthogonal to each other.
 Gram-Schmidt function implementation
@@ -5248,7 +5246,7 @@ Gram-Schmidt function implementation
 
 ---
 
-> result = RL_Vector3Transform( Vector3 v, Matrix mat )
+> result = RL.Vector3Transform( Vector3 v, Matrix mat )
 
 Transforms a Vector3 by a given Matrix
 
@@ -5257,7 +5255,7 @@ Transforms a Vector3 by a given Matrix
 
 ---
 
-> result = RL_Vector3RotateByQuaternion( Vector3 v, Quaternion q )
+> result = RL.Vector3RotateByQuaternion( Vector3 v, Quaternion q )
 
 Transform a vector by quaternion rotation
 
@@ -5266,7 +5264,7 @@ Transform a vector by quaternion rotation
 
 ---
 
-> result = RL_Vector3RotateByAxisAngle( Vector3 v, Vector3 axis, float angle )
+> result = RL.Vector3RotateByAxisAngle( Vector3 v, Vector3 axis, float angle )
 
 Rotates a vector around an axis
 
@@ -5275,7 +5273,7 @@ Rotates a vector around an axis
 
 ---
 
-> result = RL_Vector3Lerp( Vector3 v1, Vector3 v2, float amount )
+> result = RL.Vector3Lerp( Vector3 v1, Vector3 v2, float amount )
 
 Calculate linear interpolation between two vectors
 
@@ -5284,7 +5282,7 @@ Calculate linear interpolation between two vectors
 
 ---
 
-> result = RL_Vector3Reflect( Vector3 v, Vector3 normal )
+> result = RL.Vector3Reflect( Vector3 v, Vector3 normal )
 
 Calculate reflected vector to normal
 
@@ -5293,7 +5291,7 @@ Calculate reflected vector to normal
 
 ---
 
-> result = RL_Vector3Min( Vector3 v1, Vector3 v2 )
+> result = RL.Vector3Min( Vector3 v1, Vector3 v2 )
 
 Get min value for each pair of components
 
@@ -5302,7 +5300,7 @@ Get min value for each pair of components
 
 ---
 
-> result = RL_Vector3Max( Vector3 v1, Vector3 v2 )
+> result = RL.Vector3Max( Vector3 v1, Vector3 v2 )
 
 Get max value for each pair of components
 
@@ -5311,7 +5309,7 @@ Get max value for each pair of components
 
 ---
 
-> result = RL_Vector3Barycenter( Vector3 p, Vector3 a, Vector3 b, Vector3 c )
+> result = RL.Vector3Barycenter( Vector3 p, Vector3 a, Vector3 b, Vector3 c )
 
 Compute barycenter coordinates ( u, v, w ) for point p with respect to triangle ( a, b, c )
 NOTE: Assumes P is on the plane of the triangle
@@ -5321,7 +5319,7 @@ NOTE: Assumes P is on the plane of the triangle
 
 ---
 
-> result = RL_Vector3Unproject( Vector3 source, Matrix projection, Matrix view )
+> result = RL.Vector3Unproject( Vector3 source, Matrix projection, Matrix view )
 
 Projects a Vector3 from screen space into object space
 NOTE: We are avoiding calling other raymath functions despite available
@@ -5331,7 +5329,7 @@ NOTE: We are avoiding calling other raymath functions despite available
 
 ---
 
-> result = RL_Vector3Invert( Vector3 v )
+> result = RL.Vector3Invert( Vector3 v )
 
 Invert the given vector
 
@@ -5340,7 +5338,7 @@ Invert the given vector
 
 ---
 
-> result = RL_Vector3Clamp( Vector3 v, Vector3 min, Vector3 max )
+> result = RL.Vector3Clamp( Vector3 v, Vector3 min, Vector3 max )
 
 Clamp the components of the vector between
 min and max values specified by the given vectors
@@ -5350,7 +5348,7 @@ min and max values specified by the given vectors
 
 ---
 
-> result = RL_Vector3ClampValue( Vector3 v, float min, float max )
+> result = RL.Vector3ClampValue( Vector3 v, float min, float max )
 
 Clamp the magnitude of the vector between two values
 
@@ -5359,7 +5357,7 @@ Clamp the magnitude of the vector between two values
 
 ---
 
-> result = RL_Vector3Equals( Vector3 v1, Vector3 v2 )
+> result = RL.Vector3Equals( Vector3 v1, Vector3 v2 )
 
 Check whether two given vectors are almost equal
 
@@ -5368,7 +5366,7 @@ Check whether two given vectors are almost equal
 
 ---
 
-> result = RL_Vector3Refract( Vector3 v, Vector3 n, float r )
+> result = RL.Vector3Refract( Vector3 v, Vector3 n, float r )
 
 Compute the direction of a refracted ray where v specifies the
 normalized direction of the incoming ray, n specifies the
@@ -5386,7 +5384,7 @@ on the other side of the surface
 
 ---
 
-> result = RL_MatrixDeterminant( Matrix mat )
+> result = RL.MatrixDeterminant( Matrix mat )
 
 Compute matrix determinant
 
@@ -5395,7 +5393,7 @@ Compute matrix determinant
 
 ---
 
-> result = RL_MatrixTrace( Matrix mat )
+> result = RL.MatrixTrace( Matrix mat )
 
 Get the trace of the matrix ( sum of the values along the diagonal )
 
@@ -5404,7 +5402,7 @@ Get the trace of the matrix ( sum of the values along the diagonal )
 
 ---
 
-> result = RL_MatrixTranspose( Matrix mat )
+> result = RL.MatrixTranspose( Matrix mat )
 
 Transposes provided matrix
 
@@ -5413,7 +5411,7 @@ Transposes provided matrix
 
 ---
 
-> result = RL_MatrixInvert( Matrix mat )
+> result = RL.MatrixInvert( Matrix mat )
 
 Invert provided matrix
 
@@ -5422,7 +5420,7 @@ Invert provided matrix
 
 ---
 
-> result = RL_MatrixIdentity()
+> result = RL.MatrixIdentity()
 
 Get identity matrix
 
@@ -5430,7 +5428,7 @@ Get identity matrix
 
 ---
 
-> result = RL_MatrixAdd( Matrix left, Matrix right )
+> result = RL.MatrixAdd( Matrix left, Matrix right )
 
 Add two matrices
 
@@ -5439,7 +5437,7 @@ Add two matrices
 
 ---
 
-> result = RL_MatrixSubtract( Matrix left, Matrix right )
+> result = RL.MatrixSubtract( Matrix left, Matrix right )
 
 Subtract two matrices (left - right)
 
@@ -5448,7 +5446,7 @@ Subtract two matrices (left - right)
 
 ---
 
-> result = RL_MatrixMultiply( Matrix left, Matrix right )
+> result = RL.MatrixMultiply( Matrix left, Matrix right )
 
 Get two matrix multiplication
 
@@ -5457,7 +5455,7 @@ Get two matrix multiplication
 
 ---
 
-> result = RL_MatrixTranslate( Vector3 translate )
+> result = RL.MatrixTranslate( Vector3 translate )
 
 Get translation matrix
 
@@ -5466,7 +5464,7 @@ Get translation matrix
 
 ---
 
-> result = RL_MatrixRotate( Vector3 axis, float angle )
+> result = RL.MatrixRotate( Vector3 axis, float angle )
 
 Create rotation matrix from axis and angle. NOTE: Angle should be provided in radians
 
@@ -5475,7 +5473,7 @@ Create rotation matrix from axis and angle. NOTE: Angle should be provided in ra
 
 ---
 
-> result = RL_MatrixRotateX( float angle )
+> result = RL.MatrixRotateX( float angle )
 
 Get x-rotation matrix ( angle in radians )
 
@@ -5484,7 +5482,7 @@ Get x-rotation matrix ( angle in radians )
 
 ---
 
-> result = RL_MatrixRotateY( float angle )
+> result = RL.MatrixRotateY( float angle )
 
 Get y-rotation matrix ( angle in radians )
 
@@ -5493,7 +5491,7 @@ Get y-rotation matrix ( angle in radians )
 
 ---
 
-> result = RL_MatrixRotateZ( float angle )
+> result = RL.MatrixRotateZ( float angle )
 
 Get z-rotation matrix ( angle in radians )
 
@@ -5502,7 +5500,7 @@ Get z-rotation matrix ( angle in radians )
 
 ---
 
-> result = RL_MatrixRotateXYZ( Vector3 angle )
+> result = RL.MatrixRotateXYZ( Vector3 angle )
 
 Get xyz-rotation matrix ( angles in radians )
 
@@ -5511,7 +5509,7 @@ Get xyz-rotation matrix ( angles in radians )
 
 ---
 
-> result = RL_MatrixRotateZYX( Vector3 angle )
+> result = RL.MatrixRotateZYX( Vector3 angle )
 
 Get zyx-rotation matrix ( angles in radians )
 
@@ -5520,7 +5518,7 @@ Get zyx-rotation matrix ( angles in radians )
 
 ---
 
-> result = RL_MatrixScale( Vector3 scale )
+> result = RL.MatrixScale( Vector3 scale )
 
 Get scaling matrix
 
@@ -5529,7 +5527,7 @@ Get scaling matrix
 
 ---
 
-> result = RL_MatrixFrustum( double left, double right, double bottom, double top, double near, double far )
+> result = RL.MatrixFrustum( double left, double right, double bottom, double top, double near, double far )
 
 Get perspective projection matrix
 
@@ -5538,7 +5536,7 @@ Get perspective projection matrix
 
 ---
 
-> result = RL_MatrixPerspective( double fovy, double aspect, double near, double far )
+> result = RL.MatrixPerspective( double fovy, double aspect, double near, double far )
 
 Get perspective projection matrix
 
@@ -5547,7 +5545,7 @@ Get perspective projection matrix
 
 ---
 
-> result = RL_MatrixOrtho( double left, double right, double bottom, double top, double near, double far )
+> result = RL.MatrixOrtho( double left, double right, double bottom, double top, double near, double far )
 
 Get orthographic projection matrix
 
@@ -5556,7 +5554,7 @@ Get orthographic projection matrix
 
 ---
 
-> result = RL_MatrixLookAt( Vector3 eye, Vector3 target, Vector3 up )
+> result = RL.MatrixLookAt( Vector3 eye, Vector3 target, Vector3 up )
 
 Get camera look-at matrix ( View matrix )
 
@@ -5569,7 +5567,7 @@ Get camera look-at matrix ( View matrix )
 
 ---
 
-> result = RL_QuaternionAdd( Quaternion q1, Quaternion q2 )
+> result = RL.QuaternionAdd( Quaternion q1, Quaternion q2 )
 
 Add two quaternions
 
@@ -5578,7 +5576,7 @@ Add two quaternions
 
 ---
 
-> result = RL_QuaternionAddValue( Quaternion q, float add )
+> result = RL.QuaternionAddValue( Quaternion q, float add )
 
 Add quaternion and float value
 
@@ -5587,7 +5585,7 @@ Add quaternion and float value
 
 ---
 
-> result = RL_QuaternionSubtract( Quaternion q1, Quaternion q2 )
+> result = RL.QuaternionSubtract( Quaternion q1, Quaternion q2 )
 
 Subtract two quaternions
 
@@ -5596,7 +5594,7 @@ Subtract two quaternions
 
 ---
 
-> result = RL_QuaternionSubtractValue( Quaternion q, float sub )
+> result = RL.QuaternionSubtractValue( Quaternion q, float sub )
 
 Subtract quaternion and float value
 
@@ -5605,7 +5603,7 @@ Subtract quaternion and float value
 
 ---
 
-> result = RL_QuaternionIdentity()
+> result = RL.QuaternionIdentity()
 
 Get identity quaternion
 
@@ -5613,7 +5611,7 @@ Get identity quaternion
 
 ---
 
-> result = RL_QuaternionLength( Quaternion q )
+> result = RL.QuaternionLength( Quaternion q )
 
 Computes the length of a quaternion
 
@@ -5622,7 +5620,7 @@ Computes the length of a quaternion
 
 ---
 
-> result = RL_QuaternionNormalize( Quaternion q )
+> result = RL.QuaternionNormalize( Quaternion q )
 
 Normalize provided quaternion
 
@@ -5631,7 +5629,7 @@ Normalize provided quaternion
 
 ---
 
-> result = RL_QuaternionInvert( Quaternion q )
+> result = RL.QuaternionInvert( Quaternion q )
 
 Invert provided quaternion
 
@@ -5640,7 +5638,7 @@ Invert provided quaternion
 
 ---
 
-> result = RL_QuaternionMultiply( Quaternion q1, Quaternion q2 )
+> result = RL.QuaternionMultiply( Quaternion q1, Quaternion q2 )
 
 Calculate two quaternion multiplication
 
@@ -5649,7 +5647,7 @@ Calculate two quaternion multiplication
 
 ---
 
-> result = RL_QuaternionScale( Quaternion q, float mul )
+> result = RL.QuaternionScale( Quaternion q, float mul )
 
 Scale quaternion by float value
 
@@ -5658,7 +5656,7 @@ Scale quaternion by float value
 
 ---
 
-> result = RL_QuaternionDivide( Quaternion q1, Quaternion q2 )
+> result = RL.QuaternionDivide( Quaternion q1, Quaternion q2 )
 
 Divide two quaternions
 
@@ -5667,7 +5665,7 @@ Divide two quaternions
 
 ---
 
-> result = RL_QuaternionLerp( Quaternion q1, Quaternion q2, float amount )
+> result = RL.QuaternionLerp( Quaternion q1, Quaternion q2, float amount )
 
 Calculate linear interpolation between two quaternions
 
@@ -5676,7 +5674,7 @@ Calculate linear interpolation between two quaternions
 
 ---
 
-> result = RL_QuaternionNlerp( Quaternion q1, Quaternion q2, float amount )
+> result = RL.QuaternionNlerp( Quaternion q1, Quaternion q2, float amount )
 
 Calculate slerp-optimized interpolation between two quaternions
 
@@ -5685,7 +5683,7 @@ Calculate slerp-optimized interpolation between two quaternions
 
 ---
 
-> result = RL_QuaternionSlerp( Quaternion q1, Quaternion q2, float amount )
+> result = RL.QuaternionSlerp( Quaternion q1, Quaternion q2, float amount )
 
 Calculates spherical linear interpolation between two quaternions
 
@@ -5694,7 +5692,7 @@ Calculates spherical linear interpolation between two quaternions
 
 ---
 
-> result = RL_QuaternionFromVector3ToVector3( Vector3 from, Vector3 to )
+> result = RL.QuaternionFromVector3ToVector3( Vector3 from, Vector3 to )
 
 Calculate quaternion based on the rotation from one vector to another
 
@@ -5703,7 +5701,7 @@ Calculate quaternion based on the rotation from one vector to another
 
 ---
 
-> result = RL_QuaternionFromMatrix( Matrix mat )
+> result = RL.QuaternionFromMatrix( Matrix mat )
 
 Get a quaternion for a given rotation matrix
 
@@ -5712,7 +5710,7 @@ Get a quaternion for a given rotation matrix
 
 ---
 
-> result = RL_QuaternionToMatrix( Quaternion q )
+> result = RL.QuaternionToMatrix( Quaternion q )
 
 Get a quaternion for a given rotation matrix
 
@@ -5721,7 +5719,7 @@ Get a quaternion for a given rotation matrix
 
 ---
 
-> result = RL_QuaternionFromAxisAngle( Vector3 axis, float angle )
+> result = RL.QuaternionFromAxisAngle( Vector3 axis, float angle )
 
 Get rotation quaternion for an angle and axis
 NOTE: angle must be provided in radians
@@ -5731,7 +5729,7 @@ NOTE: angle must be provided in radians
 
 ---
 
-> axis, angle = RL_QuaternionToAxisAngle( Quaternion q )
+> axis, angle = RL.QuaternionToAxisAngle( Quaternion q )
 
 Get the rotation angle and axis for a given quaternion
 
@@ -5740,7 +5738,7 @@ Get the rotation angle and axis for a given quaternion
 
 ---
 
-> result = RL_QuaternionFromEuler( float pitch, float yaw, float roll )
+> result = RL.QuaternionFromEuler( float pitch, float yaw, float roll )
 
 Get the quaternion equivalent to Euler angles
 NOTE: Rotation order is ZYX
@@ -5750,7 +5748,7 @@ NOTE: Rotation order is ZYX
 
 ---
 
-> result = RL_QuaternionToEuler( Quaternion q )
+> result = RL.QuaternionToEuler( Quaternion q )
 
 Get the Euler angles equivalent to quaternion (roll, pitch, yaw)
 NOTE: Angles are returned in a Vector3 struct in radians
@@ -5760,7 +5758,7 @@ NOTE: Angles are returned in a Vector3 struct in radians
 
 ---
 
-> result = RL_QuaternionTransform( Quaternion q, Matrix mat )
+> result = RL.QuaternionTransform( Quaternion q, Matrix mat )
 
 Transform a quaternion given a transformation matrix
 
@@ -5769,7 +5767,7 @@ Transform a quaternion given a transformation matrix
 
 ---
 
-> result = RL_QuaternionEquals( Quaternion q1, Quaternion q2 )
+> result = RL.QuaternionEquals( Quaternion q1, Quaternion q2 )
 
 Check whether two given quaternions are almost equal
 
@@ -5782,31 +5780,31 @@ Check whether two given quaternions are almost equal
 
 ---
 
-> RL_GuiEnable()
+> RL.GuiEnable()
 
 Enable gui controls ( global state )
 
 ---
 
-> RL_GuiDisable()
+> RL.GuiDisable()
 
 Disable gui controls ( global state )
 
 ---
 
-> RL_GuiLock()
+> RL.GuiLock()
 
 Lock gui controls ( global state )
 
 ---
 
-> RL_GuiUnlock()
+> RL.GuiUnlock()
 
 Unlock gui controls ( global state )
 
 ---
 
-> locked = RL_GuiIsLocked()
+> locked = RL.GuiIsLocked()
 
 Check if gui is locked ( global state )
 
@@ -5814,7 +5812,7 @@ Check if gui is locked ( global state )
 
 ---
 
-> success = RL_GuiFade( float alpha )
+> success = RL.GuiFade( float alpha )
 
 Set gui controls alpha ( global state ), alpha goes from 0.0f to 1.0f
 
@@ -5823,7 +5821,7 @@ Set gui controls alpha ( global state ), alpha goes from 0.0f to 1.0f
 
 ---
 
-> success = RL_GuiSetState( int state )
+> success = RL.GuiSetState( int state )
 
 Set gui state ( global state )
 
@@ -5832,7 +5830,7 @@ Set gui state ( global state )
 
 ---
 
-> state = RL_GuiGetState()
+> state = RL.GuiGetState()
 
 Get gui state ( global state )
 
@@ -5844,7 +5842,7 @@ Get gui state ( global state )
 
 ---
 
-> success = RL_GuiSetFont( Font font )
+> success = RL.GuiSetFont( Font font )
 
 Set gui custom font ( Global state )
 
@@ -5857,7 +5855,7 @@ Set gui custom font ( Global state )
 
 ---
 
-> success = RL_GuiSetStyle( int control, int property, int value )
+> success = RL.GuiSetStyle( int control, int property, int value )
 
 Set one style property
 
@@ -5866,7 +5864,7 @@ Set one style property
 
 ---
 
-> value = RL_GuiGetStyle( int control, int property )
+> value = RL.GuiGetStyle( int control, int property )
 
 Get one style property
 
@@ -5875,7 +5873,7 @@ Get one style property
 
 ---
 
-> success = RL_GuiLoadStyle( int control, int property )
+> success = RL.GuiLoadStyle( int control, int property )
 
 Load style file over global style variable ( .rgs )
 
@@ -5884,7 +5882,7 @@ Load style file over global style variable ( .rgs )
 
 ---
 
-> RL_GuiLoadStyleDefault()
+> RL.GuiLoadStyleDefault()
 
 Load style default over global style
 
@@ -5894,7 +5892,7 @@ Load style default over global style
 
 ---
 
-> state = RL_GuiWindowBox( Rectangle bounds, string title )
+> state = RL.GuiWindowBox( Rectangle bounds, string title )
 
 Window Box control, shows a window that can be closed
 
@@ -5903,7 +5901,7 @@ Window Box control, shows a window that can be closed
 
 ---
 
-> success = RL_GuiGroupBox( Rectangle bounds, string text )
+> success = RL.GuiGroupBox( Rectangle bounds, string text )
 
 Group Box control with text name
 
@@ -5912,7 +5910,7 @@ Group Box control with text name
 
 ---
 
-> success = RL_GuiLine( Rectangle bounds, string text )
+> success = RL.GuiLine( Rectangle bounds, string text )
 
 Line separator control, could contain text
 
@@ -5921,7 +5919,7 @@ Line separator control, could contain text
 
 ---
 
-> success = RL_GuiPanel( Rectangle bounds, string text )
+> success = RL.GuiPanel( Rectangle bounds, string text )
 
 Panel control, useful to group controls
 
@@ -5930,7 +5928,7 @@ Panel control, useful to group controls
 
 ---
 
-> view, scroll = RL_GuiScrollPanel( Rectangle bounds, string text, Rectangle content, Vector2 scroll )
+> view, scroll = RL.GuiScrollPanel( Rectangle bounds, string text, Rectangle content, Vector2 scroll )
 
 Scroll Panel control
 
@@ -5943,7 +5941,7 @@ Scroll Panel control
 
 ---
 
-> success = RL_GuiLabel( Rectangle bounds, string text )
+> success = RL.GuiLabel( Rectangle bounds, string text )
 
 Label control, shows text
 
@@ -5952,7 +5950,7 @@ Label control, shows text
 
 ---
 
-> clicked = RL_GuiButton( Rectangle bounds, string text )
+> clicked = RL.GuiButton( Rectangle bounds, string text )
 
 Button control, returns true when clicked
 
@@ -5961,7 +5959,7 @@ Button control, returns true when clicked
 
 ---
 
-> clicked = RL_GuiLabelButton( Rectangle bounds, string text )
+> clicked = RL.GuiLabelButton( Rectangle bounds, string text )
 
 Label button control, show true when clicked
 
@@ -5970,7 +5968,7 @@ Label button control, show true when clicked
 
 ---
 
-> active = RL_GuiToggle( Rectangle bounds, string text, bool active )
+> active = RL.GuiToggle( Rectangle bounds, string text, bool active )
 
 Toggle Button control, returns true when active
 
@@ -5979,7 +5977,7 @@ Toggle Button control, returns true when active
 
 ---
 
-> index = RL_GuiToggleGroup( Rectangle bounds, string text, int active )
+> index = RL.GuiToggleGroup( Rectangle bounds, string text, int active )
 
 Toggle Group control, returns active toggle index
 
@@ -5988,7 +5986,7 @@ Toggle Group control, returns active toggle index
 
 ---
 
-> active = RL_GuiCheckBox( Rectangle bounds, string text, bool checked )
+> active = RL.GuiCheckBox( Rectangle bounds, string text, bool checked )
 
 Check Box control, returns true when active
 
@@ -5997,7 +5995,7 @@ Check Box control, returns true when active
 
 ---
 
-> active = RL_GuiComboBox( Rectangle bounds, string text, int active )
+> active = RL.GuiComboBox( Rectangle bounds, string text, int active )
 
 Combo Box control, returns selected item index
 
@@ -6006,7 +6004,7 @@ Combo Box control, returns selected item index
 
 ---
 
-> pressed, text = RL_GuiTextBox( Rectangle bounds, string text, int textSize, bool editMode )
+> pressed, text = RL.GuiTextBox( Rectangle bounds, string text, int textSize, bool editMode )
 
 Text Box control, updates input text
 
@@ -6015,7 +6013,7 @@ Text Box control, updates input text
 
 ---
 
-> pressed, text = RL_GuiTextBoxMulti( Rectangle bounds, string text, int textSize, bool editMode )
+> pressed, text = RL.GuiTextBoxMulti( Rectangle bounds, string text, int textSize, bool editMode )
 
 Text Box control with multiple lines
 
@@ -6024,7 +6022,7 @@ Text Box control with multiple lines
 
 ---
 
-> pressed, value = RL_GuiSpinner( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )
+> pressed, value = RL.GuiSpinner( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )
 
 Spinner control, returns selected value
 
@@ -6033,7 +6031,7 @@ Spinner control, returns selected value
 
 ---
 
-> pressed, value = RL_GuiValueBox( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )
+> pressed, value = RL.GuiValueBox( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )
 
 Value Box control, updates input text with numbers
 
@@ -6042,7 +6040,7 @@ Value Box control, updates input text with numbers
 
 ---
 
-> value = RL_GuiSlider( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
+> value = RL.GuiSlider( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
 
 Slider control, returns selected value
 
@@ -6051,7 +6049,7 @@ Slider control, returns selected value
 
 ---
 
-> value = RL_GuiSliderBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
+> value = RL.GuiSliderBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
 
 Slider Bar control, returns selected value
 
@@ -6060,7 +6058,7 @@ Slider Bar control, returns selected value
 
 ---
 
-> value = RL_GuiProgressBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
+> value = RL.GuiProgressBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
 
 Progress Bar control, shows current progress value
 
@@ -6069,7 +6067,7 @@ Progress Bar control, shows current progress value
 
 ---
 
-> value = RL_GuiScrollBar( Rectangle bounds, int value, int minValue, int maxValue )
+> value = RL.GuiScrollBar( Rectangle bounds, int value, int minValue, int maxValue )
 
 Scroll Bar control
 
@@ -6078,7 +6076,7 @@ Scroll Bar control
 
 ---
 
-> pressed, item = RL_GuiDropdownBox( Rectangle bounds, string text, int active, bool editMode )
+> pressed, item = RL.GuiDropdownBox( Rectangle bounds, string text, int active, bool editMode )
 
 Dropdown Box control, returns selected item
 
@@ -6087,7 +6085,7 @@ Dropdown Box control, returns selected item
 
 ---
 
-> success = RL_GuiStatusBar( Rectangle bounds, string text )
+> success = RL.GuiStatusBar( Rectangle bounds, string text )
 
 Status Bar control, shows info text
 
@@ -6096,7 +6094,7 @@ Status Bar control, shows info text
 
 ---
 
-> success = RL_GuiDummyRec( Rectangle bounds, string text )
+> success = RL.GuiDummyRec( Rectangle bounds, string text )
 
 Dummy control for placeholders
 
@@ -6105,7 +6103,7 @@ Dummy control for placeholders
 
 ---
 
-> cell = RL_GuiGrid( Rectangle bounds, string text, float spacing, int subdivs )
+> cell = RL.GuiGrid( Rectangle bounds, string text, float spacing, int subdivs )
 
 Grid control, returns mouse cell position
 
@@ -6118,7 +6116,7 @@ Grid control, returns mouse cell position
 
 ---
 
-> itemIndex, scrollIndex = RL_GuiListView( Rectangle bounds, string text, int scrollIndex, int active )
+> itemIndex, scrollIndex = RL.GuiListView( Rectangle bounds, string text, int scrollIndex, int active )
 
 List View control, returns selected list item index and scroll index
 
@@ -6127,7 +6125,7 @@ List View control, returns selected list item index and scroll index
 
 ---
 
-> itemIndex, scrollIndex, focus = RL_GuiListViewEx( Rectangle bounds, string text, int focus, int scrollIndex, int active )
+> itemIndex, scrollIndex, focus = RL.GuiListViewEx( Rectangle bounds, string text, int focus, int scrollIndex, int active )
 
 List View with extended parameters, returns selected list item index, scroll index and focus
 
@@ -6136,7 +6134,7 @@ List View with extended parameters, returns selected list item index, scroll ind
 
 ---
 
-> buttonIndex = RL_GuiMessageBox( Rectangle bounds, string title, string message, string buttons )
+> buttonIndex = RL.GuiMessageBox( Rectangle bounds, string title, string message, string buttons )
 
 Message Box control, displays a message, returns button index ( 0 is x button )
 
@@ -6145,7 +6143,7 @@ Message Box control, displays a message, returns button index ( 0 is x button )
 
 ---
 
-> buttonIndex, text, secretViewActive = RL_GuiTextInputBox( Rectangle bounds, string title, string message, string buttons, string text, int textMaxSize, int secretViewActive )
+> buttonIndex, text, secretViewActive = RL.GuiTextInputBox( Rectangle bounds, string title, string message, string buttons, string text, int textMaxSize, int secretViewActive )
 
 Text Input Box control, ask for text, supports secret
 
@@ -6154,7 +6152,7 @@ Text Input Box control, ask for text, supports secret
 
 ---
 
-> color = RL_GuiColorPicker( Rectangle bounds, string text, Color color )
+> color = RL.GuiColorPicker( Rectangle bounds, string text, Color color )
 
 Color Picker control ( multiple color controls )
 
@@ -6163,7 +6161,7 @@ Color Picker control ( multiple color controls )
 
 ---
 
-> color = RL_GuiColorPanel( Rectangle bounds, string text, Color color )
+> color = RL.GuiColorPanel( Rectangle bounds, string text, Color color )
 
 Color Panel control
 
@@ -6172,7 +6170,7 @@ Color Panel control
 
 ---
 
-> alpha = RL_GuiColorBarAlpha( Rectangle bounds, string text, float alpha )
+> alpha = RL.GuiColorBarAlpha( Rectangle bounds, string text, float alpha )
 
 Color Bar Alpha control
 
@@ -6181,7 +6179,7 @@ Color Bar Alpha control
 
 ---
 
-> hue = RL_GuiColorBarHue( Rectangle bounds, string text, float value )
+> hue = RL.GuiColorBarHue( Rectangle bounds, string text, float value )
 
 Color Bar Hue control
 
@@ -6194,7 +6192,7 @@ Color Bar Hue control
 
 ---
 
-> text = RL_GuiIconText( int iconId, string text )
+> text = RL.GuiIconText( int iconId, string text )
 
 Get text with icon id prepended ( if supported )
 
@@ -6203,7 +6201,7 @@ Get text with icon id prepended ( if supported )
 
 ---
 
-> success = RL_GuiDrawIcon( int iconId, Vector2 pos, int pixelSize, Color color )
+> success = RL.GuiDrawIcon( int iconId, Vector2 pos, int pixelSize, Color color )
 
 Draw icon
 
@@ -6212,7 +6210,7 @@ Draw icon
 
 ---
 
-> success = RL_GuiSetIconScale( int scale )
+> success = RL.GuiSetIconScale( int scale )
 
 Set icon scale ( 1 by default )
 
@@ -6221,7 +6219,7 @@ Set icon scale ( 1 by default )
 
 ---
 
-> success = RL_GuiSetIconPixel( int iconId, Vector2 pos )
+> success = RL.GuiSetIconPixel( int iconId, Vector2 pos )
 
 Set icon pixel value
 
@@ -6230,7 +6228,7 @@ Set icon pixel value
 
 ---
 
-> success = RL_GuiClearIconPixel( int iconId, Vector2 pos )
+> success = RL.GuiClearIconPixel( int iconId, Vector2 pos )
 
 Clear icon pixel value
 
@@ -6239,7 +6237,7 @@ Clear icon pixel value
 
 ---
 
-> value = RL_GuiCheckIconPixel( int iconId, Vector2 pos )
+> value = RL.GuiCheckIconPixel( int iconId, Vector2 pos )
 
 Check icon pixel value
 
@@ -6252,7 +6250,7 @@ Check icon pixel value
 
 ---
 
-> light = RL_CreateLight( int type, Vector3 position, Vector3 target, Color color, Shader shader )
+> light = RL.CreateLight( int type, Vector3 position, Vector3 target, Color color, Shader shader )
 
 Create a light and get shader locations
 
@@ -6261,7 +6259,7 @@ Create a light and get shader locations
 
 ---
 
-> success = RL_UpdateLightValues( Shader shader, Light light )
+> success = RL.UpdateLightValues( Shader shader, Light light )
 
 Send light properties to shader
 
@@ -6274,7 +6272,7 @@ Send light properties to shader
 
 ---
 
-> success = RL_rlSetLineWidth( float width )
+> success = RL.rlSetLineWidth( float width )
 
 Set the line drawing width
 
@@ -6283,7 +6281,7 @@ Set the line drawing width
 
 ---
 
-> width = RL_rlGetLineWidth()
+> width = RL.rlGetLineWidth()
 
 Get the line drawing width
 
@@ -6295,7 +6293,7 @@ Get the line drawing width
 
 ---
 
-> value = RL_EaseLinear( float t, float b, float c, float d )
+> value = RL.EaseLinear( float t, float b, float c, float d )
 
 Ease linear
 
@@ -6308,7 +6306,7 @@ Ease linear
 
 ---
 
-> value = RL_EaseSineIn( float t, float b, float c, float d )
+> value = RL.EaseSineIn( float t, float b, float c, float d )
 
 Ease sine in
 
@@ -6317,7 +6315,7 @@ Ease sine in
 
 ---
 
-> value = RL_EaseSineOut( float t, float b, float c, float d )
+> value = RL.EaseSineOut( float t, float b, float c, float d )
 
 Ease sine out
 
@@ -6326,7 +6324,7 @@ Ease sine out
 
 ---
 
-> value = RL_EaseSineInOut( float t, float b, float c, float d )
+> value = RL.EaseSineInOut( float t, float b, float c, float d )
 
 Ease sine in out
 
@@ -6339,7 +6337,7 @@ Ease sine in out
 
 ---
 
-> value = RL_EaseCircIn( float t, float b, float c, float d )
+> value = RL.EaseCircIn( float t, float b, float c, float d )
 
 Ease circle in
 
@@ -6348,7 +6346,7 @@ Ease circle in
 
 ---
 
-> value = RL_EaseCircOut( float t, float b, float c, float d )
+> value = RL.EaseCircOut( float t, float b, float c, float d )
 
 Ease circle out
 
@@ -6357,7 +6355,7 @@ Ease circle out
 
 ---
 
-> value = RL_EaseCircInOut( float t, float b, float c, float d )
+> value = RL.EaseCircInOut( float t, float b, float c, float d )
 
 Ease circle in out
 
@@ -6370,7 +6368,7 @@ Ease circle in out
 
 ---
 
-> value = RL_EaseCubicIn( float t, float b, float c, float d )
+> value = RL.EaseCubicIn( float t, float b, float c, float d )
 
 Ease cubic in
 
@@ -6379,7 +6377,7 @@ Ease cubic in
 
 ---
 
-> value = RL_EaseCubicOut( float t, float b, float c, float d )
+> value = RL.EaseCubicOut( float t, float b, float c, float d )
 
 Ease cubic out
 
@@ -6388,7 +6386,7 @@ Ease cubic out
 
 ---
 
-> value = RL_EaseCubicInOut( float t, float b, float c, float d )
+> value = RL.EaseCubicInOut( float t, float b, float c, float d )
 
 Ease cubic in out
 
@@ -6401,7 +6399,7 @@ Ease cubic in out
 
 ---
 
-> value = RL_EaseQuadIn( float t, float b, float c, float d )
+> value = RL.EaseQuadIn( float t, float b, float c, float d )
 
 Ease quadratic in
 
@@ -6410,7 +6408,7 @@ Ease quadratic in
 
 ---
 
-> value = RL_EaseQuadOut( float t, float b, float c, float d )
+> value = RL.EaseQuadOut( float t, float b, float c, float d )
 
 Ease quadratic out
 
@@ -6419,7 +6417,7 @@ Ease quadratic out
 
 ---
 
-> value = RL_EaseQuadInOut( float t, float b, float c, float d )
+> value = RL.EaseQuadInOut( float t, float b, float c, float d )
 
 Ease quadratic in out
 
@@ -6432,7 +6430,7 @@ Ease quadratic in out
 
 ---
 
-> value = RL_EaseExpoIn( float t, float b, float c, float d )
+> value = RL.EaseExpoIn( float t, float b, float c, float d )
 
 Ease exponential in
 
@@ -6441,7 +6439,7 @@ Ease exponential in
 
 ---
 
-> value = RL_EaseExpoOut( float t, float b, float c, float d )
+> value = RL.EaseExpoOut( float t, float b, float c, float d )
 
 Ease exponential out
 
@@ -6450,7 +6448,7 @@ Ease exponential out
 
 ---
 
-> value = RL_EaseExpoInOut( float t, float b, float c, float d )
+> value = RL.EaseExpoInOut( float t, float b, float c, float d )
 
 Ease exponential in out
 
@@ -6463,7 +6461,7 @@ Ease exponential in out
 
 ---
 
-> value = RL_EaseBackIn( float t, float b, float c, float d )
+> value = RL.EaseBackIn( float t, float b, float c, float d )
 
 Ease back in
 
@@ -6472,7 +6470,7 @@ Ease back in
 
 ---
 
-> value = RL_EaseBackOut( float t, float b, float c, float d )
+> value = RL.EaseBackOut( float t, float b, float c, float d )
 
 Ease back out
 
@@ -6481,7 +6479,7 @@ Ease back out
 
 ---
 
-> value = RL_EaseBackInOut( float t, float b, float c, float d )
+> value = RL.EaseBackInOut( float t, float b, float c, float d )
 
 Ease back in out
 
@@ -6494,7 +6492,7 @@ Ease back in out
 
 ---
 
-> value = RL_EaseBounceIn( float t, float b, float c, float d )
+> value = RL.EaseBounceIn( float t, float b, float c, float d )
 
 Ease bounce in
 
@@ -6503,7 +6501,7 @@ Ease bounce in
 
 ---
 
-> value = RL_EaseBounceOut( float t, float b, float c, float d )
+> value = RL.EaseBounceOut( float t, float b, float c, float d )
 
 Ease bounce out
 
@@ -6512,7 +6510,7 @@ Ease bounce out
 
 ---
 
-> value = RL_EaseBounceInOut( float t, float b, float c, float d )
+> value = RL.EaseBounceInOut( float t, float b, float c, float d )
 
 Ease bounce in out
 
@@ -6525,7 +6523,7 @@ Ease bounce in out
 
 ---
 
-> value = RL_EaseElasticIn( float t, float b, float c, float d )
+> value = RL.EaseElasticIn( float t, float b, float c, float d )
 
 Ease elastic in
 
@@ -6534,7 +6532,7 @@ Ease elastic in
 
 ---
 
-> value = RL_EaseElasticOut( float t, float b, float c, float d )
+> value = RL.EaseElasticOut( float t, float b, float c, float d )
 
 Ease elastic out
 
@@ -6543,7 +6541,7 @@ Ease elastic out
 
 ---
 
-> value = RL_EaseElasticInOut( float t, float b, float c, float d )
+> value = RL.EaseElasticInOut( float t, float b, float c, float d )
 
 Ease elastic in out
 

@@ -2,7 +2,6 @@
 
 local monitor = 0
 local camera = -1
-local texture = -1
 local material = -1
 local model = -1
 local animations = -1
@@ -12,41 +11,41 @@ local curAnim = 0
 local frameCount = 0
 local animSpeed = 60
 
-function init()
-	local mPos = RL_GetMonitorPosition( monitor )
-	local mSize = RL_GetMonitorSize( monitor )
-	local winSize = RL_GetScreenSize()
+function RL.init()
+	local mPos = RL.GetMonitorPosition( monitor )
+	local mSize = RL.GetMonitorSize( monitor )
+	local winSize = RL.GetScreenSize()
 
-	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
-	RL_SetWindowState( FLAG_VSYNC_HINT )
-	RL_SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
-	camera = RL_CreateCamera3D()
-	RL_SetCamera3DPosition( camera, { 0, 2, 4 } )
-	RL_SetCamera3DTarget( camera, { 0, 0, 0 } )
-	RL_SetCamera3DUp( camera, { 0, 1, 0 } )
-	RL_SetCameraMode( camera, CAMERA_FREE )
+	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
+	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
+	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
+	camera = RL.CreateCamera3D()
+	RL.SetCamera3DPosition( camera, { 0, 2, 4 } )
+	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
+	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
+	RL.SetCameraMode( camera, RL.CAMERA_FREE )
 
-	material = RL_CreateMaterial( {
+	material = RL.CreateMaterial( {
 		maps = {
 			{
-				MATERIAL_MAP_ALBEDO,
+				RL.MATERIAL_MAP_ALBEDO,
 				{
-					texture = RL_LoadTexture( RL_GetBasePath().."../resources/images/monkey_tex.png" ),
-					color = WHITE,
+					texture = RL.LoadTexture( RL.GetBasePath().."../resources/images/monkey_tex.png" ),
+					color = RL.WHITE,
 				},
 			},
 		},
 	} )
-	
-	model = RL_LoadModel( RL_GetBasePath().."../resources/iqm/monkey.iqm" )
-	RL_SetModelMaterial( model, 0, material )
-	animations, animationCount = RL_LoadModelAnimations( RL_GetBasePath().."../resources/iqm/monkey.iqm" )
+
+	model = RL.LoadModel( RL.GetBasePath().."../resources/iqm/monkey.iqm" )
+	RL.SetModelMaterial( model, 0, material )
+	animations, animationCount = RL.LoadModelAnimations( RL.GetBasePath().."../resources/iqm/monkey.iqm" )
 
 	print( "animationCount", animationCount )
 end
 
-function process( delta )
-	if RL_IsKeyPressed( KEY_ENTER ) then
+function RL.process( delta )
+	if RL.IsKeyPressed( RL.KEY_ENTER ) then
 		curAnim = curAnim + 1
 
 		if animationCount <= curAnim then
@@ -54,15 +53,15 @@ function process( delta )
 		end
 
 		frame = 0.0
-		frameCount = RL_GetModelAnimationFrameCount( animations, curAnim )
-	elseif RL_IsKeyPressed( KEY_UP ) then
+		frameCount = RL.GetModelAnimationFrameCount( animations, curAnim )
+	elseif RL.IsKeyPressed( RL.KEY_UP ) then
 		animSpeed = animSpeed + 5
-	elseif RL_IsKeyPressed( KEY_DOWN ) then
+	elseif RL.IsKeyPressed( RL.KEY_DOWN ) then
 		animSpeed = animSpeed - 5
 	end
 
-	if RL_IsKeyDown( KEY_SPACE ) then
-		RL_UpdateModelAnimation( model, animations, curAnim, math.floor( frame ) )
+	if RL.IsKeyDown( RL.KEY_SPACE ) then
+		RL.UpdateModelAnimation( model, animations, curAnim, math.floor( frame ) )
 		frame = frame + animSpeed * delta
 
 		if frameCount < frame then
@@ -73,19 +72,19 @@ function process( delta )
 	end
 end
 
-function draw()
-	RL_ClearBackground( { 100, 150, 100 } )
-	RL_UpdateCamera3D( camera )
-	
-	RL_BeginMode3D( camera )
-		RL_DrawGrid( 8, 1 )
-		RL_DrawModelEx( model, { 0, 0, 0 }, { 1.0, 0.0, 0.0 }, -90.0, { 1.0, 1.0, 1.0 }, WHITE )
-	RL_EndMode3D()
+function RL.draw()
+	RL.ClearBackground( { 100, 150, 100 } )
+	RL.UpdateCamera3D( camera )
 
-	RL_DrawText( 0,
+	RL.BeginMode3D( camera )
+		RL.DrawGrid( 8, 1 )
+		RL.DrawModelEx( model, { 0, 0, 0 }, { 1.0, 0.0, 0.0 }, -90.0, { 1.0, 1.0, 1.0 }, RL.WHITE )
+	RL.EndMode3D()
+
+	RL.DrawText( 0,
 "Enter: Change animation\
 Space: Play animation\
 Up arrow: Inreace animation speed\
 Down arrow: Decreace animation speed",
-				 { 10, 10 }, 30, 5, WHITE )
+				 { 10, 10 }, 30, 5, RL.WHITE )
 end

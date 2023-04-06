@@ -20,7 +20,7 @@ function FileExplorer:new( pos )
 		padding = 10,
 		onClicked = function()
 			object:set2Top()
-			object.dragPos = Vec2:new( RL_GetMousePosition() ) - Vec2:new( object.handle.bounds.x, object.handle.bounds.y )
+			object.dragPos = Vec2:new( RL.GetMousePosition() ) - Vec2:new( object.handle.bounds.x, object.handle.bounds.y )
 			Gui.heldCallback = function() object:drag() end
 		end,
 	} )
@@ -30,16 +30,16 @@ function FileExplorer:new( pos )
 		texture = bgrTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
-		color = Color:new( LIGHTGRAY ),
+		color = Color:new( RL.LIGHTGRAY ),
 	} ) )
-	
+
 	object.handle:add( Gui.texture:new( {
 		bounds = object.handle.bounds:clone(),
 		texture = borderTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
-		color = Color:new( LIGHTGRAY ),
-		nPatchInfo = { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = NPATCH_NINE_PATCH },
+		color = Color:new( RL.LIGHTGRAY ),
+		nPatchInfo = { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = RL.NPATCH_NINE_PATCH },
 	} ) )
 
 	object.handle:add( Gui.text:new( { text = "File Explorer", fontSize = 20, VAling = Gui.ALING.CENTER } ) )
@@ -51,8 +51,8 @@ function FileExplorer:new( pos )
 		onClicked = function()
 			object:setVisible( false )
 		end,
-		onMouseOver = function( self ) self.items[1].color = Color:new( WHITE ) end,
-		notMouseOver = function( self ) self.items[1].color = Color:new( BLACK ) end,
+		onMouseOver = function( self ) self.items[1].color = Color:new( RL.WHITE ) end,
+		notMouseOver = function( self ) self.items[1].color = Color:new( RL.BLACK ) end,
 	} )
 
 	object.closeButton:add( Gui.texture:new( {
@@ -73,7 +73,7 @@ function FileExplorer:new( pos )
 		texture = bgrTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
-		color = Color:new( GRAY ),
+		color = Color:new( RL.GRAY ),
 	} ) )
 
 	object.panel:add( Gui.texture:new( {
@@ -81,8 +81,8 @@ function FileExplorer:new( pos )
 		texture = borderTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
-		color = Color:new( LIGHTGRAY ),
-		nPatchInfo = { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = NPATCH_NINE_PATCH },
+		color = Color:new( RL.LIGHTGRAY ),
+		nPatchInfo = { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = RL.NPATCH_NINE_PATCH },
 	} ) )
 
 	-- Path.
@@ -90,7 +90,7 @@ function FileExplorer:new( pos )
 	object.pathBox = Gui.element:new( {
 		bounds = Rect:new( 0, 0, object.windowRect.width - 16 - 64, object.HANDLE_HIGHT ),
 		drawBounds = true,
-		color = Color:new( WHITE ),
+		color = Color:new( RL.WHITE ),
 		-- onClicked = function() Gui.setInputFocus( object.pathBox ) end,
 		-- inputFocus = function() object.pathBox.color = Color:new( BLUE ) end,
 		-- inputUnfocus = function() object.pathBox.color = Color:new( WHITE ) end,
@@ -103,8 +103,8 @@ function FileExplorer:new( pos )
 	object.backButton = Gui.element:new( {
 		bounds = Rect:new( 0, 0, 56, object.HANDLE_HIGHT ),
 		drawBounds = true,
-		onMouseOver = function( self ) self.color = Color:new( WHITE ) end,
-		notMouseOver = function( self ) self.color = Color:new( LIGHTGRAY ) end,
+		onMouseOver = function( self ) self.color = Color:new( RL.WHITE ) end,
+		notMouseOver = function( self ) self.color = Color:new( RL.LIGHTGRAY ) end,
 		onClicked = function() object:backDir() end,
 	} )
 
@@ -112,7 +112,7 @@ function FileExplorer:new( pos )
 		bounds = Rect:new( 0, 0, object.HANDLE_HIGHT, object.HANDLE_HIGHT ),
 		texture = backTexture,
 		HAling = Gui.ALING.CENTER,
-		color = Color:new( BLACK )
+		color = Color:new( RL.BLACK )
 	} ) )
 
 	-- Files.
@@ -130,7 +130,7 @@ function FileExplorer:new( pos )
 	object.fileName = Gui.element:new( {
 		bounds = Rect:new( 0, 0, object.windowRect.width - 16 - 70, object.HANDLE_HIGHT ),
 		drawBounds = true,
-		color = Color:new( WHITE ),
+		color = Color:new( RL.WHITE ),
 	} )
 
 	object.fileName:add( Gui.text:new( { text = "", maxTextLen = 32, allowLineBreak = false, VAling = Gui.ALING.CENTER } ) )
@@ -140,18 +140,18 @@ function FileExplorer:new( pos )
 	object.openButton = Gui.element:new( {
 		bounds = Rect:new( 0, 0, 64, object.HANDLE_HIGHT ),
 		drawBounds = true,
-		color = Color:new( WHITE ),
+		color = Color:new( RL.WHITE ),
 		onClicked = function() object:openFile() end,
-		onMouseOver = function( self ) self.color = Color:new( WHITE ) end,
-		notMouseOver = function( self ) self.color = Color:new( LIGHTGRAY ) end,
+		onMouseOver = function( self ) self.color = Color:new( RL.WHITE ) end,
+		notMouseOver = function( self ) self.color = Color:new( RL.LIGHTGRAY ) end,
 	} )
 
 	object.openButton:add( Gui.text:new( { text = "Open", VAling = Gui.ALING.CENTER, HAling = Gui.ALING.CENTER } ) )
 
 	-- Variables.
 
-	object.path = RL_GetBasePath()
-	
+	object.path = RL.GetBasePath()
+
 	-- Take last '/' away.
 	if util.utf8Sub( object.path, utf8.len( object.path ), utf8.len( object.path ) ) == "/" then
 		object.path = util.utf8Sub( object.path, 1, utf8.len( object.path ) - 1 )
@@ -189,7 +189,7 @@ function FileExplorer:changeDir( path )
 end
 
 function FileExplorer:backDir()
-	self.path = RL_GetPrevDirectoryPath( self.path )
+	self.path = RL.GetPrevDirectoryPath( self.path )
 
 	self:updatePath()
 end
@@ -197,11 +197,11 @@ end
 function FileExplorer:fileSelect( file )
 	self.file = file
 
-	self.fileName.items[1]:set( RL_GetFileName( file ) )
+	self.fileName.items[1]:set( RL.GetFileName( file ) )
 end
 
 function FileExplorer:openFile()
-	print( self.file, RL_GetFileLength( self.file ) )
+	print( self.file, RL.GetFileLength( self.file ) )
 end
 
 function FileExplorer:updateFiles()
@@ -216,8 +216,8 @@ function FileExplorer:updateFiles()
 	local files = {}
 	local folders = {}
 
-	for _, file in ipairs( RL_LoadDirectoryFiles( self.path ) ) do
-		if RL_IsPathFile( file ) then
+	for _, file in ipairs( RL.LoadDirectoryFiles( self.path ) ) do
+		if RL.IsPathFile( file ) then
 			table.insert( files, file )
 		else
 			table.insert( folders, file )
@@ -232,7 +232,7 @@ function FileExplorer:updateFiles()
 	end
 
 	for _, file in ipairs( files ) do
-		self:addFileToList( file, filesTexture, WHITE, function() self:fileSelect( file ) end )
+		self:addFileToList( file, filesTexture, RL.WHITE, function() self:fileSelect( file ) end )
 	end
 end
 
@@ -247,7 +247,7 @@ function FileExplorer:addFileToList( file, texture, color, func )
 
 	element:add( Gui.text:new( {
 		bounds = Rect:new( 28, 0, 20, 20 ),
-		text = RL_GetFileName( file ),
+		text = RL.GetFileName( file ),
 		fontSize = 20,
 		HAling = Gui.ALING.NONE,
 		VAling = Gui.ALING.CENTER,
@@ -264,7 +264,7 @@ function FileExplorer:addFileToList( file, texture, color, func )
 end
 
 function FileExplorer:drag()
-	local mousePos = Vec2:new( RL_GetMousePosition() )
+	local mousePos = Vec2:new( RL.GetMousePosition() )
 	local winPos = Vec2:new( self.handle.bounds.x, self.handle.bounds.y )
 
 	self:setPosition( mousePos - self.dragPos )

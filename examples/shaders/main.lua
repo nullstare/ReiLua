@@ -8,27 +8,27 @@ local GLSL_VERSION = "330" -- PLATFORM_DESKTOP
 
 local secondsLoc
 
-function init()
-	local mPos = RL_GetMonitorPosition( monitor )
-	local mSize = RL_GetMonitorSize( monitor )
-	local winSize = RL_GetScreenSize()
+function RL.init()
+	local mPos = RL.GetMonitorPosition( monitor )
+	local mSize = RL.GetMonitorSize( monitor )
+	local winSize = RL.GetScreenSize()
 
-	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
-	RL_SetWindowState( FLAG_VSYNC_HINT )
-	RL_SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
+	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
+	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
+	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 
-	texture = RL_LoadTexture( RL_GetBasePath().."../resources/images/cat.png" )
-	textureSize = RL_GetTextureSize( texture )
-	shader = RL_LoadShader( nil, RL_GetBasePath().."../resources/shaders/glsl"..GLSL_VERSION.."/wave.fs" )
+	texture = RL.LoadTexture( RL.GetBasePath().."../resources/images/cat.png" )
+	textureSize = RL.GetTextureSize( texture )
+	shader = RL.LoadShader( nil, RL.GetBasePath().."../resources/shaders/glsl"..GLSL_VERSION.."/wave.fs" )
 
-	secondsLoc = RL_GetShaderLocation( shader, "secondes" )
-	local sizeLoc = RL_GetShaderLocation( shader, "size" )
-    local freqXLoc = RL_GetShaderLocation( shader, "freqX" )
-    local freqYLoc = RL_GetShaderLocation( shader, "freqY" )
-    local ampXLoc = RL_GetShaderLocation( shader, "ampX" )
-    local ampYLoc = RL_GetShaderLocation( shader, "ampY" )
-    local speedXLoc = RL_GetShaderLocation( shader, "speedX" )
-    local speedYLoc = RL_GetShaderLocation( shader, "speedY" )
+	secondsLoc = RL.GetShaderLocation( shader, "secondes" )
+	local sizeLoc = RL.GetShaderLocation( shader, "size" )
+    local freqXLoc = RL.GetShaderLocation( shader, "freqX" )
+    local freqYLoc = RL.GetShaderLocation( shader, "freqY" )
+    local ampXLoc = RL.GetShaderLocation( shader, "ampX" )
+    local ampYLoc = RL.GetShaderLocation( shader, "ampY" )
+    local speedXLoc = RL.GetShaderLocation( shader, "speedX" )
+    local speedYLoc = RL.GetShaderLocation( shader, "speedY" )
 
 	local freqX = 25.0
     local freqY = 25.0
@@ -37,25 +37,25 @@ function init()
     local speedX = 8.0
     local speedY = 8.0
 
-    RL_SetShaderValue( shader, sizeLoc, textureSize, SHADER_UNIFORM_VEC2 )
-    RL_SetShaderValue( shader, freqXLoc, { freqX }, SHADER_UNIFORM_FLOAT )
-    RL_SetShaderValue( shader, freqYLoc, { freqY }, SHADER_UNIFORM_FLOAT )
-    RL_SetShaderValue( shader, ampXLoc, { ampX }, SHADER_UNIFORM_FLOAT )
-    RL_SetShaderValue( shader, ampYLoc, { ampY }, SHADER_UNIFORM_FLOAT )
-    RL_SetShaderValue( shader, speedXLoc, { speedX }, SHADER_UNIFORM_FLOAT )
-    RL_SetShaderValue( shader, speedYLoc, { speedY }, SHADER_UNIFORM_FLOAT )
+    RL.SetShaderValue( shader, sizeLoc, textureSize, RL.SHADER_UNIFORM_VEC2 )
+    RL.SetShaderValue( shader, freqXLoc, { freqX }, RL.SHADER_UNIFORM_FLOAT )
+    RL.SetShaderValue( shader, freqYLoc, { freqY }, RL.SHADER_UNIFORM_FLOAT )
+    RL.SetShaderValue( shader, ampXLoc, { ampX }, RL.SHADER_UNIFORM_FLOAT )
+    RL.SetShaderValue( shader, ampYLoc, { ampY }, RL.SHADER_UNIFORM_FLOAT )
+    RL.SetShaderValue( shader, speedXLoc, { speedX }, RL.SHADER_UNIFORM_FLOAT )
+    RL.SetShaderValue( shader, speedYLoc, { speedY }, RL.SHADER_UNIFORM_FLOAT )
 end
 
 local seconds = 0.0
 
-function draw()
-	seconds = seconds + RL_GetFrameTime();
+function RL.draw()
+	seconds = seconds + RL.GetFrameTime();
 
-    RL_SetShaderValue( shader, secondsLoc, { seconds }, SHADER_UNIFORM_FLOAT );
+    RL.SetShaderValue( shader, secondsLoc, { seconds }, RL.SHADER_UNIFORM_FLOAT );
 
-	RL_ClearBackground( { 100, 150, 100 } )
+	RL.ClearBackground( { 100, 150, 100 } )
 
-	RL_BeginShaderMode( shader )
-		RL_DrawTexture( texture, { 0, 0 }, WHITE );
-	RL_EndShaderMode()
+	RL.BeginShaderMode( shader )
+		RL.DrawTexture( texture, { 0, 0 }, RL.WHITE );
+	RL.EndShaderMode()
 end

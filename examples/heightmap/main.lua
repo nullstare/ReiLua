@@ -18,67 +18,67 @@ local dirtBottomRec = { 7 * TILE_SIZE, 0 * TILE_SIZE, TILE_SIZE, TILE_SIZE }
 
 local matrix = {}
 
-function init()
-	local mPos = RL_GetMonitorPosition( monitor )
-	local mSize = RL_GetMonitorSize( monitor )
-	local winSize = RL_GetScreenSize()
+function RL.init()
+	local mPos = RL.GetMonitorPosition( monitor )
+	local mSize = RL.GetMonitorSize( monitor )
+	local winSize = RL.GetScreenSize()
 
-	RL_SetWindowState( FLAG_WINDOW_RESIZABLE )
-	RL_SetWindowState( FLAG_VSYNC_HINT )
-	RL_SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
+	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
+	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
+	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 
-	camera = RL_CreateCamera3D()
-	RL_SetCamera3DPosition( camera, { 0, 8, 16 } )
-	RL_SetCamera3DTarget( camera, { 0, 0, 0 } )
-	RL_SetCamera3DUp( camera, { 0, 1, 0 } )
-	RL_SetCameraMode( camera, CAMERA_FREE )
+	camera = RL.CreateCamera3D()
+	RL.SetCamera3DPosition( camera, { 0, 8, 16 } )
+	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
+	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
+	RL.SetCameraMode( camera, RL.CAMERA_FREE )
 
-	heigthImage = RL_LoadImage( RL_GetBasePath().."../resources/images/heightmap.png" )
+	heigthImage = RL.LoadImage( RL.GetBasePath().."../resources/images/heightmap.png" )
 
-	mesh = RL_GenMeshHeightmap( heigthImage, { 16, 4, 16 } )
-	tilesetTex = RL_LoadTexture( RL_GetBasePath().."../resources/images/tiles.png" )
-	groundTexture = RL_LoadRenderTexture( { TILE_SIZE * 16, TILE_SIZE * 16 } )
+	mesh = RL.GenMeshHeightmap( heigthImage, { 16, 4, 16 } )
+	tilesetTex = RL.LoadTexture( RL.GetBasePath().."../resources/images/tiles.png" )
+	groundTexture = RL.LoadRenderTexture( { TILE_SIZE * 16, TILE_SIZE * 16 } )
 
 	-- Draw to ground texture.
-	RL_BeginTextureMode( groundTexture )
+	RL.BeginTextureMode( groundTexture )
 
 	for x = 1, 16 do
 		for y = 1, 16 do
 			local pos = { x - 1, y - 1 }
 
 			if 4 < x and x < 14 and 4 < y and y < 8 then
-				RL_DrawTextureRec( tilesetTex, dirtRec, { pos[1] * TILE_SIZE, pos[2] * TILE_SIZE }, WHITE )
+				RL.DrawTextureRec( tilesetTex, dirtRec, { pos[1] * TILE_SIZE, pos[2] * TILE_SIZE }, RL.WHITE )
 			elseif 4 == x and 4 < y and y < 8 then
-				RL_DrawTextureRec( tilesetTex, dirtRightRec, { pos[1] * TILE_SIZE, pos[2] * TILE_SIZE }, WHITE )
+				RL.DrawTextureRec( tilesetTex, dirtRightRec, { pos[1] * TILE_SIZE, pos[2] * TILE_SIZE }, RL.WHITE )
 			elseif 14 == x and 4 < y and y < 8 then
-				RL_DrawTextureRec( tilesetTex, dirtLeftRec, { pos[1] * TILE_SIZE, pos[2] * TILE_SIZE }, WHITE )
+				RL.DrawTextureRec( tilesetTex, dirtLeftRec, { pos[1] * TILE_SIZE, pos[2] * TILE_SIZE }, RL.WHITE )
 			elseif 4 < x and x < 14 and 4 == y then
-				RL_DrawTextureRec( tilesetTex, dirtTopRec, { pos[1] * TILE_SIZE, pos[2] * TILE_SIZE }, WHITE )
+				RL.DrawTextureRec( tilesetTex, dirtTopRec, { pos[1] * TILE_SIZE, pos[2] * TILE_SIZE }, RL.WHITE )
 			elseif 4 < x and x < 14 and 8 == y then
-				RL_DrawTextureRec( tilesetTex, dirtBottomRec, { pos[1] * TILE_SIZE, pos[2] * TILE_SIZE }, WHITE )
+				RL.DrawTextureRec( tilesetTex, dirtBottomRec, { pos[1] * TILE_SIZE, pos[2] * TILE_SIZE }, RL.WHITE )
 			else
-				RL_DrawTextureRec( tilesetTex, grassRec, { pos[1] * TILE_SIZE, pos[2] * TILE_SIZE }, WHITE )
+				RL.DrawTextureRec( tilesetTex, grassRec, { pos[1] * TILE_SIZE, pos[2] * TILE_SIZE }, RL.WHITE )
 			end 
 		end
 	end
 
-	RL_EndTextureMode()
+	RL.EndTextureMode()
 
-	material = RL_LoadMaterialDefault()
-	RL_SetTextureSource( TEXTURE_SOURCE_RENDER_TEXTURE )
-	-- RL_GenTextureMipmaps( groundTexture )
-	-- RL_SetTextureFilter( groundTexture, TEXTURE_FILTER_TRILINEAR )
-	RL_SetMaterialTexture( material, MATERIAL_MAP_ALBEDO, groundTexture )
-	RL_SetTextureSource( TEXTURE_SOURCE_TEXTURE )
+	material = RL.LoadMaterialDefault()
+	RL.SetTextureSource( RL.TEXTURE_SOURCE_RENDER_TEXTURE )
+	-- RL.GenTextureMipmaps( groundTexture )
+	-- RL.SetTextureFilter( groundTexture, TEXTURE_FILTER_TRILINEAR )
+	RL.SetMaterialTexture( material, RL.MATERIAL_MAP_ALBEDO, groundTexture )
+	RL.SetTextureSource( RL.TEXTURE_SOURCE_TEXTURE )
 
-	matrix = RL_MatrixMultiply( RL_MatrixIdentity(), RL_MatrixTranslate( { -4, 0, -4 } ) )
+	matrix = RL.MatrixMultiply( RL.MatrixIdentity(), RL.MatrixTranslate( { -4, 0, -4 } ) )
 end
 
-function draw()
-	RL_ClearBackground( { 100, 150, 100 } )
-	RL_UpdateCamera3D( camera )
+function RL.draw()
+	RL.ClearBackground( { 100, 150, 100 } )
+	RL.UpdateCamera3D( camera )
 	
-	RL_BeginMode3D( camera )
-		RL_DrawMesh( mesh, material, matrix )
-	RL_EndMode3D()
+	RL.BeginMode3D( camera )
+		RL.DrawMesh( mesh, material, matrix )
+	RL.EndMode3D()
 end

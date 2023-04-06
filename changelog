@@ -1,4 +1,15 @@
 ------------------------------------------------------------------------
+Release:	ReiLua version 0.5.0		Using Raylib 4.2
+------------------------------------------------------------------------
+KEY CHANGES:
+	- CHANGED: All ReiLua global variables and functions are now stored in global RL table.
+	- CHANGED: All examples are now changed to use new RL table method.
+	- ADDED: doc_parser creates also ReiLua_API.lua that can be used in projects with Lua Language Server.
+
+Detailed changes:
+	- FIXED: uluaGetRay was looking for integers instead of tables.
+
+------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2
 ------------------------------------------------------------------------
 KEY CHANGES:
@@ -14,20 +25,20 @@ KEY CHANGES:
 	- CHANGED: RL_DrawQuad3DTexture now takes vertex colors instead of just single color.
 
 Detailed changes:
-ADDED: Help argument.
-CHANGED: RL_rlSetLineWidth renamed to RL_rlglSetLineWidth.
-CHANGED: RL_rlGetLineWidth renamed to RL_rlglGetLineWidth.
-FIXED: DrawRectangleGradient V and H expecting wrong arguments.
-ADDED: RL_LoadDirectoryFilesEx.
-FIXED: RL_DrawLineBezierQuad was called RL_DrawLineBezier in API.
-ADDED: Color lib.
-FIXED: RL_DrawEllipse and RL_DrawEllipseLines expecting wrong arguments.
-ADDED: RL_IsPathFile.
-ADDED: RL_SetMaterialShader.
-ADDED: RL_GetFileLength.
-ADDED: RL_LoadFontEx.
-FIXED: RL_ImageAlphaClear expecting wrong arguments.
-ADDED: BLEND_ALPHA_PREMULTIPLY.
-CHANGED: RL_GetWindowSize renamed to RL_GetScreenSize.
-ADDED: RL_GetKeyName and RL_GetKeyScancode. GLFW Functions.
-ADDED: KEY_UNKNOWN.
+	- ADDED: Help argument.
+	- CHANGED: RL_rlSetLineWidth renamed to RL_rlglSetLineWidth.
+	- CHANGED: RL_rlGetLineWidth renamed to RL_rlglGetLineWidth.
+	- FIXED: DrawRectangleGradient V and H expecting wrong arguments.
+	- ADDED: RL_LoadDirectoryFilesEx.
+	- FIXED: RL_DrawLineBezierQuad was called RL_DrawLineBezier in API.
+	- ADDED: Color lib.
+	- FIXED: RL_DrawEllipse and RL_DrawEllipseLines expecting wrong arguments.
+	- ADDED: RL_IsPathFile.
+	- ADDED: RL_SetMaterialShader.
+	- ADDED: RL_GetFileLength.
+	- ADDED: RL_LoadFontEx.
+	- FIXED: RL_ImageAlphaClear expecting wrong arguments.
+	- ADDED: BLEND_ALPHA_PREMULTIPLY.
+	- CHANGED: RL_GetWindowSize renamed to RL_GetScreenSize.
+	- ADDED: RL_GetKeyName and RL_GetKeyScancode. GLFW Functions.
+	- ADDED: KEY_UNKNOWN.

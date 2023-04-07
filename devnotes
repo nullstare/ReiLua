@@ -22,4 +22,10 @@ Backlog {
 	* Models
 		* DrawCapsule and DrawCapsuleWires
 		* LoadMaterials
+	* Test
+		* UpdateTexture
+		* UpdateTextureRec
+		* GetColor
+		* LoadShader
+		* LoadShaderFromMemory
 }

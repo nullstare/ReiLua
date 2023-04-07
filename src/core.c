@@ -170,13 +170,14 @@ Set monitor for the current window (fullscreen mode)
 - Success return true
 */
 int lcoreSetWindowMonitor( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetWindowMonitor( int monitor )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetWindowMonitor( lua_tointeger( L, -1 ) );
+	SetWindowMonitor( lua_tointeger( L, 1 ) );
 	lua_pushboolean( L, true );
+
 	return 1;
 }
 
@@ -189,15 +190,16 @@ Set window position on screen
 - Success return true
 */
 int lcoreSetWindowPosition( lua_State *L ) {
-	if ( !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetWindowPosition( Vector2 pos )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Vector2 pos = uluaGetVector2( L );
+	Vector2 pos = uluaGetVector2Index( L, 1 );
 
 	SetWindowPosition( pos.x, pos.y );
 	lua_pushboolean( L, true );
+
 	return 1;
 }
 
@@ -210,15 +212,16 @@ Set window dimensions
 - Success return true
 */
 int lcoreSetWindowSize( lua_State *L ) {
-	if ( !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetWindowSize( Vector2 size )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Vector2 size = uluaGetVector2( L );
+	Vector2 size = uluaGetVector2Index( L, 1 );
 
 	SetWindowSize( (int)size.x, (int)size.y );
 	lua_pushboolean( L, true );
+
 	return 1;
 }
 
@@ -231,20 +234,21 @@ Set window minimum dimensions ( for FLAG_WINDOW_RESIZABLE )
 - Success return true
 */
 int lcoreSetWindowMinSize( lua_State *L ) {
-	if ( !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetWindowMinSize( Vector2 size )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Vector2 size = uluaGetVector2( L );
+	Vector2 size = uluaGetVector2Index( L, 1 );
 
 	SetWindowMinSize( (int)size.x, (int)size.y );
 	lua_pushboolean( L, true );
+
 	return 1;
 }
 
 /*
-> position = RL.GetMonitorPosition( int monitor )
+> position = RL.GetMonitorPosition(  )
 
 Get specified monitor position
 
@@ -252,13 +256,14 @@ Get specified monitor position
 - Success return Vector2
 */
 int lcoreGetMonitorPosition( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetMonitorPosition( int monitor )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	Vector2 pos = GetMonitorPosition( lua_tointeger( L, -1 ) );
-	uluaPushVector2( L, pos );
+	int monitor = lua_tointeger( L, 1 );
+
+	uluaPushVector2( L, GetMonitorPosition( monitor ) );
 
 	return 1;
 }
@@ -272,12 +277,14 @@ Get specified monitor size
 - Success return Vector2
 */
 int lcoreGetMonitorSize( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetMonitorSize( int monitor )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	Vector2 size = (Vector2){ GetMonitorWidth( lua_tointeger( L, -1 ) ), GetMonitorHeight( lua_tointeger( L, -1 ) ) };
+	int monitor = lua_tointeger( L, 1 );
+
+	Vector2 size = (Vector2){ GetMonitorWidth( monitor ), GetMonitorHeight( monitor ) };
 	uluaPushVector2( L, size );
 
 	return 1;
@@ -320,13 +327,16 @@ Set window configuration state using flags ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_R
 - Success return true
 */
 int lcoreSetWindowState( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetWindowState( int flags )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetWindowState( (unsigned int)lua_tointeger( L, -1 ) );
+	unsigned int flag = (unsigned int)lua_tointeger( L, 1 );
+
+	SetWindowState( flag );
 	lua_pushboolean( L, true );
+
 	return 1;
 }
 
@@ -339,12 +349,14 @@ Check if one specific window flag is enabled ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW
 - Success return bool
 */
 int lcoreIsWindowState( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsWindowState( int flags )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsWindowState( (unsigned int)lua_tointeger( L, -1 ) ) );
+	unsigned int flag = (unsigned int)lua_tointeger( L, 1 );
+
+	lua_pushboolean( L, IsWindowState( flag ) );
 
 	return 1;
 }
@@ -357,12 +369,14 @@ Clear window configuration state flags ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZ
 - Success return bool
 */
 int lcoreClearWindowState( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ClearWindowState( int flag )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	ClearWindowState( (unsigned int)lua_tointeger( L, -1 ) );
+	unsigned int flag = (unsigned int)lua_tointeger( L, 1 );
+
+	ClearWindowState( flag );
 
 	return 1;
 }
@@ -389,12 +403,12 @@ Set icon for window ( Only PLATFORM_DESKTOP )
 - Success return true
 */
 int lcoreSetWindowIcon( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetWindowIcon( Image image )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t imageId = lua_tointeger( L, -1 );
+	size_t imageId = lua_tointeger( L, 1 );
 
 	if ( !validImage( imageId ) ) {
 		lua_pushboolean( L, false );
@@ -403,6 +417,7 @@ int lcoreSetWindowIcon( lua_State *L ) {
 
 	SetWindowIcon( *state->images[ imageId ] );
 	lua_pushboolean( L, true );
+
 	return 1;
 }
 
@@ -415,13 +430,14 @@ Set title for window ( Only PLATFORM_DESKTOP )
 - Success return true
 */
 int lcoreSetWindowTitle( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetWindowTitle( string title )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetWindowTitle( lua_tostring( L, -1 ) );
+	SetWindowTitle( lua_tostring( L, 1 ) );
 	lua_pushboolean( L, true );
+
 	return 1;
 }
 
@@ -458,12 +474,13 @@ Get specified monitor physical size in millimetres
 - Success return Vector2
 */
 int lcoreGetMonitorPhysicalSize( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetMonitorPhysicalSize( int monitor )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	int monitor = lua_tointeger( L, -1 );
+	int monitor = lua_tointeger( L, 1 );
+
 	Vector2 size = { GetMonitorPhysicalWidth( monitor ), GetMonitorPhysicalHeight( monitor ) };
 	uluaPushVector2( L, size );
 
@@ -479,12 +496,14 @@ Get specified monitor refresh rate
 - Success return int
 */
 int lcoreGetMonitorRefreshRate( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetMonitorRefreshRate( int monitor )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushinteger( L, GetMonitorRefreshRate( lua_tointeger( L, -1 ) ) );
+	int monitor = lua_tointeger( L, 1 );
+	
+	lua_pushinteger( L, GetMonitorRefreshRate( monitor ) );
 
 	return 1;
 }
@@ -511,12 +530,14 @@ Get the human-readable, UTF-8 encoded name of the monitor
 - Success return string
 */
 int lcoreGetMonitorName( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetMonitorName( int monitor )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushstring( L, GetMonitorName( lua_tointeger( L, -1 ) ) );
+	int monitor = lua_tointeger( L, 1 );
+
+	lua_pushstring( L, GetMonitorName( monitor ) );
 
 	return 1;
 }
@@ -541,13 +562,14 @@ Set clipboard text content
 - Success return true
 */
 int lcoreSetClipboardText( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetClipboardText( string text )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetClipboardText( lua_tostring( L, -1 ) );
+	SetClipboardText( lua_tostring( L, 1 ) );
 	lua_pushboolean( L, true );
+
 	return 1;
 }
 
@@ -576,14 +598,16 @@ Set target FPS ( maximum )
 - Success return true
 */
 int lcoreSetTargetFPS( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetTargetFPS( int fps )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
+	int fps = lua_tointeger( L, 1 );
 
-	SetTargetFPS( lua_tointeger( L, -1 ) );
+	SetTargetFPS( fps );
 	lua_pushboolean( L, true );
+
 	return 1;
 }
 
@@ -639,12 +663,12 @@ Takes a screenshot of current screen ( filename extension defines format )
 - Success return true
 */
 int lcoreTakeScreenshot( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.TakeScreenshot( string fileName )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	TakeScreenshot( lua_tostring( L, -1 ) );
+	TakeScreenshot( lua_tostring( L, 1 ) );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -659,12 +683,14 @@ Setup init configuration flags ( view FLAGS )
 - Success return true
 */
 int lcoreSetConfigFlags( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetConfigFlags( int flags )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetConfigFlags( (unsigned int)lua_tointeger( L, -1 ) );
+	unsigned int flag = (unsigned int)lua_tointeger( L, 1 );
+
+	SetConfigFlags( flag );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -679,12 +705,14 @@ Show trace log messages ( LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR... )
 - Success return true
 */
 int lcoreTraceLog( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isstring( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.TraceLog( int logLevel, string text )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	TraceLog( lua_tointeger( L, -2 ), "%s", lua_tostring( L, -1 ) );
+	int logLevel = lua_tointeger( L, 1 );
+
+	TraceLog( logLevel, "%s", lua_tostring( L, 2 ) );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -699,12 +727,14 @@ Set the current threshold ( minimum ) log level
 - Success return true
 */
 int lcoreSetTraceLogLevel( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetTraceLogLevel( int logLevel )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetTraceLogLevel( lua_tointeger( L, -1 ) );
+	int logLevel = lua_tointeger( L, 1 );
+
+	SetTraceLogLevel( logLevel );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -719,12 +749,12 @@ Open URL with default system browser ( If available )
 - Success return true
 */
 int lcoreOpenURL( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.OpenURL( string url )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	OpenURL( lua_tostring( L, -1 ) );
+	OpenURL( lua_tostring( L, 1 ) );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -817,12 +847,13 @@ Set background color ( framebuffer clear color )
 - Success return true
 */
 int lcoreClearBackground( lua_State *L ) {
-	if ( !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ClearBackground( Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
+	Color color = uluaGetColorIndex( L, 1 );
+
 	ClearBackground( color );
 	lua_pushboolean( L, true );
 
@@ -860,12 +891,14 @@ Begin blending mode ( BLEND_ALPHA, BLEND_ADDITIVE, BLEND_MULTIPLIED... )
 - Success return true
 */
 int lcoreBeginBlendMode( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.BeginBlendMode( int mode )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	BeginBlendMode( lua_tointeger( L, -1 ) );
+	int mode = lua_tointeger( L, 1 );
+
+	BeginBlendMode( mode );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -891,12 +924,12 @@ Begin scissor mode ( define screen area for following drawing )
 - Success return true
 */
 int lcoreBeginScissorMode( lua_State *L ) {
-	if ( !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.BeginScissorMode( Rectangle rectange )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Rectangle rect = uluaGetRectangle( L );
+	Rectangle rect = uluaGetRectangleIndex( L, 1 );
 
 	BeginScissorMode( rect.x, rect.y, rect.width, rect.height );
 	lua_pushboolean( L, true );
@@ -929,7 +962,7 @@ NOTE: Set nil if no shader
 - Success return int
 */
 int lcoreLoadShader( lua_State *L ) {
-	if ( !( lua_isstring( L, -2 ) || lua_isnil( L, -2 ) ) || !( lua_isstring( L, -1 ) || lua_isnil( L, -1 ) ) ) {
+	if ( !( lua_isstring( L, 1 ) || lua_isnil( L, 1 ) ) || !( lua_isstring( L, 2 ) || lua_isnil( L, 2 ) ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadShader( string vsFileName, string fsFileName )" );
 		lua_pushinteger( L, -1 );
 		return 1;
@@ -938,16 +971,16 @@ int lcoreLoadShader( lua_State *L ) {
 	char *vsFileName = NULL;
 	char *fsFileName = NULL;
 
-	if ( lua_isstring( L, -2 ) ) {
-		if ( FileExists( lua_tostring( L, -2 ) ) ) {
+	if ( lua_isstring( L, 1 ) ) {
+		if ( FileExists( lua_tostring( L, 1 ) ) ) {
 			vsFileName = malloc( STRING_LEN * sizeof( char ) );
-			strcpy( vsFileName, lua_tostring( L, -2 ) );
+			strcpy( vsFileName, lua_tostring( L, 1 ) );
 		}
 	}
-	if ( lua_isstring( L, -1 ) ) {
-		if ( FileExists( lua_tostring( L, -1 ) ) ) {
+	if ( lua_isstring( L, 2 ) ) {
+		if ( FileExists( lua_tostring( L, 2 ) ) ) {
 			fsFileName = malloc( STRING_LEN * sizeof( char ) );
-			strcpy( fsFileName, lua_tostring( L, -1 ) );
+			strcpy( fsFileName, lua_tostring( L, 2 ) );
 		}
 	}
 
@@ -984,7 +1017,7 @@ NOTE: Set nil if no shader
 */
 
 int lcoreLoadShaderFromMemory( lua_State *L ) {
-	if ( !( lua_isstring( L, -2 ) || lua_isnil( L, -2 ) ) || !( lua_isstring( L, -1 ) || lua_isnil( L, -1 ) ) ) {
+	if ( !( lua_isstring( L, 1 ) || lua_isnil( L, 1 ) ) || !( lua_isstring( L, 2 ) || lua_isnil( L, 2 ) ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadShaderFromMemory( string vsCode, string fsCode )" );
 		lua_pushinteger( L, -1 );
 		return 1;
@@ -993,17 +1026,17 @@ int lcoreLoadShaderFromMemory( lua_State *L ) {
 	char *vs = NULL;
 	char *fs = NULL;
 
-	if ( lua_isstring( L, -2 ) ) {
-		size_t vsLen = lua_rawlen( L, -2 );
+	if ( lua_isstring( L, 1 ) ) {
+		size_t vsLen = lua_rawlen( L, 1 );
 
 		vs = malloc( vsLen * sizeof( char ) );
-		strcpy( vs, lua_tostring( L, -2 ) );
+		strcpy( vs, lua_tostring( L, 1 ) );
 	}
-	if ( lua_isstring( L, -1 ) ) {
-		size_t fsLen = lua_rawlen( L, -1 );
+	if ( lua_isstring( L, 2 ) ) {
+		size_t fsLen = lua_rawlen( L, 2 );
 
 		fs = malloc( fsLen * sizeof( char ) );
-		strcpy( fs, lua_tostring( L, -1 ) );
+		strcpy( fs, lua_tostring( L, 2 ) );
 	}
 
 	int i = 0;
@@ -1037,12 +1070,12 @@ Begin custom shader drawing
 - Success return true
 */
 int lcoreBeginShaderMode( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.BeginShaderMode( Shader shader )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t shaderId = lua_tointeger( L, -1 );
+	size_t shaderId = lua_tointeger( L, 1 );
 	
 	if ( !validShader( shaderId ) ) {
 		lua_pushboolean( L, false );
@@ -1074,18 +1107,18 @@ Get shader uniform location
 - Success return int
 */
 int lcoreGetShaderLocation( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isstring( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetShaderLocation( Shader shader, string uniformName )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	size_t shaderId = lua_tointeger( L, -2 );
+	size_t shaderId = lua_tointeger( L, 1 );
 
 	if ( !validShader( shaderId ) ) {
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	lua_pushinteger( L, GetShaderLocation( *state->shaders[ shaderId ], lua_tostring( L, -1 ) ) );
+	lua_pushinteger( L, GetShaderLocation( *state->shaders[ shaderId ], lua_tostring( L, 2 ) ) );
 
 	return 1;
 }
@@ -1099,18 +1132,18 @@ Get shader attribute location
 - Success return int
 */
 int lcoreGetShaderLocationAttrib( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isstring( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetShaderLocationAttrib( Shader shader, string attribName )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	size_t shaderId = lua_tointeger( L, -2 );
+	size_t shaderId = lua_tointeger( L, 1 );
 
 	if ( !validShader( shaderId ) ) {
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	lua_pushinteger( L, GetShaderLocationAttrib( *state->shaders[ shaderId ], lua_tostring( L, -1 ) ) );
+	lua_pushinteger( L, GetShaderLocationAttrib( *state->shaders[ shaderId ], lua_tostring( L, 2 ) ) );
 
 	return 1;
 }
@@ -1124,16 +1157,14 @@ Set shader location index
 - Success return true
 */
 int lcoreSetShaderLocationIndex( lua_State *L ) {
-	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetShaderLocationIndex( Shader shader, int shaderLocationIndex, int location )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	int location = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	int shaderLocationIndex = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	size_t shaderId = lua_tointeger( L, -1 );
+	size_t shaderId = lua_tointeger( L, 1 );
+	int shaderLocationIndex = lua_tointeger( L, 2 );
+	int location = lua_tointeger( L, 3 );
 
 	if ( !validShader( shaderId ) ) {
 		lua_pushboolean( L, false );
@@ -1154,14 +1185,13 @@ Get shader location index
 - Success return int
 */
 int lcoreGetShaderLocationIndex( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetShaderLocationIndex( Shader shader, int shaderLocationIndex )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	int shaderLocationIndex = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	size_t shaderId = lua_tointeger( L, -1 );
+	size_t shaderId = lua_tointeger( L, 1 );
+	int shaderLocationIndex = lua_tointeger( L, 2 );
 
 	if ( !validShader( shaderId ) ) {
 		lua_pushboolean( L, false );
@@ -1181,16 +1211,14 @@ Set shader uniform value ( matrix 4x4 )
 - Success return true
 */
 int lcoreSetShaderValueMatrix( lua_State *L ) {
-	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetShaderValueMatrix( Shader shader, int locIndex, Matrix mat )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Matrix mat = uluaGetMatrix( L );
-	lua_pop( L, 1 );
-	int locIndex = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	size_t shaderId = lua_tointeger( L, -1 );
+	size_t shaderId = lua_tointeger( L, 1 );
+	int locIndex = lua_tointeger( L, 2 );
+	Matrix mat = uluaGetMatrixIndex( L, 3 );
 
 	if ( !validShader( shaderId ) ) {
 		lua_pushboolean( L, false );
@@ -1211,14 +1239,14 @@ Set shader uniform value for texture ( sampler2d )
 - Success return true
 */
 int lcoreSetShaderValueTexture( lua_State *L ) {
-	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetShaderValueTexture( Shader shader, int locIndex, Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t textureId = lua_tointeger( L, -1 );
-	int locIndex = lua_tointeger( L, -2 );
-	size_t shaderId = lua_tointeger( L, -3 );
+	size_t shaderId = lua_tointeger( L, 1 );
+	int locIndex = lua_tointeger( L, 2 );
+	size_t textureId = lua_tointeger( L, 3 );
 
 	if ( !validShader( shaderId ) || !validTexture( textureId ) ) {
 		lua_pushboolean( L, false );
@@ -1240,20 +1268,22 @@ NOTE: Even one value should be in table
 - Success return true
 */
 int lcoreSetShaderValue( lua_State *L ) {
-	if ( !lua_isnumber( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) || !lua_isnumber( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetShaderValue( Shader shader, int locIndex, number{} values, int uniformType )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	int uniformType = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	
+	size_t shaderId = lua_tointeger( L, 1 );
+	int locIndex = lua_tointeger( L, 2 );
+	size_t valueCount = uluaGetTableLenIndex( L, 3 );
+	int uniformType = lua_tointeger( L, 4 );
+
 	/* Read values. */
-	size_t valueCount = uluaGetTableLen( L );
 	float floats[ valueCount ];
 	int ints[ valueCount ];
 
-	int t = lua_gettop( L ), i = 0;
+	/* t = values index. */
+	int t = 3, i = 0;
     lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
@@ -1266,10 +1296,6 @@ int lcoreSetShaderValue( lua_State *L ) {
     }
 	lua_pop( L, 1 );
 	/* Read values end. */
-
-	int locIndex = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	size_t shaderId = lua_tointeger( L, -1 );
 
 	if ( !validShader( shaderId ) ) {
 		lua_pushboolean( L, false );
@@ -1299,22 +1325,24 @@ NOTE: Even one value should be in table
 - Success return true
 */
 int lcoreSetShaderValueV( lua_State *L ) {
-	if ( !lua_isnumber( L, -5 ) || !lua_isnumber( L, -4 ) || !lua_istable( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 )
+	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetShaderValueV( Shader shader, int locIndex, number{} values, int uniformType, int count )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	int count = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	int uniformType = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
+	size_t shaderId = lua_tointeger( L, 1 );
+	int locIndex = lua_tointeger( L, 2 );
+	size_t valueCount = uluaGetTableLenIndex( L, 3 );
+	int uniformType = lua_tointeger( L, 4 );
+	int count = lua_tointeger( L, 5 );
 
 	/* Read values. */
-	size_t valueCount = uluaGetTableLen( L );
 	float floats[ valueCount * count ];
 	int ints[ valueCount * count ];
 
-	int t = lua_gettop( L ), i = 0;
+	/* t = values index. */
+	int t = 3, i = 0;
     lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
@@ -1327,10 +1355,6 @@ int lcoreSetShaderValueV( lua_State *L ) {
     }
 	lua_pop( L, 1 );
 	/* Read values end. */
-
-	int locIndex = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	size_t shaderId = lua_tointeger( L, -1 );
 
 	if ( !validShader( shaderId ) ) {
 		lua_pushboolean( L, false );
@@ -1358,12 +1382,12 @@ Unload shader from GPU memory ( VRAM )
 - Success return true
 */
 int lcoreUnloadShader( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UnloadShader( Shader shader )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t id = lua_tointeger( L, -1 );
+	size_t id = lua_tointeger( L, 1 );
 
 	if ( !validShader( id ) ) {
 		lua_pushboolean( L, false );
@@ -1389,12 +1413,15 @@ Detect if a key has been pressed once
 - Success return bool
 */
 int lcoreIsKeyPressed( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsKeyPressed( int key )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsKeyPressed( lua_tointeger( L, -1 ) ) );
+	int key = lua_tointeger( L, 1 );
+
+	lua_pushboolean( L, IsKeyPressed( key ) );
+
 	return 1;
 }
 
@@ -1407,12 +1434,15 @@ Detect if a key is being pressed
 - Success return bool
 */
 int lcoreIsKeyDown( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsKeyDown( int key )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsKeyDown( lua_tointeger( L, -1 ) ) );
+	int key = lua_tointeger( L, 1 );
+
+	lua_pushboolean( L, IsKeyDown( key ) );
+
 	return 1;
 }
 
@@ -1425,12 +1455,15 @@ Detect if a key has been released once
 - Success return bool
 */
 int lcoreIsKeyReleased( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsKeyReleased( int key )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsKeyReleased( lua_tointeger( L, -1 ) ) );
+	int key = lua_tointeger( L, 1 );
+
+	lua_pushboolean( L, IsKeyReleased( key ) );
+
 	return 1;
 }
 
@@ -1443,12 +1476,15 @@ Check if a key is NOT being pressed
 - Success return bool
 */
 int lcoreIsKeyUp( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsKeyUp( int key )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsKeyUp( lua_tointeger( L, -1 ) ) );
+	int key = lua_tointeger( L, 1 );
+
+	lua_pushboolean( L, IsKeyUp( key ) );
+
 	return 1;
 }
 
@@ -1484,12 +1520,14 @@ int lcoreGetCharPressed( lua_State *L ) {
 Set a custom key to exit program ( default is ESC )
 */
 int lcoreSetExitKey( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetExitKey( int key )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	SetExitKey( lua_tointeger( L, -1 ) );
+	int key = lua_tointeger( L, 1 );
+
+	SetExitKey( key );
 
 	return 1;
 }
@@ -1514,14 +1552,13 @@ this function returns nil but does not emit an error.
 - Success return string or nil
 */
 int lcoreGetKeyName( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetKeyName( int key, int scancode )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	int scancode = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	int key = lua_tointeger( L, -1 );
+	int key = lua_tointeger( L, 1 );
+	int scancode = lua_tointeger( L, 2 );
 
 	const char *keyName = glfwGetKeyName( key, scancode );
 
@@ -1545,13 +1582,14 @@ If the key is KEY_UNKNOWN or does not exist on the keyboard this method will ret
 - Success return int
 */
 int lcoreGetKeyScancode( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetKeyScancode( int key )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	int scancode = glfwGetKeyScancode( lua_tointeger( L, -1 ) );
+	int key = lua_tointeger( L, 1 );
 
+	int scancode = glfwGetKeyScancode( key );
 	lua_pushinteger( L, scancode );
 
 	return 1;
@@ -1570,12 +1608,15 @@ Detect if a gamepad is available
 - Success return bool
 */
 int lcoreIsGamepadAvailable( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsGamepadAvailable( int gamepad )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsGamepadAvailable( lua_tointeger( L, -1 ) ) );
+	int gamepad = lua_tointeger( L, 1 );
+
+	lua_pushboolean( L, IsGamepadAvailable( gamepad ) );
+
 	return 1;
 }
 
@@ -1588,12 +1629,16 @@ Detect if a gamepad button has been pressed once
 - Success return bool
 */
 int lcoreIsGamepadButtonPressed( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsGamepadButtonPressed( int gamepad, int button )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsGamepadButtonPressed( lua_tointeger( L, -2 ), lua_tointeger( L, -1 ) ) );
+	int gamepad = lua_tointeger( L, 1 );
+	int button = lua_tointeger( L, 2 );
+
+	lua_pushboolean( L, IsGamepadButtonPressed( gamepad, button ) );
+
 	return 1;
 }
 
@@ -1606,12 +1651,16 @@ Detect if a gamepad button is being pressed
 - Success return bool
 */
 int lcoreIsGamepadButtonDown( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsGamepadButtonDown( int gamepad, int button )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsGamepadButtonDown( lua_tointeger( L, -2 ), lua_tointeger( L, -1 ) ) );
+	int gamepad = lua_tointeger( L, 1 );
+	int button = lua_tointeger( L, 2 );
+
+	lua_pushboolean( L, IsGamepadButtonDown( gamepad, button ) );
+
 	return 1;
 }
 
@@ -1624,12 +1673,16 @@ Detect if a gamepad button has been released once
 - Success return bool
 */
 int lcoreIsGamepadButtonReleased( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsGamepadButtonReleased( int gamepad, int button )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsGamepadButtonReleased( lua_tointeger( L, -2 ), lua_tointeger( L, -1 ) ) );
+	int gamepad = lua_tointeger( L, 1 );
+	int button = lua_tointeger( L, 2 );
+
+	lua_pushboolean( L, IsGamepadButtonReleased( gamepad, button ) );
+
 	return 1;
 }
 
@@ -1642,12 +1695,15 @@ Return gamepad axis count for a gamepad
 - Success return int
 */
 int lcoreGetGamepadAxisCount( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetGamepadAxisCount( int gamepad )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushinteger( L, GetGamepadAxisCount( lua_tointeger( L, -1 ) ) );
+	int gamepad = lua_tointeger( L, 1 );
+
+	lua_pushinteger( L, GetGamepadAxisCount( gamepad ) );
+
 	return 1;
 }
 
@@ -1660,12 +1716,16 @@ Return axis movement value for a gamepad axis
 - Success return float
 */
 int lcoreGetGamepadAxisMovement( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetGamepadAxisMovement( int gamepad, int axis )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushnumber( L, GetGamepadAxisMovement( lua_tointeger( L, -2 ), lua_tointeger( L, -1 ) ) );
+	int gamepad = lua_tointeger( L, 1 );
+	int axis = lua_tointeger( L, 2 );
+
+	lua_pushnumber( L, GetGamepadAxisMovement( gamepad, axis ) );
+
 	return 1;
 }
 
@@ -1678,12 +1738,15 @@ Return gamepad internal name id
 - Success return string
 */
 int lcoreGetGamepadName( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetGamepadName( int gamepad )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushstring( L, GetGamepadName( lua_tointeger( L, -1 ) ) );
+	int gamepad = lua_tointeger( L, 1 );
+
+	lua_pushstring( L, GetGamepadName( gamepad ) );
+
 	return 1;
 }
 
@@ -1700,12 +1763,15 @@ Detect if a mouse button has been pressed once
 - Success return bool
 */
 int lcoreIsMouseButtonPressed( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsMouseButtonPressed( int button )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsMouseButtonPressed( lua_tointeger( L, -1 ) ) );
+	int button = lua_tointeger( L, 1 );
+
+	lua_pushboolean( L, IsMouseButtonPressed( button ) );
+
 	return 1;
 }
 
@@ -1718,12 +1784,15 @@ Detect if a mouse button is being pressed
 - Success return bool
 */
 int lcoreIsMouseButtonDown( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsMouseButtonDown( int button )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsMouseButtonDown( lua_tointeger( L, -1 ) ) );
+	int button = lua_tointeger( L, 1 );
+
+	lua_pushboolean( L, IsMouseButtonDown( button ) );
+
 	return 1;
 }
 
@@ -1736,12 +1805,15 @@ Detect if a mouse button has been released once
 - Success return bool
 */
 int lcoreIsMouseButtonReleased( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsMouseButtonReleased( int button )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsMouseButtonReleased( lua_tointeger( L, -1 ) ) );
+	int button = lua_tointeger( L, 1 );
+
+	lua_pushboolean( L, IsMouseButtonReleased( button ) );
+
 	return 1;
 }
 
@@ -1754,12 +1826,15 @@ Check if a mouse button is NOT being pressed
 - Success return bool
 */
 int lcoreIsMouseButtonUp( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsMouseButtonUp( int button )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsMouseButtonUp( lua_tointeger( L, -1 ) ) );
+	int button = lua_tointeger( L, 1 );
+
+	lua_pushboolean( L, IsMouseButtonUp( button ) );
+
 	return 1;
 }
 
@@ -1796,12 +1871,12 @@ Set mouse position XY
 - Success return true
 */
 int lcoreSetMousePosition( lua_State *L ) {
-	if ( !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMousePosition( Vector2 position )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Vector2 pos = uluaGetVector2( L );
+	Vector2 pos = uluaGetVector2Index( L, 1 );
 
 	SetMousePosition( pos.x, pos.y );
 	lua_pushboolean( L, true );
@@ -1818,12 +1893,12 @@ Set mouse offset
 - Success return true
 */
 int lcoreSetMouseOffset( lua_State *L ) {
-	if ( !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMouseOffset( Vector2 offset )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Vector2 offset = uluaGetVector2( L );
+	Vector2 offset = uluaGetVector2Index( L, 1 );
 
 	SetMouseOffset( offset.x, offset.y );
 	lua_pushboolean( L, true );
@@ -1840,12 +1915,12 @@ Set mouse scaling
 - Success return true
 */
 int lcoreSetMouseScale( lua_State *L ) {
-	if ( !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMouseScale( Vector2 scale )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Vector2 scale = uluaGetVector2( L );
+	Vector2 scale = uluaGetVector2Index( L, 1 );
 
 	SetMouseScale( scale.x, scale.y );
 	lua_pushboolean( L, true );
@@ -1874,12 +1949,14 @@ Set mouse cursor
 - Success return true
 */
 int lcoreSetMouseCursor( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMouseCursor( int cursor )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetMouseCursor( lua_tointeger( L, -1 ) );
+	int cursor = lua_tointeger( L, 1 );
+
+	SetMouseCursor( cursor );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -1898,12 +1975,14 @@ Get touch position XY for a touch point index ( relative to screen size )
 - Success return Vector2
 */
 int lcoreGetTouchPosition( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetTouchPosition( int index )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	uluaPushVector2( L, GetTouchPosition( lua_tointeger( L, -1 ) ) );
+	int index = lua_tointeger( L, 1 );
+
+	uluaPushVector2( L, GetTouchPosition( index ) );
 
 	return 1;
 }
@@ -1917,12 +1996,14 @@ Get touch point identifier for given index
 - Success return int
 */
 int lcoreGetTouchPointId( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetTouchPointId( int index )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushinteger( L, GetTouchPointId( lua_tointeger( L, -1 ) ) );
+	int index = lua_tointeger( L, 1 );
+
+	lua_pushinteger( L, GetTouchPointId( index ) );
 
 	return 1;
 }
@@ -1953,12 +2034,14 @@ Enable a set of gestures using flags
 - Success return true
 */
 int lcoreSetGesturesEnabled( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetGesturesEnabled( unsigned int flags )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetGesturesEnabled( (unsigned int)lua_tointeger( L, -1 ) );
+	unsigned int flags = (unsigned int)lua_tointeger( L, 1 );
+
+	SetGesturesEnabled( flags );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -1973,12 +2056,14 @@ Check if a gesture have been detected
 - Success return bool
 */
 int lcoreIsGestureDetected( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsGestureDetected( int gesture )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsGestureDetected( lua_tointeger( L, -1 ) ) );
+	int gesture = lua_tointeger( L, 1 );
+
+	lua_pushboolean( L, IsGestureDetected( gesture ) );
 
 	return 1;
 }
@@ -2087,12 +2172,13 @@ Check if file exists
 - Success return bool
 */
 int lcoreFileExists( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.FileExists( string fileName )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, FileExists( lua_tostring( L, -1 ) ) );
+	lua_pushboolean( L, FileExists( lua_tostring( L, 1 ) ) );
+
 	return 1;
 }
 
@@ -2105,12 +2191,13 @@ Check if a directory path exists
 - Success return bool
 */
 int lcoreDirectoryExists( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DirectoryExists( string dirPath )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, DirectoryExists( lua_tostring( L, -1 ) ) );
+	lua_pushboolean( L, DirectoryExists( lua_tostring( L, 1 ) ) );
+
 	return 1;
 }
 
@@ -2123,12 +2210,13 @@ Check file extension ( Including point: .png, .wav )
 - Success return bool
 */
 int lcoreIsFileExtension( lua_State *L ) {
-	if ( !lua_isstring( L, -2 ) || !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) || !lua_isstring( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsFileExtension( string fileName, string ext )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsFileExtension( lua_tostring( L, -2 ), lua_tostring( L, -1 ) ) );
+	lua_pushboolean( L, IsFileExtension( lua_tostring( L, 1 ), lua_tostring( L, 2 ) ) );
+
 	return 1;
 }
 
@@ -2141,12 +2229,13 @@ Get file length in bytes ( NOTE: GetFileSize() conflicts with windows.h )
 - Success return int
 */
 int lcoreGetFileLength( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetFileLength( string fileName )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushinteger( L, GetFileLength( lua_tostring( L, -1 ) ) );
+	lua_pushinteger( L, GetFileLength( lua_tostring( L, 1 ) ) );
+
 	return 1;
 }
 
@@ -2159,12 +2248,13 @@ Get pointer to extension for a filename string ( Includes dot: '.png' )
 - Success return string
 */
 int lcoreGetFileExtension( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetFileExtension( string fileName )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushstring( L, GetFileExtension( lua_tostring( L, -1 ) ) );
+	lua_pushstring( L, GetFileExtension( lua_tostring( L, 1 ) ) );
+
 	return 1;
 }
 
@@ -2177,12 +2267,13 @@ Get pointer to filename for a path string
 - Success return string
 */
 int lcoreGetFileName( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetFileName( string filePath )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushstring( L, GetFileName( lua_tostring( L, -1 ) ) );
+	lua_pushstring( L, GetFileName( lua_tostring( L, 1 ) ) );
+
 	return 1;
 }
 
@@ -2195,12 +2286,13 @@ Get filename string without extension ( Uses static string )
 - Success return string
 */
 int lcoreGetFileNameWithoutExt( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetFileNameWithoutExt( string filePath )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushstring( L, GetFileNameWithoutExt( lua_tostring( L, -1 ) ) );
+	lua_pushstring( L, GetFileNameWithoutExt( lua_tostring( L, 1 ) ) );
+
 	return 1;
 }
 
@@ -2213,12 +2305,13 @@ Get full path for a given fileName with path ( Uses static string )
 - Success return string
 */
 int lcoreGetDirectoryPath( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetDirectoryPath( string filePath )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushstring( L, GetDirectoryPath( lua_tostring( L, -1 ) ) );
+	lua_pushstring( L, GetDirectoryPath( lua_tostring( L, 1 ) ) );
+
 	return 1;
 }
 
@@ -2231,12 +2324,13 @@ Get previous directory path for a given path ( Uses static string )
 - Success return string
 */
 int lcoreGetPrevDirectoryPath( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetPrevDirectoryPath( string dirPath )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushstring( L, GetPrevDirectoryPath( lua_tostring( L, -1 ) ) );
+	lua_pushstring( L, GetPrevDirectoryPath( lua_tostring( L, 1 ) ) );
+
 	return 1;
 }
 
@@ -2261,12 +2355,12 @@ Load directory filepaths
 - Success return string{}
 */
 int lcoreLoadDirectoryFiles( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadDirectoryFiles( string dirPath )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	FilePathList files = LoadDirectoryFiles( lua_tostring( L, -1 ) );
+	FilePathList files = LoadDirectoryFiles( lua_tostring( L, 1 ) );
 
 	lua_createtable( L, files.count, 0 );
 
@@ -2288,12 +2382,14 @@ Load directory filepaths with extension filtering and recursive directory scan
 - Success return string{}
 */
 int lcoreLoadDirectoryFilesEx( lua_State *L ) {
-	if ( !lua_isstring( L, -3 ) || !lua_isstring( L, -2 ) || !lua_isboolean( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) || !lua_isstring( L, 2 ) || !lua_isboolean( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadDirectoryFilesEx( string dirPath )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	FilePathList files = LoadDirectoryFilesEx( lua_tostring( L, -3 ), lua_tostring( L, -2 ), lua_toboolean( L, -1 ) );
+	bool scanSubdirs = lua_toboolean( L, 3 );
+
+	FilePathList files = LoadDirectoryFilesEx( lua_tostring( L, 1 ), lua_tostring( L, 2 ), scanSubdirs );
 
 	lua_createtable( L, files.count, 0 );
 
@@ -2315,12 +2411,13 @@ Change working directory, return true on success
 - Success return true
 */
 int lcoreChangeDirectory( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ChangeDirectory( string directory )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushboolean( L, ChangeDirectory( lua_tostring( L, -1 ) ) );
+	lua_pushboolean( L, ChangeDirectory( lua_tostring( L, 1 ) ) );
+
 	return 1;
 }
 
@@ -2333,12 +2430,13 @@ Check if a given path is a file or a directory
 - Success return bool
 */
 int lcoreIsPathFile( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsPathFile( string path )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsPathFile( lua_tostring( L, -1 ) ) );
+	lua_pushboolean( L, IsPathFile( lua_tostring( L, 1 ) ) );
+
 	return 1;
 }
 
@@ -2384,12 +2482,13 @@ Get file modification time ( Last write time )
 - Success return int
 */
 int lcoreGetFileModTime( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetFileModTime( string fileName )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushinteger( L, GetFileModTime( lua_tostring( L, -1 ) ) );
+	lua_pushinteger( L, GetFileModTime( lua_tostring( L, 1 ) ) );
+
 	return 1;
 }
 
@@ -2433,20 +2532,20 @@ Unload Camera2D
 - Success return true
 */
 int lcoreUnloadCamera2D( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UnloadCamera2D( int Camera2D )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t id = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
 
-	if ( !validCamera2D( id ) ) {
+	if ( !validCamera2D( cameraId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
 
-	free( state->camera2Ds[ id ] );
-	state->camera2Ds[ id ] = NULL;
+	free( state->camera2Ds[ cameraId ] );
+	state->camera2Ds[ cameraId ] = NULL;
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2461,19 +2560,19 @@ Begin 2D mode with custom camera ( 2D )
 - Success return true
 */
 int lcoreBeginMode2D( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.BeginMode2D( camera2D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t id = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
 
-	if ( !validCamera2D( id ) ) {
+	if ( !validCamera2D( cameraId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
 
-	BeginMode2D( *state->camera2Ds[ id ] );
+	BeginMode2D( *state->camera2Ds[ cameraId ] );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2499,13 +2598,13 @@ Set camera target ( rotation and zoom origin )
 - Success return true
 */
 int lcoreSetCamera2DTarget( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera2DTarget( camera2D camera, Vector2 target )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Vector2 target = uluaGetVector2( L );
-	size_t cameraId = lua_tointeger( L, -2 );
+	size_t cameraId = lua_tointeger( L, 1 );
+	Vector2 target = uluaGetVector2Index( L, 2 );
 
 	if ( !validCamera2D( cameraId ) ) {
 		lua_pushboolean( L, false );
@@ -2527,13 +2626,13 @@ Set camera offset ( displacement from target )
 - Success return true
 */
 int lcoreSetCamera2DOffset( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera2DOffset( camera2D camera, Vector2 offset )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Vector2 offset = uluaGetVector2( L );
-	size_t cameraId = lua_tointeger( L, -2 );
+	size_t cameraId = lua_tointeger( L, 1 );
+	Vector2 offset = uluaGetVector2Index( L, 2 );
 
 	if ( !validCamera2D( cameraId ) ) {
 		lua_pushboolean( L, false );
@@ -2555,19 +2654,20 @@ Set camera rotation in degrees
 - Success return true
 */
 int lcoreSetCamera2DRotation( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera2DRotation( camera2D camera, float rotation )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -2 );
+	size_t cameraId = lua_tointeger( L, 1 );
+	float rotation = lua_tonumber( L, 2 );
 
 	if ( !validCamera2D( cameraId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
 
-	state->camera2Ds[ cameraId ]->rotation = lua_tonumber( L, -1 );
+	state->camera2Ds[ cameraId ]->rotation = rotation;
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2582,19 +2682,20 @@ Set camera zoom ( scaling ), should be 1.0f by default
 - Success return true
 */
 int lcoreSetCamera2DZoom( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera2DZoom( camera2D camera, float zoom )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -2 );
+	size_t cameraId = lua_tointeger( L, 1 );
+	float zoom = lua_tonumber( L, 2 );
 
 	if ( !validCamera2D( cameraId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
 
-	state->camera2Ds[ cameraId ]->zoom = lua_tonumber( L, -1 );
+	state->camera2Ds[ cameraId ]->zoom = zoom;
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2609,12 +2710,12 @@ Get camera2D target
 - Success return Vector2
 */
 int lcoreGetCamera2DTarget( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera2DTarget( camera2D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
 
 	if ( !validCamera2D( cameraId ) ) {
 		lua_pushnil( L );
@@ -2635,12 +2736,12 @@ Get camera2D offset
 - Success return Vector2
 */
 int lcoreGetCamera2DOffset( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera2DOffset( camera2D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
 
 	if ( !validCamera2D( cameraId ) ) {
 		lua_pushnil( L );
@@ -2661,12 +2762,12 @@ Get camera2D rotation
 - Success return float
 */
 int lcoreGetCamera2DRotation( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera2DRotation( camera2D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
 
 	if ( !validCamera2D( cameraId ) ) {
 		lua_pushnil( L );
@@ -2686,12 +2787,12 @@ Get camera2D zoom
 - Success return float
 */
 int lcoreGetCamera2DZoom( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera2DZoom( camera2D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
 
 	if ( !validCamera2D( cameraId ) ) {
 		lua_pushnil( L );
@@ -2743,20 +2844,20 @@ Unload Camera3D
 - Success return true
 */
 int lcoreUnloadCamera3D( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UnloadCamera3D( int Camera3D )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t id = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
 
-	if ( !validCamera3D( id ) ) {
+	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
 
-	free( state->camera3Ds[ id ] );
-	state->camera3Ds[ id ] = NULL;
+	free( state->camera3Ds[ cameraId ] );
+	state->camera3Ds[ cameraId ] = NULL;
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2771,19 +2872,19 @@ Begin 3D mode with custom camera ( 3D )
 - Success return true
 */
 int lcoreBeginMode3D( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.BeginMode3D( camera3D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t id = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
 
-	if ( !validCamera3D( id ) ) {
+	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
 
-	BeginMode3D( *state->camera3Ds[ id ] );
+	BeginMode3D( *state->camera3Ds[ cameraId ] );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2809,13 +2910,13 @@ Set camera position ( Remember to call "RL.UpdateCamera3D()" to apply changes )
 - Success return true
 */
 int lcoreSetCamera3DPosition( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera3DPosition( camera3D camera, Vector3 position )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Vector3 pos = uluaGetVector3( L );
-	size_t cameraId = lua_tointeger( L, -2 );
+	size_t cameraId = lua_tointeger( L, 1 );
+	Vector3 pos = uluaGetVector3Index( L, 2 );
 
 	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
@@ -2837,13 +2938,13 @@ Set camera target it looks-at
 - Success return true
 */
 int lcoreSetCamera3DTarget( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera3DTarget( camera3D camera, Vector3 target )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Vector3 target = uluaGetVector3( L );
-	size_t cameraId = lua_tointeger( L, -2 );
+	size_t cameraId = lua_tointeger( L, 1 );
+	Vector3 target = uluaGetVector3Index( L, 2 );
 
 	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
@@ -2865,13 +2966,13 @@ Set camera up vector ( Rotation over it's axis )
 - Success return true
 */
 int lcoreSetCamera3DUp( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera3DUp( camera3D camera, Vector3 up )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Vector3 up = uluaGetVector3( L );
-	size_t cameraId = lua_tointeger( L, -2 );
+	size_t cameraId = lua_tointeger( L, 1 );
+	Vector3 up = uluaGetVector3Index( L, 2 );
 
 	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
@@ -2893,19 +2994,20 @@ Set camera field-of-view apperture in Y ( degrees ) in perspective, used as near
 - Success return true
 */
 int lcoreSetCamera3DFovy( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera3DFovy( camera3D camera, float fovy )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -2 );
+	size_t cameraId = lua_tointeger( L, 1 );
+	float fovy = lua_tonumber( L, 2 );
 
 	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
 
-	state->camera3Ds[ cameraId ]->fovy = lua_tonumber( L, -1 );
+	state->camera3Ds[ cameraId ]->fovy = fovy;
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2920,19 +3022,20 @@ Set camera projection mode ( CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC )
 - Success return true
 */
 int lcoreSetCamera3DProjection( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera3DProjection( camera3D camera, int projection )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -2 );
+	size_t cameraId = lua_tointeger( L, 1 );
+	int projection = lua_tointeger( L, 2 );
 
 	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
 
-	state->camera3Ds[ cameraId ]->projection = lua_tointeger( L, -1 );
+	state->camera3Ds[ cameraId ]->projection = projection;
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2947,12 +3050,12 @@ Get camera position
 - Success return Vector3
 */
 int lcoreGetCamera3DPosition( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DPosition( camera3D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
 
 	if ( !validCamera3D( cameraId ) ) {
 		lua_pushnil( L );
@@ -2973,12 +3076,12 @@ Get camera target it looks-at
 - Success return Vector3
 */
 int lcoreGetCamera3DTarget( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DTarget( camera3D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
 
 	if ( !validCamera3D( cameraId ) ) {
 		lua_pushnil( L );
@@ -2999,12 +3102,12 @@ Get camera up vector ( Rotation over it's axis )
 - Success return Vector3
 */
 int lcoreGetCamera3DUp( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DUp( camera3D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
 
 	if ( !validCamera3D( cameraId ) ) {
 		lua_pushnil( L );
@@ -3025,12 +3128,12 @@ Get camera field-of-view apperture in Y ( degrees ) in perspective, used as near
 - Success return float
 */
 int lcoreGetCamera3DFovy( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DFovy( camera3D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
 
 	if ( !validCamera3D( cameraId ) ) {
 		lua_pushnil( L );
@@ -3051,12 +3154,12 @@ Get camera projection mode
 - Success return int
 */
 int lcoreGetCamera3DProjection( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DProjection( camera3D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
 
 	if ( !validCamera3D( cameraId ) ) {
 		lua_pushnil( L );
@@ -3077,15 +3180,13 @@ Update camera position for selected mode
 - Success return true
 */
 int lcoreUpdateCamera3D( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UpdateCamera3D( camera3D camera, int mode )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
-	int mode = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	size_t cameraId = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
+	int mode = lua_tointeger( L, 2 );
 
 	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
@@ -3107,19 +3208,15 @@ Update camera movement, movement/rotation values should be provided by user
 - Success return true
 */
 int lcoreUpdateCamera3DPro( lua_State *L ) {
-	if ( !lua_isnumber( L, -4 ) || !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_isnumber( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UpdateCamera3DPro( camera3D camera, Vector3 movement, Vector3 rotation, float zoom )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
-	float zoom = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 rotation = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Vector3 movement = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	size_t cameraId = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
+	Vector3 movement = uluaGetVector3Index( L, 2 );
+	Vector3 rotation = uluaGetVector3Index( L, 3 );
+	float zoom = lua_tointeger( L, 4 );
 
 	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
@@ -3145,14 +3242,13 @@ Get a ray trace from mouse position
 - Success return Ray
 */
 int lcoreGetMouseRay( lua_State *L ) {
-	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetMouseRay( Vector2 mousePosition, Camera3D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	Vector2 mousePosition = uluaGetVector2( L );
+	Vector2 mousePosition = uluaGetVector2Index( L, 1 );
+	size_t cameraId = lua_tointeger( L, 2 );
 
 	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
@@ -3172,12 +3268,12 @@ Get camera transform matrix ( view matrix )
 - Success return Matrix
 */
 int lcoreGetCameraMatrix( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCameraMatrix( Camera3D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
 
 	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
@@ -3197,12 +3293,12 @@ Get camera 2d transform matrix
 - Success return Matrix
 */
 int lcoreGetCameraMatrix2D( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCameraMatrix2D( Camera2D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
 
 	if ( !validCamera2D( cameraId ) ) {
 		lua_pushboolean( L, false );
@@ -3222,14 +3318,13 @@ Get the screen space position for a 3d world space position
 - Success return Vector2
 */
 int lcoreGetWorldToScreen( lua_State *L ) {
-	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetWorldToScreen( Vector3 position, Camera3D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 position = uluaGetVector3( L );
+	Vector3 position = uluaGetVector3Index( L, 1 );
+	size_t cameraId = lua_tointeger( L, 2 );
 
 	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
@@ -3249,16 +3344,14 @@ Get size position for a 3d world space position
 - Success return Vector2
 */
 int lcoreGetWorldToScreenEx( lua_State *L ) {
-	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetWorldToScreenEx( Vector3 position, Camera3D camera, Vector2 size )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Vector2 size = uluaGetVector2( L );
-	lua_pop( L, 1 );
-	size_t cameraId = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 position = uluaGetVector3( L );
+	Vector3 position = uluaGetVector3Index( L, 1 );
+	size_t cameraId = lua_tointeger( L, 2 );
+	Vector2 size = uluaGetVector2Index( L, 3 );
 
 	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
@@ -3278,14 +3371,13 @@ Get the screen space position for a 2d camera world space position
 - Success return Vector2
 */
 int lcoreGetWorldToScreen2D( lua_State *L ) {
-	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetWorldToScreen2D( Vector2 position, Camera2D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	Vector2 position = uluaGetVector2( L );
+	Vector2 position = uluaGetVector2Index( L, 1 );
+	size_t cameraId = lua_tointeger( L, 2 );
 
 	if ( !validCamera2D( cameraId ) ) {
 		lua_pushboolean( L, false );
@@ -3305,14 +3397,13 @@ Get the world space position for a 2d camera screen space position
 - Success return Vector2
 */
 int lcoreGetScreenToWorld2D( lua_State *L ) {
-	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetScreenToWorld2D( Vector2 position, Camera2D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	Vector2 position = uluaGetVector2( L );
+	Vector2 position = uluaGetVector2Index( L, 1 );
+	size_t cameraId = lua_tointeger( L, 2 );
 
 	if ( !validCamera2D( cameraId ) ) {
 		lua_pushboolean( L, false );

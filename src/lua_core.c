@@ -2059,7 +2059,11 @@ void uluaPushBoundingBox( lua_State *L, BoundingBox box ) {
 }
 
 int uluaGetTableLen( lua_State *L ) {
-	int t = lua_gettop( L ), i = 0;
+	return uluaGetTableLenIndex( L, lua_gettop( L ) );
+}
+
+int uluaGetTableLenIndex( lua_State *L, int index ) {
+	int t = index, i = 0;
     lua_pushnil( L );
 
     while ( lua_next( L, t ) != 0 ) {

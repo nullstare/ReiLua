@@ -51,3 +51,4 @@ void uluaPushRayCollision( lua_State *L, RayCollision rayCol );
 void uluaPushBoundingBox( lua_State *L, BoundingBox box );
 
 int uluaGetTableLen( lua_State *L );
+int uluaGetTableLenIndex( lua_State *L, int index );

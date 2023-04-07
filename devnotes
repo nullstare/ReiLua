@@ -22,10 +22,11 @@ Backlog {
 	* Models
 		* DrawCapsule and DrawCapsuleWires
 		* LoadMaterials
-	* Test
+	* Needs Testing
 		* UpdateTexture
 		* UpdateTextureRec
 		* GetColor
 		* LoadShader
 		* LoadShaderFromMemory
+		* LoadSoundFromWave
 }

@@ -1172,7 +1172,7 @@ Set window minimum dimensions ( for FLAG_WINDOW_RESIZABLE )
 
 ---
 
-> position = RL.GetMonitorPosition( int monitor )
+> position = RL.GetMonitorPosition(  )
 
 Get specified monitor position
 
@@ -2539,7 +2539,7 @@ Draw line using quadratic bezier curves with a control point
 
 ---
 
-> success = RL.DrawLineStrip( Vector2{} points, int pointsCount, Color color )
+> success = RL.DrawLineStrip( Vector2{} points, Color color )
 
 Draw lines sequence
 
@@ -2728,7 +2728,7 @@ Draw triangle outline ( Vertex in counter-clockwise order! )
 
 ---
 
-> success = RL.DrawTriangleFan( Vector2{} points, int pointsCount, Color color )
+> success = RL.DrawTriangleFan( Vector2{} points, Color color )
 
 Draw a triangle fan defined by points ( first vertex is the center )
 
@@ -2737,7 +2737,7 @@ Draw a triangle fan defined by points ( first vertex is the center )
 
 ---
 
-> success = RL.DrawTriangleStrip( Vector2{} points, int pointsCount, Color color )
+> success = RL.DrawTriangleStrip( Vector2{} points, Color color )
 
 Draw a triangle strip defined by points
 

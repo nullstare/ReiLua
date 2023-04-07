@@ -30,6 +30,10 @@ Detailed changes:
 	- ADDED: ColorContrast
 	- ADDED: GenImagePerlinNoise
 	- ADDED: GenImageText
+	- CHANGED: DrawLineStrip no longer require pointsCount
+	- CHANGED: DrawTriangleFan no longer require pointsCount
+	- CHANGED: DrawTriangleStrip no longer require pointsCount
+	- REVISED: How argumets are handled. Now uluaGet* functions can take index. Also using mostly positive stack indexing.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

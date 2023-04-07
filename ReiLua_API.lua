@@ -605,9 +605,8 @@ function RL.SetWindowMinSize( size ) end
 ---Get specified monitor position
 ---- Failure return nil
 ---- Success return Vector2
----@param monitor integer
 ---@return any position 
-function RL.GetMonitorPosition( monitor ) end
+function RL.GetMonitorPosition() end
 
 ---Get specified monitor size
 ---- Failure return nil
@@ -1673,10 +1672,9 @@ function RL.DrawLineBezierCubic( startPos, endPos, startControlPos, endControlPo
 ---- Failure return false
 ---- Success return true
 ---@param points any
----@param pointsCount integer
 ---@param color table
 ---@return any success 
-function RL.DrawLineStrip( points, pointsCount, color ) end
+function RL.DrawLineStrip( points, color ) end
 
 ---Draw a color-filled circle
 ---- Failure return false
@@ -1885,19 +1883,17 @@ function RL.DrawTriangleLines( v1, v2, v3, color ) end
 ---- Failure return false
 ---- Success return true
 ---@param points any
----@param pointsCount integer
 ---@param color table
 ---@return any success 
-function RL.DrawTriangleFan( points, pointsCount, color ) end
+function RL.DrawTriangleFan( points, color ) end
 
 ---Draw a triangle strip defined by points
 ---- Failure return false
 ---- Success return true
 ---@param points any
----@param pointsCount integer
 ---@param color table
 ---@return any success 
-function RL.DrawTriangleStrip( points, pointsCount, color ) end
+function RL.DrawTriangleStrip( points, color ) end
 
 ---Draw a regular polygon ( Vector version )
 ---- Failure return false

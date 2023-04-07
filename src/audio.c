@@ -53,6 +53,34 @@ static void checkWaveRealloc( int i ) {
 	}
 }
 
+static int newSound() {
+	int i = 0;
+
+	for ( i = 0; i < state->soundCount; i++ ) {
+		if ( state->sounds[i] == NULL ) {
+			break;
+		}
+	}
+	state->sounds[i] = malloc( sizeof( Sound ) );
+	checkSoundRealloc( i );
+
+	return i;
+}
+
+static int newWave() {
+	int i = 0;
+
+	for ( i = 0; i < state->waveCount; i++ ) {
+		if ( state->waves[i] == NULL ) {
+			break;
+		}
+	}
+	state->waves[i] = malloc( sizeof( Wave ) );
+	checkWaveRealloc( i );
+
+	return i;
+}
+
 /*
 ## Audio - Audio device management
 */
@@ -66,12 +94,14 @@ Set master volume ( listener )
 - Success return true
 */
 int laudioSetMasterVolume( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMasterVolume( float volume )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetMasterVolume( lua_tonumber( L, -1 ) );
+	float volume = lua_tonumber( L, 1 );
+
+	SetMasterVolume( volume );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -90,30 +120,22 @@ Load sound from file
 - Success return int
 */
 int laudioLoadSound( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadSound( string fileName )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
 
-	if ( FileExists( lua_tostring( L, -1 ) ) ) {
-		int i = 0;
-
-		for ( i = 0; i < state->soundCount; i++ ) {
-			if ( state->sounds[i] == NULL ) {
-				break;
-			}
-		}
-		state->sounds[i] = malloc( sizeof( Sound ) );
-		*state->sounds[i] = LoadSound( lua_tostring( L, -1 ) );
+	if ( FileExists( lua_tostring( L, 1 ) ) ) {
+		int i = newSound();
+		*state->sounds[i] = LoadSound( lua_tostring( L, 1 ) );
 		lua_pushinteger( L, i );
-		checkSoundRealloc( i );
+		return 1;
 	}
 	else {
 		lua_pushinteger( L, -1 );
+		return 1;
 	}
-
-	return 1;
 }
 
 /*
@@ -125,29 +147,22 @@ Load wave data from file
 - Success return int
 */
 int laudioLoadWave( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadWave( string fileName )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
 
-	if ( FileExists( lua_tostring( L, -1 ) ) ) {
-		int i = 0;
-
-		for ( i = 0; i < state->waveCount; i++ ) {
-			if ( state->waves[i] == NULL ) {
-				break;
-			}
-		}
-		state->waves[i] = malloc( sizeof( Wave ) );
-		*state->waves[i] = LoadWave( lua_tostring( L, -1 ) );
+	if ( FileExists( lua_tostring( L, 1 ) ) ) {
+		int i = newWave();
+		*state->waves[i] = LoadWave( lua_tostring( L, 1 ) );
 		lua_pushinteger( L, i );
-		checkWaveRealloc( i );
+		return 1;
 	}
 	else {
 		lua_pushinteger( L, -1 );
+		return 1;
 	}
-	return 1;
 }
 
 /*
@@ -159,28 +174,20 @@ Load sound from wave data
 - Success return int
 */
 int laudioLoadSoundFromWave( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadSoundFromWave( Wave wave )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	size_t waveId = lua_tointeger( L, -1 );
+	size_t waveId = lua_tointeger( L, 1 );
 
 	if ( !validWave( waveId ) ) {
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	int i = 0;
-
-	for ( i = 0; i < state->soundCount; i++ ) {
-		if ( state->sounds[i] == NULL ) {
-			break;
-		}
-	}
-	state->sounds[i] = malloc( sizeof( Sound ) );
+	int i = newSound();
 	*state->sounds[i] = LoadSoundFromWave( *state->waves[ waveId ] );
 	lua_pushinteger( L, i );
-	checkSoundRealloc( i );
 
 	return 1;
 }
@@ -194,19 +201,19 @@ Unload sound
 - Success return true
 */
 int laudioUnloadSound( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UnloadSound( Sound sound )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t id = lua_tointeger( L, -1 );
+	size_t soundId = lua_tointeger( L, 1 );
 
-	if ( !validSound( id ) ) {
+	if ( !validSound( soundId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	UnloadSound( *state->sounds[ id ] );
-	state->sounds[ id ] = NULL;
+	UnloadSound( *state->sounds[ soundId ] );
+	state->sounds[ soundId ] = NULL;
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -221,19 +228,19 @@ Unload wave data
 - Success return true
 */
 int laudioUnloadWave( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UnloadWave( Wave wave )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t id = lua_tointeger( L, -1 );
+	size_t waveId = lua_tointeger( L, 1 );
 
-	if ( !validWave( id ) ) {
+	if ( !validWave( waveId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	UnloadWave( *state->waves[ id ] );
-	state->waves[ id ] = NULL;
+	UnloadWave( *state->waves[ waveId ] );
+	state->waves[ waveId ] = NULL;
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -248,18 +255,18 @@ Export wave data to file, returns true on success
 - Success return true
 */
 int laudioExportWave( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isstring( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ExportWave( Wave wave, string fileName )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t id = lua_tointeger( L, -2 );
+	size_t waveId = lua_tointeger( L, 1 );
 
-	if ( !validWave( id ) ) {
+	if ( !validWave( waveId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushboolean( L, ExportWave( *state->waves[ id ], lua_tostring( L, -1 ) ) );
+	lua_pushboolean( L, ExportWave( *state->waves[ waveId ], lua_tostring( L, 2 ) ) );
 
 	return 1;
 }
@@ -273,18 +280,18 @@ Export wave sample data to code (.h), returns true on success
 - Success return true
 */
 int laudioExportWaveAsCode( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isstring( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ExportWaveAsCode( Wave wave, string fileName )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t id = lua_tointeger( L, -2 );
+	size_t waveId = lua_tointeger( L, 1 );
 
-	if ( !validWave( id ) ) {
+	if ( !validWave( waveId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushboolean( L, ExportWaveAsCode( *state->waves[ id ], lua_tostring( L, -1 ) ) );
+	lua_pushboolean( L, ExportWaveAsCode( *state->waves[ waveId ], lua_tostring( L, 2 ) ) );
 
 	return 1;
 }
@@ -302,12 +309,12 @@ Play a sound
 - Success return true
 */
 int laudioPlaySound( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.PlaySound( Sound sound )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t soundId = lua_tointeger( L, -1 );
+	size_t soundId = lua_tointeger( L, 1 );
 
 	if ( !validSound( soundId ) ) {
 		lua_pushboolean( L, false );
@@ -328,12 +335,12 @@ Stop playing a sound
 - Success return true
 */
 int laudioStopSound( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.StopSound( Sound sound )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t soundId = lua_tointeger( L, -1 );
+	size_t soundId = lua_tointeger( L, 1 );
 
 	if ( !validSound( soundId ) ) {
 		lua_pushboolean( L, false );
@@ -354,12 +361,12 @@ Pause a sound
 - Success return true
 */
 int laudioPauseSound( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.PauseSound( Sound sound )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t soundId = lua_tointeger( L, -1 );
+	size_t soundId = lua_tointeger( L, 1 );
 
 	if ( !validSound( soundId ) ) {
 		lua_pushboolean( L, false );
@@ -380,12 +387,12 @@ Resume a paused sound
 - Success return true
 */
 int laudioResumeSound( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ResumeSound( Sound sound )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t soundId = lua_tointeger( L, -1 );
+	size_t soundId = lua_tointeger( L, 1 );
 
 	if ( !validSound( soundId ) ) {
 		lua_pushboolean( L, false );
@@ -406,12 +413,12 @@ Check if a sound is currently playing
 - Success return bool
 */
 int laudioIsSoundPlaying( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsSoundPlaying( Sound sound )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	size_t soundId = lua_tointeger( L, -1 );
+	size_t soundId = lua_tointeger( L, 1 );
 
 	if ( !validSound( soundId ) ) {
 		lua_pushnil( L );
@@ -431,16 +438,19 @@ Set volume for a sound ( 1.0 is max level )
 - Success return true
 */
 int laudioSetSoundVolume( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetSoundVolume( Sound sound, float volume )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	if ( !validSound( lua_tointeger( L, -2 ) ) ) {
+	size_t soundId = lua_tointeger( L, 1 );
+	float volume = lua_tonumber( L, 2 );
+
+	if ( !validSound( soundId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetSoundVolume( *state->sounds[ lua_tointeger( L, -2 ) ], lua_tonumber( L, -1 ) );
+	SetSoundVolume( *state->sounds[ soundId ], volume );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -455,16 +465,19 @@ Set pitch for a sound ( 1.0 is base level )
 - Success return true
 */
 int laudioSetSoundPitch( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetSoundPitch( Sound sound, float pitch )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	if ( !validSound( lua_tointeger( L, -2 ) ) ) {
+	size_t soundId = lua_tointeger( L, 1 );
+	float pitch = lua_tonumber( L, 2 );
+
+	if ( !validSound( soundId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetSoundPitch( *state->sounds[ lua_tointeger( L, -2 ) ], lua_tonumber( L, -1 ) );
+	SetSoundPitch( *state->sounds[ soundId ], pitch );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -479,16 +492,19 @@ Set pan for a sound ( 0.5 is center )
 - Success return true
 */
 int laudioSetSoundPan( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetSoundPan( Sound sound, float pitch )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	if ( !validSound( lua_tointeger( L, -2 ) ) ) {
+	size_t soundId = lua_tointeger( L, 1 );
+	float pan = lua_tonumber( L, 2 );
+
+	if ( !validSound( soundId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetSoundPan( *state->sounds[ lua_tointeger( L, -2 ) ], lua_tonumber( L, -1 ) );
+	SetSoundPan( *state->sounds[ soundId ], pan );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -503,15 +519,15 @@ Convert wave data to desired format
 - Success return true
 */
 int laudioWaveFormat( lua_State *L ) {
-	if ( !lua_isnumber( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.WaveFormat( Wave wave, int sampleRate, int sampleSize, int channels )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	int channels = lua_tointeger( L, -1 );
-	int sampleSize = lua_tointeger( L, -2 );
-	int sampleRate = lua_tointeger( L, -3 );
-	size_t waveId = lua_tointeger( L, -4 );
+	size_t waveId = lua_tointeger( L, 1 );
+	int sampleRate = lua_tointeger( L, 2 );
+	int sampleSize = lua_tointeger( L, 3 );
+	int channels = lua_tointeger( L, 4 );
 
 	if ( !validWave( waveId ) ) {
 		lua_pushboolean( L, false );
@@ -532,28 +548,20 @@ Copy a wave to a new wave
 - Success return int
 */
 int laudioWaveCopy( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.WaveCopy( Wave wave )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	size_t waveId = lua_tointeger( L, -1 );
+	size_t waveId = lua_tointeger( L, 1 );
 
 	if ( !validWave( waveId ) ) {
-		lua_pushnil( L );
+		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	int i = 0;
-
-	for ( i = 0; i < state->waveCount; i++ ) {
-		if ( state->waves[i] == NULL ) {
-			break;
-		}
-	}
-	state->waves[i] = malloc( sizeof( Wave ) );
+	int i = newWave();
 	*state->waves[i] = WaveCopy( *state->waves[ waveId ] );
 	lua_pushinteger( L, i );
-	checkWaveRealloc( i );
 
 	return 1;
 }
@@ -567,14 +575,14 @@ Crop a wave to defined samples range
 - Success return true
 */
 int laudioWaveCrop( lua_State *L ) {
-	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.WaveCrop( Wave wave, int initSample, int finalSample )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	int finalSample = lua_tointeger( L, -1 );
-	int initSample = lua_tointeger( L, -2 );
-	size_t waveId = lua_tointeger( L, -3 );
+	size_t waveId = lua_tointeger( L, 1 );
+	int initSample = lua_tointeger( L, 2 );
+	int finalSample = lua_tointeger( L, 3 );
 
 	if ( !validWave( waveId ) ) {
 		lua_pushboolean( L, false );
@@ -599,13 +607,13 @@ Load music stream from file
 - Success return true
 */
 int laudioLoadMusicStream( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadMusicStream( string fileName )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	if ( FileExists( lua_tostring( L, -1 ) ) ) {
-		state->music = LoadMusicStream( lua_tostring( L, -1 ) );
+	if ( FileExists( lua_tostring( L, 1 ) ) ) {
+		state->music = LoadMusicStream( lua_tostring( L, 1 ) );
 		state->music.looping = false;
 		
 		lua_pushboolean( L, true );
@@ -683,12 +691,14 @@ Seek music to a position ( in seconds )
 - Success return true
 */
 int laudioSeekMusicStream( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SeekMusicStream( float position )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SeekMusicStream( state->music, lua_tonumber( L, -1 ) );
+	float position = lua_tonumber( L, 1 );
+
+	SeekMusicStream( state->music, position );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -703,12 +713,14 @@ Set volume for music ( 1.0 is max level )
 - Success return true
 */
 int laudioSetMusicVolume( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMusicVolume( float volume )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetMusicVolume( state->music, lua_tonumber( L, -1 ) );
+	float volume = lua_tonumber( L, 1 );
+
+	SetMusicVolume( state->music, volume );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -723,12 +735,14 @@ Set pitch for a music ( 1.0 is base level )
 - Success return true
 */
 int laudioSetMusicPitch( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMusicPitch( float pitch )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetMusicPitch( state->music, lua_tonumber( L, -1 ) );
+	float pitch = lua_tonumber( L, 1 );
+
+	SetMusicPitch( state->music, pitch );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -743,12 +757,14 @@ Set pan for a music ( 0.5 is center )
 - Success return true
 */
 int laudioSetMusicPan( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMusicPan( float pan )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetMusicPitch( state->music, lua_tonumber( L, -1 ) );
+	float pan = lua_tonumber( L, 1 );
+
+	SetMusicPitch( state->music, pan );
 	lua_pushboolean( L, true );
 
 	return 1;

@@ -154,7 +154,6 @@ int ltexturesLoadImage( lua_State *L ) {
 		int i = newImage();
 		*state->images[i] = LoadImage( lua_tostring( L, 1 ) );
 		lua_pushinteger( L, i );
-
 		return 1;
 	}
 	else {

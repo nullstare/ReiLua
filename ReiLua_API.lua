@@ -2127,6 +2127,15 @@ function RL.GenImageChecked( size, checks, col1, col2 ) end
 ---@return any image 
 function RL.GenImageWhiteNoise( size, factor ) end
 
+---Generate image: perlin noise
+---- Failure return -1
+---- Success return int
+---@param size table
+---@param offset table
+---@param factor number
+---@return any image 
+function RL.GenImagePerlinNoise( size, offset, factor ) end
+
 ---Generate image: cellular algorithm. Bigger tileSize means bigger cells
 ---- Failure return -1
 ---- Success return int
@@ -2134,6 +2143,14 @@ function RL.GenImageWhiteNoise( size, factor ) end
 ---@param tileSize integer
 ---@return any image 
 function RL.GenImageCellular( size, tileSize ) end
+
+---Generate image: grayscale image from text data
+---- Failure return -1
+---- Success return int
+---@param size table
+---@param text string
+---@return any image 
+function RL.GenImageText( size, text ) end
 
 -- Textures - Image Manipulation Functions
 

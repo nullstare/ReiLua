@@ -144,15 +144,15 @@ Load image from file into CPU memory ( RAM )
 - Success return int
 */
 int ltexturesLoadImage( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadImage( string fileName )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
 
-	if ( FileExists( lua_tostring( L, -1 ) ) ) {
+	if ( FileExists( lua_tostring( L, 1 ) ) ) {
 		int i = newImage();
-		*state->images[i] = LoadImage( lua_tostring( L, -1 ) );
+		*state->images[i] = LoadImage( lua_tostring( L, 1 ) );
 		lua_pushinteger( L, i );
 
 		return 1;
@@ -172,12 +172,12 @@ Load image from GPU texture data
 - Success return int
 */
 int ltexturesLoadImageFromTexture( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadImageFromTexture( Texture2D texture )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	size_t texId = lua_tointeger( L, -1 );
+	size_t texId = lua_tointeger( L, 1 );
 
 	if ( !validSourceTexture( texId ) ) {
 		lua_pushinteger( L, -1 );
@@ -214,12 +214,12 @@ Unload image from CPU memory ( RAM )
 - Success return true
 */
 int ltexturesUnloadImage( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UnloadImage( Image image )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t id = lua_tointeger( L, -1 );
+	size_t id = lua_tointeger( L, 1 );
 
 	if ( !validImage( id ) ) {
 		lua_pushboolean( L, false );
@@ -241,18 +241,18 @@ Export image data to file, returns true on success
 - Success return bool
 */
 int ltexturesExportImage( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isstring( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ExportImage( Image image, string fileName )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	size_t id = lua_tointeger( L, -2 );
+	size_t id = lua_tointeger( L, 1 );
 
 	if ( !validImage( id ) ) {
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, ExportImage( *state->images[ id ], lua_tostring( L, -1 ) ) );
+	lua_pushboolean( L, ExportImage( *state->images[ id ], lua_tostring( L, 2 ) ) );
 
 	return 1;
 }
@@ -266,18 +266,18 @@ Export image as code file defining an array of bytes, returns true on success
 - Success return bool
 */
 int ltexturesExportImageAsCode( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isstring( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ExportImageAsCode( Image image, string fileName )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	size_t id = lua_tointeger( L, -2 );
+	size_t id = lua_tointeger( L, 1 );
 
 	if ( !validImage( id ) ) {
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, ExportImageAsCode( *state->images[ id ], lua_tostring( L, -1 ) ) );
+	lua_pushboolean( L, ExportImageAsCode( *state->images[ id ], lua_tostring( L, 2 ) ) );
 
 	return 1;
 }
@@ -295,16 +295,14 @@ Generate image: plain color
 - Success return int
 */
 int ltexturesGenImageColor( lua_State *L ) {
-	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenImageColor( int width, int height, Color color )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	int height = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	int width = lua_tointeger( L, -1 );
+	int width = lua_tointeger( L, 1 );
+	int height = lua_tointeger( L, 2 );
+	Color color = uluaGetColorIndex( L, 3 );
 
 	int i = newImage();
 	*state->images[i] = GenImageColor( width, height, color );
@@ -322,16 +320,14 @@ Generate image: vertical gradient
 - Success return int
 */
 int ltexturesGenImageGradientV( lua_State *L ) {
-	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenImageGradientV( Vector2 size, Color top, Color bottom )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	Color bottom = uluaGetColor( L );
-	lua_pop( L, 1 );
-	Color top = uluaGetColor( L );
-	lua_pop( L, 1 );
-	Vector2 size = uluaGetVector2( L );
+	Vector2 size = uluaGetVector2Index( L, 1 );
+	Color top = uluaGetColorIndex( L, 2 );
+	Color bottom = uluaGetColorIndex( L, 3 );
 	
 	int i = newImage();
 	*state->images[i] = GenImageGradientV( (int)size.x, (int)size.y, top, bottom );
@@ -405,18 +401,15 @@ Generate image: checked
 - Success return int
 */
 int ltexturesGenImageChecked( lua_State *L ) {
-	if ( !lua_istable( L, -4 ) || !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenImageChecked( Vector2 size, Vector2 checks, Color col1, Color col2 )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	Color col2 = uluaGetColor( L );
-	lua_pop( L, 1 );
-	Color col1 = uluaGetColor( L );
-	lua_pop( L, 1 );
-	Vector2 checks = uluaGetVector2( L );
-	lua_pop( L, 1 );
-	Vector2 size = uluaGetVector2( L );
+	Vector2 size = uluaGetVector2Index( L, 1 );
+	Vector2 checks = uluaGetVector2Index( L, 2 );
+	Color col1 = uluaGetColorIndex( L, 3 );
+	Color col2 = uluaGetColorIndex( L, 4 );
 	
 	int i = newImage();
 	*state->images[i] = GenImageChecked( (int)size.x, (int)size.y, (int)checks.x, (int)checks.y, col1, col2 );
@@ -434,17 +427,40 @@ Generate image: white noise
 - Success return int
 */
 int ltexturesGenImageWhiteNoise( lua_State *L ) {
-	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenImageWhiteNoise( Vector2 size, float factor )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	float factor = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector2 size = uluaGetVector2( L );
+	Vector2 size = uluaGetVector2Index( L, 1 );
+	float factor = lua_tonumber( L, 2 );
 	
 	int i = newImage();
 	*state->images[i] = GenImageWhiteNoise( (int)size.x, (int)size.y, factor );
+	lua_pushinteger( L, i );
+
+	return 1;
+}
+
+/*
+> image = RL.GenImagePerlinNoise( Vector2 size, Vector2 offset, float factor )
+
+Generate image: perlin noise
+
+- Failure return -1
+- Success return int
+*/
+int ltexturesGenImagePerlinNoise( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenImagePerlinNoise( Vector2 size, Vector2 offset, float factor )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	Vector2 size = uluaGetVector2Index( L, 1 );
+	Vector2 offset = uluaGetVector2Index( L, 2 );
+	
+	int i = newImage();
+	*state->images[i] = GenImagePerlinNoise( (int)size.x, (int)size.y, (int)offset.x, (int)offset.y, lua_tonumber( L, 3 ) );
 	lua_pushinteger( L, i );
 
 	return 1;
@@ -459,17 +475,38 @@ Generate image: cellular algorithm. Bigger tileSize means bigger cells
 - Success return int
 */
 int ltexturesGenImageCellular( lua_State *L ) {
-	if ( !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenImageCellular( Vector2 size, int tileSize )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	int tileSize = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
 	Vector2 size = uluaGetVector2( L );
 	
 	int i = newImage();
-	*state->images[i] = GenImageCellular( (int)size.x, (int)size.y, tileSize );
+	*state->images[i] = GenImageCellular( (int)size.x, (int)size.y, lua_tointeger( L, 2 ) );
+	lua_pushinteger( L, i );
+
+	return 1;
+}
+
+/*
+> image = RL.GenImageText( Vector2 size, string text )
+
+Generate image: grayscale image from text data
+
+- Failure return -1
+- Success return int
+*/
+int ltexturesGenImageText( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenImageText( Vector2 size, string text )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	Vector2 size = uluaGetVector2Index( L, 1 );
+
+	int i = newImage();
+	*state->images[i] = GenImageText( (int)size.x, (int)size.y, lua_tostring( L, 2 ) );
 	lua_pushinteger( L, i );
 
 	return 1;
@@ -488,12 +525,12 @@ Create an image duplicate ( useful for transformations )
 - Success return int
 */
 int ltexturesImageCopy( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageCopy( Image image )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	size_t imageId = lua_tointeger( L, -1 );
+	size_t imageId = lua_tointeger( L, 1 );
 
 	if ( !validImage( imageId ) ) {
 		lua_pushinteger( L, -1 );
@@ -515,14 +552,13 @@ Create an image from another image piece
 - Success return int
 */
 int ltexturesImageFromImage( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageFromImage( Image image, Rectangle rec )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	Rectangle rec = uluaGetRectangle( L );
-	lua_pop( L, 1 );
-	size_t imageId = lua_tointeger( L, -1 );
+	size_t imageId = lua_tointeger( L, 1 );
+	Rectangle rec = uluaGetRectangleIndex( L, 2 );
 
 	if ( !validImage( imageId ) ) {
 		lua_pushinteger( L, -1 );
@@ -1941,16 +1977,14 @@ Draw a Texture2D
 - Success return true
 */
 int ltexturesDrawTexture( lua_State *L ) {
-	if ( !lua_isnumber( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTexture( Texture2D texture, Vector2 position, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	Vector2 pos = uluaGetVector2( L );
-	lua_pop( L, 1 );
-	size_t texId = lua_tointeger( L, -1 );
+	size_t texId = lua_tointeger( L, 1 );
+	Vector2 pos = uluaGetVector2Index( L, 2 );
+	Color color = uluaGetColorIndex( L, 3 );
 
 	if ( !validSourceTexture( texId ) ) {
 		lua_pushboolean( L, false );
@@ -1972,25 +2006,22 @@ Draw a part of a texture defined by a rectangle
 - Success return true
 */
 int ltexturesDrawTextureRec( lua_State *L ) {
-	if ( !lua_isnumber( L, -4 ) || !lua_istable( L, -3 )  || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 )  || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTextureRec( Texture2D texture, Rectangle source, Vector2 position, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	Vector2 pos = uluaGetVector2( L );
-	lua_pop( L, 1 );
-	Rectangle srcRect = uluaGetRectangle( L );
-	lua_pop( L, 1 );
-	size_t texId = lua_tointeger( L, -1 );
+	size_t texId = lua_tointeger( L, 1 );
+	Rectangle srcRect = uluaGetRectangleIndex( L, 2 );
+	Vector2 pos = uluaGetVector2Index( L, 3 );
+	Color tint = uluaGetColorIndex( L, 4 );
 
 	if ( !validSourceTexture( texId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
 
-	DrawTextureRec( *texturesGetSourceTexture( texId ), srcRect, pos, color );
+	DrawTextureRec( *texturesGetSourceTexture( texId ), srcRect, pos, tint );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2005,23 +2036,18 @@ Draw a part of a texture defined by a rectangle with "pro" parameters
 - Success return true
 */
 int ltexturesDrawTexturePro( lua_State *L ) {
-	if ( !lua_isnumber( L, -6 ) || !lua_istable( L, -5 ) || !lua_istable( L, -4 )
-	|| !lua_istable( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 )
+	|| !lua_istable( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_istable( L, 6 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTexturePro( Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	float rot = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector2 origin = uluaGetVector2( L );
-	lua_pop( L, 1 );
-	Rectangle dstRect = uluaGetRectangle( L );
-	lua_pop( L, 1 );
-	Rectangle srcRect = uluaGetRectangle( L );
-	lua_pop( L, 1 );
-	size_t texId = lua_tointeger( L, -1 );
+	size_t texId = lua_tointeger( L, 1 );
+	Rectangle srcRect = uluaGetRectangleIndex( L, 2 );
+	Rectangle dstRect = uluaGetRectangleIndex( L, 3 );
+	Vector2 origin = uluaGetVector2Index( L, 4 );
+	float rot = lua_tonumber( L, 5 );
+	Color color = uluaGetColorIndex( L, 6 );
 
 	if ( !validSourceTexture( texId ) ) {
 		lua_pushboolean( L, false );

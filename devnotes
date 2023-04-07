@@ -17,8 +17,6 @@ Backlog {
 		* Compression/Encoding functionality.
 		* SetWindowIcons.
 	* Textures
-		* GenImagePerlinNoise
-		* GenImageText
 		* ImageDrawCircleLines
 		* ImageBlurGaussian
 	* Models

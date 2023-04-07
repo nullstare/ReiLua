@@ -2982,9 +2982,27 @@ Generate image: white noise
 
 ---
 
+> image = RL.GenImagePerlinNoise( Vector2 size, Vector2 offset, float factor )
+
+Generate image: perlin noise
+
+- Failure return -1
+- Success return int
+
+---
+
 > image = RL.GenImageCellular( Vector2 size, int tileSize )
 
 Generate image: cellular algorithm. Bigger tileSize means bigger cells
+
+- Failure return -1
+- Success return int
+
+---
+
+> image = RL.GenImageText( Vector2 size, string text )
+
+Generate image: grayscale image from text data
 
 - Failure return -1
 - Success return int

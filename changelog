@@ -28,6 +28,8 @@ Detailed changes:
 	- ADDED: ColorTint
 	- ADDED: ColorBrightness
 	- ADDED: ColorContrast
+	- ADDED: GenImagePerlinNoise
+	- ADDED: GenImageText
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

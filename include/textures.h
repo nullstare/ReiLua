@@ -22,7 +22,9 @@ int ltexturesGenImageGradientH( lua_State *L );
 int ltexturesGenImageGradientRadial( lua_State *L );
 int ltexturesGenImageChecked( lua_State *L );
 int ltexturesGenImageWhiteNoise( lua_State *L );
+int ltexturesGenImagePerlinNoise( lua_State *L );
 int ltexturesGenImageCellular( lua_State *L );
+int ltexturesGenImageText( lua_State *L );
 /* Image Manipulation Functions. */
 int ltexturesImageCopy( lua_State *L );
 int ltexturesImageFromImage( lua_State *L );

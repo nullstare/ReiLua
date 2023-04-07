@@ -934,7 +934,9 @@ void luaRegister() {
 	assingGlobalFunction( "GenImageGradientRadial", ltexturesGenImageGradientRadial );
 	assingGlobalFunction( "GenImageChecked", ltexturesGenImageChecked );
 	assingGlobalFunction( "GenImageWhiteNoise", ltexturesGenImageWhiteNoise );
+	assingGlobalFunction( "GenImagePerlinNoise", ltexturesGenImagePerlinNoise );
 	assingGlobalFunction( "GenImageCellular", ltexturesGenImageCellular );
+	assingGlobalFunction( "GenImageText", ltexturesGenImageText );
 		/* Image Manipulation Functions. */
 	assingGlobalFunction( "ImageCopy", ltexturesImageCopy );
 	assingGlobalFunction( "ImageFromImage", ltexturesImageFromImage );
@@ -1380,13 +1382,18 @@ void luaRegister() {
 /* Lua util functions. */
 
 Color uluaGetColor( lua_State *L ) {
+    return uluaGetColorIndex( L, lua_gettop( L ) );
+}
+
+Color uluaGetColorIndex( lua_State *L, int index ) {
     Color color = { 0, 0, 0, 255 };
 
-    if ( !lua_istable( L, -1 ) ) {
+    if ( !lua_istable( L, index ) ) {
 		TraceLog( LOG_WARNING, "%s", "Error. Wrong color value. Returning { 0, 0, 0, 255 }" );
         return color;
     }
-	int t = lua_gettop( L ), i = 0;
+	// int t = lua_gettop( L ), i = 0;
+	int t = index, i = 0;
     lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
@@ -1431,13 +1438,17 @@ Color uluaGetColor( lua_State *L ) {
 }
 
 Vector2 uluaGetVector2( lua_State *L ) {
+    return uluaGetVector2Index( L, lua_gettop( L ) );
+}
+
+Vector2 uluaGetVector2Index( lua_State *L, int index ) {
     Vector2 vector = { 0.0f, 0.0f };
 
-    if ( !lua_istable( L, -1 ) ) {
+    if ( !lua_istable( L, index ) ) {
 		TraceLog( LOG_WARNING, "%s", "Error. Wrong vector2 value. Returning { 0, 0 }" );
         return vector;
     }
-	int t = lua_gettop( L ), i = 0;
+	int t = index, i = 0;
     lua_pushnil( L );
 
     while ( lua_next( L, t ) != 0 ) {
@@ -1470,13 +1481,17 @@ Vector2 uluaGetVector2( lua_State *L ) {
 }
 
 Vector3 uluaGetVector3( lua_State *L ) {
+    return uluaGetVector3Index( L, lua_gettop( L ) );
+}
+
+Vector3 uluaGetVector3Index( lua_State *L, int index ) {
     Vector3 vector = { 0.0f, 0.0f, 0.0f };
 
-    if ( !lua_istable( L, -1 ) ) {
+    if ( !lua_istable( L, index ) ) {
 		TraceLog( LOG_WARNING, "%s", "Error. Wrong vector3 value. Returning { 0, 0, 0 }" );
         return vector;
     }
-	int t = lua_gettop( L ), i = 0;
+	int t = index, i = 0;
     lua_pushnil( L );
 
     while ( lua_next( L, t ) != 0 ) {
@@ -1515,13 +1530,17 @@ Vector3 uluaGetVector3( lua_State *L ) {
 }
 
 Vector4 uluaGetVector4( lua_State *L ) {
+   return uluaGetVector4Index( L, lua_gettop( L ) );
+}
+
+Vector4 uluaGetVector4Index( lua_State *L, int index ) {
     Vector4 vector = { 0.0f, 0.0f, 0.0f, 0.0f };
 
-    if ( !lua_istable( L, -1 ) ) {
+    if ( !lua_istable( L, index ) ) {
 		TraceLog( LOG_WARNING, "%s", "Error. Wrong vector4 value. Returning { 0, 0, 0, 0 }" );
         return vector;
     }
-	int t = lua_gettop( L ), i = 0;
+	int t = index, i = 0;
     lua_pushnil( L );
 
     while ( lua_next( L, t ) != 0 ) {
@@ -1566,13 +1585,18 @@ Vector4 uluaGetVector4( lua_State *L ) {
 }
 
 Rectangle uluaGetRectangle( lua_State *L ) {
+	return uluaGetRectangleIndex( L, lua_gettop( L ) );
+}
+
+Rectangle uluaGetRectangleIndex( lua_State *L, int index ) {
     Rectangle rect = { 0.0f, 0.0f, 0.0f, 0.0f };
 
-    if ( !lua_istable( L, -1 ) ) {
+    if ( !lua_istable( L, index ) ) {
 		TraceLog( LOG_WARNING, "%s", "Error. Wrong rectangle value. Returning { 0, 0, 0, 0 }" );
         return rect;
     }
-	int t = lua_gettop( L ), i = 0;
+
+	int t = index, i = 0;
     lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
@@ -1617,13 +1641,17 @@ Rectangle uluaGetRectangle( lua_State *L ) {
 }
 
 Quaternion uluaGetQuaternion( lua_State *L ) {
+    return uluaGetQuaternionIndex( L, lua_gettop( L ) );
+}
+
+Quaternion uluaGetQuaternionIndex( lua_State *L, int index ) {
     Quaternion quaternion = { 0.0f, 0.0f, 0.0f, 0.0f };
 
-    if ( !lua_istable( L, -1 ) ) {
+    if ( !lua_istable( L, index ) ) {
 		TraceLog( LOG_WARNING, "%s", "Error. Wrong quaternion value. Returning { 0, 0, 0, 0 }" );
         return quaternion;
     }
-	int t = lua_gettop( L ), i = 0;
+	int t = index, i = 0;
     lua_pushnil( L );
 
     while ( lua_next( L, t ) != 0 ) {
@@ -1668,14 +1696,18 @@ Quaternion uluaGetQuaternion( lua_State *L ) {
 }
 
 Matrix uluaGetMatrix( lua_State *L ) {
+	return uluaGetMatrixIndex( L, lua_gettop( L ) );
+}
+
+Matrix uluaGetMatrixIndex( lua_State *L, int index ) {
 	Matrix matrix = { 0.0f };
 	float m[4][4];
 
-    if ( !lua_istable( L, -1 ) ) {
+    if ( !lua_istable( L, index ) ) {
 		TraceLog( LOG_WARNING, "%s", "Error. Wrong matrix value. Returning MatrixIdentity." );
         return MatrixIdentity();
     }
-	int t = lua_gettop( L ), i = 0;
+	int t = index, i = 0;
     lua_pushnil( L );
 
     while ( lua_next( L, t ) != 0 ) {
@@ -1703,13 +1735,17 @@ Matrix uluaGetMatrix( lua_State *L ) {
 }
 
 BoundingBox uluaGetBoundingBox( lua_State *L ) {
+	return uluaGetBoundingBoxIndex( L, lua_gettop( L ) );
+}
+
+BoundingBox uluaGetBoundingBoxIndex( lua_State *L, int index ) {
 	BoundingBox box = { .min = { 0.0, 0.0, 0.0 }, .max = { 0.0, 0.0, 0.0 } };
 
-	if ( !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, index ) ) {
 		TraceLog( LOG_WARNING, "%s", "Error. Wrong boundingbox value. Returning { min{ 0, 0, 0 }, max{ 0, 0, 0 } }." );
         return box;
     }
-	int t = lua_gettop( L ), i = 0;
+	int t = index, i = 0;
     lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
@@ -1743,13 +1779,17 @@ BoundingBox uluaGetBoundingBox( lua_State *L ) {
 }
 
 Ray uluaGetRay( lua_State *L ) {
+	return uluaGetRayIndex( L, lua_gettop( L ) );
+}
+
+Ray uluaGetRayIndex( lua_State *L, int index ) {
 	Ray ray = { .position = { 0.0, 0.0, 0.0 }, .direction = { 0.0, 0.0, 0.0 } };
 
-	if ( !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, index ) ) {
 		TraceLog( LOG_WARNING, "%s", "Error. Wrong ray value. Returning { position{ 0, 0, 0 }, direction{ 0, 0, 0 } }." );
         return ray;
     }
-	int t = lua_gettop( L ), i = 0;
+	int t = index, i = 0;
     lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
@@ -1783,13 +1823,17 @@ Ray uluaGetRay( lua_State *L ) {
 }
 
 NPatchInfo uluaGetNPatchInfo( lua_State *L ) {
+	return uluaGetNPatchInfoIndex( L, lua_gettop( L ) );
+}
+
+NPatchInfo uluaGetNPatchInfoIndex( lua_State *L, int index ) {
 	NPatchInfo npatch = { .source = { 0.0, 0.0, 0.0, 0.0 }, .left = 0, .top = 0, .right = 0, .bottom = 0, .layout = NPATCH_NINE_PATCH };
 
-	if ( !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, index ) ) {
 		TraceLog( LOG_WARNING, "%s", "Error. Wrong ray value. Returning { source = { 0.0, 0.0, 0.0, 0.0 }, left = 0, top = 0, right = 0, bottom = 0, layout = NPATCH_NINE_PATCH }." );
         return npatch;
     }
-	int t = lua_gettop( L ), i = 0;
+	int t = index, i = 0;
     lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {

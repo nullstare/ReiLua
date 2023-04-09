@@ -1,13 +1,14 @@
 Current {
+	* New argument styles for: models, rgui, easings.
 	* ReiLua camera3D lib.
 	* Check new functions from https://github.com/raysan5/raylib/blob/master/CHANGELOG
 }
 
 Backlog {
-	* IsWaveReady and others like that.
+	* IsWaveReady and other Is* ready functions.
 
 	* rlgl
-		* More low level functions. Could be usefull now when draw polygon is removed.
+		* More low level functions. Could be usefull now when for example draw polygon is removed.
 	* Text
 		* Ability to set font texture filtering.
 		* Codepoints?
@@ -29,4 +30,8 @@ Backlog {
 		* LoadShader
 		* LoadShaderFromMemory
 		* LoadSoundFromWave
+		* LoadFont
+		* LoadFontEx
+		* LoadFontFromImage
+		* DrawText
 }

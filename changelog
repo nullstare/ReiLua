@@ -33,7 +33,8 @@ Detailed changes:
 	- CHANGED: DrawLineStrip no longer require pointsCount
 	- CHANGED: DrawTriangleFan no longer require pointsCount
 	- CHANGED: DrawTriangleStrip no longer require pointsCount
-	- REVISED: How argumets are handled. Now uluaGet* functions can take index. Also using mostly positive stack indexing.
+	- REVISED: How argumets are handled. Now uluaGet*Index functions can take stack index(positive only).
+	Also using mostly positive stack indexing.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

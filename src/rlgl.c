@@ -16,12 +16,12 @@ Set the line drawing width
 - Success return true
 */
 int lrlglSetLineWidth( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlSetLineWidth( float width )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	rlSetLineWidth( lua_tonumber( L, -1 ) );
+	rlSetLineWidth( lua_tonumber( L, 1 ) );
 	lua_pushboolean( L, true );
 
 	return 1;

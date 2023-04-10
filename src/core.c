@@ -248,7 +248,7 @@ int lcoreSetWindowMinSize( lua_State *L ) {
 }
 
 /*
-> position = RL.GetMonitorPosition(  )
+> position = RL.GetMonitorPosition( int monitor )
 
 Get specified monitor position
 
@@ -1022,18 +1022,17 @@ int lcoreLoadShaderFromMemory( lua_State *L ) {
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-
 	char *vs = NULL;
 	char *fs = NULL;
 
 	if ( lua_isstring( L, 1 ) ) {
-		size_t vsLen = lua_rawlen( L, 1 );
+		size_t vsLen = lua_rawlen( L, 1 ) + 1;
 
 		vs = malloc( vsLen * sizeof( char ) );
 		strcpy( vs, lua_tostring( L, 1 ) );
 	}
 	if ( lua_isstring( L, 2 ) ) {
-		size_t fsLen = lua_rawlen( L, 2 );
+		size_t fsLen = lua_rawlen( L, 2 ) + 1;
 
 		fs = malloc( fsLen * sizeof( char ) );
 		strcpy( fs, lua_tostring( L, 2 ) );

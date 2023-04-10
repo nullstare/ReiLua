@@ -1172,7 +1172,7 @@ Set window minimum dimensions ( for FLAG_WINDOW_RESIZABLE )
 
 ---
 
-> position = RL.GetMonitorPosition(  )
+> position = RL.GetMonitorPosition( int monitor )
 
 Get specified monitor position
 
@@ -3692,7 +3692,7 @@ Returns src alpha-blended into dst color with tint
 
 ---
 
-> Color = RL.GetColor( unsigned int hexValue )
+> color = RL.GetColor( unsigned int hexValue )
 
 Get Color structure from hexadecimal value
 
@@ -3701,7 +3701,7 @@ Get Color structure from hexadecimal value
 
 ---
 
-> Color = RL.GetPixelColor( Texture2D texture, Vector2 position )
+> color = RL.GetPixelColor( Texture2D texture, Vector2 position )
 
 Get pixel color from source texture
 

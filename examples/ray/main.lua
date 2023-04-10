@@ -1,6 +1,7 @@
 local camera = -1
 local sphereMesh = -1
 local ray = { { 0.5, 0, 4 }, { 0.1, 0, -1 } }
+local rayCol = {}
 
 local function setupWindow()
 	local monitor = 0
@@ -14,7 +15,7 @@ local function setupWindow()
 end
 
 function ray_collision()
-	local rayCol = RL.GetRayCollisionMesh( ray, sphereMesh, RL.MatrixIdentity() )
+	rayCol = RL.GetRayCollisionMesh( ray, sphereMesh, RL.MatrixIdentity() )
 
 	if rayCol ~= nil and rayCol.hit then
 		print( "hit", rayCol.hit )
@@ -53,5 +54,7 @@ function RL.draw()
 		RL.DrawRay( ray, { 255, 100, 100 } )
 
 		RL.DrawMesh( sphereMesh, 0, RL.MatrixIdentity() )
+		RL.DrawSphereWires( rayCol.point, 0.05, 4, 8, RL.BLUE )
+		RL.DrawLine3D( rayCol.point, RL.Vector3Add( rayCol.point, rayCol.normal ), RL.GREEN )
 	RL.EndMode3D()
 end

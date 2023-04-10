@@ -23,7 +23,6 @@ function RL.init()
 	RL.SetCamera3DPosition( camera, { 0, 8, 16 } )
 	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
 	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
-	RL.SetCameraMode( camera, RL.CAMERA_FREE )
 
 	local ts = PLANE_SIZE
 	local meshData = {
@@ -39,12 +38,6 @@ function RL.init()
 				    { 0, 1, 0 }, { 0, 1, 0 }, { 0, 1, 0 } },
 	}
 	mesh = RL.GenMeshCustom( meshData, true )
-
-	-- local meshEdit = {
-	-- 	vertices = { { 0, 1, 0 }, { 0, 0, PLANE_SIZE }, { PLANE_SIZE, 0, PLANE_SIZE },
-	-- 				 { 0, 1, 0 }, { PLANE_SIZE, 0, PLANE_SIZE }, { PLANE_SIZE, 0, 0 } },
-	-- }
-	-- RL.UpdateMesh( mesh, meshEdit )
 
 	tileTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/tile.png" )
 	RL.GenTextureMipmaps( tileTexture )
@@ -85,8 +78,8 @@ end
 
 function RL.draw()
 	RL.ClearBackground( { 25, 50, 50 } )
-	RL.UpdateCamera3D( camera )
-	
+	RL.UpdateCamera3D( camera, RL.CAMERA_ORBITAL )
+
 	RL.BeginMode3D( camera )
 		RL.DrawMesh( mesh, material, matrix )
 	RL.EndMode3D()

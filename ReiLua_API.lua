@@ -605,8 +605,9 @@ function RL.SetWindowMinSize( size ) end
 ---Get specified monitor position
 ---- Failure return nil
 ---- Success return Vector2
+---@param monitor integer
 ---@return any position 
-function RL.GetMonitorPosition() end
+function RL.GetMonitorPosition( monitor ) end
 
 ---Get specified monitor size
 ---- Failure return nil
@@ -2754,7 +2755,7 @@ function RL.ColorAlphaBlend( dst, src, tint ) end
 ---- Failure return false
 ---- Success return Color
 ---@param int any
----@return any Color 
+---@return any color 
 function RL.GetColor( int ) end
 
 ---Get pixel color from source texture
@@ -2762,7 +2763,7 @@ function RL.GetColor( int ) end
 ---- Success return Color
 ---@param texture any
 ---@param position table
----@return any Color 
+---@return any color 
 function RL.GetPixelColor( texture, position ) end
 
 ---Get pixel data size in bytes for certain format

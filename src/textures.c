@@ -2531,7 +2531,7 @@ int ltexturesColorAlphaBlend( lua_State *L ) {
 }
 
 /*
-> Color = RL.GetColor( unsigned int hexValue )
+> color = RL.GetColor( unsigned int hexValue )
 
 Get Color structure from hexadecimal value
 
@@ -2552,7 +2552,7 @@ int ltexturesGetColor( lua_State *L ) {
 }
 
 /*
-> Color = RL.GetPixelColor( Texture2D texture, Vector2 position )
+> color = RL.GetPixelColor( Texture2D texture, Vector2 position )
 
 Get pixel color from source texture
 

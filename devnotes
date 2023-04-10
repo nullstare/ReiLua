@@ -26,24 +26,10 @@ Backlog {
 	* Needs Testing
 		* UpdateTexture
 		* UpdateTextureRec
-		* GetColor
-		* LoadShader
-		* LoadShaderFromMemory
 		* LoadSoundFromWave
 		* LoadFont
 		* LoadFontEx
 		* LoadFontFromImage
-		* DrawText
-		* DrawQuad3DTexture
-		* GenMeshCustom
 		* UpdateMesh
-		* DrawMeshInstanced
-		* LoadModelAnimations
-		* LoadMaterialDefault
-		* CreateMaterial
-		* LoadModel
 		* LoadModelFromMesh
-		* SetModelMaterial
-		* UpdateModelAnimation
-		* GetRayCollisionMesh
 }

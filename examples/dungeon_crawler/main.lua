@@ -82,11 +82,6 @@ function RL.init()
 	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
 	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
 
-	-- for x = 0, 3 do
-	-- 	for y = 0, 9 do
-	-- 		table.insert( sprites, { pos = { x + 0.5, y + 0.5 + 1 }, tile = { 1, 1 }, dis = 0, size = 0.8 } )
-	-- 	end
-	-- end
 	table.insert( sprites, { pos = { 2.5, 2.5 }, tile = { 1, 1 }, dis = 0, size = 0.8 } )
 	table.insert( sprites, { pos = { 1.5, 3.5 }, tile = { 3, 1 }, dis = 0, size = 0.5 } )
 	table.insert( sprites, { pos = { 0.5, 3.5 }, tile = { 3, 0 }, dis = 0, size = 0.7 } )

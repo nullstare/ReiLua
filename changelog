@@ -6,6 +6,8 @@ KEY CHANGES:
 	- CHANGED: All examples are now changed to use new RL table method.
 	- ADDED: doc_parser creates also ReiLua_API.lua that can be used in projects with Lua Language Server.
 	- CHANGED: Switched to Raylib vertion 4.5. Removed some functions and added others. Main changes to camera3D.
+	- REVISED: How Lua argumets are handled. Now uluaGet*Index functions can take stack index(positive only).
+	Also using positive stack indexing.
 
 Detailed changes:
 	- FIXED: uluaGetRay was looking for integers instead of tables.
@@ -33,8 +35,7 @@ Detailed changes:
 	- CHANGED: DrawLineStrip no longer require pointsCount
 	- CHANGED: DrawTriangleFan no longer require pointsCount
 	- CHANGED: DrawTriangleStrip no longer require pointsCount
-	- REVISED: How argumets are handled. Now uluaGet*Index functions can take stack index(positive only).
-	Also using mostly positive stack indexing.
+	- FIXED: LoadShaderFromMemory
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

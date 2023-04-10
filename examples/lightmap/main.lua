@@ -78,7 +78,9 @@ end
 
 function RL.draw()
 	RL.ClearBackground( { 25, 50, 50 } )
-	RL.UpdateCamera3D( camera, RL.CAMERA_ORBITAL )
+	-- RL.UpdateCamera3D( camera, RL.CAMERA_ORBITAL )
+	-- RL.UpdateCamera3D( camera, RL.CAMERA_FREE )
+	RL.UpdateCamera3D( camera, RL.CAMERA_FIRST_PERSON )
 
 	RL.BeginMode3D( camera )
 		RL.DrawMesh( mesh, material, matrix )

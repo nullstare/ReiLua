@@ -8,6 +8,7 @@ KEY CHANGES:
 	- CHANGED: Switched to Raylib vertion 4.5. Removed some functions and added others. Main changes to camera3D.
 	- REVISED: How Lua argumets are handled. Now uluaGet*Index functions can take stack index(positive only).
 	Also using positive stack indexing.
+	- ADDED: Camera3D Lua lib.
 
 Detailed changes:
 	- FIXED: uluaGetRay was looking for integers instead of tables.
@@ -36,6 +37,18 @@ Detailed changes:
 	- CHANGED: DrawTriangleFan no longer require pointsCount
 	- CHANGED: DrawTriangleStrip no longer require pointsCount
 	- FIXED: LoadShaderFromMemory
+	- ADDED: GetCamera3DForward
+	- ADDED: GetCamera3DUpNormalized
+	- ADDED: GetCamera3DRight
+	- ADDED: Camera3DMoveForward
+	- ADDED: Camera3DMoveUp
+	- ADDED: Camera3DMoveRight
+	- ADDED: Camera3DMoveToTarget
+	- ADDED: Camera3DYaw
+	- ADDED: Camera3DPitch
+	- ADDED: Camera3DRoll
+	- ADDED: GetCamera3DViewMatrix
+	- ADDED: GetCamera3DProjectionMatrix
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

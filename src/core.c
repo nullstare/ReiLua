@@ -3171,6 +3171,345 @@ int lcoreGetCamera3DProjection( lua_State *L ) {
 }
 
 /*
+> forward = RL.GetCamera3DForward( camera3D camera )
+
+Returns the cameras forward vector ( normalized )
+
+- Failure return nil
+- Success return Vector3
+*/
+int lcoreGetCamera3DForward( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DForward( camera3D camera )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, 1 );
+
+	if ( !validCamera3D( cameraId ) ) {
+		lua_pushnil( L );
+		return 1;
+	}
+	uluaPushVector3( L, GetCameraForward( state->camera3Ds[ cameraId ] ) );
+
+	return 1;
+}
+
+/*
+> up = RL.GetCamera3DUpNormalized( camera3D camera )
+
+Returns the cameras up vector ( normalized )
+Note: The up vector might not be perpendicular to the forward vector
+
+- Failure return nil
+- Success return Vector3
+*/
+int lcoreGetCamera3DUpNormalized( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DUpNormalized( camera3D camera )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, 1 );
+
+	if ( !validCamera3D( cameraId ) ) {
+		lua_pushnil( L );
+		return 1;
+	}
+	uluaPushVector3( L, GetCameraUp( state->camera3Ds[ cameraId ] ) );
+
+	return 1;
+}
+
+/*
+> forward = RL.GetCamera3DRight( camera3D camera )
+
+Returns the cameras right vector ( normalized )
+
+- Failure return nil
+- Success return Vector3
+*/
+int lcoreGetCamera3DRight( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DRight( camera3D camera )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, 1 );
+
+	if ( !validCamera3D( cameraId ) ) {
+		lua_pushnil( L );
+		return 1;
+	}
+	uluaPushVector3( L, GetCameraRight( state->camera3Ds[ cameraId ] ) );
+
+	return 1;
+}
+
+/*
+> success = RL.Camera3DMoveForward( camera3D camera, float distance, bool moveInWorldPlane )
+
+Moves the camera in it's forward direction
+
+- Failure return false
+- Success return true
+*/
+int lcoreCamera3DMoveForward( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DRight( camera3D camera )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, 1 );
+	float distance = lua_tonumber( L, 2 );
+	bool moveInWorldPlane = lua_toboolean( L, 3 );
+
+	if ( !validCamera3D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	CameraMoveForward( state->camera3Ds[ cameraId ], distance, moveInWorldPlane );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.Camera3DMoveUp( camera3D camera, float distance )
+
+Moves the camera in it's up direction
+
+- Failure return false
+- Success return true
+*/
+int lcoreCamera3DMoveUp( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Camera3DMoveUp( camera3D camera, float distance )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, 1 );
+	float distance = lua_tonumber( L, 2 );
+
+	if ( !validCamera3D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	CameraMoveUp( state->camera3Ds[ cameraId ], distance );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.Camera3DMoveRight( camera3D camera, float distance, bool moveInWorldPlane )
+
+Moves the camera target in it's current right direction
+
+- Failure return false
+- Success return true
+*/
+int lcoreCamera3DMoveRight( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Camera3DMoveRight( camera3D camera, float distance, bool moveInWorldPlane )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, 1 );
+	float distance = lua_tonumber( L, 2 );
+	bool moveInWorldPlane = lua_toboolean( L, 3 );
+
+	if ( !validCamera3D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	CameraMoveRight( state->camera3Ds[ cameraId ], distance, moveInWorldPlane );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.Camera3DMoveToTarget( camera3D camera, float delta )
+
+Moves the camera position closer/farther to/from the camera target
+
+- Failure return false
+- Success return true
+*/
+int lcoreCamera3DMoveToTarget( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Camera3DMoveToTarget( camera3D camera, float delta )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, 1 );
+	float delta = lua_tonumber( L, 2 );
+
+	if ( !validCamera3D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	CameraMoveToTarget( state->camera3Ds[ cameraId ], delta );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.Camera3DYaw( camera3D camera, float angle, bool rotateAroundTarget )
+
+Rotates the camera around it's up vector
+Yaw is "looking left and right"
+If rotateAroundTarget is false, the camera rotates around it's position
+Note: angle must be provided in radians
+
+- Failure return false
+- Success return true
+*/
+int lcoreCamera3DYaw( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Camera3DYaw( camera3D camera, float angle, bool rotateAroundTarget )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, 1 );
+	float delta = lua_tonumber( L, 2 );
+	bool rotateAroundTarget = lua_toboolean( L, 3 );
+
+	if ( !validCamera3D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	CameraYaw( state->camera3Ds[ cameraId ], delta, rotateAroundTarget );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.Camera3DPitch( camera3D camera, float angle, bool lockView, bool rotateAroundTarget, bool rotateUp )
+
+Rotates the camera around it's right vector, pitch is "looking up and down"
+ - lockView prevents camera overrotation (aka "somersaults")
+ - rotateAroundTarget defines if rotation is around target or around it's position
+ - rotateUp rotates the up direction as well (typically only usefull in CAMERA_FREE)
+NOTE: angle must be provided in radians
+
+- Failure return false
+- Success return true
+*/
+int lcoreCamera3DPitch( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 )
+	|| !lua_isboolean( L, 4 ) || !lua_isboolean( L, 5 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Camera3DYaw( camera3D camera, float angle, bool rotateAroundTarget )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, 1 );
+	float delta = lua_tonumber( L, 2 );
+	bool lockView = lua_toboolean( L, 3 );
+	bool rotateAroundTarget = lua_toboolean( L, 4 );
+	bool rotateUp = lua_toboolean( L, 5 );
+
+	if ( !validCamera3D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	CameraPitch( state->camera3Ds[ cameraId ], delta, lockView, rotateAroundTarget, rotateUp );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.Camera3DRoll( camera3D camera, float angle )
+
+Rotates the camera around it's forward vector
+Roll is "turning your head sideways to the left or right"
+Note: angle must be provided in radians
+
+- Failure return false
+- Success return true
+*/
+int lcoreCamera3DRoll( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Camera3DRoll( camera3D camera, float angle )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, 1 );
+	float angle = lua_tonumber( L, 2 );
+
+	if ( !validCamera3D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	CameraRoll( state->camera3Ds[ cameraId ], angle );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> view = RL.GetCamera3DViewMatrix( camera3D camera )
+
+Returns the camera view matrix
+
+- Failure return false
+- Success return Matrix
+*/
+int lcoreGetCamera3DViewMatrix( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DViewMatrix( camera3D camera )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, 1 );
+
+	if ( !validCamera3D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushMatrix( L, GetCameraViewMatrix( state->camera3Ds[ cameraId ] ) );
+
+	return 1;
+}
+
+/*
+> projection = RL.GetCamera3DProjectionMatrix( camera3D camera, float aspect )
+
+Returns the camera projection matrix
+
+- Failure return false
+- Success return Matrix
+*/
+int lcoreGetCamera3DProjectionMatrix( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DProjectionMatrix( camera3D camera, float aspect )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t cameraId = lua_tointeger( L, 1 );
+	float aspect = lua_tonumber( L, 2 );
+
+	if ( !validCamera3D( cameraId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushMatrix( L, GetCameraProjectionMatrix( state->camera3Ds[ cameraId ], aspect ) );
+
+	return 1;
+}
+
+/*
 > success = RL.UpdateCamera3D( camera3D camera, int mode )
 
 Update camera position for selected mode

@@ -2394,6 +2394,124 @@ Get camera projection mode
 
 ---
 
+> forward = RL.GetCamera3DForward( camera3D camera )
+
+Returns the cameras forward vector ( normalized )
+
+- Failure return nil
+- Success return Vector3
+
+---
+
+> up = RL.GetCamera3DUpNormalized( camera3D camera )
+
+Returns the cameras up vector ( normalized )
+Note: The up vector might not be perpendicular to the forward vector
+
+- Failure return nil
+- Success return Vector3
+
+---
+
+> forward = RL.GetCamera3DRight( camera3D camera )
+
+Returns the cameras right vector ( normalized )
+
+- Failure return nil
+- Success return Vector3
+
+---
+
+> success = RL.Camera3DMoveForward( camera3D camera, float distance, bool moveInWorldPlane )
+
+Moves the camera in it's forward direction
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.Camera3DMoveUp( camera3D camera, float distance )
+
+Moves the camera in it's up direction
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.Camera3DMoveRight( camera3D camera, float distance, bool moveInWorldPlane )
+
+Moves the camera target in it's current right direction
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.Camera3DMoveToTarget( camera3D camera, float delta )
+
+Moves the camera position closer/farther to/from the camera target
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.Camera3DYaw( camera3D camera, float angle, bool rotateAroundTarget )
+
+Rotates the camera around it's up vector
+Yaw is "looking left and right"
+If rotateAroundTarget is false, the camera rotates around it's position
+Note: angle must be provided in radians
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.Camera3DPitch( camera3D camera, float angle, bool lockView, bool rotateAroundTarget, bool rotateUp )
+
+Rotates the camera around it's right vector, pitch is "looking up and down"
+ - lockView prevents camera overrotation (aka "somersaults")
+ - rotateAroundTarget defines if rotation is around target or around it's position
+ - rotateUp rotates the up direction as well (typically only usefull in CAMERA_FREE)
+NOTE: angle must be provided in radians
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.Camera3DRoll( camera3D camera, float angle )
+
+Rotates the camera around it's forward vector
+Roll is "turning your head sideways to the left or right"
+Note: angle must be provided in radians
+
+- Failure return false
+- Success return true
+
+---
+
+> view = RL.GetCamera3DViewMatrix( camera3D camera )
+
+Returns the camera view matrix
+
+- Failure return false
+- Success return Matrix
+
+---
+
+> projection = RL.GetCamera3DProjectionMatrix( camera3D camera, float aspect )
+
+Returns the camera projection matrix
+
+- Failure return false
+- Success return Matrix
+
+---
+
 > success = RL.UpdateCamera3D( camera3D camera, int mode )
 
 Update camera position for selected mode

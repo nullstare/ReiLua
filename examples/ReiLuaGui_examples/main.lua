@@ -1,7 +1,7 @@
 package.path = package.path..";"..RL.GetBasePath().."?.lua"
 package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
-util = require( "utillib" )
+Util = require( "utillib" )
 Vec2 = require( "vector2" )
 Rect = require( "rectangle" )
 Color = require( "color" )

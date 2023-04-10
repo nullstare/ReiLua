@@ -814,13 +814,20 @@ void luaRegister() {
 	assingGlobalFunction( "GetCamera3DUp", lcoreGetCamera3DUp );
 	assingGlobalFunction( "GetCamera3DFovy", lcoreGetCamera3DFovy );
 	assingGlobalFunction( "GetCamera3DProjection", lcoreGetCamera3DProjection );
+	assingGlobalFunction( "GetCamera3DForward", lcoreGetCamera3DForward );
+	assingGlobalFunction( "GetCamera3DUpNormalized", lcoreGetCamera3DUpNormalized );
+	assingGlobalFunction( "GetCamera3DRight", lcoreGetCamera3DRight );
+	assingGlobalFunction( "Camera3DMoveForward", lcoreCamera3DMoveForward );
+	assingGlobalFunction( "Camera3DMoveUp", lcoreCamera3DMoveUp );
+	assingGlobalFunction( "Camera3DMoveRight", lcoreCamera3DMoveRight );
+	assingGlobalFunction( "Camera3DMoveToTarget", lcoreCamera3DMoveToTarget );
+	assingGlobalFunction( "Camera3DYaw", lcoreCamera3DYaw );
+	assingGlobalFunction( "Camera3DPitch", lcoreCamera3DPitch );
+	assingGlobalFunction( "Camera3DRoll", lcoreCamera3DRoll );
+	assingGlobalFunction( "GetCamera3DViewMatrix", lcoreGetCamera3DViewMatrix );
+	assingGlobalFunction( "GetCamera3DProjectionMatrix", lcoreGetCamera3DProjectionMatrix );
 	assingGlobalFunction( "UpdateCamera3D", lcoreUpdateCamera3D );
 	assingGlobalFunction( "UpdateCamera3DPro", lcoreUpdateCamera3DPro );
-	// assingGlobalFunction( "SetCameraMode", lcoreSetCameraMode );
-	// assingGlobalFunction( "SetCameraPanControl", lcoreSetCameraPanControl );
-	// assingGlobalFunction( "SetCameraAltControl", lcoreSetCameraAltControl );
-	// assingGlobalFunction( "SetCameraSmoothZoomControl", lcoreSetCameraSmoothZoomControl );
-	// assingGlobalFunction( "SetCameraMoveControls", lcoreSetCameraMoveControls );
 		/* Input-related Keyboard. */
 	assingGlobalFunction( "IsKeyPressed", lcoreIsKeyPressed );
 	assingGlobalFunction( "IsKeyDown", lcoreIsKeyDown );

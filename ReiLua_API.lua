@@ -1531,6 +1531,114 @@ function RL.GetCamera3DFovy( camera ) end
 ---@return any projection 
 function RL.GetCamera3DProjection( camera ) end
 
+---Returns the cameras forward vector ( normalized )
+---- Failure return nil
+---- Success return Vector3
+---@param camera any
+---@return any forward 
+function RL.GetCamera3DForward( camera ) end
+
+---Returns the cameras up vector ( normalized )
+---Note: The up vector might not be perpendicular to the forward vector
+---- Failure return nil
+---- Success return Vector3
+---@param camera any
+---@return any up 
+function RL.GetCamera3DUpNormalized( camera ) end
+
+---Returns the cameras right vector ( normalized )
+---- Failure return nil
+---- Success return Vector3
+---@param camera any
+---@return any forward 
+function RL.GetCamera3DRight( camera ) end
+
+---Moves the camera in it's forward direction
+---- Failure return false
+---- Success return true
+---@param camera any
+---@param distance number
+---@param moveInWorldPlane boolean
+---@return any success 
+function RL.Camera3DMoveForward( camera, distance, moveInWorldPlane ) end
+
+---Moves the camera in it's up direction
+---- Failure return false
+---- Success return true
+---@param camera any
+---@param distance number
+---@return any success 
+function RL.Camera3DMoveUp( camera, distance ) end
+
+---Moves the camera target in it's current right direction
+---- Failure return false
+---- Success return true
+---@param camera any
+---@param distance number
+---@param moveInWorldPlane boolean
+---@return any success 
+function RL.Camera3DMoveRight( camera, distance, moveInWorldPlane ) end
+
+---Moves the camera position closer/farther to/from the camera target
+---- Failure return false
+---- Success return true
+---@param camera any
+---@param delta number
+---@return any success 
+function RL.Camera3DMoveToTarget( camera, delta ) end
+
+---Rotates the camera around it's up vector
+---Yaw is "looking left and right"
+---If rotateAroundTarget is false, the camera rotates around it's position
+---Note: angle must be provided in radians
+---- Failure return false
+---- Success return true
+---@param camera any
+---@param angle number
+---@param rotateAroundTarget boolean
+---@return any success 
+function RL.Camera3DYaw( camera, angle, rotateAroundTarget ) end
+
+---Rotates the camera around it's right vector, pitch is "looking up and down"
+--- - lockView prevents camera overrotation (aka "somersaults")
+--- - rotateAroundTarget defines if rotation is around target or around it's position
+--- - rotateUp rotates the up direction as well (typically only usefull in CAMERA_FREE)
+---NOTE: angle must be provided in radians
+---- Failure return false
+---- Success return true
+---@param camera any
+---@param angle number
+---@param lockView boolean
+---@param rotateAroundTarget boolean
+---@param rotateUp boolean
+---@return any success 
+function RL.Camera3DPitch( camera, angle, lockView, rotateAroundTarget, rotateUp ) end
+
+---Rotates the camera around it's forward vector
+---Roll is "turning your head sideways to the left or right"
+---Note: angle must be provided in radians
+---- Failure return false
+---- Success return true
+---@param camera any
+---@param angle number
+---@return any success 
+function RL.Camera3DRoll( camera, angle ) end
+
+---Returns the camera view matrix
+---- Failure return false
+---- Success return Matrix
+---@param camera any
+---@return any view 
+function RL.GetCamera3DViewMatrix( camera ) end
+
+---Returns the camera projection matrix
+---- Failure return false
+---- Success return Matrix
+---@param camera any
+---@param aspect number
+---@return any projection 
+function RL.GetCamera3DProjectionMatrix( camera, aspect ) end
+
 ---Update camera position for selected mode
 ---- Failure return false
 ---- Success return true

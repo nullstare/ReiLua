@@ -1,7 +1,14 @@
+package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
+
+Util = require( "utillib" )
+Vec2 = require( "vector2" )
+Vec3 = require( "vector3" )
+Cam3D = require( "camera3d" )
+
 local TILE_SIZE = 32
 
 local monitor = 0
-local camera = -1
+local camera = {}
 local groundTexture = -1
 local tilesetTex = -1
 local heigthImage = -1
@@ -27,11 +34,14 @@ function RL.init()
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 
-	camera = RL.CreateCamera3D()
-	RL.SetCamera3DPosition( camera, { 0, 8, 16 } )
-	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
-	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
-	-- RL.SetCameraMode( camera, RL.CAMERA_FREE )
+	camera = Cam3D:new()
+
+	camera:setPosition( { 0, 8, 16 } )
+	camera:setTarget( { 0, 0, 0 } )
+	camera:setUp( { 0, 1, 0 } )
+	-- camera.mode = camera.MODES.ORBITAL
+	camera.mode = camera.MODES.FREE
+	-- camera.mode = camera.MODES.FIRST_PERSON
 
 	heigthImage = RL.LoadImage( RL.GetBasePath().."../resources/images/heightmap.png" )
 
@@ -74,11 +84,23 @@ function RL.init()
 	matrix = RL.MatrixMultiply( RL.MatrixIdentity(), RL.MatrixTranslate( { -4, 0, -4 } ) )
 end
 
+function RL.process( delta )
+	camera:process( delta )
+
+	if RL.IsKeyPressed( RL.KEY_SPACE ) then
+		if camera.mode == camera.MODES.FREE then
+			camera.mode = camera.MODES.FIRST_PERSON
+		else
+			camera.mode = camera.MODES.FREE
+		end
+	end
+end
+
 function RL.draw()
 	RL.ClearBackground( { 100, 150, 100 } )
-	RL.UpdateCamera3D( camera, RL.CAMERA_FIRST_PERSON )
 
-	RL.BeginMode3D( camera )
+	camera:beginMode3D()
 		RL.DrawMesh( mesh, material, matrix )
-	RL.EndMode3D()
+		-- camera:draw()
+	camera:endMode3D()
 end

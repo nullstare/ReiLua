@@ -1728,10 +1728,17 @@ int lmodelsLoadModel( lua_State *L ) {
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	int i = newModel();
 
-	*state->models[i] = LoadModel( lua_tostring( L, 1 ) );
-	lua_pushinteger( L, i );
+	if ( FileExists( lua_tostring( L, 1 ) ) ) {
+		int i = newModel();
+		*state->models[i] = LoadModel( lua_tostring( L, 1 ) );
+		lua_pushinteger( L, i );
+		return 1;
+	}
+	else {
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
 
 	return 1;
 }
@@ -2063,21 +2070,19 @@ int lmodelsLoadModelAnimations( lua_State *L ) {
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	int i = 0;
 
-	for ( i = 0; i < state->animationCount; i++ ) {
-		if ( state->animations[i] == NULL ) {
-			break;
-		}
+	if ( FileExists( lua_tostring( L, 1 ) ) ) {
+		int i = newAnimation();
+		state->animations[i]->animations = LoadModelAnimations( lua_tostring( L, 1 ), &state->animations[i]->animCount );
+		lua_pushinteger( L, i );
+		lua_pushinteger( L, state->animations[i]->animCount );
+
+		return 2;
 	}
-	state->animations[i] = malloc( sizeof( ModelAnimations ) );
-	state->animations[i]->animations = LoadModelAnimations( lua_tostring( L, 1 ), &state->animations[i]->animCount );
-	checkAnimationRealloc( i );
-
-	lua_pushinteger( L, i );
-	lua_pushinteger( L, state->animations[i]->animCount );
-
-	return 2;
+	else {
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
 }
 
 /*

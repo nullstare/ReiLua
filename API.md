@@ -5854,7 +5854,7 @@ Get one style property
 
 ---
 
-> success = RL.GuiLoadStyle( int control, int property )
+> success = RL.GuiLoadStyle( string fileName )
 
 Load style file over global style variable ( .rgs )
 

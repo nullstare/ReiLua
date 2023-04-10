@@ -4671,10 +4671,9 @@ function RL.GuiGetStyle( control, property ) end
 ---Load style file over global style variable ( .rgs )
 ---- Failure return false
 ---- Success return true
----@param control integer
----@param property integer
+---@param fileName string
 ---@return any success 
-function RL.GuiLoadStyle( control, property ) end
+function RL.GuiLoadStyle( fileName ) end
 
 ---Load style default over global style
 ---@return any RL.GuiLoadStyleDefault

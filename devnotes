@@ -1,5 +1,4 @@
 Current {
-	* New argument styles for: rgui, easings.
 	* ReiLua camera3D lib.
 	* Check new functions from https://github.com/raysan5/raylib/blob/master/CHANGELOG
 }
@@ -39,6 +38,7 @@ Backlog {
 		* GenMeshCustom
 		* UpdateMesh
 		* DrawMeshInstanced
+		* LoadModelAnimations
 		* LoadMaterialDefault
 		* CreateMaterial
 		* LoadModel

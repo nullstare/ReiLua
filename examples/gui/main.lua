@@ -87,7 +87,7 @@ function RL.draw()
 	end
 
 	textInputBox.buttonIndex, textInputBox.text, textInputBox.secretViewActive
-	= RL.GuiTextInputBox( { 420, 510, 300, 150 }, "Input Box", "Put text here", "Button",textInputBox.text, 200, textInputBox.secretViewActive )
+	= RL.GuiTextInputBox( { 420, 510, 300, 150 }, "Input Box", "Put text here", "Button", textInputBox.text, 200, textInputBox.secretViewActive )
 
 	if 0 <= textInputBox.buttonIndex then
 		print( "textInputBox.buttonIndex", textInputBox.buttonIndex )

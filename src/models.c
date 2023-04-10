@@ -120,6 +120,48 @@ static int newMesh() {
 	return i;
 }
 
+static int newMaterial() {
+	int i = 0;
+
+	for ( i = 0; i < state->materialCount; i++ ) {
+		if ( state->materials[i] == NULL ) {
+			break;
+		}
+	}
+	state->materials[i] = malloc( sizeof( Material ) );
+	checkMaterialRealloc( i );
+
+	return i;
+}
+
+static int newModel() {
+	int i = 0;
+
+	for ( i = 0; i < state->modelCount; i++ ) {
+		if ( state->models[i] == NULL ) {
+			break;
+		}
+	}
+	state->models[i] = malloc( sizeof( Model ) );
+	checkModelRealloc( i );
+
+	return i;
+}
+
+static int newAnimation() {
+	int i = 0;
+
+	for ( i = 0; i < state->animationCount; i++ ) {
+		if ( state->animations[i] == NULL ) {
+			break;
+		}
+	}
+	state->animations[i] = malloc( sizeof( ModelAnimations ) );
+	checkAnimationRealloc( i );
+
+	return i;
+}
+
 // Unload model (but not meshes) from memory (RAM and/or VRAM)
 void UnloadModelKeepMeshes( Model model ) {
     // Unload materials maps
@@ -153,16 +195,14 @@ Draw a line in 3D world space
 - Success return true
 */
 int lmodelsDrawLine3D( lua_State *L ) {
-	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawLine3D( Vector3 startPos, Vector3 endPos, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	Vector3 endPos = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Vector3 startPos = uluaGetVector3( L );
+	Vector3 startPos = uluaGetVector3Index( L, 1 );
+	Vector3 endPos = uluaGetVector3Index( L, 2 );
+	Color color = uluaGetColorIndex( L, 3 );
 
 	DrawLine3D( startPos, endPos, color);
 	lua_pushboolean( L, true );
@@ -179,14 +219,13 @@ Draw a point in 3D space, actually a small line
 - Success return true
 */
 int lmodelsDrawPoint3D( lua_State *L ) {
-	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawPoint3D( Vector3 position, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	Vector3 position = uluaGetVector3( L );
+	Vector3 position = uluaGetVector3Index( L, 1 );
+	Color color = uluaGetColorIndex( L, 2 );
 
 	DrawPoint3D( position, color );
 	lua_pushboolean( L, true );
@@ -203,20 +242,17 @@ Draw a circle in 3D world space
 - Success return true
 */
 int lmodelsDrawCircle3D( lua_State *L ) {
-	if ( !lua_istable( L, -5 ) || !lua_isnumber( L, -4 ) || !lua_istable( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 )
+	|| !lua_isnumber( L, 4 ) || !lua_istable( L, 5 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCircle3D( Vector3 center, float radius, Vector3 rotationAxis, float rotationAngle, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	float rotationAngle = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 rotationAxis = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	float radius = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 center = uluaGetVector3( L );
+	Vector3 center = uluaGetVector3Index( L, 1 );
+	float radius = lua_tonumber( L, 2 );
+	Vector3 rotationAxis = uluaGetVector3Index( L, 3 );
+	float rotationAngle = lua_tonumber( L, 4 );
+	Color color = uluaGetColorIndex( L, 5 );
 
 	DrawCircle3D( center, radius, rotationAxis, rotationAngle, color );
 	lua_pushboolean( L, true );
@@ -233,18 +269,15 @@ Draw a color-filled triangle ( Vertex in counter-clockwise order! )
 - Success return true
 */
 int lmodelsDrawTriangle3D( lua_State *L ) {
-	if ( !lua_istable( L, -4 ) || !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTriangle3D( Vector3 v1, Vector3 v2, Vector3 v3, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	Vector3 v3 = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Vector3 v2 = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Vector3 v1 = uluaGetVector3( L );
+	Vector3 v1 = uluaGetVector3Index( L, 1 );
+	Vector3 v2 = uluaGetVector3Index( L, 2 );
+	Vector3 v3 = uluaGetVector3Index( L, 3 );
+	Color color = uluaGetColorIndex( L, 4 );
 
 	DrawTriangle3D( v1, v2, v3, color );
 	lua_pushboolean( L, true );
@@ -261,16 +294,14 @@ Draw cube
 - Success return true
 */
 int lmodelsDrawCube( lua_State *L ) {
-	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCube( Vector3 position, Vector3 size, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	Vector3 size = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Vector3 pos = uluaGetVector3( L );
+	Vector3 pos = uluaGetVector3Index( L, 1 );
+	Vector3 size = uluaGetVector3Index( L, 2 );
+	Color color = uluaGetColorIndex( L, 3 );
 
 	DrawCubeV( pos, size, color );
 	lua_pushboolean( L, true );
@@ -287,55 +318,20 @@ Draw cube wires
 - Success return true
 */
 int lmodelsDrawCubeWires( lua_State *L ) {
-	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCubeWires( Vector3 position, Vector3 size, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	Vector3 size = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Vector3 pos = uluaGetVector3( L );
+	Vector3 pos = uluaGetVector3Index( L, 1 );
+	Vector3 size = uluaGetVector3Index( L, 2 );
+	Color color = uluaGetColorIndex( L, 3 );
 
 	DrawCubeWiresV( pos, size, color );
 	lua_pushboolean( L, true );
 
 	return 1;
 }
-
-/*
-> success = RL.DrawCubeTexture( Texture2D texture, Vector3 position, Vector3 size, Color color )
-
-Draw cube textured
-
-- Failure return false
-- Success return true
-*/
-// int lmodelsDrawCubeTexture( lua_State *L ) {
-// 	if ( !lua_isnumber( L, -4 ) || !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
-// 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCubeTexture( Texture2D texture, Vector3 position, Vector3 size, Color color )" );
-// 		lua_pushboolean( L, false );
-// 		return 1;
-// 	}
-// 	Color color = uluaGetColor( L );
-// 	lua_pop( L, 1 );
-// 	Vector3 size = uluaGetVector3( L );
-// 	lua_pop( L, 1 );
-// 	Vector3 pos = uluaGetVector3( L );
-// 	lua_pop( L, 1 );
-// 	size_t texId = lua_tointeger( L, -1 );
-
-// 	if ( !validSourceTexture( texId ) ) {
-// 		lua_pushboolean( L, false );
-// 		return 1;
-// 	}
-
-//  	DrawCubeTexture( *texturesGetSourceTexture( texId ), pos, size.x, size.y, size.z, color );
-// 	lua_pushboolean( L, true );
-
-// 	return 1;
-// }
 
 /*
 > success = RL.DrawSphere( Vector3 centerPos, float radius, Color color )
@@ -346,16 +342,14 @@ Draw sphere
 - Success return true
 */
 int lmodelsDrawSphere( lua_State *L ) {
-	if ( !lua_istable( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawSphere( Vector3 centerPos, float radius, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	float radius = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 centerPos = uluaGetVector3( L );
+	Vector3 centerPos = uluaGetVector3Index( L, 1 );
+	float radius = lua_tonumber( L, 2 );
+	Color color = uluaGetColorIndex( L, 3 );
 
 	DrawSphere( centerPos, radius, color );
 	lua_pushboolean( L, true );
@@ -372,20 +366,17 @@ Draw sphere with extended parameters
 - Success return true
 */
 int lmodelsDrawSphereEx( lua_State *L ) {
-	if ( !lua_istable( L, -5 ) || !lua_isnumber( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 )
+	|| !lua_isnumber( L, 4 ) || !lua_istable( L, 5 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawSphereEx( Vector3 centerPos, float radius, int rings, int slices, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	int slices = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	int rings = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	float radius = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 centerPos = uluaGetVector3( L );
+	Vector3 centerPos = uluaGetVector3Index( L, 1 );
+	float radius = lua_tonumber( L, 2 );
+	int rings = lua_tointeger( L, 3 );
+	int slices = lua_tointeger( L, 4 );
+	Color color = uluaGetColorIndex( L, 5 );
 
 	DrawSphereEx( centerPos, radius, rings, slices, color );
 	lua_pushboolean( L, true );
@@ -402,20 +393,17 @@ Draw sphere wires
 - Success return true
 */
 int lmodelsDrawSphereWires( lua_State *L ) {
-	if ( !lua_istable( L, -5 ) || !lua_isnumber( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 )
+	|| !lua_isnumber( L, 4 ) || !lua_istable( L, 5 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawSphereWires( Vector3 centerPos, float radius, int rings, int slices, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	int slices = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	int rings = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	float radius = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 centerPos = uluaGetVector3( L );
+	Vector3 centerPos = uluaGetVector3Index( L, 1 );
+	float radius = lua_tonumber( L, 2 );
+	int rings = lua_tointeger( L, 3 );
+	int slices = lua_tointeger( L, 4 );
+	Color color = uluaGetColorIndex( L, 5 );
 
 	DrawSphereWires( centerPos, radius, rings, slices, color );
 	lua_pushboolean( L, true );
@@ -432,22 +420,18 @@ Draw a cylinder/cone
 - Success return true
 */
 int lmodelsDrawCylinder( lua_State *L ) {
-	if ( !lua_istable( L, -6 ) || !lua_isnumber( L, -5 ) || !lua_isnumber( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 )
+	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_istable( L, 6 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCylinder( Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	int slices = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	float height = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	float radiusBottom = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	float radiusTop = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 position = uluaGetVector3( L );
+	Vector3 position = uluaGetVector3Index( L, 1 );
+	float radiusTop = lua_tonumber( L, 2 );
+	float radiusBottom = lua_tonumber( L, 3 );
+	float height = lua_tonumber( L, 4 );
+	int slices = lua_tointeger( L, 5 );
+	Color color = uluaGetColorIndex( L, 6 );
 
 	DrawCylinder( position, radiusTop, radiusBottom, height, slices, color );
 	lua_pushboolean( L, true );
@@ -464,22 +448,18 @@ Draw a cylinder with base at startPos and top at endPos
 - Success return true
 */
 int lmodelsDrawCylinderEx( lua_State *L ) {
-	if ( !lua_istable( L, -6 ) || !lua_istable( L, -5 ) || !lua_isnumber( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 )
+	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_istable( L, 6 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCylinderEx( Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	int sides = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	float endRadius = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	float startRadius = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 endPos = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Vector3 startPos = uluaGetVector3( L );
+	Vector3 startPos = uluaGetVector3Index( L, 1 );
+	Vector3 endPos = uluaGetVector3Index( L, 2 );
+	float startRadius = lua_tonumber( L, 3 );
+	float endRadius = lua_tonumber( L, 4 );
+	int sides = lua_tointeger( L, 5 );
+	Color color = uluaGetColorIndex( L, 6 );
 
 	DrawCylinderEx( startPos, endPos, startRadius, endRadius, sides, color );
 	lua_pushboolean( L, true );
@@ -496,22 +476,18 @@ Draw a cylinder/cone wires
 - Success return true
 */
 int lmodelsDrawCylinderWires( lua_State *L ) {
-	if ( !lua_istable( L, -6 ) || !lua_isnumber( L, -5 ) || !lua_isnumber( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 )
+	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_istable( L, 6 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCylinderWires( Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	int slices = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	float height = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	float radiusBottom = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	float radiusTop = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 position = uluaGetVector3( L );
+	Vector3 position = uluaGetVector3Index( L, 1 );
+	float radiusTop = lua_tonumber( L, 2 );
+	float radiusBottom = lua_tonumber( L, 3 );
+	float height = lua_tonumber( L, 4 );
+	int slices = lua_tointeger( L, 5 );
+	Color color = uluaGetColorIndex( L, 6 );
 
 	DrawCylinderWires( position, radiusTop, radiusBottom, height, slices, color );
 	lua_pushboolean( L, true );
@@ -528,22 +504,18 @@ Draw a cylinder wires with base at startPos and top at endPos
 - Success return true
 */
 int lmodelsDrawCylinderWiresEx( lua_State *L ) {
-	if ( !lua_istable( L, -6 ) || !lua_istable( L, -5 ) || !lua_isnumber( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 )
+	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_istable( L, 6 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCylinderWiresEx( Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	int sides = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	float endRadius = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	float startRadius = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 endPos = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Vector3 startPos = uluaGetVector3( L );
+	Vector3 startPos = uluaGetVector3Index( L, 1 );
+	Vector3 endPos = uluaGetVector3Index( L, 2 );
+	float startRadius = lua_tonumber( L, 3 );
+	float endRadius = lua_tonumber( L, 4 );
+	int sides = lua_tointeger( L, 5 );
+	Color color = uluaGetColorIndex( L, 6 );
 
 	DrawCylinderWiresEx( startPos, endPos, startRadius, endRadius, sides, color );
 	lua_pushboolean( L, true );
@@ -560,16 +532,14 @@ Draw a plane XZ
 - Success return true
 */
 int lmodelsDrawPlane( lua_State *L ) {
-	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawPlane( Vector3 centerPos, Vector2 size, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	Vector2 size = uluaGetVector2( L );
-	lua_pop( L, 1 );
-	Vector3 centerPos = uluaGetVector3( L );
+	Vector3 centerPos = uluaGetVector3Index( L, 1 );
+	Vector2 size = uluaGetVector2Index( L, 2 );
+	Color color = uluaGetColorIndex( L, 3 );
 
 	DrawPlane( centerPos, size, color );
 	lua_pushboolean( L, true );
@@ -586,47 +556,19 @@ Draw 3D textured quad. ( Texture coordinates opengl style 0.0 - 1.0 ).
 - Success return true
 */
 int lmodelDrawQuad3DTexture( lua_State *L ) {
-	if ( !lua_isnumber( L, -4 ) || !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawQuad3DTexture( Texture2D texture, Vector3{} vertices, Vector2{} texCoords, Color{} colors )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 
-	/* Colors. */
-	Color colors[4] = { 0 };
-
-	int t = lua_gettop( L ), i = 0;
-    lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-        if ( lua_istable( L, -1 ) && i < 4 ) {
-			colors[i] = uluaGetColor( L );
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
-	lua_pop( L, 1 );
-
-	/* TexCoords. */
-	Vector2 texcoords[4] = { 0 };
-
-	t = lua_gettop( L ), i = 0;
-    lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-        if ( lua_istable( L, -1 ) && i < 4 ) {
-			texcoords[i] = uluaGetVector2( L );
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
-	lua_pop( L, 1 );
+	/* Texture. */
+	size_t texId = lua_tointeger( L, 1 );
 
 	/* Vertices. */
 	Vector3 vertices[4] = { 0 };
 
-	t = lua_gettop( L );
-	i = 0;
+	int t = 2, i = 0;
     lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
@@ -636,12 +578,36 @@ int lmodelDrawQuad3DTexture( lua_State *L ) {
         i++;
         lua_pop( L, 1 );
     }
-	lua_pop( L, 1 );
+
+	/* TexCoords. */
+	Vector2 texcoords[4] = { 0 };
+
+	t = 3, i = 0;
+    lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+        if ( lua_istable( L, -1 ) && i < 4 ) {
+			texcoords[i] = uluaGetVector2( L );
+        }
+        i++;
+        lua_pop( L, 1 );
+    }
+
+	/* Colors. */
+	Color colors[4] = { 0 };
+
+	t = 4, i = 0;
+    lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+        if ( lua_istable( L, -1 ) && i < 4 ) {
+			colors[i] = uluaGetColor( L );
+        }
+        i++;
+        lua_pop( L, 1 );
+    }
 
 	//TODO Normals. maybe something like Vector3Normalize(Vector3CrossProduct(Vector3Subtract(vB, vA), Vector3Subtract(vC, vA)));
-
-	/* Texture. */
-	size_t texId = lua_tointeger( L, -1 );
 
 	if ( !validSourceTexture( texId ) ) {
 		lua_pushboolean( L, false );
@@ -675,14 +641,13 @@ Draw a ray line
 - Success return true
 */
 int lmodelsDrawRay( lua_State *L ) {
-	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawRay( Ray ray, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	Ray ray = uluaGetRay( L );
+	Ray ray = uluaGetRayIndex( L, 1 );
+	Color color = uluaGetColorIndex( L, 2 );
 
 	DrawRay( ray, color );
 	lua_pushboolean( L, true );
@@ -699,12 +664,15 @@ Draw a grid ( Centered at ( 0, 0, 0 ) )
 - Success return true
 */
 int lmodelsDrawGrid( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawGrid( int slices, float spacing )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	DrawGrid( lua_tointeger( L, -2 ), lua_tonumber( L, -1 ) );
+	int slices = lua_tointeger( L, 1 );
+	float spacing = lua_tonumber( L, 2 );
+
+	DrawGrid( slices, spacing );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -723,13 +691,14 @@ Generate polygonal mesh
 - Success return int
 */
 int lmodelsGenMeshPoly( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenMeshPoly( int sides, float radius )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	float radius = lua_tonumber( L, -1 );
-	int sides = lua_tointeger( L, -2 );
+	int sides = lua_tointeger( L, 1 );
+	float radius = lua_tonumber( L, 2 );
+
 	int i = newMesh();
 
 	*state->meshes[i] = GenMeshPoly( sides, radius );
@@ -748,15 +717,16 @@ Generate plane mesh ( With subdivisions )
 - Success return int
 */
 int lmodelsGenMeshPlane( lua_State *L ) {
-	if ( !lua_isnumber( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenMeshPlane( float width, float length, int resX, int resZ )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	int resZ = lua_tointeger( L, -1 );
-	int resX = lua_tointeger( L, -2 );
-	float length = lua_tonumber( L, -3 );
-	float width = lua_tonumber( L, -4 );
+	float width = lua_tonumber( L, 1 );
+	float length = lua_tonumber( L, 2 );
+	int resX = lua_tointeger( L, 3 );
+	int resZ = lua_tointeger( L, 4 );
+
 	int i = newMesh();
 
 	*state->meshes[i] = GenMeshPlane( width, length, resX, resZ );
@@ -775,12 +745,13 @@ Generate cuboid mesh
 - Success return int
 */
 int lmodelsGenMeshCube( lua_State *L ) {
-	if ( !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenMeshCube( Vector3 size )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	Vector3 size = uluaGetVector3( L );
+	Vector3 size = uluaGetVector3Index( L, 1 );
+
 	int i = newMesh();
 
 	*state->meshes[i] = GenMeshCube( size.x, size.y, size.z );
@@ -799,14 +770,15 @@ Generate sphere mesh ( Standard sphere )
 - Success return int
 */
 int lmodelsGenMeshSphere( lua_State *L ) {
-	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenMeshSphere( float radius, int rings, int slices )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	int slices = lua_tointeger( L, -1 );
-	int rings = lua_tointeger( L, -2 );
-	float radius = lua_tonumber( L, -3 );
+	float radius = lua_tonumber( L, 1 );
+	int rings = lua_tointeger( L, 2 );
+	int slices = lua_tointeger( L, 3 );
+
 	int i = newMesh();
 
 	*state->meshes[i] = GenMeshSphere( radius, rings, slices );
@@ -825,14 +797,15 @@ Generate cylinder mesh
 - Success return int
 */
 int lmodelsGenMeshCylinder( lua_State *L ) {
-	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenMeshCylinder( float radius, float height, int slices )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	int slices = lua_tointeger( L, -1 );
-	float height = lua_tonumber( L, -2 );
-	float radius = lua_tonumber( L, -3 );
+	float radius = lua_tonumber( L, 1 );
+	float height = lua_tonumber( L, 2 );
+	int slices = lua_tointeger( L, 3 );
+
 	int i = newMesh();
 
 	*state->meshes[i] = GenMeshCylinder( radius, height, slices);
@@ -851,14 +824,15 @@ Generate cone/pyramid mesh
 - Success return int
 */
 int lmodelsGenMeshCone( lua_State *L ) {
-	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenMeshCone( float radius, float height, int slices )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	int slices = lua_tointeger( L, -1 );
-	float height = lua_tonumber( L, -2 );
-	float radius = lua_tonumber( L, -3 );
+	float radius = lua_tonumber( L, 1 );
+	float height = lua_tonumber( L, 2 );
+	int slices = lua_tointeger( L, 3 );
+
 	int i = newMesh();
 	
 	*state->meshes[i] = GenMeshCone( radius, height, slices);
@@ -877,15 +851,16 @@ Generate torus mesh
 - Success return int
 */
 int lmodelsGenMeshTorus( lua_State *L ) {
-	if ( !lua_isnumber( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenMeshTorus( float radius, float size, int radSeg, int sides )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	int sides = lua_tointeger( L, -1 );
-	int radSeg = lua_tointeger( L, -2 );
-	float size = lua_tonumber( L, -3 );
-	float radius = lua_tonumber( L, -4 );
+	float radius = lua_tonumber( L, 1 );
+	float size = lua_tonumber( L, 2 );
+	int radSeg = lua_tointeger( L, 3 );
+	int sides = lua_tointeger( L, 4 );
+
 	int i = newMesh();
 	
 	*state->meshes[i] = GenMeshTorus( radius, size, radSeg, sides );
@@ -904,15 +879,16 @@ Generate torus mesh
 - Success return int
 */
 int lmodelsGenMeshKnot( lua_State *L ) {
-	if ( !lua_isnumber( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenMeshKnot( float radius, float size, int radSeg, int sides )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	int sides = lua_tointeger( L, -1 );
-	int radSeg = lua_tointeger( L, -2 );
-	float size = lua_tonumber( L, -3 );
-	float radius = lua_tonumber( L, -4 );
+	float radius = lua_tonumber( L, 1 );
+	float size = lua_tonumber( L, 2 );
+	int radSeg = lua_tointeger( L, 3 );
+	int sides = lua_tointeger( L, 4 );
+
 	int i = newMesh();
 	
 	*state->meshes[i] = GenMeshKnot( radius, size, radSeg, sides );
@@ -931,14 +907,13 @@ Generate heightmap mesh from image data
 - Success return int
 */
 int lmodelsGenMeshHeightmap( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenMeshHeightmap( Image heightmap, Vector3 size )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	Vector3 size = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	size_t imageId = lua_tointeger( L, -1 );
+	size_t imageId = lua_tointeger( L, 1 );
+	Vector3 size = uluaGetVector3Index( L, 2 );
 
 	if ( !validImage( imageId ) ) {
 		lua_pushboolean( L, false );
@@ -963,17 +938,14 @@ Generate custom mesh from vertex attribute data and uploads it into a VAO ( if s
 - Success return int
 */
 int lmodelsGenMeshCustom( lua_State *L ) {
-	if ( !lua_istable( L, -2 ) || !lua_isboolean( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isboolean( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenMeshCustom( Mesh{} mesh, bool dynamic )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
 	Mesh mesh = { 0 };
 
-	bool dynamic = lua_toboolean( L, -1 );
-	lua_pop( L, 1 );
-
-	int t = lua_gettop( L );
+	int t = 1;
 	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
@@ -1110,6 +1082,9 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 		}
 		lua_pop( L, 1 );
 	}
+
+	bool dynamic = lua_toboolean( L, 2 );
+
 	UploadMesh( &mesh, dynamic );
 
 	int i = newMesh();
@@ -1122,7 +1097,7 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 }
 
 /*
-> success = RL.UpdateMesh( Mesh{} mesh )
+> success = RL.UpdateMesh( Mesh mesh, Mesh{} updatedMesh )
 
 Update mesh vertex data in GPU.
 Note! Mainly intented to be used with custom meshes.
@@ -1131,12 +1106,12 @@ Note! Mainly intented to be used with custom meshes.
 - Success return true
 */
 int lmodelsUpdateMesh( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UpdateMesh( Mesh{} mesh )" );
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UpdateMesh( Mesh mesh, Mesh{} updatedMesh )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t meshId = lua_tointeger( L, -1 );
+	size_t meshId = lua_tointeger( L, 1 );
 
 	if ( !validMesh( meshId ) ) {
 		lua_pushboolean( L, false );
@@ -1144,7 +1119,7 @@ int lmodelsUpdateMesh( lua_State *L ) {
 	}
 	Mesh *mesh = state->meshes[ meshId ];
 
-	int t = lua_gettop( L );
+	int t = 2;
 	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
@@ -1269,12 +1244,12 @@ Unload mesh data from CPU and GPU
 - Success return true
 */
 int lmodelsUnloadMesh( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UnloadMesh( Mesh mesh )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t id = lua_tointeger( L, -1 );
+	size_t id = lua_tointeger( L, 1 );
 
 	if ( !validMesh( id ) ) {
 		lua_pushboolean( L, false );
@@ -1296,16 +1271,14 @@ Draw a 3d mesh with material and transform
 - Success return true
 */
 int lmodelsDrawMesh( lua_State *L ) {
-	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawMesh( Mesh mesh, Material material, Matrix transform )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Matrix matrix = uluaGetMatrix( L );
-	lua_pop( L, 1 );
-	size_t materialId = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	size_t meshId = lua_tointeger( L, -1 );
+	size_t meshId = lua_tointeger( L, 1 );
+	size_t materialId = lua_tointeger( L, 2 );
+	Matrix matrix = uluaGetMatrixIndex( L, 3 );
 
 	if ( !validMesh( meshId ) || !validMaterial( materialId ) ) {
 		lua_pushboolean( L, false );
@@ -1327,16 +1300,18 @@ Draw multiple mesh instances with material and different transforms
 - Success return true
 */
 int lmodelsDrawMeshInstanced( lua_State *L ) {
-	if ( !lua_isnumber( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) || !lua_isnumber( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawMeshInstanced( Mesh mesh, Material material, Matrix{} transforms, int instances )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	int instances = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
+	size_t meshId = lua_tointeger( L, 1 );
+	size_t materialId = lua_tointeger( L, 2 );
+	int instances = lua_tointeger( L, 4 );
+
 	Matrix transforms[ instances ];
 
-	int t = lua_gettop( L ), i = 0;
+	int t = 3, i = 0;
     lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
@@ -1346,10 +1321,6 @@ int lmodelsDrawMeshInstanced( lua_State *L ) {
         i++;
         lua_pop( L, 1 );
     }
-	lua_pop( L, 1 );
-	size_t materialId = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	size_t meshId = lua_tointeger( L, -1 );
 
 	if ( !validMesh( meshId ) || !validMaterial( materialId ) ) {
 		lua_pushboolean( L, false );
@@ -1371,14 +1342,13 @@ NOTE: Currently only works on custom mesh
 - Success return true
 */
 int lmodelsSetMeshColor( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMeshColor( Mesh mesh, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	size_t meshId = lua_tointeger( L, -1 );
+	size_t meshId = lua_tointeger( L, 1 );
+	Color color = uluaGetColorIndex( L, 2 );
 
 	if ( !validMesh( meshId ) ) {
 		lua_pushboolean( L, false );
@@ -1416,18 +1386,18 @@ Export mesh data to file, returns true on success
 - Success return true
 */
 int lmodelsExportMesh( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isstring( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ExportMesh( Mesh mesh, string fileName )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t meshId = lua_tointeger( L, -2 );
+	size_t meshId = lua_tointeger( L, 1 );
 
 	if ( !validMesh( meshId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushboolean( L, ExportMesh( *state->meshes[ meshId ], lua_tostring( L, -1 ) ) );
+	lua_pushboolean( L, ExportMesh( *state->meshes[ meshId ], lua_tostring( L, 2 ) ) );
 
 	return 1;
 }
@@ -1441,12 +1411,12 @@ Compute mesh bounding box limits
 - Success return BoundingBox
 */
 int lmodelsGetMeshBoundingBox( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetMeshBoundingBox( Mesh mesh )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t meshId = lua_tointeger( L, -1 );
+	size_t meshId = lua_tointeger( L, 1 );
 
 	if ( !validMesh( meshId ) ) {
 		lua_pushboolean( L, false );
@@ -1466,12 +1436,12 @@ Compute mesh tangents
 - Success return true
 */
 int lmodelsGenMeshTangents( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenMeshTangents( Mesh mesh )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t meshId = lua_tointeger( L, -1 );
+	size_t meshId = lua_tointeger( L, 1 );
 
 	if ( !validMesh( meshId ) ) {
 		lua_pushboolean( L, false );
@@ -1495,17 +1465,10 @@ Load default material
 - Success return int
 */
 int lmodelsLoadMaterialDefault( lua_State *L ) {
-	int i = 0;
+	int i = newMaterial();
 
-	for ( i = 0; i < state->materialCount; i++ ) {
-		if ( state->materials[i] == NULL ) {
-			break;
-		}
-	}
-	state->materials[i] = malloc( sizeof( Material ) );
 	*state->materials[i] = LoadMaterialDefault();
 	lua_pushinteger( L, i );
-	checkMaterialRealloc( i );
 
 	return 1;
 }
@@ -1519,19 +1482,13 @@ Load material from table. See material table definition
 - Success return int
 */
 int lmodelsCreateMaterial( lua_State *L ) {
-	if ( !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.CreateMaterial( Material{} material )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	int i = 0;
+	int i = newMaterial();
 
-	for ( i = 0; i < state->materialCount; i++ ) {
-		if ( state->materials[i] == NULL ) {
-			break;
-		}
-	}
-	state->materials[i] = malloc( sizeof( Material ) );
 	*state->materials[i] = LoadMaterialDefault();
 
 	int t = lua_gettop( L );
@@ -1620,12 +1577,12 @@ Unload material from GPU memory ( VRAM )
 - Success return true
 */
 int lmodelsUnloadMaterial( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UnloadMaterial( Material material )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t id = lua_tointeger( L, -1 );
+	size_t id = lua_tointeger( L, 1 );
 
 	if ( !validMaterial( id ) ) {
 		lua_pushboolean( L, false );
@@ -1647,20 +1604,21 @@ Set texture for a material map type ( MATERIAL_MAP_ALBEDO, MATERIAL_MAP_METALNES
 - Success return true
 */
 int lmodelsSetMaterialTexture( lua_State *L ) {
-	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMaterialTexture( Material material, int mapType, Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t texId = lua_tointeger( L, -1 );
-	size_t materialId = lua_tointeger( L, -3 );
+	size_t materialId = lua_tointeger( L, 1 );
+	int mapType = lua_tointeger( L, 2 );
+	size_t texId = lua_tointeger( L, 3 );
 
 	if ( !validMaterial( materialId ) || !validSourceTexture( texId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	
-	SetMaterialTexture( state->materials[ materialId ], lua_tointeger( L, -2 ), *texturesGetSourceTexture( texId ) );
+	SetMaterialTexture( state->materials[ materialId ], mapType, *texturesGetSourceTexture( texId ) );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -1675,16 +1633,14 @@ Set color for a material map type
 - Success return true
 */
 int lmodelsSetMaterialColor( lua_State *L ) {
-	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMaterialColor( Material material, int mapType, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color color = uluaGetColor( L );
-	lua_pop( L, 1 );
-	size_t mapType = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	size_t materialId = lua_tointeger( L, -1 );
+	size_t materialId = lua_tointeger( L, 1 );
+	size_t mapType = lua_tointeger( L, 2 );
+	Color color = uluaGetColorIndex( L, 3 );
 
 	if ( !validMaterial( materialId ) ) {
 		lua_pushboolean( L, false );
@@ -1706,16 +1662,14 @@ Set value for a material map type
 - Success return true
 */
 int lmodelsSetMaterialValue( lua_State *L ) {
-	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMaterialValue( Material material, int mapType, float value )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	float value = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	size_t mapType = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	size_t materialId = lua_tointeger( L, -1 );
+	size_t materialId = lua_tointeger( L, 1 );
+	size_t mapType = lua_tointeger( L, 2 );
+	float value = lua_tonumber( L, 3 );
 
 	if ( !validMaterial( materialId ) ) {
 		lua_pushboolean( L, false );
@@ -1737,14 +1691,13 @@ Set shader for material
 - Success return true
 */
 int lmodelsSetMaterialShader( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMaterialShader( Material material, Shader shader )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t shaderId = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	size_t materialId = lua_tointeger( L, -1 );
+	size_t materialId = lua_tointeger( L, 1 );
+	size_t shaderId = lua_tointeger( L, 2 );
 
 	if ( !validMaterial( materialId || !validShader( shaderId ) ) ) {
 		lua_pushboolean( L, false );
@@ -1770,22 +1723,15 @@ Load model from files ( Meshes and materials )
 - Success return int
 */
 int lmodelsLoadModel( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadModel( string fileName )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	int i = 0;
+	int i = newModel();
 
-	for ( i = 0; i < state->modelCount; i++ ) {
-		if ( state->models[i] == NULL ) {
-			break;
-		}
-	}
-	state->models[i] = malloc( sizeof( Model ) );
-	*state->models[i] = LoadModel( lua_tostring( L, -1 ) );
+	*state->models[i] = LoadModel( lua_tostring( L, 1 ) );
 	lua_pushinteger( L, i );
-	checkModelRealloc( i );
 
 	return 1;
 }
@@ -1799,28 +1745,21 @@ Load model from generated mesh ( Default material )
 - Success return int
 */
 int lmodelsLoadModelFromMesh( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadModelFromMesh( Mesh mesh )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	size_t meshId = lua_tointeger( L, -1 );
+	size_t meshId = lua_tointeger( L, 1 );
 
 	if ( !validMesh( meshId ) ) {
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	int i = 0;
+	int i = newModel();
 
-	for ( i = 0; i < state->modelCount; i++ ) {
-		if ( state->models[i] == NULL ) {
-			break;
-		}
-	}
-	state->models[i] = malloc( sizeof( Model ) );
 	*state->models[i] = LoadModelFromMesh( *state->meshes[ meshId ] );
 	lua_pushinteger( L, i );
-	checkModelRealloc( i );
 
 	return 1;
 }
@@ -1834,12 +1773,12 @@ Unload model ( Including meshes ) from memory ( RAM and/or VRAM )
 - Success return true
 */
 int lmodelsUnloadModel( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UnloadModel( Model model )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t modelId = lua_tointeger( L, -1 );
+	size_t modelId = lua_tointeger( L, 1 );
 
 	if ( !validModel( modelId ) ) {
 		lua_pushboolean( L, false );
@@ -1861,18 +1800,15 @@ Draw a model ( With texture if set )
 - Success return true
 */
 int lmodelsDrawModel( lua_State *L ) {
-	if ( !lua_isnumber( L, -4 ) || !lua_istable( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_istable( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawModel( Model model, Vector3 position, float scale, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color tint = uluaGetColor( L );
-	lua_pop( L, 1 );
-	float scale = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 position = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	size_t modelId = lua_tointeger( L, -1 );
+	size_t modelId = lua_tointeger( L, 1 );
+	Vector3 position = uluaGetVector3Index( L, 2 );
+	float scale = lua_tonumber( L, 3 );
+	Color tint = uluaGetColorIndex( L, 4 );
 
 	if ( !validModel( modelId ) ) {
 		lua_pushboolean( L, false );
@@ -1894,23 +1830,18 @@ Draw a model with extended parameters
 - Success return true
 */
 int lmodelsDrawModelEx( lua_State *L ) {
-	if ( !lua_isnumber( L, -6 ) || !lua_istable( L, -5 ) || !lua_istable( L, -4 )
-	|| !lua_isnumber( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 )
+	|| !lua_isnumber( L, 4 ) || !lua_istable( L, 5 ) || !lua_istable( L, 6 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawModelEx( Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color tint = uluaGetColor( L );
-	lua_pop( L, 1 );
-	Vector3 scale = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	float rotationAngle = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 rotationAxis = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Vector3 position = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	size_t modelId = lua_tointeger( L, -1 );
+	size_t modelId = lua_tointeger( L, 1 );
+	Vector3 position = uluaGetVector3Index( L, 2 );
+	Vector3 rotationAxis = uluaGetVector3Index( L, 3 );
+	float rotationAngle = lua_tonumber( L, 4 );
+	Vector3 scale = uluaGetVector3Index( L, 5 );
+	Color tint = uluaGetColorIndex( L, 6 );
 
 	if ( !validModel( modelId ) ) {
 		lua_pushboolean( L, false );
@@ -1932,21 +1863,20 @@ Copies material to model material. ( Model material is the material id in models
 - Success return true
 */
 int lmodelsSetModelMaterial( lua_State *L ) {
-	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetModelMaterial( Model model, Material modelMaterial, Material material )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t materialId = lua_tointeger( L, -1 );
-	size_t modelId = lua_tointeger( L, -3 );
+	size_t modelId = lua_tointeger( L, 1 );
+	int modelMaterialId = lua_tointeger( L, 2 );
+	size_t materialId = lua_tointeger( L, 3 );
 
 	if ( !validModel( modelId ) || !validMaterial( materialId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	Model *model = state->models[ modelId ];
-	int modelMaterialId = lua_tointeger( L, -2 );
 	Material *material = state->materials[ materialId ];
 
 	/* Copy material data instead of using pointer. Pointer would result in double free error. */
@@ -1980,14 +1910,14 @@ Set material for a mesh ( Mesh and material on this model )
 - Success return true
 */
 int lmodelsSetModelMeshMaterial( lua_State *L ) {
-	if ( !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetModelMeshMaterial( Model model, int meshId, int materialId )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	int materialId = lua_tointeger( L, -1 );
-	int meshId = lua_tointeger( L, -2 );
-	size_t modelId = lua_tointeger( L, -3 );
+	size_t modelId = lua_tointeger( L, 1 );
+	int meshId = lua_tointeger( L, 2 );
+	int materialId = lua_tointeger( L, 3 );
 
 	if ( !validModel( modelId ) ) {
 		lua_pushboolean( L, false );
@@ -2009,21 +1939,17 @@ Draw a billboard texture
 - Success return true
 */
 int lmodelsDrawBillboard( lua_State *L ) {
-	if ( !lua_isnumber( L, -5 ) || !lua_isnumber( L, -4 ) || !lua_istable( L, -3 )
-	|| !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 )
+	|| !lua_isnumber( L, 4 ) || !lua_istable( L, 5 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawBillboard( Camera camera, Texture2D texture, Vector3 position, float size, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color tint = uluaGetColor( L );
-	lua_pop( L, 1 );
-	float size = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 position = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	size_t texId = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	size_t cameraId = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
+	size_t texId = lua_tointeger( L, 2 );
+	Vector3 position = uluaGetVector3Index( L, 3 );
+	float size = lua_tonumber( L, 4 );
+	Color tint = uluaGetColorIndex( L, 5 );
 
 	if ( !validSourceTexture( texId ) || !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
@@ -2044,23 +1970,18 @@ Draw a billboard texture defined by source
 - Success return true
 */
 int lmodelsDrawBillboardRec( lua_State *L ) {
-	if ( !lua_isnumber( L, -6 ) || !lua_isnumber( L, -5 ) || !lua_istable( L, -4 )
-	|| !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 )
+	|| !lua_istable( L, 4 ) || !lua_istable( L, 5 ) || !lua_istable( L, 6 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawBillboardRec( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Color tint = uluaGetColor( L );
-	lua_pop( L, 1 );
-	Vector2 size = uluaGetVector2( L );
-	lua_pop( L, 1 );
-	Vector3 position = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Rectangle source = uluaGetRectangle( L );
-	lua_pop( L, 1 );
-	size_t texId = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	size_t cameraId = lua_tointeger( L, -1 );
+	size_t cameraId = lua_tointeger( L, 1 );
+	size_t texId = lua_tointeger( L, 2 );
+	Rectangle source = uluaGetRectangleIndex( L, 3 );
+	Vector3 position = uluaGetVector3Index( L, 4 );
+	Vector2 size = uluaGetVector2Index( L, 5 );
+	Color tint = uluaGetColorIndex( L, 6 );
 
 	if ( !validSourceTexture( texId ) || !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
@@ -2081,14 +2002,13 @@ Set model transform matrix
 - Success return true
 */
 int lmodelsSetModelTransform( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetModelTransform( Model model, Matrix transform )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	Matrix transform = uluaGetMatrix( L );
-	lua_pop( L, 1 );
-	size_t modelId = lua_tointeger( L, -1 );
+	size_t modelId = lua_tointeger( L, 1 );
+	Matrix transform = uluaGetMatrixIndex( L, 2 );
 
 	if ( !validModel( modelId ) ) {
 		lua_pushboolean( L, false );
@@ -2109,12 +2029,12 @@ Get model transform matrix
 - Success return Matrix
 */
 int lmodelsGetModelTransform( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetModelTransform( Model model )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t modelId = lua_tointeger( L, -1 );
+	size_t modelId = lua_tointeger( L, 1 );
 
 	if ( !validModel( modelId ) ) {
 		lua_pushboolean( L, false );
@@ -2138,7 +2058,7 @@ Load model animations from file
 - Success return int, int
 */
 int lmodelsLoadModelAnimations( lua_State *L ) {
-	if ( !lua_isstring( L, -1 ) ) {
+	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadModelAnimations( string fileName )" );
 		lua_pushinteger( L, -1 );
 		return 1;
@@ -2151,7 +2071,7 @@ int lmodelsLoadModelAnimations( lua_State *L ) {
 		}
 	}
 	state->animations[i] = malloc( sizeof( ModelAnimations ) );
-	state->animations[i]->animations = LoadModelAnimations( lua_tostring( L, -1 ), &state->animations[i]->animCount );
+	state->animations[i]->animations = LoadModelAnimations( lua_tostring( L, 1 ), &state->animations[i]->animCount );
 	checkAnimationRealloc( i );
 
 	lua_pushinteger( L, i );
@@ -2169,20 +2089,21 @@ Update model animation pose
 - Success return true
 */
 int lmodelsUpdateModelAnimation( lua_State *L ) {
-	if ( !lua_isnumber( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UpdateModelAnimation( Model model, ModelAnimations animations, int animation, int frame )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	int frame = imax( 0, lua_tointeger( L, -1 ) );
-	size_t animId = lua_tointeger( L, -3 );
-	size_t modelId = lua_tointeger( L, -4 );
+	size_t modelId = lua_tointeger( L, 1 );
+	size_t modelAnimId = lua_tointeger( L, 2 );
+	size_t animId = lua_tointeger( L, 3 );
+	int frame = imax( 0, lua_tointeger( L, 4 ) );
 
-	if ( !validModel( modelId ) || !validAnimation( animId ) ) {
+	if ( !validModel( modelId ) || !validAnimation( modelAnimId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	UpdateModelAnimation( *state->models[ modelId ], state->animations[ animId ]->animations[ lua_tointeger( L, -2 ) ], frame );
+	UpdateModelAnimation( *state->models[ modelId ], state->animations[ modelAnimId ]->animations[ animId ], frame );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2197,20 +2118,20 @@ Unload animation data
 - Success return true
 */
 int lmodelsUnloadModelAnimations( lua_State *L ) {
-	if ( !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UnloadModelAnimations( ModelAnimations animations )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t animId = lua_tointeger( L, -1 );
+	size_t modelAnimId = lua_tointeger( L, 1 );
 
-	if ( !validAnimation( animId ) ) {
+	if ( !validAnimation( modelAnimId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	UnloadModelAnimation( *state->animations[ animId ]->animations );
-	state->animations[ animId ]->animCount = 0;
-	state->animations[ animId ] = NULL;
+	UnloadModelAnimation( *state->animations[ modelAnimId ]->animations );
+	state->animations[ modelAnimId ]->animCount = 0;
+	state->animations[ modelAnimId ] = NULL;
 
 	lua_pushboolean( L, true );
 
@@ -2226,19 +2147,19 @@ Check model animation skeleton match
 - Success return bool
 */
 int lmodelsIsModelAnimationValid( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsModelAnimationValid( Model model, ModelAnimations animations )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	size_t animId = lua_tointeger( L, -1 );
-	size_t modelId = lua_tointeger( L, -2 );
+	size_t modelId = lua_tointeger( L, 1 );
+	size_t modelAnimId = lua_tointeger( L, 2 );
 
-	if ( !validModel( modelId ) || !validAnimation( animId ) ) {
+	if ( !validModel( modelId ) || !validAnimation( modelAnimId ) ) {
 		lua_pushnil( L );
 		return 1;
 	}
-	lua_pushboolean( L, IsModelAnimationValid( *state->models[ modelId ], *state->animations[ animId ]->animations ) );
+	lua_pushboolean( L, IsModelAnimationValid( *state->models[ modelId ], *state->animations[ modelAnimId ]->animations ) );
 
 	return 1;
 }
@@ -2252,18 +2173,19 @@ Return modelAnimation bone count
 - Success return int
 */
 int lmodelsGetModelAnimationBoneCount( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetModelAnimationBoneCount( ModelAnimations animations, int animation )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t animId = lua_tointeger( L, -2 );
+	size_t modelAnimId = lua_tointeger( L, 1 );
+	int animId = lua_tointeger( L, 2 );
 
-	if ( !validAnimation( animId ) ) {
+	if ( !validAnimation( modelAnimId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushinteger( L, state->animations[ animId ]->animations[ lua_tointeger( L, -1 ) ].boneCount );
+	lua_pushinteger( L, state->animations[ modelAnimId ]->animations[ animId ].boneCount );
 
 	return 1;
 }
@@ -2277,18 +2199,19 @@ Return modelAnimation frame count
 - Success return int
 */
 int lmodelsGetModelAnimationFrameCount( lua_State *L ) {
-	if ( !lua_isnumber( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetModelAnimationFrameCount( ModelAnimations animations, int animation )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t animId = lua_tointeger( L, -2 );
+	size_t modelAnimId = lua_tointeger( L, 1 );
+	int animId = lua_tointeger( L, 2 );
 
-	if ( !validAnimation( animId ) ) {
+	if ( !validAnimation( modelAnimId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	lua_pushinteger( L, state->animations[ animId ]->animations[ lua_tointeger( L, -1 ) ].frameCount );
+	lua_pushinteger( L, state->animations[ modelAnimId ]->animations[ animId ].frameCount );
 
 	return 1;
 }
@@ -2306,18 +2229,15 @@ Check collision between two spheres
 - Success return bool
 */
 int lmodelsCheckCollisionSpheres( lua_State *L ) {
-	if ( !lua_istable( L, -4 ) || !lua_isnumber( L, -3 ) || !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) || !lua_isnumber( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.CheckCollisionSpheres( Vector3 center1, float radius1, Vector3 center2, float radius2 )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	float radius2 = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 center2 = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	float radius1 = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 center1 = uluaGetVector3( L );
+	Vector3 center1 = uluaGetVector3Index( L, 1 );
+	float radius1 = lua_tonumber( L, 2 );
+	Vector3 center2 = uluaGetVector3Index( L, 3 );
+	float radius2 = lua_tonumber( L, 4 );
 
 	lua_pushboolean( L, CheckCollisionSpheres( center1, radius1, center2, radius2 ) );
 
@@ -2333,14 +2253,13 @@ Check collision between two bounding boxes
 - Success return bool
 */
 int lmodelsCheckCollisionBoxes( lua_State *L ) {
-	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.CheckCollisionBoxes( BoundingBox box1, BoundingBox box2 )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	BoundingBox box2 = uluaGetBoundingBox( L );
-	lua_pop( L, 1 );
-	BoundingBox box1 = uluaGetBoundingBox( L );
+	BoundingBox box1 = uluaGetBoundingBoxIndex( L, 1 );
+	BoundingBox box2 = uluaGetBoundingBoxIndex( L, 2 );
 
 	lua_pushboolean( L, CheckCollisionBoxes( box1, box2 ) );
 
@@ -2356,16 +2275,14 @@ Check collision between box and sphere
 - Success return bool
 */
 int lmodelsCheckCollisionBoxSphere( lua_State *L ) {
-	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.CheckCollisionBoxSphere( BoundingBox box, Vector3 center, float radius )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	float radius = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 center = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	BoundingBox box = uluaGetBoundingBox( L );
+	BoundingBox box = uluaGetBoundingBoxIndex( L, 1 );
+	Vector3 center = uluaGetVector3Index( L, 2 );
+	float radius = lua_tonumber( L, 3 );
 
 	lua_pushboolean( L, CheckCollisionBoxSphere( box, center, radius ) );
 
@@ -2381,16 +2298,14 @@ Get collision info between ray and sphere. ( RayCollision is Lua table of { hit,
 - Success return RayCollision
 */
 int lmodelsGetRayCollisionSphere( lua_State *L ) {
-	if ( !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_isnumber( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetRayCollisionSphere( Ray ray, Vector3 center, float radius )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	float radius = lua_tonumber( L, -1 );
-	lua_pop( L, 1 );
-	Vector3 center = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Ray ray = uluaGetRay( L );
+	Ray ray = uluaGetRayIndex( L, 1 );
+	Vector3 center = uluaGetVector3Index( L, 2 );
+	float radius = lua_tonumber( L, 3 );
 
 	uluaPushRayCollision( L, GetRayCollisionSphere( ray, center, radius ) );
 
@@ -2406,14 +2321,13 @@ Get collision info between ray and box
 - Success return RayCollision
 */
 int lmodelsGetRayCollisionBox( lua_State *L ) {
-	if ( !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetRayCollisionBox( Ray ray, BoundingBox box )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	BoundingBox box = uluaGetBoundingBox( L );
-	lua_pop( L, 1 );
-	Ray ray = uluaGetRay( L );
+	Ray ray = uluaGetRayIndex( L, 1 );
+	BoundingBox box = uluaGetBoundingBoxIndex( L, 2 );
 
 	uluaPushRayCollision( L, GetRayCollisionBox( ray, box ) );
 
@@ -2429,23 +2343,20 @@ Get collision info between ray and mesh
 - Success return RayCollision
 */
 int lmodelsGetRayCollisionMesh( lua_State *L ) {
-	if ( !lua_istable( L, -3 ) || !lua_isnumber( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetRayCollisionMesh( Ray ray, Mesh mesh, Matrix transform )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	// Matrix transform = MatrixIdentity();
-	Matrix transform = uluaGetMatrix( L );
-	lua_pop( L, 1 );
-	size_t meshId = lua_tointeger( L, -1 );
-	lua_pop( L, 1 );
-	Ray ray = uluaGetRay( L );
+	Ray ray = uluaGetRayIndex( L, 1 );
+	size_t meshId = lua_tointeger( L, 2 );
+	Matrix transform = uluaGetMatrixIndex( L, 3 );
 
 	if ( !validMesh( meshId ) ) {
 		lua_pushnil( L );
 		return 1;
 	}
-	// uluaPushRayCollision( L, GetRayCollisionMesh( ray, *state->meshes[ meshId ], transform ) );
+	uluaPushRayCollision( L, GetRayCollisionMesh( ray, *state->meshes[ meshId ], transform ) );
 
 	return 1;
 }
@@ -2459,18 +2370,15 @@ Get collision info between ray and triangle
 - Success return RayCollision
 */
 int lmodelsGetRayCollisionTriangle( lua_State *L ) {
-	if ( !lua_istable( L, -4 ) || !lua_istable( L, -3 ) || !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetRayCollisionTriangle( Ray ray, Vector3 p1, Vector3 p2, Vector3 p3 )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	Vector3 p3 = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Vector3 p2 = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Vector3 p1 = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Ray ray = uluaGetRay( L );
+	Ray ray = uluaGetRayIndex( L, 1 );
+	Vector3 p1 = uluaGetVector3Index( L, 2 );
+	Vector3 p2 = uluaGetVector3Index( L, 3 );
+	Vector3 p3 = uluaGetVector3Index( L, 4 );
 
 	uluaPushRayCollision( L, GetRayCollisionTriangle( ray, p1, p2, p3 ) );
 
@@ -2486,24 +2394,19 @@ Get collision info between ray and quad
 - Success return RayCollision
 */
 int lmodelsGetRayCollisionQuad( lua_State *L ) {
-	if ( !lua_istable( L, -5 ) || !lua_istable( L, -4 ) || !lua_istable( L, -3 )
-	|| !lua_istable( L, -2 ) || !lua_istable( L, -1 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 )
+	|| !lua_istable( L, 4 ) || !lua_istable( L, 5 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetRayCollisionQuad( Ray ray, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4 )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	Vector3 p4 = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Vector3 p3 = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Vector3 p2 = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Vector3 p1 = uluaGetVector3( L );
-	lua_pop( L, 1 );
-	Ray ray = uluaGetRay( L );
+	Ray ray = uluaGetRayIndex( L, 1 );
+	Vector3 p1 = uluaGetVector3Index( L, 2 );
+	Vector3 p2 = uluaGetVector3Index( L, 3 );
+	Vector3 p3 = uluaGetVector3Index( L, 4 );
+	Vector3 p4 = uluaGetVector3Index( L, 5 );
 
 	uluaPushRayCollision( L, GetRayCollisionQuad( ray, p1, p2, p3, p4 ) );
 
 	return 1;
 }
-

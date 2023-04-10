@@ -11,7 +11,6 @@ int lmodelsDrawCircle3D( lua_State *L );
 int lmodelsDrawTriangle3D( lua_State *L );
 int lmodelsDrawCube( lua_State *L );
 int lmodelsDrawCubeWires( lua_State *L );
-// int lmodelsDrawCubeTexture( lua_State *L );
 int lmodelsDrawSphere( lua_State *L );
 int lmodelsDrawSphereEx( lua_State *L );
 int lmodelsDrawSphereWires( lua_State *L );

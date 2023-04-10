@@ -2933,16 +2933,6 @@ function RL.DrawCube( position, size, color ) end
 ---@return any success 
 function RL.DrawCubeWires( position, size, color ) end
 
----Draw cube textured
----- Failure return false
----- Success return true
----@param texture any
----@param position table
----@param size table
----@param color table
----@return any success 
-function RL.DrawCubeTexture( texture, position, size, color ) end
-
 ---Draw sphere
 ---- Failure return false
 ---- Success return true
@@ -3152,8 +3142,9 @@ function RL.GenMeshCustom( mesh, dynamic ) end
 ---- Failure return false
 ---- Success return true
 ---@param mesh any
+---@param updatedMesh any
 ---@return any success 
-function RL.UpdateMesh( mesh ) end
+function RL.UpdateMesh( mesh, updatedMesh ) end
 
 ---Unload mesh data from CPU and GPU
 ---- Failure return false

@@ -1,5 +1,5 @@
 Current {
-	* New argument styles for: models, rgui, easings.
+	* New argument styles for: rgui, easings.
 	* ReiLua camera3D lib.
 	* Check new functions from https://github.com/raysan5/raylib/blob/master/CHANGELOG
 }
@@ -7,6 +7,7 @@ Current {
 Backlog {
 	* IsWaveReady and other Is* ready functions.
 
+	* Platformer example physics process for true framerate independence.
 	* rlgl
 		* More low level functions. Could be usefull now when for example draw polygon is removed.
 	* Text
@@ -34,4 +35,15 @@ Backlog {
 		* LoadFontEx
 		* LoadFontFromImage
 		* DrawText
+		* DrawQuad3DTexture
+		* GenMeshCustom
+		* UpdateMesh
+		* DrawMeshInstanced
+		* LoadMaterialDefault
+		* CreateMaterial
+		* LoadModel
+		* LoadModelFromMesh
+		* SetModelMaterial
+		* UpdateModelAnimation
+		* GetRayCollisionMesh
 }

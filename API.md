@@ -3888,15 +3888,6 @@ Draw cube wires
 
 ---
 
-> success = RL.DrawCubeTexture( Texture2D texture, Vector3 position, Vector3 size, Color color )
-
-Draw cube textured
-
-- Failure return false
-- Success return true
-
----
-
 > success = RL.DrawSphere( Vector3 centerPos, float radius, Color color )
 
 Draw sphere
@@ -4090,7 +4081,7 @@ Generate custom mesh from vertex attribute data and uploads it into a VAO ( if s
 
 ---
 
-> success = RL.UpdateMesh( Mesh{} mesh )
+> success = RL.UpdateMesh( Mesh mesh, Mesh{} updatedMesh )
 
 Update mesh vertex data in GPU.
 Note! Mainly intented to be used with custom meshes.

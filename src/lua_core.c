@@ -11,6 +11,7 @@
 #include "rgui.h"
 #include "lights.h"
 #include "lrlgl.h"
+#include "lgl.h"
 #include "reasings.h"
 
 static void assignGlobalInt( int value, const char *name ) {
@@ -491,6 +492,12 @@ void defineGlobals() {
 	/* LightType */
 	assignGlobalInt( LIGHT_DIRECTIONAL, "LIGHT_DIRECTIONAL" );
 	assignGlobalInt( LIGHT_POINT, "LIGHT_POINT" );
+	/* OpenGL */
+	assignGlobalInt( GL_COLOR_BUFFER_BIT, "GL_COLOR_BUFFER_BIT" );
+	assignGlobalInt( GL_DEPTH_BUFFER_BIT, "GL_DEPTH_BUFFER_BIT" );
+	assignGlobalInt( GL_STENCIL_BUFFER_BIT, "GL_STENCIL_BUFFER_BIT" );
+	assignGlobalInt( GL_NEAREST, "GL_NEAREST" );
+	assignGlobalInt( GL_LINEAR, "GL_LINEAR" );
 /*DOC_END*/
 
 	lua_pop( L, -1 );
@@ -999,10 +1006,8 @@ void luaRegister() {
 		/* Texture Drawing. */
 	assingGlobalFunction( "DrawTexture", ltexturesDrawTexture );
 	assingGlobalFunction( "DrawTextureRec", ltexturesDrawTextureRec );
-	// assingGlobalFunction( "DrawTextureTiled", ltexturesDrawTextureTiled );
 	assingGlobalFunction( "DrawTexturePro", ltexturesDrawTexturePro );
 	assingGlobalFunction( "DrawTextureNPatch", ltexturesDrawTextureNPatch );
-	// assingGlobalFunction( "DrawTexturePoly", ltexturesDrawTexturePoly );
 	assingGlobalFunction( "BeginTextureMode", ltexturesBeginTextureMode );
 	assingGlobalFunction( "EndTextureMode", ltexturesEndTextureMode );
 	assingGlobalFunction( "SetTextureSource", ltexturesSetTextureSource );
@@ -1038,7 +1043,6 @@ void luaRegister() {
 	assingGlobalFunction( "DrawTriangle3D", lmodelsDrawTriangle3D );
 	assingGlobalFunction( "DrawCube", lmodelsDrawCube );
 	assingGlobalFunction( "DrawCubeWires", lmodelsDrawCubeWires );
-	// assingGlobalFunction( "DrawCubeTexture", lmodelsDrawCubeTexture );
 	assingGlobalFunction( "DrawSphere", lmodelsDrawSphere );
 	assingGlobalFunction( "DrawSphereEx", lmodelsDrawSphereEx );
 	assingGlobalFunction( "DrawSphereWires", lmodelsDrawSphereWires );
@@ -1138,9 +1142,6 @@ void luaRegister() {
 	assingGlobalFunction( "StopSound", laudioStopSound );
 	assingGlobalFunction( "PauseSound", laudioPauseSound );
 	assingGlobalFunction( "ResumeSound", laudioResumeSound );
-	// assingGlobalFunction( "PlaySoundMulti", laudioPlaySoundMulti );
-	// assingGlobalFunction( "StopSoundMulti", laudioStopSoundMulti );
-	// assingGlobalFunction( "GetSoundsPlaying", laudioGetSoundsPlaying );
 	assingGlobalFunction( "IsSoundPlaying", laudioIsSoundPlaying );
 	assingGlobalFunction( "SetSoundVolume", laudioSetSoundVolume );
 	assingGlobalFunction( "SetSoundPitch", laudioSetSoundPitch );
@@ -1346,6 +1347,10 @@ void luaRegister() {
 		/* General render state. */
 	assingGlobalFunction( "rlglSetLineWidth", lrlglSetLineWidth );
 	assingGlobalFunction( "rlglGetLineWidth", lrlglGetLineWidth );
+
+	/* OpenGL */
+		/* Framebuffer management. */
+	assingGlobalFunction( "glBlitFramebuffer", lglBlitFramebuffer );
 
 	/* Easings */
 		/* Linear Easing functions. */

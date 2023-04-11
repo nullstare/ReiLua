@@ -39,8 +39,8 @@ function RL.init()
 	camera:setPosition( { 0, 8, 16 } )
 	camera:setTarget( { 0, 0, 0 } )
 	camera:setUp( { 0, 1, 0 } )
-	-- camera.mode = camera.MODES.ORBITAL
-	camera.mode = camera.MODES.FREE
+	camera.mode = camera.MODES.ORBITAL
+	-- camera.mode = camera.MODES.FREE
 	-- camera.mode = camera.MODES.FIRST_PERSON
 
 	heigthImage = RL.LoadImage( RL.GetBasePath().."../resources/images/heightmap.png" )

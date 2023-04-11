@@ -80,10 +80,8 @@ int ltexturesUpdateTextureRec( lua_State *L );
 /* Texture Drawing. */
 int ltexturesDrawTexture( lua_State *L );
 int ltexturesDrawTextureRec( lua_State *L );
-// int ltexturesDrawTextureTiled( lua_State *L );
 int ltexturesDrawTexturePro( lua_State *L );
 int ltexturesDrawTextureNPatch( lua_State *L );
-// int ltexturesDrawTexturePoly( lua_State *L );
 int ltexturesBeginTextureMode( lua_State *L );
 int ltexturesEndTextureMode( lua_State *L );
 int ltexturesSetTextureSource( lua_State *L );

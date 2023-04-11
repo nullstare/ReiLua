@@ -122,6 +122,7 @@ luaApiFile:write(
 
 local srcFile = io.open( "../src/lua_core.c", "r" )
 local writing = false
+local globalVariableCount = 0
 
 repeat
 	line = srcFile:read( "*l" )
@@ -144,6 +145,7 @@ repeat
 			local value = RL[ globalName ]
 
 			globalName = "RL."..globalName
+			globalVariableCount = globalVariableCount + 1
 
 			if value == nil then
 				luaApiFile:write( globalName.."=nil\n" )
@@ -259,8 +261,11 @@ local sourceFiles = {
 	"rgui",
 	"lights",
 	"rlgl",
+	"gl",
 	"easings",
 }
+
+local functionCount = 0
 
 for _, src in ipairs( sourceFiles ) do
 	srcFile = io.open( "../src/"..src..".c", "r" )
@@ -289,6 +294,7 @@ for _, src in ipairs( sourceFiles ) do
 				luaApiFile:write( "-- "..line:sub( 4 ).."\n" )
 			elseif line:sub( 1, 1 ) == ">" then
 				funcStr =  parseFunction( line )
+				functionCount = functionCount + 1
 			elseif line:sub( 1, 1 ) ~= "" then
 				luaApiFile:write( "---"..line.."\n" )
 			end
@@ -310,3 +316,5 @@ end
 if not separate then
 	apiFile:close()
 end
+
+print( "Parsed:\n"..globalVariableCount.." Global variables\n"..functionCount.." Functions" )

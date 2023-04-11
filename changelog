@@ -49,6 +49,7 @@ Detailed changes:
 	- ADDED: Camera3DRoll
 	- ADDED: GetCamera3DViewMatrix
 	- ADDED: GetCamera3DProjectionMatrix
+	- ADDED: glBlitFramebuffer
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

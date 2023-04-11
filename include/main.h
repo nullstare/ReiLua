@@ -7,15 +7,16 @@
 #define VERSION_PATCH 0
 #define VERSION_DEV 1
 
+#include "glad.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "raylib.h"
+#include "rlgl.h"
 #include "raymath.h"
 #include "raygui.h"
 #include "rlights.h"
 #include "rcamera.h"
-#include "rlgl.h"
 #include "glfw3.h"
 #include "glfw3native.h"
 #include <lua.h>

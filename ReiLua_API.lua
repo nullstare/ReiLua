@@ -542,6 +542,14 @@ RL.HUEBAR_SELECTOR_OVERFLOW=20
 
 RL.LIGHT_DIRECTIONAL=0
 RL.LIGHT_POINT=1
+
+-- Globals - OpenGL
+
+RL.GL_COLOR_BUFFER_BIT=16384
+RL.GL_DEPTH_BUFFER_BIT=256
+RL.GL_STENCIL_BUFFER_BIT=1024
+RL.GL_NEAREST=9728
+RL.GL_LINEAR=9729
 -- Core - Window
 
 ---Check if window has been initialized successfully
@@ -5198,6 +5206,21 @@ function RL.rlSetLineWidth( width ) end
 ---- Success return float
 ---@return any width 
 function RL.rlGetLineWidth() end
+
+-- OpenGL - Framebuffer management
+
+---Copy a block of pixels from one framebuffer object to another.
+---Use -1 RenderTexture for window framebuffer.
+---- Failure return false
+---- Success return true
+---@param srcTex any
+---@param dstTex any
+---@param srcRect table
+---@param dstRect table
+---@param mask integer
+---@param filter integer
+---@return any success 
+function RL.glBlitFramebuffer( srcTex, dstTex, srcRect, dstRect, mask, filter ) end
 
 -- Easings - Linear Easing functions
 

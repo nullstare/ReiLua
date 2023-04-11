@@ -921,6 +921,18 @@ LIGHT_DIRECTIONAL
 
 LIGHT_POINT
 
+## Globals - OpenGL
+
+GL_COLOR_BUFFER_BIT
+
+GL_DEPTH_BUFFER_BIT
+
+GL_STENCIL_BUFFER_BIT
+
+GL_NEAREST
+
+GL_LINEAR
+
 ## Types
 
 Raylib structs in Lua
@@ -6385,6 +6397,20 @@ Set the line drawing width
 Get the line drawing width
 
 - Success return float
+
+---
+
+## OpenGL - Framebuffer management
+
+---
+
+> success = RL.glBlitFramebuffer( RenderTexture srcTex, RenderTexture dstTex, Rectangle srcRect, Rectangle dstRect, int mask, int filter )
+
+Copy a block of pixels from one framebuffer object to another.
+Use -1 RenderTexture for window framebuffer.
+
+- Failure return false
+- Success return true
 
 ---
 

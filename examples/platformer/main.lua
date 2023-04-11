@@ -300,7 +300,9 @@ function RL.draw()
 		drawPlayer()
 	RL.EndTextureMode()
 
-	RL.SetTextureSource( RL.TEXTURE_SOURCE_RENDER_TEXTURE )
-	RL.DrawTexturePro( framebuffer, { 0, 0, res.x, -res.y }, { 0, 0, winSize.x, winSize.y }, { 0, 0 }, 0.0, RL.WHITE )
-	RL.SetTextureSource( RL.TEXTURE_SOURCE_TEXTURE )
+	-- RL.SetTextureSource( RL.TEXTURE_SOURCE_RENDER_TEXTURE )
+	-- RL.DrawTexturePro( framebuffer, { 0, 0, res.x, -res.y }, { 0, 0, winSize.x, winSize.y }, { 0, 0 }, 0.0, RL.WHITE )
+	-- RL.SetTextureSource( RL.TEXTURE_SOURCE_TEXTURE )
+
+	RL.glBlitFramebuffer( framebuffer, -1, res, winSize, RL.GL_COLOR_BUFFER_BIT, RL.GL_NEAREST )
 end

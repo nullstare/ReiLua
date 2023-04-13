@@ -1,4 +1,4 @@
-util = require( "utillib" )
+Util = require( "utillib" )
 Rect = require( "rectangle" )
 Vec2 = require( "vector2" )
 Color = require( "color" )
@@ -106,11 +106,11 @@ function Gui.delete( cell )
 end
 
 function Gui.set2Top( cell )
-	util.tableMove( Gui._cells, Gui.getId( cell ), 1, #Gui._cells )
+	Util.tableMove( Gui._cells, Gui.getId( cell ), 1, #Gui._cells )
 end
 
 function Gui.set2Back( cell )
-	util.tableMove( Gui._cells, Gui.getId( cell ), 1, 1 )
+	Util.tableMove( Gui._cells, Gui.getId( cell ), 1, 1 )
 end
 
 function Gui.process( mousePosition )
@@ -187,7 +187,7 @@ function Gui.process( mousePosition )
 
 			if 0 < key then
 				if key == RL.KEY_BACKSPACE then
-					Gui._inputItem.text = util.utf8Sub( Gui._inputItem.text, 0, utf8.len( Gui._inputItem.text ) - 1 )
+					Gui._inputItem.text = Util.utf8Sub( Gui._inputItem.text, 0, utf8.len( Gui._inputItem.text ) - 1 )
 				elseif key == RL.KEY_ENTER or key == RL.KEY_KP_ENTER then
 					if Gui._inputItem.allowLineBreak then
 						Gui._inputItem.text = Gui._inputItem.text.."\n"
@@ -615,8 +615,8 @@ function Container:scroll( pos )
 		return
 	end
 
-	self._scrollRect.x = util.clamp( pos.x, 0, self._scrollRect.width - self.bounds.width )
-	self._scrollRect.y = util.clamp( pos.y, 0, self._scrollRect.height - self.bounds.height )
+	self._scrollRect.x = Util.clamp( pos.x, 0, self._scrollRect.width - self.bounds.width )
+	self._scrollRect.y = Util.clamp( pos.y, 0, self._scrollRect.height - self.bounds.height )
 
 	self:update()
 end

@@ -17,6 +17,7 @@ bool stateInit( const char *exePath ) {
 	state->resolution = (Vector2){ 800, 600 };
 	state->luaState = NULL;
 	state->textureSource = TEXTURE_SOURCE_TEXTURE;
+	state->guiFont = 0;
 	/* Images. */
 	state->imageAlloc = ALLOC_PAGE_SIZE;
 	state->imageCount = 0;

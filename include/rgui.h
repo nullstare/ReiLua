@@ -11,6 +11,7 @@ int lguiGuiSetState( lua_State *L );
 int lguiGuiGetState( lua_State *L );
 /* Font. */
 int lguiGuiSetFont( lua_State *L );
+int lguiGuiGetFont( lua_State *L );
 /* Style */
 int lguiGuiSetStyle( lua_State *L );
 int lguiGuiGetStyle( lua_State *L );

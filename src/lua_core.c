@@ -1290,6 +1290,7 @@ void luaRegister() {
 	assingGlobalFunction( "GuiGetState", lguiGuiGetState );
 		/* Font. */
 	assingGlobalFunction( "GuiSetFont", lguiGuiSetFont );
+	assingGlobalFunction( "GuiGetFont", lguiGuiGetFont );
 		/* Style. */
 	assingGlobalFunction( "GuiSetStyle", lguiGuiSetStyle );
 	assingGlobalFunction( "GuiGetStyle", lguiGuiGetStyle );

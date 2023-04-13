@@ -3,12 +3,6 @@ package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 Util = require( "utillib" )
 Vec2 = require( "vector2" )
 
--- print( "RL", RL, #RL )
-
--- for i, v in pairs( RL ) do
--- 	print( i, v )
--- end
-
 local TILE_SIZE = 16
 local PLAYER_MAXSPEED = 1.5
 local PLAYER_ACCELL = 5

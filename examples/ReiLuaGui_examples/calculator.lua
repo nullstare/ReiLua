@@ -32,7 +32,7 @@ function Calculator:new( pos )
 		VAling = Gui.ALING.CENTER,
 		color = Color:new( RL.LIGHTGRAY ),
 	} ) )
-	
+
 	object.handle:add( Gui.texture:new( {
 		bounds = object.handle.bounds:clone(),
 		texture = borderTexture,

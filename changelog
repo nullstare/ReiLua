@@ -50,6 +50,7 @@ Detailed changes:
 	- ADDED: GetCamera3DViewMatrix
 	- ADDED: GetCamera3DProjectionMatrix
 	- ADDED: glBlitFramebuffer
+	- ADDED: GuiGetFont
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

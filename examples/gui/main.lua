@@ -33,9 +33,6 @@ function RL.init()
 	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 end
 
-function RL.process( delta )
-end
-
 function RL.draw()
 	RL.ClearBackground( { 50, 20, 75 } )
 

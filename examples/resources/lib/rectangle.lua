@@ -1,4 +1,6 @@
 Rectangle = {}
+-- Rectangle.TYPE = "Rectangle"
+
 Rectangle.meta = {
 	__index = Rectangle,
 	__tostring = function( r )

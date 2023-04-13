@@ -2049,7 +2049,8 @@ bool GuiTextBox(Rectangle bounds, char *text, int textSize, bool editMode)
             // Delete text
             if (keyCount > 0)
             {
-                if (IsKeyPressed(KEY_BACKSPACE))
+                // if (IsKeyPressed(KEY_BACKSPACE))
+                if ( GetKeyPressed() == KEY_BACKSPACE )
                 {
                     while ((keyCount > 0) && ((text[--keyCount] & 0xc0) == 0x80));
                     text[keyCount] = '\0';
@@ -2343,7 +2344,8 @@ bool GuiTextBoxMulti(Rectangle bounds, char *text, int textSize, bool editMode)
             // Delete characters
             if (textLength > 0)
             {
-                if (IsKeyPressed(KEY_BACKSPACE))
+                // if (IsKeyPressed(KEY_BACKSPACE))
+                if ( GetKeyPressed() == KEY_BACKSPACE )
                 {
                     if ((unsigned char)text[textLength - 1] < 127)
                     {

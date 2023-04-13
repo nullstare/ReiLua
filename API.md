@@ -5955,10 +5955,18 @@ Get gui state ( global state )
 
 > success = RL.GuiSetFont( Font font )
 
-Set gui custom font ( Global state )
+Set gui custom font ( global state )
 
 - Failure return false
 - Success return true
+
+---
+
+> font = RL.GuiGetFont()
+
+Get gui custom font ( global state )
+
+- Success return int
 
 ---
 

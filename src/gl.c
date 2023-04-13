@@ -55,9 +55,10 @@ int lglBlitFramebuffer( lua_State *L ) {
 		dstRect.x, dstRect.y, dstRect.width, dstRect.height,
 		mask,
 		filter
-		// GL_COLOR_BUFFER_BIT, 									// mask
-		// GL_NEAREST												// filter
 	);
+
+	glBindFramebuffer( GL_READ_FRAMEBUFFER, 0 );
+	glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
 
 	lua_pushboolean( L, true );
 

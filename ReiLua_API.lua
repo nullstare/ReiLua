@@ -4759,12 +4759,17 @@ function RL.GuiGetState() end
 
 -- Gui - Font
 
----Set gui custom font ( Global state )
+---Set gui custom font ( global state )
 ---- Failure return false
 ---- Success return true
 ---@param font any
 ---@return any success 
 function RL.GuiSetFont( font ) end
+
+---Get gui custom font ( global state )
+---- Success return int
+---@return any font 
+function RL.GuiGetFont() end
 
 -- Gui - Style
 

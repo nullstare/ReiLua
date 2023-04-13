@@ -114,6 +114,9 @@ function utillib.split( str, sep )
 	for str in string.gmatch( str, "([^"..sep.."]+)" ) do
 		table.insert( t, str )
 	end
+	-- for s in string.gmatch( str, "([^"..sep.."]+)" ) do
+	-- 	table.insert( t, s )
+	-- end
 
 	return t
 end

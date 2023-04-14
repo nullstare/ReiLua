@@ -9,6 +9,7 @@ KEY CHANGES:
 	- REVISED: How Lua argumets are handled. Now uluaGet*Index functions can take stack index(positive only).
 	Also using positive stack indexing.
 	- ADDED: Camera3D Lua lib.
+	- ADDED: Raygui wrapper lib.
 
 Detailed changes:
 	- FIXED: uluaGetRay was looking for integers instead of tables.
@@ -51,6 +52,7 @@ Detailed changes:
 	- ADDED: GetCamera3DProjectionMatrix
 	- ADDED: glBlitFramebuffer
 	- ADDED: GuiGetFont
+	- FIXED: GuiScrollPanel
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

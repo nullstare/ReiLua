@@ -5,6 +5,7 @@ Current {
 
 Backlog {
 	* IsWaveReady and other Is* ready functions.
+	* Extend color lib functionality.
 
 	* Platformer example physics process for true framerate independence.
 	* rlgl

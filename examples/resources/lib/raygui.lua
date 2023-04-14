@@ -3,7 +3,7 @@
 Util = require( "utillib" )
 Rect = require( "rectangle" )
 Vec2 = require( "vector2" )
--- Color = require( "color" )
+Color = require( "color" )
 
 ---@param text string
 ---@return integer count, table rowItemCounts
@@ -69,7 +69,7 @@ function Raygui:process()
     for i = #self.elements, 1, -1 do
 		local element = self.elements[i]
 
-        if element.process ~= nil then
+        if element.visible and element.process ~= nil then
             if element:process() then
                 self.focused = i
 
@@ -87,11 +87,200 @@ function Raygui:draw()
             RL.GuiUnlock()
         end
 
-        if element.draw ~= nil then
+        if element.visible and element.draw ~= nil then
             element:draw()
         end
     end
 end
+
+function Raygui:set2Top( element )
+	for i, curElement in ipairs( self.elements ) do
+		if element == curElement then
+			Util.tableMove( self.elements, i, 1, #self.elements )
+
+			return
+		end
+	end
+end
+
+function Raygui:set2Back( element )
+	for i, curElement in ipairs( self.elements ) do
+		if element == curElement then
+			Util.tableMove( self.elements, i, 1, 1 )
+
+			return
+		end
+	end
+end
+
+--[[
+	Container/separator controls, useful for controls organization
+]]--
+
+-- WindowBox.
+
+WindowBox = {}
+WindowBox.__index = WindowBox
+
+function WindowBox:new( bounds, text, callback )
+    local object = setmetatable( {}, WindowBox )
+
+    object.bounds = bounds:clone()
+    object.text = text
+	object.callback = callback
+
+	object.visible = true
+
+	return object
+end
+
+function WindowBox:process()
+    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+end
+
+function WindowBox:draw()
+	if RL.GuiWindowBox( self.bounds, self.text ) and self.callback ~= nil then
+        self.callback( self )
+    end
+end
+
+function WindowBox:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+end
+
+-- GroupBox.
+
+GroupBox = {}
+GroupBox.__index = GroupBox
+
+function GroupBox:new( bounds, text )
+    local object = setmetatable( {}, GroupBox )
+
+    object.bounds = bounds:clone()
+    object.text = text
+
+	object.visible = true
+
+	return object
+end
+
+function GroupBox:process()
+    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+end
+
+function GroupBox:draw()
+	RL.GuiGroupBox( self.bounds, self.text )
+end
+
+function GroupBox:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+end
+
+-- Line.
+
+Line = {}
+Line.__index = Line
+
+function Line:new( bounds, text )
+    local object = setmetatable( {}, Line )
+
+    object.bounds = bounds:clone()
+    object.text = text
+
+	object.visible = true
+
+	return object
+end
+
+function Line:process()
+    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+end
+
+function Line:draw()
+	RL.GuiLine( self.bounds, self.text )
+end
+
+function Line:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+end
+
+-- Panel.
+
+Panel = {}
+Panel.__index = Panel
+
+function Panel:new( bounds, text )
+    local object = setmetatable( {}, Panel )
+
+    object.bounds = bounds:clone()
+    object.text = text
+
+	object.visible = true
+
+	return object
+end
+
+function Panel:process()
+    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+end
+
+function Panel:draw()
+	RL.GuiPanel( self.bounds, self.text )
+end
+
+function Panel:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+end
+
+-- ScrollPanel.
+
+ScrollPanel = {}
+ScrollPanel.__index = ScrollPanel
+
+function ScrollPanel:new( bounds, text, content, scroll, callback )
+    local object = setmetatable( {}, ScrollPanel )
+
+    object.bounds = bounds:clone()
+    object.text = text
+    object.content = content:clone()
+    object.scroll = scroll:clone()
+	object.view = Rect:new()
+    object.callback = callback
+
+	object.visible = true
+
+	return object
+end
+
+function ScrollPanel:process()
+    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+end
+
+function ScrollPanel:draw()
+	local oldScroll = self.scroll:clone()
+
+	local view, scroll = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll )
+
+	self.view = Rect:new( view )
+	self.scroll = Vec2:new( scroll )
+
+	if self.scroll ~= oldScroll and self.callback ~= nil then
+		self.callback( self )
+	end
+end
+
+function ScrollPanel:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+end
+
+--[[
+	Basic controls set
+]]--
 
 -- Label.
 
@@ -104,11 +293,9 @@ function Label:new( bounds, text )
     object.bounds = bounds:clone()
     object.text = text
 
-	return object
-end
+	object.visible = true
 
-function Label:setText( text )
-    self.text = text
+	return object
 end
 
 function Label:process()
@@ -137,12 +324,9 @@ function Button:new( bounds, text, callback )
     object.callback = callback
 
     object.clicked = false
+	object.visible = true
 
 	return object
-end
-
-function Button:setText( text )
-    self.text = text
 end
 
 function Button:process()
@@ -175,12 +359,9 @@ function LabelButton:new( bounds, text, callback )
     object.callback = callback
 
     object.clicked = false
+	object.visible = true
 
 	return object
-end
-
-function LabelButton:setText( text )
-    self.text = text
 end
 
 function LabelButton:process()
@@ -213,11 +394,9 @@ function Toggle:new( bounds, text, active, callback )
     object.active = active
     object.callback = callback
 
-	return object
-end
+	object.visible = true
 
-function Toggle:setText( text )
-    self.text = text
+	return object
 end
 
 function Toggle:process()
@@ -252,6 +431,7 @@ function ToggleGroup:new( bounds, text, active, callback )
     object.active = active
     object.callback = callback
 
+	object.visible = true
 	object.focusBounds = {}
     object:updateFocusBounds()
 
@@ -336,6 +516,7 @@ function CheckBox:new( bounds, text, checked, callback )
     object.checked = checked
     object.callback = callback
 
+	object.visible = true
     object.focusBounds = bounds:clone()
     object:updateFocusBounds()
 
@@ -415,11 +596,9 @@ function ComboBox:new( bounds, text, active, callback )
     object.active = active
     object.callback = callback
 
-	return object
-end
+	object.visible = true
 
-function ComboBox:setText( text )
-    self.text = text
+	return object
 end
 
 function ComboBox:process()
@@ -455,6 +634,7 @@ function DropdownBox:new( bounds, text, active, editMode, callback )
     object.editMode = editMode
     object.callback = callback
 
+	object.visible = true
 	object.editModeBounds = bounds:clone()
 	object:updateFocusBounds()
 
@@ -525,11 +705,9 @@ function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callbac
     object.editMode = editMode
     object.callback = callback
 
-	return object
-end
+	object.visible = true
 
-function Spinner:setText( text )
-    self.text = text
+	return object
 end
 
 function Spinner:process()
@@ -572,11 +750,9 @@ function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callba
     object.editMode = editMode
     object.callback = callback
 
-	return object
-end
+	object.visible = true
 
-function ValueBox:setText( text )
-    self.text = text
+	return object
 end
 
 function ValueBox:process()
@@ -618,12 +794,9 @@ function TextBox:new( bounds, text, textSize, editMode, callback )
     object.callback = callback
 	-- Option for preventing text to be drawn outside bounds.
 	object.scissorMode = false
+	object.visible = true
 
 	return object
-end
-
-function TextBox:setText( text )
-    self.text = text
 end
 
 function TextBox:process()
@@ -671,11 +844,9 @@ function TextBoxMulti:new( bounds, text, textSize, editMode, callback )
     object.editMode = editMode
     object.callback = callback
 
-	return object
-end
+	object.visible = true
 
-function TextBoxMulti:setText( text )
-    self.text = text
+	return object
 end
 
 function TextBoxMulti:process()
@@ -717,11 +888,9 @@ function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, cal
     object.maxValue = maxValue
     object.callback = callback
 
-	return object
-end
+	object.visible = true
 
-function Slider:setText( text )
-    self.text = text
+	return object
 end
 
 function Slider:process()
@@ -759,11 +928,9 @@ function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, 
     object.maxValue = maxValue
     object.callback = callback
 
-	return object
-end
+	object.visible = true
 
-function SliderBar:setText( text )
-    self.text = text
+	return object
 end
 
 function SliderBar:process()
@@ -801,11 +968,9 @@ function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue
     object.maxValue = maxValue
     object.callback = callback
 
-	return object
-end
+	object.visible = true
 
-function ProgressBar:setText( text )
-    self.text = text
+	return object
 end
 
 function ProgressBar:process()
@@ -838,11 +1003,9 @@ function StatusBar:new( bounds, text )
     object.bounds = bounds:clone()
     object.text = text
 
-	return object
-end
+	object.visible = true
 
-function StatusBar:setText( text )
-    self.text = text
+	return object
 end
 
 function StatusBar:process()
@@ -869,11 +1032,9 @@ function DummyRec:new( bounds, text )
     object.bounds = bounds:clone()
     object.text = text
 
-	return object
-end
+	object.visible = true
 
-function DummyRec:setText( text )
-    self.text = text
+	return object
 end
 
 function DummyRec:process()
@@ -904,12 +1065,9 @@ function Grid:new( bounds, text, spacing, subdivs, callback )
 	object.callback = callback
 
 	object.cell = Vec2:new()
+	object.visible = true
 
 	return object
-end
-
-function Grid:setText( text )
-    self.text = text
 end
 
 function Grid:process()
@@ -931,7 +1089,333 @@ function Grid:setPosition( pos )
 	self.bounds.y = pos.y
 end
 
+--[[
+	Advance controls set
+]]--
+
+-- ListView.
+
+ListView = {}
+ListView.__index = ListView
+
+function ListView:new( bounds, text, scrollIndex, active, callback )
+    local object = setmetatable( {}, ListView )
+
+    object.bounds = bounds:clone()
+    object.text = text
+    object.scrollIndex = scrollIndex
+    object.active = active
+	object.callback = callback
+	object.visible = true
+
+	return object
+end
+
+function ListView:getItem( id )
+	return getItems( self.text )[ id + 1 ]
+end
+
+function ListView:process()
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+end
+
+function ListView:draw()
+	local oldActive = self.active
+
+	self.active, self.scrollIndex = RL.GuiListView( self.bounds, self.text, self.scrollIndex, self.active )
+
+	if oldActive ~= self.active and self.callback ~= nil then
+		self.callback( self )
+	end
+end
+
+function ListView:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+end
+
+-- ListViewEx.
+
+ListViewEx = {}
+ListViewEx.__index = ListViewEx
+
+function ListViewEx:new( bounds, text, focus, scrollIndex, active, callback )
+    local object = setmetatable( {}, ListViewEx )
+
+    object.bounds = bounds:clone()
+    object.text = text
+    object.focus = focus
+    object.scrollIndex = scrollIndex
+    object.active = active
+	object.callback = callback
+	object.visible = true
+
+	return object
+end
+
+function ListViewEx:getItem( id )
+	return getItems( self.text )[ id + 1 ]
+end
+
+function ListViewEx:process()
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+end
+
+function ListViewEx:draw()
+	local oldActive = self.active
+
+	self.active, self.scrollIndex, self.focus = RL.GuiListViewEx( self.bounds, self.text, self.focus, self.scrollIndex, self.active )
+
+	if oldActive ~= self.active and self.callback ~= nil then
+		self.callback( self )
+	end
+end
+
+function ListViewEx:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+end
+
+-- MessageBox.
+
+MessageBox = {}
+MessageBox.__index = MessageBox
+
+function MessageBox:new( bounds, title, message, buttons, callback )
+    local object = setmetatable( {}, MessageBox )
+
+    object.bounds = bounds:clone()
+    object.title = title
+    object.message = message
+    object.buttons = buttons
+	object.callback = callback
+
+	object.buttonIndex = -1
+	object.visible = true
+
+	return object
+end
+
+function MessageBox:getItem( id )
+	return getItems( self.buttons )[ id ]
+end
+
+function MessageBox:process()
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+end
+
+function MessageBox:draw()
+	self.buttonIndex = RL.GuiMessageBox( self.bounds, self.title, self.message, self.buttons )
+
+	if 0 <= self.buttonIndex and self.callback ~= nil then
+		self.callback( self )
+	end
+end
+
+function MessageBox:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+end
+
+-- TextInputBox.
+
+TextInputBox = {}
+TextInputBox.__index = TextInputBox
+
+function TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callback )
+    local object = setmetatable( {}, TextInputBox )
+
+    object.bounds = bounds:clone()
+    object.title = title
+    object.message = message
+    object.buttons = buttons
+    object.text = text
+    object.textMaxSize = textMaxSize
+    object.secretViewActive = secretViewActive
+	object.callback = callback
+
+	object.buttonIndex = -1
+	object.visible = true
+
+	return object
+end
+
+function TextInputBox:getItem( id )
+	return getItems( self.buttons )[ id ]
+end
+
+function TextInputBox:process()
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+end
+
+function TextInputBox:draw()
+	self.buttonIndex, self.text, self.secretViewActive = RL.GuiTextInputBox( self.bounds, self.title, self.message, self.buttons, self.text, self.textMaxSize, self.secretViewActive )
+
+	if 0 <= self.buttonIndex and self.callback ~= nil then
+		self.callback( self )
+	end
+end
+
+function TextInputBox:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+end
+
+-- ColorPicker.
+
+ColorPicker = {}
+ColorPicker.__index = ColorPicker
+
+function ColorPicker:new( bounds, text, color, callback )
+    local object = setmetatable( {}, ColorPicker )
+
+    object.bounds = bounds:clone()
+    object.text = text
+    object.color = color
+	object.callback = callback
+
+	object.visible = true
+
+	return object
+end
+
+function ColorPicker:process()
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+end
+
+function ColorPicker:draw()
+	local oldColor = self.color:clone()
+	local color = RL.GuiColorPicker( self.bounds, self.text, self.color )
+
+	self.color = Color:new( color )
+
+	if oldColor ~= self.color and self.callback ~= nil then
+		self.callback( self )
+	end
+end
+
+function ColorPicker:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+end
+
+-- ColorPanel.
+
+ColorPanel = {}
+ColorPanel.__index = ColorPanel
+
+function ColorPanel:new( bounds, text, color, callback )
+    local object = setmetatable( {}, ColorPanel )
+
+    object.bounds = bounds:clone()
+    object.text = text
+    object.color = color
+	object.callback = callback
+
+	object.visible = true
+
+	return object
+end
+
+function ColorPanel:process()
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+end
+
+function ColorPanel:draw()
+	local oldColor = self.color:clone()
+	local color = RL.GuiColorPanel( self.bounds, self.text, self.color )
+
+	self.color = Color:new( color )
+
+	if oldColor ~= self.color and self.callback ~= nil then
+		self.callback( self )
+	end
+end
+
+function ColorPanel:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+end
+
+-- ColorBarAlpha.
+
+ColorBarAlpha = {}
+ColorBarAlpha.__index = ColorBarAlpha
+
+function ColorBarAlpha:new( bounds, text, alpha, callback )
+    local object = setmetatable( {}, ColorBarAlpha )
+
+    object.bounds = bounds:clone()
+    object.text = text
+    object.alpha = alpha
+	object.callback = callback
+
+	object.visible = true
+
+	return object
+end
+
+function ColorBarAlpha:process()
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+end
+
+function ColorBarAlpha:draw()
+	local oldAlpha = self.alpha
+	self.alpha = RL.GuiColorBarAlpha( self.bounds, self.text, self.alpha )
+
+	if self.alpha ~= oldAlpha and self.callback ~= nil then
+		self.callback( self )
+	end
+end
+
+function ColorBarAlpha:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+end
+
+-- ColorBarHue.
+
+ColorBarHue = {}
+ColorBarHue.__index = ColorBarHue
+
+function ColorBarHue:new( bounds, text, value, callback )
+    local object = setmetatable( {}, ColorBarHue )
+
+    object.bounds = bounds:clone()
+    object.text = text
+    object.value = value
+	object.callback = callback
+
+	object.visible = true
+
+	return object
+end
+
+function ColorBarHue:process()
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+end
+
+function ColorBarHue:draw()
+	local oldValue = self.value
+	self.value = RL.GuiColorBarHue( self.bounds, self.text, self.value )
+
+	if self.value ~= oldValue and self.callback ~= nil then
+		self.callback( self )
+	end
+end
+
+function ColorBarHue:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+end
+
 --Assingments.
+
+Raygui.WindowBox = WindowBox
+Raygui.GroupBox = GroupBox
+Raygui.Line = Line
+Raygui.Panel = Panel
+Raygui.ScrollPanel = ScrollPanel
 
 Raygui.Label = Label
 Raygui.Button = Button
@@ -951,5 +1435,14 @@ Raygui.ProgressBar = ProgressBar
 Raygui.StatusBar = StatusBar
 Raygui.DummyRec = DummyRec
 Raygui.Grid = Grid
+
+Raygui.ListView = ListView
+Raygui.ListViewEx = ListViewEx
+Raygui.MessageBox = MessageBox
+Raygui.TextInputBox = TextInputBox
+Raygui.ColorPicker = ColorPicker
+Raygui.ColorPanel = ColorPanel
+Raygui.ColorBarAlpha = ColorBarAlpha
+Raygui.ColorBarHue = ColorBarHue
 
 return Raygui

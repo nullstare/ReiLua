@@ -9,6 +9,8 @@ Raygui = require( "raygui" )
 local raygui = Raygui:new()
 
 local grid = {}
+local windowbox = {}
+local winOpen = true
 
 function RL.init()
 	local monitor = 0
@@ -130,9 +132,106 @@ function RL.init()
 		32,
 		2
 	) )
+	windowbox = raygui:add( raygui.WindowBox:new(
+		Rect:new( 720, 250, 256, 256 ),
+		"WindowBox",
+		function( self ) self.visible = false end
+	) )
+	local groupbox = raygui:add( raygui.GroupBox:new(
+		Rect:new( 400, 700, 256, 256 ),
+		"GroupBox"
+	) )
+	local line = raygui:add( raygui.Line:new(
+		Rect:new( 400, 32, 256, 16 ),
+		"Line"
+	) )
+	local panel = raygui:add( raygui.Panel:new(
+		Rect:new( 400, 64, 256, 128 ),
+		"Panel"
+	) )
+	local scrollpanel = raygui:add( raygui.ScrollPanel:new(
+		Rect:new( 800, 64, 256, 256 ),
+		"ScrollPanel",
+		Rect:new( 0, 0, 256, 600 ),
+		Vec2:new( 0, 0 )
+	) )
+	local listview = raygui:add( raygui.ListView:new(
+		Rect:new( 1100, 64, 128, 80 ),
+		"Cat\nDog\nHorse\nCow\nPig\nEagle\nLion",
+		0,
+		0,
+		function( self ) print( self:getItem( self.active ) ) end
+	) )
+	local listviewex = raygui:add( raygui.ListViewEx:new(
+		Rect:new( 1300, 64, 128, 80 ),
+		"Cat\nDog\nHorse\nCow\nPig\nEagle\nLion",
+		0,
+		0,
+		0,
+		function( self ) print( self:getItem( self.active ) ) end
+	) )
+	local messagebox = raygui:add( raygui.MessageBox:new(
+		Rect:new( 1100, 150, 300, 128 ),
+		"Title",
+		"Message",
+		"Cancel\nOk",
+		function( self )
+			if 0 < self.buttonIndex then
+				print( "You pressed "..self:getItem( self.buttonIndex ) )
+
+				if self.buttonIndex == 1 then
+					raygui:set2Back( windowbox )
+				elseif self.buttonIndex == 2 then
+					raygui:set2Top( windowbox )
+				end
+			end
+		end
+	) )
+	local textinputbox = raygui:add( raygui.TextInputBox:new(
+		Rect:new( 1100, 300, 300, 128 ),
+		"Title",
+		"Message",
+		"Cancel\nOk",
+		"Text",
+		8,
+		0,
+		function( self )
+			if 0 < self.buttonIndex then
+				print( "You pressed "..self:getItem( self.buttonIndex ) )
+			end
+		end
+	) )
+	local colorpicker = raygui:add( raygui.ColorPicker:new(
+		Rect:new( 1500, 32, 128, 128 ),
+		"Color Picker",
+		Color:new()
+	) )
+	local colorpanel = raygui:add( raygui.ColorPanel:new(
+		Rect:new( 1700, 32, 128, 128 ),
+		"Color Panel",
+		Color:new()
+	) )
+	local colorbaralpha = raygui:add( raygui.ColorBarAlpha:new(
+		Rect:new( 1700, 180, 128, 20 ),
+		"Color Panel",
+		1.0
+	) )
+	local colorbarhue = raygui:add( raygui.ColorBarHue:new(
+		Rect:new( 1840, 32, 20, 128 ),
+		"Color Panel",
+		1.0
+	) )
 end
 
 function RL.process( delta )
+	if RL.IsKeyPressed( RL.KEY_R ) then
+		raygui:set2Top( windowbox )
+	end
+
+	if RL.IsKeyPressed( RL.KEY_F ) then
+		raygui:set2Back( windowbox )
+	end
+
 	raygui:process()
 end
 

@@ -28,18 +28,9 @@ Color.meta = {
 	-- __idiv = function( v, value )
 	-- 	return Vector2:new( v.x // value, v.y // value )
 	-- end,
-	-- __len = function( v )
-	-- 	local len = 0
-
-	-- 	for _, _ in pairs( v ) do
-	-- 		len = len + 1
-	-- 	end
-
-	-- 	return len
-	-- end,
-	-- __eq = function( v1, v2 )
-	-- 	return v1.x == v2.x and v1.y == v2.y
-	-- end,
+	__eq = function( c1, c2 )
+		return c1.r == c2.r and c1.g == c2.g and c1.b == c2.b
+	end,
 }
 
 function Color:new( r, g, b, a )

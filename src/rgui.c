@@ -353,7 +353,7 @@ Scroll Panel control
 - Success return Rectangle, Vector2
 */
 int lguiGuiScrollPanel( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) || lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
+	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiScrollPanel( Rectangle bounds, string text, Rectangle content, Vector2 scroll )" );
 		lua_pushboolean( L, false );
 		return 1;

@@ -1,18 +1,18 @@
 Current {
-	* Check new functions from https://github.com/raysan5/raylib/blob/master/CHANGELOG
-	* Tilemap clib.
+	* Check raylib changes from https://github.com/raysan5/raylib/blob/master/CHANGELOG
 }
 
 Backlog {
-	* IsWaveReady and other Is* ready functions.
-	* Extend color lib functionality.
-
 	* Platformer example physics process for true framerate independence.
-	* rlgl
-		* More low level functions. Could be usefull now when for example draw polygon is removed.
+	* Extend color lib functionality.
+	* Tilemap clib. Fast tilemap draw and clib example.
+
+	* IsWaveReady and other Is* ready functions.
 	* Text
 		* Ability to set font texture filtering.
 		* Codepoints?
+	* rlgl
+		* More low level functions. Could be usefull now when for example DrawTexturePoly is removed.
 	* Audio
 		* AudioStream.
 	* Core.

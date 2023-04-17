@@ -47,31 +47,29 @@ end
 
 -- Raygui.
 
-Raygui = {}
-Raygui.__index = Raygui
+Raygui = {
+	RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT = 24,
 
-function Raygui:new()
-    local object = setmetatable( {}, Raygui )
+	elements = {},
+	focused = 0,
+	dragging = nil,
+	grabPos = Vec2:new(),
+}
 
-    object.elements = {}
-    object.focused = 0
+function Raygui.process()
+	-- If dragging, don't process element masking.
+	if Raygui.dragging ~= nil then
+		Raygui.drag( Raygui.dragging )
 
-	return object
-end
+		return
+	end
 
-function Raygui:add( element )
-	table.insert( self.elements, element )
-
-    return element
-end
-
-function Raygui:process()
-    for i = #self.elements, 1, -1 do
-		local element = self.elements[i]
+	for i = #Raygui.elements, 1, -1 do
+		local element = Raygui.elements[i]
 
         if element.visible and element.process ~= nil then
             if element:process() then
-                self.focused = i
+                Raygui.focused = i
 
                 return
             end
@@ -79,11 +77,40 @@ function Raygui:process()
     end
 end
 
-function Raygui:draw()
-    RL.GuiLock()
+function Raygui.drag( element )
+	local mousePos = Vec2:new( RL.GetMousePosition() )
+	local mouseOver = RL.CheckCollisionPointRec( mousePos, element.bounds )
 
-    for i, element in ipairs( self.elements ) do
-        if i == self.focused then
+	if element.draggable and element ~= Raygui.dragging and RL.IsMouseButtonPressed( RL.MOUSE_BUTTON_LEFT )
+	and mouseOver and mousePos.y - element.bounds.y <= Raygui.RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT then
+		Raygui.grabPos = mousePos - Vec2:new( element.bounds.x, element.bounds.y )
+
+		if element.grabCallback ~= nil then
+			element.grabCallback( element )
+		end
+		Raygui.dragging = element
+	end
+
+	if element == Raygui.dragging then
+		if not RL.IsMouseButtonDown( RL.MOUSE_BUTTON_LEFT ) then
+			Raygui.dragging = nil
+		end
+
+		element:setPosition( mousePos - Raygui.grabPos )
+
+		if element.dragCallback ~= nil then
+			element.dragCallback( element )
+		end
+	end
+
+    return mouseOver
+end
+
+function Raygui.draw()
+	RL.GuiLock()
+
+    for i, element in ipairs( Raygui.elements ) do
+        if i == Raygui.focused then
             RL.GuiUnlock()
         end
 
@@ -93,20 +120,20 @@ function Raygui:draw()
     end
 end
 
-function Raygui:set2Top( element )
-	for i, curElement in ipairs( self.elements ) do
+function Raygui.set2Top( element )
+	for i, curElement in ipairs( Raygui.elements ) do
 		if element == curElement then
-			Util.tableMove( self.elements, i, 1, #self.elements )
+			Util.tableMove( Raygui.elements, i, 1, #Raygui.elements )
 
 			return
 		end
 	end
 end
 
-function Raygui:set2Back( element )
-	for i, curElement in ipairs( self.elements ) do
+function Raygui.set2Back( element )
+	for i, curElement in ipairs( Raygui.elements ) do
 		if element == curElement then
-			Util.tableMove( self.elements, i, 1, 1 )
+			Util.tableMove( Raygui.elements, i, 1, 1 )
 
 			return
 		end
@@ -119,23 +146,43 @@ end
 
 -- WindowBox.
 
+--- Window Box control, shows a window that can be closed
+---@class WindowBox
+---@field bounds table Rect
+---@field text string
+---@field callback function|nil
+---@field grabCallback function|nil
+---@field dragCallback function|nil
+---@field visible boolean
+---@field draggable boolean
 WindowBox = {}
 WindowBox.__index = WindowBox
 
-function WindowBox:new( bounds, text, callback )
+---@param bounds table Rect
+---@param text string
+---@param callback function|nil
+---@param grabCallback function|nil
+---@param dragCallback function|nil
+---@return table object
+function WindowBox:new( bounds, text, callback, grabCallback, dragCallback )
     local object = setmetatable( {}, WindowBox )
 
     object.bounds = bounds:clone()
     object.text = text
 	object.callback = callback
+	object.grabCallback = grabCallback
+	object.dragCallback = dragCallback
 
 	object.visible = true
+	object.draggable = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
 
 function WindowBox:process()
-    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+	return Raygui.drag( self )
 end
 
 function WindowBox:draw()
@@ -151,9 +198,16 @@ end
 
 -- GroupBox.
 
+--- Group Box control with text name
+---@class GroupBox
+---@field bounds table Rect
+---@field text string
+---@field visible boolean
 GroupBox = {}
 GroupBox.__index = GroupBox
 
+---@param bounds table Rect
+---@param text string
 function GroupBox:new( bounds, text )
     local object = setmetatable( {}, GroupBox )
 
@@ -161,6 +215,8 @@ function GroupBox:new( bounds, text )
     object.text = text
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -180,6 +236,7 @@ end
 
 -- Line.
 
+--- Line separator control, could contain text
 Line = {}
 Line.__index = Line
 
@@ -190,6 +247,8 @@ function Line:new( bounds, text )
     object.text = text
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -209,22 +268,28 @@ end
 
 -- Panel.
 
+--- Panel control, useful to group controls
 Panel = {}
 Panel.__index = Panel
 
-function Panel:new( bounds, text )
+function Panel:new( bounds, text, grabCallback, dragCallback )
     local object = setmetatable( {}, Panel )
 
     object.bounds = bounds:clone()
     object.text = text
 
 	object.visible = true
+	object.draggable = true
+	object.grabCallback = grabCallback
+	object.dragCallback = dragCallback
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
 
 function Panel:process()
-    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+    return Raygui.drag( self )
 end
 
 function Panel:draw()
@@ -238,10 +303,11 @@ end
 
 -- ScrollPanel.
 
+--- Scroll Panel control
 ScrollPanel = {}
 ScrollPanel.__index = ScrollPanel
 
-function ScrollPanel:new( bounds, text, content, scroll, callback )
+function ScrollPanel:new( bounds, text, content, scroll, callback, grabCallback, dragCallback )
     local object = setmetatable( {}, ScrollPanel )
 
     object.bounds = bounds:clone()
@@ -250,14 +316,19 @@ function ScrollPanel:new( bounds, text, content, scroll, callback )
     object.scroll = scroll:clone()
 	object.view = Rect:new()
     object.callback = callback
+	object.grabCallback = grabCallback
+	object.dragCallback = dragCallback
 
 	object.visible = true
+	object.draggable = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
 
 function ScrollPanel:process()
-    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+    return Raygui.drag( self )
 end
 
 function ScrollPanel:draw()
@@ -284,6 +355,7 @@ end
 
 -- Label.
 
+--- Label control, shows text
 Label = {}
 Label.__index = Label
 
@@ -294,6 +366,8 @@ function Label:new( bounds, text )
     object.text = text
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -313,6 +387,7 @@ end
 
 -- Button.
 
+--- Button control
 Button = {}
 Button.__index = Button
 
@@ -325,6 +400,8 @@ function Button:new( bounds, text, callback )
 
     object.clicked = false
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -348,6 +425,7 @@ end
 
 -- LabelButton.
 
+--- Label button control
 LabelButton = {}
 LabelButton.__index = LabelButton
 
@@ -360,6 +438,8 @@ function LabelButton:new( bounds, text, callback )
 
     object.clicked = false
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -383,6 +463,7 @@ end
 
 -- Toggle.
 
+--- Toggle Button control
 Toggle = {}
 Toggle.__index = Toggle
 
@@ -395,6 +476,8 @@ function Toggle:new( bounds, text, active, callback )
     object.callback = callback
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -420,6 +503,7 @@ end
 
 -- ToggleGroup.
 
+--- Toggle Group control
 ToggleGroup = {}
 ToggleGroup.__index = ToggleGroup
 
@@ -434,6 +518,8 @@ function ToggleGroup:new( bounds, text, active, callback )
 	object.visible = true
 	object.focusBounds = {}
     object:updateFocusBounds()
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -520,6 +606,8 @@ function CheckBox:new( bounds, text, checked, callback )
     object.focusBounds = bounds:clone()
     object:updateFocusBounds()
 
+	table.insert( Raygui.elements, object )
+
 	return object
 end
 
@@ -585,6 +673,7 @@ end
 
 -- ComboBox.
 
+--- Combo Box control
 ComboBox = {}
 ComboBox.__index = ComboBox
 
@@ -597,6 +686,8 @@ function ComboBox:new( bounds, text, active, callback )
     object.callback = callback
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -622,6 +713,7 @@ end
 
 -- DropdownBox.
 
+--- Dropdown Box control
 DropdownBox = {}
 DropdownBox.__index = DropdownBox
 
@@ -637,6 +729,8 @@ function DropdownBox:new( bounds, text, active, editMode, callback )
 	object.visible = true
 	object.editModeBounds = bounds:clone()
 	object:updateFocusBounds()
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -691,6 +785,7 @@ end
 
 -- Spinner.
 
+--- Spinner control
 Spinner = {}
 Spinner.__index = Spinner
 
@@ -706,6 +801,8 @@ function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callbac
     object.callback = callback
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -736,6 +833,7 @@ end
 
 -- ValueBox.
 
+--- Value Box control
 ValueBox = {}
 ValueBox.__index = ValueBox
 
@@ -751,6 +849,8 @@ function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callba
     object.callback = callback
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -781,6 +881,7 @@ end
 
 -- TextBox.
 
+--- Text Box control
 TextBox = {}
 TextBox.__index = TextBox
 
@@ -795,6 +896,8 @@ function TextBox:new( bounds, text, textSize, editMode, callback )
 	-- Option for preventing text to be drawn outside bounds.
 	object.scissorMode = false
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -832,6 +935,7 @@ end
 
 -- TextBoxMulti.
 
+-- Text Box control with multiple lines
 TextBoxMulti = {}
 TextBoxMulti.__index = TextBoxMulti
 
@@ -845,6 +949,8 @@ function TextBoxMulti:new( bounds, text, textSize, editMode, callback )
     object.callback = callback
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -874,6 +980,7 @@ end
 
 -- Slider.
 
+--- Slider control
 Slider = {}
 Slider.__index = Slider
 
@@ -889,6 +996,8 @@ function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, cal
     object.callback = callback
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -914,6 +1023,7 @@ end
 
 -- SliderBar.
 
+--- Slider Bar control
 SliderBar = {}
 SliderBar.__index = SliderBar
 
@@ -929,6 +1039,8 @@ function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, 
     object.callback = callback
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -954,6 +1066,7 @@ end
 
 -- ProgressBar.
 
+--- Progress Bar control, shows current progress value
 ProgressBar = {}
 ProgressBar.__index = ProgressBar
 
@@ -969,6 +1082,8 @@ function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue
     object.callback = callback
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -994,6 +1109,7 @@ end
 
 -- StatusBar.
 
+--- Status Bar control, shows info text
 StatusBar = {}
 StatusBar.__index = StatusBar
 
@@ -1004,6 +1120,8 @@ function StatusBar:new( bounds, text )
     object.text = text
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -1023,6 +1141,7 @@ end
 
 -- DummyRec.
 
+--- Dummy control for placeholders
 DummyRec = {}
 DummyRec.__index = DummyRec
 
@@ -1033,6 +1152,8 @@ function DummyRec:new( bounds, text )
     object.text = text
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -1052,6 +1173,7 @@ end
 
 -- Grid.
 
+--- Grid control
 Grid = {}
 Grid.__index = Grid
 
@@ -1066,6 +1188,8 @@ function Grid:new( bounds, text, spacing, subdivs, callback )
 
 	object.cell = Vec2:new()
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -1095,6 +1219,7 @@ end
 
 -- ListView.
 
+--- List View control
 ListView = {}
 ListView.__index = ListView
 
@@ -1107,6 +1232,8 @@ function ListView:new( bounds, text, scrollIndex, active, callback )
     object.active = active
 	object.callback = callback
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -1136,6 +1263,7 @@ end
 
 -- ListViewEx.
 
+--- List View with extended parameters
 ListViewEx = {}
 ListViewEx.__index = ListViewEx
 
@@ -1149,6 +1277,8 @@ function ListViewEx:new( bounds, text, focus, scrollIndex, active, callback )
     object.active = active
 	object.callback = callback
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -1178,10 +1308,11 @@ end
 
 -- MessageBox.
 
+--- Message Box control, displays a message
 MessageBox = {}
 MessageBox.__index = MessageBox
 
-function MessageBox:new( bounds, title, message, buttons, callback )
+function MessageBox:new( bounds, title, message, buttons, callback, grabCallback, dragCallback )
     local object = setmetatable( {}, MessageBox )
 
     object.bounds = bounds:clone()
@@ -1189,9 +1320,14 @@ function MessageBox:new( bounds, title, message, buttons, callback )
     object.message = message
     object.buttons = buttons
 	object.callback = callback
+	object.grabCallback = grabCallback
+	object.dragCallback = dragCallback
 
 	object.buttonIndex = -1
 	object.visible = true
+	object.draggable = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -1201,7 +1337,7 @@ function MessageBox:getItem( id )
 end
 
 function MessageBox:process()
-	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+	return Raygui.drag( self )
 end
 
 function MessageBox:draw()
@@ -1219,10 +1355,11 @@ end
 
 -- TextInputBox.
 
+--- Text Input Box control, ask for text, supports secret
 TextInputBox = {}
 TextInputBox.__index = TextInputBox
 
-function TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callback )
+function TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callback, grabCallback, dragCallback )
     local object = setmetatable( {}, TextInputBox )
 
     object.bounds = bounds:clone()
@@ -1233,9 +1370,14 @@ function TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, s
     object.textMaxSize = textMaxSize
     object.secretViewActive = secretViewActive
 	object.callback = callback
+	object.grabCallback = grabCallback
+	object.dragCallback = dragCallback
 
 	object.buttonIndex = -1
 	object.visible = true
+	object.draggable = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -1245,7 +1387,7 @@ function TextInputBox:getItem( id )
 end
 
 function TextInputBox:process()
-	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+	return Raygui.drag( self )
 end
 
 function TextInputBox:draw()
@@ -1263,6 +1405,7 @@ end
 
 -- ColorPicker.
 
+--- Color Picker control ( multiple color controls )
 ColorPicker = {}
 ColorPicker.__index = ColorPicker
 
@@ -1275,6 +1418,8 @@ function ColorPicker:new( bounds, text, color, callback )
 	object.callback = callback
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -1301,6 +1446,7 @@ end
 
 -- ColorPanel.
 
+--- Color Panel control
 ColorPanel = {}
 ColorPanel.__index = ColorPanel
 
@@ -1313,6 +1459,8 @@ function ColorPanel:new( bounds, text, color, callback )
 	object.callback = callback
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -1339,6 +1487,7 @@ end
 
 -- ColorBarAlpha.
 
+--- Color Bar Alpha control
 ColorBarAlpha = {}
 ColorBarAlpha.__index = ColorBarAlpha
 
@@ -1351,6 +1500,8 @@ function ColorBarAlpha:new( bounds, text, alpha, callback )
 	object.callback = callback
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end
@@ -1375,6 +1526,7 @@ end
 
 -- ColorBarHue.
 
+--- Color Bar Hue control
 ColorBarHue = {}
 ColorBarHue.__index = ColorBarHue
 
@@ -1387,6 +1539,8 @@ function ColorBarHue:new( bounds, text, value, callback )
 	object.callback = callback
 
 	object.visible = true
+
+	table.insert( Raygui.elements, object )
 
 	return object
 end

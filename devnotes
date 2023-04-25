@@ -21,7 +21,6 @@ Backlog {
 		* ImageDrawCircleLines
 		* ImageBlurGaussian
 	* Models
-		* DrawCapsule and DrawCapsuleWires
 		* LoadMaterials
 	* Needs Testing
 		* UpdateTexture

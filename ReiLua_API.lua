@@ -3129,6 +3129,30 @@ function RL.DrawCylinderWires( position, radiusTop, radiusBottom, height, slices
 ---@return any success 
 function RL.DrawCylinderWiresEx( startPos, endPos, startRadius, endRadius, sides, color ) end
 
+---Draw a capsule with the center of its sphere caps at startPos and endPos
+---- Failure return false
+---- Success return true
+---@param startPos table
+---@param endPos table
+---@param radius number
+---@param slices integer
+---@param rings integer
+---@param color table
+---@return any success 
+function RL.DrawCapsule( startPos, endPos, radius, slices, rings, color ) end
+
+---Draw capsule wireframe with the center of its sphere caps at startPos and endPos
+---- Failure return false
+---- Success return true
+---@param startPos table
+---@param endPos table
+---@param radius number
+---@param slices integer
+---@param rings integer
+---@param color table
+---@return any success 
+function RL.DrawCapsuleWires( startPos, endPos, radius, slices, rings, color ) end
+
 ---Draw a plane XZ
 ---- Failure return false
 ---- Success return true

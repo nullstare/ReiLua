@@ -1050,6 +1050,8 @@ void luaRegister() {
 	assingGlobalFunction( "DrawCylinderEx", lmodelsDrawCylinderEx );
 	assingGlobalFunction( "DrawCylinderWires", lmodelsDrawCylinderWires );
 	assingGlobalFunction( "DrawCylinderWiresEx", lmodelsDrawCylinderWiresEx );
+	assingGlobalFunction( "DrawCapsule", lmodelsDrawCapsule );
+	assingGlobalFunction( "DrawCapsuleWires", lmodelsDrawCapsuleWires );
 	assingGlobalFunction( "DrawPlane", lmodelsDrawPlane );
 	assingGlobalFunction( "DrawQuad3DTexture", lmodelDrawQuad3DTexture );
 	assingGlobalFunction( "DrawRay", lmodelsDrawRay );

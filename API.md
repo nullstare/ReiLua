@@ -4081,6 +4081,24 @@ Draw a cylinder wires with base at startPos and top at endPos
 
 ---
 
+> success = RL.DrawCapsule( Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, Color color )
+
+Draw a capsule with the center of its sphere caps at startPos and endPos
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.DrawCapsuleWires( Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, Color color )
+
+Draw capsule wireframe with the center of its sphere caps at startPos and endPos
+
+- Failure return false
+- Success return true
+
+---
+
 > success = RL.DrawPlane( Vector3 centerPos, Vector2 size, Color color )
 
 Draw a plane XZ

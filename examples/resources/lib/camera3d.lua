@@ -33,6 +33,10 @@ function Camera3D:new()
 	object.camera = RL.CreateCamera3D()
 	object.mode = object.MODES.CUSTOM
 
+	object:setPosition( { 0, 0, 0 } )
+	object:setTarget( { 0, 0, 0 } )
+	object:setUp( { 0, 1, 0 } )
+
 	return object
 end
 

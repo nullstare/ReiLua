@@ -18,6 +18,8 @@ int lmodelsDrawCylinder( lua_State *L );
 int lmodelsDrawCylinderEx( lua_State *L );
 int lmodelsDrawCylinderWires( lua_State *L );
 int lmodelsDrawCylinderWiresEx( lua_State *L );
+int lmodelsDrawCapsule( lua_State *L );
+int lmodelsDrawCapsuleWires( lua_State *L );
 int lmodelsDrawPlane( lua_State *L );
 int lmodelDrawQuad3DTexture( lua_State *L );
 int lmodelsDrawRay( lua_State *L );

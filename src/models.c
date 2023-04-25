@@ -524,6 +524,62 @@ int lmodelsDrawCylinderWiresEx( lua_State *L ) {
 }
 
 /*
+> success = RL.DrawCapsule( Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, Color color )
+
+Draw a capsule with the center of its sphere caps at startPos and endPos
+
+- Failure return false
+- Success return true
+*/
+int lmodelsDrawCapsule( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 )
+	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_istable( L, 6 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCapsule( Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, Color color )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 startPos = uluaGetVector3Index( L, 1 );
+	Vector3 endPos = uluaGetVector3Index( L, 2 );
+	float radius = lua_tonumber( L, 3 );
+	int slices = lua_tonumber( L, 4 );
+	int rings = lua_tointeger( L, 5 );
+	Color color = uluaGetColorIndex( L, 6 );
+
+	DrawCapsule( startPos, endPos, radius, slices, rings, color );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.DrawCapsuleWires( Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, Color color )
+
+Draw capsule wireframe with the center of its sphere caps at startPos and endPos
+
+- Failure return false
+- Success return true
+*/
+int lmodelsDrawCapsuleWires( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 )
+	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_istable( L, 6 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCapsuleWires( Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, Color color )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 startPos = uluaGetVector3Index( L, 1 );
+	Vector3 endPos = uluaGetVector3Index( L, 2 );
+	float radius = lua_tonumber( L, 3 );
+	int slices = lua_tonumber( L, 4 );
+	int rings = lua_tointeger( L, 5 );
+	Color color = uluaGetColorIndex( L, 6 );
+
+	DrawCapsuleWires( startPos, endPos, radius, slices, rings, color );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
 > success = RL.DrawPlane( Vector3 centerPos, Vector2 size, Color color )
 
 Draw a plane XZ

@@ -30,7 +30,7 @@ if( EMSCRIPTEN ) # Web
 else() # Desktop
 	if( SHARED )
 		message( Shared )
-		# find_package( raylib 4.0 REQUIRED ) # Requires at least version 4.0
+		find_package( raylib 4.5 REQUIRED ) # Requires at least version 4.5
 		target_link_libraries( ${PROJECT_NAME} raylib )
 		target_link_libraries( ${PROJECT_NAME} lua )
 	else()
@@ -42,7 +42,7 @@ else() # Desktop
 	if( UNIX )
 		set( CMAKE_C_COMPILER "gcc" )
 
-		if( DRM ) # Mainly for Raspberry pi
+		if( DRM ) # Mainly for Raspberry Pi
 			# target_link_libraries( ${PROJECT_NAME} GLESv2 EGL drm gbm rt bcm_host m dl pthread )
 			target_link_libraries( ${PROJECT_NAME} GLESv2 EGL drm gbm rt m dl pthread )
 		else()

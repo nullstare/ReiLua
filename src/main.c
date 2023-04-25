@@ -65,15 +65,11 @@ int main( int argn, const char **argc ) {
 			if ( WindowShouldClose() ) {
 				state->run = false;
 			}
-			if ( IsAudioDeviceReady() ) {
-				UpdateMusicStream( state->music );
-			}
 			luaCallProcess();
 			luaCallDraw();
 		}
 		luaCallExit();
 	}
-
 	stateFree();
 
 	return 1;

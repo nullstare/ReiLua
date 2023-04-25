@@ -1153,12 +1153,15 @@ void luaRegister() {
 	assingGlobalFunction( "LoadMusicStream", laudioLoadMusicStream );
 	assingGlobalFunction( "PlayMusicStream", laudioPlayMusicStream );
 	assingGlobalFunction( "IsMusicStreamPlaying", laudioIsMusicStreamPlaying );
+	assingGlobalFunction( "UpdateMusicStream", laudioUpdateMusicStream );
 	assingGlobalFunction( "StopMusicStream", laudioStopMusicStream );
 	assingGlobalFunction( "PauseMusicStream", laudioPauseMusicStream );
 	assingGlobalFunction( "ResumeMusicStream", laudioResumeMusicStream );
 	assingGlobalFunction( "SetMusicVolume", laudioSetMusicVolume );
 	assingGlobalFunction( "SetMusicPitch", laudioSetMusicPitch );
 	assingGlobalFunction( "SetMusicPan", laudioSetMusicPan );
+	assingGlobalFunction( "SetMusicLooping", laudioSetMusicLooping );
+	assingGlobalFunction( "GetMusicLooping", laudioGetMusicLooping );
 	assingGlobalFunction( "GetMusicTimeLength", laudioGetMusicTimeLength );
 	assingGlobalFunction( "GetMusicTimePlayed", laudioGetMusicTimePlayed );
 

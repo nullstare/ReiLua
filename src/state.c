@@ -42,6 +42,10 @@ bool stateInit( const char *exePath ) {
 	state->soundAlloc = ALLOC_PAGE_SIZE;
 	state->soundCount = 0;
 	state->sounds = malloc( state->soundAlloc * sizeof( Sound* ) );
+	/* Musics. */
+	state->musicAlloc = ALLOC_PAGE_SIZE;
+	state->musicCount = 0;
+	state->musics = malloc( state->musicAlloc * sizeof( Music* ) );
 	/* Camera2D's. */
 	state->camera2DAlloc = ALLOC_PAGE_SIZE;
 	state->camera2DCount = 0;
@@ -157,6 +161,12 @@ void stateFree() {
 			free( state->sounds[i] );
 		}
 	}
+	for ( int i = 0; i < state->musicCount; ++i ) {
+		if ( state->musics[i] != NULL ) {
+			UnloadMusicStream( *state->musics[i] );
+			free( state->musics[i] );
+		}
+	}
 	for ( int i = 0; i < state->camera2DCount; ++i ) {
 		if ( state->camera2Ds[i] != NULL ) {
 			free( state->camera2Ds[i] );
@@ -213,7 +223,6 @@ void stateFree() {
 
 	if ( IsAudioDeviceReady() ) {
 		CloseAudioDevice();
-		UnloadMusicStream( state->music );
 	}
 	if ( state->hasWindow ) {
 		CloseWindow();
@@ -227,6 +236,7 @@ void stateFree() {
 	free( state->fonts );
 	free( state->waves );
 	free( state->sounds );
+	free( state->musics );
 	free( state->camera2Ds );
 	free( state->camera3Ds );
 	free( state->meshes );

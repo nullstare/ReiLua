@@ -3756,70 +3756,114 @@ function RL.WaveCrop( wave, initSample, finalSample ) end
 -- Audio - Music management
 
 ---Load music stream from file
----- Failure return false
----- Success return true
+---- Failure return -1
+---- Success return int
 ---@param fileName string
----@return any success 
+---@return any music 
 function RL.LoadMusicStream( fileName ) end
 
 ---Start music playing
----@return any RL.PlayMusicStream
-function  RL.PlayMusicStream() end
+---- Failure return false
+---- Success return true
+---@param music any
+---@return any success 
+function RL.PlayMusicStream( music ) end
 
 ---Check if music is playing
+---- Failure return nil
 ---- Success return bool
+---@param music any
 ---@return any playing 
-function RL.IsMusicStreamPlaying() end
+function RL.IsMusicStreamPlaying( music ) end
+
+---Updates buffers for music streaming
+---- Failure return false
+---- Success return true
+---@param music any
+---@return any success 
+function RL.UpdateMusicStream( music ) end
 
 ---Stop music playing
----@return any RL.StopMusicStream
-function  RL.StopMusicStream() end
+---- Failure return false
+---- Success return true
+---@param music any
+---@return any success 
+function RL.StopMusicStream( music ) end
 
 ---Pause music playing
----@return any RL.PauseMusicStream
-function  RL.PauseMusicStream() end
+---- Failure return false
+---- Success return true
+---@param music any
+---@return any success 
+function RL.PauseMusicStream( music ) end
 
 ---Resume playing paused music
----@return any RL.ResumeMusicStream
-function  RL.ResumeMusicStream() end
+---- Failure return false
+---- Success return true
+---@param music any
+---@return any success 
+function RL.ResumeMusicStream( music ) end
 
 ---Seek music to a position ( in seconds )
 ---- Failure return false
 ---- Success return true
+---@param music any
 ---@param position number
 ---@return any success 
-function RL.SeekMusicStream( position ) end
+function RL.SeekMusicStream( music, position ) end
 
 ---Set volume for music ( 1.0 is max level )
 ---- Failure return false
 ---- Success return true
+---@param music any
 ---@param volume number
 ---@return any success 
-function RL.SetMusicVolume( volume ) end
+function RL.SetMusicVolume( music, volume ) end
 
 ---Set pitch for a music ( 1.0 is base level )
 ---- Failure return false
 ---- Success return true
+---@param music any
 ---@param pitch number
 ---@return any success 
-function RL.SetMusicPitch( pitch ) end
+function RL.SetMusicPitch( music, pitch ) end
 
 ---Set pan for a music ( 0.5 is center )
 ---- Failure return false
 ---- Success return true
+---@param music any
 ---@param pan number
 ---@return any success 
-function RL.SetMusicPan( pan ) end
+function RL.SetMusicPan( music, pan ) end
+
+---Set looping for a music
+---- Failure return false
+---- Success return true
+---@param music any
+---@param looping boolean
+---@return any success 
+function RL.SetMusicLooping( music, looping ) end
+
+---Get looping of a music
+---- Failure return nil
+---- Success return bool
+---@param music any
+---@return any looping 
+function RL.GetMusicLooping( music ) end
 
 ---Get music time length ( in seconds )
+---- Failure return false
 ---- Success return float
+---@param music any
 ---@return any length 
-function RL.GetMusicTimeLength() end
+function RL.GetMusicTimeLength( music ) end
 
 ---Get current music time played ( in seconds )
+---- Failure return false
 ---- Success return float
+---@param music any
 ---@return any played 
-function RL.GetMusicTimePlayed() end
+function RL.GetMusicTimePlayed( music ) end
 
 -- Math - Utils
 

@@ -10,6 +10,7 @@ KEY CHANGES:
 	Also using positive stack indexing.
 	- ADDED: Camera3D Lua lib.
 	- ADDED: Raygui wrapper lib.
+	- CHANGED: Can now have multiple Music objects like other Raylib objects instead of just one.
 
 Detailed changes:
 	- FIXED: uluaGetRay was looking for integers instead of tables.
@@ -53,6 +54,9 @@ Detailed changes:
 	- ADDED: glBlitFramebuffer
 	- ADDED: GuiGetFont
 	- FIXED: GuiScrollPanel
+	- ADDED: UpdateMusicStream
+	- ADDED: SetMusicLooping
+	- ADDED: GetMusicLooping
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

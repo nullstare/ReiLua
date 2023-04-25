@@ -4775,48 +4775,70 @@ Crop a wave to defined samples range
 
 ---
 
-> success = RL.LoadMusicStream( string fileName )
+> music = RL.LoadMusicStream( string fileName )
 
 Load music stream from file
+
+- Failure return -1
+- Success return int
+
+---
+
+> success = RL.PlayMusicStream( Music music )
+
+Start music playing
 
 - Failure return false
 - Success return true
 
 ---
 
-> RL.PlayMusicStream()
-
-Start music playing
-
----
-
-> playing = RL.IsMusicStreamPlaying()
+> playing = RL.IsMusicStreamPlaying( Music music )
 
 Check if music is playing
 
+- Failure return nil
 - Success return bool
 
 ---
 
-> RL.StopMusicStream()
+> success = RL.UpdateMusicStream( Music music )
+
+Updates buffers for music streaming
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.StopMusicStream( Music music )
 
 Stop music playing
 
+- Failure return false
+- Success return true
+
 ---
 
-> RL.PauseMusicStream()
+> success = RL.PauseMusicStream( Music music )
 
 Pause music playing
 
+- Failure return false
+- Success return true
+
 ---
 
-> RL.ResumeMusicStream()
+> success = RL.ResumeMusicStream( Music music )
 
 Resume playing paused music
 
+- Failure return false
+- Success return true
+
 ---
 
-> success = RL.SeekMusicStream( float position )
+> success = RL.SeekMusicStream( Music music, float position )
 
 Seek music to a position ( in seconds )
 
@@ -4825,7 +4847,7 @@ Seek music to a position ( in seconds )
 
 ---
 
-> success = RL.SetMusicVolume( float volume )
+> success = RL.SetMusicVolume( Music music, float volume )
 
 Set volume for music ( 1.0 is max level )
 
@@ -4834,7 +4856,7 @@ Set volume for music ( 1.0 is max level )
 
 ---
 
-> success = RL.SetMusicPitch( float pitch )
+> success = RL.SetMusicPitch( Music music, float pitch )
 
 Set pitch for a music ( 1.0 is base level )
 
@@ -4843,7 +4865,7 @@ Set pitch for a music ( 1.0 is base level )
 
 ---
 
-> success = RL.SetMusicPan( float pan )
+> success = RL.SetMusicPan( Music music, float pan )
 
 Set pan for a music ( 0.5 is center )
 
@@ -4852,18 +4874,38 @@ Set pan for a music ( 0.5 is center )
 
 ---
 
-> length = RL.GetMusicTimeLength()
+> success = RL.SetMusicLooping( Music music, bool looping )
+
+Set looping for a music
+
+- Failure return false
+- Success return true
+
+---
+
+> looping = RL.GetMusicLooping( Music music )
+
+Get looping of a music
+
+- Failure return nil
+- Success return bool
+
+---
+
+> length = RL.GetMusicTimeLength( Music music )
 
 Get music time length ( in seconds )
 
+- Failure return false
 - Success return float
 
 ---
 
-> played = RL.GetMusicTimePlayed()
+> played = RL.GetMusicTimePlayed( Music music )
 
 Get current music time played ( in seconds )
 
+- Failure return false
 - Success return float
 
 ---

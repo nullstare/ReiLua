@@ -41,7 +41,9 @@ typedef struct {
 	size_t soundCount;
 	size_t soundAlloc;
 		/* Music. */
-	Music music;
+	Music **musics;
+	size_t musicCount;
+	size_t musicAlloc;
 		/* Camera2D's. */
 	Camera2D **camera2Ds;
 	size_t camera2DCount;

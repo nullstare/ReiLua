@@ -23,6 +23,16 @@ static bool validWave( size_t id ) {
 	}
 }
 
+static bool validMusic( size_t id ) {
+	if ( id < 0 || state->musicCount < id || state->musics[ id ] == NULL ) {
+		TraceLog( LOG_WARNING, "%s %d", "Invalid music", id );
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+
 static void checkSoundRealloc( int i ) {
 	if ( i == state->soundCount ) {
 		state->soundCount++;
@@ -53,6 +63,21 @@ static void checkWaveRealloc( int i ) {
 	}
 }
 
+static void checkMusicRealloc( int i ) {
+	if ( i == state->musicCount ) {
+		state->musicCount++;
+	}
+
+	if ( state->musicCount == state->musicAlloc ) {
+		state->musicAlloc += ALLOC_PAGE_SIZE;
+		state->musics = realloc( state->musics, state->musicAlloc * sizeof( Music* ) );
+
+		for ( i = state->musicCount; i < state->musicAlloc; i++ ) {
+			state->musics[i] = NULL;
+		}
+	}
+}
+
 static int newSound() {
 	int i = 0;
 
@@ -77,6 +102,20 @@ static int newWave() {
 	}
 	state->waves[i] = malloc( sizeof( Wave ) );
 	checkWaveRealloc( i );
+
+	return i;
+}
+
+static int newMusic() {
+	int i = 0;
+
+	for ( i = 0; i < state->musicCount; i++ ) {
+		if ( state->musics[i] == NULL ) {
+			break;
+		}
+	}
+	state->musics[i] = malloc( sizeof( Music ) );
+	checkMusicRealloc( i );
 
 	return i;
 }
@@ -599,91 +638,188 @@ int laudioWaveCrop( lua_State *L ) {
 */
 
 /*
-> success = RL.LoadMusicStream( string fileName )
+> music = RL.LoadMusicStream( string fileName )
 
 Load music stream from file
 
-- Failure return false
-- Success return true
+- Failure return -1
+- Success return int
 */
 int laudioLoadMusicStream( lua_State *L ) {
 	if ( !lua_isstring( L, 1 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadMusicStream( string fileName )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	if ( !FileExists( lua_tostring( L, 1 ) ) ) {
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	int i = newMusic();
+	*state->musics[i] = LoadMusicStream( lua_tostring( L, 1 ) );
+	state->musics[i]->looping = true;
+	lua_pushinteger( L, i );
+
+	return 1;
+}
+
+/*
+> success = RL.PlayMusicStream( Music music )
+
+Start music playing
+
+- Failure return false
+- Success return true
+*/
+int laudioPlayMusicStream( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.PlayMusicStream( Music music )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	if ( FileExists( lua_tostring( L, 1 ) ) ) {
-		state->music = LoadMusicStream( lua_tostring( L, 1 ) );
-		state->music.looping = false;
-		
-		lua_pushboolean( L, true );
-	}
-	else {
+	size_t musicId = lua_tointeger( L, 1 );
+
+	if ( !validMusic( musicId ) ) {
 		lua_pushboolean( L, false );
+		return 1;
 	}
+	PlayMusicStream( *state->musics[ musicId ] );
+	lua_pushboolean( L, true );
 
 	return 1;
 }
 
 /*
-> RL.PlayMusicStream()
-
-Start music playing
-*/
-int laudioPlayMusicStream( lua_State *L ) {
-	PlayMusicStream( state->music );
-
-	return 0;
-}
-
-/*
-> playing = RL.IsMusicStreamPlaying()
+> playing = RL.IsMusicStreamPlaying( Music music )
 
 Check if music is playing
 
+- Failure return nil
 - Success return bool
 */
 int laudioIsMusicStreamPlaying( lua_State *L ) {
-	lua_pushboolean( L, IsMusicStreamPlaying( state->music ) );
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsMusicStreamPlaying( Music music )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	size_t musicId = lua_tointeger( L, 1 );
+
+	if ( !validMusic( musicId ) ) {
+		lua_pushnil( L );
+		return 1;
+	}
+	lua_pushboolean( L, IsMusicStreamPlaying( *state->musics[ musicId ] ) );
 
 	return 1;
 }
 
 /*
-> RL.StopMusicStream()
+> success = RL.UpdateMusicStream( Music music )
+
+Updates buffers for music streaming
+
+- Failure return false
+- Success return true
+*/
+int laudioUpdateMusicStream( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UpdateMusicStream( Music music )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t musicId = lua_tointeger( L, 1 );
+
+	if ( !validMusic( musicId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	UpdateMusicStream( *state->musics[ musicId ] );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.StopMusicStream( Music music )
 
 Stop music playing
+
+- Failure return false
+- Success return true
 */
 int laudioStopMusicStream( lua_State *L ) {
-	StopMusicStream( state->music );
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.StopMusicStream( Music music )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t musicId = lua_tointeger( L, 1 );
 
-	return 0;
+	if ( !validMusic( musicId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	StopMusicStream( *state->musics[ musicId ] );
+	lua_pushboolean( L, true );
+
+	return 1;
 }
 
 /*
-> RL.PauseMusicStream()
+> success = RL.PauseMusicStream( Music music )
 
 Pause music playing
+
+- Failure return false
+- Success return true
 */
 int laudioPauseMusicStream( lua_State *L ) {
-	PauseMusicStream( state->music );
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.PauseMusicStream( Music music )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t musicId = lua_tointeger( L, 1 );
 
-	return 0;
+	if ( !validMusic( musicId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	PauseMusicStream( *state->musics[ musicId ] );
+	lua_pushboolean( L, true );
+
+	return 1;
 }
 
 /*
-> RL.ResumeMusicStream()
+> success = RL.ResumeMusicStream( Music music )
 
 Resume playing paused music
+
+- Failure return false
+- Success return true
 */
 int laudioResumeMusicStream( lua_State *L ) {
-	ResumeMusicStream( state->music );
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ResumeMusicStream( Music music )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t musicId = lua_tointeger( L, 1 );
 
-	return 0;
+	if ( !validMusic( musicId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	ResumeMusicStream( *state->musics[ musicId ] );
+	lua_pushboolean( L, true );
+
+	return 1;
 }
 
 /*
-> success = RL.SeekMusicStream( float position )
+> success = RL.SeekMusicStream( Music music, float position )
 
 Seek music to a position ( in seconds )
 
@@ -691,21 +827,26 @@ Seek music to a position ( in seconds )
 - Success return true
 */
 int laudioSeekMusicStream( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SeekMusicStream( float position )" );
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SeekMusicStream( Music music, float position )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	float position = lua_tonumber( L, 1 );
+	size_t musicId = lua_tointeger( L, 1 );
+	float position = lua_tonumber( L, 2 );
 
-	SeekMusicStream( state->music, position );
+	if ( !validMusic( musicId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	SeekMusicStream( *state->musics[ musicId ], position );
 	lua_pushboolean( L, true );
 
 	return 1;
 }
 
 /*
-> success = RL.SetMusicVolume( float volume )
+> success = RL.SetMusicVolume( Music music, float volume )
 
 Set volume for music ( 1.0 is max level )
 
@@ -713,21 +854,26 @@ Set volume for music ( 1.0 is max level )
 - Success return true
 */
 int laudioSetMusicVolume( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMusicVolume( float volume )" );
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMusicVolume( Music music, float volume )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	float volume = lua_tonumber( L, 1 );
+	size_t musicId = lua_tointeger( L, 1 );
+	float volume = lua_tonumber( L, 2 );
 
-	SetMusicVolume( state->music, volume );
+	if ( !validMusic( musicId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	SetMusicVolume( *state->musics[ musicId ], volume );
 	lua_pushboolean( L, true );
 
 	return 1;
 }
 
 /*
-> success = RL.SetMusicPitch( float pitch )
+> success = RL.SetMusicPitch( Music music, float pitch )
 
 Set pitch for a music ( 1.0 is base level )
 
@@ -735,21 +881,26 @@ Set pitch for a music ( 1.0 is base level )
 - Success return true
 */
 int laudioSetMusicPitch( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMusicPitch( float pitch )" );
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMusicPitch( Music music, float pitch )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	float pitch = lua_tonumber( L, 1 );
+	size_t musicId = lua_tointeger( L, 1 );
+	float pitch = lua_tonumber( L, 2 );
 
-	SetMusicPitch( state->music, pitch );
+	if ( !validMusic( musicId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	SetMusicPitch( *state->musics[ musicId ], pitch );
 	lua_pushboolean( L, true );
 
 	return 1;
 }
 
 /*
-> success = RL.SetMusicPan( float pan )
+> success = RL.SetMusicPan( Music music, float pan )
 
 Set pan for a music ( 0.5 is center )
 
@@ -757,41 +908,122 @@ Set pan for a music ( 0.5 is center )
 - Success return true
 */
 int laudioSetMusicPan( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMusicPan( float pan )" );
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMusicPan( Music music, float pan )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	float pan = lua_tonumber( L, 1 );
+	size_t musicId = lua_tointeger( L, 1 );
+	float pan = lua_tonumber( L, 2 );
 
-	SetMusicPitch( state->music, pan );
+	if ( !validMusic( musicId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	SetMusicPitch( *state->musics[ musicId ], pan );
 	lua_pushboolean( L, true );
 
 	return 1;
 }
 
 /*
-> length = RL.GetMusicTimeLength()
+> success = RL.SetMusicLooping( Music music, bool looping )
 
-Get music time length ( in seconds )
+Set looping for a music
 
-- Success return float
+- Failure return false
+- Success return true
 */
-int laudioGetMusicTimeLength( lua_State *L ) {
-	lua_pushnumber( L, GetMusicTimeLength( state->music ) );
+int laudioSetMusicLooping( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isboolean( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMusicLooping( Music music, bool looping )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t musicId = lua_tointeger( L, 1 );
+	bool looping = lua_toboolean( L, 2 );
+
+	if ( !validMusic( musicId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	state->musics[ musicId ]->looping = looping;
+	lua_pushboolean( L, true );
 
 	return 1;
 }
 
 /*
-> played = RL.GetMusicTimePlayed()
+> looping = RL.GetMusicLooping( Music music )
+
+Get looping of a music
+
+- Failure return nil
+- Success return bool
+*/
+int laudioGetMusicLooping( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetMusicLooping( Music music )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	size_t musicId = lua_tointeger( L, 1 );
+
+	if ( !validMusic( musicId ) ) {
+		lua_pushnil( L );
+		return 1;
+	}
+	lua_pushboolean( L, state->musics[ musicId ]->looping );
+
+	return 1;
+}
+
+/*
+> length = RL.GetMusicTimeLength( Music music )
+
+Get music time length ( in seconds )
+
+- Failure return false
+- Success return float
+*/
+int laudioGetMusicTimeLength( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetMusicTimeLength( Music music )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t musicId = lua_tointeger( L, 1 );
+
+	if ( !validMusic( musicId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	lua_pushnumber( L, GetMusicTimeLength( *state->musics[ musicId ] ) );
+
+	return 1;
+}
+
+/*
+> played = RL.GetMusicTimePlayed( Music music )
 
 Get current music time played ( in seconds )
 
+- Failure return false
 - Success return float
 */
 int laudioGetMusicTimePlayed( lua_State *L ) {
-	lua_pushnumber( L, GetMusicTimePlayed( state->music ) );
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetMusicTimePlayed( Music music )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t musicId = lua_tointeger( L, 1 );
+
+	if ( !validMusic( musicId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	lua_pushnumber( L, GetMusicTimePlayed( *state->musics[ musicId ] ) );
 
 	return 1;
 }

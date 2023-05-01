@@ -369,8 +369,8 @@ void defineGlobals() {
 	assignGlobalInt( NPATCH_THREE_PATCH_VERTICAL, "NPATCH_THREE_PATCH_VERTICAL" );
 	assignGlobalInt( NPATCH_THREE_PATCH_HORIZONTAL, "NPATCH_THREE_PATCH_HORIZONTAL" );
 	/* TextureModes */
-	assignGlobalInt( TEXTURE_SOURCE_TEXTURE, "TEXTURE_SOURCE_TEXTURE" );
-	assignGlobalInt( TEXTURE_SOURCE_RENDER_TEXTURE, "TEXTURE_SOURCE_RENDER_TEXTURE" );
+	assignGlobalInt( TEXTURE_TYPE_TEXTURE, "TEXTURE_TYPE_TEXTURE" );
+	assignGlobalInt( TEXTURE_TYPE_RENDER_TEXTURE, "TEXTURE_TYPE_RENDER_TEXTURE" );
 	/* Colors */
 	assignGlobalColor( LIGHTGRAY, "LIGHTGRAY" );
 	assignGlobalColor( GRAY, "GRAY" );
@@ -1000,7 +1000,6 @@ void luaRegister() {
 	assingGlobalFunction( "LoadTextureCubemap", ltexturesLoadTextureCubemap );
 	assingGlobalFunction( "LoadRenderTexture", ltexturesLoadRenderTexture );
 	assingGlobalFunction( "UnloadTexture", ltexturesUnloadTexture );
-	assingGlobalFunction( "UnloadRenderTexture", ltexturesUnloadRenderTexture );
 	assingGlobalFunction( "UpdateTexture", ltexturesUpdateTexture );
 	assingGlobalFunction( "UpdateTextureRec", ltexturesUpdateTextureRec );
 		/* Texture Drawing. */
@@ -1010,8 +1009,7 @@ void luaRegister() {
 	assingGlobalFunction( "DrawTextureNPatch", ltexturesDrawTextureNPatch );
 	assingGlobalFunction( "BeginTextureMode", ltexturesBeginTextureMode );
 	assingGlobalFunction( "EndTextureMode", ltexturesEndTextureMode );
-	assingGlobalFunction( "SetTextureSource", ltexturesSetTextureSource );
-	assingGlobalFunction( "GetTextureSource", ltexturesGetTextureSource );
+	assingGlobalFunction( "GetTextureType", ltexturesGetTextureType );
 		/* Texture Configuration. */
 	assingGlobalFunction( "GenTextureMipmaps", ltexturesGenTextureMipmaps );
 	assingGlobalFunction( "SetTextureFilter", ltexturesSetTextureFilter );

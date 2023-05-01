@@ -216,9 +216,7 @@ function RL.draw()
 			RL.DrawText( 0, "Press Enter to\nrestart", { 10, 10 }, 10, 2, RL.WHITE )
 		end
 	RL.EndTextureMode()
-	
+
 	-- Draw framebuffer to window.
-	RL.SetTextureSource( RL.TEXTURE_SOURCE_RENDER_TEXTURE )
 	RL.DrawTexturePro( framebuffer, { 0, 0, RESOLUTION[1], -RESOLUTION[2] }, { 0, 0, winSize[1], winSize[2] }, { 0, 0 }, 0.0, RL.WHITE )
-	RL.SetTextureSource( RL.TEXTURE_SOURCE_TEXTURE )
 end

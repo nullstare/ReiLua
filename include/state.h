@@ -8,12 +8,17 @@ typedef struct {
 } ModelAnimations;
 
 typedef struct {
+	int type;
+	Texture texture;
+	RenderTexture renderTexture;
+} ReiTexture;
+
+typedef struct {
 	char *exePath;
 	bool hasWindow;
 	bool run;
 	lua_State *luaState;
 	Vector2 resolution;
-	int textureSource;
 	size_t guiFont;
 	/* Resources. */
 		/* Images. */
@@ -21,13 +26,9 @@ typedef struct {
 	size_t imageCount;
 	size_t imageAlloc;
 		/* Textures. */
-	Texture **textures;
+	ReiTexture **textures;
 	size_t textureCount;
 	size_t textureAlloc;
-		/* RenderTextures. */
-	RenderTexture **renderTextures;
-	size_t renderTextureCount;
-	size_t renderTextureAlloc;
 		/* Fonts. */
 	Font **fonts;
 	size_t fontCount;

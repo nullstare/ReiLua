@@ -121,7 +121,5 @@ function RL.draw()
 	RL.EndMode3D()
 	-- RL.EndTextureMode()
 
-	-- RL.SetTextureSource( TEXTURE_SOURCE_RENDER_TEXTURE )
 	-- RL.DrawTexturePro( framebuffer, { 0, 0, res[1], -res[2] }, { 0, 0, winSize[1], winSize[2] }, { 0, 0 }, 0.0, WHITE )
-	-- RL.SetTextureSource( TEXTURE_SOURCE_TEXTURE )
 end

@@ -75,11 +75,9 @@ function RL.init()
 	RL.EndTextureMode()
 
 	material = RL.LoadMaterialDefault()
-	RL.SetTextureSource( RL.TEXTURE_SOURCE_RENDER_TEXTURE )
 	-- RL.GenTextureMipmaps( groundTexture )
 	-- RL.SetTextureFilter( groundTexture, RL.TEXTURE_FILTER_TRILINEAR )
 	RL.SetMaterialTexture( material, RL.MATERIAL_MAP_ALBEDO, groundTexture )
-	RL.SetTextureSource( RL.TEXTURE_SOURCE_TEXTURE )
 
 	matrix = RL.MatrixMultiply( RL.MatrixIdentity(), RL.MatrixTranslate( { -4, 0, -4 } ) )
 end

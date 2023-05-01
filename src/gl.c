@@ -31,7 +31,9 @@ int lglBlitFramebuffer( lua_State *L ) {
 	int mask = lua_tointeger( L, 5 );
 	int filter = lua_tointeger( L, 6 );
 
-	if ( ( !validRenderTexture( srcTexId ) && srcTexId != -1 ) && ( !validRenderTexture( dstTexId ) && dstTexId != -1 ) ) {
+	// if ( ( !validRenderTexture( srcTexId ) && srcTexId != -1 ) && ( !validRenderTexture( dstTexId ) && dstTexId != -1 ) ) {
+	if ( ( !validTexture( srcTexId, TEXTURE_TYPE_RENDER_TEXTURE ) && srcTexId != -1 )
+	&& ( !validTexture( dstTexId, TEXTURE_TYPE_RENDER_TEXTURE ) && dstTexId != -1 ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -40,14 +42,14 @@ int lglBlitFramebuffer( lua_State *L ) {
 		glBindFramebuffer( GL_READ_FRAMEBUFFER, 0 );
 	}
 	else {
-		glBindFramebuffer( GL_READ_FRAMEBUFFER, state->renderTextures[ srcTexId ]->id );
+		glBindFramebuffer( GL_READ_FRAMEBUFFER, state->textures[ srcTexId ]->renderTexture.id );
 	}
 
 	if ( dstTexId == -1 ) {
 		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
 	}
 	else {
-		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, state->renderTextures[ dstTexId ]->id );
+		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, state->textures[ dstTexId ]->renderTexture.id );
 	}
 
 	glBlitFramebuffer(

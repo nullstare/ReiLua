@@ -1,3 +1,7 @@
+package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
+
+Cam3D = require( "camera3d" )
+
 local PLANE_SIZE = 8
 
 local monitor = 0
@@ -19,10 +23,18 @@ function RL.init()
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 
-	camera = RL.CreateCamera3D()
-	RL.SetCamera3DPosition( camera, { 0, 8, 16 } )
-	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
-	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
+	-- camera = RL.CreateCamera3D()
+	-- RL.SetCamera3DPosition( camera, { 0, 8, 16 } )
+	-- RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
+	-- RL.SetCamera3DUp( camera, { 0, 1, 0 } )
+	camera = Cam3D:new()
+
+	camera:setPosition( { 0, 8, 16 } )
+	camera:setTarget( { 0, 0, 0 } )
+	camera:setUp( { 0, 1, 0 } )
+	camera.mode = camera.MODES.ORBITAL
+	-- camera.mode = camera.MODES.FREE
+	-- camera.mode = camera.MODES.FIRST_PERSON
 
 	local ts = PLANE_SIZE
 	local meshData = {
@@ -76,13 +88,25 @@ function RL.init()
 	matrix = RL.MatrixMultiply( RL.MatrixIdentity(), RL.MatrixTranslate( { -4, 0, -4 } ) )
 end
 
+function RL.process( delta )
+	camera:process( delta )
+
+	if RL.IsKeyPressed( RL.KEY_SPACE ) then
+		if camera.mode == camera.MODES.FREE then
+			camera.mode = camera.MODES.FIRST_PERSON
+		else
+			camera.mode = camera.MODES.FREE
+		end
+	end
+end
+
 function RL.draw()
 	RL.ClearBackground( { 25, 50, 50 } )
 	-- RL.UpdateCamera3D( camera, RL.CAMERA_ORBITAL )
 	-- RL.UpdateCamera3D( camera, RL.CAMERA_FREE )
-	RL.UpdateCamera3D( camera, RL.CAMERA_FIRST_PERSON )
+	-- RL.UpdateCamera3D( camera, RL.CAMERA_FIRST_PERSON )
 
-	RL.BeginMode3D( camera )
+	camera:beginMode3D()
 		RL.DrawMesh( mesh, material, matrix )
-	RL.EndMode3D()
+		camera:endMode3D()
 end

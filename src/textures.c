@@ -26,25 +26,10 @@ static void checkTextureRealloc( int i ) {
 
 	if ( state->textureCount == state->textureAlloc ) {
 		state->textureAlloc += ALLOC_PAGE_SIZE;
-		state->textures = realloc( state->textures, state->textureAlloc * sizeof( Texture2D* ) );
+		state->textures = realloc( state->textures, state->textureAlloc * sizeof( ReiTexture* ) );
 
 		for ( i = state->textureCount; i < state->textureAlloc; i++ ) {
 			state->textures[i] = NULL;
-		}
-	}
-}
-
-static void checkRenderTextureRealloc( int i ) {
-	if ( i == state->renderTextureCount ) {
-		state->renderTextureCount++;
-	}
-
-	if ( state->renderTextureCount == state->renderTextureAlloc ) {
-		state->renderTextureAlloc += ALLOC_PAGE_SIZE;
-		state->renderTextures = realloc( state->renderTextures, state->renderTextureAlloc * sizeof( RenderTexture2D* ) );
-
-		for ( i = state->renderTextureCount; i < state->renderTextureAlloc; i++ ) {
-			state->renderTextures[i] = NULL;
 		}
 	}
 }
@@ -59,35 +44,17 @@ bool validImage( size_t id ) {
 	}
 }
 
-bool validTexture( size_t id ) {
+bool validTexture( size_t id, int type ) {
 	if ( id < 0 || state->textureCount < id || state->textures[ id ] == NULL ) {
 		TraceLog( LOG_WARNING, "%s %d", "Invalid texture", id );
 		return false;
 	}
-	else {
-		return true;
-	}
-}
-
-bool validRenderTexture( size_t id ) {
-	if ( id < 0 || state->renderTextureCount < id || state->renderTextures[ id ] == NULL ) {
-		TraceLog( LOG_WARNING, "%s %d", "Invalid renderTexture", id );
+	else if ( type != TEXTURE_TYPE_ALL && type != state->textures[ id ]->type ) {
+		TraceLog( LOG_WARNING, "%s %d", "Wrong texture type", type );
 		return false;
 	}
 	else {
 		return true;
-	}
-}
-
-bool validSourceTexture( size_t id ) {
-	switch ( state->textureSource ) {
-	case TEXTURE_SOURCE_TEXTURE:
-		return validTexture( id );
-	case TEXTURE_SOURCE_RENDER_TEXTURE:
-		return validRenderTexture( id );
-	default:
-		return validTexture( id );
-		break;
 	}
 }
 
@@ -105,7 +72,7 @@ static int newImage() {
 	return i;
 }
 
-static int newTexture() {
+static int newTexture( int type ) {
 	int i = 0;
 
 	for ( i = 0; i < state->textureCount; i++ ) {
@@ -113,24 +80,39 @@ static int newTexture() {
 			break;
 		}
 	}
-	state->textures[i] = malloc( sizeof( Texture2D ) );
+	state->textures[i] = malloc( sizeof( ReiTexture ) );
+	state->textures[i]->type = type;
+
 	checkTextureRealloc( i );
 
 	return i;
 }
 
-Texture2D* texturesGetSourceTexture( size_t index ) {
-	switch ( state->textureSource ) {
-	case TEXTURE_SOURCE_TEXTURE:
-		return state->textures[ index ];
-	case TEXTURE_SOURCE_RENDER_TEXTURE:
-		return &state->renderTextures[ index ]->texture;
-	default:
-		return state->textures[ index ];
-		break;
+Texture2D* texturesGetSourceTexture( size_t id ) {
+	if ( state->textures[id] != NULL ) {
+		switch ( state->textures[id]->type ) {
+		case TEXTURE_TYPE_TEXTURE:
+			return &state->textures[id]->texture;
+			break;
+		case TEXTURE_TYPE_RENDER_TEXTURE:
+			return &state->textures[id]->renderTexture.texture;
+			break;
+		}
 	}
 }
 
+void texturesFreeTexture( size_t id ) {
+	if ( state->textures[id] != NULL ) {
+		switch ( state->textures[id]->type ) {
+		case TEXTURE_TYPE_TEXTURE:
+			UnloadTexture( state->textures[id]->texture );
+			break;
+		case TEXTURE_TYPE_RENDER_TEXTURE:
+			UnloadRenderTexture( state->textures[id]->renderTexture );
+			break;
+		}
+	}
+}
 /*
 ## Textures - Image Loading
 */
@@ -178,7 +160,7 @@ int ltexturesLoadImageFromTexture( lua_State *L ) {
 	}
 	size_t texId = lua_tointeger( L, 1 );
 
-	if ( !validSourceTexture( texId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -1654,10 +1636,9 @@ int ltexturesLoadTexture( lua_State *L ) {
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-
 	if ( FileExists( lua_tostring( L, 1 ) ) ) {
-		int i = newTexture();
-		*state->textures[i] = LoadTexture( lua_tostring( L, 1 ) );
+		int i = newTexture( TEXTURE_TYPE_TEXTURE );
+		state->textures[i]->texture = LoadTexture( lua_tostring( L, 1 ) );
 		lua_pushinteger( L, i );
 		return 1;
 	}
@@ -1687,8 +1668,8 @@ int ltexturesLoadTextureFromImage( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	int i = newTexture();
-	*state->textures[i] = LoadTextureFromImage( *state->images[ imageId ] );
+	int i = newTexture( TEXTURE_TYPE_TEXTURE );
+	state->textures[i]->texture = LoadTextureFromImage( *state->images[ imageId ] );
 	lua_pushinteger( L, i );
 
 	return 1;
@@ -1715,8 +1696,8 @@ int ltexturesLoadTextureCubemap( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	int i = newTexture();
-	*state->textures[i] = LoadTextureCubemap( *state->images[ imageId ], layout );
+	int i = newTexture( TEXTURE_TYPE_TEXTURE );
+	state->textures[i]->texture = LoadTextureCubemap( *state->images[ imageId ], layout );
 	lua_pushinteger( L, i );
 
 	return 1;
@@ -1737,17 +1718,10 @@ int ltexturesLoadRenderTexture( lua_State *L ) {
 		return 1;
 	}
 	Vector2 size = uluaGetVector2Index( L, 1 );
-	int i = 0;
 
-	for ( i = 0; i < state->renderTextureCount; i++ ) {
-		if ( state->renderTextures[i] == NULL ) {
-			break;
-		}
-	}
-	state->renderTextures[i] = malloc( sizeof( RenderTexture2D ) );
-	*state->renderTextures[i] = LoadRenderTexture( (int)size.x, (int)size.y );
+	int i = newTexture( TEXTURE_TYPE_RENDER_TEXTURE );
+	state->textures[i]->renderTexture = LoadRenderTexture( (int)size.x, (int)size.y );
 	lua_pushinteger( L, i );
-	checkRenderTextureRealloc( i );
 
 	return 1;
 }
@@ -1768,39 +1742,13 @@ int ltexturesUnloadTexture( lua_State *L ) {
 	}
 	size_t id = lua_tointeger( L, 1 );
 
-	if ( !validTexture( id ) ) {
+	if ( !validTexture( id, TEXTURE_TYPE_ALL ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	UnloadTexture( *state->textures[ id ] );
-	state->textures[ id ] = NULL;
-	lua_pushboolean( L, true );
-
-	return 1;
-}
-
-/*
-> success = RL.UnloadRenderTexture( RenderTexture2D target )
-
-Unload render texture from GPU memory ( VRAM )
-
-- Failure return false
-- Success return true
-*/
-int ltexturesUnloadRenderTexture( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UnloadRenderTexture( RenderTexture2D target )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t id = lua_tointeger( L, 1 );
-	
-	if ( !validRenderTexture( id ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	UnloadRenderTexture( *state->renderTextures[ id ] );
-	state->renderTextures[ id ] = NULL;
+	// UnloadTexture( *state->textures[ id ] );
+	texturesFreeTexture( id );
+	// state->textures[ id ] = NULL;
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -1810,7 +1758,7 @@ int ltexturesUnloadRenderTexture( lua_State *L ) {
 > success = RL.UpdateTexture( Texture2D texture, int{} pixels )
 
 Update GPU texture with new data
-NOTE! Should be TEXTURE_SOURCE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
+NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 
 - Failure return false
 - Success return true
@@ -1823,7 +1771,7 @@ int ltexturesUpdateTexture( lua_State *L ) {
 	}
 	size_t texId = lua_tointeger( L, 1 );
 	
-	if ( !validTexture( texId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_TEXTURE ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1850,7 +1798,8 @@ int ltexturesUpdateTexture( lua_State *L ) {
 		i++;
 		lua_pop( L, 1 );
 	}
-	UpdateTexture( *state->textures[ texId ], pixels );
+	// UpdateTexture( *state->textures[ texId ], pixels );
+	UpdateTexture( state->textures[ texId ]->texture, pixels );
 	lua_pushboolean( L, true );
 
 	free( pixels );
@@ -1862,7 +1811,7 @@ int ltexturesUpdateTexture( lua_State *L ) {
 > success = RL.UpdateTextureRec( Texture2D texture, Rectangle rec, int{} pixels )
 
 Update GPU texture rectangle with new data
-NOTE! Should be TEXTURE_SOURCE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
+NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 
 - Failure return false
 - Success return true
@@ -1875,7 +1824,7 @@ int ltexturesUpdateTextureRec( lua_State *L ) {
 	}
 	size_t texId = lua_tointeger( L, 1 );
 	
-	if ( !validTexture( texId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_TEXTURE ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1906,7 +1855,7 @@ int ltexturesUpdateTextureRec( lua_State *L ) {
 
 	Rectangle rec = uluaGetRectangleIndex( L, 2 );
 
-	UpdateTextureRec( *state->textures[ texId ], rec, pixels );
+	UpdateTextureRec( state->textures[ texId ]->texture, rec, pixels );
 	lua_pushboolean( L, true );
 
 	free( pixels );
@@ -1936,7 +1885,7 @@ int ltexturesDrawTexture( lua_State *L ) {
 	Vector2 pos = uluaGetVector2Index( L, 2 );
 	Color color = uluaGetColorIndex( L, 3 );
 
-	if ( !validSourceTexture( texId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1966,7 +1915,7 @@ int ltexturesDrawTextureRec( lua_State *L ) {
 	Vector2 pos = uluaGetVector2Index( L, 3 );
 	Color tint = uluaGetColorIndex( L, 4 );
 
-	if ( !validSourceTexture( texId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1999,7 +1948,7 @@ int ltexturesDrawTexturePro( lua_State *L ) {
 	float rot = lua_tonumber( L, 5 );
 	Color color = uluaGetColorIndex( L, 6 );
 
-	if ( !validSourceTexture( texId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2032,7 +1981,7 @@ int ltexturesDrawTextureNPatch( lua_State *L ) {
 	float rotation = lua_tonumber( L, 5 );
 	Color tint = uluaGetColorIndex( L, 6 );
 
-	if ( !validSourceTexture( texId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2058,12 +2007,12 @@ int ltexturesBeginTextureMode( lua_State *L ) {
 	}
 	size_t texId = lua_tointeger( L, 1 );
 
-	if ( !validRenderTexture( texId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_RENDER_TEXTURE ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
 
-	BeginTextureMode( *state->renderTextures[ texId ] );
+	BeginTextureMode( state->textures[ texId ]->renderTexture );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2081,42 +2030,26 @@ int ltexturesEndTextureMode( lua_State *L ) {
 }
 
 /*
-> success = RL.SetTextureSource( int textureSource )
+> type = RL.GetTextureType( Texture2D texture )
 
-Set what texture source to use ( TEXTURE_SOURCE_TEXTURE or TEXTURE_SOURCE_RENDER_TEXTURE )
+Get texture type ( TEXTURE_TYPE_TEXTURE or TEXTURE_TYPE_RENDER_TEXTURE )
 
 - Failure return false
-- Success return true
-*/
-int ltexturesSetTextureSource( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetTextureSource( int textureSource )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int texSource = lua_tointeger( L, 1 );
-
-	if ( texSource != TEXTURE_SOURCE_TEXTURE && texSource != TEXTURE_SOURCE_RENDER_TEXTURE ) {
-		TraceLog( LOG_WARNING, "%s %d", "Invalid source texture", texSource );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-
-	state->textureSource = texSource;
-	lua_pushboolean( L, true );
-
-	return 1;
-}
-
-/*
-> textureSource = RL.GetTextureSource()
-
-Get current texture source type ( TEXTURE_SOURCE_TEXTURE or TEXTURE_SOURCE_RENDER_TEXTURE )
-
 - Success return int
 */
-int ltexturesGetTextureSource( lua_State *L ) {
-	lua_pushinteger( L, state->textureSource );
+int ltexturesGetTextureType( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetTextureType( Texture2D texture )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t texId = lua_tointeger( L, 1 );
+
+	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	lua_pushinteger( L, state->textures[ texId ]->type );
 
 	return 1;
 }
@@ -2141,11 +2074,10 @@ int ltexturesGenTextureMipmaps( lua_State *L ) {
 	}
 	size_t texId = lua_tointeger( L, 1 );
 
-	if ( !validSourceTexture( texId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	GenTextureMipmaps( texturesGetSourceTexture( texId ) );
 	lua_pushboolean( L, true );
 
@@ -2169,7 +2101,7 @@ int ltexturesSetTextureFilter( lua_State *L ) {
 	size_t texId = lua_tointeger( L, 1 );
 	int filter = lua_tointeger( L, 2 );
 
-	if ( !validSourceTexture( texId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2197,7 +2129,7 @@ int ltexturesSetTextureWrap( lua_State *L ) {
 	size_t texId = lua_tointeger( L, 1 );
 	int wrap = lua_tointeger( L, 2 );
 
-	if ( !validSourceTexture( texId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2224,7 +2156,7 @@ int ltexturesGetTextureSize( lua_State *L ) {
 	}
 	size_t texId = lua_tointeger( L, 1 );
 
-	if ( !validSourceTexture( texId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
 		lua_pushnil( L );
 		return 1;
 	}
@@ -2568,7 +2500,7 @@ int ltexturesGetPixelColor( lua_State *L ) {
 	size_t texId = lua_tointeger( L, 1 );
 	Vector2 pos = uluaGetVector2Index( L, 2 );
 
-	if ( !validSourceTexture( texId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}

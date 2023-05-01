@@ -381,8 +381,8 @@ RL.NPATCH_THREE_PATCH_HORIZONTAL=2
 
 -- Globals - TextureModes
 
-RL.TEXTURE_SOURCE_TEXTURE=0
-RL.TEXTURE_SOURCE_RENDER_TEXTURE=1
+RL.TEXTURE_TYPE_TEXTURE=0
+RL.TEXTURE_TYPE_RENDER_TEXTURE=1
 
 -- Globals - Colors
 
@@ -2639,15 +2639,8 @@ function RL.LoadRenderTexture( size ) end
 ---@return any success 
 function RL.UnloadTexture( texture ) end
 
----Unload render texture from GPU memory ( VRAM )
----- Failure return false
----- Success return true
----@param target any
----@return any success 
-function RL.UnloadRenderTexture( target ) end
-
 ---Update GPU texture with new data
----NOTE! Should be TEXTURE_SOURCE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
+---NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 ---- Failure return false
 ---- Success return true
 ---@param texture any
@@ -2656,7 +2649,7 @@ function RL.UnloadRenderTexture( target ) end
 function RL.UpdateTexture( texture, pixels ) end
 
 ---Update GPU texture rectangle with new data
----NOTE! Should be TEXTURE_SOURCE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
+---NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 ---- Failure return false
 ---- Success return true
 ---@param texture any
@@ -2721,17 +2714,12 @@ function RL.BeginTextureMode( target ) end
 ---@return any RL.EndTextureMode
 function  RL.EndTextureMode() end
 
----Set what texture source to use ( TEXTURE_SOURCE_TEXTURE or TEXTURE_SOURCE_RENDER_TEXTURE )
+---Get texture type ( TEXTURE_TYPE_TEXTURE or TEXTURE_TYPE_RENDER_TEXTURE )
 ---- Failure return false
----- Success return true
----@param textureSource integer
----@return any success 
-function RL.SetTextureSource( textureSource ) end
-
----Get current texture source type ( TEXTURE_SOURCE_TEXTURE or TEXTURE_SOURCE_RENDER_TEXTURE )
 ---- Success return int
----@return any textureSource 
-function RL.GetTextureSource() end
+---@param texture any
+---@return any type 
+function RL.GetTextureType( texture ) end
 
 -- Textures - Texture Configuration
 

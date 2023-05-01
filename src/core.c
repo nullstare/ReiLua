@@ -1247,11 +1247,12 @@ int lcoreSetShaderValueTexture( lua_State *L ) {
 	int locIndex = lua_tointeger( L, 2 );
 	size_t textureId = lua_tointeger( L, 3 );
 
-	if ( !validShader( shaderId ) || !validTexture( textureId ) ) {
+	if ( !validShader( shaderId ) || !validTexture( textureId, TEXTURE_TYPE_ALL ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetShaderValueTexture( *state->shaders[ shaderId ], locIndex, *state->textures[ textureId ] );
+	// SetShaderValueTexture( *state->shaders[ shaderId ], locIndex, *state->textures[ textureId ] );
+	SetShaderValueTexture( *state->shaders[ shaderId ], locIndex, *texturesGetSourceTexture( textureId ) );
 	lua_pushboolean( L, true );
 
 	return 1;

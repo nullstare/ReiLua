@@ -50,7 +50,5 @@ function RL.draw()
 		RL.DrawTriangle( { 0, 32 }, { 32, 16 }, { 0, 0 }, RL.RED )
 	RL.EndTextureMode()
 
-	RL.SetTextureSource( RL.TEXTURE_SOURCE_RENDER_TEXTURE )
 	RL.DrawTexturePro( framebuffer, { 0, 0, res[1], -res[2] }, { 0, 0, winSize[1], winSize[2] }, { 0, 0 }, 0.0, { 255, 255, 255 } )
-	RL.SetTextureSource( RL.TEXTURE_SOURCE_TEXTURE )
 end

@@ -675,9 +675,9 @@ NPATCH_THREE_PATCH_HORIZONTAL
 
 ## Globals - TextureModes
 
-TEXTURE_SOURCE_TEXTURE
+TEXTURE_TYPE_TEXTURE
 
-TEXTURE_SOURCE_RENDER_TEXTURE
+TEXTURE_TYPE_RENDER_TEXTURE
 
 ## Globals - Colors
 
@@ -3560,19 +3560,10 @@ Unload texture from GPU memory ( VRAM )
 
 ---
 
-> success = RL.UnloadRenderTexture( RenderTexture2D target )
-
-Unload render texture from GPU memory ( VRAM )
-
-- Failure return false
-- Success return true
-
----
-
 > success = RL.UpdateTexture( Texture2D texture, int{} pixels )
 
 Update GPU texture with new data
-NOTE! Should be TEXTURE_SOURCE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
+NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 
 - Failure return false
 - Success return true
@@ -3582,7 +3573,7 @@ NOTE! Should be TEXTURE_SOURCE_TEXTURE. Pixel should be in format { { 255, 255, 
 > success = RL.UpdateTextureRec( Texture2D texture, Rectangle rec, int{} pixels )
 
 Update GPU texture rectangle with new data
-NOTE! Should be TEXTURE_SOURCE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
+NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 
 - Failure return false
 - Success return true
@@ -3644,19 +3635,11 @@ Ends drawing to render texture
 
 ---
 
-> success = RL.SetTextureSource( int textureSource )
+> type = RL.GetTextureType( Texture2D texture )
 
-Set what texture source to use ( TEXTURE_SOURCE_TEXTURE or TEXTURE_SOURCE_RENDER_TEXTURE )
+Get texture type ( TEXTURE_TYPE_TEXTURE or TEXTURE_TYPE_RENDER_TEXTURE )
 
 - Failure return false
-- Success return true
-
----
-
-> textureSource = RL.GetTextureSource()
-
-Get current texture source type ( TEXTURE_SOURCE_TEXTURE or TEXTURE_SOURCE_RENDER_TEXTURE )
-
 - Success return int
 
 ---

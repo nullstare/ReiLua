@@ -665,7 +665,7 @@ int lmodelDrawQuad3DTexture( lua_State *L ) {
 
 	//TODO Normals. maybe something like Vector3Normalize(Vector3CrossProduct(Vector3Subtract(vB, vA), Vector3Subtract(vC, vA)));
 
-	if ( !validSourceTexture( texId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1138,7 +1138,6 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 		}
 		lua_pop( L, 1 );
 	}
-
 	bool dynamic = lua_toboolean( L, 2 );
 
 	UploadMesh( &mesh, dynamic );
@@ -1575,7 +1574,7 @@ int lmodelsCreateMaterial( lua_State *L ) {
 									if ( strcmp( "texture", (char*)lua_tostring( L, -2 ) ) == 0 && lua_isnumber( L, -1 ) ) {
 										size_t texId = lua_tointeger( L, -1 );
 
-										if ( !validSourceTexture( texId ) ) {
+										if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
 											lua_pushboolean( L, false );
 											return 1;
 										}
@@ -1669,7 +1668,7 @@ int lmodelsSetMaterialTexture( lua_State *L ) {
 	int mapType = lua_tointeger( L, 2 );
 	size_t texId = lua_tointeger( L, 3 );
 
-	if ( !validMaterial( materialId ) || !validSourceTexture( texId ) ) {
+	if ( !validMaterial( materialId ) || !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2014,7 +2013,7 @@ int lmodelsDrawBillboard( lua_State *L ) {
 	float size = lua_tonumber( L, 4 );
 	Color tint = uluaGetColorIndex( L, 5 );
 
-	if ( !validSourceTexture( texId ) || !validCamera3D( cameraId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) || !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2046,7 +2045,7 @@ int lmodelsDrawBillboardRec( lua_State *L ) {
 	Vector2 size = uluaGetVector2Index( L, 5 );
 	Color tint = uluaGetColorIndex( L, 6 );
 
-	if ( !validSourceTexture( texId ) || !validCamera3D( cameraId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) || !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}

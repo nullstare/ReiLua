@@ -26,7 +26,7 @@ int lshapesSetShapesTexture( lua_State *L ) {
 	size_t texId = lua_tointeger( L, 1 );
 	Rectangle source = uluaGetRectangleIndex( L, 2 );
 
-	if ( !validSourceTexture( texId ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}

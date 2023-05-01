@@ -16,7 +16,6 @@ bool stateInit( const char *exePath ) {
 	state->run = true;
 	state->resolution = (Vector2){ 800, 600 };
 	state->luaState = NULL;
-	state->textureSource = TEXTURE_SOURCE_TEXTURE;
 	state->guiFont = 0;
 	/* Images. */
 	state->imageAlloc = ALLOC_PAGE_SIZE;
@@ -25,11 +24,7 @@ bool stateInit( const char *exePath ) {
 	/* Textures. */
 	state->textureAlloc = ALLOC_PAGE_SIZE;
 	state->textureCount = 0;
-	state->textures = malloc( state->textureAlloc * sizeof( Texture2D* ) );
-	/* RenderTextures. */
-	state->renderTextureAlloc = ALLOC_PAGE_SIZE;
-	state->renderTextureCount = 0;
-	state->renderTextures = malloc( state->renderTextureAlloc * sizeof( RenderTexture2D* ) );
+	state->textures = malloc( state->textureAlloc * sizeof( ReiTexture* ) );
 	/* Fonts. */
 	state->fontAlloc = ALLOC_PAGE_SIZE;
 	state->fontCount = 1;
@@ -82,7 +77,6 @@ bool stateInit( const char *exePath ) {
 	for ( int i = 0; i < ALLOC_PAGE_SIZE; i++ ) {
 		state->images[i] = NULL;
 		state->textures[i] = NULL;
-		state->renderTextures[i] = NULL;
 		state->waves[i] = NULL;
 		state->sounds[i] = NULL;
 		state->camera2Ds[i] = NULL;
@@ -133,14 +127,8 @@ void stateFree() {
 	}	
 	for ( int i = 0; i < state->textureCount; ++i ) {
 		if ( state->textures[i] != NULL ) {
-			UnloadTexture( *state->textures[i] );
+			texturesFreeTexture(i);
 			free( state->textures[i] );
-		}
-	}
-	for ( int i = 0; i < state->renderTextureCount; ++i ) {
-		if ( state->renderTextures[i] != NULL ) {
-			UnloadRenderTexture( *state->renderTextures[i] );
-			free( state->renderTextures[i] );
 		}
 	}
 	for ( int i = 0; i < state->fontCount; ++i ) {
@@ -232,7 +220,6 @@ void stateFree() {
 	}
 	free( state->images );
 	free( state->textures );
-	free( state->renderTextures );
 	free( state->fonts );
 	free( state->waves );
 	free( state->sounds );

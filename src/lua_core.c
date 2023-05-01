@@ -528,7 +528,8 @@ void LogCustom( int logLevel, const char *text, va_list args ) {
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
 
-	lua_getglobal( L, "log" );
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "log" );
 
     if ( lua_isfunction( L, -1 ) ) {
         lua_pushinteger( L, logLevel );
@@ -600,7 +601,6 @@ bool luaCallMain() {
 		sprintf( path, "%smain", state->exePath );
 	}
 #endif
-
     luaL_dofile( L, path );
 
 	/* Check errors in main.lua */
@@ -611,7 +611,9 @@ bool luaCallMain() {
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
 
-	// lua_getglobal( L, "init" );
+	/* Apply custom callback here. */
+	SetTraceLogCallback( LogCustom );
+
 	lua_getglobal( L, "RL" );
 	lua_getfield ( L, -1, "init" );
 
@@ -627,8 +629,6 @@ bool luaCallMain() {
         return false;
     }
 	lua_pop( L, -1 );
-	/* Apply custom callback here. */
-	SetTraceLogCallback( LogCustom );
 
 	return true;
 }
@@ -639,7 +639,6 @@ void luaCallProcess() {
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop(L);
 	
-    // lua_getglobal( L, "process" );
 	lua_getglobal( L, "RL" );
 	lua_getfield ( L, -1, "process" );
 
@@ -661,7 +660,6 @@ void luaCallDraw() {
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop(L);
 	
-    // lua_getglobal( L, "draw" );
 	lua_getglobal( L, "RL" );
 	lua_getfield ( L, -1, "draw" );
 
@@ -684,7 +682,6 @@ void luaCallExit() {
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop(L);
 	
-    // lua_getglobal( L, "exit" );
 	lua_getglobal( L, "RL" );
 	lua_getfield ( L, -1, "exit" );
 

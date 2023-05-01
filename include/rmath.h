@@ -61,6 +61,7 @@ int lmathVector3Normalize( lua_State *L );
 int lmathVector3OrthoNormalize( lua_State *L );
 int lmathVector3Transform( lua_State *L );
 int lmathVector3RotateByQuaternion( lua_State *L );
+int lmathVector3RotateByAxisAngle( lua_State *L );
 int lmathVector3Lerp( lua_State *L );
 int lmathVector3Reflect( lua_State *L );
 int lmathVector3Min( lua_State *L );

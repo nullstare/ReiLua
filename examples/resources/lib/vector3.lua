@@ -45,6 +45,8 @@ Vector3.meta = {
 function Vector3:new( x, y, z )
 	if type( x ) == "table" then
 		x, y, z = table.unpack( x )
+	elseif type( x ) == "nil" then
+		x, y, z = 0, 0, 0
 	end
 
 	local object = setmetatable( {}, Vector3.meta )

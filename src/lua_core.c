@@ -1221,6 +1221,7 @@ void luaRegister() {
 	assingGlobalFunction( "Vector3OrthoNormalize", lmathVector3OrthoNormalize );
 	assingGlobalFunction( "Vector3Transform", lmathVector3Transform );
 	assingGlobalFunction( "Vector3RotateByQuaternion", lmathVector3RotateByQuaternion );
+	assingGlobalFunction( "Vector3RotateByAxisAngle", lmathVector3RotateByAxisAngle );
 	assingGlobalFunction( "Vector3Lerp", lmathVector3Lerp );
 	assingGlobalFunction( "Vector3Reflect", lmathVector3Reflect );
 	assingGlobalFunction( "Vector3Min", lmathVector3Min );

@@ -2639,6 +2639,13 @@ function RL.LoadRenderTexture( size ) end
 ---@return any success 
 function RL.UnloadTexture( texture ) end
 
+---Check if a texture is ready
+---- Failure return nil
+---- Success return true
+---@param texture any
+---@return any isReady 
+function RL.IsTextureReady( texture ) end
+
 ---Update GPU texture with new data
 ---NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 ---- Failure return false

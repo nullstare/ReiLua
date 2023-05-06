@@ -65,6 +65,8 @@ Detailed changes:
 	- REMOVED: UnloadRenderTexture
 	- ADDED: GetTextureType
 	- FIXED: Vector3RotateByAxisAngle was not connected.
+	- FIXED: uluaGetBoundingBoxIndex was looking for numbers instead of tables.
+	- ADDED: IsTextureReady
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

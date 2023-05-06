@@ -1740,16 +1740,41 @@ int ltexturesUnloadTexture( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t id = lua_tointeger( L, 1 );
+	size_t texId = lua_tointeger( L, 1 );
 
-	if ( !validTexture( id, TEXTURE_TYPE_ALL ) ) {
+	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	// UnloadTexture( *state->textures[ id ] );
-	texturesFreeTexture( id );
+	texturesFreeTexture( texId );
 	// state->textures[ id ] = NULL;
 	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> isReady = RL.IsTextureReady( Texture2D texture )
+
+Check if a texture is ready
+
+- Failure return nil
+- Success return true
+*/
+int ltexturesIsTextureReady( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsTextureReady( Texture2D texture )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	size_t texId = lua_tointeger( L, 1 );
+
+	if ( !validTexture( texId, TEXTURE_TYPE_TEXTURE ) ) {
+		lua_pushnil( L );
+		return 1;
+	}
+	lua_pushboolean( L, IsTextureReady( state->textures[ texId ]->texture) );
 
 	return 1;
 }

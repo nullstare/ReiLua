@@ -23,12 +23,7 @@ function RL.init()
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 
-	-- camera = RL.CreateCamera3D()
-	-- RL.SetCamera3DPosition( camera, { 0, 8, 16 } )
-	-- RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
-	-- RL.SetCamera3DUp( camera, { 0, 1, 0 } )
 	camera = Cam3D:new()
-
 	camera:setPosition( { 0, 8, 16 } )
 	camera:setTarget( { 0, 0, 0 } )
 	camera:setUp( { 0, 1, 0 } )
@@ -55,9 +50,7 @@ function RL.init()
 	RL.GenTextureMipmaps( tileTexture )
 	RL.SetTextureFilter( tileTexture, RL.TEXTURE_FILTER_TRILINEAR )
 	lightmap = RL.LoadTexture( RL.GetBasePath().."../resources/images/lightmap.png" )
-	RL.GenTextureMipmaps( lightmap )
 	RL.SetTextureFilter( lightmap, RL.TEXTURE_FILTER_TRILINEAR )
-	RL.SetTextureWrap( lightmap, RL.TEXTURE_WRAP_CLAMP )
 
 	shader = RL.LoadShader( RL.GetBasePath().."../resources/shaders/glsl330/lightmap.vs",
 						    RL.GetBasePath().."../resources/shaders/glsl330/lightmap.fs" )
@@ -108,5 +101,5 @@ function RL.draw()
 
 	camera:beginMode3D()
 		RL.DrawMesh( mesh, material, matrix )
-		camera:endMode3D()
+	camera:endMode3D()
 end

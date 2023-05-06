@@ -234,8 +234,8 @@ apiFile:write( "\n> Ray = { { 0.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0 } } or { position
 { position, direction }. Ray type (useful for raycast)\n\n---\n" )
 apiFile:write( "\n> RayCollision = { hit = true, distance = 1.0, point = { 0.0, 0.0, 0.0 }, normal = { 0.0, 0.0, 1.0 } }\n\
 Raycast hit information. NOTE: Data in named keys\n\n---\n" )
-apiFile:write( "\n> BoundingBox = { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } }\n\
-{ min, max }. Bounding box type for 3d mesh\n\n---\n" )
+apiFile:write( "\n> BoundingBox = { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } } or { min = { 0.0, 0.0, 0.0 }, max = { 1.0, 1.0, 1.0 } }\n\
+{ min, max }. Accepts Vector3. Bounding box type for 3d mesh\n\n---\n" )
 apiFile:write( "\n> Sound = SoundId\n\
 int id. Basic Sound source and buffer\n\n---\n" )
 apiFile:write( "\n> NPatchInfo = { { 0, 0, 24, 24 }, 8, 8, 8, 8, NPATCH_NINE_PATCH } or { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = NPATCH_NINE_PATCH }\n\

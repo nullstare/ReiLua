@@ -1071,9 +1071,9 @@ Raycast hit information. NOTE: Data in named keys
 
 ---
 
-> BoundingBox = { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } }
+> BoundingBox = { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } } or { min = { 0.0, 0.0, 0.0 }, max = { 1.0, 1.0, 1.0 } }
 
-{ min, max }. Bounding box type for 3d mesh
+{ min, max }. Accepts Vector3. Bounding box type for 3d mesh
 
 ---
 
@@ -3556,6 +3556,15 @@ Load texture for rendering ( framebuffer )
 Unload texture from GPU memory ( VRAM )
 
 - Failure return false
+- Success return true
+
+---
+
+> isReady = RL.IsTextureReady( Texture2D texture )
+
+Check if a texture is ready
+
+- Failure return nil
 - Success return true
 
 ---

@@ -997,6 +997,7 @@ void luaRegister() {
 	assingGlobalFunction( "LoadTextureCubemap", ltexturesLoadTextureCubemap );
 	assingGlobalFunction( "LoadRenderTexture", ltexturesLoadRenderTexture );
 	assingGlobalFunction( "UnloadTexture", ltexturesUnloadTexture );
+	assingGlobalFunction( "IsTextureReady", ltexturesIsTextureReady );
 	assingGlobalFunction( "UpdateTexture", ltexturesUpdateTexture );
 	assingGlobalFunction( "UpdateTextureRec", ltexturesUpdateTextureRec );
 		/* Texture Drawing. */
@@ -1763,7 +1764,7 @@ BoundingBox uluaGetBoundingBoxIndex( lua_State *L, int index ) {
     lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-		if ( lua_isnumber( L, -1 ) ) {
+		if ( lua_istable( L, -1 ) ) {
 			if ( lua_isnumber( L, -2 ) ) {
 				switch ( i ) {
 					case 0:

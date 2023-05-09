@@ -122,13 +122,13 @@ void stateFree() {
 	for ( int i = 0; i < state->imageCount; ++i ) {
 		if ( state->images[i] != NULL ) {
 			UnloadImage( *state->images[i] );
-			free( state->images[i] );
+			// free( state->images[i] );
 		}
 	}	
 	for ( int i = 0; i < state->textureCount; ++i ) {
 		if ( state->textures[i] != NULL ) {
 			texturesFreeTexture(i);
-			free( state->textures[i] );
+			// free( state->textures[i] );
 		}
 	}
 	for ( int i = 0; i < state->fontCount; ++i ) {

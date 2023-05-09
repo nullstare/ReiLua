@@ -111,6 +111,7 @@ void texturesFreeTexture( size_t id ) {
 			UnloadRenderTexture( state->textures[id]->renderTexture );
 			break;
 		}
+		state->textures[id] = NULL;
 	}
 }
 /*
@@ -1746,9 +1747,7 @@ int ltexturesUnloadTexture( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	// UnloadTexture( *state->textures[ id ] );
 	texturesFreeTexture( texId );
-	// state->textures[ id ] = NULL;
 	lua_pushboolean( L, true );
 
 	return 1;

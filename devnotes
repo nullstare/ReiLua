@@ -23,6 +23,7 @@ Backlog {
 		* ImageBlurGaussian
 	* Models
 		* LoadMaterials
+		* DrawBillboardPro
 	* Needs Testing
 		* UpdateTexture
 		* UpdateTextureRec

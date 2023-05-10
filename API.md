@@ -921,6 +921,18 @@ LIGHT_DIRECTIONAL
 
 LIGHT_POINT
 
+## Globals - rlGlVersion
+
+RL_OPENGL_11
+
+RL_OPENGL_21
+
+RL_OPENGL_33
+
+RL_OPENGL_43
+
+RL_OPENGL_ES_20
+
 ## Globals - OpenGL
 
 GL_COLOR_BUFFER_BIT
@@ -4446,6 +4458,15 @@ Draw a billboard texture defined by source
 
 ---
 
+> success = RL.DrawBillboardPro( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint )
+
+Draw a billboard texture defined by source and rotation
+
+- Failure return false
+- Success return true
+
+---
+
 > success = RL.SetModelTransform( Model model, Matrix transform )
 
 Set model transform matrix
@@ -6457,6 +6478,18 @@ Set the line drawing width
 Get the line drawing width
 
 - Success return float
+
+---
+
+## RLGL - Initialization functions
+
+---
+
+> version = RL.rlGetVersion()
+
+Get current OpenGL version
+
+- Success return int
 
 ---
 

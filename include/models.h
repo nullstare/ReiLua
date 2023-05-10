@@ -3,6 +3,8 @@
 /* Internals. */
 /* Deleted from raylib. Need for freeing models. */
 void UnloadModelKeepMeshes( Model model );
+void DrawBillboardProNoRatio( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint );
+void DrawBillboardRecNoRatio( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Color tint );
 
 /* Basic. */
 int lmodelsDrawLine3D( lua_State *L );
@@ -61,6 +63,7 @@ int lmodelsSetModelMaterial( lua_State *L );
 int lmodelsSetModelMeshMaterial( lua_State *L );
 int lmodelsDrawBillboard( lua_State *L );
 int lmodelsDrawBillboardRec( lua_State *L );
+int lmodelsDrawBillboardPro( lua_State *L );
 int lmodelsSetModelTransform( lua_State *L );
 int lmodelsGetModelTransform( lua_State *L );
 /* Animations. */

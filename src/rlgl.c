@@ -39,3 +39,20 @@ int lrlglGetLineWidth( lua_State *L ) {
 
 	return 1;
 }
+
+/*
+## RLGL - Initialization functions
+*/
+
+/*
+> version = RL.rlGetVersion()
+
+Get current OpenGL version
+
+- Success return int
+*/
+int lrlglGetVersion( lua_State *L ) {
+	lua_pushinteger( L, rlGetVersion() );
+
+	return 1;
+}

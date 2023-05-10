@@ -543,6 +543,14 @@ RL.HUEBAR_SELECTOR_OVERFLOW=20
 RL.LIGHT_DIRECTIONAL=0
 RL.LIGHT_POINT=1
 
+-- Globals - rlGlVersion
+
+RL.RL_OPENGL_11=1
+RL.RL_OPENGL_21=2
+RL.RL_OPENGL_33=3
+RL.RL_OPENGL_43=4
+RL.RL_OPENGL_ES_20=5
+
 -- Globals - OpenGL
 
 RL.GL_COLOR_BUFFER_BIT=16384
@@ -3481,6 +3489,21 @@ function RL.DrawBillboard( camera, texture, position, size, tint ) end
 ---@return any success 
 function RL.DrawBillboardRec( camera, texture, source, position, size, tint ) end
 
+---Draw a billboard texture defined by source and rotation
+---- Failure return false
+---- Success return true
+---@param camera any
+---@param texture any
+---@param source table
+---@param position table
+---@param up table
+---@param size table
+---@param origin table
+---@param rotation number
+---@param tint table
+---@return any success 
+function RL.DrawBillboardPro( camera, texture, source, position, up, size, origin, rotation, tint ) end
+
 ---Set model transform matrix
 ---- Failure return false
 ---- Success return true
@@ -5274,6 +5297,13 @@ function RL.rlSetLineWidth( width ) end
 ---- Success return float
 ---@return any width 
 function RL.rlGetLineWidth() end
+
+-- RLGL - Initialization functions
+
+---Get current OpenGL version
+---- Success return int
+---@return any version 
+function RL.rlGetVersion() end
 
 -- OpenGL - Framebuffer management
 

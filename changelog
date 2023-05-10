@@ -68,6 +68,8 @@ Detailed changes:
 	- FIXED: uluaGetBoundingBoxIndex was looking for numbers instead of tables.
 	- ADDED: IsTextureReady
 	- FIXED: UnloadTexture did not set texture id to NULL.
+	- ADDED: DrawBillboardPro
+	- ADDED: rlglGetVersion
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

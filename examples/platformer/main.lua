@@ -259,7 +259,7 @@ local function drawPlayer()
 			end
 
 			player.curFrame = frame
-		end 
+		end
 	else
 		if 0 < player.vel.y then
 			player.curFrame = 6

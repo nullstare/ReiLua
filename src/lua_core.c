@@ -492,6 +492,12 @@ void defineGlobals() {
 	/* LightType */
 	assignGlobalInt( LIGHT_DIRECTIONAL, "LIGHT_DIRECTIONAL" );
 	assignGlobalInt( LIGHT_POINT, "LIGHT_POINT" );
+	/* rlGlVersion */
+	assignGlobalInt( RL_OPENGL_11, "RL_OPENGL_11" );
+	assignGlobalInt( RL_OPENGL_21, "RL_OPENGL_21" );
+	assignGlobalInt( RL_OPENGL_33, "RL_OPENGL_33" );
+	assignGlobalInt( RL_OPENGL_43, "RL_OPENGL_43" );
+	assignGlobalInt( RL_OPENGL_ES_20, "RL_OPENGL_ES_20" );
 	/* OpenGL */
 	assignGlobalInt( GL_COLOR_BUFFER_BIT, "GL_COLOR_BUFFER_BIT" );
 	assignGlobalInt( GL_DEPTH_BUFFER_BIT, "GL_DEPTH_BUFFER_BIT" );
@@ -1089,6 +1095,7 @@ void luaRegister() {
 	assingGlobalFunction( "SetModelMeshMaterial", lmodelsSetModelMeshMaterial );
 	assingGlobalFunction( "DrawBillboard", lmodelsDrawBillboard );
 	assingGlobalFunction( "DrawBillboardRec", lmodelsDrawBillboardRec );
+	assingGlobalFunction( "DrawBillboardPro", lmodelsDrawBillboardPro );
 	assingGlobalFunction( "SetModelTransform", lmodelsSetModelTransform );
 	assingGlobalFunction( "GetModelTransform", lmodelsGetModelTransform );
 		/* Animations. */
@@ -1350,6 +1357,8 @@ void luaRegister() {
 		/* General render state. */
 	assingGlobalFunction( "rlglSetLineWidth", lrlglSetLineWidth );
 	assingGlobalFunction( "rlglGetLineWidth", lrlglGetLineWidth );
+		/* Initialization functions. */
+	assingGlobalFunction( "rlglGetVersion", lrlglGetVersion );
 
 	/* OpenGL */
 		/* Framebuffer management. */

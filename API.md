@@ -933,6 +933,12 @@ RL_OPENGL_43
 
 RL_OPENGL_ES_20
 
+## Globals - rlCullMode
+
+RL_CULL_FACE_FRONT
+
+RL_CULL_FACE_BACK
+
 ## Globals - OpenGL
 
 GL_COLOR_BUFFER_BIT
@@ -6464,6 +6470,63 @@ Send light properties to shader
 
 ---
 
+> RL.rlEnableColorBlend()
+
+Enable color blending
+
+---
+
+> RL.rlDisableColorBlend()
+
+Disable color blending
+
+---
+
+> RL.rlEnableDepthTest()
+
+Enable depth test
+
+---
+
+> RL.rlDisableDepthTest()
+
+Disable depth test
+
+---
+
+> RL.rlEnableDepthMask()
+
+Enable depth write
+
+---
+
+> RL.rlDisableDepthMask()
+
+Disable depth write
+
+---
+
+> RL.rlEnableBackfaceCulling()
+
+Enable backface culling
+
+---
+
+> RL.rlDisableBackfaceCulling()
+
+Disable backface culling
+
+---
+
+> success = RL.rlSetCullFace( int mode )
+
+Set face culling mode
+
+- Failure return false
+- Success return true
+
+---
+
 > success = RL.rlSetLineWidth( float width )
 
 Set the line drawing width
@@ -6478,6 +6541,18 @@ Set the line drawing width
 Get the line drawing width
 
 - Success return float
+
+---
+
+> RL.rlEnableSmoothLines()
+
+Enable line aliasing
+
+---
+
+> RL.rlDisableSmoothLines()
+
+Disable line aliasing
 
 ---
 

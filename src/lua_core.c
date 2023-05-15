@@ -498,6 +498,9 @@ void defineGlobals() {
 	assignGlobalInt( RL_OPENGL_33, "RL_OPENGL_33" );
 	assignGlobalInt( RL_OPENGL_43, "RL_OPENGL_43" );
 	assignGlobalInt( RL_OPENGL_ES_20, "RL_OPENGL_ES_20" );
+	/* rlCullMode */
+	assignGlobalInt( RL_CULL_FACE_FRONT, "RL_CULL_FACE_FRONT" );
+	assignGlobalInt( RL_CULL_FACE_BACK, "RL_CULL_FACE_BACK" );
 	/* OpenGL */
 	assignGlobalInt( GL_COLOR_BUFFER_BIT, "GL_COLOR_BUFFER_BIT" );
 	assignGlobalInt( GL_DEPTH_BUFFER_BIT, "GL_DEPTH_BUFFER_BIT" );
@@ -1355,10 +1358,21 @@ void luaRegister() {
 
 	/* RLGL */
 		/* General render state. */
-	assingGlobalFunction( "rlglSetLineWidth", lrlglSetLineWidth );
-	assingGlobalFunction( "rlglGetLineWidth", lrlglGetLineWidth );
+	assingGlobalFunction( "rlEnableColorBlend", lrlglEnableColorBlend );
+	assingGlobalFunction( "rlDisableColorBlend", lrlglDisableColorBlend );
+	assingGlobalFunction( "rlEnableDepthTest", lrlglEnableDepthTest );
+	assingGlobalFunction( "rlDisableDepthTest", lrlglDisableDepthTest );
+	assingGlobalFunction( "rlEnableDepthMask", lrlglEnableDepthMask );
+	assingGlobalFunction( "rlDisableDepthMask", lrlglDisableDepthMask );
+	assingGlobalFunction( "rlEnableBackfaceCulling", lrlglEnableBackfaceCulling );
+	assingGlobalFunction( "rlDisableBackfaceCulling", lrlglDisableBackfaceCulling );
+	assingGlobalFunction( "rlSetCullFace", lrlglSetCullFace );
+	assingGlobalFunction( "rlSetLineWidth", lrlglSetLineWidth );
+	assingGlobalFunction( "rlGetLineWidth", lrlglGetLineWidth );
+	assingGlobalFunction( "rlEnableSmoothLines", lrlglEnableSmoothLines );
+	assingGlobalFunction( "rlDisableSmoothLines", lrlglDisableSmoothLines );
 		/* Initialization functions. */
-	assingGlobalFunction( "rlglGetVersion", lrlglGetVersion );
+	assingGlobalFunction( "rlGetVersion", lrlglGetVersion );
 
 	/* OpenGL */
 		/* Framebuffer management. */

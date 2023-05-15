@@ -551,6 +551,11 @@ RL.RL_OPENGL_33=3
 RL.RL_OPENGL_43=4
 RL.RL_OPENGL_ES_20=5
 
+-- Globals - rlCullMode
+
+RL.RL_CULL_FACE_FRONT=0
+RL.RL_CULL_FACE_BACK=1
+
 -- Globals - OpenGL
 
 RL.GL_COLOR_BUFFER_BIT=16384
@@ -5286,6 +5291,45 @@ function RL.UpdateLightValues( shader, light ) end
 
 -- RLGL - General render state
 
+---Enable color blending
+---@return any RL.rlEnableColorBlend
+function  RL.rlEnableColorBlend() end
+
+---Disable color blending
+---@return any RL.rlDisableColorBlend
+function  RL.rlDisableColorBlend() end
+
+---Enable depth test
+---@return any RL.rlEnableDepthTest
+function  RL.rlEnableDepthTest() end
+
+---Disable depth test
+---@return any RL.rlDisableDepthTest
+function  RL.rlDisableDepthTest() end
+
+---Enable depth write
+---@return any RL.rlEnableDepthMask
+function  RL.rlEnableDepthMask() end
+
+---Disable depth write
+---@return any RL.rlDisableDepthMask
+function  RL.rlDisableDepthMask() end
+
+---Enable backface culling
+---@return any RL.rlEnableBackfaceCulling
+function  RL.rlEnableBackfaceCulling() end
+
+---Disable backface culling
+---@return any RL.rlDisableBackfaceCulling
+function  RL.rlDisableBackfaceCulling() end
+
+---Set face culling mode
+---- Failure return false
+---- Success return true
+---@param mode integer
+---@return any success 
+function RL.rlSetCullFace( mode ) end
+
 ---Set the line drawing width
 ---- Failure return false
 ---- Success return true
@@ -5297,6 +5341,14 @@ function RL.rlSetLineWidth( width ) end
 ---- Success return float
 ---@return any width 
 function RL.rlGetLineWidth() end
+
+---Enable line aliasing
+---@return any RL.rlEnableSmoothLines
+function  RL.rlEnableSmoothLines() end
+
+---Disable line aliasing
+---@return any RL.rlDisableSmoothLines
+function  RL.rlDisableSmoothLines() end
 
 -- RLGL - Initialization functions
 

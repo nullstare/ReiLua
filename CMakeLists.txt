@@ -23,6 +23,7 @@ if( EMSCRIPTEN ) # Web
 	target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/web/libraylib.a )
 	target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/web/liblua.a )
 
+	# Try "-s USE_PTHREADS" if not getting pixel perfect rendering.
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY" )
   	set( CMAKE_EXECUTABLE_SUFFIX ".html" ) # This line is used to set your executable to build with the emscripten html template so that you can directly open it.
 	set( resources_dir "resources" )
@@ -44,7 +45,8 @@ else() # Desktop
 
 		if( DRM ) # Mainly for Raspberry Pi
 			# target_link_libraries( ${PROJECT_NAME} GLESv2 EGL drm gbm rt bcm_host m dl pthread )
-			target_link_libraries( ${PROJECT_NAME} GLESv2 EGL drm gbm rt m dl pthread )
+			# target_link_libraries( ${PROJECT_NAME} GLESv2 EGL drm gbm pthread rt m dl )
+			target_link_libraries( ${PROJECT_NAME} raylib GLESv2 EGL pthread rt m gbm drm dl atomic )
 		else()
 			target_link_libraries( ${PROJECT_NAME} m dl pthread )
 		endif()

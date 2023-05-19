@@ -34,3 +34,7 @@ Backlog {
 		* UpdateMesh
 		* LoadModelFromMesh
 }
+
+Bugs {
+	* CameraLib. Lateral movement is slower if looking down or up.
+}

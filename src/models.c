@@ -1768,7 +1768,6 @@ int lmodelsSetMaterialTexture( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	
 	SetMaterialTexture( state->materials[ materialId ], mapType, *texturesGetSourceTexture( texId ) );
 	lua_pushboolean( L, true );
 
@@ -1797,7 +1796,6 @@ int lmodelsSetMaterialColor( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	state->materials[ materialId ]->maps[ mapType ].color = color;
 	lua_pushboolean( L, true );
 
@@ -1826,7 +1824,6 @@ int lmodelsSetMaterialValue( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	state->materials[ materialId ]->maps[ mapType ].value = value;
 	lua_pushboolean( L, true );
 
@@ -1854,9 +1851,204 @@ int lmodelsSetMaterialShader( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	state->materials[ materialId ]->shader = *state->shaders[ shaderId ];
 	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.SetMaterialParams( Material material, float{} params )
+
+Set material generic parameters ( if required )
+
+- Failure return false
+- Success return true
+*/
+int lmodelsSetMaterialParams( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMaterialParams( Material material, float{} params )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t len = uluaGetTableLen( L );
+	size_t materialId = lua_tointeger( L, 1 );
+
+	if ( !validMaterial( materialId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	float params[ len ];
+
+	int t = lua_gettop( L );
+	int i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		params[i] = lua_tonumber( L, -1 );
+		i++;
+		lua_pop( L, 1 );
+	}
+	int paramCount = ( len > 4 ) ? 4 : len;
+
+	for ( int i = 0; i < paramCount; i++ ) {
+		state->materials[ materialId ]->params[i] = params[i];
+	}
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> texture = RL.GetMaterialTexture( Material material, int mapType )
+
+Get texture from material map type. Returns -1 if no texture.
+
+- Failure return false
+- Success return int
+*/
+int lmodelsGetMaterialTexture( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetMaterialTexture( Material material, int mapType )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t materialId = lua_tointeger( L, 1 );
+	int mapType = lua_tointeger( L, 2 );
+
+	if ( !validMaterial( materialId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	/* Check what ReiLua texture has same openGL texture and return that. */
+	for ( int i = 0; i < state->textureCount; i++ ) {
+		if ( state->textures[i]->type == TEXTURE_TYPE_TEXTURE
+		&& state->textures[i]->texture.id == state->materials[ materialId ]->maps[ mapType ].texture.id ) {
+			lua_pushinteger( L, i );
+			return 1;
+		}
+		else if ( state->textures[i]->type == TEXTURE_TYPE_RENDER_TEXTURE
+		&& state->textures[i]->renderTexture.texture.id == state->materials[ materialId ]->maps[ mapType ].texture.id ) {
+			lua_pushinteger( L, i );
+			return 1;
+		}
+	}
+	lua_pushinteger( L, -1 );
+
+	return 1;
+}
+
+/*
+> color = RL.GetMaterialColor( Material material, int mapType )
+
+Get color from material map type.
+
+- Failure return false
+- Success return Color
+*/
+int lmodelsGetMaterialColor( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetMaterialColor( Material material, int mapType )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t materialId = lua_tointeger( L, 1 );
+	int mapType = lua_tointeger( L, 2 );
+
+	if ( !validMaterial( materialId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushColor( L, state->materials[ materialId ]->maps[ mapType ].color );
+
+	return 1;
+}
+
+/*
+> value = RL.GetMaterialValue( Material material, int mapType )
+
+Get color from material map type.
+
+- Failure return false
+- Success return float
+*/
+int lmodelsGetMaterialValue( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetMaterialValue( Material material, int mapType )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t materialId = lua_tointeger( L, 1 );
+	int mapType = lua_tointeger( L, 2 );
+
+	if ( !validMaterial( materialId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	lua_pushnumber( L, state->materials[ materialId ]->maps[ mapType ].value );
+
+	return 1;
+}
+
+/*
+> shader = RL.GetMaterialShader( Material material )
+
+Get material shader. Returns -1 if no shader.
+
+- Failure return false
+- Success return int
+*/
+int lmodelsGetMaterialShader( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetMaterialShader( Material material )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t materialId = lua_tointeger( L, 1 );
+
+	if ( !validMaterial( materialId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	/* Look for shader that has same shader program id. */
+	for ( int i = 0; i < state->shaderCount; i++ ) {
+		if ( state->shaders[i]->id == state->materials[ materialId ]->shader.id ) {
+			lua_pushinteger( L, i );
+			return 1;
+		}
+	}
+	lua_pushinteger( L, -1 );
+
+	return 1;
+}
+
+/*
+> params = RL.GetMaterialParams( Material material )
+
+Get material parameters.
+
+- Failure return false
+- Success return float{}
+*/
+int lmodelsGetMaterialParams( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetMaterialParams( Material material )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t materialId = lua_tointeger( L, 1 );
+
+	if ( !validMaterial( materialId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector4 params = {
+		state->materials[ materialId ]->params[0],
+		state->materials[ materialId ]->params[1],
+		state->materials[ materialId ]->params[2],
+		state->materials[ materialId ]->params[3]
+	};
+	uluaPushVector4( L, params );
 
 	return 1;
 }

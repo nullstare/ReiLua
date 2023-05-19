@@ -379,7 +379,7 @@ RL.NPATCH_NINE_PATCH=0
 RL.NPATCH_THREE_PATCH_VERTICAL=1
 RL.NPATCH_THREE_PATCH_HORIZONTAL=2
 
--- Globals - TextureModes
+-- Globals - TextureTypes
 
 RL.TEXTURE_TYPE_TEXTURE=0
 RL.TEXTURE_TYPE_RENDER_TEXTURE=1
@@ -3407,6 +3407,52 @@ function RL.SetMaterialValue( material, mapType, value ) end
 ---@param shader any
 ---@return any success 
 function RL.SetMaterialShader( material, shader ) end
+
+---Set material generic parameters ( if required )
+---- Failure return false
+---- Success return true
+---@param material any
+---@param params any
+---@return any success 
+function RL.SetMaterialParams( material, params ) end
+
+---Get texture from material map type. Returns -1 if no texture.
+---- Failure return false
+---- Success return int
+---@param material any
+---@param mapType integer
+---@return any texture 
+function RL.GetMaterialTexture( material, mapType ) end
+
+---Get color from material map type.
+---- Failure return false
+---- Success return Color
+---@param material any
+---@param mapType integer
+---@return any color 
+function RL.GetMaterialColor( material, mapType ) end
+
+---Get color from material map type.
+---- Failure return false
+---- Success return float
+---@param material any
+---@param mapType integer
+---@return any value 
+function RL.GetMaterialValue( material, mapType ) end
+
+---Get material shader. Returns -1 if no shader.
+---- Failure return false
+---- Success return int
+---@param material any
+---@return any shader 
+function RL.GetMaterialShader( material ) end
+
+---Get material parameters.
+---- Failure return false
+---- Success return float{}
+---@param material any
+---@return any params 
+function RL.GetMaterialParams( material ) end
 
 -- Models - Model
 

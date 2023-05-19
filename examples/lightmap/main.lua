@@ -77,7 +77,6 @@ function RL.init()
 		},
 	}
 	material = RL.CreateMaterial( materialData )
-
 	matrix = RL.MatrixMultiply( RL.MatrixIdentity(), RL.MatrixTranslate( { -4, 0, -4 } ) )
 end
 

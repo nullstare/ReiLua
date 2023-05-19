@@ -53,6 +53,12 @@ int lmodelsSetMaterialTexture( lua_State *L );
 int lmodelsSetMaterialColor( lua_State *L );
 int lmodelsSetMaterialValue( lua_State *L );
 int lmodelsSetMaterialShader( lua_State *L );
+int lmodelsSetMaterialParams( lua_State *L );
+int lmodelsGetMaterialTexture( lua_State *L );
+int lmodelsGetMaterialColor( lua_State *L );
+int lmodelsGetMaterialValue( lua_State *L );
+int lmodelsGetMaterialShader( lua_State *L );
+int lmodelsGetMaterialParams( lua_State *L );
 /* Model. */
 int lmodelsLoadModel( lua_State *L );
 int lmodelsLoadModelFromMesh( lua_State *L );

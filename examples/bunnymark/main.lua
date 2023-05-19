@@ -71,7 +71,8 @@ end
 function RL.draw()
 	RL.ClearBackground( RL.RAYWHITE )
 
-	for _, bunny in ipairs( bunnies ) do
+	for i = 1, #bunnies do
+		local bunny = bunnies[i]
 		-- NOTE: When internal batch buffer limit is reached (MAX_BATCH_ELEMENTS),
 		-- a draw call is launched and buffer starts being filled again;
 		-- before issuing a draw call, updated vertex data from internal CPU buffer is send to GPU...

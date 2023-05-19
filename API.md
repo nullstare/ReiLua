@@ -673,7 +673,7 @@ NPATCH_THREE_PATCH_VERTICAL
 
 NPATCH_THREE_PATCH_HORIZONTAL
 
-## Globals - TextureModes
+## Globals - TextureTypes
 
 TEXTURE_TYPE_TEXTURE
 
@@ -4376,6 +4376,60 @@ Set shader for material
 
 - Failure return false
 - Success return true
+
+---
+
+> success = RL.SetMaterialParams( Material material, float{} params )
+
+Set material generic parameters ( if required )
+
+- Failure return false
+- Success return true
+
+---
+
+> texture = RL.GetMaterialTexture( Material material, int mapType )
+
+Get texture from material map type. Returns -1 if no texture.
+
+- Failure return false
+- Success return int
+
+---
+
+> color = RL.GetMaterialColor( Material material, int mapType )
+
+Get color from material map type.
+
+- Failure return false
+- Success return Color
+
+---
+
+> value = RL.GetMaterialValue( Material material, int mapType )
+
+Get color from material map type.
+
+- Failure return false
+- Success return float
+
+---
+
+> shader = RL.GetMaterialShader( Material material )
+
+Get material shader. Returns -1 if no shader.
+
+- Failure return false
+- Success return int
+
+---
+
+> params = RL.GetMaterialParams( Material material )
+
+Get material parameters.
+
+- Failure return false
+- Success return float{}
 
 ---
 

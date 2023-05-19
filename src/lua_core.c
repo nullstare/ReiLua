@@ -17,21 +17,18 @@
 static void assignGlobalInt( int value, const char *name ) {
 	lua_State *L = state->luaState;
 	lua_pushinteger( L, value );
-	// lua_setglobal( L, name );
 	lua_setfield( L, -2, name );
 }
 
 static void assignGlobalFloat( float value, const char *name ) {
 	lua_State *L = state->luaState;
 	lua_pushnumber( L, value );
-	// lua_setglobal( L, name );
 	lua_setfield( L, -2, name );
 }
 
 static void assignGlobalColor( Color color, const char *name ) {
 	lua_State *L = state->luaState;
 	uluaPushColor( L, color );
-	// lua_setglobal( L, name );
 	lua_setfield( L, -2, name );
 }
 
@@ -368,7 +365,7 @@ void defineGlobals() {
 	assignGlobalInt( NPATCH_NINE_PATCH, "NPATCH_NINE_PATCH" );
 	assignGlobalInt( NPATCH_THREE_PATCH_VERTICAL, "NPATCH_THREE_PATCH_VERTICAL" );
 	assignGlobalInt( NPATCH_THREE_PATCH_HORIZONTAL, "NPATCH_THREE_PATCH_HORIZONTAL" );
-	/* TextureModes */
+	/* TextureTypes */
 	assignGlobalInt( TEXTURE_TYPE_TEXTURE, "TEXTURE_TYPE_TEXTURE" );
 	assignGlobalInt( TEXTURE_TYPE_RENDER_TEXTURE, "TEXTURE_TYPE_RENDER_TEXTURE" );
 	/* Colors */
@@ -1088,6 +1085,12 @@ void luaRegister() {
 	assingGlobalFunction( "SetMaterialColor", lmodelsSetMaterialColor );
 	assingGlobalFunction( "SetMaterialValue", lmodelsSetMaterialValue );
 	assingGlobalFunction( "SetMaterialShader", lmodelsSetMaterialShader );
+	assingGlobalFunction( "SetMaterialParams", lmodelsSetMaterialParams );
+	assingGlobalFunction( "GetMaterialTexture", lmodelsGetMaterialTexture );
+	assingGlobalFunction( "GetMaterialColor", lmodelsGetMaterialColor );
+	assingGlobalFunction( "GetMaterialValue", lmodelsGetMaterialValue );
+	assingGlobalFunction( "GetMaterialShader", lmodelsGetMaterialShader );
+	assingGlobalFunction( "GetMaterialParams", lmodelsGetMaterialParams );
 		/* Model. */
 	assingGlobalFunction( "LoadModel", lmodelsLoadModel );
 	assingGlobalFunction( "LoadModelFromMesh", lmodelsLoadModelFromMesh );

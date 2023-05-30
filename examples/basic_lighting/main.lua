@@ -1,5 +1,5 @@
 -- Based on raylib [shaders] example - basic lighting by Chris Camacho (@codifies)
--- https://github.com/TSnake41/raylib-lua/blob/master/examples/textures_bunnymark.lua
+-- https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_basic_lighting.c
 
 package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 

@@ -6520,6 +6520,96 @@ Send light properties to shader
 
 ---
 
+> success = RL.SetLightType( Light light, int type )
+
+Set light type
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.SetLightPosition( Light light, Vector3 position )
+
+Set light position
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.SetLightTarget( Light light, Vector3 target )
+
+Set light target
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.SetLightColor( Light light, Color color )
+
+Set light color
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.SetLightEnabled( Light light, bool enabled )
+
+Set light enabled
+
+- Failure return false
+- Success return true
+
+---
+
+> type = RL.GetLightType( Light light )
+
+Get light type
+
+- Failure return false
+- Success return int
+
+---
+
+> position = RL.GetLightPosition( Light light )
+
+Get light position
+
+- Failure return false
+- Success return Vector3
+
+---
+
+> target = RL.GetLightTarget( Light light )
+
+Get light target
+
+- Failure return false
+- Success return Vector3
+
+---
+
+> color = RL.GetLightColor( Light light )
+
+Get light color
+
+- Failure return false
+- Success return Color
+
+---
+
+> enabled = RL.IsLightEnabled( Light light )
+
+Get light enabled
+
+- Failure return nil
+- Success return boolean
+
+---
+
 ## RLGL - General render state
 
 ---

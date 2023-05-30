@@ -108,3 +108,263 @@ int llightsUpdateLightValues( lua_State *L ) {
 
 	return 1;
 }
+
+/*
+> success = RL.SetLightType( Light light, int type )
+
+Set light type
+
+- Failure return false
+- Success return true
+*/
+int llightsSetLightType( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetLightType( Light light, int type )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t lightId = lua_tointeger( L, 1 );
+	int type = lua_tointeger( L, 2 );
+
+	if ( !validLight( lightId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	state->lights[ lightId ]->type = type;
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.SetLightPosition( Light light, Vector3 position )
+
+Set light position
+
+- Failure return false
+- Success return true
+*/
+int llightsSetLightPosition( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetLightPosition( Light light, Vecto3 position )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t lightId = lua_tointeger( L, 1 );
+	Vector3 position = uluaGetVector3Index( L, 2 );
+
+	if ( !validLight( lightId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	state->lights[ lightId ]->position = position;
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.SetLightTarget( Light light, Vector3 target )
+
+Set light target
+
+- Failure return false
+- Success return true
+*/
+int llightsSetLightTarget( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetLightTarget( Light light, Vecto3 target )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t lightId = lua_tointeger( L, 1 );
+	Vector3 target = uluaGetVector3Index( L, 2 );
+
+	if ( !validLight( lightId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	state->lights[ lightId ]->target = target;
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.SetLightColor( Light light, Color color )
+
+Set light color
+
+- Failure return false
+- Success return true
+*/
+int llightsSetLightColor( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetLightColor( Light light, Color color )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t lightId = lua_tointeger( L, 1 );
+	Color color = uluaGetColorIndex( L, 2 );
+
+	if ( !validLight( lightId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	state->lights[ lightId ]->color = color;
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.SetLightEnabled( Light light, bool enabled )
+
+Set light enabled
+
+- Failure return false
+- Success return true
+*/
+int llightsSetLightEnabled( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isboolean( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetLightEnabled( Light light, bool enabled )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t lightId = lua_tointeger( L, 1 );
+	bool enabled = lua_toboolean( L, 2 );
+
+	if ( !validLight( lightId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	state->lights[ lightId ]->enabled = enabled;
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> type = RL.GetLightType( Light light )
+
+Get light type
+
+- Failure return false
+- Success return int
+*/
+int llightsGetLightType( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetLightType( Light light )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t lightId = lua_tointeger( L, 1 );
+
+	if ( !validLight( lightId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	lua_pushinteger( L, state->lights[ lightId ]->type );
+
+	return 1;
+}
+
+/*
+> position = RL.GetLightPosition( Light light )
+
+Get light position
+
+- Failure return false
+- Success return Vector3
+*/
+int llightsGetLightPosition( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetLightPosition( Light light )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t lightId = lua_tointeger( L, 1 );
+
+	if ( !validLight( lightId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushVector3( L, state->lights[ lightId ]->position );
+
+	return 1;
+}
+
+/*
+> target = RL.GetLightTarget( Light light )
+
+Get light target
+
+- Failure return false
+- Success return Vector3
+*/
+int llightsGetLightTarget( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetLightTarget( Light light )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t lightId = lua_tointeger( L, 1 );
+
+	if ( !validLight( lightId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushVector3( L, state->lights[ lightId ]->target );
+
+	return 1;
+}
+
+/*
+> color = RL.GetLightColor( Light light )
+
+Get light color
+
+- Failure return false
+- Success return Color
+*/
+int llightsGetLightColor( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetLightColor( Light light )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t lightId = lua_tointeger( L, 1 );
+
+	if ( !validLight( lightId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushColor( L, state->lights[ lightId ]->color );
+
+	return 1;
+}
+
+/*
+> enabled = RL.IsLightEnabled( Light light )
+
+Get light enabled
+
+- Failure return nil
+- Success return boolean
+*/
+int llightsIsLightEnabled( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsLightEnabled( Light light )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	size_t lightId = lua_tointeger( L, 1 );
+
+	if ( !validLight( lightId ) ) {
+		lua_pushnil( L );
+		return 1;
+	}
+	lua_pushboolean( L, state->lights[ lightId ]->enabled );
+
+	return 1;
+}

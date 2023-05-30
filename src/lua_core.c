@@ -1358,6 +1358,16 @@ void luaRegister() {
 		/* Basics. */
 	assingGlobalFunction( "CreateLight", llightsCreateLight );
 	assingGlobalFunction( "UpdateLightValues", llightsUpdateLightValues );
+	assingGlobalFunction( "SetLightType", llightsSetLightType );
+	assingGlobalFunction( "SetLightPosition", llightsSetLightPosition );
+	assingGlobalFunction( "SetLightTarget", llightsSetLightTarget );
+	assingGlobalFunction( "SetLightColor", llightsSetLightColor );
+	assingGlobalFunction( "SetLightEnabled", llightsSetLightEnabled );
+	assingGlobalFunction( "GetLightType", llightsGetLightType );
+	assingGlobalFunction( "GetLightPosition", llightsGetLightPosition );
+	assingGlobalFunction( "GetLightTarget", llightsGetLightTarget );
+	assingGlobalFunction( "GetLightColor", llightsGetLightColor );
+	assingGlobalFunction( "IsLightEnabled", llightsIsLightEnabled );
 
 	/* RLGL */
 		/* General render state. */

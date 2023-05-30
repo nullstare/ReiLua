@@ -5335,6 +5335,81 @@ function RL.CreateLight( type, position, target, color, shader ) end
 ---@return any success 
 function RL.UpdateLightValues( shader, light ) end
 
+---Set light type
+---- Failure return false
+---- Success return true
+---@param light any
+---@param type integer
+---@return any success 
+function RL.SetLightType( light, type ) end
+
+---Set light position
+---- Failure return false
+---- Success return true
+---@param light any
+---@param position table
+---@return any success 
+function RL.SetLightPosition( light, position ) end
+
+---Set light target
+---- Failure return false
+---- Success return true
+---@param light any
+---@param target table
+---@return any success 
+function RL.SetLightTarget( light, target ) end
+
+---Set light color
+---- Failure return false
+---- Success return true
+---@param light any
+---@param color table
+---@return any success 
+function RL.SetLightColor( light, color ) end
+
+---Set light enabled
+---- Failure return false
+---- Success return true
+---@param light any
+---@param enabled boolean
+---@return any success 
+function RL.SetLightEnabled( light, enabled ) end
+
+---Get light type
+---- Failure return false
+---- Success return int
+---@param light any
+---@return any type 
+function RL.GetLightType( light ) end
+
+---Get light position
+---- Failure return false
+---- Success return Vector3
+---@param light any
+---@return any position 
+function RL.GetLightPosition( light ) end
+
+---Get light target
+---- Failure return false
+---- Success return Vector3
+---@param light any
+---@return any target 
+function RL.GetLightTarget( light ) end
+
+---Get light color
+---- Failure return false
+---- Success return Color
+---@param light any
+---@return any color 
+function RL.GetLightColor( light ) end
+
+---Get light enabled
+---- Failure return nil
+---- Success return boolean
+---@param light any
+---@return any enabled 
+function RL.IsLightEnabled( light ) end
+
 -- RLGL - General render state
 
 ---Enable color blending

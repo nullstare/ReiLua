@@ -47,7 +47,7 @@ end
 
 -- Raygui.
 
-Raygui = {
+local Raygui = {
 	RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT = 24,
 
 	elements = {},
@@ -63,6 +63,9 @@ function Raygui.process()
 
 		return
 	end
+
+	-- Focused is 0 if not over any element.
+	Raygui.focused = 0
 
 	for i = #Raygui.elements, 1, -1 do
 		local element = Raygui.elements[i]

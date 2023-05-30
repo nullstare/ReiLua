@@ -1,11 +1,9 @@
 Current {
-	* Review GenMeshCustom indices.
 }
 
 Backlog {
 	* Platformer example physics process for true framerate independence.
 	* Extend color lib functionality.
-	* Tilemap clib. Fast tilemap draw and clib example.
 
 	* IsWaveReady and other Is* ready functions.
 	* Text
@@ -23,7 +21,7 @@ Backlog {
 		* ImageBlurGaussian
 	* Models
 		* LoadMaterials
-		* DrawBillboardPro
+
 	* Needs Testing
 		* UpdateTexture
 		* UpdateTextureRec

@@ -27,7 +27,6 @@ function RL.init()
 	camera:setUp( { 0, 1, 0 } )
 	-- camera.mode = camera.MODES.ORBITAL
 	camera.mode = camera.MODES.FREE
-	-- camera.mode = camera.MODES.FIRST_PERSON
 end
 
 function RL.process( delta )

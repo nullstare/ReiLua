@@ -13,6 +13,7 @@ KEY CHANGES:
 	- CHANGED: Can now have multiple Music objects like other Raylib objects instead of just one.
 	- CHANGED: Texture now can be either Texture or RenderTexture. No need to change texture source anymore.
 	- ADDED: Material getter functions.
+	- ADDED: Light property functions.
 
 Detailed changes:
 	- FIXED: uluaGetRay was looking for integers instead of tables.

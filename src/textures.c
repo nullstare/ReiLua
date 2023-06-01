@@ -44,20 +44,6 @@ bool validImage( size_t id ) {
 	}
 }
 
-// bool validTexture( size_t id, int type ) {
-// 	if ( id < 0 || state->textureCount < id || state->textures[ id ] == NULL ) {
-// 		TraceLog( LOG_WARNING, "%s %d", "Invalid texture", id );
-// 		return false;
-// 	}
-// 	else if ( type != TEXTURE_TYPE_ALL && type != state->textures[ id ]->type ) {
-// 		TraceLog( LOG_WARNING, "%s %d", "Wrong texture type", type );
-// 		return false;
-// 	}
-// 	else {
-// 		return true;
-// 	}
-// }
-
 static int newImage() {
 	int i = 0;
 
@@ -154,7 +140,7 @@ Load image from GPU texture data
 - Success return int
 */
 int ltexturesLoadImageFromTexture( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) ) {
+	if ( !isValidTexture( L, 1, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadImageFromTexture( Texture2D texture )" );
 		lua_pushinteger( L, -1 );
 		return 1;
@@ -1754,7 +1740,7 @@ Check if a texture is ready
 - Success return true
 */
 int ltexturesIsTextureReady( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) ) {
+	if ( !isValidTexture( L, 1, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsTextureReady( Texture2D texture )" );
 		lua_pushnil( L );
 		return 1;
@@ -1776,7 +1762,7 @@ NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 25
 - Success return true
 */
 int ltexturesUpdateTexture( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) || !lua_istable( L, 2 ) ) {
+	if ( !isValidTexture( L, 1, true ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UpdateTexture( Texture2D texture, int{} pixels )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -1824,7 +1810,7 @@ NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 25
 - Success return true
 */
 int ltexturesUpdateTextureRec( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
+	if ( !isValidTexture( L, 1, true ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UpdateTextureRec( Texture2D texture, Rectangle rec, int{} pixels )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -1879,7 +1865,7 @@ Draw a Texture2D
 - Success return true
 */
 int ltexturesDrawTexture( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
+	if ( !isValidTexture( L, 1, true ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTexture( Texture2D texture, Vector2 position, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -1903,7 +1889,7 @@ Draw a part of a texture defined by a rectangle
 - Success return true
 */
 int ltexturesDrawTextureRec( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) || !lua_istable( L, 2 )  || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
+	if ( !isValidTexture( L, 1, true ) || !lua_istable( L, 2 )  || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTextureRec( Texture2D texture, Rectangle source, Vector2 position, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -1928,7 +1914,7 @@ Draw a part of a texture defined by a rectangle with "pro" parameters
 - Success return true
 */
 int ltexturesDrawTexturePro( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 )
+	if ( !isValidTexture( L, 1, true ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 )
 	|| !lua_istable( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_istable( L, 6 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTexturePro( Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint )" );
 		lua_pushboolean( L, false );
@@ -1956,7 +1942,7 @@ Draws a texture ( or part of it ) that stretches or shrinks nicely
 - Success return true
 */
 int ltexturesDrawTextureNPatch( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 )
+	if ( !isValidTexture( L, 1, true ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 )
 	|| !lua_istable( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_istable( L, 6 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTextureNPatch( Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint )" );
 		lua_pushboolean( L, false );
@@ -1984,7 +1970,7 @@ Begin drawing to render texture
 - Success return true
 */
 int ltexturesBeginTextureMode( lua_State *L ) {
-	if ( !isValidRenderTexture( L, 1 ) ) {
+	if ( !isValidRenderTexture( L, 1, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.BeginTextureMode( RenderTexture2D target )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -2042,7 +2028,7 @@ Generate GPU mipmaps for a texture
 - Success return true
 */
 int ltexturesGenTextureMipmaps( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) ) {
+	if ( !isValidTexture( L, 1, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenTextureMipmaps( Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -2064,7 +2050,7 @@ Set texture scaling filter mode ( TEXTURE_FILTER_POINT, TEXTURE_FILTER_BILINEAR.
 - Success return true
 */
 int ltexturesSetTextureFilter( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !isValidTexture( L, 1, true ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetTextureFilter( Texture2D texture, int filter )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -2087,7 +2073,7 @@ Set texture wrapping mode ( TEXTURE_WRAP_REPEAT, TEXTURE_WRAP_CLAMP... )
 - Success return true
 */
 int ltexturesSetTextureWrap( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !isValidTexture( L, 1, true ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetTextureWrap( Texture2D texture, int wrap )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -2110,7 +2096,7 @@ Get texture OpenGL id
 - Success return int
 */
 int ltexturesGetTextureId( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) ) {
+	if ( !isValidTexture( L, 1, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetTextureId( Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -2130,7 +2116,7 @@ Get texture size
 - Success return Vector2
 */
 int ltexturesGetTextureSize( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) ) {
+	if ( !isValidTexture( L, 1, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetTextureSize( Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -2150,7 +2136,7 @@ Get texture mipmaps. Mipmap levels, 1 by default
 - Success return int
 */
 int ltexturesGetTextureMipmaps( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) ) {
+	if ( !isValidTexture( L, 1, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetTextureMipmaps( Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -2170,7 +2156,7 @@ Get texture mipmaps. Mipmap levels, 1 by default
 - Success return int
 */
 int ltexturesGetTextureFormat( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) ) {
+	if ( !isValidTexture( L, 1, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetTextureFormat( Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -2455,7 +2441,7 @@ Get pixel color from source texture
 - Success return Color
 */
 int ltexturesGetPixelColor( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) || !lua_istable( L, 2 ) ) {
+	if ( !isValidTexture( L, 1, true ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetPixelColor( Texture2D texture, Vector2 position )" );
 		lua_pushboolean( L, false );
 		return 1;

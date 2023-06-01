@@ -1023,9 +1023,15 @@ int id. Font type, includes texture and chars data
 
 ---
 
-> Camera = CameraId
+> Camera2D = CameraId or { offset, target, rotation, zoom }
 
-int id. Defines 3d camera position/orientation
+int id. Defines 2D camera position/orientation
+
+---
+
+> Camera = CameraId or { position, target, up, fovy, projection }
+
+int id. Defines 3D camera3D position/orientation
 
 ---
 
@@ -2202,7 +2208,7 @@ Return camera2D id set to default configuration
 
 ---
 
-> success = RL.UnloadCamera2D( int Camera2D )
+> success = RL.UnloadCamera2D( camera2D camera )
 
 Unload Camera2D
 
@@ -2443,7 +2449,7 @@ Note: The up vector might not be perpendicular to the forward vector
 
 ---
 
-> forward = RL.GetCamera3DRight( camera3D camera )
+> right = RL.GetCamera3DRight( camera3D camera )
 
 Returns the cameras right vector ( normalized )
 
@@ -4509,7 +4515,7 @@ Set material for a mesh ( Mesh and material on this model )
 
 ---
 
-> success = RL.DrawBillboard( Camera camera, Texture2D texture, Vector3 position, float size, Color tint )
+> success = RL.DrawBillboard( Camera3D camera, Texture2D texture, Vector3 position, float size, Color tint )
 
 Draw a billboard texture
 
@@ -4518,7 +4524,7 @@ Draw a billboard texture
 
 ---
 
-> success = RL.DrawBillboardRec( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Color tint )
+> success = RL.DrawBillboardRec( Camera3D camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Color tint )
 
 Draw a billboard texture defined by source
 
@@ -4527,7 +4533,7 @@ Draw a billboard texture defined by source
 
 ---
 
-> success = RL.DrawBillboardPro( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint )
+> success = RL.DrawBillboardPro( Camera3D camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint )
 
 Draw a billboard texture defined by source and rotation
 

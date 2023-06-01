@@ -1446,22 +1446,82 @@ void luaRegister() {
 
 /* Type validators. */
 
-bool isValidTexture( lua_State *L, int index ) {
-	if ( lua_isnumber( L, index ) || lua_istable( L, index ) ) {
-		return true;
+bool isValidTexture( lua_State *L, int index, bool allowTable ) {
+	if ( lua_isnumber( L, index ) ) {
+		int id = lua_tointeger( L, index );
+
+		if ( ( 0 <= id && id < state->textureCount && state->textures[ id ] != NULL ) ) {
+			return true;
+		}
+		else {
+			return false;
+		}
     }
+	else if ( allowTable && lua_istable( L, index ) ) {
+		return true;
+	}
 	else {
-		TraceLog( LOG_WARNING, "%s", "Error. Invalid texture." );
+		TraceLog( LOG_WARNING, "%s", "Error. Invalid Texture." );
 		return false;
 	}
 }
 
-bool isValidRenderTexture( lua_State *L, int index ) {
-	if ( lua_isnumber( L, index ) || lua_istable( L, index ) ) {
-		return true;
+bool isValidRenderTexture( lua_State *L, int index, bool allowTable ) {
+	if ( lua_isnumber( L, index ) ) {
+		int id = lua_tointeger( L, index );
+
+		if ( ( 0 <= id && id < state->textureCount && state->textures[ id ] != NULL ) ) {
+			return true;
+		}
+		else {
+			return false;
+		}
     }
+	else if ( allowTable && lua_istable( L, index ) ) {
+		return true;
+	}
 	else {
-		TraceLog( LOG_WARNING, "%s", "Error. Invalid renderTexture." );
+		TraceLog( LOG_WARNING, "%s", "Error. Invalid RenderTexture." );
+		return false;
+	}
+}
+
+bool isValidCamera2D( lua_State *L, int index, bool allowTable ) {
+	if ( lua_isnumber( L, index ) ) {
+		int id = lua_tointeger( L, index );
+
+		if ( ( 0 <= id && id < state->camera2DCount && state->camera2Ds[ id ] != NULL ) ) {
+			return true;
+		}
+		else {
+			return false;
+		}
+    }
+	else if ( allowTable && lua_istable( L, index ) ) {
+		return true;
+	}
+	else {
+		TraceLog( LOG_WARNING, "%s", "Error. Invalid Camera2D." );
+		return false;
+	}
+}
+
+bool isValidCamera3D( lua_State *L, int index, bool allowTable ) {
+	if ( lua_isnumber( L, index ) ) {
+		int id = lua_tointeger( L, index );
+
+		if ( ( 0 <= id && id < state->camera3DCount && state->camera3Ds[ id ] != NULL ) ) {
+			return true;
+		}
+		else {
+			return false;
+		}
+    }
+	else if ( allowTable && lua_istable( L, index ) ) {
+		return true;
+	}
+	else {
+		TraceLog( LOG_WARNING, "%s", "Error. Invalid Camera3D." );
 		return false;
 	}
 }
@@ -1979,9 +2039,7 @@ Texture uluaGetTexture( lua_State *L, int index ) {
 	Texture texture = { 0 };
 
 	if ( lua_isnumber( L, index ) ) {
-		if ( 0 <= lua_tointeger( L, index ) ) {
-			texture = *texturesGetSourceTexture( lua_tointeger( L, index ) );
-		}
+		texture = *texturesGetSourceTexture( lua_tointeger( L, index ) );
 	}
 	else if ( lua_istable( L, index ) ) {
 		int t = index, i = 0;
@@ -2038,9 +2096,7 @@ RenderTexture uluaGetRenderTexture( lua_State *L, int index ) {
 	RenderTexture renderTexture = { 0 };
 
 	if ( lua_isnumber( L, index ) ) {
-		if ( 0 <= lua_tointeger( L, index ) ) {
-			renderTexture = state->textures[ lua_tointeger( L, index ) ]->renderTexture;
-		}
+		renderTexture = state->textures[ lua_tointeger( L, index ) ]->renderTexture;
 	}
 	else if ( lua_istable( L, index ) ) {
 		int t = index, i = 0;
@@ -2079,6 +2135,114 @@ RenderTexture uluaGetRenderTexture( lua_State *L, int index ) {
 	}
 
 	return renderTexture;
+}
+
+Camera2D uluaGetCamera2D( lua_State *L, int index ) {
+	Camera2D camera = { 0 };
+
+	if ( lua_isnumber( L, index ) ) {
+		camera = *state->camera2Ds[ lua_tointeger( L, index ) ];
+	}
+	else if ( lua_istable( L, index ) ) {
+		int t = index, i = 0;
+    	lua_pushnil( L );
+
+		while ( lua_next( L, t ) != 0 ) {
+			if ( lua_isnumber( L, -2 ) ) {
+				switch ( i ) {
+					case 0:
+						camera.offset = uluaGetVector2Index( L, lua_gettop( L ) );
+						break;
+					case 1:
+						camera.target = uluaGetVector2Index( L, lua_gettop( L ) );
+						break;
+					case 2:
+						camera.rotation = lua_tonumber( L, -1 );
+						break;
+					case 3:
+						camera.zoom = lua_tonumber( L, -1 );
+						break;
+					default:
+						break;
+				}
+			}
+			else if ( lua_isstring( L, -2 ) ) {
+				if ( strcmp( "offset", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					camera.offset = uluaGetVector2Index( L, lua_gettop( L ) );
+				}
+				else if ( strcmp( "target", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					camera.target = uluaGetVector2Index( L, lua_gettop( L ) );
+				}
+				else if ( strcmp( "rotation", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					camera.rotation = lua_tonumber( L, -1 );
+				}
+				else if ( strcmp( "zoom", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					camera.zoom = lua_tonumber( L, -1 );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+	}
+
+	return camera;
+}
+
+Camera3D uluaGetCamera3D( lua_State *L, int index ) {
+	Camera3D camera = { 0 };
+
+	if ( lua_isnumber( L, index ) ) {
+		camera = *state->camera3Ds[ lua_tointeger( L, index ) ];
+	}
+	else if ( lua_istable( L, index ) ) {
+		int t = index, i = 0;
+    	lua_pushnil( L );
+
+		while ( lua_next( L, t ) != 0 ) {
+			if ( lua_isnumber( L, -2 ) ) {
+				switch ( i ) {
+					case 0:
+						camera.position = uluaGetVector3Index( L, lua_gettop( L ) );
+						break;
+					case 1:
+						camera.target = uluaGetVector3Index( L, lua_gettop( L ) );
+						break;
+					case 2:
+						camera.up = uluaGetVector3Index( L, lua_gettop( L ) );
+						break;
+					case 3:
+						camera.fovy = lua_tonumber( L, -1 );
+						break;
+					case 4:
+						camera.projection = lua_tointeger( L, -1 );
+						break;
+					default:
+						break;
+				}
+			}
+			else if ( lua_isstring( L, -2 ) ) {
+				if ( strcmp( "position", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					camera.position = uluaGetVector3Index( L, lua_gettop( L ) );
+				}
+				else if ( strcmp( "target", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					camera.target = uluaGetVector3Index( L, lua_gettop( L ) );
+				}
+				else if ( strcmp( "up", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					camera.up = uluaGetVector3Index( L, lua_gettop( L ) );
+				}
+				else if ( strcmp( "fovy", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					camera.fovy = lua_tonumber( L, -1 );
+				}
+				else if ( strcmp( "projection", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					camera.projection = lua_tointeger( L, -1 );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+	}
+
+	return camera;
 }
 
 /* Push types. */

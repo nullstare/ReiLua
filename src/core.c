@@ -49,26 +49,6 @@ static void checkShaderRealloc( int i ) {
 	}
 }
 
-bool validCamera2D( size_t id ) {
-	if ( id < 0 || state->camera2DCount < id || state->camera2Ds[ id ] == NULL ) {
-		TraceLog( LOG_WARNING, "%s %d", "Invalid camera2D", id );
-		return false;
-	}
-	else {
-		return true;
-	}
-}
-
-bool validCamera3D( size_t id ) {
-	if ( id < 0 || state->camera3DCount < id || state->camera3Ds[ id ] == NULL ) {
-		TraceLog( LOG_WARNING, "%s %d", "Invalid camera3D", id );
-		return false;
-	}
-	else {
-		return true;
-	}
-}
-
 bool validShader( size_t id ) {
 	if ( id < 0 || state->shaderCount < id || state->shaders[ id ] == NULL ) {
 		TraceLog( LOG_WARNING, "%s %d", "Invalid shader", id );
@@ -1238,7 +1218,7 @@ Set shader uniform value for texture ( sampler2d )
 - Success return true
 */
 int lcoreSetShaderValueTexture( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !isValidTexture( L, 3 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !isValidTexture( L, 3, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetShaderValueTexture( Shader shader, int locIndex, Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -2523,7 +2503,7 @@ int lcoreCreateCamera2D( lua_State *L ) {
 }
 
 /*
-> success = RL.UnloadCamera2D( int Camera2D )
+> success = RL.UnloadCamera2D( camera2D camera )
 
 Unload Camera2D
 
@@ -2531,17 +2511,12 @@ Unload Camera2D
 - Success return true
 */
 int lcoreUnloadCamera2D( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera2D( L, 1, false ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UnloadCamera2D( int Camera2D )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
-
-	if ( !validCamera2D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	free( state->camera2Ds[ cameraId ] );
 	state->camera2Ds[ cameraId ] = NULL;
@@ -2559,19 +2534,14 @@ Begin 2D mode with custom camera ( 2D )
 - Success return true
 */
 int lcoreBeginMode2D( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera2D( L, 1, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.BeginMode2D( camera2D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera2D camera = uluaGetCamera2D( L, 1 );
 
-	if ( !validCamera2D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-
-	BeginMode2D( *state->camera2Ds[ cameraId ] );
+	BeginMode2D( camera );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2597,18 +2567,13 @@ Set camera target ( rotation and zoom origin )
 - Success return true
 */
 int lcoreSetCamera2DTarget( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
+	if ( !isValidCamera2D( L, 1, false ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera2DTarget( camera2D camera, Vector2 target )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
 	Vector2 target = uluaGetVector2Index( L, 2 );
-
-	if ( !validCamera2D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	state->camera2Ds[ cameraId ]->target = target;
 	lua_pushboolean( L, true );
@@ -2625,18 +2590,13 @@ Set camera offset ( displacement from target )
 - Success return true
 */
 int lcoreSetCamera2DOffset( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
+	if ( !isValidCamera2D( L, 1, false ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera2DOffset( camera2D camera, Vector2 offset )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
 	Vector2 offset = uluaGetVector2Index( L, 2 );
-
-	if ( !validCamera2D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	state->camera2Ds[ cameraId ]->offset = offset;
 	lua_pushboolean( L, true );
@@ -2653,18 +2613,13 @@ Set camera rotation in degrees
 - Success return true
 */
 int lcoreSetCamera2DRotation( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !isValidCamera2D( L, 1, false ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera2DRotation( camera2D camera, float rotation )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
 	float rotation = lua_tonumber( L, 2 );
-
-	if ( !validCamera2D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	state->camera2Ds[ cameraId ]->rotation = rotation;
 	lua_pushboolean( L, true );
@@ -2681,18 +2636,13 @@ Set camera zoom ( scaling ), should be 1.0f by default
 - Success return true
 */
 int lcoreSetCamera2DZoom( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !isValidCamera2D( L, 1, false ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera2DZoom( camera2D camera, float zoom )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
 	float zoom = lua_tonumber( L, 2 );
-
-	if ( !validCamera2D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	state->camera2Ds[ cameraId ]->zoom = zoom;
 	lua_pushboolean( L, true );
@@ -2709,18 +2659,12 @@ Get camera2D target
 - Success return Vector2
 */
 int lcoreGetCamera2DTarget( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera2D( L, 1, false ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera2DTarget( camera2D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
-
-	if ( !validCamera2D( cameraId ) ) {
-		lua_pushnil( L );
-		return 1;
-	}
-
 	uluaPushVector2( L, state->camera2Ds[ cameraId ]->target );
 
 	return 1;
@@ -2735,18 +2679,12 @@ Get camera2D offset
 - Success return Vector2
 */
 int lcoreGetCamera2DOffset( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera2D( L, 1, false ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera2DOffset( camera2D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
-
-	if ( !validCamera2D( cameraId ) ) {
-		lua_pushnil( L );
-		return 1;
-	}
-
 	uluaPushVector2( L, state->camera2Ds[ cameraId ]->offset );
 
 	return 1;
@@ -2761,17 +2699,12 @@ Get camera2D rotation
 - Success return float
 */
 int lcoreGetCamera2DRotation( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera2D( L, 1, false ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera2DRotation( camera2D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
-
-	if ( !validCamera2D( cameraId ) ) {
-		lua_pushnil( L );
-		return 1;
-	}
 	lua_pushnumber( L, state->camera2Ds[ cameraId ]->rotation );
 
 	return 1;
@@ -2786,17 +2719,12 @@ Get camera2D zoom
 - Success return float
 */
 int lcoreGetCamera2DZoom( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera2D( L, 1, false ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera2DZoom( camera2D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
-
-	if ( !validCamera2D( cameraId ) ) {
-		lua_pushnil( L );
-		return 1;
-	}
 	lua_pushnumber( L, state->camera2Ds[ cameraId ]->zoom );
 
 	return 1;
@@ -2843,17 +2771,12 @@ Unload Camera3D
 - Success return true
 */
 int lcoreUnloadCamera3D( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UnloadCamera3D( int Camera3D )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	free( state->camera3Ds[ cameraId ] );
 	state->camera3Ds[ cameraId ] = NULL;
@@ -2871,19 +2794,14 @@ Begin 3D mode with custom camera ( 3D )
 - Success return true
 */
 int lcoreBeginMode3D( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera3D( L, 1, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.BeginMode3D( camera3D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera3D camera = uluaGetCamera3D( L, 1 );
 
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-
-	BeginMode3D( *state->camera3Ds[ cameraId ] );
+	BeginMode3D( camera );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2909,18 +2827,13 @@ Set camera position ( Remember to call "RL.UpdateCamera3D()" to apply changes )
 - Success return true
 */
 int lcoreSetCamera3DPosition( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera3DPosition( camera3D camera, Vector3 position )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
 	Vector3 pos = uluaGetVector3Index( L, 2 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	state->camera3Ds[ cameraId ]->position = pos;
 	lua_pushboolean( L, true );
@@ -2937,18 +2850,13 @@ Set camera target it looks-at
 - Success return true
 */
 int lcoreSetCamera3DTarget( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera3DTarget( camera3D camera, Vector3 target )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
 	Vector3 target = uluaGetVector3Index( L, 2 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	state->camera3Ds[ cameraId ]->target = target;
 	lua_pushboolean( L, true );
@@ -2965,18 +2873,13 @@ Set camera up vector ( Rotation over it's axis )
 - Success return true
 */
 int lcoreSetCamera3DUp( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) || !lua_istable( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera3DUp( camera3D camera, Vector3 up )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
 	Vector3 up = uluaGetVector3Index( L, 2 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	state->camera3Ds[ cameraId ]->up = up;
 	lua_pushboolean( L, true );
@@ -2993,18 +2896,13 @@ Set camera field-of-view apperture in Y ( degrees ) in perspective, used as near
 - Success return true
 */
 int lcoreSetCamera3DFovy( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera3DFovy( camera3D camera, float fovy )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
 	float fovy = lua_tonumber( L, 2 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	state->camera3Ds[ cameraId ]->fovy = fovy;
 	lua_pushboolean( L, true );
@@ -3021,18 +2919,13 @@ Set camera projection mode ( CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC )
 - Success return true
 */
 int lcoreSetCamera3DProjection( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetCamera3DProjection( camera3D camera, int projection )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
 	int projection = lua_tointeger( L, 2 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	state->camera3Ds[ cameraId ]->projection = projection;
 	lua_pushboolean( L, true );
@@ -3049,17 +2942,12 @@ Get camera position
 - Success return Vector3
 */
 int lcoreGetCamera3DPosition( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DPosition( camera3D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushnil( L );
-		return 1;
-	}
 
 	uluaPushVector3( L, state->camera3Ds[ cameraId ]->position );
 
@@ -3075,17 +2963,12 @@ Get camera target it looks-at
 - Success return Vector3
 */
 int lcoreGetCamera3DTarget( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DTarget( camera3D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushnil( L );
-		return 1;
-	}
 
 	uluaPushVector3( L, state->camera3Ds[ cameraId ]->target );
 
@@ -3101,17 +2984,12 @@ Get camera up vector ( Rotation over it's axis )
 - Success return Vector3
 */
 int lcoreGetCamera3DUp( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DUp( camera3D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushnil( L );
-		return 1;
-	}
 
 	uluaPushVector3( L, state->camera3Ds[ cameraId ]->up );
 
@@ -3127,17 +3005,12 @@ Get camera field-of-view apperture in Y ( degrees ) in perspective, used as near
 - Success return float
 */
 int lcoreGetCamera3DFovy( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DFovy( camera3D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushnil( L );
-		return 1;
-	}
 
 	lua_pushnumber( L, state->camera3Ds[ cameraId ]->fovy );
 
@@ -3153,17 +3026,12 @@ Get camera projection mode
 - Success return int
 */
 int lcoreGetCamera3DProjection( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DProjection( camera3D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushnil( L );
-		return 1;
-	}
 
 	lua_pushinteger( L, state->camera3Ds[ cameraId ]->projection );
 
@@ -3179,18 +3047,14 @@ Returns the cameras forward vector ( normalized )
 - Success return Vector3
 */
 int lcoreGetCamera3DForward( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera3D( L, 1, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DForward( camera3D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera3D camera = uluaGetCamera3D( L, 1 );
 
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushnil( L );
-		return 1;
-	}
-	uluaPushVector3( L, GetCameraForward( state->camera3Ds[ cameraId ] ) );
+	uluaPushVector3( L, GetCameraForward( &camera ) );
 
 	return 1;
 }
@@ -3205,24 +3069,20 @@ Note: The up vector might not be perpendicular to the forward vector
 - Success return Vector3
 */
 int lcoreGetCamera3DUpNormalized( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera3D( L, 1, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DUpNormalized( camera3D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
 
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushnil( L );
-		return 1;
-	}
 	uluaPushVector3( L, GetCameraUp( state->camera3Ds[ cameraId ] ) );
 
 	return 1;
 }
 
 /*
-> forward = RL.GetCamera3DRight( camera3D camera )
+> right = RL.GetCamera3DRight( camera3D camera )
 
 Returns the cameras right vector ( normalized )
 
@@ -3230,17 +3090,13 @@ Returns the cameras right vector ( normalized )
 - Success return Vector3
 */
 int lcoreGetCamera3DRight( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera3D( L, 1, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DRight( camera3D camera )" );
 		lua_pushnil( L );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
 
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushnil( L );
-		return 1;
-	}
 	uluaPushVector3( L, GetCameraRight( state->camera3Ds[ cameraId ] ) );
 
 	return 1;
@@ -3255,7 +3111,7 @@ Moves the camera in it's forward direction
 - Success return true
 */
 int lcoreCamera3DMoveForward( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DRight( camera3D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -3263,11 +3119,6 @@ int lcoreCamera3DMoveForward( lua_State *L ) {
 	size_t cameraId = lua_tointeger( L, 1 );
 	float distance = lua_tonumber( L, 2 );
 	bool moveInWorldPlane = lua_toboolean( L, 3 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	CameraMoveForward( state->camera3Ds[ cameraId ], distance, moveInWorldPlane );
 	lua_pushboolean( L, true );
@@ -3284,18 +3135,13 @@ Moves the camera in it's up direction
 - Success return true
 */
 int lcoreCamera3DMoveUp( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Camera3DMoveUp( camera3D camera, float distance )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
 	float distance = lua_tonumber( L, 2 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	CameraMoveUp( state->camera3Ds[ cameraId ], distance );
 	lua_pushboolean( L, true );
@@ -3312,7 +3158,7 @@ Moves the camera target in it's current right direction
 - Success return true
 */
 int lcoreCamera3DMoveRight( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Camera3DMoveRight( camera3D camera, float distance, bool moveInWorldPlane )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -3320,11 +3166,6 @@ int lcoreCamera3DMoveRight( lua_State *L ) {
 	size_t cameraId = lua_tointeger( L, 1 );
 	float distance = lua_tonumber( L, 2 );
 	bool moveInWorldPlane = lua_toboolean( L, 3 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	CameraMoveRight( state->camera3Ds[ cameraId ], distance, moveInWorldPlane );
 	lua_pushboolean( L, true );
@@ -3341,18 +3182,13 @@ Moves the camera position closer/farther to/from the camera target
 - Success return true
 */
 int lcoreCamera3DMoveToTarget( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Camera3DMoveToTarget( camera3D camera, float delta )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
 	float delta = lua_tonumber( L, 2 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	CameraMoveToTarget( state->camera3Ds[ cameraId ], delta );
 	lua_pushboolean( L, true );
@@ -3372,7 +3208,7 @@ Note: angle must be provided in radians
 - Success return true
 */
 int lcoreCamera3DYaw( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Camera3DYaw( camera3D camera, float angle, bool rotateAroundTarget )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -3380,11 +3216,6 @@ int lcoreCamera3DYaw( lua_State *L ) {
 	size_t cameraId = lua_tointeger( L, 1 );
 	float delta = lua_tonumber( L, 2 );
 	bool rotateAroundTarget = lua_toboolean( L, 3 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	CameraYaw( state->camera3Ds[ cameraId ], delta, rotateAroundTarget );
 	lua_pushboolean( L, true );
@@ -3405,7 +3236,7 @@ NOTE: angle must be provided in radians
 - Success return true
 */
 int lcoreCamera3DPitch( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 )
+	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 )
 	|| !lua_isboolean( L, 4 ) || !lua_isboolean( L, 5 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Camera3DYaw( camera3D camera, float angle, bool rotateAroundTarget )" );
 		lua_pushboolean( L, false );
@@ -3416,11 +3247,6 @@ int lcoreCamera3DPitch( lua_State *L ) {
 	bool lockView = lua_toboolean( L, 3 );
 	bool rotateAroundTarget = lua_toboolean( L, 4 );
 	bool rotateUp = lua_toboolean( L, 5 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	CameraPitch( state->camera3Ds[ cameraId ], delta, lockView, rotateAroundTarget, rotateUp );
 	lua_pushboolean( L, true );
@@ -3439,18 +3265,13 @@ Note: angle must be provided in radians
 - Success return true
 */
 int lcoreCamera3DRoll( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Camera3DRoll( camera3D camera, float angle )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
 	float angle = lua_tonumber( L, 2 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	CameraRoll( state->camera3Ds[ cameraId ], angle );
 	lua_pushboolean( L, true );
@@ -3467,18 +3288,14 @@ Returns the camera view matrix
 - Success return Matrix
 */
 int lcoreGetCamera3DViewMatrix( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera3D( L, 1, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DViewMatrix( camera3D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera3D camera = uluaGetCamera3D( L, 1 );
 
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	uluaPushMatrix( L, GetCameraViewMatrix( state->camera3Ds[ cameraId ] ) );
+	uluaPushMatrix( L, GetCameraViewMatrix( &camera ) );
 
 	return 1;
 }
@@ -3492,19 +3309,15 @@ Returns the camera projection matrix
 - Success return Matrix
 */
 int lcoreGetCamera3DProjectionMatrix( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !isValidCamera3D( L, 1, true ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCamera3DProjectionMatrix( camera3D camera, float aspect )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera3D camera = uluaGetCamera3D( L, 1 );
 	float aspect = lua_tonumber( L, 2 );
 
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	uluaPushMatrix( L, GetCameraProjectionMatrix( state->camera3Ds[ cameraId ], aspect ) );
+	uluaPushMatrix( L, GetCameraProjectionMatrix( &camera, aspect ) );
 
 	return 1;
 }
@@ -3518,18 +3331,13 @@ Update camera position for selected mode
 - Success return true
 */
 int lcoreUpdateCamera3D( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UpdateCamera3D( camera3D camera, int mode )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
 	int mode = lua_tointeger( L, 2 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	UpdateCamera( state->camera3Ds[ cameraId ], mode );
 	lua_pushboolean( L, true );
@@ -3546,7 +3354,7 @@ Update camera movement, movement/rotation values should be provided by user
 - Success return true
 */
 int lcoreUpdateCamera3DPro( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_isnumber( L, 4 ) ) {
+	if ( !isValidCamera3D( L, 1, false ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_isnumber( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UpdateCamera3DPro( camera3D camera, Vector3 movement, Vector3 rotation, float zoom )" );
 		lua_pushboolean( L, false );
 		return 1;
@@ -3555,11 +3363,6 @@ int lcoreUpdateCamera3DPro( lua_State *L ) {
 	Vector3 movement = uluaGetVector3Index( L, 2 );
 	Vector3 rotation = uluaGetVector3Index( L, 3 );
 	float zoom = lua_tointeger( L, 4 );
-
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
 
 	UpdateCameraPro( state->camera3Ds[ cameraId ], movement, rotation, zoom );
 	lua_pushboolean( L, true );
@@ -3580,19 +3383,15 @@ Get a ray trace from mouse position
 - Success return Ray
 */
 int lcoreGetMouseRay( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !lua_istable( L, 1 ) || !isValidCamera3D( L, 2, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetMouseRay( Vector2 mousePosition, Camera3D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	Vector2 mousePosition = uluaGetVector2Index( L, 1 );
-	size_t cameraId = lua_tointeger( L, 2 );
+	Camera3D camera = uluaGetCamera3D( L, 2 );
 
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	uluaPushRay( L, GetMouseRay( mousePosition, *state->camera3Ds[ cameraId ] ) );
+	uluaPushRay( L, GetMouseRay( mousePosition, camera ) );
 
 	return 1;
 }
@@ -3606,18 +3405,14 @@ Get camera transform matrix ( view matrix )
 - Success return Matrix
 */
 int lcoreGetCameraMatrix( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera3D( L, 1, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCameraMatrix( Camera3D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera3D camera = uluaGetCamera3D( L, 1 );
 
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	uluaPushMatrix( L, GetCameraMatrix( *state->camera3Ds[ cameraId ] ) );
+	uluaPushMatrix( L, GetCameraMatrix( camera ) );
 
 	return 1;
 }
@@ -3631,18 +3426,13 @@ Get camera 2d transform matrix
 - Success return Matrix
 */
 int lcoreGetCameraMatrix2D( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
+	if ( !isValidCamera2D( L, 1, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCameraMatrix2D( Camera2D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t cameraId = lua_tointeger( L, 1 );
-
-	if ( !validCamera2D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	uluaPushMatrix( L, GetCameraMatrix2D( *state->camera2Ds[ cameraId ] ) );
+	Camera2D camera = uluaGetCamera2D( L, 1 );
+	uluaPushMatrix( L, GetCameraMatrix2D( camera ) );
 
 	return 1;
 }
@@ -3656,19 +3446,15 @@ Get the screen space position for a 3d world space position
 - Success return Vector2
 */
 int lcoreGetWorldToScreen( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !lua_istable( L, 1 ) || !isValidCamera3D( L, 2, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetWorldToScreen( Vector3 position, Camera3D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	Vector3 position = uluaGetVector3Index( L, 1 );
-	size_t cameraId = lua_tointeger( L, 2 );
+	Camera3D camera = uluaGetCamera3D( L, 2 );
 
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	uluaPushVector2( L, GetWorldToScreen( position, *state->camera3Ds[ cameraId ] ) );
+	uluaPushVector2( L, GetWorldToScreen( position, camera ) );
 
 	return 1;
 }
@@ -3682,20 +3468,16 @@ Get size position for a 3d world space position
 - Success return Vector2
 */
 int lcoreGetWorldToScreenEx( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) ) {
+	if ( !lua_istable( L, 1 ) || !isValidCamera3D( L, 2, true ) || !lua_istable( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetWorldToScreenEx( Vector3 position, Camera3D camera, Vector2 size )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	Vector3 position = uluaGetVector3Index( L, 1 );
-	size_t cameraId = lua_tointeger( L, 2 );
+	Camera3D camera = uluaGetCamera3D( L, 2 );
 	Vector2 size = uluaGetVector2Index( L, 3 );
 
-	if ( !validCamera3D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	uluaPushVector2( L, GetWorldToScreenEx( position, *state->camera3Ds[ cameraId ], size.x, size.y ) );
+	uluaPushVector2( L, GetWorldToScreenEx( position, camera, size.x, size.y ) );
 
 	return 1;
 }
@@ -3709,19 +3491,15 @@ Get the screen space position for a 2d camera world space position
 - Success return Vector2
 */
 int lcoreGetWorldToScreen2D( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !lua_istable( L, 1 ) || !isValidCamera2D( L, 2, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetWorldToScreen2D( Vector2 position, Camera2D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	Vector2 position = uluaGetVector2Index( L, 1 );
-	size_t cameraId = lua_tointeger( L, 2 );
+	Camera2D camera = uluaGetCamera2D( L, 1 );
 
-	if ( !validCamera2D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	uluaPushVector2( L, GetWorldToScreen2D( position, *state->camera2Ds[ cameraId ] ) );
+	uluaPushVector2( L, GetWorldToScreen2D( position, camera ) );
 
 	return 1;
 }
@@ -3735,19 +3513,15 @@ Get the world space position for a 2d camera screen space position
 - Success return Vector2
 */
 int lcoreGetScreenToWorld2D( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !lua_istable( L, 1 ) || !isValidCamera2D( L, 2, true ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetScreenToWorld2D( Vector2 position, Camera2D camera )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	Vector2 position = uluaGetVector2Index( L, 1 );
-	size_t cameraId = lua_tointeger( L, 2 );
+	Camera2D camera = uluaGetCamera2D( L, 1 );
 
-	if ( !validCamera2D( cameraId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	uluaPushVector2( L, GetScreenToWorld2D( position, *state->camera2Ds[ cameraId ] ) );
+	uluaPushVector2( L, GetScreenToWorld2D( position, camera ) );
 
 	return 1;
 }

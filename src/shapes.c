@@ -18,7 +18,7 @@ defining a font char white rectangle would allow drawing everything in a single 
 - Success return true
 */
 int lshapesSetShapesTexture( lua_State *L ) {
-	if ( !isValidTexture( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !isValidTexture( L, 1, true ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetShapesTexture( Texture2D texture, Rectangle source )" );
 		lua_pushboolean( L, false );
 		return 1;

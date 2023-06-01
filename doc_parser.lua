@@ -194,8 +194,10 @@ apiFile:write( "\n> RenderTexture = RenderTextureId or { id, texture, depth }\n\
 int id. RenderTexture type, for texture rendering\n\n---\n" )
 apiFile:write( "\n> Font = FontId\n\
 int id. Font type, includes texture and chars data\n\n---\n" )
-apiFile:write( "\n> Camera = CameraId\n\
-int id. Defines 3d camera position/orientation\n\n---\n" )
+apiFile:write( "\n> Camera2D = CameraId or { offset, target, rotation, zoom }\n\
+int id. Defines 2D camera position/orientation\n\n---\n" )
+apiFile:write( "\n> Camera = CameraId or { position, target, up, fovy, projection }\n\
+int id. Defines 3D camera3D position/orientation\n\n---\n" )
 apiFile:write( "\n> Mesh = MeshId\n\
 int id. Vertex data defining a mesh\n\
 ```\

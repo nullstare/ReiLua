@@ -18,6 +18,7 @@ KEY CHANGES:
 	- ADDED: rlgl Framebuffer state functions
 	- ADDED: rlgl Textures management functions
 	- ADDED: Texture and RenderTexture can be given as tables
+	- ADDED: Camera2D and Camera3D can be given as tables
 
 Detailed changes:
 	- FIXED: uluaGetRay was looking for integers instead of tables
@@ -79,7 +80,6 @@ Detailed changes:
 	- ADDED: More rlgl General render state functions.
 	- ADDED: GetMaterialTexture, GetMaterialColor, GetMaterialValue and GetMaterialShader
 	- ADDED: SetMaterialParams and GetMaterialParams
-	- ADDED: TextureReference functions for RenderTexture texture or depth texture
 	- ADDED: GetTextureId
 
 ------------------------------------------------------------------------

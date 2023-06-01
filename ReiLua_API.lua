@@ -1377,9 +1377,9 @@ function RL.CreateCamera2D() end
 ---Unload Camera2D
 ---- Failure return false
 ---- Success return true
----@param Camera2D integer
+---@param camera any
 ---@return any success 
-function RL.UnloadCamera2D( Camera2D ) end
+function RL.UnloadCamera2D( camera ) end
 
 ---Begin 2D mode with custom camera ( 2D )
 ---- Failure return false
@@ -1571,7 +1571,7 @@ function RL.GetCamera3DUpNormalized( camera ) end
 ---- Failure return nil
 ---- Success return Vector3
 ---@param camera any
----@return any forward 
+---@return any right 
 function RL.GetCamera3DRight( camera ) end
 
 ---Moves the camera in it's forward direction

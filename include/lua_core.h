@@ -8,8 +8,10 @@ void luaCallDraw();
 void luaCallExit();
 void luaRegister();
 /* Type validators. */
-bool isValidTexture( lua_State *L, int index );
-bool isValidRenderTexture( lua_State *L, int index );
+bool isValidTexture( lua_State *L, int index, bool allowTable );
+bool isValidRenderTexture( lua_State *L, int index, bool allowTable );
+bool isValidCamera2D( lua_State *L, int index, bool allowTable );
+bool isValidCamera3D( lua_State *L, int index, bool allowTable );
 /* Lua Util functions. */
 Color uluaGetColor( lua_State *L );
 Color uluaGetColorIndex( lua_State *L, int index );
@@ -33,6 +35,8 @@ NPatchInfo uluaGetNPatchInfo( lua_State *L );
 NPatchInfo uluaGetNPatchInfoIndex( lua_State *L, int index );
 Texture uluaGetTexture( lua_State *L, int index );
 RenderTexture uluaGetRenderTexture( lua_State *L, int index );
+Camera2D uluaGetCamera2D( lua_State *L, int index );
+Camera3D uluaGetCamera3D( lua_State *L, int index );
 /* Push types. */
 void uluaPushColor( lua_State *L, Color color );
 void uluaPushVector2( lua_State *L, Vector2 vector );

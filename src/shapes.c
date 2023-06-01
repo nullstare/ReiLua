@@ -18,19 +18,15 @@ defining a font char white rectangle would allow drawing everything in a single 
 - Success return true
 */
 int lshapesSetShapesTexture( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+	if ( !isValidTexture( L, 1 ) || !lua_isnumber( L, 2 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetShapesTexture( Texture2D texture, Rectangle source )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	size_t texId = lua_tointeger( L, 1 );
+	Texture texture = uluaGetTexture( L, 1 );
 	Rectangle source = uluaGetRectangleIndex( L, 2 );
 
-	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	SetShapesTexture( *texturesGetSourceTexture( texId ), source );
+	SetShapesTexture( texture, source );
 	lua_pushboolean( L, true );
 
 	return 1;

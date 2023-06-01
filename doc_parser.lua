@@ -188,9 +188,9 @@ apiFile:write( "\n> Rectangle = { 0.0, 0.0, 1.0, 1.0 } or { x = 0.0, y = 0.0, wi
 { x, y, width ,height }. Rectangle type\n\n---\n" )
 apiFile:write( "\n> Image = ImageId\n\
 int id. Image type (multiple pixel formats supported). NOTE: Data stored in CPU memory (RAM)\n\n---\n" )
-apiFile:write( "\n> Texture = TextureId\n\
+apiFile:write( "\n> Texture = TextureId or { id, width, height, mipmaps, format }\n\
 int id. Texture type (multiple internal formats supported). NOTE: Data stored in GPU memory (VRAM)\n\n---\n" )
-apiFile:write( "\n> RenderTexture = RenderTextureId\n\
+apiFile:write( "\n> RenderTexture = RenderTextureId or { id, texture, depth }\n\
 int id. RenderTexture type, for texture rendering\n\n---\n" )
 apiFile:write( "\n> Font = FontId\n\
 int id. Font type, includes texture and chars data\n\n---\n" )

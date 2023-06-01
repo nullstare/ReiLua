@@ -2,35 +2,39 @@
 Release:	ReiLua version 0.5.0		Using Raylib 4.5
 ------------------------------------------------------------------------
 KEY CHANGES:
-	- CHANGED: All ReiLua global variables and functions are now stored in global RL table.
-	- CHANGED: All examples are now changed to use new RL table method.
-	- ADDED: doc_parser creates also ReiLua_API.lua that can be used in projects with Lua Language Server.
-	- CHANGED: Switched to Raylib vertion 4.5. Removed some functions and added others. Main changes to camera3D.
-	- REVISED: How Lua argumets are handled. Now uluaGet*Index functions can take stack index(positive only).
-	Also using positive stack indexing.
-	- ADDED: Camera3D Lua lib.
-	- ADDED: Raygui wrapper lib.
-	- CHANGED: Can now have multiple Music objects like other Raylib objects instead of just one.
-	- CHANGED: Texture now can be either Texture or RenderTexture. No need to change texture source anymore.
-	- ADDED: Material getter functions.
-	- ADDED: Light property functions.
+	- CHANGED: All ReiLua global variables and functions are now stored in global RL table
+	- CHANGED: All examples are now changed to use new RL table method
+	- ADDED: doc_parser creates also ReiLua_API.lua that can be used in projects with Lua Language Server
+	- CHANGED: Switched to Raylib vertion 4.5. Removed some functions and added others. Main changes to camera3D
+	- REVISED: How Lua argumets are handled. Now uluaGet*Index functions can take stack index(positive only)
+	Also using positive stack indexing
+	- ADDED: Camera3D Lua lib
+	- ADDED: Raygui wrapper lib
+	- CHANGED: Can now have multiple Music objects like other Raylib objects instead of just one
+	- CHANGED: Texture now can be either Texture or RenderTexture. No need to change texture source anymore
+	- ADDED: Material getter functions
+	- ADDED: Light property functions
+	- ADDED: rlgl Framebuffer management (fbo) functions
+	- ADDED: rlgl Framebuffer state functions
+	- ADDED: rlgl Textures management functions
+	- ADDED: Texture and RenderTexture can be given as tables
 
 Detailed changes:
-	- FIXED: uluaGetRay was looking for integers instead of tables.
-	- REMOVED: SetCameraMode.
-	- REMOVED: SetCameraPanControl.
-	- REMOVED: SetCameraAltControl.
-	- REMOVED: SetCameraSmoothZoomControl.
-	- REMOVED: SetCameraMoveControls.
-	- REMOVED: DrawTextureTiled.
-	- REMOVED: DrawTexturePoly.
-	- REMOVED: DrawCubeTexture.
-	- REMOVED: PlaySoundMulti.
-	- REMOVED: StopSoundMulti.
-	- REMOVED: GetSoundsPlaying.
-	- CHANGED: UpdateCamera3D now takes int mode parameter. Same as UpdateCamera in raylib.
-	- ADDED: UpdateCamera3DPro. Same as UpdateCameraPro in raylib.
-	- ADDED: BLEND_CUSTOM_SEPARATE.
+	- FIXED: uluaGetRay was looking for integers instead of tables
+	- REMOVED: SetCameraMode
+	- REMOVED: SetCameraPanControl
+	- REMOVED: SetCameraAltControl
+	- REMOVED: SetCameraSmoothZoomControl
+	- REMOVED: SetCameraMoveControls
+	- REMOVED: DrawTextureTiled
+	- REMOVED: DrawTexturePoly
+	- REMOVED: DrawCubeTexture
+	- REMOVED: PlaySoundMulti
+	- REMOVED: StopSoundMulti
+	- REMOVED: GetSoundsPlaying
+	- CHANGED: UpdateCamera3D now takes int mode parameter. Same as UpdateCamera in raylib
+	- ADDED: UpdateCamera3DPro. Same as UpdateCameraPro in raylib
+	- ADDED: BLEND_CUSTOM_SEPARATE
 	- ADDED: Vector2LineAngle
 	- ADDED: CheckCollisionPointPoly
 	- ADDED: ColorTint
@@ -66,8 +70,8 @@ Detailed changes:
 	- REMOVED: GetTextureSource
 	- REMOVED: UnloadRenderTexture
 	- ADDED: GetTextureType
-	- FIXED: Vector3RotateByAxisAngle was not connected.
-	- FIXED: uluaGetBoundingBoxIndex was looking for numbers instead of tables.
+	- FIXED: Vector3RotateByAxisAngle was not registered.
+	- FIXED: uluaGetBoundingBoxIndex was looking for numbers instead of tables
 	- ADDED: IsTextureReady
 	- FIXED: UnloadTexture did not set texture id to NULL.
 	- ADDED: DrawBillboardPro
@@ -75,37 +79,39 @@ Detailed changes:
 	- ADDED: More rlgl General render state functions.
 	- ADDED: GetMaterialTexture, GetMaterialColor, GetMaterialValue and GetMaterialShader
 	- ADDED: SetMaterialParams and GetMaterialParams
+	- ADDED: TextureReference functions for RenderTexture texture or depth texture
+	- ADDED: GetTextureId
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2
 ------------------------------------------------------------------------
 KEY CHANGES:
-	- ADDED: This changelog.
-	- ADDED: Lua interpreter mode.
-	- ADDED: Easings extra module.
-	- ADDED: exit function.
-	- FIXED: uluaGetNPatchInfo fix for RL_DrawTextureNPatch. Guess this was never tested and did not work at all >:E.
-	- ADDED: Flag option (-s) for doc_parser.lua for exporting module APIs to separate files.
-	- ADDED: ReiLuaGui.
-	- ADDED: ReiLuaGui Examples.
-	- ADDED: Draw Mesh Instanced Example.
-	- CHANGED: RL_DrawQuad3DTexture now takes vertex colors instead of just single color.
+	- ADDED: This changelog
+	- ADDED: Lua interpreter mode
+	- ADDED: Easings extra module
+	- ADDED: exit function
+	- FIXED: uluaGetNPatchInfo fix for RL_DrawTextureNPatch. Guess this was never tested and did not work at all >:E
+	- ADDED: Flag option (-s) for doc_parser.lua for exporting module APIs to separate files
+	- ADDED: ReiLuaGui
+	- ADDED: ReiLuaGui Examples
+	- ADDED: Draw Mesh Instanced Example
+	- CHANGED: RL_DrawQuad3DTexture now takes vertex colors instead of just single color
 
 Detailed changes:
-	- ADDED: Help argument.
-	- CHANGED: RL_rlSetLineWidth renamed to RL_rlglSetLineWidth.
-	- CHANGED: RL_rlGetLineWidth renamed to RL_rlglGetLineWidth.
-	- FIXED: DrawRectangleGradient V and H expecting wrong arguments.
-	- ADDED: RL_LoadDirectoryFilesEx.
-	- FIXED: RL_DrawLineBezierQuad was called RL_DrawLineBezier in API.
-	- ADDED: Color lib.
-	- FIXED: RL_DrawEllipse and RL_DrawEllipseLines expecting wrong arguments.
-	- ADDED: RL_IsPathFile.
-	- ADDED: RL_SetMaterialShader.
-	- ADDED: RL_GetFileLength.
-	- ADDED: RL_LoadFontEx.
-	- FIXED: RL_ImageAlphaClear expecting wrong arguments.
-	- ADDED: BLEND_ALPHA_PREMULTIPLY.
-	- CHANGED: RL_GetWindowSize renamed to RL_GetScreenSize.
-	- ADDED: RL_GetKeyName and RL_GetKeyScancode. GLFW Functions.
-	- ADDED: KEY_UNKNOWN.
+	- ADDED: Help argument
+	- CHANGED: RL_rlSetLineWidth renamed to RL_rlglSetLineWidth
+	- CHANGED: RL_rlGetLineWidth renamed to RL_rlglGetLineWidth
+	- FIXED: DrawRectangleGradient V and H expecting wrong arguments
+	- ADDED: RL_LoadDirectoryFilesEx
+	- FIXED: RL_DrawLineBezierQuad was called RL_DrawLineBezier in API
+	- ADDED: Color lib
+	- FIXED: RL_DrawEllipse and RL_DrawEllipseLines expecting wrong arguments
+	- ADDED: RL_IsPathFile
+	- ADDED: RL_SetMaterialShader
+	- ADDED: RL_GetFileLength
+	- ADDED: RL_LoadFontEx
+	- FIXED: RL_ImageAlphaClear expecting wrong arguments
+	- ADDED: BLEND_ALPHA_PREMULTIPLY
+	- CHANGED: RL_GetWindowSize renamed to RL_GetScreenSize
+	- ADDED: RL_GetKeyName and RL_GetKeyScancode. GLFW Functions
+	- ADDED: KEY_UNKNOWN

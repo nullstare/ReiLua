@@ -1,13 +1,12 @@
 #pragma once
 
 /* TEXTURE_TYPE_ALL is internal and used for accepting every type. */
-enum TEXTURE_TYPE { TEXTURE_TYPE_TEXTURE, TEXTURE_TYPE_RENDER_TEXTURE, TEXTURE_TYPE_ALL };
+enum TextureType { TEXTURE_TYPE_TEXTURE, TEXTURE_TYPE_RENDER_TEXTURE, TEXTURE_TYPE_ALL };
 
 /* Validators. */
 bool validImage( size_t id );
-bool validTexture( size_t id, int type );
-bool validRenderTexture( size_t id );
-bool validSourceTexture( size_t id );
+// bool validTexture( size_t id, int type );
+// bool validTexture( lua_State *L, int index );
 Texture2D* texturesGetSourceTexture( size_t id );
 void texturesFreeTexture( size_t id );
 /* Image Loading. */
@@ -91,6 +90,7 @@ int ltexturesGetTextureType( lua_State *L );
 int ltexturesGenTextureMipmaps( lua_State *L );
 int ltexturesSetTextureFilter( lua_State *L );
 int ltexturesSetTextureWrap( lua_State *L );
+int ltexturesGetTextureId( lua_State *L );
 int ltexturesGetTextureSize( lua_State *L );
 int ltexturesGetTextureMipmaps( lua_State *L );
 int ltexturesGetTextureFormat( lua_State *L );

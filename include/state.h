@@ -9,6 +9,7 @@ typedef struct {
 
 typedef struct {
 	int type;
+	int texRef; /* TextureReference. */
 	Texture texture;
 	RenderTexture renderTexture;
 } ReiTexture;

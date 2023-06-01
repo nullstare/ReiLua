@@ -1005,13 +1005,13 @@ int id. Image type (multiple pixel formats supported). NOTE: Data stored in CPU 
 
 ---
 
-> Texture = TextureId
+> Texture = TextureId or { id, width, height, mipmaps, format }
 
 int id. Texture type (multiple internal formats supported). NOTE: Data stored in GPU memory (VRAM)
 
 ---
 
-> RenderTexture = RenderTextureId
+> RenderTexture = RenderTextureId or { id, texture, depth }
 
 int id. RenderTexture type, for texture rendering
 
@@ -3571,7 +3571,7 @@ Load texture for rendering ( framebuffer )
 
 > success = RL.UnloadTexture( Texture2D texture )
 
-Unload texture from GPU memory ( VRAM )
+Unload texture from GPU memory ( VRAM ). NOTE! Must be texture id.
 
 - Failure return false
 - Success return true
@@ -3702,11 +3702,20 @@ Set texture wrapping mode ( TEXTURE_WRAP_REPEAT, TEXTURE_WRAP_CLAMP... )
 
 ---
 
+> id = RL.GetTextureId( Texture2D texture )
+
+Get texture OpenGL id
+
+- Failure return false
+- Success return int
+
+---
+
 > size = RL.GetTextureSize( Texture2D texture )
 
 Get texture size
 
-- Failure return nil
+- Failure return false
 - Success return Vector2
 
 ---
@@ -6610,6 +6619,34 @@ Get light enabled
 
 ---
 
+## RLGL - Framebuffer state
+
+---
+
+> success = RL.rlEnableFramebuffer( int id )
+
+Enable render texture (fbo)
+
+- Failure return false
+- Success return true
+
+---
+
+> RL.rlDisableFramebuffer()
+
+Disable render texture (fbo), return to default framebuffer
+
+---
+
+> success = RL.rlActiveDrawBuffers( int count )
+
+Activate multiple draw color buffers
+
+- Failure return false
+- Success return true
+
+---
+
 ## RLGL - General render state
 
 ---
@@ -6709,6 +6746,77 @@ Disable line aliasing
 Get current OpenGL version
 
 - Success return int
+
+---
+
+## RLGL - Textures management
+
+---
+
+> id = RL.rlLoadTexture( Vector2 size, int format, int mipmapCount )
+
+Load texture in GPU
+
+- Failure return -1
+- Success return int
+
+---
+
+> id = RL.rlLoadTextureDepth( Vector2 size, bool useRenderBuffer )
+
+Load depth texture/renderbuffer ( to be attached to fbo )
+
+- Failure return -1
+- Success return int
+
+---
+
+> success = RL.rlUnloadTexture( int id )
+
+Unload texture from GPU memory
+
+- Failure return false
+- Success return true
+
+---
+
+## RLGL - Framebuffer management (fbo)
+
+---
+
+> fboId = RL.rlLoadFramebuffer( Vector2 size )
+
+Load an empty framebuffer
+
+- Failure return -1
+- Success return int
+
+---
+
+> success = RL.rlFramebufferAttach( int fboId, int texId, int attachType, int texType, int mipLevel )
+
+Attach texture/renderbuffer to a framebuffer
+
+- Failure return false
+- Success return true
+
+---
+
+> isComplete = RL.rlFramebufferComplete( int id )
+
+Verify framebuffer is complete
+
+- Failure return nil
+- Success return bool
+
+---
+
+> success = RL.rlUnloadFramebuffer( int id )
+
+Delete framebuffer from GPU
+
+- Failure return nil
+- Success return bool
 
 ---
 

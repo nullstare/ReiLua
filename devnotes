@@ -20,8 +20,8 @@ Backlog {
 		* ImageDrawCircleLines
 		* ImageBlurGaussian
 	* Models
-		* LoadMaterials
-
+		* LoadMaterials (Load materials from model file)
+		* LoadMaterialsFromModel (Could then for example edit and set back to model)
 	* Needs Testing
 		* UpdateTexture
 		* UpdateTextureRec

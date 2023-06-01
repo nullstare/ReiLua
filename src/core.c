@@ -1238,20 +1238,20 @@ Set shader uniform value for texture ( sampler2d )
 - Success return true
 */
 int lcoreSetShaderValueTexture( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !isValidTexture( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetShaderValueTexture( Shader shader, int locIndex, Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t shaderId = lua_tointeger( L, 1 );
 	int locIndex = lua_tointeger( L, 2 );
-	size_t textureId = lua_tointeger( L, 3 );
+	Texture texture = uluaGetTexture( L, 3 );
 
-	if ( !validShader( shaderId ) || !validTexture( textureId, TEXTURE_TYPE_ALL ) ) {
+	if ( !validShader( shaderId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	SetShaderValueTexture( *state->shaders[ shaderId ], locIndex, *texturesGetSourceTexture( textureId ) );
+	SetShaderValueTexture( *state->shaders[ shaderId ], locIndex, texture );
 	lua_pushboolean( L, true );
 
 	return 1;

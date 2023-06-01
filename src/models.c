@@ -708,14 +708,13 @@ Draw 3D textured quad. ( Texture coordinates opengl style 0.0 - 1.0 ).
 - Success return true
 */
 int lmodelDrawQuad3DTexture( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
+	if ( !isValidTexture( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawQuad3DTexture( Texture2D texture, Vector3{} vertices, Vector2{} texCoords, Color{} colors )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	/* Texture. */
-	size_t texId = lua_tointeger( L, 1 );
+	Texture texture = uluaGetTexture( L, 1 );
 
 	/* Vertices. */
 	Vector3 vertices[4] = { 0 };
@@ -761,14 +760,9 @@ int lmodelDrawQuad3DTexture( lua_State *L ) {
 
 	//TODO Normals. maybe something like Vector3Normalize(Vector3CrossProduct(Vector3Subtract(vB, vA), Vector3Subtract(vC, vA)));
 
-	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-
 	/* Draw. */
 	rlCheckRenderBatchLimit( 4 );
-	rlSetTexture( texturesGetSourceTexture( texId )->id );
+	rlSetTexture( texture.id );
 
 	rlBegin( RL_QUADS );
 		for ( i = 0; i < 4; ++i ) {
@@ -1668,13 +1662,7 @@ int lmodelsCreateMaterial( lua_State *L ) {
 
 								while ( lua_next( L, t4 ) != 0 ) {
 									if ( strcmp( "texture", (char*)lua_tostring( L, -2 ) ) == 0 && lua_isnumber( L, -1 ) ) {
-										size_t texId = lua_tointeger( L, -1 );
-
-										if ( !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
-											lua_pushboolean( L, false );
-											return 1;
-										}
-										state->materials[i]->maps[map].texture = *texturesGetSourceTexture( texId );
+										state->materials[i]->maps[map].texture = uluaGetTexture( L, lua_gettop( L ) );
 									}
 									else if ( strcmp( "color", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
 										state->materials[i]->maps[map].color = uluaGetColor( L );
@@ -1755,20 +1743,16 @@ Set texture for a material map type ( MATERIAL_MAP_ALBEDO, MATERIAL_MAP_METALNES
 - Success return true
 */
 int lmodelsSetMaterialTexture( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !isValidTexture( L, 3 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetMaterialTexture( Material material, int mapType, Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t materialId = lua_tointeger( L, 1 );
 	int mapType = lua_tointeger( L, 2 );
-	size_t texId = lua_tointeger( L, 3 );
+	Texture texture = uluaGetTexture( L, 3 );
 
-	if ( !validMaterial( materialId ) || !validTexture( texId, TEXTURE_TYPE_ALL ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	SetMaterialTexture( state->materials[ materialId ], mapType, *texturesGetSourceTexture( texId ) );
+	SetMaterialTexture( state->materials[ materialId ], mapType, texture );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2197,7 +2181,6 @@ int lmodelsDrawModelEx( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	DrawModelEx( *state->models[ modelId ], position, rotationAxis, rotationAngle, scale, tint );
 	lua_pushboolean( L, true );
 
@@ -2266,14 +2249,13 @@ int lmodelsSetModelMeshMaterial( lua_State *L ) {
 		return 1;
 	}
 	size_t modelId = lua_tointeger( L, 1 );
-	int meshId = lua_tointeger( L, 2 );
-	int materialId = lua_tointeger( L, 3 );
+	size_t meshId = lua_tointeger( L, 2 );
+	size_t materialId = lua_tointeger( L, 3 );
 
-	if ( !validModel( modelId ) ) {
+	if ( !validModel( modelId ) || !validMesh( meshId ) || !validMaterial( materialId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	SetModelMeshMaterial( state->models[ modelId ], meshId, materialId );
 	lua_pushboolean( L, true );
 
@@ -2289,23 +2271,23 @@ Draw a billboard texture
 - Success return true
 */
 int lmodelsDrawBillboard( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 )
+	if ( !lua_isnumber( L, 1 ) || !isValidTexture( L, 2 ) || !lua_istable( L, 3 )
 	|| !lua_isnumber( L, 4 ) || !lua_istable( L, 5 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawBillboard( Camera camera, Texture2D texture, Vector3 position, float size, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
-	size_t texId = lua_tointeger( L, 2 );
+	Texture texture = uluaGetTexture( L, 2 );
 	Vector3 position = uluaGetVector3Index( L, 3 );
 	float size = lua_tonumber( L, 4 );
 	Color tint = uluaGetColorIndex( L, 5 );
 
-	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) || !validCamera3D( cameraId ) ) {
+	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	DrawBillboard( *state->camera3Ds[ cameraId ], *texturesGetSourceTexture( texId ), position, size, tint );
+	DrawBillboard( *state->camera3Ds[ cameraId ], texture, position, size, tint );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2320,25 +2302,25 @@ Draw a billboard texture defined by source
 - Success return true
 */
 int lmodelsDrawBillboardRec( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 )
+	if ( !lua_isnumber( L, 1 ) || !isValidTexture( L, 2 ) || !lua_istable( L, 3 )
 	|| !lua_istable( L, 4 ) || !lua_istable( L, 5 ) || !lua_istable( L, 6 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawBillboardRec( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
-	size_t texId = lua_tointeger( L, 2 );
+	Texture texture = uluaGetTexture( L, 2 );
 	Rectangle source = uluaGetRectangleIndex( L, 3 );
 	Vector3 position = uluaGetVector3Index( L, 4 );
 	Vector2 size = uluaGetVector2Index( L, 5 );
 	Color tint = uluaGetColorIndex( L, 6 );
 
-	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) || !validCamera3D( cameraId ) ) {
+	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	// DrawBillboardRec( *state->camera3Ds[ cameraId ], *texturesGetSourceTexture( texId ), source, position, size, tint );
-	DrawBillboardRecNoRatio( *state->camera3Ds[ cameraId ], *texturesGetSourceTexture( texId ), source, position, size, tint );
+	DrawBillboardRecNoRatio( *state->camera3Ds[ cameraId ], texture, source, position, size, tint );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2353,7 +2335,7 @@ Draw a billboard texture defined by source and rotation
 - Success return true
 */
 int lmodelsDrawBillboardPro( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 )
+	if ( !lua_isnumber( L, 1 ) || !isValidTexture( L, 2 ) || !lua_istable( L, 3 )
 	|| !lua_istable( L, 4 ) || !lua_istable( L, 5 ) || !lua_istable( L, 6 )
 	|| !lua_istable( L, 7 ) || !lua_isnumber( L, 8 ) || !lua_istable( L, 9 ) ) {
 		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawBillboardPro( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint )" );
@@ -2361,7 +2343,7 @@ int lmodelsDrawBillboardPro( lua_State *L ) {
 		return 1;
 	}
 	size_t cameraId = lua_tointeger( L, 1 );
-	size_t texId = lua_tointeger( L, 2 );
+	Texture texture = uluaGetTexture( L, 2 );
 	Rectangle source = uluaGetRectangleIndex( L, 3 );
 	Vector3 position = uluaGetVector3Index( L, 4 );
 	Vector3 up = uluaGetVector3Index( L, 5 );
@@ -2370,12 +2352,12 @@ int lmodelsDrawBillboardPro( lua_State *L ) {
 	float rotation = lua_tonumber( L, 8 );
 	Color tint = uluaGetColorIndex( L, 9 );
 
-	if ( !validTexture( texId, TEXTURE_TYPE_ALL ) || !validCamera3D( cameraId ) ) {
+	if ( !validCamera3D( cameraId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
 	// DrawBillboardPro( *state->camera3Ds[ cameraId ], *texturesGetSourceTexture( texId ), source, position, up, size, origin, rotation, tint );
-	DrawBillboardProNoRatio( *state->camera3Ds[ cameraId ], *texturesGetSourceTexture( texId ), source, position, up, size, origin, rotation, tint );
+	DrawBillboardProNoRatio( *state->camera3Ds[ cameraId ], texture, source, position, up, size, origin, rotation, tint );
 	lua_pushboolean( L, true );
 
 	return 1;

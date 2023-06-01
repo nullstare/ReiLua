@@ -4,6 +4,61 @@
 #include "lrlgl.h"
 
 /*
+## RLGL - Framebuffer state
+*/
+
+/*
+> success = RL.rlEnableFramebuffer( int id )
+
+Enable render texture (fbo)
+
+- Failure return false
+- Success return true
+*/
+int lrlglEnableFramebuffer( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlEnableFramebuffer( int id )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlEnableFramebuffer( lua_tointeger( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> RL.rlDisableFramebuffer()
+
+Disable render texture (fbo), return to default framebuffer
+*/
+int lrlglDisableFramebuffer( lua_State *L ) {
+	rlDisableFramebuffer();
+
+	return 0;
+}
+
+/*
+> success = RL.rlActiveDrawBuffers( int count )
+
+Activate multiple draw color buffers
+
+- Failure return false
+- Success return true
+*/
+int lrlglActiveDrawBuffers( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlActiveDrawBuffers( int count )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlActiveDrawBuffers( lua_tointeger( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
 ## RLGL - General render state
 */
 
@@ -183,6 +238,170 @@ Get current OpenGL version
 */
 int lrlglGetVersion( lua_State *L ) {
 	lua_pushinteger( L, rlGetVersion() );
+
+	return 1;
+}
+
+/*
+## RLGL - Textures management
+*/
+
+/*
+> id = RL.rlLoadTexture( Vector2 size, int format, int mipmapCount )
+
+Load texture in GPU
+
+- Failure return -1
+- Success return int
+*/
+int lrlglLoadTexture( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlLoadTexture( Vector2 size, int format, int mipmapCount )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	Vector2 size = uluaGetVector2Index( L, 1 );
+	int format = lua_tointeger( L, 2 );
+	int mipmapCount = lua_tointeger( L, 3 );
+
+	lua_pushinteger( L, rlLoadTexture( NULL, size.x, size.y, format, mipmapCount ) );
+
+	return 1;
+}
+
+/*
+> id = RL.rlLoadTextureDepth( Vector2 size, bool useRenderBuffer )
+
+Load depth texture/renderbuffer ( to be attached to fbo )
+
+- Failure return -1
+- Success return int
+*/
+int lrlglLoadTextureDepth( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) || !lua_isboolean( L, 2 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlLoadTextureDepth( Vector2 size, bool useRenderBuffer )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	Vector2 size = uluaGetVector2Index( L, 1 );
+	bool useRenderBuffer = lua_toboolean( L, 2 );
+
+	lua_pushinteger( L, rlLoadTextureDepth( size.x, size.y, useRenderBuffer ) );
+
+	return 1;
+}
+
+/*
+> success = RL.rlUnloadTexture( int id )
+
+Unload texture from GPU memory
+
+- Failure return false
+- Success return true
+*/
+int lrlglUnloadTexture( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlUnloadTexture( int id )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlUnloadTexture( lua_tointeger( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+## RLGL - Framebuffer management (fbo)
+*/
+
+/*
+> fboId = RL.rlLoadFramebuffer( Vector2 size )
+
+Load an empty framebuffer
+
+- Failure return -1
+- Success return int
+*/
+int lrlglLoadFramebuffer( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlLoadFramebuffer( Vector2 size )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	Vector2 size = uluaGetVector2Index( L, 1 );
+
+	lua_pushinteger( L, rlLoadFramebuffer( size.x, size.y ) );
+
+	return 1;
+}
+
+/*
+> success = RL.rlFramebufferAttach( int fboId, int texId, int attachType, int texType, int mipLevel )
+
+Attach texture/renderbuffer to a framebuffer
+
+- Failure return false
+- Success return true
+*/
+int lrlglFramebufferAttach( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 )
+	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlFramebufferAttach( int fboId, int texId, int attachType, int texType, int mipLevel )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	unsigned int fboId = lua_tointeger( L, 1 );
+	unsigned int texId = lua_tointeger( L, 2 );
+	int attachType = lua_tointeger( L, 3 );
+	int texType = lua_tointeger( L, 4 );
+	int mipLevel = lua_tointeger( L, 5 );
+
+	rlFramebufferAttach( fboId, texId, attachType, texType, mipLevel );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> isComplete = RL.rlFramebufferComplete( int id )
+
+Verify framebuffer is complete
+
+- Failure return nil
+- Success return bool
+*/
+int lrlglFramebufferComplete( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlFramebufferComplete( int id )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	unsigned int id = lua_tointeger( L, 1 );
+
+	lua_pushboolean( L, rlFramebufferComplete( id ) );
+
+	return 1;
+}
+
+/*
+> success = RL.rlUnloadFramebuffer( int id )
+
+Delete framebuffer from GPU
+
+- Failure return nil
+- Success return bool
+*/
+int lrlglUnloadFramebuffer( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlUnloadFramebuffer( int id )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	unsigned int id = lua_tointeger( L, 1 );
+
+	rlUnloadFramebuffer( id );
+	lua_pushboolean( L, true );
 
 	return 1;
 }

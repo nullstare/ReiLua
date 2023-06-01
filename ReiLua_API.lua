@@ -2645,7 +2645,7 @@ function RL.LoadTextureCubemap( image, layout ) end
 ---@return any renderTexture 
 function RL.LoadRenderTexture( size ) end
 
----Unload texture from GPU memory ( VRAM )
+---Unload texture from GPU memory ( VRAM ). NOTE! Must be texture id.
 ---- Failure return false
 ---- Success return true
 ---@param texture any
@@ -2766,8 +2766,15 @@ function RL.SetTextureFilter( texture, filter ) end
 ---@return any success 
 function RL.SetTextureWrap( texture, wrap ) end
 
+---Get texture OpenGL id
+---- Failure return false
+---- Success return int
+---@param texture any
+---@return any id 
+function RL.GetTextureId( texture ) end
+
 ---Get texture size
----- Failure return nil
+---- Failure return false
 ---- Success return Vector2
 ---@param texture any
 ---@return any size 
@@ -5410,6 +5417,26 @@ function RL.GetLightColor( light ) end
 ---@return any enabled 
 function RL.IsLightEnabled( light ) end
 
+-- RLGL - Framebuffer state
+
+---Enable render texture (fbo)
+---- Failure return false
+---- Success return true
+---@param id integer
+---@return any success 
+function RL.rlEnableFramebuffer( id ) end
+
+---Disable render texture (fbo), return to default framebuffer
+---@return any RL.rlDisableFramebuffer
+function  RL.rlDisableFramebuffer() end
+
+---Activate multiple draw color buffers
+---- Failure return false
+---- Success return true
+---@param count integer
+---@return any success 
+function RL.rlActiveDrawBuffers( count ) end
+
 -- RLGL - General render state
 
 ---Enable color blending
@@ -5477,6 +5504,66 @@ function  RL.rlDisableSmoothLines() end
 ---- Success return int
 ---@return any version 
 function RL.rlGetVersion() end
+
+-- RLGL - Textures management
+
+---Load texture in GPU
+---- Failure return -1
+---- Success return int
+---@param size table
+---@param format integer
+---@param mipmapCount integer
+---@return any id 
+function RL.rlLoadTexture( size, format, mipmapCount ) end
+
+---Load depth texture/renderbuffer ( to be attached to fbo )
+---- Failure return -1
+---- Success return int
+---@param size table
+---@param useRenderBuffer boolean
+---@return any id 
+function RL.rlLoadTextureDepth( size, useRenderBuffer ) end
+
+---Unload texture from GPU memory
+---- Failure return false
+---- Success return true
+---@param id integer
+---@return any success 
+function RL.rlUnloadTexture( id ) end
+
+-- RLGL - Framebuffer management (fbo)
+
+---Load an empty framebuffer
+---- Failure return -1
+---- Success return int
+---@param size table
+---@return any fboId 
+function RL.rlLoadFramebuffer( size ) end
+
+---Attach texture/renderbuffer to a framebuffer
+---- Failure return false
+---- Success return true
+---@param fboId integer
+---@param texId integer
+---@param attachType integer
+---@param texType integer
+---@param mipLevel integer
+---@return any success 
+function RL.rlFramebufferAttach( fboId, texId, attachType, texType, mipLevel ) end
+
+---Verify framebuffer is complete
+---- Failure return nil
+---- Success return bool
+---@param id integer
+---@return any isComplete 
+function RL.rlFramebufferComplete( id ) end
+
+---Delete framebuffer from GPU
+---- Failure return nil
+---- Success return bool
+---@param id integer
+---@return any success 
+function RL.rlUnloadFramebuffer( id ) end
 
 -- OpenGL - Framebuffer management
 

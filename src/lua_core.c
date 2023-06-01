@@ -1018,6 +1018,7 @@ void luaRegister() {
 	assingGlobalFunction( "GenTextureMipmaps", ltexturesGenTextureMipmaps );
 	assingGlobalFunction( "SetTextureFilter", ltexturesSetTextureFilter );
 	assingGlobalFunction( "SetTextureWrap", ltexturesSetTextureWrap );
+	assingGlobalFunction( "GetTextureId", ltexturesGetTextureId );
 	assingGlobalFunction( "GetTextureSize", ltexturesGetTextureSize );
 	assingGlobalFunction( "GetTextureMipmaps", ltexturesGetTextureMipmaps );
 	assingGlobalFunction( "GetTextureFormat", ltexturesGetTextureFormat );
@@ -1370,6 +1371,10 @@ void luaRegister() {
 	assingGlobalFunction( "IsLightEnabled", llightsIsLightEnabled );
 
 	/* RLGL */
+		/* Framebuffer state. */
+	assingGlobalFunction( "rlEnableFramebuffer", lrlglEnableFramebuffer );
+	assingGlobalFunction( "rlDisableFramebuffer", lrlglDisableFramebuffer );
+	assingGlobalFunction( "rlActiveDrawBuffers", lrlglActiveDrawBuffers );
 		/* General render state. */
 	assingGlobalFunction( "rlEnableColorBlend", lrlglEnableColorBlend );
 	assingGlobalFunction( "rlDisableColorBlend", lrlglDisableColorBlend );
@@ -1386,6 +1391,15 @@ void luaRegister() {
 	assingGlobalFunction( "rlDisableSmoothLines", lrlglDisableSmoothLines );
 		/* Initialization functions. */
 	assingGlobalFunction( "rlGetVersion", lrlglGetVersion );
+		/* Textures management */
+	assingGlobalFunction( "rlLoadTexture", lrlglLoadTexture );
+	assingGlobalFunction( "rlLoadTextureDepth", lrlglLoadTextureDepth );
+	assingGlobalFunction( "rlUnloadTexture", lrlglUnloadTexture );
+		/* Framebuffer management (fbo). */
+	assingGlobalFunction( "rlLoadFramebuffer", lrlglLoadFramebuffer );
+	assingGlobalFunction( "rlFramebufferAttach", lrlglFramebufferAttach );
+	assingGlobalFunction( "rlFramebufferComplete", lrlglFramebufferComplete );
+	assingGlobalFunction( "rlUnloadFramebuffer", lrlglUnloadFramebuffer );
 
 	/* OpenGL */
 		/* Framebuffer management. */
@@ -1428,6 +1442,28 @@ void luaRegister() {
 	assingGlobalFunction( "EaseElasticInOut", leasingsEaseElasticInOut );
 
 	lua_pop( L, -1 );
+}
+
+/* Type validators. */
+
+bool isValidTexture( lua_State *L, int index ) {
+	if ( lua_isnumber( L, index ) || lua_istable( L, index ) ) {
+		return true;
+    }
+	else {
+		TraceLog( LOG_WARNING, "%s", "Error. Invalid texture." );
+		return false;
+	}
+}
+
+bool isValidRenderTexture( lua_State *L, int index ) {
+	if ( lua_isnumber( L, index ) || lua_istable( L, index ) ) {
+		return true;
+    }
+	else {
+		TraceLog( LOG_WARNING, "%s", "Error. Invalid renderTexture." );
+		return false;
+	}
 }
 
 /* Lua util functions. */
@@ -1938,6 +1974,114 @@ NPatchInfo uluaGetNPatchInfoIndex( lua_State *L, int index ) {
     }
 	return npatch;
 }
+
+Texture uluaGetTexture( lua_State *L, int index ) {
+	Texture texture = { 0 };
+
+	if ( lua_isnumber( L, index ) ) {
+		if ( 0 <= lua_tointeger( L, index ) ) {
+			texture = *texturesGetSourceTexture( lua_tointeger( L, index ) );
+		}
+	}
+	else if ( lua_istable( L, index ) ) {
+		int t = index, i = 0;
+    	lua_pushnil( L );
+
+		while ( lua_next( L, t ) != 0 ) {
+			if ( lua_isnumber( L, -2 ) ) {
+				switch ( i ) {
+					case 0:
+						texture.id = lua_tointeger( L, -1 );
+						break;
+					case 1:
+						texture.width = lua_tointeger( L, -1 );
+						break;
+					case 2:
+						texture.height = lua_tointeger( L, -1 );
+						break;
+					case 3:
+						texture.mipmaps = lua_tointeger( L, -1 );
+						break;
+					case 4:
+						texture.format = lua_tointeger( L, -1 );
+						break;
+					default:
+						break;
+				}
+			}
+			else if ( lua_isstring( L, -2 ) ) {
+				if ( strcmp( "id", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					texture.id = lua_tointeger( L, -1 );
+				}
+				else if ( strcmp( "width", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					texture.width = lua_tointeger( L, -1 );
+				}
+				else if ( strcmp( "height", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					texture.height = lua_tointeger( L, -1 );
+				}
+				else if ( strcmp( "mipmaps", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					texture.mipmaps = lua_tointeger( L, -1 );
+				}
+				else if ( strcmp( "format", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					texture.format = lua_tointeger( L, -1 );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+	}
+
+	return texture;
+}
+
+RenderTexture uluaGetRenderTexture( lua_State *L, int index ) {
+	RenderTexture renderTexture = { 0 };
+
+	if ( lua_isnumber( L, index ) ) {
+		if ( 0 <= lua_tointeger( L, index ) ) {
+			renderTexture = state->textures[ lua_tointeger( L, index ) ]->renderTexture;
+		}
+	}
+	else if ( lua_istable( L, index ) ) {
+		int t = index, i = 0;
+    	lua_pushnil( L );
+
+		while ( lua_next( L, t ) != 0 ) {
+			if ( lua_isnumber( L, -2 ) ) {
+				switch ( i ) {
+					case 0:
+						renderTexture.id = lua_tointeger( L, -1 );
+						break;
+					case 1:
+						renderTexture.texture = uluaGetTexture( L, lua_gettop( L ) );
+						break;
+					case 2:
+						renderTexture.depth = uluaGetTexture( L, lua_gettop( L ) );
+						break;
+					default:
+						break;
+				}
+			}
+			else if ( lua_isstring( L, -2 ) ) {
+				if ( strcmp( "id", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					renderTexture.id = lua_tointeger( L, -1 );
+				}
+				else if ( strcmp( "texture", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					renderTexture.texture = uluaGetTexture( L, lua_gettop( L ) );
+				}
+				else if ( strcmp( "depth", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					renderTexture.depth = uluaGetTexture( L, lua_gettop( L ) );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+	}
+
+	return renderTexture;
+}
+
+/* Push types. */
 
 void uluaPushColor( lua_State *L, Color color ) {
 	lua_createtable( L, 3, 0 );

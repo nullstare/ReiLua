@@ -1475,6 +1475,18 @@ void luaRegister() {
 	assingGlobalFunction( "IsLightEnabled", llightsIsLightEnabled );
 
 	/* RLGL */
+		/* Matrix operations */
+	assingGlobalFunction( "rlMatrixMode", lrlglMatrixMode );
+	assingGlobalFunction( "rlPushMatrix", lrlglPushMatrix );
+	assingGlobalFunction( "rlPopMatrix", lrlglPopMatrix );
+	assingGlobalFunction( "rlLoadIdentity", lrlglLoadIdentity );
+	assingGlobalFunction( "rlTranslatef", lrlglTranslatef );
+	assingGlobalFunction( "rlRotatef", lrlglRotatef );
+	assingGlobalFunction( "rlScalef", lrlglScalef );
+	assingGlobalFunction( "rlMultMatrixf", lrlglMultMatrixf );
+	assingGlobalFunction( "rlFrustum", lrlglFrustum );
+	assingGlobalFunction( "rlOrtho", lrlglOrtho );
+	assingGlobalFunction( "rlViewport", lrlglViewport );
 		/* Textures state */
 	assingGlobalFunction( "rlActiveTextureSlot", lrlglActiveTextureSlot );
 	assingGlobalFunction( "rlEnableTexture", lrlglEnableTexture );
@@ -1503,6 +1515,10 @@ void luaRegister() {
 	assingGlobalFunction( "rlDisableSmoothLines", lrlglDisableSmoothLines );
 		/* Initialization functions. */
 	assingGlobalFunction( "rlGetVersion", lrlglGetVersion );
+		/* Render batch management. */
+	assingGlobalFunction( "rlDrawRenderBatchActive", lrlglDrawRenderBatchActive );
+	assingGlobalFunction( "rlCheckRenderBatchLimit", lrlglCheckRenderBatchLimit );
+	assingGlobalFunction( "rlSetTexture", lrlglSetTexture );
 		/* Textures management */
 	assingGlobalFunction( "rlLoadTexture", lrlglLoadTexture );
 	assingGlobalFunction( "rlLoadTextureDepth", lrlglLoadTextureDepth );

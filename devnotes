@@ -1,4 +1,11 @@
 Current {
+	* rlgl
+		* Vertex level operations.
+		* Vertex buffers state.
+		* Vertex buffers management
+		* Shaders management
+		* Matrix state management
+		* Compute shader management
 	* New type validators.
 }
 
@@ -10,8 +17,6 @@ Backlog {
 	* Text
 		* Ability to set font texture filtering.
 		* Codepoints?
-	* rlgl
-		* More low level functions. Could be usefull now when for example DrawTexturePoly is removed.
 	* Audio
 		* AudioStream.
 	* Core.

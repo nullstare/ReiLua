@@ -1,5 +1,17 @@
 #pragma once
 
+/* Matrix operations */
+int lrlglMatrixMode( lua_State *L );
+int lrlglPushMatrix( lua_State *L );
+int lrlglPopMatrix( lua_State *L );
+int lrlglLoadIdentity( lua_State *L );
+int lrlglTranslatef( lua_State *L );
+int lrlglRotatef( lua_State *L );
+int lrlglScalef( lua_State *L );
+int lrlglMultMatrixf( lua_State *L );
+int lrlglFrustum( lua_State *L );
+int lrlglOrtho( lua_State *L );
+int lrlglViewport( lua_State *L );
 /* Textures state */
 int lrlglActiveTextureSlot( lua_State *L );
 int lrlglEnableTexture( lua_State *L );
@@ -28,6 +40,10 @@ int lrlglEnableSmoothLines( lua_State *L );
 int lrlglDisableSmoothLines( lua_State *L );
 /* Initialization functions */
 int lrlglGetVersion( lua_State *L );
+/* Render batch management */
+int lrlglDrawRenderBatchActive( lua_State *L );
+int lrlglCheckRenderBatchLimit( lua_State *L );
+int lrlglSetTexture( lua_State *L );
 /* Textures management */
 int lrlglLoadTexture( lua_State *L );
 int lrlglLoadTextureDepth( lua_State *L );

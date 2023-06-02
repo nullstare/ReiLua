@@ -19,6 +19,11 @@ KEY CHANGES:
 	- ADDED: rlgl Textures management functions
 	- ADDED: Texture and RenderTexture can be given as tables
 	- ADDED: Camera2D and Camera3D can be given as tables
+	- ADDED: Camera2D and Camera3D can be given as tables
+	- ADDED: rlgl New defines
+	- ADDED: rlgl Textures state functions
+	- ADDED: rlgl Some Render batch management functions
+	- ADDED: rlgl Matrix operations functions
 
 Detailed changes:
 	- FIXED: uluaGetRay was looking for integers instead of tables
@@ -81,8 +86,6 @@ Detailed changes:
 	- ADDED: GetMaterialTexture, GetMaterialColor, GetMaterialValue and GetMaterialShader
 	- ADDED: SetMaterialParams and GetMaterialParams
 	- ADDED: GetTextureId
-	- ADDED: RLGL defines
-	- ADDED: RLGL Textures state functions
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

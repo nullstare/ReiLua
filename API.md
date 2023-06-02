@@ -6833,6 +6833,67 @@ Get light enabled
 
 ---
 
+## RLGL - Textures state
+
+---
+
+> success = RL.rlActiveTextureSlot( int slot )
+
+Select and active a texture slot
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlEnableTexture( int id )
+
+Enable texture
+
+- Failure return false
+- Success return true
+
+---
+
+> RL.rlDisableTexture()
+
+Disable texture
+
+---
+
+> success = RL.rlEnableTextureCubemap( int id )
+
+Enable texture cubemap
+
+- Failure return false
+- Success return true
+
+---
+
+> RL.rlDisableTextureCubemap()
+
+Disable texture cubemap
+
+---
+
+> success = RL.rlTextureParameters( int id, int param, int value )
+
+Set texture parameters ( filter, wrap )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlCubemapParameters( int id, int param, int value )
+
+Set cubemap parameters ( filter, wrap )
+
+- Failure return false
+- Success return true
+
+---
+
 ## RLGL - Framebuffer state
 
 ---

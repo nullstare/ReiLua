@@ -4,6 +4,140 @@
 #include "lrlgl.h"
 
 /*
+## RLGL - Textures state
+*/
+
+/*
+> success = RL.rlActiveTextureSlot( int slot )
+
+Select and active a texture slot
+
+- Failure return false
+- Success return true
+*/
+int lrlglActiveTextureSlot( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlActiveTextureSlot( int slot )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlActiveTextureSlot( lua_tointeger( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlEnableTexture( int id )
+
+Enable texture
+
+- Failure return false
+- Success return true
+*/
+int lrlglEnableTexture( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlEnableTexture( int id )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlEnableTexture( lua_tointeger( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> RL.rlDisableTexture()
+
+Disable texture
+*/
+int lrlglDisableTexture( lua_State *L ) {
+	rlDisableTexture();
+
+	return 0;
+}
+
+/*
+> success = RL.rlEnableTextureCubemap( int id )
+
+Enable texture cubemap
+
+- Failure return false
+- Success return true
+*/
+int lrlglEnableTextureCubemap( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlEnableTextureCubemap( int id )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlEnableTextureCubemap( lua_tointeger( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> RL.rlDisableTextureCubemap()
+
+Disable texture cubemap
+*/
+int lrlglDisableTextureCubemap( lua_State *L ) {
+	rlDisableTextureCubemap();
+
+	return 0;
+}
+
+/*
+> success = RL.rlTextureParameters( int id, int param, int value )
+
+Set texture parameters ( filter, wrap )
+
+- Failure return false
+- Success return true
+*/
+int lrlglTextureParameters( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlTextureParameters( int id, int param, int value )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	unsigned int id = lua_tointeger( L, 1 );
+	int param = lua_tointeger( L, 2 );
+	int value = lua_tointeger( L, 3 );
+
+	rlTextureParameters( id, param, value );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlCubemapParameters( int id, int param, int value )
+
+Set cubemap parameters ( filter, wrap )
+
+- Failure return false
+- Success return true
+*/
+int lrlglCubemapParameters( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlCubemapParameters( int id, int param, int value )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	unsigned int id = lua_tointeger( L, 1 );
+	int param = lua_tointeger( L, 2 );
+	int value = lua_tointeger( L, 3 );
+
+	rlCubemapParameters( id, param, value );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
 ## RLGL - Framebuffer state
 */
 

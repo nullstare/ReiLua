@@ -1,5 +1,13 @@
 #pragma once
 
+/* Textures state */
+int lrlglActiveTextureSlot( lua_State *L );
+int lrlglEnableTexture( lua_State *L );
+int lrlglDisableTexture( lua_State *L );
+int lrlglEnableTextureCubemap( lua_State *L );
+int lrlglDisableTextureCubemap( lua_State *L );
+int lrlglTextureParameters( lua_State *L );
+int lrlglCubemapParameters( lua_State *L );
 /* Framebuffer state. */
 int lrlglEnableFramebuffer( lua_State *L );
 int lrlglDisableFramebuffer( lua_State *L );

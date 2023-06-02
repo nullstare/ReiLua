@@ -1475,6 +1475,14 @@ void luaRegister() {
 	assingGlobalFunction( "IsLightEnabled", llightsIsLightEnabled );
 
 	/* RLGL */
+		/* Textures state */
+	assingGlobalFunction( "rlActiveTextureSlot", lrlglActiveTextureSlot );
+	assingGlobalFunction( "rlEnableTexture", lrlglEnableTexture );
+	assingGlobalFunction( "rlDisableTexture", lrlglDisableTexture );
+	assingGlobalFunction( "rlEnableTextureCubemap", lrlglEnableTextureCubemap );
+	assingGlobalFunction( "rlDisableTextureCubemap", lrlglDisableTextureCubemap );
+	assingGlobalFunction( "rlTextureParameters", lrlglTextureParameters );
+	assingGlobalFunction( "rlCubemapParameters", lrlglCubemapParameters );
 		/* Framebuffer state. */
 	assingGlobalFunction( "rlEnableFramebuffer", lrlglEnableFramebuffer );
 	assingGlobalFunction( "rlDisableFramebuffer", lrlglDisableFramebuffer );

@@ -5549,6 +5549,55 @@ function RL.GetLightColor( light ) end
 ---@return any enabled 
 function RL.IsLightEnabled( light ) end
 
+-- RLGL - Textures state
+
+---Select and active a texture slot
+---- Failure return false
+---- Success return true
+---@param slot integer
+---@return any success 
+function RL.rlActiveTextureSlot( slot ) end
+
+---Enable texture
+---- Failure return false
+---- Success return true
+---@param id integer
+---@return any success 
+function RL.rlEnableTexture( id ) end
+
+---Disable texture
+---@return any RL.rlDisableTexture
+function  RL.rlDisableTexture() end
+
+---Enable texture cubemap
+---- Failure return false
+---- Success return true
+---@param id integer
+---@return any success 
+function RL.rlEnableTextureCubemap( id ) end
+
+---Disable texture cubemap
+---@return any RL.rlDisableTextureCubemap
+function  RL.rlDisableTextureCubemap() end
+
+---Set texture parameters ( filter, wrap )
+---- Failure return false
+---- Success return true
+---@param id integer
+---@param param integer
+---@param value integer
+---@return any success 
+function RL.rlTextureParameters( id, param, value ) end
+
+---Set cubemap parameters ( filter, wrap )
+---- Failure return false
+---- Success return true
+---@param id integer
+---@param param integer
+---@param value integer
+---@return any success 
+function RL.rlCubemapParameters( id, param, value ) end
+
 -- RLGL - Framebuffer state
 
 ---Enable render texture (fbo)

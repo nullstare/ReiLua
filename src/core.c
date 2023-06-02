@@ -1568,8 +1568,7 @@ int lcoreGetKeyScancode( lua_State *L ) {
 	}
 	int key = lua_tointeger( L, 1 );
 
-	int scancode = glfwGetKeyScancode( key );
-	lua_pushinteger( L, scancode );
+	lua_pushinteger( L, glfwGetKeyScancode( key ) );
 
 	return 1;
 }

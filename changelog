@@ -81,6 +81,7 @@ Detailed changes:
 	- ADDED: GetMaterialTexture, GetMaterialColor, GetMaterialValue and GetMaterialShader
 	- ADDED: SetMaterialParams and GetMaterialParams
 	- ADDED: GetTextureId
+	- ADDED: RLGL defines
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

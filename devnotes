@@ -1,6 +1,5 @@
 Current {
 	* rlgl
-		* Vertex level operations.
 		* Vertex buffers state.
 		* Vertex buffers management
 		* Shaders management

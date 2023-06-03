@@ -6928,6 +6928,88 @@ NOTE: We store current viewport dimensions
 
 ---
 
+## RLGL - Vertex level operations
+
+---
+
+> success = RL.rlBegin( int mode )
+
+Initialize drawing mode ( how to organize vertex )
+
+- Failure return false
+- Success return true
+
+---
+
+> RL.rlEnd()
+
+Finish vertex providing
+
+---
+
+> success = RL.rlVertex2f( Vector2 position )
+
+Define one vertex ( position )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlVertex3f( Vector3 position )
+
+Define one vertex ( position )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlTexCoord2f( Vector2 texCoord )
+
+Define one vertex ( texture coordinate ) - 2 float
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlNormal3f( Vector3 normal )
+
+Define one vertex ( normal ) - 3 float
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlColor4ub( Color color )
+
+Define one vertex ( color ) - 4 byte
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlColor3f( Vector3 color )
+
+Define one vertex ( color ) - 3 float
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlColor4f( Vector4 color )
+
+Define one vertex ( color ) - 4 float
+
+- Failure return false
+- Success return true
+
+---
+
 ## RLGL - Textures state
 
 ---

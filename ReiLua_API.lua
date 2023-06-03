@@ -5631,6 +5631,68 @@ function RL.rlOrtho( left, right, bottom, top, znear, zfar ) end
 ---@return any success 
 function RL.rlViewport( viewport ) end
 
+-- RLGL - Vertex level operations
+
+---Initialize drawing mode ( how to organize vertex )
+---- Failure return false
+---- Success return true
+---@param mode integer
+---@return any success 
+function RL.rlBegin( mode ) end
+
+---Finish vertex providing
+---@return any RL.rlEnd
+function  RL.rlEnd() end
+
+---Define one vertex ( position )
+---- Failure return false
+---- Success return true
+---@param position table
+---@return any success 
+function RL.rlVertex2f( position ) end
+
+---Define one vertex ( position )
+---- Failure return false
+---- Success return true
+---@param position table
+---@return any success 
+function RL.rlVertex3f( position ) end
+
+---Define one vertex ( texture coordinate ) - 2 float
+---- Failure return false
+---- Success return true
+---@param texCoord table
+---@return any success 
+function RL.rlTexCoord2f( texCoord ) end
+
+---Define one vertex ( normal ) - 3 float
+---- Failure return false
+---- Success return true
+---@param normal table
+---@return any success 
+function RL.rlNormal3f( normal ) end
+
+---Define one vertex ( color ) - 4 byte
+---- Failure return false
+---- Success return true
+---@param color table
+---@return any success 
+function RL.rlColor4ub( color ) end
+
+---Define one vertex ( color ) - 3 float
+---- Failure return false
+---- Success return true
+---@param color table
+---@return any success 
+function RL.rlColor3f( color ) end
+
+---Define one vertex ( color ) - 4 float
+---- Failure return false
+---- Success return true
+---@param color table
+---@return any success 
+function RL.rlColor4f( color ) end
+
 -- RLGL - Textures state
 
 ---Select and active a texture slot

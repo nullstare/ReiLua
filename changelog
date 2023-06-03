@@ -24,6 +24,8 @@ KEY CHANGES:
 	- ADDED: rlgl Textures state functions
 	- ADDED: rlgl Some Render batch management functions
 	- ADDED: rlgl Matrix operations functions
+	- ADDED: rlgl Vertex level operations
+	- ADDED: Draw Textured Polygon Example
 
 Detailed changes:
 	- FIXED: uluaGetRay was looking for integers instead of tables

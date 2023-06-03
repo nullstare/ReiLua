@@ -12,6 +12,16 @@ int lrlglMultMatrixf( lua_State *L );
 int lrlglFrustum( lua_State *L );
 int lrlglOrtho( lua_State *L );
 int lrlglViewport( lua_State *L );
+/* Vertex level operations */
+int lrlglBegin( lua_State *L );
+int lrlglEnd( lua_State *L );
+int lrlglVertex2f( lua_State *L );
+int lrlglVertex3f( lua_State *L );
+int lrlglTexCoord2f( lua_State *L );
+int lrlglNormal3f( lua_State *L );
+int lrlglColor4ub( lua_State *L );
+int lrlglColor3f( lua_State *L );
+int lrlglColor4f( lua_State *L );
 /* Textures state */
 int lrlglActiveTextureSlot( lua_State *L );
 int lrlglEnableTexture( lua_State *L );

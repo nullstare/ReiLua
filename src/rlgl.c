@@ -234,6 +234,195 @@ int lrlglViewport( lua_State *L ) {
 }
 
 /*
+## RLGL - Vertex level operations
+*/
+
+/*
+> success = RL.rlBegin( int mode )
+
+Initialize drawing mode ( how to organize vertex )
+
+- Failure return false
+- Success return true
+*/
+int lrlglBegin( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlBegin( int mode )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlBegin( lua_tointeger( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> RL.rlEnd()
+
+Finish vertex providing
+*/
+int lrlglEnd( lua_State *L ) {
+	rlEnd();
+
+	return 0;
+}
+
+/*
+> success = RL.rlVertex2f( Vector2 position )
+
+Define one vertex ( position )
+
+- Failure return false
+- Success return true
+*/
+int lrlglVertex2f( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlVertex2f( Vector2 position )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 position = uluaGetVector2Index( L, 1 );
+
+	rlVertex2f( position.x, position.y );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlVertex3f( Vector3 position )
+
+Define one vertex ( position )
+
+- Failure return false
+- Success return true
+*/
+int lrlglVertex3f( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlVertex3f( Vector3 position )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 position = uluaGetVector3Index( L, 1 );
+
+	rlVertex3f( position.x, position.y, position.z );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlTexCoord2f( Vector2 texCoord )
+
+Define one vertex ( texture coordinate ) - 2 float
+
+- Failure return false
+- Success return true
+*/
+int lrlglTexCoord2f( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlTexCoord2f( Vector2 texCoord )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector2 texCoord = uluaGetVector2Index( L, 1 );
+
+	rlTexCoord2f( texCoord.x, texCoord.y );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlNormal3f( Vector3 normal )
+
+Define one vertex ( normal ) - 3 float
+
+- Failure return false
+- Success return true
+*/
+int lrlglNormal3f( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlNormal3f( Vector3 normal )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 normal = uluaGetVector3Index( L, 1 );
+
+	rlNormal3f( normal.x, normal.y, normal.z );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlColor4ub( Color color )
+
+Define one vertex ( color ) - 4 byte
+
+- Failure return false
+- Success return true
+*/
+int lrlglColor4ub( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlColor4ub( Color color )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Color color = uluaGetColorIndex( L, 1 );
+
+	rlColor4ub( color.r, color.g, color.b, color.a );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlColor3f( Vector3 color )
+
+Define one vertex ( color ) - 3 float
+
+- Failure return false
+- Success return true
+*/
+int lrlglColor3f( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlColor3f( Vector3 color )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector3 color = uluaGetVector3Index( L, 1 );
+
+	rlColor3f( color.x, color.y, color.z );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlColor4f( Vector4 color )
+
+Define one vertex ( color ) - 4 float
+
+- Failure return false
+- Success return true
+*/
+int lrlglColor4f( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlColor4f( Vector4 color )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Vector4 color = uluaGetVector4Index( L, 1 );
+
+	rlColor4f( color.x, color.y, color.z, color.w );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
 ## RLGL - Textures state
 */
 

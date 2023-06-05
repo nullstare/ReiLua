@@ -26,6 +26,7 @@ KEY CHANGES:
 	- ADDED: rlgl Matrix operations functions
 	- ADDED: rlgl Vertex level operations
 	- ADDED: Draw Textured Polygon Example
+	- ADDED: rlgl General render state functions
 
 Detailed changes:
 	- FIXED: uluaGetRay was looking for integers instead of tables
@@ -84,7 +85,6 @@ Detailed changes:
 	- FIXED: UnloadTexture did not set texture id to NULL.
 	- ADDED: DrawBillboardPro
 	- ADDED: rlGetVersion
-	- ADDED: More rlgl General render state functions.
 	- ADDED: GetMaterialTexture, GetMaterialColor, GetMaterialValue and GetMaterialShader
 	- ADDED: SetMaterialParams and GetMaterialParams
 	- ADDED: GetTextureId

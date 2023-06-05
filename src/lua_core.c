@@ -1519,10 +1519,24 @@ void luaRegister() {
 	assingGlobalFunction( "rlEnableBackfaceCulling", lrlglEnableBackfaceCulling );
 	assingGlobalFunction( "rlDisableBackfaceCulling", lrlglDisableBackfaceCulling );
 	assingGlobalFunction( "rlSetCullFace", lrlglSetCullFace );
+	assingGlobalFunction( "rlEnableScissorTest", lrlglEnableScissorTest );
+	assingGlobalFunction( "rlDisableScissorTest", lrlglDisableScissorTest );
+	assingGlobalFunction( "rlScissor", lrlglScissor );
+	assingGlobalFunction( "rlEnableWireMode", lrlglEnableWireMode );
+	assingGlobalFunction( "rlDisableWireMode", lrlglDisableWireMode );
 	assingGlobalFunction( "rlSetLineWidth", lrlglSetLineWidth );
 	assingGlobalFunction( "rlGetLineWidth", lrlglGetLineWidth );
 	assingGlobalFunction( "rlEnableSmoothLines", lrlglEnableSmoothLines );
 	assingGlobalFunction( "rlDisableSmoothLines", lrlglDisableSmoothLines );
+	assingGlobalFunction( "rlEnableStereoRender", lrlglEnableStereoRender );
+	assingGlobalFunction( "rlDisableStereoRender", lrlglDisableStereoRender );
+	assingGlobalFunction( "rlIsStereoRenderEnabled", lrlglIsStereoRenderEnabled );
+	assingGlobalFunction( "rlClearColor", lrlglClearColor );
+	assingGlobalFunction( "rlClearScreenBuffers", lrlglClearScreenBuffers );
+	assingGlobalFunction( "rlCheckErrors", lrlglCheckErrors );
+	assingGlobalFunction( "rlSetBlendMode", lrlglSetBlendMode );
+	assingGlobalFunction( "rlSetBlendFactors", lrlglSetBlendFactors );
+	assingGlobalFunction( "rlSetBlendFactorsSeparate", lrlglSetBlendFactorsSeparate );
 		/* Initialization functions. */
 	assingGlobalFunction( "rlGetVersion", lrlglGetVersion );
 		/* Render batch management. */

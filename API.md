@@ -7160,6 +7160,39 @@ Set face culling mode
 
 ---
 
+> RL.rlEnableScissorTest()
+
+Enable scissor test
+
+---
+
+> RL.rlDisableScissorTest()
+
+Disable scissor test
+
+---
+
+> success = RL.rlScissor( Rectangle area )
+
+Scissor test
+
+- Failure return false
+- Success return true
+
+---
+
+> RL.rlEnableWireMode()
+
+Enable wire mode
+
+---
+
+> RL.rlDisableWireMode()
+
+Disable wire mode
+
+---
+
 > success = RL.rlSetLineWidth( float width )
 
 Set the line drawing width
@@ -7186,6 +7219,74 @@ Enable line aliasing
 > RL.rlDisableSmoothLines()
 
 Disable line aliasing
+
+---
+
+> RL.rlEnableStereoRender()
+
+Enable stereo rendering
+
+---
+
+> RL.rlDisableStereoRender()
+
+Enable stereo rendering
+
+---
+
+> enabled = RL.rlIsStereoRenderEnabled()
+
+Check if stereo render is enabled
+
+- Success return bool
+
+---
+
+> success = RL.rlClearColor( Color color )
+
+Clear color buffer with color
+
+- Failure return false
+- Success return true
+
+---
+
+> RL.rlClearScreenBuffers()
+
+Clear used screen buffers ( color and depth )
+
+---
+
+> RL.rlCheckErrors()
+
+Check and log OpenGL error codes
+
+---
+
+> success = RL.rlSetBlendMode( int mode )
+
+Set blending mode
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlSetBlendFactors( int glSrcFactor, int glDstFactor, int glEquation )
+
+Set blending mode factor and equation ( using OpenGL factors )
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlSetBlendFactorsSeparate( int glSrcRGB, int glDstRGB, int glSrcAlpha, int glDstAlpha, int glEqRGB, int glEqAlpha )
+
+Set blending mode factors and equations separately ( using OpenGL factors )
+
+- Failure return false
+- Success return true
 
 ---
 

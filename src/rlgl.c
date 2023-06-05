@@ -724,6 +724,72 @@ int lrlglSetCullFace( lua_State *L ) {
 }
 
 /*
+> RL.rlEnableScissorTest()
+
+Enable scissor test
+*/
+int lrlglEnableScissorTest( lua_State *L ) {
+	rlEnableScissorTest();
+
+	return 0;
+}
+
+/*
+> RL.rlDisableScissorTest()
+
+Disable scissor test
+*/
+int lrlglDisableScissorTest( lua_State *L ) {
+	rlDisableScissorTest();
+
+	return 0;
+}
+
+/*
+> success = RL.rlScissor( Rectangle area )
+
+Scissor test
+
+- Failure return false
+- Success return true
+*/
+int lrlglScissor( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlScissor( Rectangle area )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Rectangle area = uluaGetRectangleIndex( L, 1 );
+	
+	rlScissor( area.x, area.y, area.width, area.height );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> RL.rlEnableWireMode()
+
+Enable wire mode
+*/
+int lrlglEnableWireMode( lua_State *L ) {
+	rlEnableWireMode();
+
+	return 0;
+}
+
+/*
+> RL.rlDisableWireMode()
+
+Disable wire mode
+*/
+int lrlglDisableWireMode( lua_State *L ) {
+	rlDisableWireMode();
+
+	return 0;
+}
+
+/*
 > success = RL.rlSetLineWidth( float width )
 
 Set the line drawing width
@@ -777,6 +843,158 @@ int lrlglDisableSmoothLines( lua_State *L ) {
 
 	return 0;
 }
+
+/*
+> RL.rlEnableStereoRender()
+
+Enable stereo rendering
+*/
+int lrlglEnableStereoRender( lua_State *L ) {
+	rlEnableStereoRender();
+
+	return 0;
+}
+
+/*
+> RL.rlDisableStereoRender()
+
+Enable stereo rendering
+*/
+int lrlglDisableStereoRender( lua_State *L ) {
+	rlDisableStereoRender();
+
+	return 0;
+}
+
+/*
+> enabled = RL.rlIsStereoRenderEnabled()
+
+Check if stereo render is enabled
+
+- Success return bool
+*/
+int lrlglIsStereoRenderEnabled( lua_State *L ) {
+	lua_pushboolean( L, rlIsStereoRenderEnabled() );
+
+	return 1;
+}
+
+/*
+> success = RL.rlClearColor( Color color )
+
+Clear color buffer with color
+
+- Failure return false
+- Success return true
+*/
+int lrlglClearColor( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlClearColor( Color color )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	Color color = uluaGetColorIndex( L, 1 );
+
+	rlClearColor( color.r, color.g, color.b, color.a );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> RL.rlClearScreenBuffers()
+
+Clear used screen buffers ( color and depth )
+*/
+int lrlglClearScreenBuffers( lua_State *L ) {
+	rlClearScreenBuffers();
+
+	return 0;
+}
+
+/*
+> RL.rlCheckErrors()
+
+Check and log OpenGL error codes
+*/
+int lrlglCheckErrors( lua_State *L ) {
+	rlCheckErrors();
+
+	return 0;
+}
+
+/*
+> success = RL.rlSetBlendMode( int mode )
+
+Set blending mode
+
+- Failure return false
+- Success return true
+*/
+int lrlglSetBlendMode( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlSetBlendMode( int mode )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlSetBlendMode( lua_tointeger( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlSetBlendFactors( int glSrcFactor, int glDstFactor, int glEquation )
+
+Set blending mode factor and equation ( using OpenGL factors )
+
+- Failure return false
+- Success return true
+*/
+int lrlglSetBlendFactors( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlSetBlendFactors( int glSrcFactor, int glDstFactor, int glEquation )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int glSrcFactor = lua_tointeger( L, 1 );
+	int glDstFactor = lua_tointeger( L, 2 );
+	int glEquation = lua_tointeger( L, 3 );
+
+	rlSetBlendFactors( glSrcFactor, glDstFactor, glEquation );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlSetBlendFactorsSeparate( int glSrcRGB, int glDstRGB, int glSrcAlpha, int glDstAlpha, int glEqRGB, int glEqAlpha )
+
+Set blending mode factors and equations separately ( using OpenGL factors )
+
+- Failure return false
+- Success return true
+*/
+int lrlglSetBlendFactorsSeparate( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 )
+	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_isnumber( L, 6 ) ) {
+		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.rlSetBlendFactorsSeparate( int glSrcRGB, int glDstRGB, int glSrcAlpha, int glDstAlpha, int glEqRGB, int glEqAlpha )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int glSrcRGB = lua_tointeger( L, 1 );
+	int glDstRGB = lua_tointeger( L, 2 );
+	int glSrcAlpha = lua_tointeger( L, 3 );
+	int glDstAlpha = lua_tointeger( L, 4 );
+	int glEqRGB = lua_tointeger( L, 5 );
+	int glEqAlpha = lua_tointeger( L, 6 );
+
+	rlSetBlendFactorsSeparate( glSrcRGB, glDstRGB, glSrcAlpha, glDstAlpha, glEqRGB, glEqAlpha );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
 
 /*
 ## RLGL - Initialization functions

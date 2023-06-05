@@ -5803,6 +5803,29 @@ function  RL.rlDisableBackfaceCulling() end
 ---@return any success 
 function RL.rlSetCullFace( mode ) end
 
+---Enable scissor test
+---@return any RL.rlEnableScissorTest
+function  RL.rlEnableScissorTest() end
+
+---Disable scissor test
+---@return any RL.rlDisableScissorTest
+function  RL.rlDisableScissorTest() end
+
+---Scissor test
+---- Failure return false
+---- Success return true
+---@param area table
+---@return any success 
+function RL.rlScissor( area ) end
+
+---Enable wire mode
+---@return any RL.rlEnableWireMode
+function  RL.rlEnableWireMode() end
+
+---Disable wire mode
+---@return any RL.rlDisableWireMode
+function  RL.rlDisableWireMode() end
+
 ---Set the line drawing width
 ---- Failure return false
 ---- Success return true
@@ -5822,6 +5845,62 @@ function  RL.rlEnableSmoothLines() end
 ---Disable line aliasing
 ---@return any RL.rlDisableSmoothLines
 function  RL.rlDisableSmoothLines() end
+
+---Enable stereo rendering
+---@return any RL.rlEnableStereoRender
+function  RL.rlEnableStereoRender() end
+
+---Enable stereo rendering
+---@return any RL.rlDisableStereoRender
+function  RL.rlDisableStereoRender() end
+
+---Check if stereo render is enabled
+---- Success return bool
+---@return any enabled 
+function RL.rlIsStereoRenderEnabled() end
+
+---Clear color buffer with color
+---- Failure return false
+---- Success return true
+---@param color table
+---@return any success 
+function RL.rlClearColor( color ) end
+
+---Clear used screen buffers ( color and depth )
+---@return any RL.rlClearScreenBuffers
+function  RL.rlClearScreenBuffers() end
+
+---Check and log OpenGL error codes
+---@return any RL.rlCheckErrors
+function  RL.rlCheckErrors() end
+
+---Set blending mode
+---- Failure return false
+---- Success return true
+---@param mode integer
+---@return any success 
+function RL.rlSetBlendMode( mode ) end
+
+---Set blending mode factor and equation ( using OpenGL factors )
+---- Failure return false
+---- Success return true
+---@param glSrcFactor integer
+---@param glDstFactor integer
+---@param glEquation integer
+---@return any success 
+function RL.rlSetBlendFactors( glSrcFactor, glDstFactor, glEquation ) end
+
+---Set blending mode factors and equations separately ( using OpenGL factors )
+---- Failure return false
+---- Success return true
+---@param glSrcRGB integer
+---@param glDstRGB integer
+---@param glSrcAlpha integer
+---@param glDstAlpha integer
+---@param glEqRGB integer
+---@param glEqAlpha integer
+---@return any success 
+function RL.rlSetBlendFactorsSeparate( glSrcRGB, glDstRGB, glSrcAlpha, glDstAlpha, glEqRGB, glEqAlpha ) end
 
 -- RLGL - Initialization functions
 

@@ -44,10 +44,24 @@ int lrlglDisableDepthMask( lua_State *L );
 int lrlglEnableBackfaceCulling( lua_State *L );
 int lrlglDisableBackfaceCulling( lua_State *L );
 int lrlglSetCullFace( lua_State *L );
+int lrlglEnableScissorTest( lua_State *L );
+int lrlglDisableScissorTest( lua_State *L );
+int lrlglScissor( lua_State *L );
+int lrlglEnableWireMode( lua_State *L );
+int lrlglDisableWireMode( lua_State *L );
 int lrlglSetLineWidth( lua_State *L );
 int lrlglGetLineWidth( lua_State *L );
 int lrlglEnableSmoothLines( lua_State *L );
 int lrlglDisableSmoothLines( lua_State *L );
+int lrlglEnableStereoRender( lua_State *L );
+int lrlglDisableStereoRender( lua_State *L );
+int lrlglIsStereoRenderEnabled( lua_State *L );
+int lrlglClearColor( lua_State *L );
+int lrlglClearScreenBuffers( lua_State *L );
+int lrlglCheckErrors( lua_State *L );
+int lrlglSetBlendMode( lua_State *L );
+int lrlglSetBlendFactors( lua_State *L );
+int lrlglSetBlendFactorsSeparate( lua_State *L );
 /* Initialization functions */
 int lrlglGetVersion( lua_State *L );
 /* Render batch management */

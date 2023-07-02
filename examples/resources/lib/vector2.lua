@@ -1,3 +1,8 @@
+-- For luaJit compatibility.
+if table.unpack == nil then
+	table.unpack = unpack
+end
+
 Vector2 = {}
 Vector2.meta = {
 	__index = Vector2,
@@ -24,9 +29,6 @@ Vector2.meta = {
 	end,
 	__unm = function( v )
 		return Vector2:new( -v.x, -v.y )
-	end,
-	__idiv = function( v, value )
-		return Vector2:new( v.x // value, v.y // value )
 	end,
 	__len = function( v )
 		local len = 0
@@ -88,6 +90,14 @@ end
 
 function Vector2:max( v2 )
 	return Vector2:new( math.max( self.x, v2.x ), math.max( self.y, v2.y ) )
+end
+
+function Vector2:floor()
+	return Vector2:new( math.floor( self.x ), math.floor( self.y ) )
+end
+
+function Vector2:ceil()
+	return Vector2:new( math.ceil( self.x ), math.ceil( self.y ) )
 end
 
 function Vector2:addValue( value )

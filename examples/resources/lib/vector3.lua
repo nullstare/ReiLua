@@ -1,3 +1,8 @@
+-- For luaJit compatibility.
+if table.unpack == nil then
+	table.unpack = unpack
+end
+
 Vector3 = {}
 Vector3.meta = {
 	__index = Vector3,
@@ -24,9 +29,6 @@ Vector3.meta = {
 	end,
 	__unm = function( v )
 		return Vector3:new( -v.x, -v.y, -v.z )
-	end,
-	__idiv = function( v, value )
-		return Vector3:new( v.x // value, v.y // value, v.z // value )
 	end,
 	__len = function( v )
 		local len = 0
@@ -92,6 +94,14 @@ end
 
 function Vector3:max( v2 )
 	return Vector3:new( RL.Vector3Max( self, v2 ) )
+end
+
+function Vector3:floor()
+	return Vector3:new( math.floor( self.x ), math.floor( self.y ), math.floor( self.z ) )
+end
+
+function Vector3:ceil()
+	return Vector3:new( math.ceil( self.x ), math.ceil( self.y ), math.ceil( self.z ) )
 end
 
 function Vector3:addValue( value )

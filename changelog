@@ -27,6 +27,8 @@ KEY CHANGES:
 	- ADDED: rlgl Vertex level operations
 	- ADDED: Draw Textured Polygon Example
 	- ADDED: rlgl General render state functions
+	- ADDED: LuaJIT compatibility.
+	- CHANGED Bitwise operators moved from utillib to bitlib for better luaJIT support.
 
 Detailed changes:
 	- FIXED: uluaGetRay was looking for integers instead of tables

@@ -74,7 +74,8 @@ GameFolder
 ```
 
 Application should now start successfully from executable. All functionality can be found in "API".
-ReiLua_API.lua can be put into project folder to provide annotations when using Lua Language Server.
+
+ReiLua_API.lua can be put into project folder to provide annotations when using "Lua Language Server".
 
 ## Interpreter Mode
 
@@ -94,11 +95,11 @@ Generate API.md and ReiLua_API.lua from build folder with command.
 
 ## Building
 
-I think the simplest way would be to statically link Raylib and Lua to the same executable. Specially on Linux this would simplify distribution of games since different distros tend to use different versions of librarys. Of course if you plan to only experiment with it, this isn't so important. Current Raylib version 4.2.0.
+I think the simplest way would be to statically link Raylib and Lua to the same executable. Specially on Linux this would simplify distribution of games since different distros tend to use different versions of librarys. Of course if you plan to only experiment with it, this isn't so important.
 
 https://github.com/raysan5/raylib
 
-https://github.com/lua/lua
+https://github.com/lua/lua or https://github.com/LuaJIT/LuaJIT
 
 ### Linux
 

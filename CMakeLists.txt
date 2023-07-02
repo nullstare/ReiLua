@@ -7,6 +7,7 @@ project( ReiLua )
 set( CMAKE_C_STANDARD 99 ) # Requires C99 standard
 
 option( SHARED "Build using dynamic libraries." off )
+option( LUAJIT "Use LuaJIT." off )
 
 if( NOT CMAKE_BUILD_TYPE )
   	SET( CMAKE_BUILD_TYPE Release CACHE STRING
@@ -31,13 +32,25 @@ if( EMSCRIPTEN ) # Web
 else() # Desktop
 	if( SHARED )
 		message( Shared )
+		set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DSHARED" )
 		find_package( raylib 4.5 REQUIRED ) # Requires at least version 4.5
 		target_link_libraries( ${PROJECT_NAME} raylib )
-		target_link_libraries( ${PROJECT_NAME} lua )
+
+		if( LUAJIT )
+			target_link_libraries( ${PROJECT_NAME} luajit )
+		else()
+			target_link_libraries( ${PROJECT_NAME} lua )
+		endif()
 	else()
 		message( Static )
 		target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/libraylib.a )
-		target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/liblua.a )
+
+		if( LUAJIT )
+			set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DLUAJIT" )
+			target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/libluajit.a )
+		else()
+			target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/liblua.a )
+		endif()
 	endif()
 
 	if( UNIX )

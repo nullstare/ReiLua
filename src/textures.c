@@ -36,7 +36,7 @@ static void checkTextureRealloc( int i ) {
 
 bool validImage( size_t id ) {
 	if ( id < 0 || state->imageCount < id || state->images[ id ] == NULL ) {
-		TraceLog( LOG_WARNING, "%s %d", "Invalid image", id );
+		TraceLog( state->logLevelInvalid, "%s %d", "Invalid image", id );
 		return false;
 	}
 	else {
@@ -114,7 +114,7 @@ Load image from file into CPU memory ( RAM )
 */
 int ltexturesLoadImage( lua_State *L ) {
 	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadImage( string fileName )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadImage( string fileName )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -141,7 +141,7 @@ Load image from GPU texture data
 */
 int ltexturesLoadImageFromTexture( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadImageFromTexture( Texture2D texture )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadImageFromTexture( Texture2D texture )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -179,7 +179,7 @@ Unload image from CPU memory ( RAM )
 */
 int ltexturesUnloadImage( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UnloadImage( Image image )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.UnloadImage( Image image )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -206,7 +206,7 @@ Export image data to file, returns true on success
 */
 int ltexturesExportImage( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ExportImage( Image image, string fileName )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ExportImage( Image image, string fileName )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -231,7 +231,7 @@ Export image as code file defining an array of bytes, returns true on success
 */
 int ltexturesExportImageAsCode( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ExportImageAsCode( Image image, string fileName )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ExportImageAsCode( Image image, string fileName )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -260,7 +260,7 @@ Generate image: plain color
 */
 int ltexturesGenImageColor( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenImageColor( int width, int height, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GenImageColor( int width, int height, Color color )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -285,7 +285,7 @@ Generate image: vertical gradient
 */
 int ltexturesGenImageGradientV( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenImageGradientV( Vector2 size, Color top, Color bottom )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GenImageGradientV( Vector2 size, Color top, Color bottom )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -310,7 +310,7 @@ Generate image: horizontal gradient
 */
 int ltexturesGenImageGradientH( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenImageGradientH( Vector2 size, Color left, Color right )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GenImageGradientH( Vector2 size, Color left, Color right )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -335,7 +335,7 @@ Generate image: radial gradient
 */
 int ltexturesGenImageGradientRadial( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenImageGradientRadial( Vector2 size, float density, Color inner, Color outer )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GenImageGradientRadial( Vector2 size, float density, Color inner, Color outer )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -361,7 +361,7 @@ Generate image: checked
 */
 int ltexturesGenImageChecked( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenImageChecked( Vector2 size, Vector2 checks, Color col1, Color col2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GenImageChecked( Vector2 size, Vector2 checks, Color col1, Color col2 )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -387,7 +387,7 @@ Generate image: white noise
 */
 int ltexturesGenImageWhiteNoise( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenImageWhiteNoise( Vector2 size, float factor )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GenImageWhiteNoise( Vector2 size, float factor )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -411,7 +411,7 @@ Generate image: perlin noise
 */
 int ltexturesGenImagePerlinNoise( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenImagePerlinNoise( Vector2 size, Vector2 offset, float factor )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GenImagePerlinNoise( Vector2 size, Vector2 offset, float factor )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -435,7 +435,7 @@ Generate image: cellular algorithm. Bigger tileSize means bigger cells
 */
 int ltexturesGenImageCellular( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenImageCellular( Vector2 size, int tileSize )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GenImageCellular( Vector2 size, int tileSize )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -459,7 +459,7 @@ Generate image: grayscale image from text data
 */
 int ltexturesGenImageText( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenImageText( Vector2 size, string text )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GenImageText( Vector2 size, string text )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -486,7 +486,7 @@ Create an image duplicate ( useful for transformations )
 */
 int ltexturesImageCopy( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageCopy( Image image )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageCopy( Image image )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -513,7 +513,7 @@ Create an image from another image piece
 */
 int ltexturesImageFromImage( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageFromImage( Image image, Rectangle rec )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageFromImage( Image image, Rectangle rec )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -542,7 +542,7 @@ Create an image from text ( custom sprite font )
 int ltexturesImageText( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) || !lua_isnumber( L, 3 )
 	|| !lua_isnumber( L, 4 ) || !lua_istable( L, 5 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageText( Font font, string text, float fontSize, float spacing, Color tint )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageText( Font font, string text, float fontSize, float spacing, Color tint )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -572,7 +572,7 @@ Convert image data to desired format
 */
 int ltexturesImageFormat( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageFormat( Image image, int newFormat )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageFormat( Image image, int newFormat )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -599,7 +599,7 @@ Convert image to POT ( power-of-two )
 */
 int ltexturesImageToPOT( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageToPOT( Image image, Color fill )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageToPOT( Image image, Color fill )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -626,7 +626,7 @@ Crop an image to a defined rectangle
 */
 int ltexturesImageCrop( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageCrop( Image image, Rectangle crop )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageCrop( Image image, Rectangle crop )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -653,7 +653,7 @@ Crop image depending on alpha value
 */
 int ltexturesImageAlphaCrop( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageAlphaCrop( Image image, float threshold )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageAlphaCrop( Image image, float threshold )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -680,7 +680,7 @@ Clear alpha channel to desired color
 */
 int ltexturesImageAlphaClear( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageAlphaClear( Image image, Color color, float threshold )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageAlphaClear( Image image, Color color, float threshold )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -708,7 +708,7 @@ Apply alpha mask to image
 */
 int ltexturesImageAlphaMask( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageAlphaMask( Image image, Image alphaMask )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageAlphaMask( Image image, Image alphaMask )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -735,7 +735,7 @@ Premultiply alpha channel
 */
 int ltexturesImageAlphaPremultiply( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageAlphaPremultiply( Image image )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageAlphaPremultiply( Image image )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -761,7 +761,7 @@ Resize image ( Bicubic scaling algorithm )
 */
 int ltexturesImageResize( lua_State *L ) {
 	if ( !lua_isnumber( L, 1) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageResize( Image image, Vector2 size )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageResize( Image image, Vector2 size )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -788,7 +788,7 @@ Resize image ( Nearest-Neighbor scaling algorithm )
 */
 int ltexturesImageResizeNN( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageResizeNN( Image image, Vector2 size )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageResizeNN( Image image, Vector2 size )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -815,7 +815,7 @@ Resize canvas and fill with color
 */
 int ltexturesImageResizeCanvas( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageResizeCanvas( Image image, Vector2 size, Vector2 offset, Color fill )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageResizeCanvas( Image image, Vector2 size, Vector2 offset, Color fill )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -844,7 +844,7 @@ Generate all mipmap levels for a provided image
 */
 int ltexturesImageMipmaps( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageMipmaps( Image image )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageMipmaps( Image image )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -870,7 +870,7 @@ Dither image data to 16bpp or lower ( Floyd-Steinberg dithering )
 */
 int ltexturesImageDither( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageDither( Image image, Color bpp )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageDither( Image image, Color bpp )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -897,7 +897,7 @@ Flip image vertically
 */
 int ltexturesImageFlipVertical( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageFlipVertical( Image image )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageFlipVertical( Image image )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -923,7 +923,7 @@ Flip image horizontally
 */
 int ltexturesImageFlipHorizontal( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageFlipHorizontal( Image image )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageFlipHorizontal( Image image )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -949,7 +949,7 @@ Rotate image clockwise 90deg
 */
 int ltexturesImageRotateCW( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageRotateCW( Image image )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageRotateCW( Image image )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -975,7 +975,7 @@ Rotate image counter-clockwise 90deg
 */
 int ltexturesImageRotateCCW( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageRotateCCW( Image image )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageRotateCCW( Image image )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1001,7 +1001,7 @@ Modify image color: tint
 */
 int ltexturesImageColorTint( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageColorTint( Image image, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageColorTint( Image image, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1028,7 +1028,7 @@ Modify image color: invert
 */
 int ltexturesImageColorInvert( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageColorInvert( Image image )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageColorInvert( Image image )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1054,7 +1054,7 @@ Modify image color: grayscale
 */
 int ltexturesImageColorGrayscale( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageColorGrayscale( Image image )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageColorGrayscale( Image image )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1080,7 +1080,7 @@ Modify image color: contrast ( -100 to 100 )
 */
 int ltexturesImageColorContrast( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageColorContrast( Image image, float contrast )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageColorContrast( Image image, float contrast )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1107,7 +1107,7 @@ Modify image color: brightness ( -255 to 255 )
 */
 int ltexturesImageColorBrightness( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageColorBrightness( Image image, int brightness )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageColorBrightness( Image image, int brightness )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1134,7 +1134,7 @@ Modify image color: replace color
 */
 int ltexturesImageColorReplace( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageColorReplace( Image image, Color color, Color replace )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageColorReplace( Image image, Color color, Color replace )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1162,7 +1162,7 @@ Load color data from image as a Color array ( RGBA - 32bit )
 */
 int ltexturesLoadImageColors( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadImageColors( Image image )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadImageColors( Image image )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1197,7 +1197,7 @@ Load colors palette from image as a Color array ( RGBA - 32bit )
 */
 int ltexturesLoadImagePalette( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadImagePalette( Image image, int maxPaletteSize )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadImagePalette( Image image, int maxPaletteSize )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1233,7 +1233,7 @@ Get image alpha border rectangle
 */
 int ltexturesGetImageAlphaBorder( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetImageAlphaBorder( Image image, float threshold )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetImageAlphaBorder( Image image, float threshold )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1259,7 +1259,7 @@ Get image pixel color at ( x, y ) position
 */
 int ltexturesGetImageColor( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetImageColor( Image image, Vector2 pixelPos )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetImageColor( Image image, Vector2 pixelPos )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1289,7 +1289,7 @@ Clear image background with given color
 */
 int ltexturesImageClearBackground( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageClearBackground( Image dst, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageClearBackground( Image dst, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1317,7 +1317,7 @@ Draw pixel within an image
 */
 int ltexturesImageDrawPixel( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageDrawPixel( Image dst, Vector2 position, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageDrawPixel( Image dst, Vector2 position, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1346,7 +1346,7 @@ Draw line within an image
 */
 int ltexturesImageDrawLine( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageDrawLine( Image dst, Vector2 start, Vector2 end, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageDrawLine( Image dst, Vector2 start, Vector2 end, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1376,7 +1376,7 @@ Draw circle within an image
 */
 int ltexturesImageDrawCircle( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageDrawCircle( Image dst, Vector2 center, int radius, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageDrawCircle( Image dst, Vector2 center, int radius, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1406,7 +1406,7 @@ Draw rectangle within an image
 */
 int ltexturesImageDrawRectangle( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageDrawRectangle( Image dst, Rectangle rec, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageDrawRectangle( Image dst, Rectangle rec, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1435,7 +1435,7 @@ Draw rectangle lines within an image
 */
 int ltexturesImageDrawRectangleLines( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageDrawRectangleLines( Image dst, Rectangle rec, int thick, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageDrawRectangleLines( Image dst, Rectangle rec, int thick, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1466,7 +1466,7 @@ Draw a source image within a destination image ( Tint applied to source )
 int ltexturesImageDraw( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 )
 	|| !lua_istable( L, 4 ) || !lua_istable( L, 5 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageDraw( Image dst, Image src, Rectangle srcRec, Rectangle dstRec, Color tint )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageDraw( Image dst, Image src, Rectangle srcRec, Rectangle dstRec, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1498,7 +1498,7 @@ Draw text ( Custom sprite font ) within an image ( Destination )
 int ltexturesImageDrawTextEx( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isstring( L, 3 ) || !lua_istable( L, 4 )
 	|| !lua_isnumber( L, 5 ) || !lua_isnumber( L, 6 ) || !lua_istable( L, 7 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ImageDrawTextEx( Image dst, Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageDrawTextEx( Image dst, Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1534,7 +1534,7 @@ Get image size
 */
 int ltexturesGetImageSize( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetImageSize( Image image )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetImageSize( Image image )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -1561,7 +1561,7 @@ Get image mipmaps. Mipmap levels, 1 by default
 */
 int ltexturesGetImageMipmaps( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetImageMipmaps( Image image )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetImageMipmaps( Image image )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1586,7 +1586,7 @@ Get image data format ( PixelFormat type )
 */
 int ltexturesGetImageFormat( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetImageFormat( Image image )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetImageFormat( Image image )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1615,7 +1615,7 @@ Load texture from file into GPU memory ( VRAM )
 */
 int ltexturesLoadTexture( lua_State *L ) {
 	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadTexture( string fileName )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadTexture( string fileName )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -1641,7 +1641,7 @@ Load texture from image data
 */
 int ltexturesLoadTextureFromImage( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadTextureFromImage( Image image )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadTextureFromImage( Image image )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -1668,7 +1668,7 @@ Load cubemap from image, multiple image cubemap layouts supported
 */
 int ltexturesLoadTextureCubemap( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadTextureCubemap( Image image, int layout )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadTextureCubemap( Image image, int layout )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -1696,7 +1696,7 @@ Load texture for rendering ( framebuffer )
 */
 int ltexturesLoadRenderTexture( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadRenderTexture( Vector2 size )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadRenderTexture( Vector2 size )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -1719,7 +1719,7 @@ Unload texture from GPU memory ( VRAM ). NOTE! Must be texture id.
 */
 int ltexturesUnloadTexture( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UnloadTexture( Texture2D texture )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.UnloadTexture( Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1741,7 +1741,7 @@ Check if a texture is ready
 */
 int ltexturesIsTextureReady( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.IsTextureReady( Texture2D texture )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsTextureReady( Texture2D texture )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -1763,7 +1763,7 @@ NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 25
 */
 int ltexturesUpdateTexture( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UpdateTexture( Texture2D texture, int{} pixels )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.UpdateTexture( Texture2D texture, int{} pixels )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1811,7 +1811,7 @@ NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 25
 */
 int ltexturesUpdateTextureRec( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UpdateTextureRec( Texture2D texture, Rectangle rec, int{} pixels )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.UpdateTextureRec( Texture2D texture, Rectangle rec, int{} pixels )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1866,7 +1866,7 @@ Draw a Texture2D
 */
 int ltexturesDrawTexture( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTexture( Texture2D texture, Vector2 position, Color tint )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawTexture( Texture2D texture, Vector2 position, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1890,7 +1890,7 @@ Draw a part of a texture defined by a rectangle
 */
 int ltexturesDrawTextureRec( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) || !lua_istable( L, 2 )  || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTextureRec( Texture2D texture, Rectangle source, Vector2 position, Color tint )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawTextureRec( Texture2D texture, Rectangle source, Vector2 position, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1916,7 +1916,7 @@ Draw a part of a texture defined by a rectangle with "pro" parameters
 int ltexturesDrawTexturePro( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 )
 	|| !lua_istable( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_istable( L, 6 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTexturePro( Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawTexturePro( Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1944,7 +1944,7 @@ Draws a texture ( or part of it ) that stretches or shrinks nicely
 int ltexturesDrawTextureNPatch( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 )
 	|| !lua_istable( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_istable( L, 6 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTextureNPatch( Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawTextureNPatch( Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1971,7 +1971,7 @@ Begin drawing to render texture
 */
 int ltexturesBeginTextureMode( lua_State *L ) {
 	if ( !isValidRenderTexture( L, 1, true ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.BeginTextureMode( RenderTexture2D target )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.BeginTextureMode( RenderTexture2D target )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2004,7 +2004,7 @@ Get texture type ( TEXTURE_TYPE_TEXTURE or TEXTURE_TYPE_RENDER_TEXTURE )
 */
 int ltexturesGetTextureType( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetTextureType( Texture2D texture )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetTextureType( Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2029,7 +2029,7 @@ Generate GPU mipmaps for a texture
 */
 int ltexturesGenTextureMipmaps( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GenTextureMipmaps( Texture2D texture )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GenTextureMipmaps( Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2051,7 +2051,7 @@ Set texture scaling filter mode ( TEXTURE_FILTER_POINT, TEXTURE_FILTER_BILINEAR.
 */
 int ltexturesSetTextureFilter( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetTextureFilter( Texture2D texture, int filter )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetTextureFilter( Texture2D texture, int filter )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2074,7 +2074,7 @@ Set texture wrapping mode ( TEXTURE_WRAP_REPEAT, TEXTURE_WRAP_CLAMP... )
 */
 int ltexturesSetTextureWrap( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetTextureWrap( Texture2D texture, int wrap )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetTextureWrap( Texture2D texture, int wrap )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2097,7 +2097,7 @@ Get texture OpenGL id
 */
 int ltexturesGetTextureId( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetTextureId( Texture2D texture )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetTextureId( Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2117,7 +2117,7 @@ Get texture size
 */
 int ltexturesGetTextureSize( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetTextureSize( Texture2D texture )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetTextureSize( Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2137,7 +2137,7 @@ Get texture mipmaps. Mipmap levels, 1 by default
 */
 int ltexturesGetTextureMipmaps( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetTextureMipmaps( Texture2D texture )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetTextureMipmaps( Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2157,7 +2157,7 @@ Get texture mipmaps. Mipmap levels, 1 by default
 */
 int ltexturesGetTextureFormat( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetTextureFormat( Texture2D texture )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetTextureFormat( Texture2D texture )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2181,7 +2181,7 @@ Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 */
 int ltexturesFade( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Fade( Color color, float alpha )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Fade( Color color, float alpha )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2203,7 +2203,7 @@ Returns hexadecimal value for a Color
 */
 int ltexturesColorToInt( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ColorToInt( Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ColorToInt( Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2224,7 +2224,7 @@ Returns Color normalized as float [0..1]
 */
 int ltexturesColorNormalize( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ColorNormalize( Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ColorNormalize( Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2245,7 +2245,7 @@ Color from normalized values [0..1]
 */
 int ltexturesColorFromNormalized( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ColorFromNormalized( Vector4 normalized )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ColorFromNormalized( Vector4 normalized )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2266,7 +2266,7 @@ Returns HSV values for a Color, hue [0..360], saturation/value [0..1]
 */
 int ltexturesColorToHSV( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ColorToHSV( Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ColorToHSV( Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2287,7 +2287,7 @@ Returns a Color from HSV values, hue [0..360], saturation/value [0..1]
 */
 int ltexturesColorFromHSV( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ColorFromHSV( float hue, float saturation, float value )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ColorFromHSV( float hue, float saturation, float value )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2310,7 +2310,7 @@ Get color multiplied with another color
 */
 int ltexturesColorTint( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ColorTint( Color color, Color tint )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ColorTint( Color color, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2332,7 +2332,7 @@ Get color with brightness correction, brightness factor goes from -1.0f to 1.0f
 */
 int ltexturesColorBrightness( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ColorBrightness( Color color, float factor )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ColorBrightness( Color color, float factor )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2354,7 +2354,7 @@ Get color with contrast correction, contrast values between -1.0f and 1.0f
 */
 int ltexturesColorContrast( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ColorContrast( Color color, float contrast )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ColorContrast( Color color, float contrast )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2376,7 +2376,7 @@ Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 */
 int ltexturesColorAlpha( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ColorAlpha( Color color, float alpha )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ColorAlpha( Color color, float alpha )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2398,7 +2398,7 @@ Returns src alpha-blended into dst color with tint
 */
 int ltexturesColorAlphaBlend( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.ColorAlphaBlend( Color dst, Color src, Color tint )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ColorAlphaBlend( Color dst, Color src, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2421,7 +2421,7 @@ Get Color structure from hexadecimal value
 */
 int ltexturesGetColor( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetColor( unsigned int hexValue )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetColor( unsigned int hexValue )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2442,7 +2442,7 @@ Get pixel color from source texture
 */
 int ltexturesGetPixelColor( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetPixelColor( Texture2D texture, Vector2 position )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetPixelColor( Texture2D texture, Vector2 position )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2466,7 +2466,7 @@ Get pixel data size in bytes for certain format
 */
 int ltexturesGetPixelDataSize( lua_State *L ) {
 	if ( !lua_isnumber( L, 1) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetPixelDataSize( int width, int height, int format )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetPixelDataSize( int width, int height, int format )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}

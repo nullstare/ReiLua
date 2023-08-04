@@ -1,4 +1,5 @@
 #include "main.h"
+#include "state.h"
 #include "shapes.h"
 #include "lua_core.h"
 #include "textures.h"
@@ -19,7 +20,7 @@ defining a font char white rectangle would allow drawing everything in a single 
 */
 int lshapesSetShapesTexture( lua_State *L ) {
 	if ( !isValidTexture( L, 1, true ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.SetShapesTexture( Texture2D texture, Rectangle source )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetShapesTexture( Texture2D texture, Rectangle source )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -42,7 +43,7 @@ Draw a pixel
 */
 int lshapesDrawPixel( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawPixel( Vector2 pos, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawPixel( Vector2 pos, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -65,7 +66,7 @@ Draw a line defining thickness
 */
 int lshapesDrawLine( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawLine( Vector2 startPos, Vector2 endPos, float thickness, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawLine( Vector2 startPos, Vector2 endPos, float thickness, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -90,7 +91,7 @@ Draw a line using cubic-bezier curves in-out
 */
 int lshapesDrawLineBezier( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawLineBezier( Vector2 startPos, Vector2 endPos, float thickness, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawLineBezier( Vector2 startPos, Vector2 endPos, float thickness, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -116,7 +117,7 @@ Draw line using quadratic bezier curves with a control point
 int lshapesDrawLineBezierQuad( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 )
 	|| !lua_isnumber( L, 4 ) || !lua_istable( L, 5 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawLineBezier( Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thickness, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawLineBezier( Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thickness, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -143,7 +144,7 @@ Draw line using quadratic bezier curves with a control point
 int lshapesDrawLineBezierCubic( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ||
 		 !lua_istable( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_istable( L, 6 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawLineBezierCubic( Vector2 startPos, Vector2 endPos, Vector2 startControlPos, Vector2 endControlPos, float thickness, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawLineBezierCubic( Vector2 startPos, Vector2 endPos, Vector2 startControlPos, Vector2 endControlPos, float thickness, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -170,7 +171,7 @@ Draw lines sequence
 */
 int lshapesDrawLineStrip( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawLineStrip( Vector2{} points, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawLineStrip( Vector2{} points, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -205,7 +206,7 @@ Draw a color-filled circle
 */
 int lshapesDrawCircle( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCircle( Vector2 center, float radius, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawCircle( Vector2 center, float radius, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -230,7 +231,7 @@ Draw a piece of a circle
 int lshapesDrawCircleSector( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ||
 		 !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_istable( L, 6 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCircleSector( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawCircleSector( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -258,7 +259,7 @@ Draw circle sector outline
 int lshapesDrawCircleSectorLines( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ||
 		 !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_istable( L, 6 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCircleSectorLines( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawCircleSectorLines( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -285,7 +286,7 @@ Draw a gradient-filled circle
 */
 int lshapesDrawCircleGradient( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCircleGradient( Vector2 center, float radius, Color color1, Color color2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawCircleGradient( Vector2 center, float radius, Color color1, Color color2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -310,7 +311,7 @@ Draw circle outline
 */
 int lshapesDrawCircleLines( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawCircleLines( Vector2 center, float radius, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawCircleLines( Vector2 center, float radius, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -334,7 +335,7 @@ Draw ellipse
 */
 int lshapesDrawEllipse( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawEllipse( Vector2 center, float radiusH, float radiusV, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawEllipse( Vector2 center, float radiusH, float radiusV, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -359,7 +360,7 @@ Draw ellipse outline
 */
 int lshapesDrawEllipseLines( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawEllipseLines( Vector2 center, float radiusH, float radiusV, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawEllipseLines( Vector2 center, float radiusH, float radiusV, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -385,7 +386,7 @@ Draw ring
 int lshapesDrawRing( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ||
 		 !lua_isnumber( L, 5 ) || !lua_isnumber( L, 6 ) || !lua_istable( L, 7 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawRing( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawRing( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -414,7 +415,7 @@ Draw ring outline
 int lshapesDrawRingLines( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ||
 		 !lua_isnumber( L, 5 ) || !lua_isnumber( L, 6 ) || !lua_istable( L, 7 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawRingLines( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawRingLines( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -442,7 +443,7 @@ Draw a color-filled rectangle
 */
 int lshapesDrawRectangle( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawRectangle( Rectangle rec, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawRectangle( Rectangle rec, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -465,7 +466,7 @@ Draw a color-filled rectangle with pro parameters
 */
 int lshapesDrawRectanglePro( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawRectanglePro( Rectangle rec, Vector2 origin, float rotation, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawRectanglePro( Rectangle rec, Vector2 origin, float rotation, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -490,7 +491,7 @@ Draw a vertical-gradient-filled rectangle
 */
 int lshapesDrawRectangleGradientV( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawRectangleGradientV( Rectangle rectangle, Color color1, Color color2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawRectangleGradientV( Rectangle rectangle, Color color1, Color color2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -514,7 +515,7 @@ Draw a horizontal-gradient-filled rectangle
 */
 int lshapesDrawRectangleGradientH( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawRectangleGradientH( Rectangle rectangle, Color color1, Color color2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawRectangleGradientH( Rectangle rectangle, Color color1, Color color2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -539,7 +540,7 @@ Draw a gradient-filled rectangle with custom vertex colors
 int lshapesDrawRectangleGradientEx( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 )
 	|| !lua_istable( L, 4 ) || !lua_istable( L, 5 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawRectangleGradientEx( Rectangle rectangle, Color col1, Color col2, Color col3, Color col4 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawRectangleGradientEx( Rectangle rectangle, Color col1, Color col2, Color col3, Color col4 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -565,7 +566,7 @@ Draw rectangle outline
 */
 int lshapesDrawRectangleLines( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawRectangleLines( Rectangle rec, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawRectangleLines( Rectangle rec, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -588,7 +589,7 @@ Draw rectangle outline with extended parameters
 */
 int lshapesDrawRectangleLinesEx( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawRectangleLinesEx( Rectangle rec, int lineThick, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawRectangleLinesEx( Rectangle rec, int lineThick, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -612,7 +613,7 @@ Draw rectangle with rounded edges
 */
 int lshapesDrawRectangleRounded( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawRectangleRounded( Rectangle rec, float roundness, int segments, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawRectangleRounded( Rectangle rec, float roundness, int segments, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -638,7 +639,7 @@ Draw rectangle with rounded edges outline
 int lshapesDrawRectangleRoundedLines( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 )
 	|| !lua_isnumber( L, 4 ) || !lua_istable( L, 5 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawRectangleRoundedLines( Rectangle rec, float roundness, int segments, int lineThick, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawRectangleRoundedLines( Rectangle rec, float roundness, int segments, int lineThick, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -664,7 +665,7 @@ Draw a color-filled triangle ( Vertex in counter-clockwise order! )
 */
 int lshapesDrawTriangle( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTriangle( Vector2 v1, Vector2 v2, Vector2 v3, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawTriangle( Vector2 v1, Vector2 v2, Vector2 v3, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -689,7 +690,7 @@ Draw triangle outline ( Vertex in counter-clockwise order! )
 */
 int lshapesDrawTriangleLines( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTriangleLines( Vector2 v1, Vector2 v2, Vector2 v3, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawTriangleLines( Vector2 v1, Vector2 v2, Vector2 v3, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -714,7 +715,7 @@ Draw a triangle fan defined by points ( first vertex is the center )
 */
 int lshapesDrawTriangleFan( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTriangleFan( Vector2{} points, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawTriangleFan( Vector2{} points, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -749,7 +750,7 @@ Draw a triangle strip defined by points
 */
 int lshapesDrawTriangleStrip( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTriangleStrip( Vector2{} points, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawTriangleStrip( Vector2{} points, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -785,7 +786,7 @@ Draw a regular polygon ( Vector version )
 int lshapesDrawPoly( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 )
 	|| !lua_isnumber( L, 4 ) || !lua_istable( L, 5 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawPoly( Vector2 center, int sides, float radius, float rotation, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawPoly( Vector2 center, int sides, float radius, float rotation, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -812,7 +813,7 @@ Draw a polygon outline of n sides
 int lshapesDrawPolyLines( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 )
 	|| !lua_isnumber( L, 4 ) || !lua_istable( L, 5 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawPolyLines( Vector2 center, int sides, float radius, float rotation, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawPolyLines( Vector2 center, int sides, float radius, float rotation, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -839,7 +840,7 @@ Draw a polygon outline of n sides with extended parameters
 int lshapesDrawPolyLinesEx( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ||
 		 !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_istable( L, 6 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawPolyLinesEx( Vector2 center, int sides, float radius, float rotation, float lineThick, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawPolyLinesEx( Vector2 center, int sides, float radius, float rotation, float lineThick, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -870,7 +871,7 @@ Check collision between two rectangles
 */
 int lshapesCheckCollisionRecs( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.CheckCollisionRecs( Rectangle rec1, Rectangle rec2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.CheckCollisionRecs( Rectangle rec1, Rectangle rec2 )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -892,7 +893,7 @@ Check collision between two circles
 */
 int lshapesCheckCollisionCircles( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.CheckCollisionCircles( Vector2 center1, float radius1, Vector2 center2, float radius2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.CheckCollisionCircles( Vector2 center1, float radius1, Vector2 center2, float radius2 )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -916,7 +917,7 @@ Check collision between circle and rectangle
 */
 int lshapesCheckCollisionCircleRec( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.CheckCollisionCircleRec( Vector2 center, float radius, Rectangle rec )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.CheckCollisionCircleRec( Vector2 center, float radius, Rectangle rec )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -939,7 +940,7 @@ Check if point is inside rectangle
 */
 int lshapesCheckCollisionPointRec( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.CheckCollisionPointRec( Vector2 point, Rectangle rec )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.CheckCollisionPointRec( Vector2 point, Rectangle rec )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -961,7 +962,7 @@ Check if point is inside circle
 */
 int lshapesCheckCollisionPointCircle( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.CheckCollisionPointCircle( Vector2 point, Vector2 center, float radius )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.CheckCollisionPointCircle( Vector2 point, Vector2 center, float radius )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -984,7 +985,7 @@ Check if point is inside a triangle
 */
 int lshapesCheckCollisionPointTriangle( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.CheckCollisionPointTriangle( Vector2 point, Vector2 p1, Vector2 p2, Vector2 p3 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.CheckCollisionPointTriangle( Vector2 point, Vector2 p1, Vector2 p2, Vector2 p3 )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -1008,7 +1009,7 @@ Check if point is within a polygon described by array of vertices
 */
 int lshapesCheckCollisionPointPoly( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.CheckCollisionPointPoly( Vector2 point, Vector2{} points )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.CheckCollisionPointPoly( Vector2 point, Vector2{} points )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -1041,7 +1042,7 @@ Check the collision between two lines defined by two points each, returns collis
 */
 int lshapesCheckCollisionLines( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.CheckCollisionLines( Vector2 startPos1, Vector2 endPos1, Vector2 startPos2, Vector2 endPos2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.CheckCollisionLines( Vector2 startPos1, Vector2 endPos1, Vector2 startPos2, Vector2 endPos2 )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -1068,7 +1069,7 @@ Check if point belongs to line created between two points [p1] and [p2] with def
 */
 int lshapesCheckCollisionPointLine( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.CheckCollisionPointLine( Vector2 point, Vector2 p1, Vector2 p2, int threshold )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.CheckCollisionPointLine( Vector2 point, Vector2 p1, Vector2 p2, int threshold )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -1092,7 +1093,7 @@ Get collision rectangle for two rectangles collision
 */
 int lshapesGetCollisionRec( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetCollisionRec( Rectangle rec1, Rectangle rec2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCollisionRec( Rectangle rec1, Rectangle rec2 )" );
 		lua_pushnil( L );
 		return 1;
 	}

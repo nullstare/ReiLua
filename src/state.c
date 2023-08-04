@@ -17,6 +17,7 @@ bool stateInit( const char *exePath ) {
 	state->resolution = (Vector2){ 800, 600 };
 	state->luaState = NULL;
 	state->guiFont = 0;
+	state->logLevelInvalid = LOG_ERROR;
 	/* Images. */
 	state->imageAlloc = ALLOC_PAGE_SIZE;
 	state->imageCount = 0;

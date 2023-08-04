@@ -77,7 +77,7 @@ Set gui controls alpha ( global state ), alpha goes from 0.0f to 1.0f
 */
 int lguiGuiFade( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiFade( float alpha )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiFade( float alpha )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -99,7 +99,7 @@ Set gui state ( global state )
 */
 int lguiGuiSetState( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiSetState( int state )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiSetState( int state )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -138,7 +138,7 @@ Set gui custom font ( global state )
 */
 int lguiGuiSetFont( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiSetFont( Font font )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiSetFont( Font font )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -178,7 +178,7 @@ Set one style property
 */
 int lguiGuiSetStyle( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiSetStyle( int control, int property, int value )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiSetStyle( int control, int property, int value )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -202,7 +202,7 @@ Get one style property
 */
 int lguiGuiGetStyle( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiGetStyle( int control, int property )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiGetStyle( int control, int property )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -224,7 +224,7 @@ Load style file over global style variable ( .rgs )
 */
 int lguiGuiLoadStyle( lua_State *L ) {
 	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiLoadStyle( string fileName )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiLoadStyle( string fileName )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -267,7 +267,7 @@ Window Box control, shows a window that can be closed
 */
 int lguiGuiWindowBox( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiWindowBox( Rectangle bounds, string title )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiWindowBox( Rectangle bounds, string title )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -288,7 +288,7 @@ Group Box control with text name
 */
 int lguiGuiGroupBox( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiGroupBox( Rectangle bounds, string text )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiGroupBox( Rectangle bounds, string text )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -310,7 +310,7 @@ Line separator control, could contain text
 */
 int lguiGuiLine( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiLine( Rectangle bounds, string text )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiLine( Rectangle bounds, string text )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -332,7 +332,7 @@ Panel control, useful to group controls
 */
 int lguiGuiPanel( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiPanel( Rectangle bounds, string text )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiPanel( Rectangle bounds, string text )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -354,7 +354,7 @@ Scroll Panel control
 */
 int lguiGuiScrollPanel( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiScrollPanel( Rectangle bounds, string text, Rectangle content, Vector2 scroll )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiScrollPanel( Rectangle bounds, string text, Rectangle content, Vector2 scroll )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -382,7 +382,7 @@ Label control, shows text
 */
 int lguiGuiLabel( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiLabel( Rectangle bounds, string text )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiLabel( Rectangle bounds, string text )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -404,7 +404,7 @@ Button control, returns true when clicked
 */
 int lguiGuiButton( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiButton( Rectangle bounds, string text )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiButton( Rectangle bounds, string text )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -425,7 +425,7 @@ Label button control, show true when clicked
 */
 int lguiGuiLabelButton( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiLabelButton( Rectangle bounds, string text )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiLabelButton( Rectangle bounds, string text )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -446,7 +446,7 @@ Toggle Button control, returns true when active
 */
 int lguiGuiToggle( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) || !lua_isboolean( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiToggle( Rectangle bounds, string text, bool active )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiToggle( Rectangle bounds, string text, bool active )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -468,7 +468,7 @@ Toggle Group control, returns active toggle index
 */
 int lguiGuiToggleGroup( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiToggleGroup( Rectangle bounds, string text, bool active )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiToggleGroup( Rectangle bounds, string text, bool active )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -490,7 +490,7 @@ Check Box control, returns true when active
 */
 int lguiGuiCheckBox( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) || !lua_isboolean( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiCheckBox( Rectangle bounds, string text, bool checked )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiCheckBox( Rectangle bounds, string text, bool checked )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -512,7 +512,7 @@ Combo Box control, returns selected item index
 */
 int lguiGuiComboBox( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiComboBox( Rectangle bounds, string text, int active )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiComboBox( Rectangle bounds, string text, int active )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -534,7 +534,7 @@ Text Box control, updates input text
 */
 int lguiGuiTextBox( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isboolean( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiTextBox( Rectangle bounds, string text, int textSize, bool editMode )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiTextBox( Rectangle bounds, string text, int textSize, bool editMode )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -561,7 +561,7 @@ Text Box control with multiple lines
 */
 int lguiGuiTextBoxMulti( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isboolean( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiTextBoxMulti( Rectangle bounds, string text, int textSize, bool editMode )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiTextBoxMulti( Rectangle bounds, string text, int textSize, bool editMode )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -589,7 +589,7 @@ Spinner control, returns selected value
 int lguiGuiSpinner( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) || !lua_isnumber( L, 3 )
 	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_isboolean( L, 6 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiSpinner( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiSpinner( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -616,7 +616,7 @@ Value Box control, updates input text with numbers
 int lguiGuiValueBox( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) || !lua_isnumber( L, 3 )
 	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_isboolean( L, 6 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiValueBox( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiValueBox( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -643,7 +643,7 @@ Slider control, returns selected value
 int lguiGuiSlider( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) || !lua_isstring( L, 3 )
 	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_isnumber( L, 6 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiSlider( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiSlider( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -668,7 +668,7 @@ Slider Bar control, returns selected value
 int lguiGuiSliderBar( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) || !lua_isstring( L, 3 )
 	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_isnumber( L, 6 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiSliderBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiSliderBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -693,7 +693,7 @@ Progress Bar control, shows current progress value
 int lguiGuiProgressBar( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isstring( L, 2 ) || !lua_isstring( L, 3 )
 	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_isnumber( L, 6 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiProgressBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiProgressBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -717,7 +717,7 @@ Scroll Bar control
 */
 int lguiGuiScrollBar( lua_State *L ) {
 	if ( !lua_istable( L, 1 )	|| !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiScrollBar( Rectangle bounds, int value, int minValue, int maxValue )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiScrollBar( Rectangle bounds, int value, int minValue, int maxValue )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -741,7 +741,7 @@ Dropdown Box control, returns selected item
 */
 int lguiGuiDropdownBox( lua_State *L ) {
 	if ( !lua_istable( L, 1 )	|| !lua_isstring( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isboolean( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiDropdownBox( Rectangle bounds, string text, int active, bool editMode )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiDropdownBox( Rectangle bounds, string text, int active, bool editMode )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -765,7 +765,7 @@ Status Bar control, shows info text
 */
 int lguiGuiStatusBar( lua_State *L ) {
 	if ( !lua_istable( L, 1 )	|| !lua_isstring( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiStatusBar( Rectangle bounds, string text )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiStatusBar( Rectangle bounds, string text )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -787,7 +787,7 @@ Dummy control for placeholders
 */
 int lguiGuiDummyRec( lua_State *L ) {
 	if ( !lua_istable( L, 1 )	|| !lua_isstring( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiDummyRec( Rectangle bounds, string text )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiDummyRec( Rectangle bounds, string text )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -809,7 +809,7 @@ Grid control, returns mouse cell position
 */
 int lguiGuiGrid( lua_State *L ) {
 	if ( !lua_istable( L, 1 )	|| !lua_isstring( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiGrid( Rectangle bounds, string text, float spacing, int subdivs )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiGrid( Rectangle bounds, string text, float spacing, int subdivs )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -836,7 +836,7 @@ List View control, returns selected list item index and scroll index
 */
 int lguiGuiListView( lua_State *L ) {
 	if ( !lua_istable( L, 1 )	|| !lua_isstring( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiListView( Rectangle bounds, string text, int scrollIndex, int active )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiListView( Rectangle bounds, string text, int scrollIndex, int active )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -861,7 +861,7 @@ List View with extended parameters, returns selected list item index, scroll ind
 int lguiGuiListViewEx( lua_State *L ) {
 	if ( !lua_istable( L, 1 )	|| !lua_isstring( L, 2 ) || !lua_isnumber( L, 3 )
 	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiListViewEx( Rectangle bounds, string text, int focus, int scrollIndex, int active )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiListViewEx( Rectangle bounds, string text, int focus, int scrollIndex, int active )" );
 		lua_pushnil( L );
 		return 1;
 	}
@@ -889,7 +889,7 @@ Message Box control, displays a message, returns button index ( 0 is x button )
 */
 int lguiGuiMessageBox( lua_State *L ) {
 	if ( !lua_istable( L, 1 )	|| !lua_isstring( L, 2 ) || !lua_isstring( L, 3 ) || !lua_isstring( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiMessageBox( Rectangle bounds, string title, string message, string buttons )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiMessageBox( Rectangle bounds, string title, string message, string buttons )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -911,7 +911,7 @@ Text Input Box control, ask for text, supports secret
 int lguiGuiTextInputBox( lua_State *L ) {
 	if ( !lua_istable( L, 1 )	|| !lua_isstring( L, 2 ) || !lua_isstring( L, 3 ) || !lua_isstring( L, 4 )
 	|| !lua_isstring( L, 5 ) || !lua_isnumber( L, 6 ) || !lua_isnumber( L, 7 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiTextInputBox( Rectangle bounds, string title, string message, string buttons, string text, int textMaxSize, int secretViewActive )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiTextInputBox( Rectangle bounds, string title, string message, string buttons, string text, int textMaxSize, int secretViewActive )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -938,7 +938,7 @@ Color Picker control ( multiple color controls )
 */
 int lguiGuiColorPicker( lua_State *L ) {
 	if ( !lua_istable( L, 1 )	|| !lua_isstring( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiColorPicker( Rectangle bounds, string text, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiColorPicker( Rectangle bounds, string text, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -960,7 +960,7 @@ Color Panel control
 */
 int lguiGuiColorPanel( lua_State *L ) {
 	if ( !lua_istable( L, 1 )	|| !lua_isstring( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiColorPanel( Rectangle bounds, string text, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiColorPanel( Rectangle bounds, string text, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -982,7 +982,7 @@ Color Bar Alpha control
 */
 int lguiGuiColorBarAlpha( lua_State *L ) {
 	if ( !lua_istable( L, 1 )	|| !lua_isstring( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiColorBarAlpha( Rectangle bounds, string text, float alpha )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiColorBarAlpha( Rectangle bounds, string text, float alpha )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1004,7 +1004,7 @@ Color Bar Hue control
 */
 int lguiGuiColorBarHue( lua_State *L ) {
 	if ( !lua_istable( L, 1 )	|| !lua_isstring( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiColorBarHue( Rectangle bounds, string text, float value )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiColorBarHue( Rectangle bounds, string text, float value )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1030,7 +1030,7 @@ Get text with icon id prepended ( if supported )
 */
 int lguiGuiIconText( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiIconText( int iconId, string text )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiIconText( int iconId, string text )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1056,7 +1056,7 @@ Draw icon
 */
 int lguiGuiDrawIcon( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 )	|| !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiDrawIcon( int iconId, Vector2 pos, int pixelSize, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiDrawIcon( int iconId, Vector2 pos, int pixelSize, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1081,7 +1081,7 @@ Set icon scale ( 1 by default )
 */
 int lguiGuiSetIconScale( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiSetIconScale( int scale )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiSetIconScale( int scale )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1103,7 +1103,7 @@ Set icon pixel value
 */
 int lguiGuiSetIconPixel( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiSetIconPixel( int iconId, Vector2 pos )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiSetIconPixel( int iconId, Vector2 pos )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1126,7 +1126,7 @@ Clear icon pixel value
 */
 int lguiGuiClearIconPixel( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiClearIconPixel( int iconId, Vector2 pos )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiClearIconPixel( int iconId, Vector2 pos )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1149,7 +1149,7 @@ Check icon pixel value
 */
 int lguiGuiCheckIconPixel( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GuiCheckIconPixel( int iconId, Vector2 pos )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiCheckIconPixel( int iconId, Vector2 pos )" );
 		lua_pushnil( L );
 		return 1;
 	}

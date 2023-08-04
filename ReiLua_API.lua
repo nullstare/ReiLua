@@ -925,6 +925,18 @@ function RL.TraceLog( logLevel, text ) end
 ---@return any success 
 function RL.SetTraceLogLevel( logLevel ) end
 
+---Set the log level for bad function calls and invalid data formats.
+---- Failure return false
+---- Success return true
+---@param logLevel integer
+---@return any success 
+function RL.SetLogLevelInvalid( logLevel ) end
+
+---Get the log level for bad function calls and invalid data formats.
+---- Success return int
+---@return any logLevel 
+function RL.GetLogLevelInvalid() end
+
 ---Open URL with default system browser ( If available )
 ---- Failure return false
 ---- Success return true

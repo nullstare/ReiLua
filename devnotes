@@ -11,7 +11,6 @@ Backlog {
 	* New type validators.
 	* Platformer example physics process for true framerate independence.
 	* Extend color lib functionality.
-	* Change snake example to use vec2.
 
 	* IsWaveReady and other Is* ready functions.
 	* Text

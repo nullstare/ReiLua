@@ -23,15 +23,10 @@ List of some MISSING features that are planned to be included. For specific func
 
 * Core
 	* VR stereo config functions for VR simulator
-* Textures
-	* LoadImageFromMemory
 * Text
 	* GlyphInfo
-	* LoadFontFromMemory
 * Audio
 	* AudioStream management functions
-	* LoadWaveFromMemory
-	* LoadMusicStreamFromMemory
 
 ## Usage
 

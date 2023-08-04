@@ -614,7 +614,7 @@ void defineGlobals() {
 }
 
 // Custom logging funtion
-void LogCustom( int logLevel, const char *text, va_list args ) {
+void logCustom( int logLevel, const char *text, va_list args ) {
 	char string[ STRING_LEN ] = {'\0'};
 	char msg[ STRING_LEN ] = {'\0'};
 
@@ -677,14 +677,12 @@ int luaTraceback( lua_State *L ) {
 		lua_pop( L, 1 );
 		return 1;
 	}
-
 	lua_getfield( L, -1, "traceback" );
 
 	if ( !lua_isfunction( L, -1 ) ) {
 		lua_pop( L, 2 );
 		return 1;
 	}
-
 	lua_pushvalue( L, 1 ); // pass error message
 	lua_pushinteger( L, 2 ); // skip this function and traceback
 	lua_call( L, 2, 1 ); // call debug.traceback
@@ -722,7 +720,7 @@ bool luaCallMain() {
 	int tracebackidx = lua_gettop( L );
 
 	/* Apply custom callback here. */
-	SetTraceLogCallback( LogCustom );
+	SetTraceLogCallback( logCustom );
 
 	lua_getglobal( L, "RL" );
 	lua_getfield ( L, -1, "init" );
@@ -740,7 +738,7 @@ bool luaCallMain() {
     }
 	lua_pop( L, -1 );
 
-	return true;
+	return state->run;
 }
 
 void luaCallProcess() {
@@ -851,6 +849,8 @@ void luaRegister() {
 	assingGlobalFunction( "SetConfigFlags", lcoreSetConfigFlags );
 	assingGlobalFunction( "TraceLog", lcoreTraceLog );
 	assingGlobalFunction( "SetTraceLogLevel", lcoreSetTraceLogLevel );
+	assingGlobalFunction( "SetLogLevelInvalid", lcoreSetLogLevelInvalid );
+	assingGlobalFunction( "GetLogLevelInvalid", lcoreGetLogLevelInvalid );
 	assingGlobalFunction( "OpenURL", lcoreOpenURL );
 		/* Cursor. */
 	assingGlobalFunction( "ShowCursor", lcoreShowCursor );
@@ -1613,7 +1613,7 @@ bool isValidTexture( lua_State *L, int index, bool allowTable ) {
 		return true;
 	}
 	else {
-		TraceLog( LOG_WARNING, "%s", "Error. Invalid Texture." );
+		TraceLog( state->logLevelInvalid, "%s", "Error. Invalid Texture." );
 		return false;
 	}
 }
@@ -1633,7 +1633,7 @@ bool isValidRenderTexture( lua_State *L, int index, bool allowTable ) {
 		return true;
 	}
 	else {
-		TraceLog( LOG_WARNING, "%s", "Error. Invalid RenderTexture." );
+		TraceLog( state->logLevelInvalid, "%s", "Error. Invalid RenderTexture." );
 		return false;
 	}
 }
@@ -1653,7 +1653,7 @@ bool isValidCamera2D( lua_State *L, int index, bool allowTable ) {
 		return true;
 	}
 	else {
-		TraceLog( LOG_WARNING, "%s", "Error. Invalid Camera2D." );
+		TraceLog( state->logLevelInvalid, "%s", "Error. Invalid Camera2D." );
 		return false;
 	}
 }
@@ -1673,7 +1673,7 @@ bool isValidCamera3D( lua_State *L, int index, bool allowTable ) {
 		return true;
 	}
 	else {
-		TraceLog( LOG_WARNING, "%s", "Error. Invalid Camera3D." );
+		TraceLog( state->logLevelInvalid, "%s", "Error. Invalid Camera3D." );
 		return false;
 	}
 }
@@ -1688,7 +1688,7 @@ Color uluaGetColorIndex( lua_State *L, int index ) {
     Color color = { 0, 0, 0, 255 };
 
     if ( !lua_istable( L, index ) ) {
-		TraceLog( LOG_WARNING, "%s", "Error. Wrong color value. Returning { 0, 0, 0, 255 }" );
+		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong color value. Returning { 0, 0, 0, 255 }" );
         return color;
     }
 	// int t = lua_gettop( L ), i = 0;
@@ -1744,7 +1744,7 @@ Vector2 uluaGetVector2Index( lua_State *L, int index ) {
     Vector2 vector = { 0.0f, 0.0f };
 
     if ( !lua_istable( L, index ) ) {
-		TraceLog( LOG_WARNING, "%s", "Error. Wrong vector2 value. Returning { 0, 0 }" );
+		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong vector2 value. Returning { 0, 0 }" );
         return vector;
     }
 	int t = index, i = 0;
@@ -1787,7 +1787,7 @@ Vector3 uluaGetVector3Index( lua_State *L, int index ) {
     Vector3 vector = { 0.0f, 0.0f, 0.0f };
 
     if ( !lua_istable( L, index ) ) {
-		TraceLog( LOG_WARNING, "%s", "Error. Wrong vector3 value. Returning { 0, 0, 0 }" );
+		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong vector3 value. Returning { 0, 0, 0 }" );
         return vector;
     }
 	int t = index, i = 0;
@@ -1836,7 +1836,7 @@ Vector4 uluaGetVector4Index( lua_State *L, int index ) {
     Vector4 vector = { 0.0f, 0.0f, 0.0f, 0.0f };
 
     if ( !lua_istable( L, index ) ) {
-		TraceLog( LOG_WARNING, "%s", "Error. Wrong vector4 value. Returning { 0, 0, 0, 0 }" );
+		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong vector4 value. Returning { 0, 0, 0, 0 }" );
         return vector;
     }
 	int t = index, i = 0;
@@ -1891,7 +1891,7 @@ Rectangle uluaGetRectangleIndex( lua_State *L, int index ) {
     Rectangle rect = { 0.0f, 0.0f, 0.0f, 0.0f };
 
     if ( !lua_istable( L, index ) ) {
-		TraceLog( LOG_WARNING, "%s", "Error. Wrong rectangle value. Returning { 0, 0, 0, 0 }" );
+		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong rectangle value. Returning { 0, 0, 0, 0 }" );
         return rect;
     }
 
@@ -1947,7 +1947,7 @@ Quaternion uluaGetQuaternionIndex( lua_State *L, int index ) {
     Quaternion quaternion = { 0.0f, 0.0f, 0.0f, 0.0f };
 
     if ( !lua_istable( L, index ) ) {
-		TraceLog( LOG_WARNING, "%s", "Error. Wrong quaternion value. Returning { 0, 0, 0, 0 }" );
+		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong quaternion value. Returning { 0, 0, 0, 0 }" );
         return quaternion;
     }
 	int t = index, i = 0;
@@ -2003,7 +2003,7 @@ Matrix uluaGetMatrixIndex( lua_State *L, int index ) {
 	float m[4][4];
 
     if ( !lua_istable( L, index ) ) {
-		TraceLog( LOG_WARNING, "%s", "Error. Wrong matrix value. Returning MatrixIdentity." );
+		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong matrix value. Returning MatrixIdentity." );
         return MatrixIdentity();
     }
 	int t = index, i = 0;
@@ -2041,7 +2041,7 @@ BoundingBox uluaGetBoundingBoxIndex( lua_State *L, int index ) {
 	BoundingBox box = { .min = { 0.0, 0.0, 0.0 }, .max = { 0.0, 0.0, 0.0 } };
 
 	if ( !lua_istable( L, index ) ) {
-		TraceLog( LOG_WARNING, "%s", "Error. Wrong boundingbox value. Returning { min{ 0, 0, 0 }, max{ 0, 0, 0 } }." );
+		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong boundingbox value. Returning { min{ 0, 0, 0 }, max{ 0, 0, 0 } }." );
         return box;
     }
 	int t = index, i = 0;
@@ -2085,7 +2085,7 @@ Ray uluaGetRayIndex( lua_State *L, int index ) {
 	Ray ray = { .position = { 0.0, 0.0, 0.0 }, .direction = { 0.0, 0.0, 0.0 } };
 
 	if ( !lua_istable( L, index ) ) {
-		TraceLog( LOG_WARNING, "%s", "Error. Wrong ray value. Returning { position{ 0, 0, 0 }, direction{ 0, 0, 0 } }." );
+		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong ray value. Returning { position{ 0, 0, 0 }, direction{ 0, 0, 0 } }." );
         return ray;
     }
 	int t = index, i = 0;
@@ -2129,7 +2129,7 @@ NPatchInfo uluaGetNPatchInfoIndex( lua_State *L, int index ) {
 	NPatchInfo npatch = { .source = { 0.0, 0.0, 0.0, 0.0 }, .left = 0, .top = 0, .right = 0, .bottom = 0, .layout = NPATCH_NINE_PATCH };
 
 	if ( !lua_istable( L, index ) ) {
-		TraceLog( LOG_WARNING, "%s", "Error. Wrong ray value. Returning { source = { 0.0, 0.0, 0.0, 0.0 }, left = 0, top = 0, right = 0, bottom = 0, layout = NPATCH_NINE_PATCH }." );
+		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong ray value. Returning { source = { 0.0, 0.0, 0.0, 0.0 }, left = 0, top = 0, right = 0, bottom = 0, layout = NPATCH_NINE_PATCH }." );
         return npatch;
     }
 	int t = index, i = 0;

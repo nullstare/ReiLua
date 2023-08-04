@@ -29,6 +29,7 @@ KEY CHANGES:
 	- ADDED: rlgl General render state functions
 	- ADDED: LuaJIT compatibility.
 	- CHANGED Bitwise operators moved from utillib to bitlib for better luaJIT support.
+	- ADDED: logLevelInvalid for bad function calls and invalid data formats.
 
 Detailed changes:
 	- FIXED: uluaGetRay was looking for integers instead of tables

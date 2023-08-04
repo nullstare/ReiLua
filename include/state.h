@@ -21,6 +21,7 @@ typedef struct {
 	lua_State *luaState;
 	Vector2 resolution;
 	size_t guiFont;
+	int logLevelInvalid;
 	/* Resources. */
 		/* Images. */
 	Image **images;

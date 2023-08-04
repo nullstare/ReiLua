@@ -21,7 +21,7 @@ static void checkFontRealloc( int i ) {
 
 bool validFont( size_t id ) {
 	if ( id < 0 || state->fontCount < id || state->fonts[ id ] == NULL ) {
-		TraceLog( LOG_WARNING, "%s %d", "Invalid font", id );
+		TraceLog( state->logLevelInvalid, "%s %d", "Invalid font", id );
 		return false;
 	}
 	else {
@@ -57,7 +57,7 @@ Load font from file into GPU memory ( VRAM )
 */
 int ltextLoadFont( lua_State *L ) {
 	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadFont( string fileName )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadFont( string fileName )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -85,7 +85,7 @@ Load font from file with extended parameters. Loading the default character set
 */
 int ltextLoadFontEx( lua_State *L ) {
 	if ( !lua_isstring( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadFontEx( string fileName, int fontSize )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadFontEx( string fileName, int fontSize )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -115,7 +115,7 @@ Load font from Image ( XNA style )
 */
 int ltextLoadFontFromImage( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.LoadFontFromImage( Image image, Color key, int firstChar )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadFontFromImage( Image image, Color key, int firstChar )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
@@ -145,7 +145,7 @@ Unload Font from GPU memory ( VRAM )
 */
 int ltextUnloadFont( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.UnloadFont( Font font )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.UnloadFont( Font font )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -176,7 +176,7 @@ Draw current FPS
 */
 int ltextDrawFPS( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawFPS( Vector2 pos )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawFPS( Vector2 pos )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -199,7 +199,7 @@ Draw text using font and additional parameters
 int ltextDrawText( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) || !lua_istable( L, 3 )
 	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_istable( L, 6 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawText( Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawText( Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -230,7 +230,7 @@ Draw text using Font and pro parameters ( rotation )
 int ltextDrawTextPro( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 )
 	|| !lua_isnumber( L, 5 ) || !lua_isnumber( L, 6 ) || !lua_isnumber( L, 7 ) || !lua_istable( L, 8 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.DrawTextPro( Font font, string text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DrawTextPro( Font font, string text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -266,7 +266,7 @@ Measure string size for Font
 */
 int ltextMeasureText( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MeasureText( Font font, string text, float fontSize, float spacing )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MeasureText( Font font, string text, float fontSize, float spacing )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -293,7 +293,7 @@ Get font baseSize
 */
 int ltextGetFontBaseSize( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetFontBaseSize( Font font )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetFontBaseSize( Font font )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -318,7 +318,7 @@ Get font glyphCount
 */
 int ltextGetFontGlyphCount( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetFontGlyphCount( Font font )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetFontGlyphCount( Font font )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -343,7 +343,7 @@ Get font glyphPadding
 */
 int ltextGetFontGlyphPadding( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.GetFontGlyphPadding( Font font )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetFontGlyphPadding( Font font )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}

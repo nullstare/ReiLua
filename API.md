@@ -1653,6 +1653,23 @@ Set the current threshold ( minimum ) log level
 
 ---
 
+> success = RL.SetLogLevelInvalid( int logLevel )
+
+Set the log level for bad function calls and invalid data formats.
+
+- Failure return false
+- Success return true
+
+---
+
+> logLevel = RL.GetLogLevelInvalid()
+
+Get the log level for bad function calls and invalid data formats.
+
+- Success return int
+
+---
+
 > success = RL.OpenURL( string url )
 
 Open URL with default system browser ( If available )

@@ -20,7 +20,7 @@ Use -1 RenderTexture for window framebuffer.
 int lglBlitFramebuffer( lua_State *L ) {
 	if ( !isValidRenderTexture( L, 1, true ) || !isValidRenderTexture( L, 2, true ) || !lua_istable( L, 3 )
 	|| !lua_istable( L, 4 )	|| !lua_isnumber( L, 5 ) || !lua_isnumber( L, 6 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.glBlitFramebuffer( RenderTexture srcTex, RenderTexture dstTex, Rectangle srcRect, Rectangle dstRect, int mask, int filter )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.glBlitFramebuffer( RenderTexture srcTex, RenderTexture dstTex, Rectangle srcRect, Rectangle dstRect, int mask, int filter )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}

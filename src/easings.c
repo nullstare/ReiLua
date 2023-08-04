@@ -18,7 +18,7 @@ Ease linear
 */
 int leasingsEaseLinear( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseLinear( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseLinear( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -46,7 +46,7 @@ Ease sine in
 */
 int leasingsEaseSineIn( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseSineIn( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseSineIn( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -70,7 +70,7 @@ Ease sine out
 */
 int leasingsEaseSineOut( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseSineOut( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseSineOut( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -94,7 +94,7 @@ Ease sine in out
 */
 int leasingsEaseSineInOut( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseSineInOut( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseSineInOut( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -122,7 +122,7 @@ Ease circle in
 */
 int leasingsEaseCircIn( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseCircIn( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseCircIn( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -146,7 +146,7 @@ Ease circle out
 */
 int leasingsEaseCircOut( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseCircOut( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseCircOut( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -170,7 +170,7 @@ Ease circle in out
 */
 int leasingsEaseCircInOut( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseCircInOut( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseCircInOut( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -198,7 +198,7 @@ Ease cubic in
 */
 int leasingsEaseCubicIn( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseCubicIn( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseCubicIn( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -222,7 +222,7 @@ Ease cubic out
 */
 int leasingsEaseCubicOut( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseCubicOut( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseCubicOut( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -246,7 +246,7 @@ Ease cubic in out
 */
 int leasingsEaseCubicInOut( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseCubicInOut( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseCubicInOut( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -274,7 +274,7 @@ Ease quadratic in
 */
 int leasingsEaseQuadIn( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseQuadIn( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseQuadIn( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -298,7 +298,7 @@ Ease quadratic out
 */
 int leasingsEaseQuadOut( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseQuadOut( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseQuadOut( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -322,7 +322,7 @@ Ease quadratic in out
 */
 int leasingsEaseQuadInOut( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseQuadInOut( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseQuadInOut( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -350,7 +350,7 @@ Ease exponential in
 */
 int leasingsEaseExpoIn( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseExpoIn( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseExpoIn( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -374,7 +374,7 @@ Ease exponential out
 */
 int leasingsEaseExpoOut( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseExpoOut( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseExpoOut( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -398,7 +398,7 @@ Ease exponential in out
 */
 int leasingsEaseExpoInOut( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseExpoInOut( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseExpoInOut( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -426,7 +426,7 @@ Ease back in
 */
 int leasingsEaseBackIn( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseBackIn( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseBackIn( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -450,7 +450,7 @@ Ease back out
 */
 int leasingsEaseBackOut( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseBackOut( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseBackOut( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -474,7 +474,7 @@ Ease back in out
 */
 int leasingsEaseBackInOut( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseBackInOut( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseBackInOut( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -502,7 +502,7 @@ Ease bounce in
 */
 int leasingsEaseBounceIn( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseBounceIn( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseBounceIn( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -526,7 +526,7 @@ Ease bounce out
 */
 int leasingsEaseBounceOut( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseBounceOut( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseBounceOut( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -550,7 +550,7 @@ Ease bounce in out
 */
 int leasingsEaseBounceInOut( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseBounceInOut( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseBounceInOut( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -578,7 +578,7 @@ Ease elastic in
 */
 int leasingsEaseElasticIn( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseElasticIn( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseElasticIn( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -602,7 +602,7 @@ Ease elastic out
 */
 int leasingsEaseElasticOut( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseElasticOut( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseElasticOut( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -626,7 +626,7 @@ Ease elastic in out
 */
 int leasingsEaseElasticInOut( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.EaseElasticInOut( float t, float b, float c, float d )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.EaseElasticInOut( float t, float b, float c, float d )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}

@@ -25,7 +25,7 @@ Clamp float value
 */
 int lmathClamp( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Clamp( float value, float min, float max )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Clamp( float value, float min, float max )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -48,7 +48,7 @@ Calculate linear interpolation between two floats
 */
 int lmathLerp( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Lerp( float start, float end, float amount )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Lerp( float start, float end, float amount )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -71,7 +71,7 @@ Normalize input value within input range
 */
 int lmathNormalize( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Normalize( float value, float start, float end )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Normalize( float value, float start, float end )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -95,7 +95,7 @@ Remap input value within input range to output range
 int lmathRemap( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 )
 	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Remap( float value, float inputStart, float inputEnd, float outputStart, float outputEnd )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Remap( float value, float inputStart, float inputEnd, float outputStart, float outputEnd )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -120,7 +120,7 @@ Wrap input value from min to max
 */
 int lmathWrap( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 )	|| !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Wrap( float value, float min, float max )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Wrap( float value, float min, float max )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -143,7 +143,7 @@ Check whether two given floats are almost equal
 */
 int lmathFloatEquals( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.FloatEquals( float x, float y )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.FloatEquals( float x, float y )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -195,7 +195,7 @@ Add two vectors (v1 + v2)
 */
 int lmathVector2Add( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Add( Vector2 v1, Vector2 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Add( Vector2 v1, Vector2 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -217,7 +217,7 @@ Add vector and float value
 */
 int lmathVector2AddValue( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2AddValue( Vector2 v, float add )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2AddValue( Vector2 v, float add )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -239,7 +239,7 @@ Subtract two vectors (v1 - v2)
 */
 int lmathVector2Subtract( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Subtract( Vector2 v1, Vector2 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Subtract( Vector2 v1, Vector2 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -261,7 +261,7 @@ Subtract vector by float value
 */
 int lmathVector2SubtractValue( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2SubtractValue( Vector2 v, float sub )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2SubtractValue( Vector2 v, float sub )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -283,7 +283,7 @@ Calculate vector length
 */
 int lmathVector2Length( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Length( vector2 v )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Length( vector2 v )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -304,7 +304,7 @@ Calculate vector square length
 */
 int lmathVector2LengthSqr( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2LengthSqr( vector2 v )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2LengthSqr( vector2 v )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -325,7 +325,7 @@ Calculate two vectors dot product
 */
 int lmathVector2DotProduct( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2DotProduct( Vector2 v1, Vector2 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2DotProduct( Vector2 v1, Vector2 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -347,7 +347,7 @@ Calculate distance between two vectors
 */
 int lmathVector2Distance( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Distance( Vector2 v1, Vector2 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Distance( Vector2 v1, Vector2 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -369,7 +369,7 @@ Calculate square distance between two vectors
 */
 int lmathVector2DistanceSqr( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2DistanceSqr( Vector2 v1, Vector2 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2DistanceSqr( Vector2 v1, Vector2 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -391,7 +391,7 @@ Calculate angle from two vectors
 */
 int lmathVector2Angle( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Angle( Vector2 v1, Vector2 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Angle( Vector2 v1, Vector2 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -415,7 +415,7 @@ Current implementation should be aligned with glm::angle.
 */
 int lmathVector2LineAngle( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2LineAngle( Vector2 start, Vector2 end )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2LineAngle( Vector2 start, Vector2 end )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -437,7 +437,7 @@ Scale vector ( multiply by value )
 */
 int lmathVector2Scale( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Scale( Vector2 v, float scale )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Scale( Vector2 v, float scale )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -459,7 +459,7 @@ Multiply vector by vector
 */
 int lmathVector2Multiply( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Multiply( Vector2 v1, Vector2 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Multiply( Vector2 v1, Vector2 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -481,7 +481,7 @@ Negate vector
 */
 int lmathVector2Negate( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Negate( Vector2 v )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Negate( Vector2 v )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -502,7 +502,7 @@ Divide vector by vector
 */
 int lmathVector2Divide( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Divide( Vector2 v1, Vector2 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Divide( Vector2 v1, Vector2 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -524,7 +524,7 @@ Normalize provided vector
 */
 int lmathVector2Normalize( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Normalize( Vector2 v )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Normalize( Vector2 v )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -545,7 +545,7 @@ Transforms a Vector2 by a given Matrix
 */
 int lmathVector2Transform( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Transform( Vector2 v, Matrix mat )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Transform( Vector2 v, Matrix mat )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -567,7 +567,7 @@ Calculate linear interpolation between two vectors
 */
 int lmathVector2Lerp( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Lerp( Vector2 v1, Vector2 v2, float amount )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Lerp( Vector2 v1, Vector2 v2, float amount )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -590,7 +590,7 @@ Calculate reflected vector to normal
 */
 int lmathVector2Reflect( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Reflect( Vector2 v, Vector2 normal )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Reflect( Vector2 v, Vector2 normal )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -612,7 +612,7 @@ Rotate vector by angle
 */
 int lmathVector2Rotate( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Rotate( Vector2 v, float angle )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Rotate( Vector2 v, float angle )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -634,7 +634,7 @@ Move Vector towards target
 */
 int lmathVector2MoveTowards( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2MoveTowards( Vector2 v, Vector2 target, float maxDistance )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2MoveTowards( Vector2 v, Vector2 target, float maxDistance )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -657,7 +657,7 @@ Invert the given vector
 */
 int lmathVector2Invert( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Invert( Vector2 v )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Invert( Vector2 v )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -679,7 +679,7 @@ min and max values specified by the given vectors
 */
 int lmathVector2Clamp( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Clamp( Vector2 v, Vector2 min, Vector2 max )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Clamp( Vector2 v, Vector2 min, Vector2 max )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -702,7 +702,7 @@ Clamp the magnitude of the vector between two min and max values
 */
 int lmathVector2ClampValue( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2ClampValue( Vector2 v, float min, float max )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2ClampValue( Vector2 v, float min, float max )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -725,7 +725,7 @@ Check whether two given vectors are almost equal
 */
 int lmathVector2Equals( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector2Equals( Vector2 v1, Vector2 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2Equals( Vector2 v1, Vector2 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -777,7 +777,7 @@ Add two vectors
 */
 int lmathVector3Add( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Add( Vector3 v1, Vector3 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Add( Vector3 v1, Vector3 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -799,7 +799,7 @@ Add vector and float value
 */
 int lmathVector3AddValue( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3AddValue( Vector3 v, float add )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3AddValue( Vector3 v, float add )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -821,7 +821,7 @@ Subtract two vectors
 */
 int lmathVector3Subtract( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Subtract( Vector3 v1, Vector3 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Subtract( Vector3 v1, Vector3 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -843,7 +843,7 @@ Subtract vector by float value
 */
 int lmathVector3SubtractValue( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3SubtractValue( Vector3 v, float sub )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3SubtractValue( Vector3 v, float sub )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -865,7 +865,7 @@ Multiply vector by scalar
 */
 int lmathVector3Scale( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Scale( Vector3 v, float scalar )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Scale( Vector3 v, float scalar )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -887,7 +887,7 @@ Multiply vector by vector
 */
 int lmathVector3Multiply( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Multiply( Vector3 v1, Vector3 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Multiply( Vector3 v1, Vector3 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -909,7 +909,7 @@ Calculate two vectors cross product
 */
 int lmathVector3CrossProduct( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3CrossProduct( Vector3 v1, Vector3 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3CrossProduct( Vector3 v1, Vector3 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -931,7 +931,7 @@ Calculate one vector perpendicular vector
 */
 int lmathVector3Perpendicular( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Perpendicular( Vector3 v )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Perpendicular( Vector3 v )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -952,7 +952,7 @@ Calculate vector length
 */
 int lmathVector3Length( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Length( Vector3 v )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Length( Vector3 v )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -973,7 +973,7 @@ Calculate vector square length
 */
 int lmathVector3LengthSqr( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3LengthSqr( Vector3 v )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3LengthSqr( Vector3 v )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -994,7 +994,7 @@ Calculate two vectors dot product
 */
 int lmathVector3DotProduct( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3DotProduct( Vector3 v1, Vector3 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3DotProduct( Vector3 v1, Vector3 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1016,7 +1016,7 @@ Calculate distance between two vectors
 */
 int lmathVector3Distance( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Distance( Vector3 v1, Vector3 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Distance( Vector3 v1, Vector3 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1038,7 +1038,7 @@ Calculate square distance between two vectors
 */
 int lmathVector3DistanceSqr( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3DistanceSqr( Vector3 v1, Vector3 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3DistanceSqr( Vector3 v1, Vector3 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1060,7 +1060,7 @@ Calculate angle between two vectors
 */
 int lmathVector3Angle( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Angle( Vector3 v1, Vector3 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Angle( Vector3 v1, Vector3 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1082,7 +1082,7 @@ Negate provided vector ( invert direction )
 */
 int lmathVector3Negate( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Negate( Vector3 v )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Negate( Vector3 v )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1103,7 +1103,7 @@ Divide vector by vector
 */
 int lmathVector3Divide( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Divide( Vector3 v1, Vector3 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Divide( Vector3 v1, Vector3 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1125,7 +1125,7 @@ Normalize provided vector
 */
 int lmathVector3Normalize( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Normalize( Vector3 v )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Normalize( Vector3 v )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1147,7 +1147,7 @@ Gram-Schmidt function implementation
 */
 int lmathVector3OrthoNormalize( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3OrthoNormalize( Vector3 v1, Vector3 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3OrthoNormalize( Vector3 v1, Vector3 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1172,7 +1172,7 @@ Transforms a Vector3 by a given Matrix
 */
 int lmathVector3Transform( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Transform( Vector3 v, Matrix mat )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Transform( Vector3 v, Matrix mat )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1194,7 +1194,7 @@ Transform a vector by quaternion rotation
 */
 int lmathVector3RotateByQuaternion( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3RotateByQuaternion( Vector3 v, Quaternion q )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3RotateByQuaternion( Vector3 v, Quaternion q )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1216,7 +1216,7 @@ Rotates a vector around an axis
 */
 int lmathVector3RotateByAxisAngle( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3RotateByAxisAngle( Vector3 v, Vector3 axis, float angle )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3RotateByAxisAngle( Vector3 v, Vector3 axis, float angle )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1239,7 +1239,7 @@ Calculate linear interpolation between two vectors
 */
 int lmathVector3Lerp( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Lerp( Vector3 v1, Vector3 v2, float amount )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Lerp( Vector3 v1, Vector3 v2, float amount )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1262,7 +1262,7 @@ Calculate reflected vector to normal
 */
 int lmathVector3Reflect( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Reflect( Vector3 v, Vector3 normal )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Reflect( Vector3 v, Vector3 normal )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1284,7 +1284,7 @@ Get min value for each pair of components
 */
 int lmathVector3Min( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Min( Vector3 v1, Vector3 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Min( Vector3 v1, Vector3 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1306,7 +1306,7 @@ Get max value for each pair of components
 */
 int lmathVector3Max( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Max( Vector3 v1, Vector3 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Max( Vector3 v1, Vector3 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1329,7 +1329,7 @@ NOTE: Assumes P is on the plane of the triangle
 */
 int lmathVector3Barycenter( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Barycenter( Vector3 p, Vector3 a, Vector3 b, Vector3 c )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Barycenter( Vector3 p, Vector3 a, Vector3 b, Vector3 c )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1354,7 +1354,7 @@ NOTE: We are avoiding calling other raymath functions despite available
 */
 int lmathVector3Unproject( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Unproject( Vector3 source, Matrix projection, Matrix view )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Unproject( Vector3 source, Matrix projection, Matrix view )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1377,7 +1377,7 @@ Invert the given vector
 */
 int lmathVector3Invert( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Invert( Vector3 v )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Invert( Vector3 v )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1399,7 +1399,7 @@ min and max values specified by the given vectors
 */
 int lmathVector3Clamp( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Clamp( Vector3 v, Vector3 min, Vector3 max )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Clamp( Vector3 v, Vector3 min, Vector3 max )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1422,7 +1422,7 @@ Clamp the magnitude of the vector between two values
 */
 int lmathVector3ClampValue( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3ClampValue( Vector3 v, float min, float max )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3ClampValue( Vector3 v, float min, float max )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1445,7 +1445,7 @@ Check whether two given vectors are almost equal
 */
 int lmathVector3Equals( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Equals( Vector3 v1, Vector3 v2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Equals( Vector3 v1, Vector3 v2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1472,7 +1472,7 @@ on the other side of the surface
 */
 int lmathVector3Refract( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.Vector3Refract( Vector3 v, Vector3 n, float r )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector3Refract( Vector3 v, Vector3 n, float r )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1499,7 +1499,7 @@ Compute matrix determinant
 */
 int lmathMatrixDeterminant( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixDeterminant( Matrix mat )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixDeterminant( Matrix mat )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1520,7 +1520,7 @@ Get the trace of the matrix ( sum of the values along the diagonal )
 */
 int lmathMatrixTrace( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixTrace( Matrix mat )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixTrace( Matrix mat )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1541,7 +1541,7 @@ Transposes provided matrix
 */
 int lmathMatrixTranspose( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixTranspose( Matrix mat )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixTranspose( Matrix mat )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1562,7 +1562,7 @@ Invert provided matrix
 */
 int lmathMatrixInvert( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixInvert( Matrix mat )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixInvert( Matrix mat )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1596,7 +1596,7 @@ Add two matrices
 */
 int lmathMatrixAdd( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixAdd( Matrix left, Matrix right )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixAdd( Matrix left, Matrix right )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1618,7 +1618,7 @@ Subtract two matrices (left - right)
 */
 int lmathMatrixSubtract( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixSubtract( Matrix left, Matrix right )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixSubtract( Matrix left, Matrix right )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1640,7 +1640,7 @@ Get two matrix multiplication
 */
 int lmathMatrixMultiply( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixMultiply( Matrix left, Matrix right )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixMultiply( Matrix left, Matrix right )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1662,7 +1662,7 @@ Get translation matrix
 */
 int lmathMatrixTranslate( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixTranslate( Vector3 translate )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixTranslate( Vector3 translate )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1683,7 +1683,7 @@ Create rotation matrix from axis and angle. NOTE: Angle should be provided in ra
 */
 int lmathMatrixRotate( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixRotate( Vector3 axis, float angle )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixRotate( Vector3 axis, float angle )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1705,7 +1705,7 @@ Get x-rotation matrix ( angle in radians )
 */
 int lmathMatrixRotateX( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixRotateX( float angle )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixRotateX( float angle )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1726,7 +1726,7 @@ Get y-rotation matrix ( angle in radians )
 */
 int lmathMatrixRotateY( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixRotateY( float angle )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixRotateY( float angle )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1747,7 +1747,7 @@ Get z-rotation matrix ( angle in radians )
 */
 int lmathMatrixRotateZ( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixRotateZ( float angle )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixRotateZ( float angle )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1768,7 +1768,7 @@ Get xyz-rotation matrix ( angles in radians )
 */
 int lmathMatrixRotateXYZ( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixRotateXYZ( Vector3 angle )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixRotateXYZ( Vector3 angle )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1789,7 +1789,7 @@ Get zyx-rotation matrix ( angles in radians )
 */
 int lmathMatrixRotateZYX( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixRotateZYX( Vector3 angle )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixRotateZYX( Vector3 angle )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1810,7 +1810,7 @@ Get scaling matrix
 */
 int lmathMatrixScale( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixScale( Vector3 scale )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixScale( Vector3 scale )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1832,7 +1832,7 @@ Get perspective projection matrix
 int lmathMatrixFrustum( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 )
 	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_isnumber( L, 6 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixFrustum( double left, double right, double bottom, double top, double near, double far )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixFrustum( double left, double right, double bottom, double top, double near, double far )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1858,7 +1858,7 @@ Get perspective projection matrix
 */
 int lmathMatrixPerspective( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixPerspective( double fovy, double aspect, double near, double far )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixPerspective( double fovy, double aspect, double near, double far )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1883,7 +1883,7 @@ Get orthographic projection matrix
 int lmathMatrixOrtho( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 )
 	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_isnumber( L, 6 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixOrtho( double left, double right, double bottom, double top, double near, double far )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixOrtho( double left, double right, double bottom, double top, double near, double far )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1909,7 +1909,7 @@ Get camera look-at matrix ( View matrix )
 */
 int lmathMatrixLookAt( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.MatrixLookAt( Vector3 eye, Vector3 target, Vector3 up )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.MatrixLookAt( Vector3 eye, Vector3 target, Vector3 up )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1936,7 +1936,7 @@ Add two quaternions
 */
 int lmathQuaternionAdd( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionAdd( Quaternion q1, Quaternion q2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionAdd( Quaternion q1, Quaternion q2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1958,7 +1958,7 @@ Add quaternion and float value
 */
 int lmathQuaternionAddValue( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionAddValue( Quaternion q, float add )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionAddValue( Quaternion q, float add )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -1980,7 +1980,7 @@ Subtract two quaternions
 */
 int lmathQuaternionSubtract( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionSubtract( Quaternion q1, Quaternion q2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionSubtract( Quaternion q1, Quaternion q2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2002,7 +2002,7 @@ Subtract quaternion and float value
 */
 int lmathQuaternionSubtractValue( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionSubtractValue( Quaternion q, float sub )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionSubtractValue( Quaternion q, float sub )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2037,7 +2037,7 @@ Computes the length of a quaternion
 */
 int lmathQuaternionLength( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionLength( Quaternion q )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionLength( Quaternion q )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2058,7 +2058,7 @@ Normalize provided quaternion
 */
 int lmathQuaternionNormalize( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionNormalize( Quaternion q )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionNormalize( Quaternion q )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2079,7 +2079,7 @@ Invert provided quaternion
 */
 int lmathQuaternionInvert( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionInvert( Quaternion q )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionInvert( Quaternion q )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2100,7 +2100,7 @@ Calculate two quaternion multiplication
 */
 int lmathQuaternionMultiply( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionMultiply( Quaternion q1, Quaternion q2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionMultiply( Quaternion q1, Quaternion q2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2122,7 +2122,7 @@ Scale quaternion by float value
 */
 int lmathQuaternionScale( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionScale( Quaternion q, float mul )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionScale( Quaternion q, float mul )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2144,7 +2144,7 @@ Divide two quaternions
 */
 int lmathQuaternionDivide( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionDivide( Quaternion q1, Quaternion q2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionDivide( Quaternion q1, Quaternion q2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2166,7 +2166,7 @@ Calculate linear interpolation between two quaternions
 */
 int lmathQuaternionLerp( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionLerp( Quaternion q1, Quaternion q2, float amount )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionLerp( Quaternion q1, Quaternion q2, float amount )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2189,7 +2189,7 @@ Calculate slerp-optimized interpolation between two quaternions
 */
 int lmathQuaternionNlerp( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionNlerp( Quaternion q1, Quaternion q2, float amount )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionNlerp( Quaternion q1, Quaternion q2, float amount )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2212,7 +2212,7 @@ Calculates spherical linear interpolation between two quaternions
 */
 int lmathQuaternionSlerp( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionSlerp( Quaternion q1, Quaternion q2, float amount )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionSlerp( Quaternion q1, Quaternion q2, float amount )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2235,7 +2235,7 @@ Calculate quaternion based on the rotation from one vector to another
 */
 int lmathQuaternionFromVector3ToVector3( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionFromVector3ToVector3( Vector3 from, Vector3 to )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionFromVector3ToVector3( Vector3 from, Vector3 to )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2257,7 +2257,7 @@ Get a quaternion for a given rotation matrix
 */
 int lmathQuaternionFromMatrix( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionFromMatrix( Matrix mat )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionFromMatrix( Matrix mat )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2278,7 +2278,7 @@ Get a quaternion for a given rotation matrix
 */
 int lmathQuaternionToMatrix( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionToMatrix( Quaternion q )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionToMatrix( Quaternion q )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2300,7 +2300,7 @@ NOTE: angle must be provided in radians
 */
 int lmathQuaternionFromAxisAngle( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionFromAxisAngle( Vector3 axis, float angle )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionFromAxisAngle( Vector3 axis, float angle )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2322,7 +2322,7 @@ Get the rotation angle and axis for a given quaternion
 */
 int lmathQuaternionToAxisAngle( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionToAxisAngle( Quaternion q )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionToAxisAngle( Quaternion q )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2349,7 +2349,7 @@ NOTE: Rotation order is ZYX
 */
 int lmathQuaternionFromEuler( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionFromEuler( float pitch, float yaw, float roll )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionFromEuler( float pitch, float yaw, float roll )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2373,7 +2373,7 @@ NOTE: Angles are returned in a Vector3 struct in radians
 */
 int lmathQuaternionToEuler( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionToEuler( Quaternion q )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionToEuler( Quaternion q )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2394,7 +2394,7 @@ Transform a quaternion given a transformation matrix
 */
 int lmathQuaternionTransform( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionTransform( Quaternion q, Matrix mat )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionTransform( Quaternion q, Matrix mat )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -2416,7 +2416,7 @@ Check whether two given quaternions are almost equal
 */
 int lmathQuaternionEquals( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( LOG_WARNING, "%s", "Bad call of function. RL.QuaternionEquals( Quaternion q1, Quaternion q2 )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.QuaternionEquals( Quaternion q1, Quaternion q2 )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}

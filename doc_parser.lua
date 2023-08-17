@@ -87,12 +87,13 @@ apiFile:write( "# ReiLua API\n" )
 -- Usage.
 
 apiFile:write( "\n## Usage\n" )
-apiFile:write( "\nApplication needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where \"main.lua\" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.process', 'RL.draw', 'RL.log' and 'RL.exit'.\n" )
+apiFile:write( "\nApplication needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where \"main.lua\" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.process', 'RL.draw', 'RL.event', 'RL.log', and 'RL.exit'.\n" )
 
 local FUNC_DESC = {
 	init = "This function will be called first when 'main.lua' is found",
 	process = "This function will be called every frame during execution. It will get time duration from last frame on argument 'delta'",
 	draw = "This function will be called every frame after process and it should have all rendering related functions. Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it. You can still use RL.BeginDrawing() and RL.EndDrawing() manually from anywhere.",
+	event = "This function will be called on events input. Content of event table is determined by event type.",
 	log = "This function can be used for custom log message handling.",
 	exit = "This function will be called on program close. Cleanup could be done here.",
 }
@@ -100,8 +101,20 @@ local FUNC_DESC = {
 apiFile:write( "\n---\n> function RL.init()\n\n"..FUNC_DESC.init.."\n\n---\n" )
 apiFile:write( "\n> function RL.process( delta )\n\n"..FUNC_DESC.process.."\n\n---\n" )
 apiFile:write( "\n> function RL.draw()\n\n"..FUNC_DESC.draw.."\n\n---\n" )
+apiFile:write( "\n> function RL.event( event )\n\n"..FUNC_DESC.event.."\n\n---\n" )
 apiFile:write( "\n> function RL.log( logLevel, message )\n\n"..FUNC_DESC.log.."\n\n---\n" )
 apiFile:write( "\n> function RL.exit()\n\n"..FUNC_DESC.exit.."\n\n---\n" )
+
+-- Events.
+
+apiFile:write( "\n## Events\n" )
+apiFile:write( "\nEvent content in RL.event.\n" )
+apiFile:write( "\n---\n> { type: RL.EVENT_KEY, int key, int scancode, int action, int mods }\n\n GLFW3 Keyboard Callback, runs on key pressed.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_CHAR, int key }\n\n GLFW3 Char Key Callback, runs on key pressed (get char value).\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_MOUSE_BUTTON, int button, int action, int mods }\n\n GLFW3 Mouse Button Callback, runs on mouse button pressed.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_MOUSE_CURSOR_POS, number x, number y }\n\n GLFW3 Cursor Position Callback, runs on mouse move.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_MOUSE_SCROLL, number xoffset, number yoffset }\n\n GLFW3 Srolling Callback, runs on mouse wheel.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_CURSOR_ENTER, int enter }\n\n GLFW3 Cursor Enter Callback, cursor enters client area.\n\n---\n" )
 
 luaApiFile:write( "-- Put this file into your project folder to provide annotations when using Lua language server.\n\n" )
 luaApiFile:write( "RL={}\n\n" )
@@ -113,6 +126,8 @@ luaApiFile:write(
 "---"..FUNC_DESC.process.."\n---@param delta number\nfunction RL.process( delta ) end\n" )
 luaApiFile:write(
 "---"..FUNC_DESC.draw.."\nfunction RL.draw() end\n" )
+luaApiFile:write(
+"---"..FUNC_DESC.event.."\n---@param event table\nfunction RL.event( event ) end\n" )
 luaApiFile:write(
 "---"..FUNC_DESC.log.."\n---@param logLevel integer\n---@param message string\nfunction RL.log( logLevel, message ) end\n" )
 luaApiFile:write(

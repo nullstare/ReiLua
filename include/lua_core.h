@@ -1,5 +1,7 @@
 #pragma once
 
+enum EventType { EVENT_KEY, EVENT_CHAR, EVENT_MOUSE_BUTTON, EVENT_MOUSE_CURSOR_POS, EVENT_MOUSE_SCROLL, EVENT_CURSOR_ENTER };
+
 void defineGlobals();
 void logCustom( int logLevel, const char *text, va_list args );
 

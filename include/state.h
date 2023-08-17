@@ -79,6 +79,13 @@ typedef struct {
 	Light **lights;
 	size_t lightCount;
 	size_t lightAlloc;
+	/* Raylib GLFW input callback events. */
+	GLFWkeyfun raylibKeyCallback;
+	GLFWcharfun raylibCharCallback;
+	GLFWmousebuttonfun raylibMouseButtonCallback;
+	GLFWcursorposfun raylibMouseCursorPosCallback;
+	GLFWscrollfun raylibMouseScrollCallback;
+	GLFWcursorenterfun raylibCursorEnterCallback;
 } State;
 
 extern State *state;

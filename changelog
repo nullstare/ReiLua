@@ -32,6 +32,7 @@ KEY CHANGES:
 	- ADDED: logLevelInvalid for bad function calls and invalid data formats.
 	- ADDED: rlgl Vertex buffers state.
 	- ADDED: rlgl Shader state.
+	- ADDED: RL.event function with input events.
 
 Detailed changes:
 	- FIXED: uluaGetRay was looking for integers instead of tables

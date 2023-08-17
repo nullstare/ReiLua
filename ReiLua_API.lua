@@ -11,6 +11,9 @@ function RL.init() end
 function RL.process( delta ) end
 ---This function will be called every frame after process and it should have all rendering related functions. Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it. You can still use RL.BeginDrawing() and RL.EndDrawing() manually from anywhere.
 function RL.draw() end
+---This function will be called on events input. Content of event table is determined by event type.
+---@param event table
+function RL.event( event ) end
 ---This function can be used for custom log message handling.
 ---@param logLevel integer
 ---@param message string
@@ -695,6 +698,21 @@ RL.GL_DEPTH_BUFFER_BIT=256
 RL.GL_STENCIL_BUFFER_BIT=1024
 RL.GL_NEAREST=9728
 RL.GL_LINEAR=9729
+
+-- Globals - GLFW
+
+RL.GLFW_RELEASE=0
+RL.GLFW_PRESS=1
+RL.GLFW_REPEAT=2
+
+-- Globals - Event
+
+RL.EVENT_KEY=0
+RL.EVENT_CHAR=1
+RL.EVENT_MOUSE_BUTTON=2
+RL.EVENT_MOUSE_CURSOR_POS=3
+RL.EVENT_MOUSE_SCROLL=4
+RL.EVENT_CURSOR_ENTER=5
 -- Core - Window
 
 ---Check if window has been initialized successfully

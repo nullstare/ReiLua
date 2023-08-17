@@ -614,12 +614,23 @@ void defineGlobals() {
 	assignGlobalInt( GL_STENCIL_BUFFER_BIT, "GL_STENCIL_BUFFER_BIT" );
 	assignGlobalInt( GL_NEAREST, "GL_NEAREST" );
 	assignGlobalInt( GL_LINEAR, "GL_LINEAR" );
+	/* GLFW API tokens. */
+	assignGlobalInt( GLFW_RELEASE, "GLFW_RELEASE" );
+	assignGlobalInt( GLFW_PRESS, "GLFW_PRESS" );
+	assignGlobalInt( GLFW_REPEAT, "GLFW_REPEAT" );
+	/* Event types. */
+	assignGlobalInt( EVENT_KEY, "EVENT_KEY" );
+	assignGlobalInt( EVENT_CHAR, "EVENT_CHAR" );
+	assignGlobalInt( EVENT_MOUSE_BUTTON, "EVENT_MOUSE_BUTTON" );
+	assignGlobalInt( EVENT_MOUSE_CURSOR_POS, "EVENT_MOUSE_CURSOR_POS" );
+	assignGlobalInt( EVENT_MOUSE_SCROLL, "EVENT_MOUSE_SCROLL" );
+	assignGlobalInt( EVENT_CURSOR_ENTER, "EVENT_CURSOR_ENTER" );
 /*DOC_END*/
 
 	lua_pop( L, -1 );
 }
 
-// Custom logging funtion
+// Custom logging funtion.
 void logCustom( int logLevel, const char *text, va_list args ) {
 	char string[ STRING_LEN ] = {'\0'};
 	char msg[ STRING_LEN ] = {'\0'};
@@ -652,6 +663,194 @@ void logCustom( int logLevel, const char *text, va_list args ) {
         lua_pushstring( L, msg );
 
         if ( lua_pcall( L, 2, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+			lua_pop( L, -1 );
+ 	    	return;
+        }
+    }
+	lua_pop( L, -1 );
+}
+
+static void keyInputEvent( GLFWwindow* window, int key, int scancode, int action, int mods ) {
+	/* Pass through to raylib callback. */
+	state->raylibKeyCallback( window, key, scancode, action, mods );
+
+	lua_State *L = state->luaState;
+
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop( L );
+
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "event" );
+
+    if ( lua_isfunction( L, -1 ) ) {
+		lua_createtable( L, 5, 0 );
+		lua_pushinteger( L, EVENT_KEY );
+		lua_setfield( L, -2, "type" );
+		lua_pushinteger( L, key );
+		lua_setfield( L, -2, "key" );
+		lua_pushinteger( L, scancode );
+		lua_setfield( L, -2, "scancode" );
+		lua_pushinteger( L, action );
+		lua_setfield( L, -2, "action" );
+		lua_pushinteger( L, mods );
+		lua_setfield( L, -2, "mods" );
+
+        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+			lua_pop( L, -1 );
+ 	    	return;
+        }
+    }
+	lua_pop( L, -1 );
+}
+
+static void charInputEvent( GLFWwindow* window, unsigned int key ) {
+	/* Pass through to raylib callback. */
+	state->raylibCharCallback( window, key );
+
+	lua_State *L = state->luaState;
+
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop( L );
+
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "event" );
+
+    if ( lua_isfunction( L, -1 ) ) {
+		lua_createtable( L, 2, 0 );
+		lua_pushinteger( L, EVENT_CHAR );
+		lua_setfield( L, -2, "type" );
+		lua_pushinteger( L, key );
+		lua_setfield( L, -2, "key" );
+
+        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+			lua_pop( L, -1 );
+ 	    	return;
+        }
+    }
+	lua_pop( L, -1 );
+}
+
+static void mouseButtonInputEvent( GLFWwindow* window, int button, int action, int mods ) {
+	/* Pass through to raylib callback. */
+	state->raylibMouseButtonCallback( window, button, action, mods );
+
+	lua_State *L = state->luaState;
+
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop( L );
+
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "event" );
+
+    if ( lua_isfunction( L, -1 ) ) {
+		lua_createtable( L, 4, 0 );
+		lua_pushinteger( L, EVENT_MOUSE_BUTTON );
+		lua_setfield( L, -2, "type" );
+		lua_pushinteger( L, button );
+		lua_setfield( L, -2, "button" );
+		lua_pushinteger( L, action );
+		lua_setfield( L, -2, "action" );
+		lua_pushinteger( L, mods );
+		lua_setfield( L, -2, "mods" );
+
+        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+			lua_pop( L, -1 );
+ 	    	return;
+        }
+    }
+	lua_pop( L, -1 );
+}
+
+static void mouseCursorPosInputEvent( GLFWwindow* window, double x, double y ) {
+	/* Pass through to raylib callback. */
+	state->raylibMouseCursorPosCallback( window, x, y );
+
+	lua_State *L = state->luaState;
+
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop( L );
+
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "event" );
+
+    if ( lua_isfunction( L, -1 ) ) {
+		lua_createtable( L, 3, 0 );
+		lua_pushinteger( L, EVENT_MOUSE_CURSOR_POS );
+		lua_setfield( L, -2, "type" );
+		lua_pushnumber( L, x );
+		lua_setfield( L, -2, "x" );
+		lua_pushnumber( L, y );
+		lua_setfield( L, -2, "y" );
+
+        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+			lua_pop( L, -1 );
+ 	    	return;
+        }
+    }
+	lua_pop( L, -1 );
+}
+
+static void mouseScrollInputEvent( GLFWwindow* window, double xoffset, double yoffset ) {
+	/* Pass through to raylib callback. */
+	state->raylibMouseScrollCallback( window, xoffset, yoffset );
+
+	lua_State *L = state->luaState;
+
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop( L );
+
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "event" );
+
+    if ( lua_isfunction( L, -1 ) ) {
+		lua_createtable( L, 3, 0 );
+		lua_pushinteger( L, EVENT_MOUSE_SCROLL );
+		lua_setfield( L, -2, "type" );
+		lua_pushnumber( L, xoffset );
+		lua_setfield( L, -2, "xoffset" );
+		lua_pushnumber( L, yoffset );
+		lua_setfield( L, -2, "yoffset" );
+
+        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+			lua_pop( L, -1 );
+ 	    	return;
+        }
+    }
+	lua_pop( L, -1 );
+}
+
+static void cursorEnterInputEvent( GLFWwindow* window, int enter ) {
+	/* Pass through to raylib callback. */
+	state->raylibCursorEnterCallback( window, enter );
+
+	lua_State *L = state->luaState;
+
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop( L );
+
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "event" );
+
+    if ( lua_isfunction( L, -1 ) ) {
+		lua_createtable( L, 2, 0 );
+		lua_pushinteger( L, EVENT_CURSOR_ENTER );
+		lua_setfield( L, -2, "type" );
+		lua_pushinteger( L, enter );
+		lua_setfield( L, -2, "enter" );
+
+        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
 			lua_pop( L, -1 );
@@ -728,8 +927,15 @@ bool luaCallMain() {
 	/* Apply custom callback here. */
 	SetTraceLogCallback( logCustom );
 
+	state->raylibKeyCallback = glfwSetKeyCallback( GetWindowHandle(), keyInputEvent );
+	state->raylibCharCallback = glfwSetCharCallback( GetWindowHandle(), charInputEvent );
+	state->raylibMouseButtonCallback = glfwSetMouseButtonCallback( GetWindowHandle(), mouseButtonInputEvent );
+	state->raylibMouseCursorPosCallback = glfwSetCursorPosCallback( GetWindowHandle(), mouseCursorPosInputEvent );
+	state->raylibMouseScrollCallback = glfwSetScrollCallback( GetWindowHandle(), mouseScrollInputEvent );
+	state->raylibCursorEnterCallback = glfwSetCursorEnterCallback( GetWindowHandle(), cursorEnterInputEvent );
+
 	lua_getglobal( L, "RL" );
-	lua_getfield ( L, -1, "init" );
+	lua_getfield( L, -1, "init" );
 
 	if ( lua_isfunction( L, -1 ) ) {
 		if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
@@ -754,7 +960,7 @@ void luaCallProcess() {
 	int tracebackidx = lua_gettop(L);
 	
 	lua_getglobal( L, "RL" );
-	lua_getfield ( L, -1, "process" );
+	lua_getfield( L, -1, "process" );
 
     if ( lua_isfunction( L, -1 ) ) {
         lua_pushnumber( L, GetFrameTime() );
@@ -775,7 +981,7 @@ void luaCallDraw() {
 	int tracebackidx = lua_gettop(L);
 	
 	lua_getglobal( L, "RL" );
-	lua_getfield ( L, -1, "draw" );
+	lua_getfield( L, -1, "draw" );
 
     if ( lua_isfunction( L, -1 ) ) {
 		BeginDrawing();
@@ -797,7 +1003,7 @@ void luaCallExit() {
 	int tracebackidx = lua_gettop(L);
 	
 	lua_getglobal( L, "RL" );
-	lua_getfield ( L, -1, "exit" );
+	lua_getfield( L, -1, "exit" );
 
     if ( lua_isfunction( L, -1 ) ) {
         if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
@@ -2458,38 +2664,38 @@ void uluaPushVector3( lua_State *L, Vector3 vector ) {
 
 void uluaPushVector4( lua_State *L, Vector4 vector ) {
 	lua_createtable( L, 4, 0 );
-    lua_pushnumber( L, vector.x );
-    lua_rawseti( L, -2, 1 );
-    lua_pushnumber( L, vector.y );
-    lua_rawseti( L, -2, 2 );
-    lua_pushnumber( L, vector.z );
-    lua_rawseti( L, -2, 3 );
-    lua_pushnumber( L, vector.w );
-    lua_rawseti( L, -2, 4 );
+	lua_pushnumber( L, vector.x );
+	lua_rawseti( L, -2, 1 );
+	lua_pushnumber( L, vector.y );
+	lua_rawseti( L, -2, 2 );
+	lua_pushnumber( L, vector.z );
+	lua_rawseti( L, -2, 3 );
+	lua_pushnumber( L, vector.w );
+	lua_rawseti( L, -2, 4 );
 }
 
 void uluaPushRectangle( lua_State *L, Rectangle rect ) {
 	lua_createtable( L, 4, 0 );
-    lua_pushnumber( L, rect.x );
-    lua_rawseti( L, -2, 1 );
-    lua_pushnumber( L, rect.y );
-    lua_rawseti( L, -2, 2 );
-    lua_pushnumber( L, rect.width );
-    lua_rawseti( L, -2, 3 );
-    lua_pushnumber( L, rect.height );
-    lua_rawseti( L, -2, 4 );
+	lua_pushnumber( L, rect.x );
+	lua_rawseti( L, -2, 1 );
+	lua_pushnumber( L, rect.y );
+	lua_rawseti( L, -2, 2 );
+	lua_pushnumber( L, rect.width );
+	lua_rawseti( L, -2, 3 );
+	lua_pushnumber( L, rect.height );
+	lua_rawseti( L, -2, 4 );
 }
 
 void uluaPushQuaternion( lua_State *L, Quaternion quaternion ) {
 	lua_createtable( L, 4, 0 );
-    lua_pushnumber( L, quaternion.x );
-    lua_rawseti( L, -2, 1 );
-    lua_pushnumber( L, quaternion.y );
-    lua_rawseti( L, -2, 2 );
-    lua_pushnumber( L, quaternion.z );
-    lua_rawseti( L, -2, 3 );
-    lua_pushnumber( L, quaternion.w );
-    lua_rawseti( L, -2, 4 );
+	lua_pushnumber( L, quaternion.x );
+	lua_rawseti( L, -2, 1 );
+	lua_pushnumber( L, quaternion.y );
+	lua_rawseti( L, -2, 2 );
+	lua_pushnumber( L, quaternion.z );
+	lua_rawseti( L, -2, 3 );
+	lua_pushnumber( L, quaternion.w );
+	lua_rawseti( L, -2, 4 );
 }
 
 void uluaPushMatrix( lua_State *L, Matrix matrix ) {

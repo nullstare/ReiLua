@@ -2,7 +2,7 @@
 
 ## Usage
 
-Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.process', 'RL.draw', 'RL.log' and 'RL.exit'.
+Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.process', 'RL.draw', 'RL.event', 'RL.log', and 'RL.exit'.
 
 ---
 > function RL.init()
@@ -23,6 +23,12 @@ This function will be called every frame after process and it should have all re
 
 ---
 
+> function RL.event( event )
+
+This function will be called on events input. Content of event table is determined by event type.
+
+---
+
 > function RL.log( logLevel, message )
 
 This function can be used for custom log message handling.
@@ -32,6 +38,47 @@ This function can be used for custom log message handling.
 > function RL.exit()
 
 This function will be called on program close. Cleanup could be done here.
+
+---
+
+## Events
+
+Event content in RL.event.
+
+---
+> { type: RL.EVENT_KEY, int key, int scancode, int action, int mods }
+
+ GLFW3 Keyboard Callback, runs on key pressed.
+
+---
+
+> { type RL.EVENT_CHAR, int key }
+
+ GLFW3 Char Key Callback, runs on key pressed (get char value).
+
+---
+
+> { type RL.EVENT_MOUSE_BUTTON, int button, int action, int mods }
+
+ GLFW3 Mouse Button Callback, runs on mouse button pressed.
+
+---
+
+> { type RL.EVENT_MOUSE_CURSOR_POS, number x, number y }
+
+ GLFW3 Cursor Position Callback, runs on mouse move.
+
+---
+
+> { type RL.EVENT_MOUSE_SCROLL, number xoffset, number yoffset }
+
+ GLFW3 Srolling Callback, runs on mouse wheel.
+
+---
+
+> { type RL.EVENT_CURSOR_ENTER, int enter }
+
+ GLFW3 Cursor Enter Callback, cursor enters client area.
 
 ---
 
@@ -1158,6 +1205,28 @@ GL_STENCIL_BUFFER_BIT
 GL_NEAREST
 
 GL_LINEAR
+
+## Globals - GLFW
+
+GLFW_RELEASE
+
+GLFW_PRESS
+
+GLFW_REPEAT
+
+## Globals - Event
+
+EVENT_KEY
+
+EVENT_CHAR
+
+EVENT_MOUSE_BUTTON
+
+EVENT_MOUSE_CURSOR_POS
+
+EVENT_MOUSE_SCROLL
+
+EVENT_CURSOR_ENTER
 
 ## Types
 

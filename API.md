@@ -3482,6 +3482,15 @@ Premultiply alpha channel
 
 ---
 
+> success = RL.ImageBlurGaussian( Image image, int blurSize )
+
+Apply Gaussian blur using a box blur approximation
+
+- Failure return false
+- Success return true
+
+---
+
 > success = RL.ImageResize( Image image, Vector2 size )
 
 Resize image ( Bicubic scaling algorithm )
@@ -3687,6 +3696,15 @@ Draw line within an image
 > success = RL.ImageDrawCircle( Image dst, Vector2 center, int radius, Color color )
 
 Draw circle within an image
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.ImageDrawCircleLines( Image dst, Vector2 center, int radius, Color color )
+
+Draw circle outline within an image
 
 - Failure return false
 - Success return true
@@ -7027,6 +7045,73 @@ Define one vertex ( color ) - 4 float
 
 ---
 
+## RLGL - Vertex buffers state
+
+---
+
+> supported = RL.rlEnableVertexArray( int vaoId )
+
+Enable vertex array ( VAO, if supported )
+
+- Failure return nil
+- Success return bool
+
+---
+
+> RL.rlDisableVertexArray()
+
+Disable vertex array ( VAO, if supported )
+
+---
+
+> success = RL.rlEnableVertexBuffer( int id )
+
+Enable vertex buffer ( VBO )
+
+- Failure return false
+- Success return true
+
+---
+
+> RL.rlDisableVertexBuffer()
+
+Disable vertex buffer ( VBO )
+
+---
+
+> success = RL.rlEnableVertexBufferElement( int id )
+
+Enable vertex buffer element ( VBO element )
+
+- Failure return false
+- Success return true
+
+---
+
+> RL.rlDisableVertexBufferElement()
+
+Disable vertex buffer element ( VBO element )
+
+---
+
+> success = RL.rlEnableVertexAttribute( int index )
+
+Enable vertex attribute index
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlDisableVertexAttribute( int index )
+
+Disable vertex attribute index
+
+- Failure return false
+- Success return true
+
+---
+
 ## RLGL - Textures state
 
 ---
@@ -7085,6 +7170,25 @@ Set cubemap parameters ( filter, wrap )
 
 - Failure return false
 - Success return true
+
+---
+
+## RLGL - Shader state
+
+---
+
+> success = RL.rlEnableShader( int id )
+
+Enable shader program
+
+- Failure return false
+- Success return true
+
+---
+
+> RL.rlDisableShader()
+
+Disable shader program
 
 ---
 
@@ -7341,6 +7445,63 @@ Check internal buffer overflow for a given number of vertex and force a rlRender
 > success = RL.rlSetTexture( int id )
 
 Set current texture for render batch and check buffers limits
+
+- Failure return false
+- Success return true
+
+---
+
+## RLGL - Vertex buffers management
+
+---
+
+> vaoId = RL.rlLoadVertexArray()
+
+Load vertex array (vao) if supported
+
+- Success return int
+
+---
+
+> vboId = RL.rlLoadVertexBuffer( Buffer{} buffer, int type, bool dynamic )
+
+Load a vertex buffer attribute. Type should be RL_UNSIGNED_BYTE or RL_FLOAT
+
+- Failure return -1
+- Success return int
+
+---
+
+> success = RL.rlUnloadVertexArray( int vaoId )
+
+Unload vertex array object (VAO)
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlUnloadVertexBuffer( int vboId )
+
+Unload vertex buffer (VBO)
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlSetVertexAttribute( int index, int compSize, int type, bool normalized, int stride, int pointer )
+
+Set vertex attribute
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlDrawVertexArray( int offset, int count )
+
+Draw vertex array
 
 - Failure return false
 - Success return true

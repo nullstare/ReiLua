@@ -22,6 +22,15 @@ int lrlglNormal3f( lua_State *L );
 int lrlglColor4ub( lua_State *L );
 int lrlglColor3f( lua_State *L );
 int lrlglColor4f( lua_State *L );
+/* Vertex buffers state */
+int lrlglEnableVertexArray( lua_State *L );
+int lrlglDisableVertexArray( lua_State *L );
+int lrlglEnableVertexBuffer( lua_State *L );
+int lrlglDisableVertexBuffer( lua_State *L );
+int lrlglEnableVertexBufferElement( lua_State *L );
+int lrlglDisableVertexBufferElement( lua_State *L );
+int lrlglEnableVertexAttribute( lua_State *L );
+int lrlglDisableVertexAttribute( lua_State *L );
 /* Textures state */
 int lrlglActiveTextureSlot( lua_State *L );
 int lrlglEnableTexture( lua_State *L );
@@ -30,6 +39,9 @@ int lrlglEnableTextureCubemap( lua_State *L );
 int lrlglDisableTextureCubemap( lua_State *L );
 int lrlglTextureParameters( lua_State *L );
 int lrlglCubemapParameters( lua_State *L );
+/* Shader state. */
+int lrlglEnableShader( lua_State *L );
+int lrlglDisableShader( lua_State *L );
 /* Framebuffer state. */
 int lrlglEnableFramebuffer( lua_State *L );
 int lrlglDisableFramebuffer( lua_State *L );
@@ -68,6 +80,13 @@ int lrlglGetVersion( lua_State *L );
 int lrlglDrawRenderBatchActive( lua_State *L );
 int lrlglCheckRenderBatchLimit( lua_State *L );
 int lrlglSetTexture( lua_State *L );
+/* Vertex buffers management */
+int lrlglLoadVertexArray( lua_State *L );
+int lrlglLoadVertexBuffer( lua_State *L );
+int lrlglUnloadVertexArray( lua_State *L );
+int lrlglUnloadVertexBuffer( lua_State *L );
+int lrlglSetVertexAttribute( lua_State *L );
+int lrlglDrawVertexArray( lua_State *L );
 /* Textures management */
 int lrlglLoadTexture( lua_State *L );
 int lrlglLoadTextureDepth( lua_State *L );

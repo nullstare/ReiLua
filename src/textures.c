@@ -85,6 +85,8 @@ Texture2D* texturesGetSourceTexture( size_t id ) {
 			break;
 		}
 	}
+
+	return &state->textures[id]->texture;
 }
 
 void texturesFreeTexture( size_t id ) {
@@ -752,6 +754,33 @@ int ltexturesImageAlphaPremultiply( lua_State *L ) {
 }
 
 /*
+> success = RL.ImageBlurGaussian( Image image, int blurSize )
+
+Apply Gaussian blur using a box blur approximation
+
+- Failure return false
+- Success return true
+*/
+int ltexturesImageBlurGaussian( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageBlurGaussian( Image image, int blurSize )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t imageId = lua_tointeger( L, 1 );
+	int blurSize = lua_tointeger( L, 2 );
+
+	if ( !validImage( imageId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	ImageBlurGaussian( state->images[ imageId ], blurSize );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
 > success = RL.ImageResize( Image image, Vector2 size )
 
 Resize image ( Bicubic scaling algorithm )
@@ -1391,6 +1420,36 @@ int ltexturesImageDrawCircle( lua_State *L ) {
 	}
 
 	ImageDrawCircleV( state->images[ imageId ], center, radius, color );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.ImageDrawCircleLines( Image dst, Vector2 center, int radius, Color color )
+
+Draw circle outline within an image
+
+- Failure return false
+- Success return true
+*/
+int ltexturesImageDrawCircleLines( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) || !lua_istable( L, 4 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageDrawCircleLines( Image dst, Vector2 center, int radius, Color color )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t imageId = lua_tointeger( L, 1 );
+	Vector2 center = uluaGetVector2Index( L, 2 );
+	int radius = lua_tointeger( L, 3 );
+	Color color = uluaGetColorIndex( L, 4 );
+
+	if ( !validImage( imageId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+
+	ImageDrawCircleLinesV( state->images[ imageId ], center, radius, color );
 	lua_pushboolean( L, true );
 
 	return 1;

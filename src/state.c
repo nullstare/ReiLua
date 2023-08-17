@@ -114,7 +114,7 @@ bool stateInit( const char *exePath ) {
 	return state->run;
 }
 
-bool stateInitInterpret() {
+void stateInitInterpret() {
 	state = malloc( sizeof( State ) );
 	luaInit();
 }

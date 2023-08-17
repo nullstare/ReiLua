@@ -85,5 +85,5 @@ function RL.draw()
 Space: Play animation\
 Up arrow: Inreace animation speed\
 Down arrow: Decreace animation speed",
-				 { 10, 10 }, 30, 5, RL.WHITE )
+		{ 10, 10 }, 30, 5, RL.WHITE )
 end

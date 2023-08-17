@@ -36,15 +36,15 @@ function RL.process( delta )
 		cameraPos[2] = cameraPos[2] - cameraSpeed * delta
 	end
 	-- Rotate.
-	if RL.IsKeyDown( string.byte( "E" ) ) then -- Or RL.IsKeyDown( KEY_E )
+	if RL.IsKeyDown( RL.KEY_E ) then -- Or RL.IsKeyDown( KEY_E )
 		cameraRot = cameraRot + cameraRotSpeed * delta
-	elseif RL.IsKeyDown( string.byte( "Q" ) ) then
+	elseif RL.IsKeyDown( RL.KEY_Q ) then
 		cameraRot = cameraRot - cameraRotSpeed * delta
 	end
 	-- Zoom.
-	if RL.IsKeyDown( string.byte( "R" ) ) then
+	if RL.IsKeyDown( RL.KEY_R ) then
 		cameraZoom = cameraZoom + cameraZoomSpeed * delta
-	elseif RL.IsKeyDown( string.byte( "F" ) ) then
+	elseif RL.IsKeyDown( RL.KEY_F ) then
 		cameraZoom = cameraZoom - cameraZoomSpeed * delta
 	end
 end
@@ -62,6 +62,7 @@ function RL.draw()
 				RL.DrawTextureRec( tileTexture, { 0, 0, 32, 32 }, { x * 32, y * 32 }, RL.WHITE )
 			end
 		end
+
 		-- Draw hero.
 		RL.DrawTextureRec( tileTexture, { 3 * 32, 0, 32, 32 }, { cameraPos[1] - 16, cameraPos[2] - 16 }, RL.WHITE )
 	RL.EndMode2D()

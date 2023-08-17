@@ -1,9 +1,8 @@
 Current {
 	* rlgl
-		* Vertex buffers state.
 		* Vertex buffers management
-		* Shaders management
 		* Matrix state management
+		* Shaders management
 		* Compute shader management
 }
 
@@ -21,9 +20,6 @@ Backlog {
 	* Core.
 		* Compression/Encoding functionality.
 		* SetWindowIcons.
-	* Textures
-		* ImageDrawCircleLines
-		* ImageBlurGaussian
 	* Models
 		* LoadMaterials (Load materials from model file)
 		* LoadMaterialsFromModel (Could then for example edit and set back to model)

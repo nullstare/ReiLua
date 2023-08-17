@@ -3,6 +3,58 @@
 #include "lua_core.h"
 #include "lrlgl.h"
 
+static void* getVertexBuffer( lua_State *L, int *type, unsigned int *size ) {
+	*type = lua_tointeger( L, 2 );
+	size_t len = uluaGetTableLenIndex( L, 1 );
+	unsigned char *uByteArray;
+	float *floatArray;
+
+	switch ( *type ) {
+	case RL_UNSIGNED_BYTE:
+		*size = len * sizeof( unsigned char );
+		uByteArray = MemAlloc( *size );
+		break;
+	case RL_FLOAT:
+		*size = len * sizeof( float );
+		floatArray = MemAlloc( *size );
+		break;
+	default:
+		break;
+	}
+
+	int t = 1;
+	int i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		switch ( *type ) {
+		case RL_UNSIGNED_BYTE:
+			uByteArray[i] = lua_tointeger( L, -1 );
+			break;
+		case RL_FLOAT:
+			floatArray[i] = lua_tointeger( L, -1 );
+			break;
+		default:
+			break;
+		}
+
+		lua_pop( L, 1 );
+		i++;
+	}
+
+	switch ( *type ) {
+	case RL_UNSIGNED_BYTE:
+		return uByteArray;
+		break;
+	case RL_FLOAT:
+		return floatArray;
+		break;
+	default:
+		return NULL;
+		break;
+	}
+}
+
 /*
 ## RLGL - Matrix operations
 */
@@ -423,6 +475,142 @@ int lrlglColor4f( lua_State *L ) {
 }
 
 /*
+## RLGL - Vertex buffers state
+*/
+
+/*
+> supported = RL.rlEnableVertexArray( int vaoId )
+
+Enable vertex array ( VAO, if supported )
+
+- Failure return nil
+- Success return bool
+*/
+int lrlglEnableVertexArray( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlEnableVertexArray( int vaoId )" );
+		lua_pushnil( L );
+		return 1;
+	}
+	lua_pushboolean( L, rlEnableVertexArray( lua_tointeger( L, 1 ) ) );
+
+	return 1;
+}
+
+/*
+> RL.rlDisableVertexArray()
+
+Disable vertex array ( VAO, if supported )
+*/
+int lrlglDisableVertexArray( lua_State *L ) {
+	rlDisableVertexArray();
+
+	return 0;
+}
+
+/*
+> success = RL.rlEnableVertexBuffer( int id )
+
+Enable vertex buffer ( VBO )
+
+- Failure return false
+- Success return true
+*/
+int lrlglEnableVertexBuffer( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlEnableVertexBuffer( int id )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlEnableVertexBuffer( lua_tointeger( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> RL.rlDisableVertexBuffer()
+
+Disable vertex buffer ( VBO )
+*/
+int lrlglDisableVertexBuffer( lua_State *L ) {
+	rlDisableVertexBuffer();
+
+	return 0;
+}
+
+/*
+> success = RL.rlEnableVertexBufferElement( int id )
+
+Enable vertex buffer element ( VBO element )
+
+- Failure return false
+- Success return true
+*/
+int lrlglEnableVertexBufferElement( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlEnableVertexBufferElement( int id )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlEnableVertexBufferElement( lua_tointeger( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> RL.rlDisableVertexBufferElement()
+
+Disable vertex buffer element ( VBO element )
+*/
+int lrlglDisableVertexBufferElement( lua_State *L ) {
+	rlDisableVertexBufferElement();
+
+	return 0;
+}
+
+/*
+> success = RL.rlEnableVertexAttribute( int index )
+
+Enable vertex attribute index
+
+- Failure return false
+- Success return true
+*/
+int lrlglEnableVertexAttribute( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlEnableVertexAttribute( int index )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlEnableVertexAttribute( lua_tointeger( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlDisableVertexAttribute( int index )
+
+Disable vertex attribute index
+
+- Failure return false
+- Success return true
+*/
+int lrlglDisableVertexAttribute( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlDisableVertexAttribute( int index )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlDisableVertexAttribute( lua_tointeger( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
 ## RLGL - Textures state
 */
 
@@ -554,6 +742,41 @@ int lrlglCubemapParameters( lua_State *L ) {
 	lua_pushboolean( L, true );
 
 	return 1;
+}
+
+/*
+## RLGL - Shader state
+*/
+
+/*
+> success = RL.rlEnableShader( int id )
+
+Enable shader program
+
+- Failure return false
+- Success return true
+*/
+int lrlglEnableShader( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlEnableShader( int id )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlEnableShader( lua_tointeger( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> RL.rlDisableShader()
+
+Disable shader program
+*/
+int lrlglDisableShader( lua_State *L ) {
+	rlDisableShader();
+
+	return 0;
 }
 
 /*
@@ -1062,6 +1285,142 @@ int lrlglSetTexture( lua_State *L ) {
 		return 1;
 	}
 	rlSetTexture( lua_tointeger( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+## RLGL - Vertex buffers management
+*/
+
+/*
+> vaoId = RL.rlLoadVertexArray()
+
+Load vertex array (vao) if supported
+
+- Success return int
+*/
+int lrlglLoadVertexArray( lua_State *L ) {
+	lua_pushinteger( L, rlLoadVertexArray() );
+
+	return 1;
+}
+
+/*
+> vboId = RL.rlLoadVertexBuffer( Buffer{} buffer, int type, bool dynamic )
+
+Load a vertex buffer attribute. Type should be RL_UNSIGNED_BYTE or RL_FLOAT
+
+- Failure return -1
+- Success return int
+*/
+int lrlglLoadVertexBuffer( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlLoadVertexBuffer( Buffer{} buffer, int type, bool dynamic )" );
+		lua_pushinteger( L, -1 );
+		return 1;
+	}
+	unsigned int size = 0;
+	int type = 0;
+	void *vertexBuffer = getVertexBuffer( L, &type, &size );
+	bool dynamic = lua_tointeger( L, 3 );
+
+	lua_pushinteger( L, rlLoadVertexBuffer( vertexBuffer, size, dynamic ) );
+
+	if ( vertexBuffer != NULL ) {
+		MemFree( vertexBuffer );
+	}
+
+	return 1;
+}
+
+/*
+> success = RL.rlUnloadVertexArray( int vaoId )
+
+Unload vertex array object (VAO)
+
+- Failure return false
+- Success return true
+*/
+int lrlglUnloadVertexArray( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlUnloadVertexArray( int vaoId )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlUnloadVertexArray( lua_tointeger( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlUnloadVertexBuffer( int vboId )
+
+Unload vertex buffer (VBO)
+
+- Failure return false
+- Success return true
+*/
+int lrlglUnloadVertexBuffer( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlUnloadVertexBuffer( int vboId )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlUnloadVertexBuffer( lua_tointeger( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlSetVertexAttribute( int index, int compSize, int type, bool normalized, int stride, int pointer )
+
+Set vertex attribute
+
+- Failure return false
+- Success return true
+*/
+int lrlglSetVertexAttribute( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 )
+	|| !lua_isboolean( L, 4 ) || !lua_isnumber( L, 5 ) || !lua_isnumber( L, 6 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlSetVertexAttribute( int index, int compSize, int type, bool normalized, int stride, int pointer )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int index = lua_tointeger( L, 1 );
+	int compSize = lua_tointeger( L, 2 );
+	int type = lua_tointeger( L, 3 );
+	bool normalized = lua_toboolean( L, 4 );
+	int stride = lua_tointeger( L, 5 );
+	int pointer = lua_tointeger( L, 6 );
+
+	rlSetVertexAttribute( index, compSize, type, normalized, stride, &pointer );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlDrawVertexArray( int offset, int count )
+
+Draw vertex array
+
+- Failure return false
+- Success return true
+*/
+int lrlglDrawVertexArray( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlDrawVertexArray( int offset, int count )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int offset = lua_tointeger( L, 1 );
+	int count = lua_tointeger( L, 2 );
+
+	rlDrawVertexArray( offset, count );
 	lua_pushboolean( L, true );
 
 	return 1;

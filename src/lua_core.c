@@ -26,6 +26,12 @@ static void assignGlobalFloat( float value, const char *name ) {
 	lua_setfield( L, -2, name );
 }
 
+static void assignGlobalDouble( double value, const char *name ) {
+	lua_State *L = state->luaState;
+	lua_pushnumber( L, value );
+	lua_setfield( L, -2, name );
+}
+
 static void assignGlobalColor( Color color, const char *name ) {
 	lua_State *L = state->luaState;
 	uluaPushColor( L, color );
@@ -499,8 +505,8 @@ void defineGlobals() {
 	/* RLGL Shader limits */
 	assignGlobalInt( RL_MAX_SHADER_LOCATIONS, "RL_MAX_SHADER_LOCATIONS" );
 	/* RLGL Projection matrix culling */
-	assignGlobalInt( RL_CULL_DISTANCE_NEAR, "RL_CULL_DISTANCE_NEAR" );
-	assignGlobalInt( RL_CULL_DISTANCE_FAR, "RL_CULL_DISTANCE_FAR" );
+	assignGlobalDouble( RL_CULL_DISTANCE_NEAR, "RL_CULL_DISTANCE_NEAR" );
+	assignGlobalDouble( RL_CULL_DISTANCE_FAR, "RL_CULL_DISTANCE_FAR" );
 	/* RLGL Texture parameters */
 	assignGlobalInt( RL_TEXTURE_WRAP_S, "RL_TEXTURE_WRAP_S" );
 	assignGlobalInt( RL_TEXTURE_WRAP_T, "RL_TEXTURE_WRAP_T" );
@@ -1069,6 +1075,7 @@ void luaRegister() {
 	assingGlobalFunction( "ImageAlphaClear", ltexturesImageAlphaClear );
 	assingGlobalFunction( "ImageAlphaMask", ltexturesImageAlphaMask );
 	assingGlobalFunction( "ImageAlphaPremultiply", ltexturesImageAlphaPremultiply );
+	assingGlobalFunction( "ImageBlurGaussian", ltexturesImageBlurGaussian );
 	assingGlobalFunction( "ImageResize", ltexturesImageResize );
 	assingGlobalFunction( "ImageResizeNN", ltexturesImageResizeNN );
 	assingGlobalFunction( "ImageResizeCanvas", ltexturesImageResizeCanvas );
@@ -1093,6 +1100,7 @@ void luaRegister() {
 	assingGlobalFunction( "ImageDrawPixel", ltexturesImageDrawPixel );
 	assingGlobalFunction( "ImageDrawLine", ltexturesImageDrawLine );
 	assingGlobalFunction( "ImageDrawCircle", ltexturesImageDrawCircle );
+	assingGlobalFunction( "ImageDrawCircleLines", ltexturesImageDrawCircleLines );
 	assingGlobalFunction( "ImageDrawRectangle", ltexturesImageDrawRectangle );
 	assingGlobalFunction( "ImageDrawRectangleLines", ltexturesImageDrawRectangleLines );
 	assingGlobalFunction( "ImageDraw", ltexturesImageDraw );
@@ -1497,6 +1505,15 @@ void luaRegister() {
 	assingGlobalFunction( "rlColor4ub", lrlglColor4ub );
 	assingGlobalFunction( "rlColor3f", lrlglColor3f );
 	assingGlobalFunction( "rlColor4f", lrlglColor4f );
+		/* Vertex buffers state. */
+	assingGlobalFunction( "rlEnableVertexArray", lrlglEnableVertexArray );
+	assingGlobalFunction( "rlDisableVertexArray", lrlglDisableVertexArray );
+	assingGlobalFunction( "rlEnableVertexBuffer", lrlglEnableVertexBuffer );
+	assingGlobalFunction( "rlDisableVertexBuffer", lrlglDisableVertexBuffer );
+	assingGlobalFunction( "rlEnableVertexBufferElement", lrlglEnableVertexBufferElement );
+	assingGlobalFunction( "rlDisableVertexBufferElement", lrlglDisableVertexBufferElement );
+	assingGlobalFunction( "rlEnableVertexAttribute", lrlglEnableVertexAttribute );
+	assingGlobalFunction( "rlDisableVertexAttribute", lrlglDisableVertexAttribute );
 		/* Textures state. */
 	assingGlobalFunction( "rlActiveTextureSlot", lrlglActiveTextureSlot );
 	assingGlobalFunction( "rlEnableTexture", lrlglEnableTexture );
@@ -1505,6 +1522,9 @@ void luaRegister() {
 	assingGlobalFunction( "rlDisableTextureCubemap", lrlglDisableTextureCubemap );
 	assingGlobalFunction( "rlTextureParameters", lrlglTextureParameters );
 	assingGlobalFunction( "rlCubemapParameters", lrlglCubemapParameters );
+		/* Shader state. */
+	assingGlobalFunction( "rlEnableShader", lrlglEnableShader );
+	assingGlobalFunction( "rlDisableShader", lrlglDisableShader );
 		/* Framebuffer state. */
 	assingGlobalFunction( "rlEnableFramebuffer", lrlglEnableFramebuffer );
 	assingGlobalFunction( "rlDisableFramebuffer", lrlglDisableFramebuffer );
@@ -1543,6 +1563,13 @@ void luaRegister() {
 	assingGlobalFunction( "rlDrawRenderBatchActive", lrlglDrawRenderBatchActive );
 	assingGlobalFunction( "rlCheckRenderBatchLimit", lrlglCheckRenderBatchLimit );
 	assingGlobalFunction( "rlSetTexture", lrlglSetTexture );
+		/* Vertex buffers management. */
+	assingGlobalFunction( "rlLoadVertexArray", lrlglLoadVertexArray );
+	assingGlobalFunction( "rlLoadVertexBuffer", lrlglLoadVertexBuffer );
+	assingGlobalFunction( "rlUnloadVertexArray", lrlglUnloadVertexArray );
+	assingGlobalFunction( "rlUnloadVertexBuffer", lrlglUnloadVertexBuffer );
+	assingGlobalFunction( "rlSetVertexAttribute", lrlglSetVertexAttribute );
+	assingGlobalFunction( "rlDrawVertexArray", lrlglDrawVertexArray );
 		/* Textures management. */
 	assingGlobalFunction( "rlLoadTexture", lrlglLoadTexture );
 	assingGlobalFunction( "rlLoadTextureDepth", lrlglLoadTextureDepth );

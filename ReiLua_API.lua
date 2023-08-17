@@ -560,8 +560,8 @@ RL.RL_MAX_SHADER_LOCATIONS=32
 
 -- Globals - RLGL
 
-RL.RL_CULL_DISTANCE_NEAR=0
-RL.RL_CULL_DISTANCE_FAR=1000
+RL.RL_CULL_DISTANCE_NEAR=0.01
+RL.RL_CULL_DISTANCE_FAR=1000.0
 
 -- Globals - RLGL
 
@@ -2506,6 +2506,14 @@ function RL.ImageAlphaMask( image, alphaMask ) end
 ---@return any success 
 function RL.ImageAlphaPremultiply( image ) end
 
+---Apply Gaussian blur using a box blur approximation
+---- Failure return false
+---- Success return true
+---@param image any
+---@param blurSize integer
+---@return any success 
+function RL.ImageBlurGaussian( image, blurSize ) end
+
 ---Resize image ( Bicubic scaling algorithm )
 ---- Failure return false
 ---- Success return true
@@ -2691,6 +2699,16 @@ function RL.ImageDrawLine( dst, start, end, color ) end
 ---@param color table
 ---@return any success 
 function RL.ImageDrawCircle( dst, center, radius, color ) end
+
+---Draw circle outline within an image
+---- Failure return false
+---- Success return true
+---@param dst any
+---@param center table
+---@param radius integer
+---@param color table
+---@return any success 
+function RL.ImageDrawCircleLines( dst, center, radius, color ) end
 
 ---Draw rectangle within an image
 ---- Failure return false
@@ -5705,6 +5723,55 @@ function RL.rlColor3f( color ) end
 ---@return any success 
 function RL.rlColor4f( color ) end
 
+-- RLGL - Vertex buffers state
+
+---Enable vertex array ( VAO, if supported )
+---- Failure return nil
+---- Success return bool
+---@param vaoId integer
+---@return any supported 
+function RL.rlEnableVertexArray( vaoId ) end
+
+---Disable vertex array ( VAO, if supported )
+---@return any RL.rlDisableVertexArray
+function  RL.rlDisableVertexArray() end
+
+---Enable vertex buffer ( VBO )
+---- Failure return false
+---- Success return true
+---@param id integer
+---@return any success 
+function RL.rlEnableVertexBuffer( id ) end
+
+---Disable vertex buffer ( VBO )
+---@return any RL.rlDisableVertexBuffer
+function  RL.rlDisableVertexBuffer() end
+
+---Enable vertex buffer element ( VBO element )
+---- Failure return false
+---- Success return true
+---@param id integer
+---@return any success 
+function RL.rlEnableVertexBufferElement( id ) end
+
+---Disable vertex buffer element ( VBO element )
+---@return any RL.rlDisableVertexBufferElement
+function  RL.rlDisableVertexBufferElement() end
+
+---Enable vertex attribute index
+---- Failure return false
+---- Success return true
+---@param index integer
+---@return any success 
+function RL.rlEnableVertexAttribute( index ) end
+
+---Disable vertex attribute index
+---- Failure return false
+---- Success return true
+---@param index integer
+---@return any success 
+function RL.rlDisableVertexAttribute( index ) end
+
 -- RLGL - Textures state
 
 ---Select and active a texture slot
@@ -5753,6 +5820,19 @@ function RL.rlTextureParameters( id, param, value ) end
 ---@param value integer
 ---@return any success 
 function RL.rlCubemapParameters( id, param, value ) end
+
+-- RLGL - Shader state
+
+---Enable shader program
+---- Failure return false
+---- Success return true
+---@param id integer
+---@return any success 
+function RL.rlEnableShader( id ) end
+
+---Disable shader program
+---@return any RL.rlDisableShader
+function  RL.rlDisableShader() end
 
 -- RLGL - Framebuffer state
 
@@ -5940,6 +6020,56 @@ function RL.rlCheckRenderBatchLimit( vCount ) end
 ---@param id integer
 ---@return any success 
 function RL.rlSetTexture( id ) end
+
+-- RLGL - Vertex buffers management
+
+---Load vertex array (vao) if supported
+---- Success return int
+---@return any vaoId 
+function RL.rlLoadVertexArray() end
+
+---Load a vertex buffer attribute. Type should be RL_UNSIGNED_BYTE or RL_FLOAT
+---- Failure return -1
+---- Success return int
+---@param buffer any
+---@param type integer
+---@param dynamic boolean
+---@return any vboId 
+function RL.rlLoadVertexBuffer( buffer, type, dynamic ) end
+
+---Unload vertex array object (VAO)
+---- Failure return false
+---- Success return true
+---@param vaoId integer
+---@return any success 
+function RL.rlUnloadVertexArray( vaoId ) end
+
+---Unload vertex buffer (VBO)
+---- Failure return false
+---- Success return true
+---@param vboId integer
+---@return any success 
+function RL.rlUnloadVertexBuffer( vboId ) end
+
+---Set vertex attribute
+---- Failure return false
+---- Success return true
+---@param index integer
+---@param compSize integer
+---@param type integer
+---@param normalized boolean
+---@param stride integer
+---@param pointer integer
+---@return any success 
+function RL.rlSetVertexAttribute( index, compSize, type, normalized, stride, pointer ) end
+
+---Draw vertex array
+---- Failure return false
+---- Success return true
+---@param offset integer
+---@param count integer
+---@return any success 
+function RL.rlDrawVertexArray( offset, count ) end
 
 -- RLGL - Textures management
 

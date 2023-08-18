@@ -80,6 +80,13 @@ typedef struct {
 	size_t lightCount;
 	size_t lightAlloc;
 	/* Raylib GLFW input callback events. */
+		/* Window events. */
+	GLFWwindowsizefun raylibWindowSizeCallback;
+	GLFWwindowmaximizefun raylibWindowMaximizeCallback;
+	GLFWwindowiconifyfun raylibWindowIconifyCallback;
+	GLFWwindowfocusfun raylibWindowFocusCallback;
+	GLFWdropfun raylibWindowDropCallback;
+		/* Input events. */
 	GLFWkeyfun raylibKeyCallback;
 	GLFWcharfun raylibCharCallback;
 	GLFWmousebuttonfun raylibMouseButtonCallback;

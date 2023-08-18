@@ -1,6 +1,4 @@
 Current {
-	* Events
-		* Window events
 	* rlgl
 		* Vertex buffers management
 		* Matrix state management
@@ -12,6 +10,7 @@ Backlog {
 	* New type validators.
 	* Platformer example physics process for true framerate independence.
 	* Extend color lib functionality.
+	* Global descriptions for API.
 
 	* IsWaveReady and other Is* ready functions.
 	* Text

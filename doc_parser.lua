@@ -105,17 +105,6 @@ apiFile:write( "\n> function RL.event( event )\n\n"..FUNC_DESC.event.."\n\n---\n
 apiFile:write( "\n> function RL.log( logLevel, message )\n\n"..FUNC_DESC.log.."\n\n---\n" )
 apiFile:write( "\n> function RL.exit()\n\n"..FUNC_DESC.exit.."\n\n---\n" )
 
--- Events.
-
-apiFile:write( "\n## Events\n" )
-apiFile:write( "\nEvent content in RL.event.\n" )
-apiFile:write( "\n---\n> { type: RL.EVENT_KEY, int key, int scancode, int action, int mods }\n\n GLFW3 Keyboard Callback, runs on key pressed.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_CHAR, int key }\n\n GLFW3 Char Key Callback, runs on key pressed (get char value).\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_MOUSE_BUTTON, int button, int action, int mods }\n\n GLFW3 Mouse Button Callback, runs on mouse button pressed.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_MOUSE_CURSOR_POS, number x, number y }\n\n GLFW3 Cursor Position Callback, runs on mouse move.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_MOUSE_SCROLL, number xoffset, number yoffset }\n\n GLFW3 Srolling Callback, runs on mouse wheel.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_CURSOR_ENTER, int enter }\n\n GLFW3 Cursor Enter Callback, cursor enters client area.\n\n---\n" )
-
 luaApiFile:write( "-- Put this file into your project folder to provide annotations when using Lua language server.\n\n" )
 luaApiFile:write( "RL={}\n\n" )
 luaApiFile:write( "-- Functions.\n\n" )
@@ -156,21 +145,24 @@ repeat
 			-- Remove comma from the end.
 			local globalName = lineSplit[2]:sub( 1, -2 )
 
-			apiFile:write( "\n"..globalName.."\n" )
 			local value = RL[ globalName ]
-
-			globalName = "RL."..globalName
+			
 			globalVariableCount = globalVariableCount + 1
 
 			if value == nil then
-				luaApiFile:write( globalName.."=nil\n" )
+				apiFile:write( "\n"..globalName.." = nil\n" )
+				luaApiFile:write( "RL."..globalName.."=nil\n" )
 			elseif type( value ) == "table" then
 				-- All tables are colors.
-				luaApiFile:write( globalName.."={"
+				apiFile:write( globalName.." = { "
+					..math.tointeger( value[1] )..", "..math.tointeger( value[2] )..", "
+					..math.tointeger( value[3] )..", "..math.tointeger( value[4] ).." }\n" )
+				luaApiFile:write( "RL."..globalName.."={"
 					..math.tointeger( value[1] )..","..math.tointeger( value[2] )..","
 					..math.tointeger( value[3] )..","..math.tointeger( value[4] ).."}\n" )
 			else
-				luaApiFile:write( globalName.."="..value.."\n" )
+				apiFile:write( globalName.." = "..value.."\n" )
+				luaApiFile:write( "RL."..globalName.."="..value.."\n" )
 			end
 		end
 	end
@@ -260,6 +252,24 @@ apiFile:write( "\n> NPatchInfo = { { 0, 0, 24, 24 }, 8, 8, 8, 8, NPATCH_NINE_PAT
 { Texture source rectangle, Left border offset, Top border offset, Right border offset, Bottom border offset, Layout of the n-patch: 3x3, 1x3 or 3x1 }\n\n---\n" )
 apiFile:write( "\n> ModelAnimations = ModelAnimationsId\n\
 int id. ModelAnimations\n\n---\n" )
+
+-- Events.
+
+apiFile:write( "\n## Events\n" )
+apiFile:write( "\nContent of event table received by RL.event.\n" )
+apiFile:write( "\n### Window events\n" )
+apiFile:write( "\n---\n> { type: RL.EVENT_WINDOW_SIZE, int width, int height }\n\n WindowSize Callback, runs when window is resized.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_WINDOW_MAXIMIZE, int maximized }\n\n Window Maximize Callback, runs when window is maximized.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_WINDOW_ICONYFY, int iconified }\n\n WindowIconify Callback, runs when window is minimized/restored.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_WINDOW_FOCUS, int focused }\n\n WindowFocus Callback, runs when window get/lose focus.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_WINDOW_DROP, int count, string{} paths }\n\n Window Drop Callback, runs when drop files into window.\n\n---\n" )
+apiFile:write( "\n### Input events\n" )
+apiFile:write( "\n---\n> { type: RL.EVENT_KEY, int key, int scancode, int action, int mods }\n\n Keyboard Callback, runs on key pressed.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_CHAR, int key }\n\n Char Key Callback, runs on key pressed (get char value).\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_MOUSE_BUTTON, int button, int action, int mods }\n\n Mouse Button Callback, runs on mouse button pressed.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_MOUSE_CURSOR_POS, number x, number y }\n\n Cursor Position Callback, runs on mouse move.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_MOUSE_SCROLL, number xoffset, number yoffset }\n\n Srolling Callback, runs on mouse wheel.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_CURSOR_ENTER, int enter }\n\n Cursor Enter Callback, cursor enters client area.\n\n---\n" )
 
 if separate then
 	apiFile:close()

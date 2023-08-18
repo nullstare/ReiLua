@@ -17,9 +17,9 @@ KEY CHANGES:
 	- ADDED: rlgl Framebuffer management (fbo) functions
 	- ADDED: rlgl Framebuffer state functions
 	- ADDED: rlgl Textures management functions
-	- ADDED: Texture and RenderTexture can be given as tables
-	- ADDED: Camera2D and Camera3D can be given as tables
-	- ADDED: Camera2D and Camera3D can be given as tables
+	- ADDED: Texture and RenderTexture can be referenced as tables
+	- ADDED: Camera2D and Camera3D can be referenced as tables
+	- ADDED: Camera2D and Camera3D can be referenced as tables
 	- ADDED: rlgl New defines
 	- ADDED: rlgl Textures state functions
 	- ADDED: rlgl Some Render batch management functions
@@ -33,6 +33,7 @@ KEY CHANGES:
 	- ADDED: rlgl Vertex buffers state.
 	- ADDED: rlgl Shader state.
 	- ADDED: RL.event function with input events.
+	- ADDED: Window events.
 
 Detailed changes:
 	- FIXED: uluaGetRay was looking for integers instead of tables
@@ -96,6 +97,7 @@ Detailed changes:
 	- ADDED: GetTextureId
 	- ADDED: ImageDrawCircleLines
 	- ADDED: ImageBlurGaussian
+	- ADDED: Values for API.md
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

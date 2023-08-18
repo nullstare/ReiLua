@@ -618,7 +618,13 @@ void defineGlobals() {
 	assignGlobalInt( GLFW_RELEASE, "GLFW_RELEASE" );
 	assignGlobalInt( GLFW_PRESS, "GLFW_PRESS" );
 	assignGlobalInt( GLFW_REPEAT, "GLFW_REPEAT" );
-	/* Event types. */
+	/* Window Events. */
+	assignGlobalInt( EVENT_WINDOW_SIZE, "EVENT_WINDOW_SIZE" );
+	assignGlobalInt( EVENT_WINDOW_MAXIMIZE, "EVENT_WINDOW_MAXIMIZE" );
+	assignGlobalInt( EVENT_WINDOW_ICONYFY, "EVENT_WINDOW_ICONYFY" );
+	assignGlobalInt( EVENT_WINDOW_FOCUS, "EVENT_WINDOW_FOCUS" );
+	assignGlobalInt( EVENT_WINDOW_DROP, "EVENT_WINDOW_DROP" );
+	/* Input Events. */
 	assignGlobalInt( EVENT_KEY, "EVENT_KEY" );
 	assignGlobalInt( EVENT_CHAR, "EVENT_CHAR" );
 	assignGlobalInt( EVENT_MOUSE_BUTTON, "EVENT_MOUSE_BUTTON" );
@@ -672,6 +678,159 @@ void logCustom( int logLevel, const char *text, va_list args ) {
 	lua_pop( L, -1 );
 }
 
+/* Window events. */
+
+static void windowSizeEvent( GLFWwindow *window, int width, int height ) {
+	/* Pass through to raylib callback. */
+	state->raylibWindowSizeCallback( window, width, height );
+
+	lua_State *L = state->luaState;
+
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop( L );
+
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "event" );
+
+    if ( lua_isfunction( L, -1 ) ) {
+		lua_createtable( L, 3, 0 );
+		lua_pushinteger( L, EVENT_WINDOW_SIZE );
+		lua_setfield( L, -2, "type" );
+		lua_pushinteger( L, width );
+		lua_setfield( L, -2, "width" );
+		lua_pushinteger( L, height );
+		lua_setfield( L, -2, "height" );
+
+        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+        }
+    }
+	lua_pop( L, -1 );
+}
+
+#if !defined( PLATFORM_WEB )
+
+static void windowMaximizeEvent( GLFWwindow *window, int maximized ) {
+	/* Pass through to raylib callback. */
+	state->raylibWindowMaximizeCallback( window, maximized );
+
+	lua_State *L = state->luaState;
+
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop( L );
+
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "event" );
+
+    if ( lua_isfunction( L, -1 ) ) {
+		lua_createtable( L, 2, 0 );
+		lua_pushinteger( L, EVENT_WINDOW_MAXIMIZE );
+		lua_setfield( L, -2, "type" );
+		lua_pushinteger( L, maximized );
+		lua_setfield( L, -2, "maximized" );
+
+        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+        }
+    }
+	lua_pop( L, -1 );
+}
+
+#endif
+
+static void windowIconyfyEvent( GLFWwindow *window, int iconified ) {
+	/* Pass through to raylib callback. */
+	state->raylibWindowIconifyCallback( window, iconified );
+
+	lua_State *L = state->luaState;
+
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop( L );
+
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "event" );
+
+    if ( lua_isfunction( L, -1 ) ) {
+		lua_createtable( L, 2, 0 );
+		lua_pushinteger( L, EVENT_WINDOW_ICONYFY );
+		lua_setfield( L, -2, "type" );
+		lua_pushinteger( L, iconified );
+		lua_setfield( L, -2, "iconified" );
+
+        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+        }
+    }
+	lua_pop( L, -1 );
+}
+
+static void windowFocusEvent( GLFWwindow *window, int focused ) {
+	/* Pass through to raylib callback. */
+	state->raylibWindowFocusCallback( window, focused );
+
+	lua_State *L = state->luaState;
+
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop( L );
+
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "event" );
+
+    if ( lua_isfunction( L, -1 ) ) {
+		lua_createtable( L, 2, 0 );
+		lua_pushinteger( L, EVENT_WINDOW_FOCUS );
+		lua_setfield( L, -2, "type" );
+		lua_pushinteger( L, focused );
+		lua_setfield( L, -2, "focused" );
+
+        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+        }
+    }
+	lua_pop( L, -1 );
+}
+
+static void windowDropEvent( GLFWwindow *window, int count, const char **paths ) {
+	/* Pass through to raylib callback. */
+	state->raylibWindowDropCallback( window, count, paths );
+
+	lua_State *L = state->luaState;
+
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop( L );
+
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "event" );
+
+    if ( lua_isfunction( L, -1 ) ) {
+		lua_createtable( L, 3, 0 );
+		lua_pushinteger( L, EVENT_WINDOW_DROP );
+		lua_setfield( L, -2, "type" );
+		lua_pushinteger( L, count );
+		lua_setfield( L, -2, "count" );
+
+		lua_createtable( L, count, 0 );
+
+		for ( int i = 0; i < count; ++i ) {
+			lua_pushstring( L, paths[i] );
+			lua_rawseti( L, -2, i+1 );
+		}
+		lua_setfield( L, -2, "paths" );
+
+        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+        }
+    }
+	lua_pop( L, -1 );
+}
+
+/* Input events. */
+
 static void keyInputEvent( GLFWwindow* window, int key, int scancode, int action, int mods ) {
 	/* Pass through to raylib callback. */
 	state->raylibKeyCallback( window, key, scancode, action, mods );
@@ -700,8 +859,6 @@ static void keyInputEvent( GLFWwindow* window, int key, int scancode, int action
         if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-			lua_pop( L, -1 );
- 	    	return;
         }
     }
 	lua_pop( L, -1 );
@@ -729,8 +886,6 @@ static void charInputEvent( GLFWwindow* window, unsigned int key ) {
         if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-			lua_pop( L, -1 );
- 	    	return;
         }
     }
 	lua_pop( L, -1 );
@@ -762,8 +917,6 @@ static void mouseButtonInputEvent( GLFWwindow* window, int button, int action, i
         if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-			lua_pop( L, -1 );
- 	    	return;
         }
     }
 	lua_pop( L, -1 );
@@ -793,8 +946,6 @@ static void mouseCursorPosInputEvent( GLFWwindow* window, double x, double y ) {
         if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-			lua_pop( L, -1 );
- 	    	return;
         }
     }
 	lua_pop( L, -1 );
@@ -824,8 +975,6 @@ static void mouseScrollInputEvent( GLFWwindow* window, double xoffset, double yo
         if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-			lua_pop( L, -1 );
- 	    	return;
         }
     }
 	lua_pop( L, -1 );
@@ -853,8 +1002,6 @@ static void cursorEnterInputEvent( GLFWwindow* window, int enter ) {
         if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-			lua_pop( L, -1 );
- 	    	return;
         }
     }
 	lua_pop( L, -1 );
@@ -927,6 +1074,16 @@ bool luaCallMain() {
 	/* Apply custom callback here. */
 	SetTraceLogCallback( logCustom );
 
+	/* Window events. */
+	state->raylibWindowSizeCallback = glfwSetWindowSizeCallback( GetWindowHandle(), windowSizeEvent );
+#if !defined( PLATFORM_WEB )
+	state->raylibWindowMaximizeCallback = glfwSetWindowMaximizeCallback( GetWindowHandle(), windowMaximizeEvent );
+#endif
+	state->raylibWindowIconifyCallback = glfwSetWindowIconifyCallback( GetWindowHandle(), windowIconyfyEvent );
+	state->raylibWindowFocusCallback = glfwSetWindowFocusCallback( GetWindowHandle(), windowFocusEvent );
+	state->raylibWindowDropCallback = glfwSetDropCallback( GetWindowHandle(), windowDropEvent );
+
+	/* Input events. */
 	state->raylibKeyCallback = glfwSetKeyCallback( GetWindowHandle(), keyInputEvent );
 	state->raylibCharCallback = glfwSetCharCallback( GetWindowHandle(), charInputEvent );
 	state->raylibMouseButtonCallback = glfwSetMouseButtonCallback( GetWindowHandle(), mouseButtonInputEvent );

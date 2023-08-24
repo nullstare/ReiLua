@@ -65,6 +65,7 @@ void uluaPushMatrix( lua_State *L, Matrix matrix );
 void uluaPushRay( lua_State *L, Ray ray );
 void uluaPushRayCollision( lua_State *L, RayCollision rayCol );
 void uluaPushBoundingBox( lua_State *L, BoundingBox box );
+void uluaPushTexture( lua_State *L, Texture texture );
 
 int uluaGetTableLen( lua_State *L );
 int uluaGetTableLenIndex( lua_State *L, int index );

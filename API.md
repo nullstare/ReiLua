@@ -3579,7 +3579,7 @@ Get texture mipmaps. Mipmap levels, 1 by default
 
 > format = RL.GetTextureFormat( Texture2D texture )
 
-Get texture mipmaps. Mipmap levels, 1 by default
+Get texture data format ( PixelFormat type )
 
 - Failure return false
 - Success return int
@@ -3802,7 +3802,7 @@ Measure string size for Font
 
 > baseSize = RL.GetFontBaseSize( Font font )
 
-Get font baseSize
+Get font base size ( default chars height )
 
 - Failure return false
 - Success return int
@@ -3811,7 +3811,7 @@ Get font baseSize
 
 > glyphCount = RL.GetFontGlyphCount( Font font )
 
-Get font glyphCount
+Get font number of glyph characters
 
 - Failure return false
 - Success return int
@@ -3820,10 +3820,19 @@ Get font glyphCount
 
 > glyphPadding = RL.GetFontGlyphPadding( Font font )
 
-Get font glyphPadding
+Get font padding around the glyph characters
 
 - Failure return false
 - Success return int
+
+---
+
+> textureTable = RL.GetFontTexture( Font font )
+
+Get font texture atlas containing the glyphs. NOTE! Texture in table form.
+
+- Failure return false
+- Success return table
 
 ---
 

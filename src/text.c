@@ -286,7 +286,7 @@ int ltextMeasureText( lua_State *L ) {
 /*
 > baseSize = RL.GetFontBaseSize( Font font )
 
-Get font baseSize
+Get font base size ( default chars height )
 
 - Failure return false
 - Success return int
@@ -311,7 +311,7 @@ int ltextGetFontBaseSize( lua_State *L ) {
 /*
 > glyphCount = RL.GetFontGlyphCount( Font font )
 
-Get font glyphCount
+Get font number of glyph characters
 
 - Failure return false
 - Success return int
@@ -336,7 +336,7 @@ int ltextGetFontGlyphCount( lua_State *L ) {
 /*
 > glyphPadding = RL.GetFontGlyphPadding( Font font )
 
-Get font glyphPadding
+Get font padding around the glyph characters
 
 - Failure return false
 - Success return int
@@ -354,6 +354,31 @@ int ltextGetFontGlyphPadding( lua_State *L ) {
 		return 1;
 	}
 	lua_pushinteger( L, state->fonts[ fontId ]->glyphPadding );
+
+	return 1;
+}
+
+/*
+> textureTable = RL.GetFontTexture( Font font )
+
+Get font texture atlas containing the glyphs. NOTE! Texture in table form.
+
+- Failure return false
+- Success return table
+*/
+int ltextGetFontTexture( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetFontTexture( Font font )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	size_t fontId = lua_tointeger( L, 1 );
+
+	if ( !validFont( fontId ) ) {
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushTexture( L, state->fonts[ fontId ]->texture );
 
 	return 1;
 }

@@ -2209,7 +2209,7 @@ int ltexturesGetTextureMipmaps( lua_State *L ) {
 /*
 > format = RL.GetTextureFormat( Texture2D texture )
 
-Get texture mipmaps. Mipmap levels, 1 by default
+Get texture data format ( PixelFormat type )
 
 - Failure return false
 - Success return int

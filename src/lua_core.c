@@ -1612,6 +1612,7 @@ void luaRegister() {
 	assingGlobalFunction( "GetFontBaseSize", ltextGetFontBaseSize );
 	assingGlobalFunction( "GetFontGlyphCount", ltextGetFontGlyphCount );
 	assingGlobalFunction( "GetFontGlyphPadding", ltextGetFontGlyphPadding );
+	assingGlobalFunction( "GetFontTexture", ltextGetFontTexture );
 
 	/* Audio. */
 		/* Audio device management. */
@@ -2957,6 +2958,20 @@ void uluaPushBoundingBox( lua_State *L, BoundingBox box ) {
 	lua_pushnumber( L, box.max.z );
 	lua_rawseti( L, -2, 3 );
 	lua_rawseti( L, -2, 2 );
+}
+
+void uluaPushTexture( lua_State *L, Texture texture ) {
+	lua_createtable( L, 5, 0 );
+	lua_pushinteger( L, texture.id );
+	lua_setfield( L, -2, "id" );
+	lua_pushinteger( L, texture.width );
+	lua_setfield( L, -2, "width" );
+	lua_pushinteger( L, texture.height );
+	lua_setfield( L, -2, "height" );
+	lua_pushinteger( L, texture.mipmaps );
+	lua_setfield( L, -2, "mipmaps" );
+	lua_pushinteger( L, texture.format );
+	lua_setfield( L, -2, "format" );
 }
 
 int uluaGetTableLen( lua_State *L ) {

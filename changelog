@@ -98,6 +98,7 @@ Detailed changes:
 	- ADDED: ImageDrawCircleLines
 	- ADDED: ImageBlurGaussian
 	- ADDED: Values for API.md
+	- ADDED: GetFontTexture
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

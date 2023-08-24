@@ -16,3 +16,4 @@ int ltextMeasureText( lua_State *L );
 int ltextGetFontBaseSize( lua_State *L );
 int ltextGetFontGlyphCount( lua_State *L );
 int ltextGetFontGlyphPadding( lua_State *L );
+int ltextGetFontTexture( lua_State *L );

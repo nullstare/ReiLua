@@ -2975,7 +2975,7 @@ function RL.GetTextureSize( texture ) end
 ---@return any mipmaps 
 function RL.GetTextureMipmaps( texture ) end
 
----Get texture mipmaps. Mipmap levels, 1 by default
+---Get texture data format ( PixelFormat type )
 ---- Failure return false
 ---- Success return int
 ---@param texture any
@@ -3174,26 +3174,33 @@ function RL.DrawTextPro( font, text, position, origin, rotation, fontSize, spaci
 ---@return any size 
 function RL.MeasureText( font, text, fontSize, spacing ) end
 
----Get font baseSize
+---Get font base size ( default chars height )
 ---- Failure return false
 ---- Success return int
 ---@param font any
 ---@return any baseSize 
 function RL.GetFontBaseSize( font ) end
 
----Get font glyphCount
+---Get font number of glyph characters
 ---- Failure return false
 ---- Success return int
 ---@param font any
 ---@return any glyphCount 
 function RL.GetFontGlyphCount( font ) end
 
----Get font glyphPadding
+---Get font padding around the glyph characters
 ---- Failure return false
 ---- Success return int
 ---@param font any
 ---@return any glyphPadding 
 function RL.GetFontGlyphPadding( font ) end
+
+---Get font texture atlas containing the glyphs. NOTE! Texture in table form.
+---- Failure return false
+---- Success return table
+---@param font any
+---@return any textureTable 
+function RL.GetFontTexture( font ) end
 
 -- Models - Basic
 

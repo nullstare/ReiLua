@@ -99,6 +99,7 @@ Detailed changes:
 	- ADDED: ImageBlurGaussian
 	- ADDED: Values for API.md
 	- ADDED: GetFontTexture
+	- CHANGED: Renamed doc_parser.lua to docgen.lua
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

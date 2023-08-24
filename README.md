@@ -10,7 +10,7 @@ Reilua means fair in finnish.
 
 ## Status
 
-ReiLua is WIP and some planned raylib functionality is still missing but it already has over 600 functions and should include all functions to make most 2d and 3d games. Current Raylib version 4.5.0.
+ReiLua is WIP and some planned raylib functionality is still missing but it already has over 700 functions and should include all functions to make most 2d and 3d games. Current Raylib version 4.5.0.
 
 Included submodules.
 
@@ -85,7 +85,7 @@ ReiLua can also be used to run single lua file using interpreter mode with argum
 Generate API.md and ReiLua_API.lua from build folder with command.
 
 ```
-./Reilua -i ../doc_parser.lua
+./Reilua -i ../docgen.lua
 ```
 
 ## Building

@@ -102,6 +102,7 @@ void texturesFreeTexture( size_t id ) {
 		state->textures[id] = NULL;
 	}
 }
+
 /*
 ## Textures - Image Loading
 */
@@ -1329,7 +1330,6 @@ int ltexturesImageClearBackground( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	ImageClearBackground( state->images[ imageId ], color );
 	lua_pushboolean( L, true );
 
@@ -1358,7 +1358,6 @@ int ltexturesImageDrawPixel( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	ImageDrawPixelV( state->images[ imageId ], position, color );
 	lua_pushboolean( L, true );
 
@@ -1388,7 +1387,6 @@ int ltexturesImageDrawLine( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	ImageDrawLineV( state->images[ imageId ], start, end, color );
 	lua_pushboolean( L, true );
 
@@ -1418,7 +1416,6 @@ int ltexturesImageDrawCircle( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	ImageDrawCircleV( state->images[ imageId ], center, radius, color );
 	lua_pushboolean( L, true );
 
@@ -1448,7 +1445,6 @@ int ltexturesImageDrawCircleLines( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	ImageDrawCircleLinesV( state->images[ imageId ], center, radius, color );
 	lua_pushboolean( L, true );
 
@@ -1477,7 +1473,6 @@ int ltexturesImageDrawRectangle( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	ImageDrawRectangleRec( state->images[ imageId ], rec, color );
 	lua_pushboolean( L, true );
 
@@ -1507,7 +1502,6 @@ int ltexturesImageDrawRectangleLines( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	ImageDrawRectangleLines( state->images[ imageId ], rec, thick, color );
 	lua_pushboolean( L, true );
 
@@ -1530,7 +1524,7 @@ int ltexturesImageDraw( lua_State *L ) {
 		return 1;
 	}
 	size_t imageDstId = lua_tointeger( L, 1 );
-	size_t imageSrcId = lua_tointeger( L, 2);
+	size_t imageSrcId = lua_tointeger( L, 2 );
 	Rectangle srcRec = uluaGetRectangleIndex( L, 3 );
 	Rectangle dstRec = uluaGetRectangleIndex( L, 4 );
 	Color tint = uluaGetColorIndex( L, 5 );
@@ -1539,7 +1533,6 @@ int ltexturesImageDraw( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	ImageDraw( state->images[ imageDstId ], *state->images[ imageSrcId ], srcRec, dstRec, tint );
 	lua_pushboolean( L, true );
 
@@ -1572,7 +1565,6 @@ int ltexturesImageDrawTextEx( lua_State *L ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-
 	ImageDrawTextEx( state->images[ imageId ], *state->fonts[ fontId ], lua_tostring( L, 3 ), position, fontSize, spacing, tint );
 	lua_pushboolean( L, true );
 
@@ -1603,7 +1595,6 @@ int ltexturesGetImageSize( lua_State *L ) {
 		lua_pushnil( L );
 		return 1;
 	}
-
 	Image *image = state->images[ imageId ];
 	uluaPushVector2( L, (Vector2){ image->width, image->height } );
 

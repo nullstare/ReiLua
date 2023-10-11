@@ -36,9 +36,15 @@ end
 function RL.draw()
 	RL.ClearBackground( { 50, 20, 75 } )
 
+	-- RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_SIZE, 10 )
+
 	if RL.GuiButton( { 112, 16, 96, 32 }, RL.GuiIconText( 113, "Exit" ) ) then
 		RL.CloseWindow()
 	end
+
+	-- RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_SIZE, 20 )
+	RL.GuiButton( { 112, 64, 96, 32 }, RL.GuiIconText( 113, "Kissa" ) )
+	-- RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_SIZE, 10 )
 
 	if windowOpen and RL.GuiWindowBox( { 300, 16, 200, 320 }, "Window" ) then
 		windowOpen = false

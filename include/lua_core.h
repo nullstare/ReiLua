@@ -14,9 +14,6 @@ enum EventType {
 	EVENT_CURSOR_ENTER
 };
 
-void defineGlobals();
-void logCustom( int logLevel, const char *text, va_list args );
-
 bool luaInit();
 int luaTraceback( lua_State *L );
 bool luaCallMain();

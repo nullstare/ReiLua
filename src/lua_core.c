@@ -44,10 +44,10 @@ static void assingGlobalFunction( const char *name, int ( *functionPtr )( lua_St
 	lua_setfield( L, -2, name );
 }
 
-void defineGlobals() {
+static void defineGlobals() {
 	lua_State *L = state->luaState;
 
-	lua_newtable( state->luaState );
+	lua_newtable( L );
 	lua_setglobal( L, "RL" );
 	lua_getglobal( L, "RL" );
 
@@ -637,7 +637,7 @@ void defineGlobals() {
 }
 
 // Custom logging funtion.
-void logCustom( int logLevel, const char *text, va_list args ) {
+static void logCustom( int logLevel, const char *text, va_list args ) {
 	char string[ STRING_LEN ] = {'\0'};
 	char msg[ STRING_LEN ] = {'\0'};
 
@@ -1993,60 +1993,46 @@ bool isValidTexture( lua_State *L, int index, bool allowTable ) {
 	if ( lua_isnumber( L, index ) ) {
 		int id = lua_tointeger( L, index );
 
-		if ( ( 0 <= id && id < state->textureCount && state->textures[ id ] != NULL ) ) {
+		if ( 0 <= id && id < state->textureCount && state->textures[ id ] != NULL ) {
 			return true;
-		}
-		else {
-			return false;
 		}
     }
 	else if ( allowTable && lua_istable( L, index ) ) {
 		return true;
 	}
-	else {
-		TraceLog( state->logLevelInvalid, "%s", "Error. Invalid Texture." );
-		return false;
-	}
+	TraceLog( state->logLevelInvalid, "%s", "Error. Invalid Texture." );
+	return false;
 }
 
 bool isValidRenderTexture( lua_State *L, int index, bool allowTable ) {
 	if ( lua_isnumber( L, index ) ) {
 		int id = lua_tointeger( L, index );
 
-		if ( ( 0 <= id && id < state->textureCount && state->textures[ id ] != NULL ) ) {
+		if ( 0 <= id && id < state->textureCount && state->textures[ id ] != NULL
+		&& state->textures[ id ]->type == TEXTURE_TYPE_RENDER_TEXTURE ) {
 			return true;
-		}
-		else {
-			return false;
 		}
     }
 	else if ( allowTable && lua_istable( L, index ) ) {
 		return true;
 	}
-	else {
-		TraceLog( state->logLevelInvalid, "%s", "Error. Invalid RenderTexture." );
-		return false;
-	}
+	TraceLog( state->logLevelInvalid, "%s", "Error. Invalid RenderTexture." );
+	return false;
 }
 
 bool isValidCamera2D( lua_State *L, int index, bool allowTable ) {
 	if ( lua_isnumber( L, index ) ) {
 		int id = lua_tointeger( L, index );
 
-		if ( ( 0 <= id && id < state->camera2DCount && state->camera2Ds[ id ] != NULL ) ) {
+		if ( 0 <= id && id < state->camera2DCount && state->camera2Ds[ id ] != NULL ) {
 			return true;
-		}
-		else {
-			return false;
 		}
     }
 	else if ( allowTable && lua_istable( L, index ) ) {
 		return true;
 	}
-	else {
-		TraceLog( state->logLevelInvalid, "%s", "Error. Invalid Camera2D." );
-		return false;
-	}
+	TraceLog( state->logLevelInvalid, "%s", "Error. Invalid Camera2D." );
+	return false;
 }
 
 bool isValidCamera3D( lua_State *L, int index, bool allowTable ) {
@@ -2056,17 +2042,12 @@ bool isValidCamera3D( lua_State *L, int index, bool allowTable ) {
 		if ( ( 0 <= id && id < state->camera3DCount && state->camera3Ds[ id ] != NULL ) ) {
 			return true;
 		}
-		else {
-			return false;
-		}
     }
 	else if ( allowTable && lua_istable( L, index ) ) {
 		return true;
 	}
-	else {
-		TraceLog( state->logLevelInvalid, "%s", "Error. Invalid Camera3D." );
-		return false;
-	}
+	TraceLog( state->logLevelInvalid, "%s", "Error. Invalid Camera3D." );
+	return false;
 }
 
 /* Lua util functions. */
@@ -2082,7 +2063,6 @@ Color uluaGetColorIndex( lua_State *L, int index ) {
 		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong color value. Returning { 0, 0, 0, 255 }" );
         return color;
     }
-	// int t = lua_gettop( L ), i = 0;
 	int t = index, i = 0;
     lua_pushnil( L );
 

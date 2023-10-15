@@ -1661,7 +1661,7 @@ int lmodelsCreateMaterial( lua_State *L ) {
 								lua_pushnil( L );
 
 								while ( lua_next( L, t4 ) != 0 ) {
-									if ( strcmp( "texture", (char*)lua_tostring( L, -2 ) ) == 0 && lua_isnumber( L, -1 ) ) {
+									if ( strcmp( "texture", (char*)lua_tostring( L, -2 ) ) == 0 && isValidTexture( L, lua_gettop( L ), true ) ) {
 										state->materials[i]->maps[map].texture = uluaGetTexture( L, lua_gettop( L ) );
 									}
 									else if ( strcmp( "color", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {

@@ -39,7 +39,7 @@ int lmathClamp( lua_State *L ) {
 }
 
 /*
-> result = RL.Lerp( float start, float end, float amount )
+> result = RL.Lerp( float a, float b, float amount )
 
 Calculate linear interpolation between two floats
 
@@ -48,7 +48,7 @@ Calculate linear interpolation between two floats
 */
 int lmathLerp( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Lerp( float start, float end, float amount )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Lerp( float a, float b, float amount )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -62,7 +62,7 @@ int lmathLerp( lua_State *L ) {
 }
 
 /*
-> result = RL.Normalize( float value, float start, float end )
+> result = RL.Normalize( float value, float a, float b )
 
 Normalize input value within input range
 
@@ -71,7 +71,7 @@ Normalize input value within input range
 */
 int lmathNormalize( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Normalize( float value, float start, float end )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Normalize( float value, float a, float b )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}
@@ -404,7 +404,7 @@ int lmathVector2Angle( lua_State *L ) {
 }
 
 /*
-> result = RL.Vector2LineAngle( Vector2 start, Vector2 end )
+> result = RL.Vector2LineAngle( Vector2 a, Vector2 b )
 
 Calculate angle defined by a two vectors line.
 NOTE: Parameters need to be normalized.
@@ -415,7 +415,7 @@ Current implementation should be aligned with glm::angle.
 */
 int lmathVector2LineAngle( lua_State *L ) {
 	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2LineAngle( Vector2 start, Vector2 end )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Vector2LineAngle( Vector2 a, Vector2 b )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}

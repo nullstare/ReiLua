@@ -2710,11 +2710,11 @@ function RL.ImageDrawPixel( dst, position, color ) end
 ---- Failure return false
 ---- Success return true
 ---@param dst any
----@param start table
----@param end table
+---@param a table
+---@param b table
 ---@param color table
 ---@return any success 
-function RL.ImageDrawLine( dst, start, end, color ) end
+function RL.ImageDrawLine( dst, a, b, color ) end
 
 ---Draw circle within an image
 ---- Failure return false
@@ -4174,20 +4174,20 @@ function RL.Clamp( value, min, max ) end
 ---Calculate linear interpolation between two floats
 ---- Failure return false
 ---- Success return float
----@param start number
----@param end number
+---@param a number
+---@param b number
 ---@param amount number
 ---@return any result 
-function RL.Lerp( start, end, amount ) end
+function RL.Lerp( a, b, amount ) end
 
 ---Normalize input value within input range
 ---- Failure return false
 ---- Success return float
 ---@param value number
----@param start number
----@param end number
+---@param a number
+---@param b number
 ---@return any result 
-function RL.Normalize( value, start, end ) end
+function RL.Normalize( value, a, b ) end
 
 ---Remap input value within input range to output range
 ---- Failure return false
@@ -4312,10 +4312,10 @@ function RL.Vector2Angle( v1, v2 ) end
 ---Current implementation should be aligned with glm::angle.
 ---- Failure return false
 ---- Success return float
----@param start table
----@param end table
+---@param a table
+---@param b table
 ---@return any result 
-function RL.Vector2LineAngle( start, end ) end
+function RL.Vector2LineAngle( a, b ) end
 
 ---Scale vector ( multiply by value )
 ---- Failure return false

@@ -3283,7 +3283,7 @@ Draw pixel within an image
 
 ---
 
-> success = RL.ImageDrawLine( Image dst, Vector2 start, Vector2 end, Color color )
+> success = RL.ImageDrawLine( Image dst, Vector2 a, Vector2 b, Color color )
 
 Draw line within an image
 
@@ -4880,7 +4880,7 @@ Clamp float value
 
 ---
 
-> result = RL.Lerp( float start, float end, float amount )
+> result = RL.Lerp( float a, float b, float amount )
 
 Calculate linear interpolation between two floats
 
@@ -4889,7 +4889,7 @@ Calculate linear interpolation between two floats
 
 ---
 
-> result = RL.Normalize( float value, float start, float end )
+> result = RL.Normalize( float value, float a, float b )
 
 Normalize input value within input range
 
@@ -5035,7 +5035,7 @@ Calculate angle from two vectors
 
 ---
 
-> result = RL.Vector2LineAngle( Vector2 start, Vector2 end )
+> result = RL.Vector2LineAngle( Vector2 a, Vector2 b )
 
 Calculate angle defined by a two vectors line.
 NOTE: Parameters need to be normalized.

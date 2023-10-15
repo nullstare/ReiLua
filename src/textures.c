@@ -1365,7 +1365,7 @@ int ltexturesImageDrawPixel( lua_State *L ) {
 }
 
 /*
-> success = RL.ImageDrawLine( Image dst, Vector2 start, Vector2 end, Color color )
+> success = RL.ImageDrawLine( Image dst, Vector2 a, Vector2 b, Color color )
 
 Draw line within an image
 
@@ -1374,7 +1374,7 @@ Draw line within an image
 */
 int ltexturesImageDrawLine( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_istable( L, 4 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageDrawLine( Image dst, Vector2 start, Vector2 end, Color color )" );
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageDrawLine( Image dst, Vector2 a, Vector2 b, Color color )" );
 		lua_pushboolean( L, false );
 		return 1;
 	}

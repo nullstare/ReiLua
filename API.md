@@ -1,6 +1,6 @@
 # ReiLua API
 
-## Usage
+## Functions
 
 Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.process', 'RL.draw', 'RL.event', 'RL.log', and 'RL.exit'.
 
@@ -40,6 +40,10 @@ This function can be used for custom log message handling.
 This function will be called on program close. Cleanup could be done here.
 
 ---
+
+## Arguments
+
+Arguments are stored in 'RL.arg' array.
 
 ## Globals - ConfigFlags
 FLAG_VSYNC_HINT = 64

@@ -1007,17 +1007,31 @@ static void cursorEnterInputEvent( GLFWwindow* window, int enter ) {
 	lua_pop( L, -1 );
 }
 
-bool luaInit() {
+bool luaInit( int argn, const char **argc ) {
 	state->luaState = luaL_newstate();
+	lua_State *L = state->luaState;
 
-    luaL_openlibs( state->luaState );
+    luaL_openlibs( L );
 
-	if ( state->luaState == NULL ) {
+	if ( L == NULL ) {
 		TraceLog( LOG_WARNING, "%s", "Failed to init Lua" );
 
 		return false;
 	}
 	defineGlobals();
+
+	/* Set arguments. */
+	lua_getglobal( L, "RL" );
+	lua_newtable( L );
+	lua_setfield( L, -2, "arg" );
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "arg" );
+
+	for ( int i = 0; i < argn; i++ ) {
+		lua_pushstring( L, argc[i] );
+		lua_rawseti( L, -2, i + 1 );
+	}
+	lua_pop( L, -1 );
 
 	return true;
 }

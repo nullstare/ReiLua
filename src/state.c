@@ -6,7 +6,7 @@
 
 State *state;
 
-bool stateInit( const char *exePath ) {
+bool stateInit( int argn, const char **argc, const char *exePath ) {
 	state = malloc( sizeof( State ) );
 
 	state->exePath = malloc( STRING_LEN * sizeof( char ) );
@@ -107,15 +107,15 @@ bool stateInit( const char *exePath ) {
 	}
 	if ( state->run ) {
 		InitAudioDevice();
-		state->run = luaInit();
+		state->run = luaInit( argn, argc );
 	}
 
 	return state->run;
 }
 
-void stateInitInterpret() {
+void stateInitInterpret( int argn, const char **argc ) {
 	state = malloc( sizeof( State ) );
-	luaInit();
+	luaInit( argn, argc );
 }
 
 void stateFree() {

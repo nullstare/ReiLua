@@ -20,6 +20,8 @@ function RL.event( event ) end
 function RL.log( logLevel, message ) end
 ---This function will be called on program close. Cleanup could be done here.
 function RL.exit() end
+---This function will be called on program close. Cleanup could be done here.
+function RL.exit() end
 
 -- Globals - ConfigFlags
 

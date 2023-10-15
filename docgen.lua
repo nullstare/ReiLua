@@ -86,7 +86,7 @@ apiFile:write( "# ReiLua API\n" )
 
 -- Usage.
 
-apiFile:write( "\n## Usage\n" )
+apiFile:write( "\n## Functions\n" )
 apiFile:write( "\nApplication needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where \"main.lua\" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.process', 'RL.draw', 'RL.event', 'RL.log', and 'RL.exit'.\n" )
 
 local FUNC_DESC = {
@@ -121,6 +121,11 @@ luaApiFile:write(
 "---"..FUNC_DESC.log.."\n---@param logLevel integer\n---@param message string\nfunction RL.log( logLevel, message ) end\n" )
 luaApiFile:write(
 "---"..FUNC_DESC.exit.."\nfunction RL.exit() end\n" )
+luaApiFile:write(
+"---"..FUNC_DESC.exit.."\nfunction RL.exit() end\n" )
+
+apiFile:write( "\n## Arguments\n" )
+apiFile:write( "\nArguments are stored in 'RL.arg' array.\n" )
 
 -- Globals.
 

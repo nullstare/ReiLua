@@ -14,7 +14,7 @@ enum EventType {
 	EVENT_CURSOR_ENTER
 };
 
-bool luaInit();
+bool luaInit( int argn, const char **argc );
 int luaTraceback( lua_State *L );
 bool luaCallMain();
 void luaCallProcess();

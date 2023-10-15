@@ -97,6 +97,6 @@ typedef struct {
 
 extern State *state;
 
-bool stateInit( const char *exePath );
-void stateInitInterpret();
+bool stateInit( int argn, const char **argc, const char *exePath );
+void stateInitInterpret( int argn, const char **argc );
 void stateFree();

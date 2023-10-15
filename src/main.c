@@ -48,7 +48,7 @@ int main( int argn, const char **argc ) {
 	}
 
 	if ( interpret_mode ) {
-		stateInitInterpret();
+		stateInitInterpret( argn, argc );
 
 		lua_State *L = state->luaState;
 		lua_pushcfunction( L, luaTraceback );
@@ -63,7 +63,7 @@ int main( int argn, const char **argc ) {
 	}
 	else {
 		printVersion();
-		stateInit( exePath );
+		stateInit( argn, argc, exePath );
 		luaRegister();
 		state->run = luaCallMain();
 

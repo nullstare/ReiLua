@@ -1579,12 +1579,173 @@ Delete framebuffer from GPU
 int lrlglUnloadFramebuffer( lua_State *L ) {
 	if ( !lua_isnumber( L, 1 ) ) {
 		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlUnloadFramebuffer( int id )" );
-		lua_pushboolean( L, false );
+		lua_pushnil( L );
 		return 1;
 	}
 	unsigned int id = lua_tointeger( L, 1 );
 
 	rlUnloadFramebuffer( id );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+## RLGL - Matrix state management
+*/
+
+/*
+> modelview = RL.rlGetMatrixModelview()
+
+Get internal modelview matrix
+
+- Success return Matrix
+*/
+int lrlglGetMatrixModelview( lua_State *L ) {
+	uluaPushMatrix( L, rlGetMatrixModelview() );
+
+	return 1;
+}
+
+/*
+> projection = RL.rlGetMatrixProjection()
+
+Get internal projection matrix
+
+- Success return Matrix
+*/
+int lrlglGetMatrixProjection( lua_State *L ) {
+	uluaPushMatrix( L, rlGetMatrixProjection() );
+
+	return 1;
+}
+
+/*
+> transform = RL.rlGetMatrixTransform()
+
+Get internal accumulated transform matrix
+
+- Success return Matrix
+*/
+int lrlglGetMatrixTransform( lua_State *L ) {
+	uluaPushMatrix( L, rlGetMatrixTransform() );
+
+	return 1;
+}
+
+/*
+> projection = RL.rlGetMatrixProjectionStereo( int eye )
+
+Get internal projection matrix for stereo render (selected eye)
+
+- Failure return false
+- Success return Matrix
+*/
+int lrlglGetMatrixProjectionStereo( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlGetMatrixProjectionStereo( int eye )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushMatrix( L, rlGetMatrixProjectionStereo( lua_tointeger( L, 1 ) ) );
+
+	return 1;
+}
+
+/*
+> viewOffset = RL.rlGetMatrixViewOffsetStereo( int eye )
+
+Get internal view offset matrix for stereo render (selected eye)
+
+- Failure return false
+- Success return Matrix
+*/
+int lrlglGetMatrixViewOffsetStereo( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlGetMatrixViewOffsetStereo( int eye )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	uluaPushMatrix( L, rlGetMatrixViewOffsetStereo( lua_tointeger( L, 1 ) ) );
+
+	return 1;
+}
+
+/*
+> success = RL.rlSetMatrixProjection( Matrix proj )
+
+Set a custom projection matrix (replaces internal projection matrix)
+
+- Failure return false
+- Success return true
+*/
+int lrlglSetMatrixProjection( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlSetMatrixProjection( Matrix proj )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlSetMatrixProjection( uluaGetMatrixIndex( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlSetMatrixModelview( Matrix view )
+
+Set a custom modelview matrix (replaces internal modelview matrix)
+
+- Failure return false
+- Success return true
+*/
+int lrlglSetMatrixModelview( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlSetMatrixModelview( Matrix view )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlSetMatrixModelview( uluaGetMatrixIndex( L, 1 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlSetMatrixProjectionStereo( Matrix right, Matrix left )
+
+Set eyes projection matrices for stereo rendering
+
+- Failure return false
+- Success return true
+*/
+int lrlglSetMatrixProjectionStereo( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlSetMatrixModelview( Matrix right, Matrix left )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlSetMatrixProjectionStereo( uluaGetMatrixIndex( L, 1 ), uluaGetMatrixIndex( L, 2 ) );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlSetMatrixViewOffsetStereo( Matrix right, Matrix left )
+
+Set eyes view offsets matrices for stereo rendering
+
+- Failure return false
+- Success return true
+*/
+int lrlglSetMatrixViewOffsetStereo( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) || !lua_istable( L, 2 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlSetMatrixViewOffsetStereo( Matrix right, Matrix left )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	rlSetMatrixViewOffsetStereo( uluaGetMatrixIndex( L, 1 ), uluaGetMatrixIndex( L, 2 ) );
 	lua_pushboolean( L, true );
 
 	return 1;

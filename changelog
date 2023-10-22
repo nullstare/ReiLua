@@ -34,6 +34,7 @@ KEY CHANGES:
 	- ADDED: rlgl Shader state.
 	- ADDED: RL.event function with input events.
 	- ADDED: Window events.
+	- ADDED: rlgl Matrix state management.
 
 Detailed changes:
 	- FIXED: uluaGetRay was looking for integers instead of tables
@@ -103,7 +104,7 @@ Detailed changes:
 	- FIXED: isValidRenderTexture checks that it is TEXTURE_TYPE_RENDER_TEXTURE
 	- FIXED: isValidTexture on CreateMaterial
 	- CHANGED: Renamed start, end arguments to a, b to avoid using Lua keyword "end" in argument names
-	- ADDED: Argumets stored in "RL.arg" array
+	- ADDED: Arguments stored in "RL.arg" array
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.4.0		Using Raylib 4.2

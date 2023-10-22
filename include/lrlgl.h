@@ -96,3 +96,13 @@ int lrlglLoadFramebuffer( lua_State *L );
 int lrlglFramebufferAttach( lua_State *L );
 int lrlglFramebufferComplete( lua_State *L );
 int lrlglUnloadFramebuffer( lua_State *L );
+/* Matrix state management */
+int lrlglGetMatrixModelview( lua_State *L );
+int lrlglGetMatrixProjection( lua_State *L );
+int lrlglGetMatrixTransform( lua_State *L );
+int lrlglGetMatrixProjectionStereo( lua_State *L );
+int lrlglGetMatrixViewOffsetStereo( lua_State *L );
+int lrlglSetMatrixProjection( lua_State *L );
+int lrlglSetMatrixModelview( lua_State *L );
+int lrlglSetMatrixProjectionStereo( lua_State *L );
+int lrlglSetMatrixViewOffsetStereo( lua_State *L );

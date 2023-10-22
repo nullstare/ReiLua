@@ -1957,6 +1957,16 @@ void luaRegister() {
 	assingGlobalFunction( "rlFramebufferAttach", lrlglFramebufferAttach );
 	assingGlobalFunction( "rlFramebufferComplete", lrlglFramebufferComplete );
 	assingGlobalFunction( "rlUnloadFramebuffer", lrlglUnloadFramebuffer );
+		/* Matrix state management. */
+	assingGlobalFunction( "rlGetMatrixModelview", lrlglGetMatrixModelview );
+	assingGlobalFunction( "rlGetMatrixProjection", lrlglGetMatrixProjection );
+	assingGlobalFunction( "rlGetMatrixTransform", lrlglGetMatrixTransform );
+	assingGlobalFunction( "rlGetMatrixProjectionStereo", lrlglGetMatrixProjectionStereo );
+	assingGlobalFunction( "rlGetMatrixViewOffsetStereo", lrlglGetMatrixViewOffsetStereo );
+	assingGlobalFunction( "rlSetMatrixProjection", lrlglSetMatrixProjection );
+	assingGlobalFunction( "rlSetMatrixModelview", lrlglSetMatrixModelview );
+	assingGlobalFunction( "rlSetMatrixProjectionStereo", lrlglSetMatrixProjectionStereo );
+	assingGlobalFunction( "rlSetMatrixViewOffsetStereo", lrlglSetMatrixViewOffsetStereo );
 
 	/* OpenGL */
 		/* Framebuffer management. */

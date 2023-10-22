@@ -34,7 +34,7 @@ Application needs 'main.lua' or 'main' file as entry point. ReiLua executable wi
 
 Example of basic "main.lua" file that will show basic windows with text.
 
-```
+```Lua
 local textColor = RL.BLACK
 local textPos = { 192, 200 }
 

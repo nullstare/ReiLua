@@ -1,7 +1,6 @@
 Current {
 	* rlgl
 		* Vertex buffers management
-		* Matrix state management
 		* Shaders management
 		* Compute shader management
 }

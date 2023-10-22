@@ -1,1 +1,3 @@
-*
+libraylib.a
+liblua.a
+libluajit.a

@@ -7191,6 +7191,88 @@ Delete framebuffer from GPU
 
 ---
 
+## RLGL - Matrix state management
+
+---
+
+> modelview = RL.rlGetMatrixModelview()
+
+Get internal modelview matrix
+
+- Success return Matrix
+
+---
+
+> projection = RL.rlGetMatrixProjection()
+
+Get internal projection matrix
+
+- Success return Matrix
+
+---
+
+> transform = RL.rlGetMatrixTransform()
+
+Get internal accumulated transform matrix
+
+- Success return Matrix
+
+---
+
+> projection = RL.rlGetMatrixProjectionStereo( int eye )
+
+Get internal projection matrix for stereo render (selected eye)
+
+- Failure return false
+- Success return Matrix
+
+---
+
+> viewOffset = RL.rlGetMatrixViewOffsetStereo( int eye )
+
+Get internal view offset matrix for stereo render (selected eye)
+
+- Failure return false
+- Success return Matrix
+
+---
+
+> success = RL.rlSetMatrixProjection( Matrix proj )
+
+Set a custom projection matrix (replaces internal projection matrix)
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlSetMatrixModelview( Matrix view )
+
+Set a custom modelview matrix (replaces internal modelview matrix)
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlSetMatrixProjectionStereo( Matrix right, Matrix left )
+
+Set eyes projection matrices for stereo rendering
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.rlSetMatrixViewOffsetStereo( Matrix right, Matrix left )
+
+Set eyes view offsets matrices for stereo rendering
+
+- Failure return false
+- Success return true
+
+---
+
 ## OpenGL - Framebuffer management
 
 ---

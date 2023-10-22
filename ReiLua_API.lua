@@ -6166,6 +6166,67 @@ function RL.rlFramebufferComplete( id ) end
 ---@return any success 
 function RL.rlUnloadFramebuffer( id ) end
 
+-- RLGL - Matrix state management
+
+---Get internal modelview matrix
+---- Success return Matrix
+---@return any modelview 
+function RL.rlGetMatrixModelview() end
+
+---Get internal projection matrix
+---- Success return Matrix
+---@return any projection 
+function RL.rlGetMatrixProjection() end
+
+---Get internal accumulated transform matrix
+---- Success return Matrix
+---@return any transform 
+function RL.rlGetMatrixTransform() end
+
+---Get internal projection matrix for stereo render (selected eye)
+---- Failure return false
+---- Success return Matrix
+---@param eye integer
+---@return any projection 
+function RL.rlGetMatrixProjectionStereo( eye ) end
+
+---Get internal view offset matrix for stereo render (selected eye)
+---- Failure return false
+---- Success return Matrix
+---@param eye integer
+---@return any viewOffset 
+function RL.rlGetMatrixViewOffsetStereo( eye ) end
+
+---Set a custom projection matrix (replaces internal projection matrix)
+---- Failure return false
+---- Success return true
+---@param proj table
+---@return any success 
+function RL.rlSetMatrixProjection( proj ) end
+
+---Set a custom modelview matrix (replaces internal modelview matrix)
+---- Failure return false
+---- Success return true
+---@param view table
+---@return any success 
+function RL.rlSetMatrixModelview( view ) end
+
+---Set eyes projection matrices for stereo rendering
+---- Failure return false
+---- Success return true
+---@param right table
+---@param left table
+---@return any success 
+function RL.rlSetMatrixProjectionStereo( right, left ) end
+
+---Set eyes view offsets matrices for stereo rendering
+---- Failure return false
+---- Success return true
+---@param right table
+---@param left table
+---@return any success 
+function RL.rlSetMatrixViewOffsetStereo( right, left ) end
+
 -- OpenGL - Framebuffer management
 
 ---Copy a block of pixels from one framebuffer object to another.

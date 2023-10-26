@@ -1673,6 +1673,12 @@ int ltexturesLoadTexture( lua_State *L ) {
 		int i = newTexture( TEXTURE_TYPE_TEXTURE );
 		state->textures[i]->texture = LoadTexture( lua_tostring( L, 1 ) );
 		lua_pushinteger( L, i );
+
+		// Texture loadedTex = LoadTexture( lua_tostring( L, 1 ) );
+		// Texture *texture = lua_newuserdata( L, sizeof( Texture ) );
+		// *texture = loadedTex;
+		// luaL_setmetatable( L, "Texture" );
+
 		return 1;
 	}
 	else {
@@ -1921,10 +1927,12 @@ int ltexturesDrawTexture( lua_State *L ) {
 		return 1;
 	}
 	Texture texture = uluaGetTexture( L, 1 );
+	// Texture *texture = luaL_checkudata( L, 1, "Texture" );
 	Vector2 pos = uluaGetVector2Index( L, 2 );
 	Color color = uluaGetColorIndex( L, 3 );
 
 	DrawTexture( texture, pos.x, pos.y, color );
+	// DrawTexture( *texture, pos.x, pos.y, color );
 	lua_pushboolean( L, true );
 
 	return 1;
@@ -2173,6 +2181,9 @@ int ltexturesGetTextureSize( lua_State *L ) {
 	}
 	Texture texture = uluaGetTexture( L, 1 );
 	uluaPushVector2( L, (Vector2){ texture.width, texture.height } );
+
+	// Texture *texture = luaL_checkudata( L, 1, "Texture" );
+	// uluaPushVector2( L, (Vector2){ texture->width, texture->height } );
 
 	return 1;
 }

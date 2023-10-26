@@ -211,11 +211,12 @@ void stateFree() {
 	if ( IsAudioDeviceReady() ) {
 		CloseAudioDevice();
 	}
-	if ( state->hasWindow ) {
-		CloseWindow();
-	}
 	if ( state->luaState != NULL ) {
 		lua_close( state->luaState );
+		state->luaState = NULL;
+	}
+	if ( state->hasWindow ) {
+		CloseWindow();
 	}
 	free( state->images );
 	free( state->textures );

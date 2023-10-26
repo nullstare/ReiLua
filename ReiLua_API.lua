@@ -6251,6 +6251,16 @@ function RL.rlFramebufferComplete( id ) end
 ---@return any success 
 function RL.rlUnloadFramebuffer( id ) end
 
+-- RLGL - Shaders management
+
+---Load shader from code strings
+---- Failure return nil
+---- Success return int
+---@param vsCode string
+---@param fsCode string
+---@return any success 
+function RL.rlLoadShaderCode( vsCode, fsCode ) end
+
 -- RLGL - Matrix state management
 
 ---Get internal modelview matrix

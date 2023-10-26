@@ -641,20 +641,38 @@ static void defineGlobals() {
 	lua_pop( L, -1 );
 }
 
-static int freeBuffer( lua_State *L ) {
+static int gcBuffer( lua_State *L ) {
 	Buffer *buffer = luaL_checkudata ( L, 1, "Buffer" );
 	free( buffer->data );
 }
 
-static void defineCBuffer() {
+static void defineBuffer() {
 	lua_State *L = state->luaState;
 
 	luaL_newmetatable( L, "Buffer" );
 	lua_pushvalue( L, -1 );
 	lua_setfield( L, -2, "__index" );
-	lua_pushcfunction( L, freeBuffer );
+	lua_pushcfunction( L, gcBuffer );
 	lua_setfield( L, -2, "__gc" );
 }
+
+// static int gcTexture( lua_State *L ) {
+// 	Texture *texture = luaL_checkudata ( L, 1, "Texture" );
+// 	printf( "gcTexture\n" );
+// 	printf( "\ttexture->id = %d\n", texture->id );
+
+// 	UnloadTexture( *texture );
+// }
+
+// static void defineTexture() {
+// 	lua_State *L = state->luaState;
+
+// 	luaL_newmetatable( L, "Texture" );
+// 	lua_pushvalue( L, -1 );
+// 	lua_setfield( L, -2, "__index" );
+// 	lua_pushcfunction( L, gcTexture );
+// 	lua_setfield( L, -2, "__gc" );
+// }
 
 // Custom logging funtion.
 static void logCustom( int logLevel, const char *text, va_list args ) {
@@ -678,24 +696,27 @@ static void logCustom( int logLevel, const char *text, va_list args ) {
 	/* Call Lua log function if exists. */
 	lua_State *L = state->luaState;
 
-	lua_pushcfunction( L, luaTraceback );
-	int tracebackidx = lua_gettop( L );
+	/* Prevent calling lua log function when lua is already shutdown. */
+	if ( L != NULL ) {
+		lua_pushcfunction( L, luaTraceback );
+		int tracebackidx = lua_gettop( L );
 
-	lua_getglobal( L, "RL" );
-	lua_getfield( L, -1, "log" );
+		lua_getglobal( L, "RL" );
+		lua_getfield( L, -1, "log" );
 
-    if ( lua_isfunction( L, -1 ) ) {
-        lua_pushinteger( L, logLevel );
-        lua_pushstring( L, msg );
+		if ( lua_isfunction( L, -1 ) ) {
+			lua_pushinteger( L, logLevel );
+			lua_pushstring( L, msg );
 
-        if ( lua_pcall( L, 2, 0, tracebackidx ) != 0 ) {
-			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
-			state->run = false;
-			lua_pop( L, -1 );
- 	    	return;
-        }
-    }
-	lua_pop( L, -1 );
+			if ( lua_pcall( L, 2, 0, tracebackidx ) != 0 ) {
+				TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+				state->run = false;
+				lua_pop( L, -1 );
+				return;
+			}
+		}
+		lua_pop( L, -1 );
+	}
 }
 
 /* Window events. */
@@ -1039,7 +1060,8 @@ bool luaInit( int argn, const char **argc ) {
 		return false;
 	}
 	defineGlobals();
-	defineCBuffer();
+	defineBuffer();
+	// defineTexture();
 
 	/* Set arguments. */
 	lua_getglobal( L, "RL" );
@@ -2166,6 +2188,7 @@ Vector2 uluaGetVector2( lua_State *L ) {
 }
 
 Vector2 uluaGetVector2Index( lua_State *L, int index ) {
+	// luaL_checktype( L, index, LUA_TTABLE );
     Vector2 vector = { 0.0f, 0.0f };
 
     if ( !lua_istable( L, index ) ) {

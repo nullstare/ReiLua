@@ -981,7 +981,6 @@ int lcoreLoadShader( lua_State *L ) {
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-
 	char *vsFileName = NULL;
 	char *fsFileName = NULL;
 

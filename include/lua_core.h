@@ -28,6 +28,10 @@ typedef struct {
 	int y;
 } Buffer;
 
+typedef struct {
+	int age;
+} Kissa;
+
 bool luaInit( int argn, const char **argc );
 int luaTraceback( lua_State *L );
 bool luaCallMain();

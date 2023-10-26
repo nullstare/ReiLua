@@ -1,6 +1,5 @@
 local textColor = RL.BLACK
 local textPos = { 192, 200 }
-local imageFont = -1
 local text = "Congrats! You created your first window!"
 
 function RL.init()

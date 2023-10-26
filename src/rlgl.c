@@ -1733,6 +1733,29 @@ int lrlglUnloadFramebuffer( lua_State *L ) {
 }
 
 /*
+## RLGL - Shaders management
+*/
+
+/*
+> success = RL.rlLoadShaderCode( string vsCode, string fsCode )
+
+Load shader from code strings
+
+- Failure return nil
+- Success return int
+*/
+// int lrlglUnloadFramebuffer( lua_State *L ) {
+// 	if ( !lua_isstring( L, 1 ) || !lua_isstring( L, 2 ) ) {
+// 		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlLoadShaderCode( string vsCode, string fsCode )" );
+// 		lua_pushnil( L );
+// 		return 1;
+// 	}
+// 	lua_pushinteger( L, rlLoadShaderCode( luaL_checkstring( L, 1 ), luaL_checkstring( L, 2 ) ) );
+
+// 	return 1;
+// }
+
+/*
 ## RLGL - Matrix state management
 */
 

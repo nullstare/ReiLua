@@ -29,6 +29,14 @@ List of some MISSING features that are planned to be included. For specific func
 * Audio
 	* AudioStream management functions
 
+## Roadmap
+
+v0.6
+	* Switch from id based objects to Lua userdata(like most bindings). Resources won't be stored in State anymore.
+	* Change argument checking to use more luaL_checkx functions and remove the TraceLog messages.
+v0.7
+	* Switch to Raylib v5.0?
+
 ## Usage
 
 Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.process', 'RL.draw', 'RL.log' and 'RL.exit'.

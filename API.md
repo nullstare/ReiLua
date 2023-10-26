@@ -7806,6 +7806,19 @@ Delete framebuffer from GPU
 
 ---
 
+## RLGL - Shaders management
+
+---
+
+> success = RL.rlLoadShaderCode( string vsCode, string fsCode )
+
+Load shader from code strings
+
+- Failure return nil
+- Success return int
+
+---
+
 ## RLGL - Matrix state management
 
 ---

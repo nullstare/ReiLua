@@ -618,6 +618,11 @@ static void defineGlobals() {
 	assignGlobalInt( GLFW_RELEASE, "GLFW_RELEASE" );
 	assignGlobalInt( GLFW_PRESS, "GLFW_PRESS" );
 	assignGlobalInt( GLFW_REPEAT, "GLFW_REPEAT" );
+	/* CBuffer Data Types */
+	assignGlobalInt( BUFFER_UNSIGNED_CHAR, "BUFFER_UNSIGNED_CHAR" );
+	assignGlobalInt( BUFFER_UNSIGNED_SHORT, "BUFFER_UNSIGNED_SHORT" );
+	assignGlobalInt( BUFFER_UNSIGNED_INT, "BUFFER_UNSIGNED_INT" );
+	assignGlobalInt( BUFFER_FLOAT, "BUFFER_FLOAT" );
 	/* Window Events. */
 	assignGlobalInt( EVENT_WINDOW_SIZE, "EVENT_WINDOW_SIZE" );
 	assignGlobalInt( EVENT_WINDOW_MAXIMIZE, "EVENT_WINDOW_MAXIMIZE" );
@@ -634,6 +639,21 @@ static void defineGlobals() {
 /*DOC_END*/
 
 	lua_pop( L, -1 );
+}
+
+static int freeBuffer( lua_State *L ) {
+	Buffer *buffer = luaL_checkudata ( L, 1, "Buffer" );
+	free( buffer->data );
+}
+
+static void defineCBuffer() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "Buffer" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, freeBuffer );
+	lua_setfield( L, -2, "__gc" );
 }
 
 // Custom logging funtion.
@@ -1019,6 +1039,7 @@ bool luaInit( int argn, const char **argc ) {
 		return false;
 	}
 	defineGlobals();
+	defineCBuffer();
 
 	/* Set arguments. */
 	lua_getglobal( L, "RL" );
@@ -1235,6 +1256,7 @@ void luaRegister() {
 	assingGlobalFunction( "SetLogLevelInvalid", lcoreSetLogLevelInvalid );
 	assingGlobalFunction( "GetLogLevelInvalid", lcoreGetLogLevelInvalid );
 	assingGlobalFunction( "OpenURL", lcoreOpenURL );
+	assingGlobalFunction( "LoadBuffer", lcoreLoadBuffer );
 		/* Cursor. */
 	assingGlobalFunction( "ShowCursor", lcoreShowCursor );
 	assingGlobalFunction( "HideCursor", lcoreHideCursor );
@@ -1944,10 +1966,18 @@ void luaRegister() {
 		/* Vertex buffers management. */
 	assingGlobalFunction( "rlLoadVertexArray", lrlglLoadVertexArray );
 	assingGlobalFunction( "rlLoadVertexBuffer", lrlglLoadVertexBuffer );
+	assingGlobalFunction( "rlLoadVertexBufferElement", lrlglLoadVertexBufferElement );
+	assingGlobalFunction( "rlUpdateVertexBuffer", lrlglUpdateVertexBuffer );
+	assingGlobalFunction( "rlUpdateVertexBufferElements", lrlglUpdateVertexBufferElements );
 	assingGlobalFunction( "rlUnloadVertexArray", lrlglUnloadVertexArray );
 	assingGlobalFunction( "rlUnloadVertexBuffer", lrlglUnloadVertexBuffer );
 	assingGlobalFunction( "rlSetVertexAttribute", lrlglSetVertexAttribute );
+	assingGlobalFunction( "rlSetVertexAttributeDivisor", lrlglSetVertexAttributeDivisor );
+	assingGlobalFunction( "rlSetVertexAttributeDefault", lrlglSetVertexAttributeDefault );
 	assingGlobalFunction( "rlDrawVertexArray", lrlglDrawVertexArray );
+	assingGlobalFunction( "rlDrawVertexArrayElements", lrlglDrawVertexArrayElements );
+	assingGlobalFunction( "rlDrawVertexArrayInstanced", lrlglDrawVertexArrayInstanced );
+	assingGlobalFunction( "rlDrawVertexArrayElementsInstanced", lrlglDrawVertexArrayElementsInstanced );
 		/* Textures management. */
 	assingGlobalFunction( "rlLoadTexture", lrlglLoadTexture );
 	assingGlobalFunction( "rlLoadTextureDepth", lrlglLoadTextureDepth );

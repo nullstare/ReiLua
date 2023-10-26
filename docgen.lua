@@ -155,18 +155,18 @@ repeat
 			globalVariableCount = globalVariableCount + 1
 
 			if value == nil then
-				apiFile:write( "\n"..globalName.." = nil\n" )
+				apiFile:write( "\n"..globalName.." = nil\n\n" )
 				luaApiFile:write( "RL."..globalName.."=nil\n" )
 			elseif type( value ) == "table" then
 				-- All tables are colors.
 				apiFile:write( globalName.." = { "
 					..math.tointeger( value[1] )..", "..math.tointeger( value[2] )..", "
-					..math.tointeger( value[3] )..", "..math.tointeger( value[4] ).." }\n" )
+					..math.tointeger( value[3] )..", "..math.tointeger( value[4] ).." }\n\n" )
 				luaApiFile:write( "RL."..globalName.."={"
 					..math.tointeger( value[1] )..","..math.tointeger( value[2] )..","
 					..math.tointeger( value[3] )..","..math.tointeger( value[4] ).."}\n" )
 			else
-				apiFile:write( globalName.." = "..value.."\n" )
+				apiFile:write( globalName.." = "..value.."\n\n" )
 				luaApiFile:write( "RL."..globalName.."="..value.."\n" )
 			end
 		end
@@ -257,6 +257,8 @@ apiFile:write( "\n> NPatchInfo = { { 0, 0, 24, 24 }, 8, 8, 8, 8, NPATCH_NINE_PAT
 { Texture source rectangle, Left border offset, Top border offset, Right border offset, Bottom border offset, Layout of the n-patch: 3x3, 1x3 or 3x1 }\n\n---\n" )
 apiFile:write( "\n> ModelAnimations = ModelAnimationsId\n\
 int id. ModelAnimations\n\n---\n" )
+apiFile:write( "\n> Buffer = Buffer userdata\n\
+Userdata.\n\n---\n" )
 
 -- Events.
 

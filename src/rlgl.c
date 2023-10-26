@@ -3,58 +3,6 @@
 #include "lua_core.h"
 #include "lrlgl.h"
 
-static void* getVertexBuffer( lua_State *L, int *type, unsigned int *size ) {
-	*type = lua_tointeger( L, 2 );
-	size_t len = uluaGetTableLenIndex( L, 1 );
-	unsigned char *uByteArray;
-	float *floatArray;
-
-	switch ( *type ) {
-	case RL_UNSIGNED_BYTE:
-		*size = len * sizeof( unsigned char );
-		uByteArray = MemAlloc( *size );
-		break;
-	case RL_FLOAT:
-		*size = len * sizeof( float );
-		floatArray = MemAlloc( *size );
-		break;
-	default:
-		break;
-	}
-
-	int t = 1;
-	int i = 0;
-	lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-		switch ( *type ) {
-		case RL_UNSIGNED_BYTE:
-			uByteArray[i] = lua_tointeger( L, -1 );
-			break;
-		case RL_FLOAT:
-			floatArray[i] = lua_tointeger( L, -1 );
-			break;
-		default:
-			break;
-		}
-
-		lua_pop( L, 1 );
-		i++;
-	}
-
-	switch ( *type ) {
-	case RL_UNSIGNED_BYTE:
-		return uByteArray;
-		break;
-	case RL_FLOAT:
-		return floatArray;
-		break;
-	default:
-		return NULL;
-		break;
-	}
-}
-
 /*
 ## RLGL - Matrix operations
 */
@@ -1308,29 +1256,93 @@ int lrlglLoadVertexArray( lua_State *L ) {
 }
 
 /*
-> vboId = RL.rlLoadVertexBuffer( Buffer{} buffer, int type, bool dynamic )
+> vboId = RL.rlLoadVertexBuffer( Buffer buffer, bool dynamic )
 
-Load a vertex buffer attribute. Type should be RL_UNSIGNED_BYTE or RL_FLOAT
+Load a vertex buffer attribute
 
 - Failure return -1
 - Success return int
 */
 int lrlglLoadVertexBuffer( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlLoadVertexBuffer( Buffer{} buffer, int type, bool dynamic )" );
+	if ( !lua_isuserdata( L, 1 ) || !lua_isboolean( L, 2 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlLoadVertexBuffer( Buffer buffer, bool dynamic )" );
 		lua_pushinteger( L, -1 );
 		return 1;
 	}
-	unsigned int size = 0;
-	int type = 0;
-	void *vertexBuffer = getVertexBuffer( L, &type, &size );
-	bool dynamic = lua_tointeger( L, 3 );
+	Buffer *buffer = luaL_checkudata( L, 1, "Buffer" );
+	bool dynamic = lua_tointeger( L, 2 );
 
-	lua_pushinteger( L, rlLoadVertexBuffer( vertexBuffer, size, dynamic ) );
+	lua_pushinteger( L, rlLoadVertexBuffer( buffer->data, buffer->size, dynamic ) );
 
-	if ( vertexBuffer != NULL ) {
-		MemFree( vertexBuffer );
+	return 1;
+}
+
+/*
+> vboId = RL.rlLoadVertexBufferElement( Buffer buffer, bool dynamic )
+
+Load a new attributes element buffer
+
+- Failure return -1
+- Success return int
+*/
+int lrlglLoadVertexBufferElement( lua_State *L ) {
+	if ( !lua_isuserdata( L, 1 ) || !lua_isboolean( L, 2 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlLoadVertexBufferElement( Buffer buffer, bool dynamic )" );
+		lua_pushinteger( L, -1 );
+		return 1;
 	}
+	Buffer *buffer = luaL_checkudata( L, 1, "Buffer" );
+	bool dynamic = lua_tointeger( L, 2 );
+
+	lua_pushinteger( L, rlLoadVertexBufferElement( buffer->data, buffer->size, dynamic ) );
+
+	return 1;
+}
+
+/*
+> success = RL.rlUpdateVertexBuffer( int bufferId, Buffer buffer, int offset )
+
+Update GPU buffer with new data
+
+- Failure return false
+- Success return true
+*/
+int lrlglUpdateVertexBuffer( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isuserdata( L, 2 ) || !lua_isnumber( L, 3 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlUpdateVertexBuffer( int bufferId, Buffer buffer, int offset )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int bufferId = lua_tointeger( L, 1 );
+	Buffer *buffer = luaL_checkudata( L, 2, "Buffer" );
+	int offset = lua_tointeger( L, 3 );
+
+	rlUpdateVertexBuffer( bufferId, buffer->data, buffer->size, offset );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlUpdateVertexBufferElements( int id, Buffer buffer, int offset )
+
+Update vertex buffer elements with new data
+
+- Failure return false
+- Success return true
+*/
+int lrlglUpdateVertexBufferElements( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isuserdata( L, 2 ) || !lua_isnumber( L, 3 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlUpdateVertexBufferElements( int id, Buffer buffer, int offset )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int bufferId = lua_tointeger( L, 1 );
+	Buffer *buffer = luaL_checkudata( L, 2, "Buffer" );
+	int offset = lua_tointeger( L, 3 );
+
+	rlUpdateVertexBufferElements( bufferId, buffer->data, buffer->size, offset );
+	lua_pushboolean( L, true );
 
 	return 1;
 }
@@ -1404,6 +1416,63 @@ int lrlglSetVertexAttribute( lua_State *L ) {
 }
 
 /*
+> success = RL.rlSetVertexAttributeDivisor( int index, int divisor )
+
+Set vertex attribute divisor
+
+- Failure return false
+- Success return true
+*/
+int lrlglSetVertexAttributeDivisor( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlSetVertexAttributeDivisor( int index, int divisor )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	unsigned int index = (unsigned int)lua_tointeger( L, 1 );
+	int divisor = lua_tointeger( L, 2 );
+
+	rlSetVertexAttributeDivisor( index, divisor );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlSetVertexAttributeDefault( int locIndex, float{} value, int attribType )
+
+Set vertex attribute default value
+
+- Failure return false
+- Success return true
+*/
+int lrlglSetVertexAttributeDefault( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlSetVertexAttributeDefault( int locIndex, float{} value, int attribType )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int locIndex = lua_tointeger( L, 1 );
+	int attribType = lua_tointeger( L, 3 );
+	int count = uluaGetTableLenIndex( L, 2 );
+	float value[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	int t = 2;
+	int i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		value[i] = lua_tonumber( L, -1 );
+		lua_pop( L, 1 );
+		i++;
+	}
+	rlSetVertexAttributeDefault( locIndex, value, attribType, count );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
 > success = RL.rlDrawVertexArray( int offset, int count )
 
 Draw vertex array
@@ -1421,6 +1490,79 @@ int lrlglDrawVertexArray( lua_State *L ) {
 	int count = lua_tointeger( L, 2 );
 
 	rlDrawVertexArray( offset, count );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlDrawVertexArrayElements( int offset, int count, Buffer buffer )
+
+Draw vertex array elements
+
+- Failure return false
+- Success return true
+*/
+int lrlglDrawVertexArrayElements( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isuserdata( L, 3 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlDrawVertexArrayElements( int offset, int count, Buffer buffer )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int offset = lua_tointeger( L, 1 );
+	int count = lua_tointeger( L, 2 );
+	Buffer *buffer = luaL_checkudata( L, 3, "Buffer" );
+
+	rlDrawVertexArrayElements( offset, count, buffer->data );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlDrawVertexArrayInstanced( int offset, int count, int instances )
+
+Draw vertex array instanced
+
+- Failure return false
+- Success return true
+*/
+int lrlglDrawVertexArrayInstanced( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlDrawVertexArrayInstanced( int offset, int count, int instances )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int offset = lua_tointeger( L, 1 );
+	int count = lua_tointeger( L, 2 );
+	int instances = lua_tointeger( L, 3 );
+
+	rlDrawVertexArrayInstanced( offset, count, instances );
+	lua_pushboolean( L, true );
+
+	return 1;
+}
+
+/*
+> success = RL.rlDrawVertexArrayElementsInstanced( int offset, int count, Buffer buffer, int instances )
+
+Draw vertex array elements instanced
+
+- Failure return false
+- Success return true
+*/
+int lrlglDrawVertexArrayElementsInstanced( lua_State *L ) {
+	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isuserdata( L, 3 ) || !lua_isnumber( L, 4 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlDrawVertexArrayElementsInstanced( int offset, int count, Buffer buffer, int instances )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int offset = lua_tointeger( L, 1 );
+	int count = lua_tointeger( L, 2 );
+	Buffer *buffer = luaL_checkudata( L, 3, "Buffer" );
+	int instances = lua_tointeger( L, 4 );
+
+	rlDrawVertexArrayElementsInstanced( offset, count, buffer->data, instances );
 	lua_pushboolean( L, true );
 
 	return 1;

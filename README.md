@@ -18,6 +18,7 @@ Included submodules.
 * Raymath
 * Lights
 * Easings
+* RLGL WIP
 
 List of some MISSING features that are planned to be included. For specific function, check API.
 

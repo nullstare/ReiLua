@@ -3558,3 +3558,77 @@ int lcoreGetScreenToWorld2D( lua_State *L ) {
 
 	return 1;
 }
+
+/*
+> buffer = RL.LoadBuffer( data{} buffer, int type )
+
+Creates buffer as userdata. Type should be one of the Buffer types
+
+- Failure return false
+- Success return Buffer
+*/
+int lcoreLoadBuffer( lua_State *L ) {
+	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadBuffer( data{} buffer, int type )" );
+		lua_pushboolean( L, false );
+		return 1;
+	}
+	int type = lua_tointeger( L, 2 );
+	Buffer *buffer = lua_newuserdata( L, sizeof( Buffer ) );
+	int len = uluaGetTableLenIndex( L, 1 );
+
+	switch ( type ) {
+		case BUFFER_UNSIGNED_CHAR:
+			buffer->size = len * sizeof( unsigned char );
+			break;
+		case BUFFER_UNSIGNED_SHORT:
+			buffer->size = len * sizeof( unsigned short );
+			break;
+		case BUFFER_UNSIGNED_INT:
+			buffer->size = len * sizeof( unsigned int );
+			break;
+		case BUFFER_FLOAT:
+			buffer->size = len * sizeof( float );
+			break;
+		default:
+			break;
+	}
+	buffer->data = malloc( buffer->size );
+
+	int t = 1;
+	int i = 0;
+	unsigned char *up = buffer->data;
+	unsigned short *sp = buffer->data;
+	unsigned int *ip = buffer->data;
+	float *fp = buffer->data;
+	
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		switch ( type ) {
+			case BUFFER_UNSIGNED_CHAR:
+				*up = (unsigned char)lua_tointeger( L, -1 );
+				up++;
+				break;
+			case BUFFER_UNSIGNED_SHORT:
+				*sp = (unsigned short)lua_tointeger( L, -1 );
+				up++;
+				break;
+			case BUFFER_UNSIGNED_INT:
+				*ip = (unsigned int)lua_tointeger( L, -1 );
+				up++;
+				break;
+			case BUFFER_FLOAT:
+				*fp = (float)lua_tonumber( L, -1 );
+				fp++;
+				break;
+			default:
+				break;
+		}
+		lua_pop( L, 1 );
+		i++;
+	}
+	luaL_setmetatable( L, "Buffer" );
+
+	return 1;
+}

@@ -14,6 +14,20 @@ enum EventType {
 	EVENT_CURSOR_ENTER
 };
 
+enum BufferType {
+	BUFFER_UNSIGNED_CHAR,
+	BUFFER_UNSIGNED_SHORT,
+	BUFFER_UNSIGNED_INT,
+	BUFFER_FLOAT,
+};
+
+typedef struct {
+	size_t size;
+	void *data;
+	int x;
+	int y;
+} Buffer;
+
 bool luaInit( int argn, const char **argc );
 int luaTraceback( lua_State *L );
 bool luaCallMain();

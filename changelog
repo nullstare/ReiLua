@@ -35,6 +35,8 @@ KEY CHANGES:
 	- ADDED: RL.event function with input events.
 	- ADDED: Window events.
 	- ADDED: rlgl Matrix state management.
+	- ADDED: Buffer userdata object.
+	- ADDED: rlgl Vertex buffers management.
 
 Detailed changes:
 	- FIXED: uluaGetRay was looking for integers instead of tables

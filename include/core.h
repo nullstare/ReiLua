@@ -46,6 +46,7 @@ int lcoreSetTraceLogLevel( lua_State *L );
 int lcoreSetLogLevelInvalid( lua_State *L );
 int lcoreGetLogLevelInvalid( lua_State *L );
 int lcoreOpenURL( lua_State *L );
+int lcoreLoadBuffer( lua_State *L );
 /* Cursor. */
 int lcoreShowCursor( lua_State *L );
 int lcoreHideCursor( lua_State *L );

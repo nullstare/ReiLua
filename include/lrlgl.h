@@ -83,10 +83,18 @@ int lrlglSetTexture( lua_State *L );
 /* Vertex buffers management */
 int lrlglLoadVertexArray( lua_State *L );
 int lrlglLoadVertexBuffer( lua_State *L );
+int lrlglLoadVertexBufferElement( lua_State *L );
+int lrlglUpdateVertexBuffer( lua_State *L );
+int lrlglUpdateVertexBufferElements( lua_State *L );
 int lrlglUnloadVertexArray( lua_State *L );
 int lrlglUnloadVertexBuffer( lua_State *L );
 int lrlglSetVertexAttribute( lua_State *L );
+int lrlglSetVertexAttributeDivisor( lua_State *L );
+int lrlglSetVertexAttributeDefault( lua_State *L );
 int lrlglDrawVertexArray( lua_State *L );
+int lrlglDrawVertexArrayElements( lua_State *L );
+int lrlglDrawVertexArrayInstanced( lua_State *L );
+int lrlglDrawVertexArrayElementsInstanced( lua_State *L );
 /* Textures management */
 int lrlglLoadTexture( lua_State *L );
 int lrlglLoadTextureDepth( lua_State *L );

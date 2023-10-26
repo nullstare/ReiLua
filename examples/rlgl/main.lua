@@ -9,9 +9,9 @@ local vertices = {
 	triSize, 0.0, triSize
 }
 local colors = {
-	RL.RED, RL.RED, RL.RED,
-	RL.GREEN, RL.GREEN, RL.GREEN,
-	RL.BLUE, RL.BLUE, RL.BLUE
+	255, 0, 0,
+	0, 255, 0,
+	0, 0, 255
 }
 
 local VBO_VERTEX_POS = 0
@@ -25,23 +25,26 @@ local mesh = {
 	}
 }
 
-function uploadMesh()
+local function uploadMesh()
 	mesh.vaoId = RL.rlLoadVertexArray()
 
 	RL.rlEnableVertexArray( mesh.vaoId )
-
+	
 	-- Vertices.
-	mesh.vboIds.vertices = RL.rlLoadVertexBuffer( vertices, RL.RL_FLOAT, false )
+	local vertexBuffer = RL.LoadBuffer( vertices, RL.BUFFER_FLOAT )
+	mesh.vboIds.vertices = RL.rlLoadVertexBuffer( vertexBuffer, false )
 	RL.rlSetVertexAttribute( VBO_VERTEX_POS, 3, RL.RL_FLOAT, false, 0, 0 )
 	RL.rlEnableVertexAttribute( VBO_VERTEX_POS )
+
 	-- Colors.
-	mesh.vboIds.colors = RL.rlLoadVertexBuffer( vertices, RL.RL_UNSIGNED_BYTE, false )
+	local colorBuffer = RL.LoadBuffer( colors, RL.BUFFER_UNSIGNED_CHAR )
+	mesh.vboIds.colors = RL.rlLoadVertexBuffer( colorBuffer, false )
 	RL.rlSetVertexAttribute( VBO_COLOR_POS, 4, RL.RL_UNSIGNED_BYTE, false, 0, 0 )
 	RL.rlEnableVertexAttribute( VBO_COLOR_POS )
 
 	RL.rlDisableVertexArray()
 
-	print( "Mesh:" )
+	print( "\nMesh:" )
 	print( "\tvaoId: "..mesh.vaoId )
 	print( "\tvboIds.vertices: "..mesh.vboIds.vertices )
 	print( "\tvboIds.colors: "..mesh.vboIds.colors )
@@ -59,7 +62,7 @@ function RL.init()
 	uploadMesh()
 end
 
-function drawMesh()
+local function drawMesh()
 end
 
 function RL.draw()

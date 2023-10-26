@@ -707,6 +707,13 @@ RL.GLFW_RELEASE=0
 RL.GLFW_PRESS=1
 RL.GLFW_REPEAT=2
 
+-- Globals - CBuffer
+
+RL.BUFFER_UNSIGNED_CHAR=0
+RL.BUFFER_UNSIGNED_SHORT=1
+RL.BUFFER_UNSIGNED_INT=2
+RL.BUFFER_FLOAT=3
+
 -- Globals - Window
 
 RL.EVENT_WINDOW_SIZE=0
@@ -1906,6 +1913,14 @@ function RL.GetWorldToScreen2D( position, camera ) end
 ---@param camera any
 ---@return any position 
 function RL.GetScreenToWorld2D( position, camera ) end
+
+---Creates buffer as userdata. Type should be one of the Buffer types
+---- Failure return false
+---- Success return Buffer
+---@param buffer any
+---@param type integer
+---@return any buffer 
+function RL.LoadBuffer( buffer, type ) end
 
 -- Shapes - Drawing
 
@@ -6063,14 +6078,39 @@ function RL.rlSetTexture( id ) end
 ---@return any vaoId 
 function RL.rlLoadVertexArray() end
 
----Load a vertex buffer attribute. Type should be RL_UNSIGNED_BYTE or RL_FLOAT
+---Load a vertex buffer attribute
 ---- Failure return -1
 ---- Success return int
 ---@param buffer any
----@param type integer
 ---@param dynamic boolean
 ---@return any vboId 
-function RL.rlLoadVertexBuffer( buffer, type, dynamic ) end
+function RL.rlLoadVertexBuffer( buffer, dynamic ) end
+
+---Load a new attributes element buffer
+---- Failure return -1
+---- Success return int
+---@param buffer any
+---@param dynamic boolean
+---@return any vboId 
+function RL.rlLoadVertexBufferElement( buffer, dynamic ) end
+
+---Update GPU buffer with new data
+---- Failure return false
+---- Success return true
+---@param bufferId integer
+---@param buffer any
+---@param offset integer
+---@return any success 
+function RL.rlUpdateVertexBuffer( bufferId, buffer, offset ) end
+
+---Update vertex buffer elements with new data
+---- Failure return false
+---- Success return true
+---@param id integer
+---@param buffer any
+---@param offset integer
+---@return any success 
+function RL.rlUpdateVertexBufferElements( id, buffer, offset ) end
 
 ---Unload vertex array object (VAO)
 ---- Failure return false
@@ -6098,6 +6138,23 @@ function RL.rlUnloadVertexBuffer( vboId ) end
 ---@return any success 
 function RL.rlSetVertexAttribute( index, compSize, type, normalized, stride, pointer ) end
 
+---Set vertex attribute divisor
+---- Failure return false
+---- Success return true
+---@param index integer
+---@param divisor integer
+---@return any success 
+function RL.rlSetVertexAttributeDivisor( index, divisor ) end
+
+---Set vertex attribute default value
+---- Failure return false
+---- Success return true
+---@param locIndex integer
+---@param value any
+---@param attribType integer
+---@return any success 
+function RL.rlSetVertexAttributeDefault( locIndex, value, attribType ) end
+
 ---Draw vertex array
 ---- Failure return false
 ---- Success return true
@@ -6105,6 +6162,34 @@ function RL.rlSetVertexAttribute( index, compSize, type, normalized, stride, poi
 ---@param count integer
 ---@return any success 
 function RL.rlDrawVertexArray( offset, count ) end
+
+---Draw vertex array elements
+---- Failure return false
+---- Success return true
+---@param offset integer
+---@param count integer
+---@param buffer any
+---@return any success 
+function RL.rlDrawVertexArrayElements( offset, count, buffer ) end
+
+---Draw vertex array instanced
+---- Failure return false
+---- Success return true
+---@param offset integer
+---@param count integer
+---@param instances integer
+---@return any success 
+function RL.rlDrawVertexArrayInstanced( offset, count, instances ) end
+
+---Draw vertex array elements instanced
+---- Failure return false
+---- Success return true
+---@param offset integer
+---@param count integer
+---@param buffer any
+---@param instances integer
+---@return any success 
+function RL.rlDrawVertexArrayElementsInstanced( offset, count, buffer, instances ) end
 
 -- RLGL - Textures management
 

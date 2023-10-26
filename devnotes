@@ -1,6 +1,5 @@
 Current {
 	* rlgl
-		* Vertex buffers management
 		* Shaders management
 		* Compute shader management
 }
@@ -22,17 +21,20 @@ Backlog {
 	* Models
 		* LoadMaterials (Load materials from model file)
 		* LoadMaterialsFromModel (Could then for example edit and set back to model)
-	* Needs Testing
-		* UpdateTexture
-		* UpdateTextureRec
-		* LoadSoundFromWave
-		* LoadFont
-		* LoadFontEx
-		* LoadFontFromImage
-		* UpdateMesh
-		* LoadModelFromMesh
 }
 
 Bugs {
 	* CameraLib. Lateral movement is slower if looking down or up.
+}
+
+Needs Testing {
+	* UpdateTexture
+	* UpdateTextureRec
+	* LoadSoundFromWave
+	* LoadFont
+	* LoadFontEx
+	* LoadFontFromImage
+	* UpdateMesh
+	* LoadModelFromMesh
+	* RLGL - Matrix state management
 }

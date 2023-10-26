@@ -31,10 +31,10 @@ List of some MISSING features that are planned to be included. For specific func
 
 ## Roadmap
 
-v0.6
+* v0.6
 	* Switch from id based objects to Lua userdata(like most bindings). Resources won't be stored in State anymore.
 	* Change argument checking to use more luaL_checkx functions and remove the TraceLog messages.
-v0.7
+* v0.7
 	* Switch to Raylib v5.0?
 
 ## Usage

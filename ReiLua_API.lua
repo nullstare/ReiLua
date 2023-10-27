@@ -384,11 +384,6 @@ RL.NPATCH_NINE_PATCH=0
 RL.NPATCH_THREE_PATCH_VERTICAL=1
 RL.NPATCH_THREE_PATCH_HORIZONTAL=2
 
--- Globals - TextureTypes
-
-RL.TEXTURE_TYPE_TEXTURE=0
-RL.TEXTURE_TYPE_RENDER_TEXTURE=1
-
 -- Globals - Colors
 
 RL.LIGHTGRAY={200,200,200,255}
@@ -742,63 +737,53 @@ function RL.IsWindowReady() end
 ---@return any state 
 function RL.IsWindowFullscreen() end
 
----Check if window is currently hidden ( only PLATFORM_DESKTOP )
+---Check if window is currently hidden (only PLATFORM_DESKTOP)
 ---- Success return bool
 ---@return any state 
 function RL.IsWindowHidden() end
 
----Check if window is currently minimized ( only PLATFORM_DESKTOP )
+---Check if window is currently minimized (only PLATFORM_DESKTOP)
 ---- Success return bool
 ---@return any state 
 function RL.IsWindowMinimized() end
 
----Check if window is currently maximized ( only PLATFORM_DESKTOP )
+---Check if window is currently maximized (only PLATFORM_DESKTOP)
 ---- Success return bool
 ---@return any state 
 function RL.IsWindowMaximized() end
 
----Check if window is currently focused ( only PLATFORM_DESKTOP )
+---Check if window is currently focused (only PLATFORM_DESKTOP)
 ---- Success return bool
 ---@return any state 
 function RL.IsWindowFocused() end
 
 ---Set monitor for the current window (fullscreen mode)
----- Failure return false
----- Success return true
 ---@param monitor integer
----@return any success 
-function RL.SetWindowMonitor( monitor ) end
+---@return any RL.SetWindowMonitor
+function  RL.SetWindowMonitor( monitor ) end
 
 ---Set window position on screen
----- Failure return false
----- Success return true
 ---@param pos table
----@return any success 
-function RL.SetWindowPosition( pos ) end
+---@return any RL.SetWindowPosition
+function  RL.SetWindowPosition( pos ) end
 
 ---Set window dimensions
----- Failure return false
----- Success return true
 ---@param size table
----@return any success 
-function RL.SetWindowSize( size ) end
+---@return any RL.SetWindowSize
+function  RL.SetWindowSize( size ) end
 
----Set window minimum dimensions ( for FLAG_WINDOW_RESIZABLE )
----- Failure return false
----- Success return true
+---Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
 ---@param size table
----@return any success 
-function RL.SetWindowMinSize( size ) end
+---@return any RL.SetWindowMinSize
+function  RL.SetWindowMinSize( size ) end
 
 ---Get specified monitor position
----- Failure return nil
 ---- Success return Vector2
 ---@param monitor integer
 ---@return any position 
 function RL.GetMonitorPosition( monitor ) end
 
 ---Get specified monitor size
----- Failure return nil
 ---- Success return Vector2
 ---@param monitor integer
 ---@return any size 
@@ -814,21 +799,18 @@ function RL.GetWindowPosition() end
 ---@return any size 
 function RL.GetScreenSize() end
 
----Set window configuration state using flags ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE... )
----- Failure return false
----- Success return true
+---Set window configuration state using flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
 ---@param flag integer
----@return any success 
-function RL.SetWindowState( flag ) end
+---@return any RL.SetWindowState
+function  RL.SetWindowState( flag ) end
 
----Check if one specific window flag is enabled ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE... )
----- Failure return nil
+---Check if one specific window flag is enabled (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
 ---- Success return bool
 ---@param flag integer
 ---@return any state 
 function RL.IsWindowState( flag ) end
 
----Clear window configuration state flags ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE... )
+---Clear window configuration state flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
 ---- Success return bool
 ---@param flag integer
 ---@return any resized 
@@ -839,19 +821,15 @@ function RL.ClearWindowState( flag ) end
 ---@return any resized 
 function RL.IsWindowResized() end
 
----Set icon for window ( Only PLATFORM_DESKTOP )
----- Failure return false
----- Success return true
+---Set icon for window (Only PLATFORM_DESKTOP)
 ---@param image any
----@return any success 
-function RL.SetWindowIcon( image ) end
+---@return any RL.SetWindowIcon
+function  RL.SetWindowIcon( image ) end
 
----Set title for window ( Only PLATFORM_DESKTOP )
----- Failure return false
----- Success return true
+---Set title for window (Only PLATFORM_DESKTOP)
 ---@param title string
----@return any success 
-function RL.SetWindowTitle( title ) end
+---@return any RL.SetWindowTitle
+function  RL.SetWindowTitle( title ) end
 
 ---Get number of connected monitors
 ---- Success return int
@@ -864,26 +842,23 @@ function RL.GetMonitorCount() end
 function RL.GetCurrentMonitor() end
 
 ---Get specified monitor physical size in millimetres
----- Failure return false
 ---- Success return Vector2
 ---@param monitor integer
 ---@return any size 
 function RL.GetMonitorPhysicalSize( monitor ) end
 
 ---Get specified monitor refresh rate
----- Failure return false
 ---- Success return int
 ---@param monitor integer
----@return any size 
+---@return any refreshRate 
 function RL.GetMonitorRefreshRate( monitor ) end
 
 ---Get window scale DPI factor
 ---- Success return Vector2
----@return any scale 
+---@return any dpi 
 function RL.GetWindowScaleDPI() end
 
 ---Get the human-readable, UTF-8 encoded name of the monitor
----- Failure return false
 ---- Success return string
 ---@param monitor integer
 ---@return any name 
@@ -894,11 +869,9 @@ function RL.GetMonitorName( monitor ) end
 function  RL.CloseWindow() end
 
 ---Set clipboard text content
----- Failure return false
----- Success return true
 ---@param text string
----@return any success 
-function RL.SetClipboardText( text ) end
+---@return any RL.SetClipboardText
+function  RL.SetClipboardText( text ) end
 
 ---Get clipboard text content
 ---- Success return string
@@ -907,19 +880,17 @@ function RL.GetClipboardText() end
 
 -- Core - Timing
 
----Set target FPS ( maximum )
----- Failure return false
----- Success return true
+---Set target FPS (maximum)
 ---@param fps integer
----@return any success 
-function RL.SetTargetFPS( fps ) end
+---@return any RL.SetTargetFPS
+function  RL.SetTargetFPS( fps ) end
 
 ---Get current FPS
 ---- Success return int
 ---@return any FPS 
 function RL.GetFPS() end
 
----Get time in seconds for last frame drawn ( Delta time )
+---Get time in seconds for last frame drawn (Delta time)
 ---- Success return float
 ---@return any delta 
 function RL.GetFrameTime() end
@@ -931,53 +902,48 @@ function RL.GetTime() end
 
 -- Core - Misc
 
----Takes a screenshot of current screen ( filename extension defines format )
----- Failure return false
----- Success return true
+---Takes a screenshot of current screen (filename extension defines format)
 ---@param fileName string
----@return any success 
-function RL.TakeScreenshot( fileName ) end
+---@return any RL.TakeScreenshot
+function  RL.TakeScreenshot( fileName ) end
 
----Setup init configuration flags ( view FLAGS )
----- Failure return false
----- Success return true
+---Setup init configuration flags (view FLAGS)
 ---@param flags integer
----@return any success 
-function RL.SetConfigFlags( flags ) end
+---@return any RL.SetConfigFlags
+function  RL.SetConfigFlags( flags ) end
 
----Show trace log messages ( LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR... )
----- Failure return false
----- Success return true
+---Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
 ---@param logLevel integer
 ---@param text string
----@return any success 
-function RL.TraceLog( logLevel, text ) end
+---@return any RL.TraceLog
+function  RL.TraceLog( logLevel, text ) end
 
----Set the current threshold ( minimum ) log level
----- Failure return false
----- Success return true
+---Set the current threshold (minimum) log level
 ---@param logLevel integer
----@return any success 
-function RL.SetTraceLogLevel( logLevel ) end
+---@return any RL.SetTraceLogLevel
+function  RL.SetTraceLogLevel( logLevel ) end
 
 ---Set the log level for bad function calls and invalid data formats.
----- Failure return false
----- Success return true
 ---@param logLevel integer
----@return any success 
-function RL.SetLogLevelInvalid( logLevel ) end
+---@return any RL.SetLogLevelInvalid
+function  RL.SetLogLevelInvalid( logLevel ) end
 
 ---Get the log level for bad function calls and invalid data formats.
 ---- Success return int
 ---@return any logLevel 
 function RL.GetLogLevelInvalid() end
 
----Open URL with default system browser ( If available )
----- Failure return false
----- Success return true
+---Open URL with default system browser (If available)
 ---@param url string
----@return any success 
-function RL.OpenURL( url ) end
+---@return any RL.OpenURL
+function  RL.OpenURL( url ) end
+
+---Creates buffer as userdata. Type should be one of the Buffer types
+---- Success return Buffer
+---@param buffer any
+---@param type integer
+---@return any buffer 
+function RL.LoadBuffer( buffer, type ) end
 
 -- Core - Cursor
 
@@ -1009,38 +975,32 @@ function RL.IsCursorOnScreen() end
 
 -- Core - Drawing
 
----Set background color ( framebuffer clear color )
----- Failure return false
----- Success return true
+---Set background color (framebuffer clear color)
 ---@param color table
----@return any success 
-function RL.ClearBackground( color ) end
+---@return any RL.ClearBackground
+function  RL.ClearBackground( color ) end
 
----Setup canvas ( framebuffer ) to start drawing
+---Setup canvas (framebuffer) to start drawing
 ---@return any RL.BeginDrawing
 function  RL.BeginDrawing() end
 
----End canvas drawing and swap buffers ( double buffering )
+---End canvas drawing and swap buffers (double buffering)
 ---@return any RL.EndDrawing
 function  RL.EndDrawing() end
 
----Begin blending mode ( BLEND_ALPHA, BLEND_ADDITIVE, BLEND_MULTIPLIED... )
----- Failure return false
----- Success return true
+---Begin blending mode (BLEND_ALPHA, BLEND_ADDITIVE, BLEND_MULTIPLIED...)
 ---@param mode integer
----@return any success 
-function RL.BeginBlendMode( mode ) end
+---@return any RL.BeginBlendMode
+function  RL.BeginBlendMode( mode ) end
 
----End blending mode ( reset to default: BLEND_ALPHA )
+---End blending mode (reset to default: BLEND_ALPHA)
 ---@return any RL.EndBlendMode
 function  RL.EndBlendMode() end
 
----Begin scissor mode ( define screen area for following drawing )
----- Failure return false
----- Success return true
+---Begin scissor mode (define screen area for following drawing)
 ---@param rectange table
----@return any success 
-function RL.BeginScissorMode( rectange ) end
+---@return any RL.BeginScissorMode
+function  RL.BeginScissorMode( rectange ) end
 
 ---End scissor mode
 ---@return any RL.EndScissorMode
@@ -1050,8 +1010,8 @@ function  RL.EndScissorMode() end
 
 ---Load shader from files and bind default locations.
 ---NOTE: Set nil if no shader
----- Failure return -1
----- Success return int
+---- Failure return nil
+---- Success return Shader
 ---@param vsFileName string
 ---@param fsFileName string
 ---@return any shader 
@@ -1059,26 +1019,23 @@ function RL.LoadShader( vsFileName, fsFileName ) end
 
 ---Load shader from code strings and bind default locations
 ---NOTE: Set nil if no shader
----- Failure return -1
----- Success return int
+---- Failure return nil
+---- Success return Shader
 ---@param vsCode string
 ---@param fsCode string
 ---@return any shader 
 function RL.LoadShaderFromMemory( vsCode, fsCode ) end
 
 ---Begin custom shader drawing
----- Failure return false
----- Success return true
 ---@param shader any
----@return any success 
-function RL.BeginShaderMode( shader ) end
+---@return any RL.BeginShaderMode
+function  RL.BeginShaderMode( shader ) end
 
----End custom shader drawing ( use default shader )
+---End custom shader drawing (use default shader)
 ---@return any RL.EndShaderMode
 function  RL.EndShaderMode() end
 
 ---Get shader uniform location
----- Failure return -1
 ---- Success return int
 ---@param shader any
 ---@param uniformName string
@@ -1086,7 +1043,6 @@ function  RL.EndShaderMode() end
 function RL.GetShaderLocation( shader, uniformName ) end
 
 ---Get shader attribute location
----- Failure return -1
 ---- Success return int
 ---@param shader any
 ---@param attribName string
@@ -1094,95 +1050,73 @@ function RL.GetShaderLocation( shader, uniformName ) end
 function RL.GetShaderLocationAttrib( shader, attribName ) end
 
 ---Set shader location index
----- Failure return false
----- Success return true
 ---@param shader any
 ---@param shaderLocationIndex integer
 ---@param location integer
----@return any success 
-function RL.SetShaderLocationIndex( shader, shaderLocationIndex, location ) end
+---@return any RL.SetShaderLocationIndex
+function  RL.SetShaderLocationIndex( shader, shaderLocationIndex, location ) end
 
 ---Get shader location index
----- Failure return false
 ---- Success return int
 ---@param shader any
 ---@param shaderLocationIndex integer
 ---@return any location 
 function RL.GetShaderLocationIndex( shader, shaderLocationIndex ) end
 
----Set shader uniform value ( matrix 4x4 )
----- Failure return false
----- Success return true
+---Set shader uniform value (matrix 4x4)
 ---@param shader any
 ---@param locIndex integer
 ---@param mat table
----@return any success 
-function RL.SetShaderValueMatrix( shader, locIndex, mat ) end
+---@return any RL.SetShaderValueMatrix
+function  RL.SetShaderValueMatrix( shader, locIndex, mat ) end
 
----Set shader uniform value for texture ( sampler2d )
----- Failure return false
----- Success return true
+---Set shader uniform value for texture (sampler2d)
 ---@param shader any
 ---@param locIndex integer
 ---@param texture any
----@return any success 
-function RL.SetShaderValueTexture( shader, locIndex, texture ) end
+---@return any RL.SetShaderValueTexture
+function  RL.SetShaderValueTexture( shader, locIndex, texture ) end
 
 ---Set shader uniform value
 ---NOTE: Even one value should be in table
----- Failure return false
----- Success return true
 ---@param shader any
 ---@param locIndex integer
 ---@param values any
 ---@param uniformType integer
----@return any success 
-function RL.SetShaderValue( shader, locIndex, values, uniformType ) end
+---@return any RL.SetShaderValue
+function  RL.SetShaderValue( shader, locIndex, values, uniformType ) end
 
 ---Set shader uniform value vector
 ---NOTE: Even one value should be in table
----- Failure return false
----- Success return true
 ---@param shader any
 ---@param locIndex integer
 ---@param values any
 ---@param uniformType integer
 ---@param count integer
----@return any success 
-function RL.SetShaderValueV( shader, locIndex, values, uniformType, count ) end
-
----Unload shader from GPU memory ( VRAM )
----- Failure return false
----- Success return true
----@param shader any
----@return any success 
-function RL.UnloadShader( shader ) end
+---@return any RL.SetShaderValueV
+function  RL.SetShaderValueV( shader, locIndex, values, uniformType, count ) end
 
 -- Core - Input-related Keyboard
 
 ---Detect if a key has been pressed once
----- Failure return nil
 ---- Success return bool
 ---@param key integer
 ---@return any pressed 
 function RL.IsKeyPressed( key ) end
 
 ---Detect if a key is being pressed
----- Failure return nil
 ---- Success return bool
 ---@param key integer
 ---@return any pressed 
 function RL.IsKeyDown( key ) end
 
 ---Detect if a key has been released once
----- Failure return nil
 ---- Success return bool
 ---@param key integer
 ---@return any released 
 function RL.IsKeyReleased( key ) end
 
 ---Check if a key is NOT being pressed
----- Failure return nil
 ---- Success return bool
 ---@param key integer
 ---@return any released 
@@ -1198,7 +1132,7 @@ function RL.GetKeyPressed() end
 ---@return any unicode 
 function RL.GetCharPressed() end
 
----Set a custom key to exit program ( default is ESC )
+---Set a custom key to exit program (default is ESC)
 ---@param key integer
 ---@return any RL.SetExitKey
 function  RL.SetExitKey( key ) end
@@ -1213,7 +1147,6 @@ function  RL.SetExitKey( key ) end
 ---otherwise the scancode is ignored. If you specify a non-printable key,
 ---or KEY_UNKNOWN and a scancode that maps to a non-printable key,
 ---this function returns nil but does not emit an error.
----- Failure return -1
 ---- Success return string or nil
 ---@param key integer
 ---@param scancode integer
@@ -1222,7 +1155,6 @@ function RL.GetKeyName( key, scancode ) end
 
 ---This function returns the platform-specific scancode of the specified key.
 ---If the key is KEY_UNKNOWN or does not exist on the keyboard this method will return -1.
----- Failure return nil
 ---- Success return int
 ---@param key integer
 ---@return any scancode 
@@ -1231,14 +1163,12 @@ function RL.GetKeyScancode( key ) end
 -- Core - Input-related Gamepad
 
 ---Detect if a gamepad is available
----- Failure return nil
 ---- Success return bool
 ---@param gamepad integer
 ---@return any available 
 function RL.IsGamepadAvailable( gamepad ) end
 
 ---Detect if a gamepad button has been pressed once
----- Failure return nil
 ---- Success return bool
 ---@param gamepad integer
 ---@param button integer
@@ -1246,7 +1176,6 @@ function RL.IsGamepadAvailable( gamepad ) end
 function RL.IsGamepadButtonPressed( gamepad, button ) end
 
 ---Detect if a gamepad button is being pressed
----- Failure return nil
 ---- Success return bool
 ---@param gamepad integer
 ---@param button integer
@@ -1254,7 +1183,6 @@ function RL.IsGamepadButtonPressed( gamepad, button ) end
 function RL.IsGamepadButtonDown( gamepad, button ) end
 
 ---Detect if a gamepad button has been released once
----- Failure return nil
 ---- Success return bool
 ---@param gamepad integer
 ---@param button integer
@@ -1262,14 +1190,12 @@ function RL.IsGamepadButtonDown( gamepad, button ) end
 function RL.IsGamepadButtonReleased( gamepad, button ) end
 
 ---Return gamepad axis count for a gamepad
----- Failure return false
 ---- Success return int
 ---@param gamepad integer
 ---@return any count 
 function RL.GetGamepadAxisCount( gamepad ) end
 
 ---Return axis movement value for a gamepad axis
----- Failure return false
 ---- Success return float
 ---@param gamepad integer
 ---@param axis integer
@@ -1277,7 +1203,6 @@ function RL.GetGamepadAxisCount( gamepad ) end
 function RL.GetGamepadAxisMovement( gamepad, axis ) end
 
 ---Return gamepad internal name id
----- Failure return false
 ---- Success return string
 ---@param gamepad integer
 ---@return any name 
@@ -1286,28 +1211,24 @@ function RL.GetGamepadName( gamepad ) end
 -- Core - Input-related Mouse
 
 ---Detect if a mouse button has been pressed once
----- Failure return nil
 ---- Success return bool
 ---@param button integer
 ---@return any pressed 
 function RL.IsMouseButtonPressed( button ) end
 
 ---Detect if a mouse button is being pressed
----- Failure return nil
 ---- Success return bool
 ---@param button integer
 ---@return any pressed 
 function RL.IsMouseButtonDown( button ) end
 
 ---Detect if a mouse button has been released once
----- Failure return nil
 ---- Success return bool
 ---@param button integer
 ---@return any released 
 function RL.IsMouseButtonReleased( button ) end
 
 ---Check if a mouse button is NOT being pressed
----- Failure return nil
 ---- Success return bool
 ---@param button integer
 ---@return any released 
@@ -1324,25 +1245,19 @@ function RL.GetMousePosition() end
 function RL.GetMouseDelta() end
 
 ---Set mouse position XY
----- Failure return false
----- Success return true
 ---@param position table
----@return any success 
-function RL.SetMousePosition( position ) end
+---@return any RL.SetMousePosition
+function  RL.SetMousePosition( position ) end
 
 ---Set mouse offset
----- Failure return false
----- Success return true
 ---@param offset table
----@return any success 
-function RL.SetMouseOffset( offset ) end
+---@return any RL.SetMouseOffset
+function  RL.SetMouseOffset( offset ) end
 
 ---Set mouse scaling
----- Failure return false
----- Success return true
 ---@param scale table
----@return any success 
-function RL.SetMouseScale( scale ) end
+---@return any RL.SetMouseScale
+function  RL.SetMouseScale( scale ) end
 
 ---Returns mouse wheel movement Y
 ---- Success return float
@@ -1350,23 +1265,19 @@ function RL.SetMouseScale( scale ) end
 function RL.GetMouseWheelMove() end
 
 ---Set mouse cursor
----- Failure return false
----- Success return true
 ---@param cursor integer
----@return any success 
-function RL.SetMouseCursor( cursor ) end
+---@return any RL.SetMouseCursor
+function  RL.SetMouseCursor( cursor ) end
 
 -- Core - Input-related Touch
 
----Get touch position XY for a touch point index ( relative to screen size )
----- Failure return false
+---Get touch position XY for a touch point index (relative to screen size)
 ---- Success return Vector2
 ---@param index integer
 ---@return any position 
 function RL.GetTouchPosition( index ) end
 
 ---Get touch point identifier for given index
----- Failure return false
 ---- Success return int
 ---@param index integer
 ---@return any id 
@@ -1380,14 +1291,11 @@ function RL.GetTouchPointCount() end
 -- Core - Input-related Gestures
 
 ---Enable a set of gestures using flags
----- Failure return false
----- Success return true
 ---@param int any
----@return any success 
-function RL.SetGesturesEnabled( int ) end
+---@return any RL.SetGesturesEnabled
+function  RL.SetGesturesEnabled( int ) end
 
 ---Check if a gesture have been detected
----- Failure return nil
 ---- Success return bool
 ---@param gesture integer
 ---@return any detected 
@@ -1425,89 +1333,78 @@ function RL.GetGesturePinchAngle() end
 
 -- Core - File
 
----Return game directory ( where main.lua is located )
+---Return game directory (where main.lua is located)
 ---- Success return string
 ---@return any path 
 function RL.GetBasePath() end
 
 ---Check if file exists
----- Failure return nil
 ---- Success return bool
 ---@param fileName string
 ---@return any fileExists 
 function RL.FileExists( fileName ) end
 
 ---Check if a directory path exists
----- Failure return nil
 ---- Success return bool
 ---@param dirPath string
 ---@return any dirExists 
 function RL.DirectoryExists( dirPath ) end
 
----Check file extension ( Including point: .png, .wav )
----- Failure return nil
+---Check file extension (Including point: .png, .wav)
 ---- Success return bool
 ---@param fileName string
 ---@param ext string
 ---@return any hasFileExtension 
 function RL.IsFileExtension( fileName, ext ) end
 
----Get file length in bytes ( NOTE: GetFileSize() conflicts with windows.h )
----- Failure return false
+---Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
 ---- Success return int
 ---@param fileName string
 ---@return any length 
 function RL.GetFileLength( fileName ) end
 
----Get pointer to extension for a filename string ( Includes dot: '.png' )
----- Failure return false
+---Get pointer to extension for a filename string (Includes dot: '.png')
 ---- Success return string
 ---@param fileName string
 ---@return any extension 
 function RL.GetFileExtension( fileName ) end
 
 ---Get pointer to filename for a path string
----- Failure return false
 ---- Success return string
 ---@param filePath string
----@return any filePath 
+---@return any fileName 
 function RL.GetFileName( filePath ) end
 
----Get filename string without extension ( Uses static string )
----- Failure return false
+---Get filename string without extension (Uses static string)
 ---- Success return string
 ---@param filePath string
----@return any filePath 
+---@return any fileName 
 function RL.GetFileNameWithoutExt( filePath ) end
 
----Get full path for a given fileName with path ( Uses static string )
----- Failure return false
+---Get full path for a given fileName with path (Uses static string)
 ---- Success return string
 ---@param filePath string
 ---@return any filePath 
 function RL.GetDirectoryPath( filePath ) end
 
----Get previous directory path for a given path ( Uses static string )
----- Failure return false
+---Get previous directory path for a given path (Uses static string)
 ---- Success return string
 ---@param dirPath string
 ---@return any directory 
 function RL.GetPrevDirectoryPath( dirPath ) end
 
----Get current working directory ( Uses static string )
+---Get current working directory (Uses static string)
 ---- Success return string
 ---@return any directory 
 function RL.GetWorkingDirectory() end
 
 ---Load directory filepaths
----- Failure return false
 ---- Success return string{}
 ---@param dirPath string
 ---@return any fileNames 
 function RL.LoadDirectoryFiles( dirPath ) end
 
 ---Load directory filepaths with extension filtering and recursive directory scan
----- Failure return false
 ---- Success return string{}
 ---@param basePath string
 ---@param filter string
@@ -1516,14 +1413,12 @@ function RL.LoadDirectoryFiles( dirPath ) end
 function RL.LoadDirectoryFilesEx( basePath, filter, scanSubdirs ) end
 
 ---Change working directory, return true on success
----- Failure return false
----- Success return true
+---- Success return bool
 ---@param directory string
 ---@return any success 
 function RL.ChangeDirectory( directory ) end
 
 ---Check if a given path is a file or a directory
----- Failure return nil
 ---- Success return bool
 ---@param path string
 ---@return any isFile 
@@ -1531,7 +1426,7 @@ function RL.IsPathFile( path ) end
 
 ---Check if a file has been dropped into window
 ---- Success return bool
----@return any fileDropped 
+---@return any iSFileDropped 
 function RL.IsFileDropped() end
 
 ---Load dropped filepaths
@@ -1539,8 +1434,7 @@ function RL.IsFileDropped() end
 ---@return any files 
 function RL.LoadDroppedFiles() end
 
----Get file modification time ( Last write time )
----- Failure return false
+---Get file modification time (Last write time)
 ---- Success return int
 ---@param fileName string
 ---@return any time 
@@ -1548,84 +1442,63 @@ function RL.GetFileModTime( fileName ) end
 
 -- Core - Camera2D
 
----Return camera2D id set to default configuration
----- Success return int
+---Return camera2D set to default configuration
+---- Success return Camera2D
 ---@return any camera2D 
 function RL.CreateCamera2D() end
 
----Unload Camera2D
----- Failure return false
----- Success return true
+---Begin 2D mode with custom camera (2D)
 ---@param camera any
----@return any success 
-function RL.UnloadCamera2D( camera ) end
-
----Begin 2D mode with custom camera ( 2D )
----- Failure return false
----- Success return true
----@param camera any
----@return any success 
-function RL.BeginMode2D( camera ) end
+---@return any RL.BeginMode2D
+function  RL.BeginMode2D( camera ) end
 
 ---Ends 2D mode with custom camera
 ---@return any RL.EndMode2D
 function  RL.EndMode2D() end
 
----Set camera target ( rotation and zoom origin )
----- Failure return false
----- Success return true
+---Set camera target (rotation and zoom origin)
 ---@param camera any
 ---@param target table
----@return any success 
-function RL.SetCamera2DTarget( camera, target ) end
+---@return any RL.SetCamera2DTarget
+function  RL.SetCamera2DTarget( camera, target ) end
 
----Set camera offset ( displacement from target )
----- Failure return false
----- Success return true
+---Set camera offset (displacement from target)
 ---@param camera any
 ---@param offset table
----@return any success 
-function RL.SetCamera2DOffset( camera, offset ) end
+---@return any RL.SetCamera2DOffset
+function  RL.SetCamera2DOffset( camera, offset ) end
 
 ---Set camera rotation in degrees
----- Failure return false
----- Success return true
 ---@param camera any
 ---@param rotation number
----@return any success 
-function RL.SetCamera2DRotation( camera, rotation ) end
+---@return any RL.SetCamera2DRotation
+function  RL.SetCamera2DRotation( camera, rotation ) end
 
----Set camera zoom ( scaling ), should be 1.0f by default
----- Failure return false
----- Success return true
+---Set camera zoom (scaling), should be 1.0f by default
 ---@param camera any
 ---@param zoom number
----@return any success 
-function RL.SetCamera2DZoom( camera, zoom ) end
+---@return any RL.SetCamera2DZoom
+function  RL.SetCamera2DZoom( camera, zoom ) end
 
 ---Get camera2D target
----- Failure return nil
 ---- Success return Vector2
 ---@param camera any
 ---@return any target 
 function RL.GetCamera2DTarget( camera ) end
 
 ---Get camera2D offset
----- Failure return nil
 ---- Success return Vector2
 ---@param camera any
 ---@return any offset 
 function RL.GetCamera2DOffset( camera ) end
 
 ---Get camera2D rotation
----- Failure return nil
 ---- Success return float
 ---@param camera any
 ---@return any rotation 
 function RL.GetCamera2DRotation( camera ) end
 
 ---Get camera2D zoom
----- Failure return nil
 ---- Success return float
 ---@param camera any
 ---@return any zoom 
@@ -1638,201 +1511,158 @@ function RL.GetCamera2DZoom( camera ) end
 ---@return any camera 
 function RL.CreateCamera3D() end
 
----Unload Camera3D
----- Failure return false
----- Success return true
----@param Camera3D integer
----@return any success 
-function RL.UnloadCamera3D( Camera3D ) end
-
----Begin 3D mode with custom camera ( 3D )
----- Failure return false
----- Success return true
+---Begin 3D mode with custom camera (3D)
 ---@param camera any
----@return any success 
-function RL.BeginMode3D( camera ) end
+---@return any RL.BeginMode3D
+function  RL.BeginMode3D( camera ) end
 
 ---Ends 3D mode and returns to default 2D orthographic mode
 ---@return any RL.EndMode3D
 function  RL.EndMode3D() end
 
----Set camera position ( Remember to call "RL.UpdateCamera3D()" to apply changes )
----- Failure return false
----- Success return true
+---Set camera position (Remember to call "RL.UpdateCamera3D()" to apply changes)
 ---@param camera any
 ---@param position table
----@return any success 
-function RL.SetCamera3DPosition( camera, position ) end
+---@return any RL.SetCamera3DPosition
+function  RL.SetCamera3DPosition( camera, position ) end
 
 ---Set camera target it looks-at
----- Failure return false
----- Success return true
 ---@param camera any
 ---@param target table
----@return any success 
-function RL.SetCamera3DTarget( camera, target ) end
+---@return any RL.SetCamera3DTarget
+function  RL.SetCamera3DTarget( camera, target ) end
 
----Set camera up vector ( Rotation over it's axis )
----- Failure return false
----- Success return true
+---Set camera up vector (Rotation over it's axis)
 ---@param camera any
 ---@param up table
----@return any success 
-function RL.SetCamera3DUp( camera, up ) end
+---@return any RL.SetCamera3DUp
+function  RL.SetCamera3DUp( camera, up ) end
 
----Set camera field-of-view apperture in Y ( degrees ) in perspective, used as near plane width in orthographic
----- Failure return false
----- Success return true
+---Set camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic
 ---@param camera any
 ---@param fovy number
----@return any success 
-function RL.SetCamera3DFovy( camera, fovy ) end
+---@return any RL.SetCamera3DFovy
+function  RL.SetCamera3DFovy( camera, fovy ) end
 
----Set camera projection mode ( CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC )
----- Failure return false
----- Success return true
+---Set camera projection mode (CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC)
 ---@param camera any
 ---@param projection integer
----@return any success 
-function RL.SetCamera3DProjection( camera, projection ) end
+---@return any RL.SetCamera3DProjection
+function  RL.SetCamera3DProjection( camera, projection ) end
 
 ---Get camera position
----- Failure return nil
 ---- Success return Vector3
 ---@param camera any
 ---@return any position 
 function RL.GetCamera3DPosition( camera ) end
 
 ---Get camera target it looks-at
----- Failure return nil
 ---- Success return Vector3
 ---@param camera any
 ---@return any target 
 function RL.GetCamera3DTarget( camera ) end
 
----Get camera up vector ( Rotation over it's axis )
----- Failure return nil
+---Get camera up vector (Rotation over it's axis)
 ---- Success return Vector3
 ---@param camera any
 ---@return any up 
 function RL.GetCamera3DUp( camera ) end
 
----Get camera field-of-view apperture in Y ( degrees ) in perspective, used as near plane width in orthographic
----- Failure return nil
+---Get camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic
 ---- Success return float
 ---@param camera any
 ---@return any fovy 
 function RL.GetCamera3DFovy( camera ) end
 
 ---Get camera projection mode
----- Failure return nil
 ---- Success return int
 ---@param camera any
 ---@return any projection 
 function RL.GetCamera3DProjection( camera ) end
 
----Returns the cameras forward vector ( normalized )
----- Failure return nil
+---Returns the cameras forward vector (normalized)
 ---- Success return Vector3
 ---@param camera any
 ---@return any forward 
 function RL.GetCamera3DForward( camera ) end
 
----Returns the cameras up vector ( normalized )
+---Returns the cameras up vector (normalized)
 ---Note: The up vector might not be perpendicular to the forward vector
----- Failure return nil
 ---- Success return Vector3
 ---@param camera any
 ---@return any up 
 function RL.GetCamera3DUpNormalized( camera ) end
 
----Returns the cameras right vector ( normalized )
----- Failure return nil
+---Returns the cameras right vector (normalized)
 ---- Success return Vector3
 ---@param camera any
 ---@return any right 
 function RL.GetCamera3DRight( camera ) end
 
 ---Moves the camera in it's forward direction
----- Failure return false
----- Success return true
 ---@param camera any
 ---@param distance number
 ---@param moveInWorldPlane boolean
----@return any success 
-function RL.Camera3DMoveForward( camera, distance, moveInWorldPlane ) end
+---@return any RL.Camera3DMoveForward
+function  RL.Camera3DMoveForward( camera, distance, moveInWorldPlane ) end
 
 ---Moves the camera in it's up direction
----- Failure return false
----- Success return true
 ---@param camera any
 ---@param distance number
----@return any success 
-function RL.Camera3DMoveUp( camera, distance ) end
+---@return any RL.Camera3DMoveUp
+function  RL.Camera3DMoveUp( camera, distance ) end
 
 ---Moves the camera target in it's current right direction
----- Failure return false
----- Success return true
 ---@param camera any
 ---@param distance number
 ---@param moveInWorldPlane boolean
----@return any success 
-function RL.Camera3DMoveRight( camera, distance, moveInWorldPlane ) end
+---@return any RL.Camera3DMoveRight
+function  RL.Camera3DMoveRight( camera, distance, moveInWorldPlane ) end
 
 ---Moves the camera position closer/farther to/from the camera target
----- Failure return false
----- Success return true
 ---@param camera any
 ---@param delta number
----@return any success 
-function RL.Camera3DMoveToTarget( camera, delta ) end
+---@return any RL.Camera3DMoveToTarget
+function  RL.Camera3DMoveToTarget( camera, delta ) end
 
 ---Rotates the camera around it's up vector
 ---Yaw is "looking left and right"
 ---If rotateAroundTarget is false, the camera rotates around it's position
 ---Note: angle must be provided in radians
----- Failure return false
----- Success return true
 ---@param camera any
 ---@param angle number
 ---@param rotateAroundTarget boolean
----@return any success 
-function RL.Camera3DYaw( camera, angle, rotateAroundTarget ) end
+---@return any RL.Camera3DYaw
+function  RL.Camera3DYaw( camera, angle, rotateAroundTarget ) end
 
 ---Rotates the camera around it's right vector, pitch is "looking up and down"
 --- - lockView prevents camera overrotation (aka "somersaults")
 --- - rotateAroundTarget defines if rotation is around target or around it's position
 --- - rotateUp rotates the up direction as well (typically only usefull in CAMERA_FREE)
 ---NOTE: angle must be provided in radians
----- Failure return false
----- Success return true
 ---@param camera any
 ---@param angle number
 ---@param lockView boolean
 ---@param rotateAroundTarget boolean
 ---@param rotateUp boolean
----@return any success 
-function RL.Camera3DPitch( camera, angle, lockView, rotateAroundTarget, rotateUp ) end
+---@return any RL.Camera3DPitch
+function  RL.Camera3DPitch( camera, angle, lockView, rotateAroundTarget, rotateUp ) end
 
 ---Rotates the camera around it's forward vector
 ---Roll is "turning your head sideways to the left or right"
 ---Note: angle must be provided in radians
----- Failure return false
----- Success return true
 ---@param camera any
 ---@param angle number
----@return any success 
-function RL.Camera3DRoll( camera, angle ) end
+---@return any RL.Camera3DRoll
+function  RL.Camera3DRoll( camera, angle ) end
 
 ---Returns the camera view matrix
----- Failure return false
 ---- Success return Matrix
 ---@param camera any
 ---@return any view 
 function RL.GetCamera3DViewMatrix( camera ) end
 
 ---Returns the camera projection matrix
----- Failure return false
 ---- Success return Matrix
 ---@param camera any
 ---@param aspect number
@@ -1840,49 +1670,41 @@ function RL.GetCamera3DViewMatrix( camera ) end
 function RL.GetCamera3DProjectionMatrix( camera, aspect ) end
 
 ---Update camera position for selected mode
----- Failure return false
----- Success return true
 ---@param camera any
 ---@param mode integer
----@return any success 
-function RL.UpdateCamera3D( camera, mode ) end
+---@return any RL.UpdateCamera3D
+function  RL.UpdateCamera3D( camera, mode ) end
 
 ---Update camera movement, movement/rotation values should be provided by user
----- Failure return false
----- Success return true
 ---@param camera any
 ---@param movement table
 ---@param rotation table
 ---@param zoom number
----@return any success 
-function RL.UpdateCamera3DPro( camera, movement, rotation, zoom ) end
+---@return any RL.UpdateCamera3DPro
+function  RL.UpdateCamera3DPro( camera, movement, rotation, zoom ) end
 
 -- Core - Screen-space
 
 ---Get a ray trace from mouse position
----- Failure return false
 ---- Success return Ray
 ---@param mousePosition table
 ---@param camera any
 ---@return any ray 
 function RL.GetMouseRay( mousePosition, camera ) end
 
----Get camera transform matrix ( view matrix )
----- Failure return false
+---Get camera transform matrix (view matrix)
 ---- Success return Matrix
 ---@param camera any
 ---@return any matrix 
 function RL.GetCameraMatrix( camera ) end
 
 ---Get camera 2d transform matrix
----- Failure return false
 ---- Success return Matrix
 ---@param camera any
 ---@return any matrix 
 function RL.GetCameraMatrix2D( camera ) end
 
 ---Get the screen space position for a 3d world space position
----- Failure return false
 ---- Success return Vector2
 ---@param position table
 ---@param camera any
@@ -1890,7 +1712,6 @@ function RL.GetCameraMatrix2D( camera ) end
 function RL.GetWorldToScreen( position, camera ) end
 
 ---Get size position for a 3d world space position
----- Failure return false
 ---- Success return Vector2
 ---@param position table
 ---@param camera any
@@ -1899,7 +1720,6 @@ function RL.GetWorldToScreen( position, camera ) end
 function RL.GetWorldToScreenEx( position, camera, size ) end
 
 ---Get the screen space position for a 2d camera world space position
----- Failure return false
 ---- Success return Vector2
 ---@param position table
 ---@param camera any
@@ -1907,32 +1727,21 @@ function RL.GetWorldToScreenEx( position, camera, size ) end
 function RL.GetWorldToScreen2D( position, camera ) end
 
 ---Get the world space position for a 2d camera screen space position
----- Failure return false
 ---- Success return Vector2
 ---@param position table
 ---@param camera any
 ---@return any position 
 function RL.GetScreenToWorld2D( position, camera ) end
 
----Creates buffer as userdata. Type should be one of the Buffer types
----- Failure return false
----- Success return Buffer
----@param buffer any
----@param type integer
----@return any buffer 
-function RL.LoadBuffer( buffer, type ) end
-
 -- Shapes - Drawing
 
 ---Set texture and rectangle to be used on shapes drawing
 ---NOTE: It can be useful when using basic shapes and one single font,
 ---defining a font char white rectangle would allow drawing everything in a single draw call
----- Failure return false
----- Success return true
 ---@param texture any
 ---@param source table
----@return any success 
-function RL.SetShapesTexture( texture, source ) end
+---@return any RL.SetShapesTexture
+function  RL.SetShapesTexture( texture, source ) end
 
 ---Draw a pixel
 ---- Failure return false
@@ -2341,34 +2150,24 @@ function RL.GetCollisionRec( rec1, rec2 ) end
 
 -- Textures - Image Loading
 
----Load image from file into CPU memory ( RAM )
----- Failure return -1
----- Success return int
+---Load image from file into CPU memory (RAM)
+---- Success return Image
 ---@param fileName string
 ---@return any image 
 function RL.LoadImage( fileName ) end
 
 ---Load image from GPU texture data
----- Failure return -1
----- Success return int
+---- Success return Image
 ---@param texture any
 ---@return any image 
 function RL.LoadImageFromTexture( texture ) end
 
----Load image from screen buffer and ( screenshot )
----- Success return int
+---Load image from screen buffer and (screenshot)
+---- Success return Image
 ---@return any image 
 function RL.LoadImageFromScreen() end
 
----Unload image from CPU memory ( RAM )
----- Failure return false
----- Success return true
----@param image any
----@return any success 
-function RL.UnloadImage( image ) end
-
 ---Export image data to file, returns true on success
----- Failure return nil
 ---- Success return bool
 ---@param image any
 ---@param fileName string
@@ -2376,7 +2175,6 @@ function RL.UnloadImage( image ) end
 function RL.ExportImage( image, fileName ) end
 
 ---Export image as code file defining an array of bytes, returns true on success
----- Failure return nil
 ---- Success return bool
 ---@param image any
 ---@param fileName string
@@ -2386,17 +2184,14 @@ function RL.ExportImageAsCode( image, fileName ) end
 -- Textures - Image Generation
 
 ---Generate image: plain color
----- Failure return -1
----- Success return int
----@param width integer
----@param height integer
+---- Success return Image
+---@param size table
 ---@param color table
 ---@return any image 
-function RL.GenImageColor( width, height, color ) end
+function RL.GenImageColor( size, color ) end
 
 ---Generate image: vertical gradient
----- Failure return -1
----- Success return int
+---- Success return Image
 ---@param size table
 ---@param top table
 ---@param bottom table
@@ -2404,8 +2199,7 @@ function RL.GenImageColor( width, height, color ) end
 function RL.GenImageGradientV( size, top, bottom ) end
 
 ---Generate image: horizontal gradient
----- Failure return -1
----- Success return int
+---- Success return Image
 ---@param size table
 ---@param left table
 ---@param right table
@@ -2413,8 +2207,7 @@ function RL.GenImageGradientV( size, top, bottom ) end
 function RL.GenImageGradientH( size, left, right ) end
 
 ---Generate image: radial gradient
----- Failure return -1
----- Success return int
+---- Success return Image
 ---@param size table
 ---@param density number
 ---@param inner table
@@ -2423,8 +2216,7 @@ function RL.GenImageGradientH( size, left, right ) end
 function RL.GenImageGradientRadial( size, density, inner, outer ) end
 
 ---Generate image: checked
----- Failure return -1
----- Success return int
+---- Success return Image
 ---@param size table
 ---@param checks table
 ---@param col1 table
@@ -2433,16 +2225,14 @@ function RL.GenImageGradientRadial( size, density, inner, outer ) end
 function RL.GenImageChecked( size, checks, col1, col2 ) end
 
 ---Generate image: white noise
----- Failure return -1
----- Success return int
+---- Success return Image
 ---@param size table
 ---@param factor number
 ---@return any image 
 function RL.GenImageWhiteNoise( size, factor ) end
 
 ---Generate image: perlin noise
----- Failure return -1
----- Success return int
+---- Success return Image
 ---@param size table
 ---@param offset table
 ---@param factor number
@@ -2450,16 +2240,14 @@ function RL.GenImageWhiteNoise( size, factor ) end
 function RL.GenImagePerlinNoise( size, offset, factor ) end
 
 ---Generate image: cellular algorithm. Bigger tileSize means bigger cells
----- Failure return -1
----- Success return int
+---- Success return Image
 ---@param size table
 ---@param tileSize integer
 ---@return any image 
 function RL.GenImageCellular( size, tileSize ) end
 
 ---Generate image: grayscale image from text data
----- Failure return -1
----- Success return int
+---- Success return Image
 ---@param size table
 ---@param text string
 ---@return any image 
@@ -2467,22 +2255,20 @@ function RL.GenImageText( size, text ) end
 
 -- Textures - Image Manipulation Functions
 
----Create an image duplicate ( useful for transformations )
----- Failure return -1
----- Success return int
+---Create an image duplicate (useful for transformations)
+---- Success return Image
 ---@param image any
 ---@return any image 
 function RL.ImageCopy( image ) end
 
 ---Create an image from another image piece
----- Failure return -1
----- Success return int
+---- Success return Image
 ---@param image any
 ---@param rec table
 ---@return any image 
 function RL.ImageFromImage( image, rec ) end
 
----Create an image from text ( custom sprite font )
+---Create an image from text (custom sprite font)
 ---- Failure return -1
 ---- Success return int
 ---@param font any
@@ -2494,194 +2280,146 @@ function RL.ImageFromImage( image, rec ) end
 function RL.ImageText( font, text, fontSize, spacing, tint ) end
 
 ---Convert image data to desired format
----- Failure return false
----- Success return true
 ---@param image any
 ---@param newFormat integer
----@return any success 
-function RL.ImageFormat( image, newFormat ) end
+---@return any RL.ImageFormat
+function  RL.ImageFormat( image, newFormat ) end
 
----Convert image to POT ( power-of-two )
----- Failure return false
----- Success return true
+---Convert image to POT (power-of-two)
 ---@param image any
 ---@param fill table
----@return any success 
-function RL.ImageToPOT( image, fill ) end
+---@return any RL.ImageToPOT
+function  RL.ImageToPOT( image, fill ) end
 
 ---Crop an image to a defined rectangle
----- Failure return false
----- Success return true
 ---@param image any
 ---@param crop table
----@return any success 
-function RL.ImageCrop( image, crop ) end
+---@return any RL.ImageCrop
+function  RL.ImageCrop( image, crop ) end
 
 ---Crop image depending on alpha value
----- Failure return false
----- Success return true
 ---@param image any
 ---@param threshold number
----@return any success 
-function RL.ImageAlphaCrop( image, threshold ) end
+---@return any RL.ImageAlphaCrop
+function  RL.ImageAlphaCrop( image, threshold ) end
 
 ---Clear alpha channel to desired color
----- Failure return false
----- Success return true
 ---@param image any
 ---@param color table
 ---@param threshold number
----@return any success 
-function RL.ImageAlphaClear( image, color, threshold ) end
+---@return any RL.ImageAlphaClear
+function  RL.ImageAlphaClear( image, color, threshold ) end
 
 ---Apply alpha mask to image
----- Failure return false
----- Success return true
 ---@param image any
 ---@param alphaMask any
----@return any success 
-function RL.ImageAlphaMask( image, alphaMask ) end
+---@return any RL.ImageAlphaMask
+function  RL.ImageAlphaMask( image, alphaMask ) end
 
 ---Premultiply alpha channel
----- Failure return false
----- Success return true
 ---@param image any
----@return any success 
-function RL.ImageAlphaPremultiply( image ) end
+---@return any RL.ImageAlphaPremultiply
+function  RL.ImageAlphaPremultiply( image ) end
 
 ---Apply Gaussian blur using a box blur approximation
----- Failure return false
----- Success return true
 ---@param image any
 ---@param blurSize integer
----@return any success 
-function RL.ImageBlurGaussian( image, blurSize ) end
+---@return any RL.ImageBlurGaussian
+function  RL.ImageBlurGaussian( image, blurSize ) end
 
----Resize image ( Bicubic scaling algorithm )
----- Failure return false
----- Success return true
+---Resize image (Bicubic scaling algorithm)
 ---@param image any
 ---@param size table
----@return any success 
-function RL.ImageResize( image, size ) end
+---@return any RL.ImageResize
+function  RL.ImageResize( image, size ) end
 
----Resize image ( Nearest-Neighbor scaling algorithm )
----- Failure return false
----- Success return true
+---Resize image (Nearest-Neighbor scaling algorithm)
 ---@param image any
 ---@param size table
----@return any success 
-function RL.ImageResizeNN( image, size ) end
+---@return any RL.ImageResizeNN
+function  RL.ImageResizeNN( image, size ) end
 
 ---Resize canvas and fill with color
----- Failure return false
----- Success return true
 ---@param image any
 ---@param size table
 ---@param offset table
 ---@param fill table
----@return any success 
-function RL.ImageResizeCanvas( image, size, offset, fill ) end
+---@return any RL.ImageResizeCanvas
+function  RL.ImageResizeCanvas( image, size, offset, fill ) end
 
 ---Generate all mipmap levels for a provided image
----- Failure return false
----- Success return true
 ---@param image any
----@return any success 
-function RL.ImageMipmaps( image ) end
+---@return any RL.ImageMipmaps
+function  RL.ImageMipmaps( image ) end
 
----Dither image data to 16bpp or lower ( Floyd-Steinberg dithering )
----- Failure return false
----- Success return true
+---Dither image data to 16bpp or lower (Floyd-Steinberg dithering)
 ---@param image any
 ---@param bpp table
----@return any success 
-function RL.ImageDither( image, bpp ) end
+---@return any RL.ImageDither
+function  RL.ImageDither( image, bpp ) end
 
 ---Flip image vertically
----- Failure return false
----- Success return true
 ---@param image any
----@return any success 
-function RL.ImageFlipVertical( image ) end
+---@return any RL.ImageFlipVertical
+function  RL.ImageFlipVertical( image ) end
 
 ---Flip image horizontally
----- Failure return false
----- Success return true
 ---@param image any
----@return any success 
-function RL.ImageFlipHorizontal( image ) end
+---@return any RL.ImageFlipHorizontal
+function  RL.ImageFlipHorizontal( image ) end
 
 ---Rotate image clockwise 90deg
----- Failure return false
----- Success return true
 ---@param image any
----@return any success 
-function RL.ImageRotateCW( image ) end
+---@return any RL.ImageRotateCW
+function  RL.ImageRotateCW( image ) end
 
 ---Rotate image counter-clockwise 90deg
----- Failure return false
----- Success return true
 ---@param image any
----@return any success 
-function RL.ImageRotateCCW( image ) end
+---@return any RL.ImageRotateCCW
+function  RL.ImageRotateCCW( image ) end
 
 ---Modify image color: tint
----- Failure return false
----- Success return true
 ---@param image any
 ---@param color table
----@return any success 
-function RL.ImageColorTint( image, color ) end
+---@return any RL.ImageColorTint
+function  RL.ImageColorTint( image, color ) end
 
 ---Modify image color: invert
----- Failure return false
----- Success return true
 ---@param image any
----@return any success 
-function RL.ImageColorInvert( image ) end
+---@return any RL.ImageColorInvert
+function  RL.ImageColorInvert( image ) end
 
 ---Modify image color: grayscale
----- Failure return false
----- Success return true
 ---@param image any
----@return any success 
-function RL.ImageColorGrayscale( image ) end
+---@return any RL.ImageColorGrayscale
+function  RL.ImageColorGrayscale( image ) end
 
----Modify image color: contrast ( -100 to 100 )
----- Failure return false
----- Success return true
+---Modify image color: contrast (-100 to 100)
 ---@param image any
 ---@param contrast number
----@return any success 
-function RL.ImageColorContrast( image, contrast ) end
+---@return any RL.ImageColorContrast
+function  RL.ImageColorContrast( image, contrast ) end
 
----Modify image color: brightness ( -255 to 255 )
----- Failure return false
----- Success return true
+---Modify image color: brightness (-255 to 255)
 ---@param image any
 ---@param brightness integer
----@return any success 
-function RL.ImageColorBrightness( image, brightness ) end
+---@return any RL.ImageColorBrightness
+function  RL.ImageColorBrightness( image, brightness ) end
 
 ---Modify image color: replace color
----- Failure return false
----- Success return true
 ---@param image any
 ---@param color table
 ---@param replace table
----@return any success 
-function RL.ImageColorReplace( image, color, replace ) end
+---@return any RL.ImageColorReplace
+function  RL.ImageColorReplace( image, color, replace ) end
 
----Load color data from image as a Color array ( RGBA - 32bit )
----- Failure return false
+---Load color data from image as a Color array (RGBA - 32bit)
 ---- Success return Color{}
 ---@param image any
 ---@return any colors 
 function RL.LoadImageColors( image ) end
 
----Load colors palette from image as a Color array ( RGBA - 32bit )
----- Failure return false
+---Load colors palette from image as a Color array (RGBA - 32bit)
 ---- Success return Color{}
 ---@param image any
 ---@param maxPaletteSize integer
@@ -2689,15 +2427,13 @@ function RL.LoadImageColors( image ) end
 function RL.LoadImagePalette( image, maxPaletteSize ) end
 
 ---Get image alpha border rectangle
----- Failure return false
 ---- Success return Rectangle
 ---@param image any
 ---@param threshold number
 ---@return any rectangle 
 function RL.GetImageAlphaBorder( image, threshold ) end
 
----Get image pixel color at ( x, y ) position
----- Failure return false
+---Get image pixel color at (x, y) position
 ---- Success return Color
 ---@param image any
 ---@param pixelPos table
@@ -2707,81 +2443,65 @@ function RL.GetImageColor( image, pixelPos ) end
 -- Textures - Image Drawing
 
 ---Clear image background with given color
----- Failure return false
----- Success return true
 ---@param dst any
 ---@param color table
----@return any success 
-function RL.ImageClearBackground( dst, color ) end
+---@return any RL.ImageClearBackground
+function  RL.ImageClearBackground( dst, color ) end
 
 ---Draw pixel within an image
----- Failure return false
----- Success return true
 ---@param dst any
 ---@param position table
 ---@param color table
----@return any success 
-function RL.ImageDrawPixel( dst, position, color ) end
+---@return any RL.ImageDrawPixel
+function  RL.ImageDrawPixel( dst, position, color ) end
 
 ---Draw line within an image
----- Failure return false
----- Success return true
 ---@param dst any
 ---@param a table
 ---@param b table
 ---@param color table
----@return any success 
-function RL.ImageDrawLine( dst, a, b, color ) end
+---@return any RL.ImageDrawLine
+function  RL.ImageDrawLine( dst, a, b, color ) end
 
 ---Draw circle within an image
----- Failure return false
----- Success return true
 ---@param dst any
 ---@param center table
 ---@param radius integer
 ---@param color table
----@return any success 
-function RL.ImageDrawCircle( dst, center, radius, color ) end
+---@return any RL.ImageDrawCircle
+function  RL.ImageDrawCircle( dst, center, radius, color ) end
 
 ---Draw circle outline within an image
----- Failure return false
----- Success return true
 ---@param dst any
 ---@param center table
 ---@param radius integer
 ---@param color table
----@return any success 
-function RL.ImageDrawCircleLines( dst, center, radius, color ) end
+---@return any RL.ImageDrawCircleLines
+function  RL.ImageDrawCircleLines( dst, center, radius, color ) end
 
 ---Draw rectangle within an image
----- Failure return false
----- Success return true
 ---@param dst any
 ---@param rec table
 ---@param color table
----@return any success 
-function RL.ImageDrawRectangle( dst, rec, color ) end
+---@return any RL.ImageDrawRectangle
+function  RL.ImageDrawRectangle( dst, rec, color ) end
 
 ---Draw rectangle lines within an image
----- Failure return false
----- Success return true
 ---@param dst any
 ---@param rec table
 ---@param thick integer
 ---@param color table
----@return any success 
-function RL.ImageDrawRectangleLines( dst, rec, thick, color ) end
+---@return any RL.ImageDrawRectangleLines
+function  RL.ImageDrawRectangleLines( dst, rec, thick, color ) end
 
----Draw a source image within a destination image ( Tint applied to source )
----- Failure return false
----- Success return true
+---Draw a source image within a destination image (Tint applied to source)
 ---@param dst any
 ---@param src any
 ---@param srcRec table
 ---@param dstRec table
 ---@param tint table
----@return any success 
-function RL.ImageDraw( dst, src, srcRec, dstRec, tint ) end
+---@return any RL.ImageDraw
+function  RL.ImageDraw( dst, src, srcRec, dstRec, tint ) end
 
 ---Draw text ( Custom sprite font ) within an image ( Destination )
 ---- Failure return false
@@ -2799,21 +2519,18 @@ function RL.ImageDrawTextEx( dst, font, text, position, fontSize, spacing, tint 
 -- Textures - Image Configuration
 
 ---Get image size
----- Failure return nil
 ---- Success return Vector2
 ---@param image any
 ---@return any size 
 function RL.GetImageSize( image ) end
 
 ---Get image mipmaps. Mipmap levels, 1 by default
----- Failure return false
 ---- Success return int
 ---@param image any
 ---@return any mipmaps 
 function RL.GetImageMipmaps( image ) end
 
----Get image data format ( PixelFormat type )
----- Failure return false
+---Get image data format (PixelFormat type)
 ---- Success return int
 ---@param image any
 ---@return any format 
@@ -2822,187 +2539,164 @@ function RL.GetImageFormat( image ) end
 -- Textures - Texture Loading
 
 ---Load texture from file into GPU memory ( VRAM )
----- Failure return -1
----- Success return int
+---- Failure return nil
+---- Success return Texture
 ---@param fileName string
 ---@return any texture 
 function RL.LoadTexture( fileName ) end
 
 ---Load texture from image data
----- Failure return -1
----- Success return int
+---- Success return Texture
 ---@param image any
 ---@return any texture 
 function RL.LoadTextureFromImage( image ) end
 
 ---Load cubemap from image, multiple image cubemap layouts supported
----- Failure return -1
----- Success return int
+---- Success return Texture
 ---@param image any
 ---@param layout integer
 ---@return any texture 
 function RL.LoadTextureCubemap( image, layout ) end
 
----Load texture for rendering ( framebuffer )
----- Failure return -1
----- Success return int
+---Load texture for rendering (framebuffer)
+---- Success return RenderTexture
 ---@param size table
 ---@return any renderTexture 
 function RL.LoadRenderTexture( size ) end
 
----Unload texture from GPU memory ( VRAM ). NOTE! Must be texture id.
----- Failure return false
----- Success return true
----@param texture any
----@return any success 
-function RL.UnloadTexture( texture ) end
-
 ---Check if a texture is ready
----- Failure return nil
----- Success return true
+---- Success return bool
 ---@param texture any
 ---@return any isReady 
 function RL.IsTextureReady( texture ) end
 
 ---Update GPU texture with new data
 ---NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
----- Failure return false
----- Success return true
 ---@param texture any
 ---@param pixels any
----@return any success 
-function RL.UpdateTexture( texture, pixels ) end
+---@return any RL.UpdateTexture
+function  RL.UpdateTexture( texture, pixels ) end
 
 ---Update GPU texture rectangle with new data
 ---NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
----- Failure return false
----- Success return true
 ---@param texture any
 ---@param rec table
 ---@param pixels any
----@return any success 
-function RL.UpdateTextureRec( texture, rec, pixels ) end
+---@return any RL.UpdateTextureRec
+function  RL.UpdateTextureRec( texture, rec, pixels ) end
 
 -- Textures - Texture Drawing
 
 ---Draw a Texture2D
----- Failure return false
----- Success return true
 ---@param texture any
 ---@param position table
 ---@param tint table
----@return any success 
-function RL.DrawTexture( texture, position, tint ) end
+---@return any RL.DrawTexture
+function  RL.DrawTexture( texture, position, tint ) end
 
 ---Draw a part of a texture defined by a rectangle
----- Failure return false
----- Success return true
 ---@param texture any
 ---@param source table
 ---@param position table
 ---@param tint table
----@return any success 
-function RL.DrawTextureRec( texture, source, position, tint ) end
+---@return any RL.DrawTextureRec
+function  RL.DrawTextureRec( texture, source, position, tint ) end
 
 ---Draw a part of a texture defined by a rectangle with "pro" parameters
----- Failure return false
----- Success return true
 ---@param texture any
 ---@param source table
 ---@param dest table
 ---@param origin table
 ---@param rotation number
 ---@param tint table
----@return any success 
-function RL.DrawTexturePro( texture, source, dest, origin, rotation, tint ) end
+---@return any RL.DrawTexturePro
+function  RL.DrawTexturePro( texture, source, dest, origin, rotation, tint ) end
 
----Draws a texture ( or part of it ) that stretches or shrinks nicely
----- Failure return false
----- Success return true
+---Draws a texture (or part of it) that stretches or shrinks nicely
 ---@param texture any
 ---@param nPatchInfo any
 ---@param dest table
 ---@param origin table
 ---@param rotation number
 ---@param tint table
----@return any success 
-function RL.DrawTextureNPatch( texture, nPatchInfo, dest, origin, rotation, tint ) end
+---@return any RL.DrawTextureNPatch
+function  RL.DrawTextureNPatch( texture, nPatchInfo, dest, origin, rotation, tint ) end
 
 ---Begin drawing to render texture
----- Failure return false
----- Success return true
 ---@param target any
----@return any success 
-function RL.BeginTextureMode( target ) end
+---@return any RL.BeginTextureMode
+function  RL.BeginTextureMode( target ) end
 
 ---Ends drawing to render texture
 ---@return any RL.EndTextureMode
 function  RL.EndTextureMode() end
 
----Get texture type ( TEXTURE_TYPE_TEXTURE or TEXTURE_TYPE_RENDER_TEXTURE )
----- Failure return false
----- Success return int
----@param texture any
----@return any type 
-function RL.GetTextureType( texture ) end
-
 -- Textures - Texture Configuration
 
 ---Generate GPU mipmaps for a texture
----- Failure return false
----- Success return true
 ---@param texture any
----@return any success 
-function RL.GenTextureMipmaps( texture ) end
+---@return any RL.GenTextureMipmaps
+function  RL.GenTextureMipmaps( texture ) end
 
----Set texture scaling filter mode ( TEXTURE_FILTER_POINT, TEXTURE_FILTER_BILINEAR... )
----- Failure return false
----- Success return true
+---Set texture scaling filter mode (TEXTURE_FILTER_POINT, TEXTURE_FILTER_BILINEAR...)
 ---@param texture any
 ---@param filter integer
----@return any success 
-function RL.SetTextureFilter( texture, filter ) end
+---@return any RL.SetTextureFilter
+function  RL.SetTextureFilter( texture, filter ) end
 
----Set texture wrapping mode ( TEXTURE_WRAP_REPEAT, TEXTURE_WRAP_CLAMP... )
----- Failure return false
----- Success return true
+---Set texture wrapping mode (TEXTURE_WRAP_REPEAT, TEXTURE_WRAP_CLAMP...)
 ---@param texture any
 ---@param wrap integer
----@return any success 
-function RL.SetTextureWrap( texture, wrap ) end
+---@return any RL.SetTextureWrap
+function  RL.SetTextureWrap( texture, wrap ) end
 
----Get texture OpenGL id
----- Failure return false
+---Get OpenGL texture id
 ---- Success return int
 ---@param texture any
 ---@return any id 
 function RL.GetTextureId( texture ) end
 
 ---Get texture size
----- Failure return false
 ---- Success return Vector2
 ---@param texture any
 ---@return any size 
 function RL.GetTextureSize( texture ) end
 
 ---Get texture mipmaps. Mipmap levels, 1 by default
----- Failure return false
 ---- Success return int
 ---@param texture any
 ---@return any mipmaps 
 function RL.GetTextureMipmaps( texture ) end
 
----Get texture data format ( PixelFormat type )
----- Failure return false
+---Get texture data format (PixelFormat type)
 ---- Success return int
 ---@param texture any
 ---@return any format 
 function RL.GetTextureFormat( texture ) end
 
+-- Textures - RenderTexture Configuration
+
+---Get OpenGL framebuffer object id
+---- Success return int
+---@param renderTexture any
+---@return any id 
+function RL.GetRenderTextureId( renderTexture ) end
+
+---Get color buffer attachment texture
+---- Success return Texture
+---@param renderTexture any
+---@return any texture 
+function RL.GetRenderTextureTexture( renderTexture ) end
+
+---Get depth buffer attachment texture
+---- Success return Texture
+---@param renderTexture any
+---@return any texture 
+function RL.GetRenderTextureDepthTexture( renderTexture ) end
+
 -- Textures - Color/pixel
 
 ---Returns color with alpha applied, alpha goes from 0.0f to 1.0f
----- Failure return false
 ---- Success return Color
 ---@param color table
 ---@param alpha number
@@ -3010,35 +2704,30 @@ function RL.GetTextureFormat( texture ) end
 function RL.Fade( color, alpha ) end
 
 ---Returns hexadecimal value for a Color
----- Failure return false
 ---- Success return int
 ---@param color table
 ---@return any value 
 function RL.ColorToInt( color ) end
 
 ---Returns Color normalized as float [0..1]
----- Failure return false
 ---- Success return Vector4
 ---@param color table
 ---@return any color 
 function RL.ColorNormalize( color ) end
 
 ---Color from normalized values [0..1]
----- Failure return false
 ---- Success return Color
 ---@param normalized table
 ---@return any color 
 function RL.ColorFromNormalized( normalized ) end
 
 ---Returns HSV values for a Color, hue [0..360], saturation/value [0..1]
----- Failure return false
 ---- Success return Vector3
 ---@param color table
 ---@return any HSV 
 function RL.ColorToHSV( color ) end
 
 ---Returns a Color from HSV values, hue [0..360], saturation/value [0..1]
----- Failure return false
 ---- Success return Color
 ---@param hue number
 ---@param saturation number
@@ -3047,7 +2736,6 @@ function RL.ColorToHSV( color ) end
 function RL.ColorFromHSV( hue, saturation, value ) end
 
 ---Get color multiplied with another color
----- Failure return false
 ---- Success return Color
 ---@param color table
 ---@param tint table
@@ -3055,7 +2743,6 @@ function RL.ColorFromHSV( hue, saturation, value ) end
 function RL.ColorTint( color, tint ) end
 
 ---Get color with brightness correction, brightness factor goes from -1.0f to 1.0f
----- Failure return false
 ---- Success return Color
 ---@param color table
 ---@param factor number
@@ -3063,7 +2750,6 @@ function RL.ColorTint( color, tint ) end
 function RL.ColorBrightness( color, factor ) end
 
 ---Get color with contrast correction, contrast values between -1.0f and 1.0f
----- Failure return false
 ---- Success return Color
 ---@param color table
 ---@param contrast number
@@ -3071,7 +2757,6 @@ function RL.ColorBrightness( color, factor ) end
 function RL.ColorContrast( color, contrast ) end
 
 ---Returns color with alpha applied, alpha goes from 0.0f to 1.0f
----- Failure return false
 ---- Success return Color
 ---@param color table
 ---@param alpha number
@@ -3079,7 +2764,6 @@ function RL.ColorContrast( color, contrast ) end
 function RL.ColorAlpha( color, alpha ) end
 
 ---Returns src alpha-blended into dst color with tint
----- Failure return false
 ---- Success return Color
 ---@param dst table
 ---@param src table
@@ -3088,14 +2772,12 @@ function RL.ColorAlpha( color, alpha ) end
 function RL.ColorAlphaBlend( dst, src, tint ) end
 
 ---Get Color structure from hexadecimal value
----- Failure return false
 ---- Success return Color
----@param int any
+---@param hexValue integer
 ---@return any color 
-function RL.GetColor( int ) end
+function RL.GetColor( hexValue ) end
 
 ---Get pixel color from source texture
----- Failure return false
 ---- Success return Color
 ---@param texture any
 ---@param position table
@@ -3103,7 +2785,6 @@ function RL.GetColor( int ) end
 function RL.GetPixelColor( texture, position ) end
 
 ---Get pixel data size in bytes for certain format
----- Failure return false
 ---- Success return int
 ---@param width integer
 ---@param height integer
@@ -3390,14 +3071,12 @@ function RL.DrawCapsuleWires( startPos, endPos, radius, slices, rings, color ) e
 function RL.DrawPlane( centerPos, size, color ) end
 
 ---Draw 3D textured quad. ( Texture coordinates opengl style 0.0 - 1.0 ).
----- Failure return false
----- Success return true
 ---@param texture any
 ---@param vertices any
 ---@param texCoords any
 ---@param colors any
----@return any success 
-function RL.DrawQuad3DTexture( texture, vertices, texCoords, colors ) end
+---@return any RL.DrawQuad3DTexture
+function  RL.DrawQuad3DTexture( texture, vertices, texCoords, colors ) end
 
 ---Draw a ray line
 ---- Failure return false
@@ -3593,13 +3272,11 @@ function RL.CreateMaterial( material ) end
 function RL.UnloadMaterial( material ) end
 
 ---Set texture for a material map type ( MATERIAL_MAP_ALBEDO, MATERIAL_MAP_METALNESS... )
----- Failure return false
----- Success return true
 ---@param material any
 ---@param mapType integer
 ---@param texture any
----@return any success 
-function RL.SetMaterialTexture( material, mapType, texture ) end
+---@return any RL.SetMaterialTexture
+function  RL.SetMaterialTexture( material, mapType, texture ) end
 
 ---Set color for a material map type
 ---- Failure return false
@@ -3620,12 +3297,10 @@ function RL.SetMaterialColor( material, mapType, color ) end
 function RL.SetMaterialValue( material, mapType, value ) end
 
 ---Set shader for material
----- Failure return false
----- Success return true
 ---@param material any
 ---@param shader any
----@return any success 
-function RL.SetMaterialShader( material, shader ) end
+---@return any RL.SetMaterialShader
+function  RL.SetMaterialShader( material, shader ) end
 
 ---Set material generic parameters ( if required )
 ---- Failure return false
@@ -3661,7 +3336,7 @@ function RL.GetMaterialValue( material, mapType ) end
 
 ---Get material shader. Returns -1 if no shader.
 ---- Failure return false
----- Success return int
+---- Success return Shader
 ---@param material any
 ---@return any shader 
 function RL.GetMaterialShader( material ) end
@@ -3737,31 +3412,25 @@ function RL.SetModelMaterial( model, modelMaterial, material ) end
 function RL.SetModelMeshMaterial( model, meshId, materialId ) end
 
 ---Draw a billboard texture
----- Failure return false
----- Success return true
 ---@param camera any
 ---@param texture any
 ---@param position table
 ---@param size number
 ---@param tint table
----@return any success 
-function RL.DrawBillboard( camera, texture, position, size, tint ) end
+---@return any RL.DrawBillboard
+function  RL.DrawBillboard( camera, texture, position, size, tint ) end
 
 ---Draw a billboard texture defined by source
----- Failure return false
----- Success return true
 ---@param camera any
 ---@param texture any
 ---@param source table
 ---@param position table
 ---@param size table
 ---@param tint table
----@return any success 
-function RL.DrawBillboardRec( camera, texture, source, position, size, tint ) end
+---@return any RL.DrawBillboardRec
+function  RL.DrawBillboardRec( camera, texture, source, position, size, tint ) end
 
 ---Draw a billboard texture defined by source and rotation
----- Failure return false
----- Success return true
 ---@param camera any
 ---@param texture any
 ---@param source table
@@ -3771,8 +3440,8 @@ function RL.DrawBillboardRec( camera, texture, source, position, size, tint ) en
 ---@param origin table
 ---@param rotation number
 ---@param tint table
----@return any success 
-function RL.DrawBillboardPro( camera, texture, source, position, up, size, origin, rotation, tint ) end
+---@return any RL.DrawBillboardPro
+function  RL.DrawBillboardPro( camera, texture, source, position, up, size, origin, rotation, tint ) end
 
 ---Set model transform matrix
 ---- Failure return false
@@ -5547,12 +5216,10 @@ function RL.GuiCheckIconPixel( iconId, pos ) end
 function RL.CreateLight( type, position, target, color, shader ) end
 
 ---Send light properties to shader
----- Failure return false
----- Success return true
 ---@param shader any
 ---@param light any
----@return any success 
-function RL.UpdateLightValues( shader, light ) end
+---@return any RL.UpdateLightValues
+function  RL.UpdateLightValues( shader, light ) end
 
 ---Set light type
 ---- Failure return false
@@ -6326,16 +5993,14 @@ function RL.rlSetMatrixViewOffsetStereo( right, left ) end
 
 ---Copy a block of pixels from one framebuffer object to another.
 ---Use -1 RenderTexture for window framebuffer.
----- Failure return false
----- Success return true
 ---@param srcTex any
 ---@param dstTex any
 ---@param srcRect table
 ---@param dstRect table
 ---@param mask integer
 ---@param filter integer
----@return any success 
-function RL.glBlitFramebuffer( srcTex, dstTex, srcRect, dstRect, mask, filter ) end
+---@return any RL.glBlitFramebuffer
+function  RL.glBlitFramebuffer( srcTex, dstTex, srcRect, dstRect, mask, filter ) end
 
 -- Easings - Linear Easing functions
 

@@ -37,7 +37,7 @@ int lcoreIsWindowFullscreen( lua_State *L ) {
 /*
 > state = RL.IsWindowHidden()
 
-Check if window is currently hidden ( only PLATFORM_DESKTOP )
+Check if window is currently hidden (only PLATFORM_DESKTOP)
 
 - Success return bool
 */
@@ -50,7 +50,7 @@ int lcoreIsWindowHidden( lua_State *L ) {
 /*
 > state = RL.IsWindowMinimized()
 
-Check if window is currently minimized ( only PLATFORM_DESKTOP )
+Check if window is currently minimized (only PLATFORM_DESKTOP)
 
 - Success return bool
 */
@@ -63,7 +63,7 @@ int lcoreIsWindowMinimized( lua_State *L ) {
 /*
 > state = RL.IsWindowMaximized()
 
-Check if window is currently maximized ( only PLATFORM_DESKTOP )
+Check if window is currently maximized (only PLATFORM_DESKTOP)
 
 - Success return bool
 */
@@ -76,7 +76,7 @@ int lcoreIsWindowMaximized( lua_State *L ) {
 /*
 > state = RL.IsWindowFocused()
 
-Check if window is currently focused ( only PLATFORM_DESKTOP )
+Check if window is currently focused (only PLATFORM_DESKTOP)
 
 - Success return bool
 */
@@ -87,89 +87,55 @@ int lcoreIsWindowFocused( lua_State *L ) {
 }
 
 /*
-> success = RL.SetWindowMonitor( int monitor )
+> RL.SetWindowMonitor( int monitor )
 
 Set monitor for the current window (fullscreen mode)
-
-- Failure return false
-- Success return true
 */
 int lcoreSetWindowMonitor( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetWindowMonitor( int monitor )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	SetWindowMonitor( lua_tointeger( L, 1 ) );
-	lua_pushboolean( L, true );
+	int monitor = luaL_checkinteger( L, 1 );
 
-	return 1;
+	SetWindowMonitor( monitor );
+
+	return 0;
 }
 
 /*
-> success = RL.SetWindowPosition( Vector2 pos )
+> RL.SetWindowPosition( Vector2 pos )
 
 Set window position on screen
-
-- Failure return false
-- Success return true
 */
 int lcoreSetWindowPosition( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetWindowPosition( Vector2 pos )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
 	Vector2 pos = uluaGetVector2Index( L, 1 );
 
 	SetWindowPosition( pos.x, pos.y );
-	lua_pushboolean( L, true );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetWindowSize( Vector2 size )
+> RL.SetWindowSize( Vector2 size )
 
 Set window dimensions
-
-- Failure return false
-- Success return true
 */
 int lcoreSetWindowSize( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetWindowSize( Vector2 size )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
 	Vector2 size = uluaGetVector2Index( L, 1 );
 
 	SetWindowSize( (int)size.x, (int)size.y );
-	lua_pushboolean( L, true );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetWindowMinSize( Vector2 size )
+> RL.SetWindowMinSize( Vector2 size )
 
-Set window minimum dimensions ( for FLAG_WINDOW_RESIZABLE )
-
-- Failure return false
-- Success return true
+Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
 */
 int lcoreSetWindowMinSize( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetWindowMinSize( Vector2 size )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
 	Vector2 size = uluaGetVector2Index( L, 1 );
 
 	SetWindowMinSize( (int)size.x, (int)size.y );
-	lua_pushboolean( L, true );
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -177,16 +143,10 @@ int lcoreSetWindowMinSize( lua_State *L ) {
 
 Get specified monitor position
 
-- Failure return nil
 - Success return Vector2
 */
 int lcoreGetMonitorPosition( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetMonitorPosition( int monitor )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int monitor = lua_tointeger( L, 1 );
+	int monitor = luaL_checkinteger( L, 1 );
 
 	uluaPushVector2( L, GetMonitorPosition( monitor ) );
 
@@ -198,16 +158,10 @@ int lcoreGetMonitorPosition( lua_State *L ) {
 
 Get specified monitor size
 
-- Failure return nil
 - Success return Vector2
 */
 int lcoreGetMonitorSize( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetMonitorSize( int monitor )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int monitor = lua_tointeger( L, 1 );
+	int monitor = luaL_checkinteger( L, 1 );
 
 	Vector2 size = (Vector2){ GetMonitorWidth( monitor ), GetMonitorHeight( monitor ) };
 	uluaPushVector2( L, size );
@@ -223,8 +177,7 @@ Get window position on monitor
 - Success return Vector2
 */
 int lcoreGetWindowPosition( lua_State *L ) {
-	Vector2 pos = GetWindowPosition();
-	uluaPushVector2( L, pos );
+	uluaPushVector2( L, GetWindowPosition() );
 
 	return 1;
 }
@@ -244,42 +197,27 @@ int lcoreGetScreenSize( lua_State *L ) {
 }
 
 /*
-> success = RL.SetWindowState( int flag )
+> RL.SetWindowState( int flag )
 
-Set window configuration state using flags ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE... )
-
-- Failure return false
-- Success return true
+Set window configuration state using flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
 */
 int lcoreSetWindowState( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetWindowState( int flags )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	unsigned int flag = (unsigned int)lua_tointeger( L, 1 );
+	unsigned int flag = (unsigned int)luaL_checkinteger( L, 1 );
 
 	SetWindowState( flag );
-	lua_pushboolean( L, true );
 
-	return 1;
+	return 0;
 }
 
 /*
 > state = RL.IsWindowState( int flag )
 
-Check if one specific window flag is enabled ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE... )
+Check if one specific window flag is enabled (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
 
-- Failure return nil
 - Success return bool
 */
 int lcoreIsWindowState( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsWindowState( int flags )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	unsigned int flag = (unsigned int)lua_tointeger( L, 1 );
+	unsigned int flag = (unsigned int)luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsWindowState( flag ) );
 
@@ -289,17 +227,12 @@ int lcoreIsWindowState( lua_State *L ) {
 /*
 > resized = RL.ClearWindowState( int flag )
 
-Clear window configuration state flags ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE... )
+Clear window configuration state flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
 
 - Success return bool
 */
 int lcoreClearWindowState( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ClearWindowState( int flag )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	unsigned int flag = (unsigned int)lua_tointeger( L, 1 );
+	unsigned int flag = (unsigned int)luaL_checkinteger( L, 1 );
 
 	ClearWindowState( flag );
 
@@ -322,7 +255,7 @@ int lcoreIsWindowResized( lua_State *L ) {
 /*
 > RL.SetWindowIcon( Image image )
 
-Set icon for window ( Only PLATFORM_DESKTOP )
+Set icon for window (Only PLATFORM_DESKTOP)
 */
 int lcoreSetWindowIcon( lua_State *L ) {
 	Image *image = luaL_checkudata( L, 1, "Image" );
@@ -333,23 +266,14 @@ int lcoreSetWindowIcon( lua_State *L ) {
 }
 
 /*
-> success = RL.SetWindowTitle( string title )
+> RL.SetWindowTitle( string title )
 
-Set title for window ( Only PLATFORM_DESKTOP )
-
-- Failure return false
-- Success return true
+Set title for window (Only PLATFORM_DESKTOP)
 */
 int lcoreSetWindowTitle( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetWindowTitle( string title )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	SetWindowTitle( lua_tostring( L, 1 ) );
-	lua_pushboolean( L, true );
+	SetWindowTitle( luaL_checkstring( L, 1 ) );
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -361,6 +285,7 @@ Get number of connected monitors
 */
 int lcoreGetMonitorCount( lua_State *L ) {
 	lua_pushinteger( L, GetMonitorCount() );
+
 	return 1;
 }
 
@@ -373,6 +298,7 @@ Get current connected monitor
 */
 int lcoreGetCurrentMonitor( lua_State *L ) {
 	lua_pushinteger( L, GetCurrentMonitor() );
+
 	return 1;
 }
 
@@ -381,16 +307,10 @@ int lcoreGetCurrentMonitor( lua_State *L ) {
 
 Get specified monitor physical size in millimetres
 
-- Failure return false
 - Success return Vector2
 */
 int lcoreGetMonitorPhysicalSize( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetMonitorPhysicalSize( int monitor )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int monitor = lua_tointeger( L, 1 );
+	int monitor = luaL_checkinteger( L, 1 );
 
 	Vector2 size = { GetMonitorPhysicalWidth( monitor ), GetMonitorPhysicalHeight( monitor ) };
 	uluaPushVector2( L, size );
@@ -399,20 +319,14 @@ int lcoreGetMonitorPhysicalSize( lua_State *L ) {
 }
 
 /*
-> size = RL.GetMonitorRefreshRate( int monitor )
+> refreshRate = RL.GetMonitorRefreshRate( int monitor )
 
 Get specified monitor refresh rate
 
-- Failure return false
 - Success return int
 */
 int lcoreGetMonitorRefreshRate( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetMonitorRefreshRate( int monitor )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int monitor = lua_tointeger( L, 1 );
+	int monitor = luaL_checkinteger( L, 1 );
 	
 	lua_pushinteger( L, GetMonitorRefreshRate( monitor ) );
 
@@ -420,7 +334,7 @@ int lcoreGetMonitorRefreshRate( lua_State *L ) {
 }
 
 /*
-> scale = RL.GetWindowScaleDPI()
+> dpi = RL.GetWindowScaleDPI()
 
 Get window scale DPI factor
 
@@ -437,16 +351,10 @@ int lcoreGetWindowScaleDPI( lua_State *L ) {
 
 Get the human-readable, UTF-8 encoded name of the monitor
 
-- Failure return false
 - Success return string
 */
 int lcoreGetMonitorName( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetMonitorName( int monitor )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int monitor = lua_tointeger( L, 1 );
+	int monitor = luaL_checkinteger( L, 1 );
 
 	lua_pushstring( L, GetMonitorName( monitor ) );
 
@@ -465,23 +373,14 @@ int lcoreCloseWindow( lua_State *L ) {
 }
 
 /*
-> success = RL.SetClipboardText( string text )
+> RL.SetClipboardText( string text )
 
 Set clipboard text content
-
-- Failure return false
-- Success return true
 */
 int lcoreSetClipboardText( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetClipboardText( string text )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	SetClipboardText( lua_tostring( L, 1 ) );
-	lua_pushboolean( L, true );
+	SetClipboardText( luaL_checkstring( L, 1 ) );
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -493,6 +392,7 @@ Get clipboard text content
 */
 int lcoreGetClipboardText( lua_State *L ) {
 	lua_pushstring( L, GetClipboardText() );
+
 	return 1;
 }
 
@@ -501,25 +401,16 @@ int lcoreGetClipboardText( lua_State *L ) {
 */
 
 /*
-> success = RL.SetTargetFPS( int fps )
+> RL.SetTargetFPS( int fps )
 
-Set target FPS ( maximum )
-
-- Failure return false
-- Success return true
+Set target FPS (maximum)
 */
 int lcoreSetTargetFPS( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetTargetFPS( int fps )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int fps = lua_tointeger( L, 1 );
+	int fps = luaL_checkinteger( L, 1 );
 
 	SetTargetFPS( fps );
-	lua_pushboolean( L, true );
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -538,7 +429,7 @@ int lcoreGetFPS( lua_State *L ) {
 /*
 > delta = RL.GetFrameTime()
 
-Get time in seconds for last frame drawn ( Delta time )
+Get time in seconds for last frame drawn (Delta time)
 
 - Success return float
 */
@@ -566,110 +457,64 @@ int lcoreGetTime( lua_State *L ) {
 */
 
 /*
-> success = RL.TakeScreenshot( string fileName )
+> RL.TakeScreenshot( string fileName )
 
-Takes a screenshot of current screen ( filename extension defines format )
-
-- Failure return false
-- Success return true
+Takes a screenshot of current screen (filename extension defines format)
 */
 int lcoreTakeScreenshot( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.TakeScreenshot( string fileName )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	TakeScreenshot( lua_tostring( L, 1 ) );
-	lua_pushboolean( L, true );
+	TakeScreenshot( luaL_checkstring( L, 1 ) );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetConfigFlags( int flags )
+> RL.SetConfigFlags( int flags )
 
-Setup init configuration flags ( view FLAGS )
-
-- Failure return false
-- Success return true
+Setup init configuration flags (view FLAGS)
 */
 int lcoreSetConfigFlags( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetConfigFlags( int flags )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	unsigned int flag = (unsigned int)lua_tointeger( L, 1 );
+	unsigned int flag = (unsigned int)luaL_checkinteger( L, 1 );
 
 	SetConfigFlags( flag );
-	lua_pushboolean( L, true );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.TraceLog( int logLevel, string text )
+> RL.TraceLog( int logLevel, string text )
 
-Show trace log messages ( LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR... )
-
-- Failure return false
-- Success return true
+Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
 */
 int lcoreTraceLog( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.TraceLog( int logLevel, string text )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int logLevel = lua_tointeger( L, 1 );
+	int logLevel = luaL_checkinteger( L, 1 );
 
-	TraceLog( logLevel, "%s", lua_tostring( L, 2 ) );
-	lua_pushboolean( L, true );
+	TraceLog( logLevel, "%s", luaL_checkstring( L, 2 ) );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetTraceLogLevel( int logLevel )
+> RL.SetTraceLogLevel( int logLevel )
 
-Set the current threshold ( minimum ) log level
-
-- Failure return false
-- Success return true
+Set the current threshold (minimum) log level
 */
 int lcoreSetTraceLogLevel( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetTraceLogLevel( int logLevel )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int logLevel = lua_tointeger( L, 1 );
+	int logLevel = luaL_checkinteger( L, 1 );
 
 	SetTraceLogLevel( logLevel );
-	lua_pushboolean( L, true );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetLogLevelInvalid( int logLevel )
+> RL.SetLogLevelInvalid( int logLevel )
 
 Set the log level for bad function calls and invalid data formats.
-
-- Failure return false
-- Success return true
 */
 int lcoreSetLogLevelInvalid( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetLogLevelInvalid( int logLevel )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	state->logLevelInvalid = lua_tointeger( L, 1 );
+	state->logLevelInvalid = luaL_checkinteger( L, 1 );
 
-	lua_pushboolean( L, true );
-
-	return 1;
+	return 0;
 }
 
 /*
@@ -686,21 +531,82 @@ int lcoreGetLogLevelInvalid( lua_State *L ) {
 }
 
 /*
-> success = RL.OpenURL( string url )
+> RL.OpenURL( string url )
 
-Open URL with default system browser ( If available )
-
-- Failure return false
-- Success return true
+Open URL with default system browser (If available)
 */
 int lcoreOpenURL( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.OpenURL( string url )" );
-		lua_pushboolean( L, false );
-		return 1;
+	OpenURL( luaL_checkstring( L, 1 ) );
+
+	return 0;
+}
+
+/*
+> buffer = RL.LoadBuffer( data{} buffer, int type )
+
+Creates buffer as userdata. Type should be one of the Buffer types
+
+- Success return Buffer
+*/
+int lcoreLoadBuffer( lua_State *L ) {
+	luaL_checktype( L, 1, LUA_TTABLE );
+	int type = luaL_checkinteger( L, 2 );
+
+	Buffer *buffer = lua_newuserdata( L, sizeof( Buffer ) );
+	int len = uluaGetTableLenIndex( L, 1 );
+
+	switch ( type ) {
+		case BUFFER_UNSIGNED_CHAR:
+			buffer->size = len * sizeof( unsigned char );
+			break;
+		case BUFFER_UNSIGNED_SHORT:
+			buffer->size = len * sizeof( unsigned short );
+			break;
+		case BUFFER_UNSIGNED_INT:
+			buffer->size = len * sizeof( unsigned int );
+			break;
+		case BUFFER_FLOAT:
+			buffer->size = len * sizeof( float );
+			break;
+		default:
+			break;
 	}
-	OpenURL( lua_tostring( L, 1 ) );
-	lua_pushboolean( L, true );
+	buffer->data = malloc( buffer->size );
+
+	int t = 1;
+	int i = 0;
+	unsigned char *up = buffer->data;
+	unsigned short *sp = buffer->data;
+	unsigned int *ip = buffer->data;
+	float *fp = buffer->data;
+	
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		switch ( type ) {
+			case BUFFER_UNSIGNED_CHAR:
+				*up = (unsigned char)lua_tointeger( L, -1 );
+				up++;
+				break;
+			case BUFFER_UNSIGNED_SHORT:
+				*sp = (unsigned short)lua_tointeger( L, -1 );
+				up++;
+				break;
+			case BUFFER_UNSIGNED_INT:
+				*ip = (unsigned int)lua_tointeger( L, -1 );
+				up++;
+				break;
+			case BUFFER_FLOAT:
+				*fp = (float)lua_tonumber( L, -1 );
+				fp++;
+				break;
+			default:
+				break;
+		}
+		lua_pop( L, 1 );
+		i++;
+	}
+	luaL_setmetatable( L, "Buffer" );
 
 	return 1;
 }
@@ -784,102 +690,75 @@ int lcoreIsCursorOnScreen( lua_State *L ) {
 */
 
 /*
-> success = RL.ClearBackground( Color color )
+> RL.ClearBackground( Color color )
 
 Set background color (framebuffer clear color)
-
-- Failure return false
-- Success return true
 */
 int lcoreClearBackground( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ClearBackground( Color color )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
 	Color color = uluaGetColorIndex( L, 1 );
 
 	ClearBackground( color );
-	lua_pushboolean( L, true );
 
-	return 1;
+	return 0;
 }
 
 /*
 > RL.BeginDrawing()
 
-Setup canvas ( framebuffer ) to start drawing
+Setup canvas (framebuffer) to start drawing
 */
 int lcoreBeginDrawing( lua_State *L ) {
 	BeginDrawing();
 
-	return 1;
+	return 0;
 }
 
 /*
 > RL.EndDrawing()
 
-End canvas drawing and swap buffers ( double buffering )
+End canvas drawing and swap buffers (double buffering)
 */
 int lcoreEndDrawing( lua_State *L ) {
 	EndDrawing();
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.BeginBlendMode( int mode )
+> RL.BeginBlendMode( int mode )
 
-Begin blending mode ( BLEND_ALPHA, BLEND_ADDITIVE, BLEND_MULTIPLIED... )
-
-- Failure return false
-- Success return true
+Begin blending mode (BLEND_ALPHA, BLEND_ADDITIVE, BLEND_MULTIPLIED...)
 */
 int lcoreBeginBlendMode( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.BeginBlendMode( int mode )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int mode = lua_tointeger( L, 1 );
+	int mode = luaL_checkinteger( L, 1 );
 
 	BeginBlendMode( mode );
-	lua_pushboolean( L, true );
 
-	return 1;
+	return 0;
 }
 
 /*
 > RL.EndBlendMode()
 
-End blending mode ( reset to default: BLEND_ALPHA )
+End blending mode (reset to default: BLEND_ALPHA)
 */
 int lcoreEndBlendMode( lua_State *L ) {
 	EndBlendMode();
 	
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.BeginScissorMode( Rectangle rectange )
+> RL.BeginScissorMode( Rectangle rectange )
 
-Begin scissor mode ( define screen area for following drawing )
-
-- Failure return false
-- Success return true
+Begin scissor mode (define screen area for following drawing)
 */
 int lcoreBeginScissorMode( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.BeginScissorMode( Rectangle rectange )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
 	Rectangle rect = uluaGetRectangleIndex( L, 1 );
 
 	BeginScissorMode( rect.x, rect.y, rect.width, rect.height );
-	lua_pushboolean( L, true );
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -890,7 +769,7 @@ End scissor mode
 int lcoreEndScissorMode( lua_State *L ) {
 	EndScissorMode();
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -1191,16 +1070,10 @@ int lcoreSetShaderValueV( lua_State *L ) {
 
 Detect if a key has been pressed once
 
-- Failure return nil
 - Success return bool
 */
 int lcoreIsKeyPressed( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsKeyPressed( int key )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int key = lua_tointeger( L, 1 );
+	int key = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsKeyPressed( key ) );
 
@@ -1212,16 +1085,10 @@ int lcoreIsKeyPressed( lua_State *L ) {
 
 Detect if a key is being pressed
 
-- Failure return nil
 - Success return bool
 */
 int lcoreIsKeyDown( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsKeyDown( int key )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int key = lua_tointeger( L, 1 );
+	int key = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsKeyDown( key ) );
 
@@ -1233,16 +1100,10 @@ int lcoreIsKeyDown( lua_State *L ) {
 
 Detect if a key has been released once
 
-- Failure return nil
 - Success return bool
 */
 int lcoreIsKeyReleased( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsKeyReleased( int key )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int key = lua_tointeger( L, 1 );
+	int key = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsKeyReleased( key ) );
 
@@ -1254,16 +1115,10 @@ int lcoreIsKeyReleased( lua_State *L ) {
 
 Check if a key is NOT being pressed
 
-- Failure return nil
 - Success return bool
 */
 int lcoreIsKeyUp( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsKeyUp( int key )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int key = lua_tointeger( L, 1 );
+	int key = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsKeyUp( key ) );
 
@@ -1299,19 +1154,14 @@ int lcoreGetCharPressed( lua_State *L ) {
 /*
 > RL.SetExitKey( int key )
 
-Set a custom key to exit program ( default is ESC )
+Set a custom key to exit program (default is ESC)
 */
 int lcoreSetExitKey( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetExitKey( int key )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int key = lua_tointeger( L, 1 );
+	int key = luaL_checkinteger( L, 1 );
 
 	SetExitKey( key );
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -1330,17 +1180,11 @@ otherwise the scancode is ignored. If you specify a non-printable key,
 or KEY_UNKNOWN and a scancode that maps to a non-printable key,
 this function returns nil but does not emit an error.
 
-- Failure return -1
 - Success return string or nil
 */
 int lcoreGetKeyName( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetKeyName( int key, int scancode )" );
-		lua_pushinteger( L, -1 );
-		return 1;
-	}
-	int key = lua_tointeger( L, 1 );
-	int scancode = lua_tointeger( L, 2 );
+	int key = luaL_checkinteger( L, 1 );
+	int scancode = luaL_checkinteger( L, 2 );
 
 	const char *keyName = glfwGetKeyName( key, scancode );
 
@@ -1360,16 +1204,10 @@ int lcoreGetKeyName( lua_State *L ) {
 This function returns the platform-specific scancode of the specified key.
 If the key is KEY_UNKNOWN or does not exist on the keyboard this method will return -1.
 
-- Failure return nil
 - Success return int
 */
 int lcoreGetKeyScancode( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetKeyScancode( int key )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int key = lua_tointeger( L, 1 );
+	int key = luaL_checkinteger( L, 1 );
 
 	lua_pushinteger( L, glfwGetKeyScancode( key ) );
 
@@ -1385,16 +1223,10 @@ int lcoreGetKeyScancode( lua_State *L ) {
 
 Detect if a gamepad is available
 
-- Failure return nil
 - Success return bool
 */
 int lcoreIsGamepadAvailable( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsGamepadAvailable( int gamepad )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int gamepad = lua_tointeger( L, 1 );
+	int gamepad = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsGamepadAvailable( gamepad ) );
 
@@ -1406,17 +1238,11 @@ int lcoreIsGamepadAvailable( lua_State *L ) {
 
 Detect if a gamepad button has been pressed once
 
-- Failure return nil
 - Success return bool
 */
 int lcoreIsGamepadButtonPressed( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsGamepadButtonPressed( int gamepad, int button )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int gamepad = lua_tointeger( L, 1 );
-	int button = lua_tointeger( L, 2 );
+	int gamepad = luaL_checkinteger( L, 1 );
+	int button = luaL_checkinteger( L, 2 );
 
 	lua_pushboolean( L, IsGamepadButtonPressed( gamepad, button ) );
 
@@ -1428,17 +1254,11 @@ int lcoreIsGamepadButtonPressed( lua_State *L ) {
 
 Detect if a gamepad button is being pressed
 
-- Failure return nil
 - Success return bool
 */
 int lcoreIsGamepadButtonDown( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsGamepadButtonDown( int gamepad, int button )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int gamepad = lua_tointeger( L, 1 );
-	int button = lua_tointeger( L, 2 );
+	int gamepad = luaL_checkinteger( L, 1 );
+	int button = luaL_checkinteger( L, 2 );
 
 	lua_pushboolean( L, IsGamepadButtonDown( gamepad, button ) );
 
@@ -1450,17 +1270,11 @@ int lcoreIsGamepadButtonDown( lua_State *L ) {
 
 Detect if a gamepad button has been released once
 
-- Failure return nil
 - Success return bool
 */
 int lcoreIsGamepadButtonReleased( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsGamepadButtonReleased( int gamepad, int button )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int gamepad = lua_tointeger( L, 1 );
-	int button = lua_tointeger( L, 2 );
+	int gamepad = luaL_checkinteger( L, 1 );
+	int button = luaL_checkinteger( L, 2 );
 
 	lua_pushboolean( L, IsGamepadButtonReleased( gamepad, button ) );
 
@@ -1472,16 +1286,10 @@ int lcoreIsGamepadButtonReleased( lua_State *L ) {
 
 Return gamepad axis count for a gamepad
 
-- Failure return false
 - Success return int
 */
 int lcoreGetGamepadAxisCount( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetGamepadAxisCount( int gamepad )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int gamepad = lua_tointeger( L, 1 );
+	int gamepad = luaL_checkinteger( L, 1 );
 
 	lua_pushinteger( L, GetGamepadAxisCount( gamepad ) );
 
@@ -1493,17 +1301,11 @@ int lcoreGetGamepadAxisCount( lua_State *L ) {
 
 Return axis movement value for a gamepad axis
 
-- Failure return false
 - Success return float
 */
 int lcoreGetGamepadAxisMovement( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetGamepadAxisMovement( int gamepad, int axis )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int gamepad = lua_tointeger( L, 1 );
-	int axis = lua_tointeger( L, 2 );
+	int gamepad = luaL_checkinteger( L, 1 );
+	int axis = luaL_checkinteger( L, 2 );
 
 	lua_pushnumber( L, GetGamepadAxisMovement( gamepad, axis ) );
 
@@ -1515,16 +1317,10 @@ int lcoreGetGamepadAxisMovement( lua_State *L ) {
 
 Return gamepad internal name id
 
-- Failure return false
 - Success return string
 */
 int lcoreGetGamepadName( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetGamepadName( int gamepad )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int gamepad = lua_tointeger( L, 1 );
+	int gamepad = luaL_checkinteger( L, 1 );
 
 	lua_pushstring( L, GetGamepadName( gamepad ) );
 
@@ -1540,16 +1336,10 @@ int lcoreGetGamepadName( lua_State *L ) {
 
 Detect if a mouse button has been pressed once
 
-- Failure return nil
 - Success return bool
 */
 int lcoreIsMouseButtonPressed( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsMouseButtonPressed( int button )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int button = lua_tointeger( L, 1 );
+	int button = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsMouseButtonPressed( button ) );
 
@@ -1561,16 +1351,10 @@ int lcoreIsMouseButtonPressed( lua_State *L ) {
 
 Detect if a mouse button is being pressed
 
-- Failure return nil
 - Success return bool
 */
 int lcoreIsMouseButtonDown( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsMouseButtonDown( int button )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int button = lua_tointeger( L, 1 );
+	int button = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsMouseButtonDown( button ) );
 
@@ -1582,16 +1366,10 @@ int lcoreIsMouseButtonDown( lua_State *L ) {
 
 Detect if a mouse button has been released once
 
-- Failure return nil
 - Success return bool
 */
 int lcoreIsMouseButtonReleased( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsMouseButtonReleased( int button )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int button = lua_tointeger( L, 1 );
+	int button = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsMouseButtonReleased( button ) );
 
@@ -1603,16 +1381,10 @@ int lcoreIsMouseButtonReleased( lua_State *L ) {
 
 Check if a mouse button is NOT being pressed
 
-- Failure return nil
 - Success return bool
 */
 int lcoreIsMouseButtonUp( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsMouseButtonUp( int button )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int button = lua_tointeger( L, 1 );
+	int button = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsMouseButtonUp( button ) );
 
@@ -1628,6 +1400,7 @@ Returns mouse position
 */
 int lcoreGetMousePosition( lua_State *L ) {
 	uluaPushVector2( L, GetMousePosition() );
+
 	return 1;
 }
 
@@ -1640,73 +1413,47 @@ Get mouse delta between frames
 */
 int lcoreGetMouseDelta( lua_State *L ) {
 	uluaPushVector2( L, GetMouseDelta() );
+
 	return 1;
 }
 
 /*
-> success = RL.SetMousePosition( Vector2 position )
+> RL.SetMousePosition( Vector2 position )
 
 Set mouse position XY
-
-- Failure return false
-- Success return true
 */
 int lcoreSetMousePosition( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetMousePosition( Vector2 position )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
 	Vector2 pos = uluaGetVector2Index( L, 1 );
 
 	SetMousePosition( pos.x, pos.y );
-	lua_pushboolean( L, true );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetMouseOffset( Vector2 offset )
+> RL.SetMouseOffset( Vector2 offset )
 
 Set mouse offset
-
-- Failure return false
-- Success return true
 */
 int lcoreSetMouseOffset( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetMouseOffset( Vector2 offset )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
 	Vector2 offset = uluaGetVector2Index( L, 1 );
 
 	SetMouseOffset( offset.x, offset.y );
-	lua_pushboolean( L, true );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetMouseScale( Vector2 scale )
+> RL.SetMouseScale( Vector2 scale )
 
 Set mouse scaling
-
-- Failure return false
-- Success return true
 */
 int lcoreSetMouseScale( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetMouseScale( Vector2 scale )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
 	Vector2 scale = uluaGetVector2Index( L, 1 );
 
 	SetMouseScale( scale.x, scale.y );
-	lua_pushboolean( L, true );
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -1718,29 +1465,21 @@ Returns mouse wheel movement Y
 */
 int lcoreGetMouseWheelMove( lua_State *L ) {
 	lua_pushnumber( L, GetMouseWheelMove() );
+
 	return 1;
 }
 
 /*
-> success = RL.SetMouseCursor( int cursor )
+> RL.SetMouseCursor( int cursor )
 
 Set mouse cursor
-
-- Failure return false
-- Success return true
 */
 int lcoreSetMouseCursor( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetMouseCursor( int cursor )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int cursor = lua_tointeger( L, 1 );
+	int cursor = luaL_checkinteger( L, 1 );
 
 	SetMouseCursor( cursor );
-	lua_pushboolean( L, true );
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -1750,18 +1489,12 @@ int lcoreSetMouseCursor( lua_State *L ) {
 /*
 > position = RL.GetTouchPosition( int index )
 
-Get touch position XY for a touch point index ( relative to screen size )
+Get touch position XY for a touch point index (relative to screen size)
 
-- Failure return false
 - Success return Vector2
 */
 int lcoreGetTouchPosition( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetTouchPosition( int index )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int index = lua_tointeger( L, 1 );
+	int index = luaL_checkinteger( L, 1 );
 
 	uluaPushVector2( L, GetTouchPosition( index ) );
 
@@ -1773,16 +1506,10 @@ int lcoreGetTouchPosition( lua_State *L ) {
 
 Get touch point identifier for given index
 
-- Failure return false
 - Success return int
 */
 int lcoreGetTouchPointId( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetTouchPointId( int index )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int index = lua_tointeger( L, 1 );
+	int index = luaL_checkinteger( L, 1 );
 
 	lua_pushinteger( L, GetTouchPointId( index ) );
 
@@ -1807,25 +1534,16 @@ int lcoreGetTouchPointCount( lua_State *L ) {
 */
 
 /*
-> success = RL.SetGesturesEnabled( unsigned int flags )
+> RL.SetGesturesEnabled( unsigned int flags )
 
 Enable a set of gestures using flags
-
-- Failure return false
-- Success return true
 */
 int lcoreSetGesturesEnabled( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetGesturesEnabled( unsigned int flags )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	unsigned int flags = (unsigned int)lua_tointeger( L, 1 );
+	unsigned int flags = (unsigned int)luaL_checkinteger( L, 1 );
 
 	SetGesturesEnabled( flags );
-	lua_pushboolean( L, true );
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -1833,16 +1551,10 @@ int lcoreSetGesturesEnabled( lua_State *L ) {
 
 Check if a gesture have been detected
 
-- Failure return nil
 - Success return bool
 */
 int lcoreIsGestureDetected( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsGestureDetected( int gesture )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	int gesture = lua_tointeger( L, 1 );
+	int gesture = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsGestureDetected( gesture ) );
 
@@ -1934,7 +1646,7 @@ int lcoreGetGesturePinchAngle( lua_State *L ) {
 /*
 > path = RL.GetBasePath()
 
-Return game directory ( where main.lua is located )
+Return game directory (where main.lua is located)
 
 - Success return string
 */
@@ -1949,16 +1661,10 @@ int lcoreGetBasePath( lua_State *L ) {
 
 Check if file exists
 
-- Failure return nil
 - Success return bool
 */
 int lcoreFileExists( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.FileExists( string fileName )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	lua_pushboolean( L, FileExists( lua_tostring( L, 1 ) ) );
+	lua_pushboolean( L, FileExists( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
 }
@@ -1968,16 +1674,10 @@ int lcoreFileExists( lua_State *L ) {
 
 Check if a directory path exists
 
-- Failure return nil
 - Success return bool
 */
 int lcoreDirectoryExists( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.DirectoryExists( string dirPath )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	lua_pushboolean( L, DirectoryExists( lua_tostring( L, 1 ) ) );
+	lua_pushboolean( L, DirectoryExists( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
 }
@@ -1985,18 +1685,12 @@ int lcoreDirectoryExists( lua_State *L ) {
 /*
 > hasFileExtension = RL.IsFileExtension( string fileName, string ext )
 
-Check file extension ( Including point: .png, .wav )
+Check file extension (Including point: .png, .wav)
 
-- Failure return nil
 - Success return bool
 */
 int lcoreIsFileExtension( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) || !lua_isstring( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsFileExtension( string fileName, string ext )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	lua_pushboolean( L, IsFileExtension( lua_tostring( L, 1 ), lua_tostring( L, 2 ) ) );
+	lua_pushboolean( L, IsFileExtension( luaL_checkstring( L, 1 ), luaL_checkstring( L, 2 ) ) );
 
 	return 1;
 }
@@ -2004,18 +1698,12 @@ int lcoreIsFileExtension( lua_State *L ) {
 /*
 > length = RL.GetFileLength( string fileName )
 
-Get file length in bytes ( NOTE: GetFileSize() conflicts with windows.h )
+Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
 
-- Failure return false
 - Success return int
 */
 int lcoreGetFileLength( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetFileLength( string fileName )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	lua_pushinteger( L, GetFileLength( lua_tostring( L, 1 ) ) );
+	lua_pushinteger( L, GetFileLength( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
 }
@@ -2023,56 +1711,38 @@ int lcoreGetFileLength( lua_State *L ) {
 /*
 > extension = RL.GetFileExtension( string fileName )
 
-Get pointer to extension for a filename string ( Includes dot: '.png' )
+Get pointer to extension for a filename string (Includes dot: '.png')
 
-- Failure return false
 - Success return string
 */
 int lcoreGetFileExtension( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetFileExtension( string fileName )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	lua_pushstring( L, GetFileExtension( lua_tostring( L, 1 ) ) );
+	lua_pushstring( L, GetFileExtension( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
 }
 
 /*
-> filePath = RL.GetFileName( string filePath )
+> fileName = RL.GetFileName( string filePath )
 
 Get pointer to filename for a path string
 
-- Failure return false
 - Success return string
 */
 int lcoreGetFileName( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetFileName( string filePath )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	lua_pushstring( L, GetFileName( lua_tostring( L, 1 ) ) );
+	lua_pushstring( L, GetFileName( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
 }
 
 /*
-> filePath = RL.GetFileNameWithoutExt( string filePath )
+> fileName = RL.GetFileNameWithoutExt( string filePath )
 
-Get filename string without extension ( Uses static string )
+Get filename string without extension (Uses static string)
 
-- Failure return false
 - Success return string
 */
 int lcoreGetFileNameWithoutExt( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetFileNameWithoutExt( string filePath )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	lua_pushstring( L, GetFileNameWithoutExt( lua_tostring( L, 1 ) ) );
+	lua_pushstring( L, GetFileNameWithoutExt( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
 }
@@ -2080,18 +1750,12 @@ int lcoreGetFileNameWithoutExt( lua_State *L ) {
 /*
 > filePath = RL.GetDirectoryPath( string filePath )
 
-Get full path for a given fileName with path ( Uses static string )
+Get full path for a given fileName with path (Uses static string)
 
-- Failure return false
 - Success return string
 */
 int lcoreGetDirectoryPath( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetDirectoryPath( string filePath )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	lua_pushstring( L, GetDirectoryPath( lua_tostring( L, 1 ) ) );
+	lua_pushstring( L, GetDirectoryPath( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
 }
@@ -2099,18 +1763,12 @@ int lcoreGetDirectoryPath( lua_State *L ) {
 /*
 > directory = RL.GetPrevDirectoryPath( string dirPath )
 
-Get previous directory path for a given path ( Uses static string )
+Get previous directory path for a given path (Uses static string)
 
-- Failure return false
 - Success return string
 */
 int lcoreGetPrevDirectoryPath( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetPrevDirectoryPath( string dirPath )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	lua_pushstring( L, GetPrevDirectoryPath( lua_tostring( L, 1 ) ) );
+	lua_pushstring( L, GetPrevDirectoryPath( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
 }
@@ -2118,12 +1776,13 @@ int lcoreGetPrevDirectoryPath( lua_State *L ) {
 /*
 > directory = RL.GetWorkingDirectory()
 
-Get current working directory ( Uses static string )
+Get current working directory (Uses static string)
 
 - Success return string
 */
 int lcoreGetWorkingDirectory( lua_State *L ) {
 	lua_pushstring( L, GetWorkingDirectory() );
+
 	return 1;
 }
 
@@ -2132,16 +1791,10 @@ int lcoreGetWorkingDirectory( lua_State *L ) {
 
 Load directory filepaths
 
-- Failure return false
 - Success return string{}
 */
 int lcoreLoadDirectoryFiles( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadDirectoryFiles( string dirPath )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	FilePathList files = LoadDirectoryFiles( lua_tostring( L, 1 ) );
+	FilePathList files = LoadDirectoryFiles( luaL_checkstring( L, 1 ) );
 
 	lua_createtable( L, files.count, 0 );
 
@@ -2159,18 +1812,12 @@ int lcoreLoadDirectoryFiles( lua_State *L ) {
 
 Load directory filepaths with extension filtering and recursive directory scan
 
-- Failure return false
 - Success return string{}
 */
 int lcoreLoadDirectoryFilesEx( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) || !lua_isstring( L, 2 ) || !lua_isboolean( L, 3 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadDirectoryFilesEx( string dirPath )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	bool scanSubdirs = lua_toboolean( L, 3 );
+	bool scanSubdirs = uluaGetBoolean( L, 3 );
 
-	FilePathList files = LoadDirectoryFilesEx( lua_tostring( L, 1 ), lua_tostring( L, 2 ), scanSubdirs );
+	FilePathList files = LoadDirectoryFilesEx( luaL_checkstring( L, 1 ), luaL_checkstring( L, 2 ), scanSubdirs );
 
 	lua_createtable( L, files.count, 0 );
 
@@ -2188,16 +1835,10 @@ int lcoreLoadDirectoryFilesEx( lua_State *L ) {
 
 Change working directory, return true on success
 
-- Failure return false
-- Success return true
+- Success return bool
 */
 int lcoreChangeDirectory( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ChangeDirectory( string directory )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	lua_pushboolean( L, ChangeDirectory( lua_tostring( L, 1 ) ) );
+	lua_pushboolean( L, ChangeDirectory( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
 }
@@ -2207,22 +1848,16 @@ int lcoreChangeDirectory( lua_State *L ) {
 
 Check if a given path is a file or a directory
 
-- Failure return nil
 - Success return bool
 */
 int lcoreIsPathFile( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.IsPathFile( string path )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	lua_pushboolean( L, IsPathFile( lua_tostring( L, 1 ) ) );
+	lua_pushboolean( L, IsPathFile( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
 }
 
 /*
-> fileDropped = RL.IsFileDropped()
+> iSFileDropped = RL.IsFileDropped()
 
 Check if a file has been dropped into window
 
@@ -2230,6 +1865,7 @@ Check if a file has been dropped into window
 */
 int lcoreIsFileDropped( lua_State *L ) {
 	lua_pushboolean( L, IsFileDropped() );
+
 	return 1;
 }
 
@@ -2257,18 +1893,12 @@ int lcoreLoadDroppedFiles( lua_State *L ) {
 /*
 > time = RL.GetFileModTime( string fileName )
 
-Get file modification time ( Last write time )
+Get file modification time (Last write time)
 
-- Failure return false
 - Success return int
 */
 int lcoreGetFileModTime( lua_State *L ) {
-	if ( !lua_isstring( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetFileModTime( string fileName )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	lua_pushinteger( L, GetFileModTime( lua_tostring( L, 1 ) ) );
+	lua_pushinteger( L, GetFileModTime( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
 }
@@ -2959,76 +2589,6 @@ int lcoreGetScreenToWorld2D( lua_State *L ) {
 	Camera2D *camera = luaL_checkudata( L, 2, "Camera2D" );
 
 	uluaPushVector2( L, GetScreenToWorld2D( position, *camera ) );
-
-	return 1;
-}
-
-/*
-> buffer = RL.LoadBuffer( data{} buffer, int type )
-
-Creates buffer as userdata. Type should be one of the Buffer types
-
-- Success return Buffer
-*/
-int lcoreLoadBuffer( lua_State *L ) {
-	luaL_checktype( L, 1, LUA_TTABLE );
-	int type = luaL_checkinteger( L, 2 );
-
-	Buffer *buffer = lua_newuserdata( L, sizeof( Buffer ) );
-	int len = uluaGetTableLenIndex( L, 1 );
-
-	switch ( type ) {
-		case BUFFER_UNSIGNED_CHAR:
-			buffer->size = len * sizeof( unsigned char );
-			break;
-		case BUFFER_UNSIGNED_SHORT:
-			buffer->size = len * sizeof( unsigned short );
-			break;
-		case BUFFER_UNSIGNED_INT:
-			buffer->size = len * sizeof( unsigned int );
-			break;
-		case BUFFER_FLOAT:
-			buffer->size = len * sizeof( float );
-			break;
-		default:
-			break;
-	}
-	buffer->data = malloc( buffer->size );
-
-	int t = 1;
-	int i = 0;
-	unsigned char *up = buffer->data;
-	unsigned short *sp = buffer->data;
-	unsigned int *ip = buffer->data;
-	float *fp = buffer->data;
-	
-	lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-		switch ( type ) {
-			case BUFFER_UNSIGNED_CHAR:
-				*up = (unsigned char)lua_tointeger( L, -1 );
-				up++;
-				break;
-			case BUFFER_UNSIGNED_SHORT:
-				*sp = (unsigned short)lua_tointeger( L, -1 );
-				up++;
-				break;
-			case BUFFER_UNSIGNED_INT:
-				*ip = (unsigned int)lua_tointeger( L, -1 );
-				up++;
-				break;
-			case BUFFER_FLOAT:
-				*fp = (float)lua_tonumber( L, -1 );
-				fp++;
-				break;
-			default:
-				break;
-		}
-		lua_pop( L, 1 );
-		i++;
-	}
-	luaL_setmetatable( L, "Buffer" );
 
 	return 1;
 }

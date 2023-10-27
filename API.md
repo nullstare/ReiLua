@@ -684,12 +684,6 @@ NPATCH_THREE_PATCH_VERTICAL = 1
 NPATCH_THREE_PATCH_HORIZONTAL = 2
 
 
-## Globals - TextureTypes
-TEXTURE_TYPE_TEXTURE = 0
-
-TEXTURE_TYPE_RENDER_TEXTURE = 1
-
-
 ## Globals - Colors
 LIGHTGRAY = { 200, 200, 200, 255 }
 
@@ -1487,7 +1481,7 @@ Check if window is currently fullscreen
 
 > state = RL.IsWindowHidden()
 
-Check if window is currently hidden ( only PLATFORM_DESKTOP )
+Check if window is currently hidden (only PLATFORM_DESKTOP)
 
 - Success return bool
 
@@ -1495,7 +1489,7 @@ Check if window is currently hidden ( only PLATFORM_DESKTOP )
 
 > state = RL.IsWindowMinimized()
 
-Check if window is currently minimized ( only PLATFORM_DESKTOP )
+Check if window is currently minimized (only PLATFORM_DESKTOP)
 
 - Success return bool
 
@@ -1503,7 +1497,7 @@ Check if window is currently minimized ( only PLATFORM_DESKTOP )
 
 > state = RL.IsWindowMaximized()
 
-Check if window is currently maximized ( only PLATFORM_DESKTOP )
+Check if window is currently maximized (only PLATFORM_DESKTOP)
 
 - Success return bool
 
@@ -1511,45 +1505,33 @@ Check if window is currently maximized ( only PLATFORM_DESKTOP )
 
 > state = RL.IsWindowFocused()
 
-Check if window is currently focused ( only PLATFORM_DESKTOP )
+Check if window is currently focused (only PLATFORM_DESKTOP)
 
 - Success return bool
 
 ---
 
-> success = RL.SetWindowMonitor( int monitor )
+> RL.SetWindowMonitor( int monitor )
 
 Set monitor for the current window (fullscreen mode)
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.SetWindowPosition( Vector2 pos )
+> RL.SetWindowPosition( Vector2 pos )
 
 Set window position on screen
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.SetWindowSize( Vector2 size )
+> RL.SetWindowSize( Vector2 size )
 
 Set window dimensions
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.SetWindowMinSize( Vector2 size )
+> RL.SetWindowMinSize( Vector2 size )
 
-Set window minimum dimensions ( for FLAG_WINDOW_RESIZABLE )
-
-- Failure return false
-- Success return true
+Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
 
 ---
 
@@ -1557,7 +1539,6 @@ Set window minimum dimensions ( for FLAG_WINDOW_RESIZABLE )
 
 Get specified monitor position
 
-- Failure return nil
 - Success return Vector2
 
 ---
@@ -1566,7 +1547,6 @@ Get specified monitor position
 
 Get specified monitor size
 
-- Failure return nil
 - Success return Vector2
 
 ---
@@ -1587,27 +1567,23 @@ Get screen size
 
 ---
 
-> success = RL.SetWindowState( int flag )
+> RL.SetWindowState( int flag )
 
-Set window configuration state using flags ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE... )
-
-- Failure return false
-- Success return true
+Set window configuration state using flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
 
 ---
 
 > state = RL.IsWindowState( int flag )
 
-Check if one specific window flag is enabled ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE... )
+Check if one specific window flag is enabled (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
 
-- Failure return nil
 - Success return bool
 
 ---
 
 > resized = RL.ClearWindowState( int flag )
 
-Clear window configuration state flags ( FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE... )
+Clear window configuration state flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
 
 - Success return bool
 
@@ -1621,21 +1597,15 @@ Check if window has been resized from last frame
 
 ---
 
-> success = RL.SetWindowIcon( Image image )
+> RL.SetWindowIcon( Image image )
 
-Set icon for window ( Only PLATFORM_DESKTOP )
-
-- Failure return false
-- Success return true
+Set icon for window (Only PLATFORM_DESKTOP)
 
 ---
 
-> success = RL.SetWindowTitle( string title )
+> RL.SetWindowTitle( string title )
 
-Set title for window ( Only PLATFORM_DESKTOP )
-
-- Failure return false
-- Success return true
+Set title for window (Only PLATFORM_DESKTOP)
 
 ---
 
@@ -1659,21 +1629,19 @@ Get current connected monitor
 
 Get specified monitor physical size in millimetres
 
-- Failure return false
 - Success return Vector2
 
 ---
 
-> size = RL.GetMonitorRefreshRate( int monitor )
+> refreshRate = RL.GetMonitorRefreshRate( int monitor )
 
 Get specified monitor refresh rate
 
-- Failure return false
 - Success return int
 
 ---
 
-> scale = RL.GetWindowScaleDPI()
+> dpi = RL.GetWindowScaleDPI()
 
 Get window scale DPI factor
 
@@ -1685,7 +1653,6 @@ Get window scale DPI factor
 
 Get the human-readable, UTF-8 encoded name of the monitor
 
-- Failure return false
 - Success return string
 
 ---
@@ -1696,12 +1663,9 @@ Close window and unload OpenGL context and free all resources
 
 ---
 
-> success = RL.SetClipboardText( string text )
+> RL.SetClipboardText( string text )
 
 Set clipboard text content
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -1717,12 +1681,9 @@ Get clipboard text content
 
 ---
 
-> success = RL.SetTargetFPS( int fps )
+> RL.SetTargetFPS( int fps )
 
-Set target FPS ( maximum )
-
-- Failure return false
-- Success return true
+Set target FPS (maximum)
 
 ---
 
@@ -1736,7 +1697,7 @@ Get current FPS
 
 > delta = RL.GetFrameTime()
 
-Get time in seconds for last frame drawn ( Delta time )
+Get time in seconds for last frame drawn (Delta time)
 
 - Success return float
 
@@ -1754,48 +1715,33 @@ Get elapsed time in seconds since InitWindow()
 
 ---
 
-> success = RL.TakeScreenshot( string fileName )
+> RL.TakeScreenshot( string fileName )
 
-Takes a screenshot of current screen ( filename extension defines format )
-
-- Failure return false
-- Success return true
+Takes a screenshot of current screen (filename extension defines format)
 
 ---
 
-> success = RL.SetConfigFlags( int flags )
+> RL.SetConfigFlags( int flags )
 
-Setup init configuration flags ( view FLAGS )
-
-- Failure return false
-- Success return true
+Setup init configuration flags (view FLAGS)
 
 ---
 
-> success = RL.TraceLog( int logLevel, string text )
+> RL.TraceLog( int logLevel, string text )
 
-Show trace log messages ( LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR... )
-
-- Failure return false
-- Success return true
+Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
 
 ---
 
-> success = RL.SetTraceLogLevel( int logLevel )
+> RL.SetTraceLogLevel( int logLevel )
 
-Set the current threshold ( minimum ) log level
-
-- Failure return false
-- Success return true
+Set the current threshold (minimum) log level
 
 ---
 
-> success = RL.SetLogLevelInvalid( int logLevel )
+> RL.SetLogLevelInvalid( int logLevel )
 
 Set the log level for bad function calls and invalid data formats.
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -1807,12 +1753,17 @@ Get the log level for bad function calls and invalid data formats.
 
 ---
 
-> success = RL.OpenURL( string url )
+> RL.OpenURL( string url )
 
-Open URL with default system browser ( If available )
+Open URL with default system browser (If available)
 
-- Failure return false
-- Success return true
+---
+
+> buffer = RL.LoadBuffer( data{} buffer, int type )
+
+Creates buffer as userdata. Type should be one of the Buffer types
+
+- Success return Buffer
 
 ---
 
@@ -1864,48 +1815,39 @@ Check if cursor is on the screen
 
 ---
 
-> success = RL.ClearBackground( Color color )
+> RL.ClearBackground( Color color )
 
-Set background color ( framebuffer clear color )
-
-- Failure return false
-- Success return true
+Set background color (framebuffer clear color)
 
 ---
 
 > RL.BeginDrawing()
 
-Setup canvas ( framebuffer ) to start drawing
+Setup canvas (framebuffer) to start drawing
 
 ---
 
 > RL.EndDrawing()
 
-End canvas drawing and swap buffers ( double buffering )
+End canvas drawing and swap buffers (double buffering)
 
 ---
 
-> success = RL.BeginBlendMode( int mode )
+> RL.BeginBlendMode( int mode )
 
-Begin blending mode ( BLEND_ALPHA, BLEND_ADDITIVE, BLEND_MULTIPLIED... )
-
-- Failure return false
-- Success return true
+Begin blending mode (BLEND_ALPHA, BLEND_ADDITIVE, BLEND_MULTIPLIED...)
 
 ---
 
 > RL.EndBlendMode()
 
-End blending mode ( reset to default: BLEND_ALPHA )
+End blending mode (reset to default: BLEND_ALPHA)
 
 ---
 
-> success = RL.BeginScissorMode( Rectangle rectange )
+> RL.BeginScissorMode( Rectangle rectange )
 
-Begin scissor mode ( define screen area for following drawing )
-
-- Failure return false
-- Success return true
+Begin scissor mode (define screen area for following drawing)
 
 ---
 
@@ -1924,8 +1866,8 @@ End scissor mode
 Load shader from files and bind default locations.
 NOTE: Set nil if no shader
 
-- Failure return -1
-- Success return int
+- Failure return nil
+- Success return Shader
 
 ---
 
@@ -1934,23 +1876,20 @@ NOTE: Set nil if no shader
 Load shader from code strings and bind default locations
 NOTE: Set nil if no shader
 
-- Failure return -1
-- Success return int
+- Failure return nil
+- Success return Shader
 
 ---
 
-> success = RL.BeginShaderMode( Shader shader )
+> RL.BeginShaderMode( Shader shader )
 
 Begin custom shader drawing
-
-- Failure return false
-- Success return true
 
 ---
 
 > RL.EndShaderMode()
 
-End custom shader drawing ( use default shader )
+End custom shader drawing (use default shader)
 
 ---
 
@@ -1958,7 +1897,6 @@ End custom shader drawing ( use default shader )
 
 Get shader uniform location
 
-- Failure return -1
 - Success return int
 
 ---
@@ -1967,17 +1905,13 @@ Get shader uniform location
 
 Get shader attribute location
 
-- Failure return -1
 - Success return int
 
 ---
 
-> success = RL.SetShaderLocationIndex( Shader shader, int shaderLocationIndex, int location )
+> RL.SetShaderLocationIndex( Shader shader, int shaderLocationIndex, int location )
 
 Set shader location index
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -1985,55 +1919,33 @@ Set shader location index
 
 Get shader location index
 
-- Failure return false
 - Success return int
 
 ---
 
-> success = RL.SetShaderValueMatrix( Shader shader, int locIndex, Matrix mat )
+> RL.SetShaderValueMatrix( Shader shader, int locIndex, Matrix mat )
 
-Set shader uniform value ( matrix 4x4 )
-
-- Failure return false
-- Success return true
+Set shader uniform value (matrix 4x4)
 
 ---
 
-> success = RL.SetShaderValueTexture( Shader shader, int locIndex, Texture2D texture )
+> RL.SetShaderValueTexture( Shader shader, int locIndex, Texture texture )
 
-Set shader uniform value for texture ( sampler2d )
-
-- Failure return false
-- Success return true
+Set shader uniform value for texture (sampler2d)
 
 ---
 
-> success = RL.SetShaderValue( Shader shader, int locIndex, number{} values, int uniformType )
+> RL.SetShaderValue( Shader shader, int locIndex, number{} values, int uniformType )
 
 Set shader uniform value
 NOTE: Even one value should be in table
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.SetShaderValueV( Shader shader, int locIndex, number{} values, int uniformType, int count )
+> RL.SetShaderValueV( Shader shader, int locIndex, number{} values, int uniformType, int count )
 
 Set shader uniform value vector
 NOTE: Even one value should be in table
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.UnloadShader( Shader shader )
-
-Unload shader from GPU memory ( VRAM )
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -2045,7 +1957,6 @@ Unload shader from GPU memory ( VRAM )
 
 Detect if a key has been pressed once
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -2054,7 +1965,6 @@ Detect if a key has been pressed once
 
 Detect if a key is being pressed
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -2063,7 +1973,6 @@ Detect if a key is being pressed
 
 Detect if a key has been released once
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -2072,7 +1981,6 @@ Detect if a key has been released once
 
 Check if a key is NOT being pressed
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -2095,7 +2003,7 @@ Get char pressed (unicode), call it multiple times for chars queued, returns 0 w
 
 > RL.SetExitKey( int key )
 
-Set a custom key to exit program ( default is ESC )
+Set a custom key to exit program (default is ESC)
 
 ---
 
@@ -2114,7 +2022,6 @@ otherwise the scancode is ignored. If you specify a non-printable key,
 or KEY_UNKNOWN and a scancode that maps to a non-printable key,
 this function returns nil but does not emit an error.
 
-- Failure return -1
 - Success return string or nil
 
 ---
@@ -2124,7 +2031,6 @@ this function returns nil but does not emit an error.
 This function returns the platform-specific scancode of the specified key.
 If the key is KEY_UNKNOWN or does not exist on the keyboard this method will return -1.
 
-- Failure return nil
 - Success return int
 
 ---
@@ -2137,7 +2043,6 @@ If the key is KEY_UNKNOWN or does not exist on the keyboard this method will ret
 
 Detect if a gamepad is available
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -2146,7 +2051,6 @@ Detect if a gamepad is available
 
 Detect if a gamepad button has been pressed once
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -2155,7 +2059,6 @@ Detect if a gamepad button has been pressed once
 
 Detect if a gamepad button is being pressed
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -2164,7 +2067,6 @@ Detect if a gamepad button is being pressed
 
 Detect if a gamepad button has been released once
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -2173,7 +2075,6 @@ Detect if a gamepad button has been released once
 
 Return gamepad axis count for a gamepad
 
-- Failure return false
 - Success return int
 
 ---
@@ -2182,7 +2083,6 @@ Return gamepad axis count for a gamepad
 
 Return axis movement value for a gamepad axis
 
-- Failure return false
 - Success return float
 
 ---
@@ -2191,7 +2091,6 @@ Return axis movement value for a gamepad axis
 
 Return gamepad internal name id
 
-- Failure return false
 - Success return string
 
 ---
@@ -2204,7 +2103,6 @@ Return gamepad internal name id
 
 Detect if a mouse button has been pressed once
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -2213,7 +2111,6 @@ Detect if a mouse button has been pressed once
 
 Detect if a mouse button is being pressed
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -2222,7 +2119,6 @@ Detect if a mouse button is being pressed
 
 Detect if a mouse button has been released once
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -2231,7 +2127,6 @@ Detect if a mouse button has been released once
 
 Check if a mouse button is NOT being pressed
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -2252,30 +2147,21 @@ Get mouse delta between frames
 
 ---
 
-> success = RL.SetMousePosition( Vector2 position )
+> RL.SetMousePosition( Vector2 position )
 
 Set mouse position XY
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.SetMouseOffset( Vector2 offset )
+> RL.SetMouseOffset( Vector2 offset )
 
 Set mouse offset
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.SetMouseScale( Vector2 scale )
+> RL.SetMouseScale( Vector2 scale )
 
 Set mouse scaling
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -2287,12 +2173,9 @@ Returns mouse wheel movement Y
 
 ---
 
-> success = RL.SetMouseCursor( int cursor )
+> RL.SetMouseCursor( int cursor )
 
 Set mouse cursor
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -2302,9 +2185,8 @@ Set mouse cursor
 
 > position = RL.GetTouchPosition( int index )
 
-Get touch position XY for a touch point index ( relative to screen size )
+Get touch position XY for a touch point index (relative to screen size)
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -2313,7 +2195,6 @@ Get touch position XY for a touch point index ( relative to screen size )
 
 Get touch point identifier for given index
 
-- Failure return false
 - Success return int
 
 ---
@@ -2330,12 +2211,9 @@ Get touch point identifier for given index
 
 ---
 
-> success = RL.SetGesturesEnabled( unsigned int flags )
+> RL.SetGesturesEnabled( unsigned int flags )
 
 Enable a set of gestures using flags
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -2343,7 +2221,6 @@ Enable a set of gestures using flags
 
 Check if a gesture have been detected
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -2402,7 +2279,7 @@ Get gesture pinch angle
 
 > path = RL.GetBasePath()
 
-Return game directory ( where main.lua is located )
+Return game directory (where main.lua is located)
 
 - Success return string
 
@@ -2412,7 +2289,6 @@ Return game directory ( where main.lua is located )
 
 Check if file exists
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -2421,77 +2297,69 @@ Check if file exists
 
 Check if a directory path exists
 
-- Failure return nil
 - Success return bool
 
 ---
 
 > hasFileExtension = RL.IsFileExtension( string fileName, string ext )
 
-Check file extension ( Including point: .png, .wav )
+Check file extension (Including point: .png, .wav)
 
-- Failure return nil
 - Success return bool
 
 ---
 
 > length = RL.GetFileLength( string fileName )
 
-Get file length in bytes ( NOTE: GetFileSize() conflicts with windows.h )
+Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
 
-- Failure return false
 - Success return int
 
 ---
 
 > extension = RL.GetFileExtension( string fileName )
 
-Get pointer to extension for a filename string ( Includes dot: '.png' )
+Get pointer to extension for a filename string (Includes dot: '.png')
 
-- Failure return false
 - Success return string
 
 ---
 
-> filePath = RL.GetFileName( string filePath )
+> fileName = RL.GetFileName( string filePath )
 
 Get pointer to filename for a path string
 
-- Failure return false
 - Success return string
 
 ---
 
-> filePath = RL.GetFileNameWithoutExt( string filePath )
+> fileName = RL.GetFileNameWithoutExt( string filePath )
 
-Get filename string without extension ( Uses static string )
+Get filename string without extension (Uses static string)
 
-- Failure return false
 - Success return string
 
 ---
 
 > filePath = RL.GetDirectoryPath( string filePath )
 
-Get full path for a given fileName with path ( Uses static string )
+Get full path for a given fileName with path (Uses static string)
 
-- Failure return false
 - Success return string
 
 ---
 
 > directory = RL.GetPrevDirectoryPath( string dirPath )
 
-Get previous directory path for a given path ( Uses static string )
+Get previous directory path for a given path (Uses static string)
 
-- Failure return false
 - Success return string
 
 ---
 
 > directory = RL.GetWorkingDirectory()
 
-Get current working directory ( Uses static string )
+Get current working directory (Uses static string)
 
 - Success return string
 
@@ -2501,7 +2369,6 @@ Get current working directory ( Uses static string )
 
 Load directory filepaths
 
-- Failure return false
 - Success return string{}
 
 ---
@@ -2510,7 +2377,6 @@ Load directory filepaths
 
 Load directory filepaths with extension filtering and recursive directory scan
 
-- Failure return false
 - Success return string{}
 
 ---
@@ -2519,8 +2385,7 @@ Load directory filepaths with extension filtering and recursive directory scan
 
 Change working directory, return true on success
 
-- Failure return false
-- Success return true
+- Success return bool
 
 ---
 
@@ -2528,12 +2393,11 @@ Change working directory, return true on success
 
 Check if a given path is a file or a directory
 
-- Failure return nil
 - Success return bool
 
 ---
 
-> fileDropped = RL.IsFileDropped()
+> iSFileDropped = RL.IsFileDropped()
 
 Check if a file has been dropped into window
 
@@ -2551,9 +2415,8 @@ Load dropped filepaths
 
 > time = RL.GetFileModTime( string fileName )
 
-Get file modification time ( Last write time )
+Get file modification time (Last write time)
 
-- Failure return false
 - Success return int
 
 ---
@@ -2564,27 +2427,15 @@ Get file modification time ( Last write time )
 
 > camera2D = RL.CreateCamera2D()
 
-Return camera2D id set to default configuration
+Return camera2D set to default configuration
 
-- Success return int
-
----
-
-> success = RL.UnloadCamera2D( camera2D camera )
-
-Unload Camera2D
-
-- Failure return false
-- Success return true
+- Success return Camera2D
 
 ---
 
-> success = RL.BeginMode2D( camera2D camera )
+> RL.BeginMode2D( camera2D camera )
 
-Begin 2D mode with custom camera ( 2D )
-
-- Failure return false
-- Success return true
+Begin 2D mode with custom camera (2D)
 
 ---
 
@@ -2594,39 +2445,27 @@ Ends 2D mode with custom camera
 
 ---
 
-> success = RL.SetCamera2DTarget( camera2D camera, Vector2 target )
+> RL.SetCamera2DTarget( camera2D camera, Vector2 target )
 
-Set camera target ( rotation and zoom origin )
-
-- Failure return false
-- Success return true
+Set camera target (rotation and zoom origin)
 
 ---
 
-> success = RL.SetCamera2DOffset( camera2D camera, Vector2 offset )
+> RL.SetCamera2DOffset( camera2D camera, Vector2 offset )
 
-Set camera offset ( displacement from target )
-
-- Failure return false
-- Success return true
+Set camera offset (displacement from target)
 
 ---
 
-> success = RL.SetCamera2DRotation( camera2D camera, float rotation )
+> RL.SetCamera2DRotation( camera2D camera, float rotation )
 
 Set camera rotation in degrees
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.SetCamera2DZoom( camera2D camera, float zoom )
+> RL.SetCamera2DZoom( camera2D camera, float zoom )
 
-Set camera zoom ( scaling ), should be 1.0f by default
-
-- Failure return false
-- Success return true
+Set camera zoom (scaling), should be 1.0f by default
 
 ---
 
@@ -2634,7 +2473,6 @@ Set camera zoom ( scaling ), should be 1.0f by default
 
 Get camera2D target
 
-- Failure return nil
 - Success return Vector2
 
 ---
@@ -2643,7 +2481,6 @@ Get camera2D target
 
 Get camera2D offset
 
-- Failure return nil
 - Success return Vector2
 
 ---
@@ -2652,7 +2489,6 @@ Get camera2D offset
 
 Get camera2D rotation
 
-- Failure return nil
 - Success return float
 
 ---
@@ -2661,7 +2497,6 @@ Get camera2D rotation
 
 Get camera2D zoom
 
-- Failure return nil
 - Success return float
 
 ---
@@ -2678,21 +2513,9 @@ Return camera3D id set to default configuration
 
 ---
 
-> success = RL.UnloadCamera3D( int Camera3D )
+> RL.BeginMode3D( camera3D camera )
 
-Unload Camera3D
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.BeginMode3D( camera3D camera )
-
-Begin 3D mode with custom camera ( 3D )
-
-- Failure return false
-- Success return true
+Begin 3D mode with custom camera (3D)
 
 ---
 
@@ -2702,48 +2525,33 @@ Ends 3D mode and returns to default 2D orthographic mode
 
 ---
 
-> success = RL.SetCamera3DPosition( camera3D camera, Vector3 position )
+> RL.SetCamera3DPosition( camera3D camera, Vector3 position )
 
-Set camera position ( Remember to call "RL.UpdateCamera3D()" to apply changes )
-
-- Failure return false
-- Success return true
+Set camera position (Remember to call "RL.UpdateCamera3D()" to apply changes)
 
 ---
 
-> success = RL.SetCamera3DTarget( camera3D camera, Vector3 target )
+> RL.SetCamera3DTarget( camera3D camera, Vector3 target )
 
 Set camera target it looks-at
 
-- Failure return false
-- Success return true
+---
+
+> RL.SetCamera3DUp( camera3D camera, Vector3 up )
+
+Set camera up vector (Rotation over it's axis)
 
 ---
 
-> success = RL.SetCamera3DUp( camera3D camera, Vector3 up )
+> RL.SetCamera3DFovy( camera3D camera, float fovy )
 
-Set camera up vector ( Rotation over it's axis )
-
-- Failure return false
-- Success return true
+Set camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic
 
 ---
 
-> success = RL.SetCamera3DFovy( camera3D camera, float fovy )
+> RL.SetCamera3DProjection( camera3D camera, int projection )
 
-Set camera field-of-view apperture in Y ( degrees ) in perspective, used as near plane width in orthographic
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.SetCamera3DProjection( camera3D camera, int projection )
-
-Set camera projection mode ( CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC )
-
-- Failure return false
-- Success return true
+Set camera projection mode (CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC)
 
 ---
 
@@ -2751,7 +2559,6 @@ Set camera projection mode ( CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC )
 
 Get camera position
 
-- Failure return nil
 - Success return Vector3
 
 ---
@@ -2760,25 +2567,22 @@ Get camera position
 
 Get camera target it looks-at
 
-- Failure return nil
 - Success return Vector3
 
 ---
 
 > up = RL.GetCamera3DUp( camera3D camera )
 
-Get camera up vector ( Rotation over it's axis )
+Get camera up vector (Rotation over it's axis)
 
-- Failure return nil
 - Success return Vector3
 
 ---
 
 > fovy = RL.GetCamera3DFovy( camera3D camera )
 
-Get camera field-of-view apperture in Y ( degrees ) in perspective, used as near plane width in orthographic
+Get camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic
 
-- Failure return nil
 - Success return float
 
 ---
@@ -2787,88 +2591,69 @@ Get camera field-of-view apperture in Y ( degrees ) in perspective, used as near
 
 Get camera projection mode
 
-- Failure return nil
 - Success return int
 
 ---
 
 > forward = RL.GetCamera3DForward( camera3D camera )
 
-Returns the cameras forward vector ( normalized )
+Returns the cameras forward vector (normalized)
 
-- Failure return nil
 - Success return Vector3
 
 ---
 
 > up = RL.GetCamera3DUpNormalized( camera3D camera )
 
-Returns the cameras up vector ( normalized )
+Returns the cameras up vector (normalized)
 Note: The up vector might not be perpendicular to the forward vector
 
-- Failure return nil
 - Success return Vector3
 
 ---
 
 > right = RL.GetCamera3DRight( camera3D camera )
 
-Returns the cameras right vector ( normalized )
+Returns the cameras right vector (normalized)
 
-- Failure return nil
 - Success return Vector3
 
 ---
 
-> success = RL.Camera3DMoveForward( camera3D camera, float distance, bool moveInWorldPlane )
+> RL.Camera3DMoveForward( camera3D camera, float distance, bool moveInWorldPlane )
 
 Moves the camera in it's forward direction
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.Camera3DMoveUp( camera3D camera, float distance )
+> RL.Camera3DMoveUp( camera3D camera, float distance )
 
 Moves the camera in it's up direction
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.Camera3DMoveRight( camera3D camera, float distance, bool moveInWorldPlane )
+> RL.Camera3DMoveRight( camera3D camera, float distance, bool moveInWorldPlane )
 
 Moves the camera target in it's current right direction
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.Camera3DMoveToTarget( camera3D camera, float delta )
+> RL.Camera3DMoveToTarget( camera3D camera, float delta )
 
 Moves the camera position closer/farther to/from the camera target
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.Camera3DYaw( camera3D camera, float angle, bool rotateAroundTarget )
+> RL.Camera3DYaw( camera3D camera, float angle, bool rotateAroundTarget )
 
 Rotates the camera around it's up vector
 Yaw is "looking left and right"
 If rotateAroundTarget is false, the camera rotates around it's position
 Note: angle must be provided in radians
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.Camera3DPitch( camera3D camera, float angle, bool lockView, bool rotateAroundTarget, bool rotateUp )
+> RL.Camera3DPitch( camera3D camera, float angle, bool lockView, bool rotateAroundTarget, bool rotateUp )
 
 Rotates the camera around it's right vector, pitch is "looking up and down"
  - lockView prevents camera overrotation (aka "somersaults")
@@ -2876,19 +2661,13 @@ Rotates the camera around it's right vector, pitch is "looking up and down"
  - rotateUp rotates the up direction as well (typically only usefull in CAMERA_FREE)
 NOTE: angle must be provided in radians
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.Camera3DRoll( camera3D camera, float angle )
+> RL.Camera3DRoll( camera3D camera, float angle )
 
 Rotates the camera around it's forward vector
 Roll is "turning your head sideways to the left or right"
 Note: angle must be provided in radians
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -2896,7 +2675,6 @@ Note: angle must be provided in radians
 
 Returns the camera view matrix
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -2905,26 +2683,19 @@ Returns the camera view matrix
 
 Returns the camera projection matrix
 
-- Failure return false
 - Success return Matrix
 
 ---
 
-> success = RL.UpdateCamera3D( camera3D camera, int mode )
+> RL.UpdateCamera3D( camera3D camera, int mode )
 
 Update camera position for selected mode
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.UpdateCamera3DPro( camera3D camera, Vector3 movement, Vector3 rotation, float zoom )
+> RL.UpdateCamera3DPro( camera3D camera, Vector3 movement, Vector3 rotation, float zoom )
 
 Update camera movement, movement/rotation values should be provided by user
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -2936,16 +2707,14 @@ Update camera movement, movement/rotation values should be provided by user
 
 Get a ray trace from mouse position
 
-- Failure return false
 - Success return Ray
 
 ---
 
 > matrix = RL.GetCameraMatrix( Camera3D camera )
 
-Get camera transform matrix ( view matrix )
+Get camera transform matrix (view matrix)
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -2954,7 +2723,6 @@ Get camera transform matrix ( view matrix )
 
 Get camera 2d transform matrix
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -2963,7 +2731,6 @@ Get camera 2d transform matrix
 
 Get the screen space position for a 3d world space position
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -2972,7 +2739,6 @@ Get the screen space position for a 3d world space position
 
 Get size position for a 3d world space position
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -2981,7 +2747,6 @@ Get size position for a 3d world space position
 
 Get the screen space position for a 2d camera world space position
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -2990,17 +2755,7 @@ Get the screen space position for a 2d camera world space position
 
 Get the world space position for a 2d camera screen space position
 
-- Failure return false
 - Success return Vector2
-
----
-
-> buffer = RL.LoadBuffer( data{} buffer, int type )
-
-Creates buffer as userdata. Type should be one of the Buffer types
-
-- Failure return false
-- Success return Buffer
 
 ---
 
@@ -3008,14 +2763,11 @@ Creates buffer as userdata. Type should be one of the Buffer types
 
 ---
 
-> success = RL.SetShapesTexture( Texture2D texture, Rectangle source )
+> RL.SetShapesTexture( Texture texture, Rectangle source )
 
 Set texture and rectangle to be used on shapes drawing
 NOTE: It can be useful when using basic shapes and one single font,
 defining a font char white rectangle would allow drawing everything in a single draw call
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -3398,10 +3150,9 @@ Get collision rectangle for two rectangles collision
 
 > image = RL.LoadImage( string fileName )
 
-Load image from file into CPU memory ( RAM )
+Load image from file into CPU memory (RAM)
 
-- Failure return -1
-- Success return int
+- Success return Image
 
 ---
 
@@ -3409,25 +3160,15 @@ Load image from file into CPU memory ( RAM )
 
 Load image from GPU texture data
 
-- Failure return -1
-- Success return int
+- Success return Image
 
 ---
 
 > image = RL.LoadImageFromScreen()
 
-Load image from screen buffer and ( screenshot )
+Load image from screen buffer and (screenshot)
 
-- Success return int
-
----
-
-> success = RL.UnloadImage( Image image )
-
-Unload image from CPU memory ( RAM )
-
-- Failure return false
-- Success return true
+- Success return Image
 
 ---
 
@@ -3435,7 +3176,6 @@ Unload image from CPU memory ( RAM )
 
 Export image data to file, returns true on success
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -3444,7 +3184,6 @@ Export image data to file, returns true on success
 
 Export image as code file defining an array of bytes, returns true on success
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -3453,12 +3192,11 @@ Export image as code file defining an array of bytes, returns true on success
 
 ---
 
-> image = RL.GenImageColor( int width, int height, Color color )
+> image = RL.GenImageColor( Vector2 size, Color color )
 
 Generate image: plain color
 
-- Failure return -1
-- Success return int
+- Success return Image
 
 ---
 
@@ -3466,8 +3204,7 @@ Generate image: plain color
 
 Generate image: vertical gradient
 
-- Failure return -1
-- Success return int
+- Success return Image
 
 ---
 
@@ -3475,8 +3212,7 @@ Generate image: vertical gradient
 
 Generate image: horizontal gradient
 
-- Failure return -1
-- Success return int
+- Success return Image
 
 ---
 
@@ -3484,8 +3220,7 @@ Generate image: horizontal gradient
 
 Generate image: radial gradient
 
-- Failure return -1
-- Success return int
+- Success return Image
 
 ---
 
@@ -3493,8 +3228,7 @@ Generate image: radial gradient
 
 Generate image: checked
 
-- Failure return -1
-- Success return int
+- Success return Image
 
 ---
 
@@ -3502,8 +3236,7 @@ Generate image: checked
 
 Generate image: white noise
 
-- Failure return -1
-- Success return int
+- Success return Image
 
 ---
 
@@ -3511,8 +3244,7 @@ Generate image: white noise
 
 Generate image: perlin noise
 
-- Failure return -1
-- Success return int
+- Success return Image
 
 ---
 
@@ -3520,8 +3252,7 @@ Generate image: perlin noise
 
 Generate image: cellular algorithm. Bigger tileSize means bigger cells
 
-- Failure return -1
-- Success return int
+- Success return Image
 
 ---
 
@@ -3529,8 +3260,7 @@ Generate image: cellular algorithm. Bigger tileSize means bigger cells
 
 Generate image: grayscale image from text data
 
-- Failure return -1
-- Success return int
+- Success return Image
 
 ---
 
@@ -3540,10 +3270,9 @@ Generate image: grayscale image from text data
 
 > image = RL.ImageCopy( Image image )
 
-Create an image duplicate ( useful for transformations )
+Create an image duplicate (useful for transformations)
 
-- Failure return -1
-- Success return int
+- Success return Image
 
 ---
 
@@ -3551,241 +3280,169 @@ Create an image duplicate ( useful for transformations )
 
 Create an image from another image piece
 
-- Failure return -1
-- Success return int
+- Success return Image
 
 ---
 
 > image = RL.ImageText( Font font, string text, float fontSize, float spacing, Color tint )
 
-Create an image from text ( custom sprite font )
+Create an image from text (custom sprite font)
 
 - Failure return -1
 - Success return int
 
 ---
 
-> success = RL.ImageFormat( Image image, int newFormat )
+> RL.ImageFormat( Image image, int newFormat )
 
 Convert image data to desired format
 
-- Failure return false
-- Success return true
+---
+
+> RL.ImageToPOT( Image image, Color fill )
+
+Convert image to POT (power-of-two)
 
 ---
 
-> success = RL.ImageToPOT( Image image, Color fill )
-
-Convert image to POT ( power-of-two )
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.ImageCrop( Image image, Rectangle crop )
+> RL.ImageCrop( Image image, Rectangle crop )
 
 Crop an image to a defined rectangle
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageAlphaCrop( Image image, float threshold )
+> RL.ImageAlphaCrop( Image image, float threshold )
 
 Crop image depending on alpha value
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageAlphaClear( Image image, Color color, float threshold )
+> RL.ImageAlphaClear( Image image, Color color, float threshold )
 
 Clear alpha channel to desired color
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageAlphaMask( Image image, Image alphaMask )
+> RL.ImageAlphaMask( Image image, Image alphaMask )
 
 Apply alpha mask to image
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageAlphaPremultiply( Image image )
+> RL.ImageAlphaPremultiply( Image image )
 
 Premultiply alpha channel
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageBlurGaussian( Image image, int blurSize )
+> RL.ImageBlurGaussian( Image image, int blurSize )
 
 Apply Gaussian blur using a box blur approximation
 
-- Failure return false
-- Success return true
+---
+
+> RL.ImageResize( Image image, Vector2 size )
+
+Resize image (Bicubic scaling algorithm)
 
 ---
 
-> success = RL.ImageResize( Image image, Vector2 size )
+> RL.ImageResizeNN( Image image, Vector2 size )
 
-Resize image ( Bicubic scaling algorithm )
-
-- Failure return false
-- Success return true
+Resize image (Nearest-Neighbor scaling algorithm)
 
 ---
 
-> success = RL.ImageResizeNN( Image image, Vector2 size )
-
-Resize image ( Nearest-Neighbor scaling algorithm )
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.ImageResizeCanvas( Image image, Vector2 size, Vector2 offset, Color fill )
+> RL.ImageResizeCanvas( Image image, Vector2 size, Vector2 offset, Color fill )
 
 Resize canvas and fill with color
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageMipmaps( Image image )
+> RL.ImageMipmaps( Image image )
 
 Generate all mipmap levels for a provided image
 
-- Failure return false
-- Success return true
+---
+
+> RL.ImageDither( Image image, Color bpp )
+
+Dither image data to 16bpp or lower (Floyd-Steinberg dithering)
 
 ---
 
-> success = RL.ImageDither( Image image, Color bpp )
-
-Dither image data to 16bpp or lower ( Floyd-Steinberg dithering )
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.ImageFlipVertical( Image image )
+> RL.ImageFlipVertical( Image image )
 
 Flip image vertically
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageFlipHorizontal( Image image )
+> RL.ImageFlipHorizontal( Image image )
 
 Flip image horizontally
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageRotateCW( Image image )
+> RL.ImageRotateCW( Image image )
 
 Rotate image clockwise 90deg
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageRotateCCW( Image image )
+> RL.ImageRotateCCW( Image image )
 
 Rotate image counter-clockwise 90deg
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageColorTint( Image image, Color color )
+> RL.ImageColorTint( Image image, Color color )
 
 Modify image color: tint
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageColorInvert( Image image )
+> RL.ImageColorInvert( Image image )
 
 Modify image color: invert
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageColorGrayscale( Image image )
+> RL.ImageColorGrayscale( Image image )
 
 Modify image color: grayscale
 
-- Failure return false
-- Success return true
+---
+
+> RL.ImageColorContrast( Image image, float contrast )
+
+Modify image color: contrast (-100 to 100)
 
 ---
 
-> success = RL.ImageColorContrast( Image image, float contrast )
+> RL.ImageColorBrightness( Image image, int brightness )
 
-Modify image color: contrast ( -100 to 100 )
-
-- Failure return false
-- Success return true
+Modify image color: brightness (-255 to 255)
 
 ---
 
-> success = RL.ImageColorBrightness( Image image, int brightness )
-
-Modify image color: brightness ( -255 to 255 )
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.ImageColorReplace( Image image, Color color, Color replace )
+> RL.ImageColorReplace( Image image, Color color, Color replace )
 
 Modify image color: replace color
-
-- Failure return false
-- Success return true
 
 ---
 
 > colors = RL.LoadImageColors( Image image )
 
-Load color data from image as a Color array ( RGBA - 32bit )
+Load color data from image as a Color array (RGBA - 32bit)
 
-- Failure return false
 - Success return Color{}
 
 ---
 
 > colors = RL.LoadImagePalette( Image image, int maxPaletteSize )
 
-Load colors palette from image as a Color array ( RGBA - 32bit )
+Load colors palette from image as a Color array (RGBA - 32bit)
 
-- Failure return false
 - Success return Color{}
 
 ---
@@ -3794,16 +3451,14 @@ Load colors palette from image as a Color array ( RGBA - 32bit )
 
 Get image alpha border rectangle
 
-- Failure return false
 - Success return Rectangle
 
 ---
 
 > color = RL.GetImageColor( Image image, Vector2 pixelPos )
 
-Get image pixel color at ( x, y ) position
+Get image pixel color at (x, y) position
 
-- Failure return false
 - Success return Color
 
 ---
@@ -3812,75 +3467,51 @@ Get image pixel color at ( x, y ) position
 
 ---
 
-> success = RL.ImageClearBackground( Image dst, Color color )
+> RL.ImageClearBackground( Image dst, Color color )
 
 Clear image background with given color
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageDrawPixel( Image dst, Vector2 position, Color color )
+> RL.ImageDrawPixel( Image dst, Vector2 position, Color color )
 
 Draw pixel within an image
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageDrawLine( Image dst, Vector2 a, Vector2 b, Color color )
+> RL.ImageDrawLine( Image dst, Vector2 a, Vector2 b, Color color )
 
 Draw line within an image
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageDrawCircle( Image dst, Vector2 center, int radius, Color color )
+> RL.ImageDrawCircle( Image dst, Vector2 center, int radius, Color color )
 
 Draw circle within an image
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageDrawCircleLines( Image dst, Vector2 center, int radius, Color color )
+> RL.ImageDrawCircleLines( Image dst, Vector2 center, int radius, Color color )
 
 Draw circle outline within an image
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageDrawRectangle( Image dst, Rectangle rec, Color color )
+> RL.ImageDrawRectangle( Image dst, Rectangle rec, Color color )
 
 Draw rectangle within an image
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageDrawRectangleLines( Image dst, Rectangle rec, int thick, Color color )
+> RL.ImageDrawRectangleLines( Image dst, Rectangle rec, int thick, Color color )
 
 Draw rectangle lines within an image
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ImageDraw( Image dst, Image src, Rectangle srcRec, Rectangle dstRec, Color tint )
+> RL.ImageDraw( Image dst, Image src, Rectangle srcRec, Rectangle dstRec, Color tint )
 
-Draw a source image within a destination image ( Tint applied to source )
-
-- Failure return false
-- Success return true
+Draw a source image within a destination image (Tint applied to source)
 
 ---
 
@@ -3901,7 +3532,6 @@ Draw text ( Custom sprite font ) within an image ( Destination )
 
 Get image size
 
-- Failure return nil
 - Success return Vector2
 
 ---
@@ -3910,16 +3540,14 @@ Get image size
 
 Get image mipmaps. Mipmap levels, 1 by default
 
-- Failure return false
 - Success return int
 
 ---
 
 > format = RL.GetImageFormat( Image image )
 
-Get image data format ( PixelFormat type )
+Get image data format (PixelFormat type)
 
-- Failure return false
 - Success return int
 
 ---
@@ -3932,8 +3560,8 @@ Get image data format ( PixelFormat type )
 
 Load texture from file into GPU memory ( VRAM )
 
-- Failure return -1
-- Success return int
+- Failure return nil
+- Success return Texture
 
 ---
 
@@ -3941,8 +3569,7 @@ Load texture from file into GPU memory ( VRAM )
 
 Load texture from image data
 
-- Failure return -1
-- Success return int
+- Success return Texture
 
 ---
 
@@ -3950,55 +3577,37 @@ Load texture from image data
 
 Load cubemap from image, multiple image cubemap layouts supported
 
-- Failure return -1
-- Success return int
+- Success return Texture
 
 ---
 
 > renderTexture = RL.LoadRenderTexture( Vector2 size )
 
-Load texture for rendering ( framebuffer )
+Load texture for rendering (framebuffer)
 
-- Failure return -1
-- Success return int
-
----
-
-> success = RL.UnloadTexture( Texture2D texture )
-
-Unload texture from GPU memory ( VRAM ). NOTE! Must be texture id.
-
-- Failure return false
-- Success return true
+- Success return RenderTexture
 
 ---
 
-> isReady = RL.IsTextureReady( Texture2D texture )
+> isReady = RL.IsTextureReady( Texture texture )
 
 Check if a texture is ready
 
-- Failure return nil
-- Success return true
+- Success return bool
 
 ---
 
-> success = RL.UpdateTexture( Texture2D texture, int{} pixels )
+> RL.UpdateTexture( Texture texture, int{} pixels )
 
 Update GPU texture with new data
 NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.UpdateTextureRec( Texture2D texture, Rectangle rec, int{} pixels )
+> RL.UpdateTextureRec( Texture texture, Rectangle rec, int{} pixels )
 
 Update GPU texture rectangle with new data
 NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -4006,48 +3615,33 @@ NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 25
 
 ---
 
-> success = RL.DrawTexture( Texture2D texture, Vector2 position, Color tint )
+> RL.DrawTexture( Texture texture, Vector2 position, Color tint )
 
 Draw a Texture2D
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawTextureRec( Texture2D texture, Rectangle source, Vector2 position, Color tint )
+> RL.DrawTextureRec( Texture texture, Rectangle source, Vector2 position, Color tint )
 
 Draw a part of a texture defined by a rectangle
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawTexturePro( Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint )
+> RL.DrawTexturePro( Texture texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint )
 
 Draw a part of a texture defined by a rectangle with "pro" parameters
 
-- Failure return false
-- Success return true
+---
+
+> RL.DrawTextureNPatch( Texture texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint )
+
+Draws a texture (or part of it) that stretches or shrinks nicely
 
 ---
 
-> success = RL.DrawTextureNPatch( Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint )
-
-Draws a texture ( or part of it ) that stretches or shrinks nicely
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.BeginTextureMode( RenderTexture2D target )
+> RL.BeginTextureMode( RenderTexture target )
 
 Begin drawing to render texture
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -4057,79 +3651,85 @@ Ends drawing to render texture
 
 ---
 
-> type = RL.GetTextureType( Texture2D texture )
-
-Get texture type ( TEXTURE_TYPE_TEXTURE or TEXTURE_TYPE_RENDER_TEXTURE )
-
-- Failure return false
-- Success return int
-
----
-
 ## Textures - Texture Configuration
 
 ---
 
-> success = RL.GenTextureMipmaps( Texture2D texture )
+> RL.GenTextureMipmaps( Texture texture )
 
 Generate GPU mipmaps for a texture
 
-- Failure return false
-- Success return true
+---
+
+> RL.SetTextureFilter( Texture texture, int filter )
+
+Set texture scaling filter mode (TEXTURE_FILTER_POINT, TEXTURE_FILTER_BILINEAR...)
 
 ---
 
-> success = RL.SetTextureFilter( Texture2D texture, int filter )
+> RL.SetTextureWrap( Texture texture, int wrap )
 
-Set texture scaling filter mode ( TEXTURE_FILTER_POINT, TEXTURE_FILTER_BILINEAR... )
-
-- Failure return false
-- Success return true
+Set texture wrapping mode (TEXTURE_WRAP_REPEAT, TEXTURE_WRAP_CLAMP...)
 
 ---
 
-> success = RL.SetTextureWrap( Texture2D texture, int wrap )
+> id = RL.GetTextureId( Texture texture )
 
-Set texture wrapping mode ( TEXTURE_WRAP_REPEAT, TEXTURE_WRAP_CLAMP... )
+Get OpenGL texture id
 
-- Failure return false
-- Success return true
-
----
-
-> id = RL.GetTextureId( Texture2D texture )
-
-Get texture OpenGL id
-
-- Failure return false
 - Success return int
 
 ---
 
-> size = RL.GetTextureSize( Texture2D texture )
+> size = RL.GetTextureSize( Texture texture )
 
 Get texture size
 
-- Failure return false
 - Success return Vector2
 
 ---
 
-> mipmaps = RL.GetTextureMipmaps( Texture2D texture )
+> mipmaps = RL.GetTextureMipmaps( Texture texture )
 
 Get texture mipmaps. Mipmap levels, 1 by default
 
-- Failure return false
 - Success return int
 
 ---
 
-> format = RL.GetTextureFormat( Texture2D texture )
+> format = RL.GetTextureFormat( Texture texture )
 
-Get texture data format ( PixelFormat type )
+Get texture data format (PixelFormat type)
 
-- Failure return false
 - Success return int
+
+---
+
+## Textures - RenderTexture Configuration
+
+---
+
+> id = RL.GetRenderTextureId( RenderTexture renderTexture )
+
+Get OpenGL framebuffer object id
+
+- Success return int
+
+---
+
+> texture = RL.GetRenderTextureTexture( RenderTexture renderTexture )
+
+Get color buffer attachment texture
+
+- Success return Texture
+
+---
+
+> texture = RL.GetRenderTextureDepthTexture( RenderTexture renderTexture )
+
+Get depth buffer attachment texture
+
+- Success return Texture
 
 ---
 
@@ -4141,7 +3741,6 @@ Get texture data format ( PixelFormat type )
 
 Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 
-- Failure return false
 - Success return Color
 
 ---
@@ -4150,7 +3749,6 @@ Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 
 Returns hexadecimal value for a Color
 
-- Failure return false
 - Success return int
 
 ---
@@ -4159,7 +3757,6 @@ Returns hexadecimal value for a Color
 
 Returns Color normalized as float [0..1]
 
-- Failure return false
 - Success return Vector4
 
 ---
@@ -4168,7 +3765,6 @@ Returns Color normalized as float [0..1]
 
 Color from normalized values [0..1]
 
-- Failure return false
 - Success return Color
 
 ---
@@ -4177,7 +3773,6 @@ Color from normalized values [0..1]
 
 Returns HSV values for a Color, hue [0..360], saturation/value [0..1]
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -4186,7 +3781,6 @@ Returns HSV values for a Color, hue [0..360], saturation/value [0..1]
 
 Returns a Color from HSV values, hue [0..360], saturation/value [0..1]
 
-- Failure return false
 - Success return Color
 
 ---
@@ -4195,7 +3789,6 @@ Returns a Color from HSV values, hue [0..360], saturation/value [0..1]
 
 Get color multiplied with another color
 
-- Failure return false
 - Success return Color
 
 ---
@@ -4204,7 +3797,6 @@ Get color multiplied with another color
 
 Get color with brightness correction, brightness factor goes from -1.0f to 1.0f
 
-- Failure return false
 - Success return Color
 
 ---
@@ -4213,7 +3805,6 @@ Get color with brightness correction, brightness factor goes from -1.0f to 1.0f
 
 Get color with contrast correction, contrast values between -1.0f and 1.0f
 
-- Failure return false
 - Success return Color
 
 ---
@@ -4222,7 +3813,6 @@ Get color with contrast correction, contrast values between -1.0f and 1.0f
 
 Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 
-- Failure return false
 - Success return Color
 
 ---
@@ -4231,25 +3821,22 @@ Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 
 Returns src alpha-blended into dst color with tint
 
-- Failure return false
 - Success return Color
 
 ---
 
-> color = RL.GetColor( unsigned int hexValue )
+> color = RL.GetColor( int hexValue )
 
 Get Color structure from hexadecimal value
 
-- Failure return false
 - Success return Color
 
 ---
 
-> color = RL.GetPixelColor( Texture2D texture, Vector2 position )
+> color = RL.GetPixelColor( Texture texture, Vector2 position )
 
 Get pixel color from source texture
 
-- Failure return false
 - Success return Color
 
 ---
@@ -4258,7 +3845,6 @@ Get pixel color from source texture
 
 Get pixel data size in bytes for certain format
 
-- Failure return false
 - Success return int
 
 ---
@@ -4531,12 +4117,9 @@ Draw a plane XZ
 
 ---
 
-> success = RL.DrawQuad3DTexture( Texture2D texture, Vector3{} vertices, Vector2{} texCoords, Color{} colors )
+> RL.DrawQuad3DTexture( Texture texture, Vector3{} vertices, Vector2{} texCoords, Color{} colors )
 
 Draw 3D textured quad. ( Texture coordinates opengl style 0.0 - 1.0 ).
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -4756,12 +4339,9 @@ Unload material from GPU memory ( VRAM )
 
 ---
 
-> success = RL.SetMaterialTexture( Material material, int mapType, Texture2D texture )
+> RL.SetMaterialTexture( Material material, int mapType, Texture2D texture )
 
 Set texture for a material map type ( MATERIAL_MAP_ALBEDO, MATERIAL_MAP_METALNESS... )
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -4783,12 +4363,9 @@ Set value for a material map type
 
 ---
 
-> success = RL.SetMaterialShader( Material material, Shader shader )
+> RL.SetMaterialShader( Material material, Shader shader )
 
 Set shader for material
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -4833,7 +4410,7 @@ Get color from material map type.
 Get material shader. Returns -1 if no shader.
 
 - Failure return false
-- Success return int
+- Success return Shader
 
 ---
 
@@ -4913,30 +4490,21 @@ Set material for a mesh ( Mesh and material on this model )
 
 ---
 
-> success = RL.DrawBillboard( Camera3D camera, Texture2D texture, Vector3 position, float size, Color tint )
+> RL.DrawBillboard( Camera3D camera, Texture texture, Vector3 position, float size, Color tint )
 
 Draw a billboard texture
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawBillboardRec( Camera3D camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Color tint )
+> RL.DrawBillboardRec( Camera3D camera, Texture texture, Rectangle source, Vector3 position, Vector2 size, Color tint )
 
 Draw a billboard texture defined by source
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawBillboardPro( Camera3D camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint )
+> RL.DrawBillboardPro( Camera3D camera, Texture texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint )
 
 Draw a billboard texture defined by source and rotation
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -6924,12 +6492,9 @@ Create a light and get shader locations
 
 ---
 
-> success = RL.UpdateLightValues( Shader shader, Light light )
+> RL.UpdateLightValues( Shader shader, Light light )
 
 Send light properties to shader
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -7905,13 +7470,10 @@ Set eyes view offsets matrices for stereo rendering
 
 ---
 
-> success = RL.glBlitFramebuffer( RenderTexture srcTex, RenderTexture dstTex, Rectangle srcRect, Rectangle dstRect, int mask, int filter )
+> RL.glBlitFramebuffer( RenderTexture srcTex, RenderTexture dstTex, Rectangle srcRect, Rectangle dstRect, int mask, int filter )
 
 Copy a block of pixels from one framebuffer object to another.
 Use -1 RenderTexture for window framebuffer.
-
-- Failure return false
-- Success return true
 
 ---
 

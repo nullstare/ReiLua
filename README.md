@@ -10,6 +10,8 @@ Reilua means fair in finnish.
 
 ## Status
 
+### WARNING  !!!  UNDER UNFINISHED HEAVY REFORM  !!!  WARNING
+
 ReiLua is WIP and some planned raylib functionality is still missing but it already has over 700 functions and should include all functions to make most 2d and 3d games. Current Raylib version 4.5.0.
 
 Included submodules.

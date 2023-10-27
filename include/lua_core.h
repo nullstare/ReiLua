@@ -28,10 +28,6 @@ typedef struct {
 	int y;
 } Buffer;
 
-typedef struct {
-	int age;
-} Kissa;
-
 bool luaInit( int argn, const char **argc );
 int luaTraceback( lua_State *L );
 bool luaCallMain();
@@ -39,12 +35,8 @@ void luaCallProcess();
 void luaCallDraw();
 void luaCallExit();
 void luaRegister();
-/* Type validators. */
-bool isValidTexture( lua_State *L, int index, bool allowTable );
-bool isValidRenderTexture( lua_State *L, int index, bool allowTable );
-bool isValidCamera2D( lua_State *L, int index, bool allowTable );
-bool isValidCamera3D( lua_State *L, int index, bool allowTable );
 /* Lua Util functions. */
+bool uluaGetBoolean( lua_State *L, int index );
 Color uluaGetColor( lua_State *L );
 Color uluaGetColorIndex( lua_State *L, int index );
 Vector2 uluaGetVector2( lua_State *L );
@@ -65,10 +57,6 @@ Ray uluaGetRay( lua_State *L );
 Ray uluaGetRayIndex( lua_State *L, int index );
 NPatchInfo uluaGetNPatchInfo( lua_State *L );
 NPatchInfo uluaGetNPatchInfoIndex( lua_State *L, int index );
-Texture uluaGetTexture( lua_State *L, int index );
-RenderTexture uluaGetRenderTexture( lua_State *L, int index );
-Camera2D uluaGetCamera2D( lua_State *L, int index );
-Camera3D uluaGetCamera3D( lua_State *L, int index );
 /* Push types. */
 void uluaPushColor( lua_State *L, Color color );
 void uluaPushVector2( lua_State *L, Vector2 vector );
@@ -80,7 +68,12 @@ void uluaPushMatrix( lua_State *L, Matrix matrix );
 void uluaPushRay( lua_State *L, Ray ray );
 void uluaPushRayCollision( lua_State *L, RayCollision rayCol );
 void uluaPushBoundingBox( lua_State *L, BoundingBox box );
+void uluaPushImage( lua_State *L, Image image );
 void uluaPushTexture( lua_State *L, Texture texture );
+void uluaPushRenderTexture( lua_State *L, RenderTexture renderTexture );
+void uluaPushCamera2D( lua_State *L, Camera2D camera );
+void uluaPushCamera3D( lua_State *L, Camera3D camera );
+void uluaPushShader( lua_State *L, Shader shader );
 
 int uluaGetTableLen( lua_State *L );
 int uluaGetTableLenIndex( lua_State *L, int index );

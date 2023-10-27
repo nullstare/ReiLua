@@ -1,4 +1,21 @@
 ------------------------------------------------------------------------
+Release:	ReiLua version 0.6.0		Using Raylib 4.5
+------------------------------------------------------------------------
+KEY CHANGES:
+	- CHANGED: Switch from ID based objects to userdata.
+	- CHANGED: Wrong arguments now largely crash the application instead of TraceLog state->logLevelInvalid.
+	- CHANGED: Rely mostly on luaL_check* functions for arg checking.
+
+DETAILED CHANGES:
+	- CHANGED: GenImageColor now takes Vector2 as size.
+	- REMOVED: UnloadImage.
+	- REMOVED: UnloadTexture.
+	- REMOVED: GetTextureType and texture type DEFINES.
+	- ADDED: GetRenderTextureTexture and GetRenderTextureDepthTexture.
+	- REMOVED: UnloadCamera2D and UnloadCamera3D.
+	- REMOVED: UnloadShader.
+
+------------------------------------------------------------------------
 Release:	ReiLua version 0.5.0		Using Raylib 4.5
 ------------------------------------------------------------------------
 KEY CHANGES:

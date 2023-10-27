@@ -114,22 +114,12 @@ Load font from Image ( XNA style )
 - Success return int
 */
 int ltextLoadFontFromImage( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadFontFromImage( Image image, Color key, int firstChar )" );
-		lua_pushinteger( L, -1 );
-		return 1;
-	}
-	size_t imageId = lua_tointeger( L, 1 );
+	Image *image = luaL_checkudata( L, 1, "Image" );
 	Color key = uluaGetColorIndex( L, 2 );
 	int firstChar = lua_tointeger( L, 3 );
 
-	if ( !validImage( imageId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-
 	int i = newFont();
-	*state->fonts[i] = LoadFontFromImage( *state->images[ imageId ], key, firstChar );
+	*state->fonts[i] = LoadFontFromImage( *image, key, firstChar );
 	lua_pushinteger( L, i );
 
 	return 1;

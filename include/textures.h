@@ -1,19 +1,9 @@
 #pragma once
 
-/* TEXTURE_TYPE_ALL is internal and used for accepting every type. */
-enum TextureType { TEXTURE_TYPE_TEXTURE, TEXTURE_TYPE_RENDER_TEXTURE, TEXTURE_TYPE_ALL };
-
-/* Validators. */
-bool validImage( size_t id );
-// bool validTexture( size_t id, int type );
-// bool validTexture( lua_State *L, int index );
-Texture2D* texturesGetSourceTexture( size_t id );
-void texturesFreeTexture( size_t id );
 /* Image Loading. */
 int ltexturesLoadImage( lua_State *L );
 int ltexturesLoadImageFromTexture( lua_State *L );
 int ltexturesLoadImageFromScreen( lua_State *L );
-int ltexturesUnloadImage( lua_State *L );
 int ltexturesExportImage( lua_State *L );
 int ltexturesExportImageAsCode( lua_State *L );
 /* Image Generation. */
@@ -76,7 +66,6 @@ int ltexturesLoadTexture( lua_State *L );
 int ltexturesLoadTextureFromImage( lua_State *L );
 int ltexturesLoadTextureCubemap( lua_State *L );
 int ltexturesLoadRenderTexture( lua_State *L );
-int ltexturesUnloadTexture( lua_State *L );
 int ltexturesIsTextureReady( lua_State *L );
 int ltexturesUpdateTexture( lua_State *L );
 int ltexturesUpdateTextureRec( lua_State *L );
@@ -87,7 +76,6 @@ int ltexturesDrawTexturePro( lua_State *L );
 int ltexturesDrawTextureNPatch( lua_State *L );
 int ltexturesBeginTextureMode( lua_State *L );
 int ltexturesEndTextureMode( lua_State *L );
-int ltexturesGetTextureType( lua_State *L );
 /* Texture Configuration. */
 int ltexturesGenTextureMipmaps( lua_State *L );
 int ltexturesSetTextureFilter( lua_State *L );
@@ -96,6 +84,10 @@ int ltexturesGetTextureId( lua_State *L );
 int ltexturesGetTextureSize( lua_State *L );
 int ltexturesGetTextureMipmaps( lua_State *L );
 int ltexturesGetTextureFormat( lua_State *L );
+/* RenderTexture Configuration. */
+int ltexturesGetRenderTextureId( lua_State *L );
+int ltexturesGetRenderTextureTexture( lua_State *L );
+int ltexturesGetRenderTextureDepthTexture( lua_State *L );
 /* Color/pixel */
 int ltexturesFade( lua_State *L );
 int ltexturesColorToInt( lua_State *L );

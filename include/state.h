@@ -8,13 +8,6 @@ typedef struct {
 } ModelAnimations;
 
 typedef struct {
-	int type;
-	int texRef; /* TextureReference. */
-	Texture texture;
-	RenderTexture renderTexture;
-} ReiTexture;
-
-typedef struct {
 	char *exePath;
 	bool hasWindow;
 	bool run;
@@ -23,14 +16,6 @@ typedef struct {
 	size_t guiFont;
 	int logLevelInvalid;
 	/* Resources. */
-		/* Images. */
-	Image **images;
-	size_t imageCount;
-	size_t imageAlloc;
-		/* Textures. */
-	ReiTexture **textures;
-	size_t textureCount;
-	size_t textureAlloc;
 		/* Fonts. */
 	Font **fonts;
 	size_t fontCount;
@@ -47,14 +32,6 @@ typedef struct {
 	Music **musics;
 	size_t musicCount;
 	size_t musicAlloc;
-		/* Camera2D's. */
-	Camera2D **camera2Ds;
-	size_t camera2DCount;
-	size_t camera2DAlloc;
-		/* Camera3D's. */
-	Camera3D **camera3Ds;
-	size_t camera3DCount;
-	size_t camera3DAlloc;
 		/* Meshes. */
 	Mesh **meshes;
 	size_t meshCount;
@@ -71,10 +48,6 @@ typedef struct {
 	ModelAnimations **animations;
 	size_t animationCount;
 	size_t animationAlloc;
-		/* Shaders. */
-	Shader **shaders;
-	size_t shaderCount;
-	size_t shaderAlloc;
 		/* Lights. */
 	Light **lights;
 	size_t lightCount;

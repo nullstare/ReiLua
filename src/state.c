@@ -18,14 +18,6 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 	state->luaState = NULL;
 	state->guiFont = 0;
 	state->logLevelInvalid = LOG_ERROR;
-	/* Images. */
-	state->imageAlloc = ALLOC_PAGE_SIZE;
-	state->imageCount = 0;
-	state->images = malloc( state->imageAlloc * sizeof( Image* ) );
-	/* Textures. */
-	state->textureAlloc = ALLOC_PAGE_SIZE;
-	state->textureCount = 0;
-	state->textures = malloc( state->textureAlloc * sizeof( ReiTexture* ) );
 	/* Fonts. */
 	state->fontAlloc = ALLOC_PAGE_SIZE;
 	state->fontCount = 1;
@@ -42,14 +34,6 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 	state->musicAlloc = ALLOC_PAGE_SIZE;
 	state->musicCount = 0;
 	state->musics = malloc( state->musicAlloc * sizeof( Music* ) );
-	/* Camera2D's. */
-	state->camera2DAlloc = ALLOC_PAGE_SIZE;
-	state->camera2DCount = 0;
-	state->camera2Ds = malloc( state->camera2DAlloc * sizeof( Camera2D* ) );
-	/* Camera3D's. */
-	state->camera3DAlloc = ALLOC_PAGE_SIZE;
-	state->camera3DCount = 0;
-	state->camera3Ds = malloc( state->camera3DAlloc * sizeof( Camera3D* ) );
 	/* Meshes. */
 	state->meshAlloc = ALLOC_PAGE_SIZE;
 	state->meshCount = 0;
@@ -66,26 +50,17 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 	state->animationAlloc = ALLOC_PAGE_SIZE;
 	state->animationCount = 0;
 	state->animations = malloc( state->animationAlloc * sizeof( ModelAnimations* ) );
-	/* Shaders. */
-	state->shaderAlloc = ALLOC_PAGE_SIZE;
-	state->shaderCount = 0;
-	state->shaders = malloc( state->shaderAlloc * sizeof( Shader* ) );
 	/* Lights. */
 	state->lightAlloc = ALLOC_PAGE_SIZE;
 	state->lightCount = 0;
 	state->lights = malloc( state->lightAlloc * sizeof( Light* ) );
 
 	for ( int i = 0; i < ALLOC_PAGE_SIZE; i++ ) {
-		state->images[i] = NULL;
-		state->textures[i] = NULL;
 		state->waves[i] = NULL;
 		state->sounds[i] = NULL;
-		state->camera2Ds[i] = NULL;
-		state->camera3Ds[i] = NULL;
 		state->meshes[i] = NULL;
 		state->models[i] = NULL;
 		state->animations[i] = NULL;
-		state->shaders[i] = NULL;
 		state->lights[i] = NULL;
 
 		/* The ones we want to save the first. */
@@ -119,18 +94,6 @@ void stateInitInterpret( int argn, const char **argc ) {
 }
 
 void stateFree() {
-	for ( int i = 0; i < state->imageCount; ++i ) {
-		if ( state->images[i] != NULL ) {
-			UnloadImage( *state->images[i] );
-			free( state->images[i] );
-		}
-	}	
-	for ( int i = 0; i < state->textureCount; ++i ) {
-		if ( state->textures[i] != NULL ) {
-			texturesFreeTexture(i);
-			free( state->textures[i] );
-		}
-	}
 	for ( int i = 0; i < state->fontCount; ++i ) {
 		if ( state->fonts[i] != NULL ) {
 			UnloadFont( *state->fonts[i] );
@@ -153,16 +116,6 @@ void stateFree() {
 		if ( state->musics[i] != NULL ) {
 			UnloadMusicStream( *state->musics[i] );
 			free( state->musics[i] );
-		}
-	}
-	for ( int i = 0; i < state->camera2DCount; ++i ) {
-		if ( state->camera2Ds[i] != NULL ) {
-			free( state->camera2Ds[i] );
-		}
-	}
-	for ( int i = 0; i < state->camera3DCount; ++i ) {
-		if ( state->camera3Ds[i] != NULL ) {
-			free( state->camera3Ds[i] );
 		}
 	}
 	for ( int i = 0; i < state->modelCount; ++i ) {
@@ -194,12 +147,6 @@ void stateFree() {
 			free( state->animations[i] );
 		}
 	}
-	for ( int i = 0; i < state->shaderCount; ++i ) {
-		if ( state->shaders[i] != NULL ) {
-			UnloadShader( *state->shaders[i] );
-			free( state->shaders[i] );
-		}
-	}
 	
 #if !defined( PLATFORM_RPI ) || !defined( PLATFORM_DRM )
 	for ( int i = 0; i < state->lightCount; ++i ) {
@@ -218,19 +165,14 @@ void stateFree() {
 	if ( state->hasWindow ) {
 		CloseWindow();
 	}
-	free( state->images );
-	free( state->textures );
 	free( state->fonts );
 	free( state->waves );
 	free( state->sounds );
 	free( state->musics );
-	free( state->camera2Ds );
-	free( state->camera3Ds );
 	free( state->meshes );
 	free( state->materials );
 	free( state->models );
 	free( state->animations );
-	free( state->shaders );
 	free( state->lights );
 	free( state->exePath );
 	free( state );

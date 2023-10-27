@@ -14,6 +14,116 @@
 #include "lgl.h"
 #include "reasings.h"
 
+/* Define types. */
+
+/* Buffer. */
+static int gcBuffer( lua_State *L ) {
+	Buffer *buffer = luaL_checkudata ( L, 1, "Buffer" );
+	free( buffer->data );
+}
+
+static void defineBuffer() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "Buffer" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcBuffer );
+	lua_setfield( L, -2, "__gc" );
+}
+
+/* Image */
+static int gcImage( lua_State *L ) {
+	Image *image = luaL_checkudata ( L, 1, "Image" );
+	printf( "gcImage\n" );
+
+	UnloadImage( *image );
+}
+
+static void defineImage() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "Image" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcImage );
+	lua_setfield( L, -2, "__gc" );
+}
+
+/* Texture */
+static int gcTexture( lua_State *L ) {
+	Texture *texture = luaL_checkudata ( L, 1, "Texture" );
+	printf( "gcTexture\n" );
+
+	UnloadTexture( *texture );
+}
+
+static void defineTexture() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "Texture" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcTexture );
+	lua_setfield( L, -2, "__gc" );
+}
+
+/* RenderRexture. */
+static int gcRenderTexture( lua_State *L ) {
+	RenderTexture *renderTexture = luaL_checkudata ( L, 1, "RenderTexture" );
+	printf( "gcRenderTexture\n" );
+
+	UnloadRenderTexture( *renderTexture );
+}
+
+static void defineRenderTexture() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "RenderTexture" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcRenderTexture );
+	lua_setfield( L, -2, "__gc" );
+}
+
+/* Camera2D. */
+static void defineCamera2D() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "Camera2D" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+}
+
+/* Camera3D. */
+static void defineCamera3D() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "Camera3D" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+}
+
+/* Shader. */
+static int gcShader( lua_State *L ) {
+	Shader *shader = luaL_checkudata ( L, 1, "Shader" );
+	printf( "gcShader\n" );
+
+	UnloadShader( *shader );
+}
+
+static void defineShader() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "Shader" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcShader );
+	lua_setfield( L, -2, "__gc" );
+}
+
+/* Assing globals. */
+
 static void assignGlobalInt( int value, const char *name ) {
 	lua_State *L = state->luaState;
 	lua_pushinteger( L, value );
@@ -371,9 +481,6 @@ static void defineGlobals() {
 	assignGlobalInt( NPATCH_NINE_PATCH, "NPATCH_NINE_PATCH" );
 	assignGlobalInt( NPATCH_THREE_PATCH_VERTICAL, "NPATCH_THREE_PATCH_VERTICAL" );
 	assignGlobalInt( NPATCH_THREE_PATCH_HORIZONTAL, "NPATCH_THREE_PATCH_HORIZONTAL" );
-	/* TextureTypes */
-	assignGlobalInt( TEXTURE_TYPE_TEXTURE, "TEXTURE_TYPE_TEXTURE" );
-	assignGlobalInt( TEXTURE_TYPE_RENDER_TEXTURE, "TEXTURE_TYPE_RENDER_TEXTURE" );
 	/* Colors */
 	assignGlobalColor( LIGHTGRAY, "LIGHTGRAY" );
 	assignGlobalColor( GRAY, "GRAY" );
@@ -640,39 +747,6 @@ static void defineGlobals() {
 
 	lua_pop( L, -1 );
 }
-
-static int gcBuffer( lua_State *L ) {
-	Buffer *buffer = luaL_checkudata ( L, 1, "Buffer" );
-	free( buffer->data );
-}
-
-static void defineBuffer() {
-	lua_State *L = state->luaState;
-
-	luaL_newmetatable( L, "Buffer" );
-	lua_pushvalue( L, -1 );
-	lua_setfield( L, -2, "__index" );
-	lua_pushcfunction( L, gcBuffer );
-	lua_setfield( L, -2, "__gc" );
-}
-
-// static int gcTexture( lua_State *L ) {
-// 	Texture *texture = luaL_checkudata ( L, 1, "Texture" );
-// 	printf( "gcTexture\n" );
-// 	printf( "\ttexture->id = %d\n", texture->id );
-
-// 	UnloadTexture( *texture );
-// }
-
-// static void defineTexture() {
-// 	lua_State *L = state->luaState;
-
-// 	luaL_newmetatable( L, "Texture" );
-// 	lua_pushvalue( L, -1 );
-// 	lua_setfield( L, -2, "__index" );
-// 	lua_pushcfunction( L, gcTexture );
-// 	lua_setfield( L, -2, "__gc" );
-// }
 
 // Custom logging funtion.
 static void logCustom( int logLevel, const char *text, va_list args ) {
@@ -1060,8 +1134,14 @@ bool luaInit( int argn, const char **argc ) {
 		return false;
 	}
 	defineGlobals();
+	/* Define object types. */
 	defineBuffer();
-	// defineTexture();
+	defineImage();
+	defineTexture();
+	defineRenderTexture();
+	defineCamera2D();
+	defineCamera3D();
+	defineShader();
 
 	/* Set arguments. */
 	lua_getglobal( L, "RL" );
@@ -1124,7 +1204,6 @@ bool luaCallMain() {
 	if ( lua_tostring( state->luaState, -1 ) ) {
 		TraceLog( LOG_ERROR, "Lua error: %s\n", lua_tostring( state->luaState, -1 ) );
 	}
-
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
 
@@ -1235,7 +1314,6 @@ void luaRegister() {
 
 	/* Core. */
 		/* Window. */
-
 	assingGlobalFunction( "IsWindowReady", lcoreIsWindowReady );
 	assingGlobalFunction( "IsWindowFullscreen", lcoreIsWindowFullscreen );
 	assingGlobalFunction( "IsWindowHidden", lcoreIsWindowHidden );
@@ -1307,7 +1385,6 @@ void luaRegister() {
 	assingGlobalFunction( "SetShaderValueTexture", lcoreSetShaderValueTexture );
 	assingGlobalFunction( "SetShaderValue", lcoreSetShaderValue );
 	assingGlobalFunction( "SetShaderValueV", lcoreSetShaderValueV );
-	assingGlobalFunction( "UnloadShader", lcoreUnloadShader );
 		/* File. */
 	assingGlobalFunction( "GetBasePath", lcoreGetBasePath );
 	assingGlobalFunction( "FileExists", lcoreFileExists );
@@ -1329,7 +1406,6 @@ void luaRegister() {
 	assingGlobalFunction( "GetFileModTime", lcoreGetFileModTime );
 		/* Camera2D. */
 	assingGlobalFunction( "CreateCamera2D", lcoreCreateCamera2D );
-	assingGlobalFunction( "UnloadCamera2D", lcoreUnloadCamera2D );
 	assingGlobalFunction( "BeginMode2D", lcoreBeginMode2D );
 	assingGlobalFunction( "EndMode2D", lcoreEndMode2D );
 	assingGlobalFunction( "SetCamera2DTarget", lcoreSetCamera2DTarget );
@@ -1342,7 +1418,6 @@ void luaRegister() {
 	assingGlobalFunction( "GetCamera2DZoom", lcoreGetCamera2DZoom );
 		/* Camera3D. */
 	assingGlobalFunction( "CreateCamera3D", lcoreCreateCamera3D );
-	assingGlobalFunction( "UnloadCamera3D", lcoreUnloadCamera3D );
 	assingGlobalFunction( "BeginMode3D", lcoreBeginMode3D );
 	assingGlobalFunction( "EndMode3D", lcoreEndMode3D );
 	assingGlobalFunction( "SetCamera3DPosition", lcoreSetCamera3DPosition );
@@ -1472,7 +1547,6 @@ void luaRegister() {
 	assingGlobalFunction( "LoadImage", ltexturesLoadImage );
 	assingGlobalFunction( "LoadImageFromTexture", ltexturesLoadImageFromTexture );
 	assingGlobalFunction( "LoadImageFromScreen", ltexturesLoadImageFromScreen );
-	assingGlobalFunction( "UnloadImage", ltexturesUnloadImage );
 	assingGlobalFunction( "ExportImage", ltexturesExportImage );
 	assingGlobalFunction( "ExportImageAsCode", ltexturesExportImageAsCode );
 		/* Image Generation. */
@@ -1535,7 +1609,6 @@ void luaRegister() {
 	assingGlobalFunction( "LoadTextureFromImage", ltexturesLoadTextureFromImage );
 	assingGlobalFunction( "LoadTextureCubemap", ltexturesLoadTextureCubemap );
 	assingGlobalFunction( "LoadRenderTexture", ltexturesLoadRenderTexture );
-	assingGlobalFunction( "UnloadTexture", ltexturesUnloadTexture );
 	assingGlobalFunction( "IsTextureReady", ltexturesIsTextureReady );
 	assingGlobalFunction( "UpdateTexture", ltexturesUpdateTexture );
 	assingGlobalFunction( "UpdateTextureRec", ltexturesUpdateTextureRec );
@@ -1546,7 +1619,6 @@ void luaRegister() {
 	assingGlobalFunction( "DrawTextureNPatch", ltexturesDrawTextureNPatch );
 	assingGlobalFunction( "BeginTextureMode", ltexturesBeginTextureMode );
 	assingGlobalFunction( "EndTextureMode", ltexturesEndTextureMode );
-	assingGlobalFunction( "GetTextureType", ltexturesGetTextureType );
 		/* Texture Configuration. */
 	assingGlobalFunction( "GenTextureMipmaps", ltexturesGenTextureMipmaps );
 	assingGlobalFunction( "SetTextureFilter", ltexturesSetTextureFilter );
@@ -1555,6 +1627,10 @@ void luaRegister() {
 	assingGlobalFunction( "GetTextureSize", ltexturesGetTextureSize );
 	assingGlobalFunction( "GetTextureMipmaps", ltexturesGetTextureMipmaps );
 	assingGlobalFunction( "GetTextureFormat", ltexturesGetTextureFormat );
+		/* RenderTexture Configuration. */
+	assingGlobalFunction( "GetRenderTextureId", ltexturesGetRenderTextureId );
+	assingGlobalFunction( "GetRenderTextureTexture", ltexturesGetRenderTextureTexture );
+	assingGlobalFunction( "GetRenderTextureDepthTexture", ltexturesGetRenderTextureDepthTexture );
 		/* Color/pixel */
 	assingGlobalFunction( "Fade", ltexturesFade );
 	assingGlobalFunction( "ColorToInt", ltexturesColorToInt );
@@ -2063,76 +2139,20 @@ void luaRegister() {
 	lua_pop( L, -1 );
 }
 
-/* Type validators. */
-
-bool isValidTexture( lua_State *L, int index, bool allowTable ) {
-	if ( lua_isnumber( L, index ) ) {
-		int id = lua_tointeger( L, index );
-
-		if ( 0 <= id && id < state->textureCount && state->textures[ id ] != NULL ) {
-			return true;
-		}
-    }
-	else if ( allowTable && lua_istable( L, index ) ) {
-		return true;
-	}
-	TraceLog( state->logLevelInvalid, "%s", "Error. Invalid Texture." );
-	return false;
-}
-
-bool isValidRenderTexture( lua_State *L, int index, bool allowTable ) {
-	if ( lua_isnumber( L, index ) ) {
-		int id = lua_tointeger( L, index );
-
-		if ( 0 <= id && id < state->textureCount && state->textures[ id ] != NULL
-		&& state->textures[ id ]->type == TEXTURE_TYPE_RENDER_TEXTURE ) {
-			return true;
-		}
-    }
-	else if ( allowTable && lua_istable( L, index ) ) {
-		return true;
-	}
-	TraceLog( state->logLevelInvalid, "%s", "Error. Invalid RenderTexture." );
-	return false;
-}
-
-bool isValidCamera2D( lua_State *L, int index, bool allowTable ) {
-	if ( lua_isnumber( L, index ) ) {
-		int id = lua_tointeger( L, index );
-
-		if ( 0 <= id && id < state->camera2DCount && state->camera2Ds[ id ] != NULL ) {
-			return true;
-		}
-    }
-	else if ( allowTable && lua_istable( L, index ) ) {
-		return true;
-	}
-	TraceLog( state->logLevelInvalid, "%s", "Error. Invalid Camera2D." );
-	return false;
-}
-
-bool isValidCamera3D( lua_State *L, int index, bool allowTable ) {
-	if ( lua_isnumber( L, index ) ) {
-		int id = lua_tointeger( L, index );
-
-		if ( ( 0 <= id && id < state->camera3DCount && state->camera3Ds[ id ] != NULL ) ) {
-			return true;
-		}
-    }
-	else if ( allowTable && lua_istable( L, index ) ) {
-		return true;
-	}
-	TraceLog( state->logLevelInvalid, "%s", "Error. Invalid Camera3D." );
-	return false;
-}
-
 /* Lua util functions. */
+
+bool uluaGetBoolean( lua_State *L, int index ) {
+	luaL_checktype( L, index, LUA_TBOOLEAN );
+
+	return lua_toboolean( L, index );
+}
 
 Color uluaGetColor( lua_State *L ) {
     return uluaGetColorIndex( L, lua_gettop( L ) );
 }
 
 Color uluaGetColorIndex( lua_State *L, int index ) {
+	luaL_checktype( L, index, LUA_TTABLE );
     Color color = { 0, 0, 0, 255 };
 
     if ( !lua_istable( L, index ) ) {
@@ -2188,7 +2208,7 @@ Vector2 uluaGetVector2( lua_State *L ) {
 }
 
 Vector2 uluaGetVector2Index( lua_State *L, int index ) {
-	// luaL_checktype( L, index, LUA_TTABLE );
+	luaL_checktype( L, index, LUA_TTABLE );
     Vector2 vector = { 0.0f, 0.0f };
 
     if ( !lua_istable( L, index ) ) {
@@ -2232,6 +2252,7 @@ Vector3 uluaGetVector3( lua_State *L ) {
 }
 
 Vector3 uluaGetVector3Index( lua_State *L, int index ) {
+	luaL_checktype( L, index, LUA_TTABLE );
     Vector3 vector = { 0.0f, 0.0f, 0.0f };
 
     if ( !lua_istable( L, index ) ) {
@@ -2281,6 +2302,7 @@ Vector4 uluaGetVector4( lua_State *L ) {
 }
 
 Vector4 uluaGetVector4Index( lua_State *L, int index ) {
+	luaL_checktype( L, index, LUA_TTABLE );
     Vector4 vector = { 0.0f, 0.0f, 0.0f, 0.0f };
 
     if ( !lua_istable( L, index ) ) {
@@ -2336,6 +2358,7 @@ Rectangle uluaGetRectangle( lua_State *L ) {
 }
 
 Rectangle uluaGetRectangleIndex( lua_State *L, int index ) {
+	luaL_checktype( L, index, LUA_TTABLE );
     Rectangle rect = { 0.0f, 0.0f, 0.0f, 0.0f };
 
     if ( !lua_istable( L, index ) ) {
@@ -2392,6 +2415,7 @@ Quaternion uluaGetQuaternion( lua_State *L ) {
 }
 
 Quaternion uluaGetQuaternionIndex( lua_State *L, int index ) {
+	luaL_checktype( L, index, LUA_TTABLE );
     Quaternion quaternion = { 0.0f, 0.0f, 0.0f, 0.0f };
 
     if ( !lua_istable( L, index ) ) {
@@ -2447,6 +2471,7 @@ Matrix uluaGetMatrix( lua_State *L ) {
 }
 
 Matrix uluaGetMatrixIndex( lua_State *L, int index ) {
+	luaL_checktype( L, index, LUA_TTABLE );
 	Matrix matrix = { 0.0f };
 	float m[4][4];
 
@@ -2486,6 +2511,7 @@ BoundingBox uluaGetBoundingBox( lua_State *L ) {
 }
 
 BoundingBox uluaGetBoundingBoxIndex( lua_State *L, int index ) {
+	luaL_checktype( L, index, LUA_TTABLE );
 	BoundingBox box = { .min = { 0.0, 0.0, 0.0 }, .max = { 0.0, 0.0, 0.0 } };
 
 	if ( !lua_istable( L, index ) ) {
@@ -2530,6 +2556,7 @@ Ray uluaGetRay( lua_State *L ) {
 }
 
 Ray uluaGetRayIndex( lua_State *L, int index ) {
+	luaL_checktype( L, index, LUA_TTABLE );
 	Ray ray = { .position = { 0.0, 0.0, 0.0 }, .direction = { 0.0, 0.0, 0.0 } };
 
 	if ( !lua_istable( L, index ) ) {
@@ -2574,6 +2601,7 @@ NPatchInfo uluaGetNPatchInfo( lua_State *L ) {
 }
 
 NPatchInfo uluaGetNPatchInfoIndex( lua_State *L, int index ) {
+	luaL_checktype( L, index, LUA_TTABLE );
 	NPatchInfo npatch = { .source = { 0.0, 0.0, 0.0, 0.0 }, .left = 0, .top = 0, .right = 0, .bottom = 0, .layout = NPATCH_NINE_PATCH };
 
 	if ( !lua_istable( L, index ) ) {
@@ -2633,216 +2661,6 @@ NPatchInfo uluaGetNPatchInfoIndex( lua_State *L, int index ) {
 		lua_pop( L, 1 );
     }
 	return npatch;
-}
-
-Texture uluaGetTexture( lua_State *L, int index ) {
-	Texture texture = { 0 };
-
-	if ( lua_isnumber( L, index ) ) {
-		texture = *texturesGetSourceTexture( lua_tointeger( L, index ) );
-	}
-	else if ( lua_istable( L, index ) ) {
-		int t = index, i = 0;
-    	lua_pushnil( L );
-
-		while ( lua_next( L, t ) != 0 ) {
-			if ( lua_isnumber( L, -2 ) ) {
-				switch ( i ) {
-					case 0:
-						texture.id = lua_tointeger( L, -1 );
-						break;
-					case 1:
-						texture.width = lua_tointeger( L, -1 );
-						break;
-					case 2:
-						texture.height = lua_tointeger( L, -1 );
-						break;
-					case 3:
-						texture.mipmaps = lua_tointeger( L, -1 );
-						break;
-					case 4:
-						texture.format = lua_tointeger( L, -1 );
-						break;
-					default:
-						break;
-				}
-			}
-			else if ( lua_isstring( L, -2 ) ) {
-				if ( strcmp( "id", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					texture.id = lua_tointeger( L, -1 );
-				}
-				else if ( strcmp( "width", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					texture.width = lua_tointeger( L, -1 );
-				}
-				else if ( strcmp( "height", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					texture.height = lua_tointeger( L, -1 );
-				}
-				else if ( strcmp( "mipmaps", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					texture.mipmaps = lua_tointeger( L, -1 );
-				}
-				else if ( strcmp( "format", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					texture.format = lua_tointeger( L, -1 );
-				}
-			}
-			i++;
-			lua_pop( L, 1 );
-		}
-	}
-
-	return texture;
-}
-
-RenderTexture uluaGetRenderTexture( lua_State *L, int index ) {
-	RenderTexture renderTexture = { 0 };
-
-	if ( lua_isnumber( L, index ) ) {
-		renderTexture = state->textures[ lua_tointeger( L, index ) ]->renderTexture;
-	}
-	else if ( lua_istable( L, index ) ) {
-		int t = index, i = 0;
-    	lua_pushnil( L );
-
-		while ( lua_next( L, t ) != 0 ) {
-			if ( lua_isnumber( L, -2 ) ) {
-				switch ( i ) {
-					case 0:
-						renderTexture.id = lua_tointeger( L, -1 );
-						break;
-					case 1:
-						renderTexture.texture = uluaGetTexture( L, lua_gettop( L ) );
-						break;
-					case 2:
-						renderTexture.depth = uluaGetTexture( L, lua_gettop( L ) );
-						break;
-					default:
-						break;
-				}
-			}
-			else if ( lua_isstring( L, -2 ) ) {
-				if ( strcmp( "id", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					renderTexture.id = lua_tointeger( L, -1 );
-				}
-				else if ( strcmp( "texture", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					renderTexture.texture = uluaGetTexture( L, lua_gettop( L ) );
-				}
-				else if ( strcmp( "depth", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					renderTexture.depth = uluaGetTexture( L, lua_gettop( L ) );
-				}
-			}
-			i++;
-			lua_pop( L, 1 );
-		}
-	}
-
-	return renderTexture;
-}
-
-Camera2D uluaGetCamera2D( lua_State *L, int index ) {
-	Camera2D camera = { 0 };
-
-	if ( lua_isnumber( L, index ) ) {
-		camera = *state->camera2Ds[ lua_tointeger( L, index ) ];
-	}
-	else if ( lua_istable( L, index ) ) {
-		int t = index, i = 0;
-    	lua_pushnil( L );
-
-		while ( lua_next( L, t ) != 0 ) {
-			if ( lua_isnumber( L, -2 ) ) {
-				switch ( i ) {
-					case 0:
-						camera.offset = uluaGetVector2Index( L, lua_gettop( L ) );
-						break;
-					case 1:
-						camera.target = uluaGetVector2Index( L, lua_gettop( L ) );
-						break;
-					case 2:
-						camera.rotation = lua_tonumber( L, -1 );
-						break;
-					case 3:
-						camera.zoom = lua_tonumber( L, -1 );
-						break;
-					default:
-						break;
-				}
-			}
-			else if ( lua_isstring( L, -2 ) ) {
-				if ( strcmp( "offset", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					camera.offset = uluaGetVector2Index( L, lua_gettop( L ) );
-				}
-				else if ( strcmp( "target", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					camera.target = uluaGetVector2Index( L, lua_gettop( L ) );
-				}
-				else if ( strcmp( "rotation", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					camera.rotation = lua_tonumber( L, -1 );
-				}
-				else if ( strcmp( "zoom", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					camera.zoom = lua_tonumber( L, -1 );
-				}
-			}
-			i++;
-			lua_pop( L, 1 );
-		}
-	}
-
-	return camera;
-}
-
-Camera3D uluaGetCamera3D( lua_State *L, int index ) {
-	Camera3D camera = { 0 };
-
-	if ( lua_isnumber( L, index ) ) {
-		camera = *state->camera3Ds[ lua_tointeger( L, index ) ];
-	}
-	else if ( lua_istable( L, index ) ) {
-		int t = index, i = 0;
-    	lua_pushnil( L );
-
-		while ( lua_next( L, t ) != 0 ) {
-			if ( lua_isnumber( L, -2 ) ) {
-				switch ( i ) {
-					case 0:
-						camera.position = uluaGetVector3Index( L, lua_gettop( L ) );
-						break;
-					case 1:
-						camera.target = uluaGetVector3Index( L, lua_gettop( L ) );
-						break;
-					case 2:
-						camera.up = uluaGetVector3Index( L, lua_gettop( L ) );
-						break;
-					case 3:
-						camera.fovy = lua_tonumber( L, -1 );
-						break;
-					case 4:
-						camera.projection = lua_tointeger( L, -1 );
-						break;
-					default:
-						break;
-				}
-			}
-			else if ( lua_isstring( L, -2 ) ) {
-				if ( strcmp( "position", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					camera.position = uluaGetVector3Index( L, lua_gettop( L ) );
-				}
-				else if ( strcmp( "target", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					camera.target = uluaGetVector3Index( L, lua_gettop( L ) );
-				}
-				else if ( strcmp( "up", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					camera.up = uluaGetVector3Index( L, lua_gettop( L ) );
-				}
-				else if ( strcmp( "fovy", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					camera.fovy = lua_tonumber( L, -1 );
-				}
-				else if ( strcmp( "projection", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					camera.projection = lua_tointeger( L, -1 );
-				}
-			}
-			i++;
-			lua_pop( L, 1 );
-		}
-	}
-
-	return camera;
 }
 
 /* Push types. */
@@ -3017,18 +2835,40 @@ void uluaPushBoundingBox( lua_State *L, BoundingBox box ) {
 	lua_rawseti( L, -2, 2 );
 }
 
+void uluaPushImage( lua_State *L, Image image ) {
+	Image *imageP = lua_newuserdata( L, sizeof( Image ) );
+	*imageP = image;
+	luaL_setmetatable( L, "Image" );
+}
+
 void uluaPushTexture( lua_State *L, Texture texture ) {
-	lua_createtable( L, 5, 0 );
-	lua_pushinteger( L, texture.id );
-	lua_setfield( L, -2, "id" );
-	lua_pushinteger( L, texture.width );
-	lua_setfield( L, -2, "width" );
-	lua_pushinteger( L, texture.height );
-	lua_setfield( L, -2, "height" );
-	lua_pushinteger( L, texture.mipmaps );
-	lua_setfield( L, -2, "mipmaps" );
-	lua_pushinteger( L, texture.format );
-	lua_setfield( L, -2, "format" );
+	Texture *textureP = lua_newuserdata( L, sizeof( Texture ) );
+	*textureP = texture;
+	luaL_setmetatable( L, "Texture" );
+}
+
+void uluaPushRenderTexture( lua_State *L, RenderTexture renderTexture ) {
+	RenderTexture *renderTextureP = lua_newuserdata( L, sizeof( RenderTexture ) );
+	*renderTextureP = renderTexture;
+	luaL_setmetatable( L, "RenderTexture" );
+}
+
+void uluaPushCamera2D( lua_State *L, Camera2D camera ) {
+	Camera2D *cameraP = lua_newuserdata( L, sizeof( Camera2D ) );
+	*cameraP = camera;
+	luaL_setmetatable( L, "Camera2D" );
+}
+
+void uluaPushCamera3D( lua_State *L, Camera3D camera ) {
+	Camera3D *cameraP = lua_newuserdata( L, sizeof( Camera3D ) );
+	*cameraP = camera;
+	luaL_setmetatable( L, "Camera3D" );
+}
+
+void uluaPushShader( lua_State *L, Shader shader ) {
+	Shader *shaderP = lua_newuserdata( L, sizeof( Shader ) );
+	*shaderP = shader;
+	luaL_setmetatable( L, "Shader" );
 }
 
 int uluaGetTableLen( lua_State *L ) {
@@ -3036,6 +2876,7 @@ int uluaGetTableLen( lua_State *L ) {
 }
 
 int uluaGetTableLenIndex( lua_State *L, int index ) {
+	luaL_checktype( L, index, LUA_TTABLE );
 	int t = index, i = 0;
     lua_pushnil( L );
 

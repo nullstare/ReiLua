@@ -59,54 +59,35 @@ Create a light and get shader locations
 - Success return int
 */
 int llightsCreateLight( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 )
-	|| !lua_istable( L, 4 ) || !lua_isnumber( L, 5 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.CreateLight( int type, Vector3 position, Vector3 target, Color color, Shader shader )" );
-		lua_pushinteger( L, -1 );
-		return 1;
-	}
-	int type = lua_tointeger( L, 1 );
+	int type = luaL_checkinteger( L, 1 );
 	Vector3 position = uluaGetVector3Index( L, 2 );
 	Vector3 target = uluaGetVector3Index( L, 3 );
 	Color color = uluaGetColorIndex( L, 4 );
-	size_t shaderId = lua_tointeger( L, 5 );
+	Shader *shader = luaL_checkudata( L, 5, "Shader" );
 
 	int i = newLight();
-	*state->lights[i] = CreateLight( type, position, target, color, *state->shaders[ shaderId ] );
+	*state->lights[i] = CreateLight( type, position, target, color, *shader );
 	lua_pushinteger( L, i );
 
 	return 1;
 }
 
 /*
-> success = RL.UpdateLightValues( Shader shader, Light light )
+> RL.UpdateLightValues( Shader shader, Light light )
 
 Send light properties to shader
-
-- Failure return false
-- Success return true
 */
 int llightsUpdateLightValues( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.UpdateLightValues( Shader shader, Light light )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t shaderId = lua_tointeger( L, 1 );
+	Shader *shader = luaL_checkudata( L, 1, "Shader" );
 	size_t lightId = lua_tointeger( L, 2 );
 
 	if ( !validLight( lightId ) ) {
 		lua_pushboolean( L, false );
 		return 1;
 	}
-	if ( !validShader( shaderId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	UpdateLightValues( *state->shaders[ shaderId ], *state->lights[ lightId ] );
-	lua_pushboolean( L, true );
+	UpdateLightValues( *shader, *state->lights[ lightId ] );
 
-	return 1;
+	return 0;
 }
 
 /*

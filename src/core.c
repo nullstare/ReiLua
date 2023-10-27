@@ -4,61 +4,6 @@
 #include "textures.h"
 #include "lua_core.h"
 
-static void checkCamera2DRealloc( int i ) {
-	if ( i == state->camera2DCount ) {
-		state->camera2DCount++;
-	}
-
-	if ( state->camera2DCount == state->camera2DAlloc ) {
-		state->camera2DAlloc += ALLOC_PAGE_SIZE;
-		state->camera2Ds = realloc( state->camera2Ds, state->camera2DAlloc * sizeof( Camera2D* ) );
-
-		for ( i = state->camera2DCount; i < state->camera2DAlloc; i++ ) {
-			state->camera2Ds[i] = NULL;
-		}
-	}
-}
-
-static void checkCamera3DRealloc( int i ) {
-	if ( i == state->camera3DCount ) {
-		state->camera3DCount++;
-	}
-
-	if ( state->camera3DCount == state->camera3DAlloc ) {
-		state->camera3DAlloc += ALLOC_PAGE_SIZE;
-		state->camera3Ds = realloc( state->camera3Ds, state->camera3DAlloc * sizeof( Camera3D* ) );
-
-		for ( i = state->camera3DCount; i < state->camera3DAlloc; i++ ) {
-			state->camera3Ds[i] = NULL;
-		}
-	}
-}
-
-static void checkShaderRealloc( int i ) {
-	if ( i == state->shaderCount ) {
-		state->shaderCount++;
-	}
-
-	if ( state->shaderCount == state->shaderAlloc ) {
-		state->shaderAlloc += ALLOC_PAGE_SIZE;
-		state->shaders = realloc( state->shaders, state->shaderAlloc * sizeof( Shader* ) );
-
-		for ( i = state->shaderCount; i < state->shaderAlloc; i++ ) {
-			state->shaders[i] = NULL;
-		}
-	}
-}
-
-bool validShader( size_t id ) {
-	if ( id < 0 || state->shaderCount < id || state->shaders[ id ] == NULL ) {
-		TraceLog( state->logLevelInvalid, "%s %d", "Invalid shader", id );
-		return false;
-	}
-	else {
-		return true;
-	}
-}
-
 /*
 ## Core - Window
 */
@@ -375,30 +320,16 @@ int lcoreIsWindowResized( lua_State *L ) {
 }
 
 /*
-> success = RL.SetWindowIcon( Image image )
+> RL.SetWindowIcon( Image image )
 
 Set icon for window ( Only PLATFORM_DESKTOP )
-
-- Failure return false
-- Success return true
 */
 int lcoreSetWindowIcon( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetWindowIcon( Image image )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t imageId = lua_tointeger( L, 1 );
+	Image *image = luaL_checkudata( L, 1, "Image" );
 
-	if ( !validImage( imageId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
+	SetWindowIcon( *image );
 
-	SetWindowIcon( *state->images[ imageId ] );
-	lua_pushboolean( L, true );
-
-	return 1;
+	return 0;
 }
 
 /*
@@ -855,7 +786,7 @@ int lcoreIsCursorOnScreen( lua_State *L ) {
 /*
 > success = RL.ClearBackground( Color color )
 
-Set background color ( framebuffer clear color )
+Set background color (framebuffer clear color)
 
 - Failure return false
 - Success return true
@@ -972,13 +903,13 @@ int lcoreEndScissorMode( lua_State *L ) {
 Load shader from files and bind default locations.
 NOTE: Set nil if no shader
 
-- Failure return -1
-- Success return int
+- Failure return nil
+- Success return Shader
 */
 int lcoreLoadShader( lua_State *L ) {
 	if ( !( lua_isstring( L, 1 ) || lua_isnil( L, 1 ) ) || !( lua_isstring( L, 2 ) || lua_isnil( L, 2 ) ) ) {
 		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadShader( string vsFileName, string fsFileName )" );
-		lua_pushinteger( L, -1 );
+		lua_pushnil( L );
 		return 1;
 	}
 	char *vsFileName = NULL;
@@ -996,18 +927,7 @@ int lcoreLoadShader( lua_State *L ) {
 			strcpy( fsFileName, lua_tostring( L, 2 ) );
 		}
 	}
-
-	int i = 0;
-
-	for ( i = 0; i < state->shaderCount; i++ ) {
-		if ( state->shaders[i] == NULL ) {
-			break;
-		}
-	}
-	state->shaders[i] = malloc( sizeof( Shader ) );
-	*state->shaders[i] = LoadShader( vsFileName, fsFileName );
-	lua_pushinteger( L, i );
-	checkShaderRealloc( i );
+	uluaPushShader( L, LoadShader( vsFileName, fsFileName ) );
 
 	if ( vsFileName != NULL ) {
 		free( vsFileName );
@@ -1025,14 +945,14 @@ int lcoreLoadShader( lua_State *L ) {
 Load shader from code strings and bind default locations
 NOTE: Set nil if no shader
 
-- Failure return -1
-- Success return int
+- Failure return nil
+- Success return Shader
 */
 
 int lcoreLoadShaderFromMemory( lua_State *L ) {
 	if ( !( lua_isstring( L, 1 ) || lua_isnil( L, 1 ) ) || !( lua_isstring( L, 2 ) || lua_isnil( L, 2 ) ) ) {
 		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadShaderFromMemory( string vsCode, string fsCode )" );
-		lua_pushinteger( L, -1 );
+		lua_pushnil( L );
 		return 1;
 	}
 	char *vs = NULL;
@@ -1050,18 +970,7 @@ int lcoreLoadShaderFromMemory( lua_State *L ) {
 		fs = malloc( fsLen * sizeof( char ) );
 		strcpy( fs, lua_tostring( L, 2 ) );
 	}
-
-	int i = 0;
-
-	for ( i = 0; i < state->shaderCount; i++ ) {
-		if ( state->shaders[i] == NULL ) {
-			break;
-		}
-	}
-	state->shaders[i] = malloc( sizeof( Shader ) );
-	*state->shaders[i] = LoadShaderFromMemory( vs, fs );
-	lua_pushinteger( L, i );
-	checkShaderRealloc( i );
+	uluaPushShader( L, LoadShaderFromMemory( vs, fs ) );
 
 	if ( vs != NULL ) {
 		free( vs );
@@ -1074,40 +983,27 @@ int lcoreLoadShaderFromMemory( lua_State *L ) {
 }
 
 /*
-> success = RL.BeginShaderMode( Shader shader )
+> RL.BeginShaderMode( Shader shader )
 
 Begin custom shader drawing
-
-- Failure return false
-- Success return true
 */
 int lcoreBeginShaderMode( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.BeginShaderMode( Shader shader )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t shaderId = lua_tointeger( L, 1 );
-	
-	if ( !validShader( shaderId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	BeginShaderMode( *state->shaders[ shaderId ] );
-	lua_pushboolean( L, true );
+	Shader *shader = luaL_checkudata( L, 1, "Shader" );
 
-	return 1;
+	BeginShaderMode( *shader );
+
+	return 0;
 }
 
 /*
 > RL.EndShaderMode()
 
-End custom shader drawing ( use default shader )
+End custom shader drawing (use default shader)
 */
 int lcoreEndShaderMode( lua_State *L ) {
 	EndShaderMode();
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -1115,22 +1011,12 @@ int lcoreEndShaderMode( lua_State *L ) {
 
 Get shader uniform location
 
-- Failure return -1
 - Success return int
 */
 int lcoreGetShaderLocation( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetShaderLocation( Shader shader, string uniformName )" );
-		lua_pushinteger( L, -1 );
-		return 1;
-	}
-	size_t shaderId = lua_tointeger( L, 1 );
+	Shader *shader = luaL_checkudata( L, 1, "Shader" );
 
-	if ( !validShader( shaderId ) ) {
-		lua_pushinteger( L, -1 );
-		return 1;
-	}
-	lua_pushinteger( L, GetShaderLocation( *state->shaders[ shaderId ], lua_tostring( L, 2 ) ) );
+	lua_pushinteger( L, GetShaderLocation( *shader, luaL_checkstring( L, 2 ) ) );
 
 	return 1;
 }
@@ -1140,52 +1026,29 @@ int lcoreGetShaderLocation( lua_State *L ) {
 
 Get shader attribute location
 
-- Failure return -1
 - Success return int
 */
 int lcoreGetShaderLocationAttrib( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetShaderLocationAttrib( Shader shader, string attribName )" );
-		lua_pushinteger( L, -1 );
-		return 1;
-	}
-	size_t shaderId = lua_tointeger( L, 1 );
+	Shader *shader = luaL_checkudata( L, 1, "Shader" );
 
-	if ( !validShader( shaderId ) ) {
-		lua_pushinteger( L, -1 );
-		return 1;
-	}
-	lua_pushinteger( L, GetShaderLocationAttrib( *state->shaders[ shaderId ], lua_tostring( L, 2 ) ) );
+	lua_pushinteger( L, GetShaderLocationAttrib( *shader, luaL_checkstring( L, 2 ) ) );
 
 	return 1;
 }
 
 /*
-> success = RL.SetShaderLocationIndex( Shader shader, int shaderLocationIndex, int location )
+> RL.SetShaderLocationIndex( Shader shader, int shaderLocationIndex, int location )
 
 Set shader location index
-
-- Failure return false
-- Success return true
 */
 int lcoreSetShaderLocationIndex( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isnumber( L, 3 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetShaderLocationIndex( Shader shader, int shaderLocationIndex, int location )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t shaderId = lua_tointeger( L, 1 );
-	int shaderLocationIndex = lua_tointeger( L, 2 );
-	int location = lua_tointeger( L, 3 );
+	Shader *shader = luaL_checkudata( L, 1, "Shader" );
+	int shaderLocationIndex = luaL_checkinteger( L, 2 );
+	int location = luaL_checkinteger( L, 3 );
 
-	if ( !validShader( shaderId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	state->shaders[ shaderId ]->locs[ shaderLocationIndex ] = location;
-	lua_pushboolean( L, true );
+	shader->locs[ shaderLocationIndex ] = location;
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -1193,102 +1056,58 @@ int lcoreSetShaderLocationIndex( lua_State *L ) {
 
 Get shader location index
 
-- Failure return false
 - Success return int
 */
 int lcoreGetShaderLocationIndex( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetShaderLocationIndex( Shader shader, int shaderLocationIndex )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t shaderId = lua_tointeger( L, 1 );
-	int shaderLocationIndex = lua_tointeger( L, 2 );
+	Shader *shader = luaL_checkudata( L, 1, "Shader" );
+	int shaderLocationIndex = luaL_checkinteger( L, 2 );
 
-	if ( !validShader( shaderId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	lua_pushinteger( L, state->shaders[ shaderId ]->locs[ shaderLocationIndex ] );
+	lua_pushinteger( L, shader->locs[ shaderLocationIndex ] );
 
 	return 1;
 }
 
 /*
-> success = RL.SetShaderValueMatrix( Shader shader, int locIndex, Matrix mat )
+> RL.SetShaderValueMatrix( Shader shader, int locIndex, Matrix mat )
 
-Set shader uniform value ( matrix 4x4 )
-
-- Failure return false
-- Success return true
+Set shader uniform value (matrix 4x4)
 */
 int lcoreSetShaderValueMatrix( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetShaderValueMatrix( Shader shader, int locIndex, Matrix mat )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t shaderId = lua_tointeger( L, 1 );
-	int locIndex = lua_tointeger( L, 2 );
+	Shader *shader = luaL_checkudata( L, 1, "Shader" );
+	int locIndex = luaL_checkinteger( L, 2 );
 	Matrix mat = uluaGetMatrixIndex( L, 3 );
 
-	if ( !validShader( shaderId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	SetShaderValueMatrix( *state->shaders[ shaderId ], locIndex, mat );
-	lua_pushboolean( L, true );
+	SetShaderValueMatrix( *shader, locIndex, mat );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetShaderValueTexture( Shader shader, int locIndex, Texture2D texture )
+> RL.SetShaderValueTexture( Shader shader, int locIndex, Texture texture )
 
-Set shader uniform value for texture ( sampler2d )
-
-- Failure return false
-- Success return true
+Set shader uniform value for texture (sampler2d)
 */
 int lcoreSetShaderValueTexture( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !isValidTexture( L, 3, true ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetShaderValueTexture( Shader shader, int locIndex, Texture2D texture )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t shaderId = lua_tointeger( L, 1 );
-	int locIndex = lua_tointeger( L, 2 );
-	Texture texture = uluaGetTexture( L, 3 );
+	Shader *shader = luaL_checkudata( L, 1, "Shader" );
+	int locIndex = luaL_checkinteger( L, 2 );
+	Texture *texture = luaL_checkudata( L, 3, "Texture" );
 
-	if ( !validShader( shaderId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	SetShaderValueTexture( *state->shaders[ shaderId ], locIndex, texture );
-	lua_pushboolean( L, true );
+	SetShaderValueTexture( *shader, locIndex, *texture );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetShaderValue( Shader shader, int locIndex, number{} values, int uniformType )
+> RL.SetShaderValue( Shader shader, int locIndex, number{} values, int uniformType )
 
 Set shader uniform value
 NOTE: Even one value should be in table
-
-- Failure return false
-- Success return true
 */
 int lcoreSetShaderValue( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetShaderValue( Shader shader, int locIndex, number{} values, int uniformType )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t shaderId = lua_tointeger( L, 1 );
-	int locIndex = lua_tointeger( L, 2 );
+	Shader *shader = luaL_checkudata( L, 1, "Shader" );
+	int locIndex = luaL_checkinteger( L, 2 );
 	size_t valueCount = uluaGetTableLenIndex( L, 3 );
-	int uniformType = lua_tointeger( L, 4 );
+	int uniformType = luaL_checkinteger( L, 4 );
 
 	/* Read values. */
 	float floats[ valueCount ];
@@ -1309,45 +1128,29 @@ int lcoreSetShaderValue( lua_State *L ) {
 	lua_pop( L, 1 );
 	/* Read values end. */
 
-	if ( !validShader( shaderId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-
 	if ( uniformType == SHADER_UNIFORM_FLOAT || uniformType == SHADER_UNIFORM_VEC2
 	|| uniformType == SHADER_UNIFORM_VEC3 || uniformType == SHADER_UNIFORM_VEC4 ) {
-		SetShaderValue( *state->shaders[ shaderId ], locIndex, floats, uniformType );
+		SetShaderValue( *shader, locIndex, floats, uniformType );
 	}
 	else {
-		SetShaderValue( *state->shaders[ shaderId ], locIndex, ints, uniformType );
+		SetShaderValue( *shader, locIndex, ints, uniformType );
 	}
 
-	lua_pushboolean( L, true );
-
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetShaderValueV( Shader shader, int locIndex, number{} values, int uniformType, int count )
+> RL.SetShaderValueV( Shader shader, int locIndex, number{} values, int uniformType, int count )
 
 Set shader uniform value vector
 NOTE: Even one value should be in table
-
-- Failure return false
-- Success return true
 */
 int lcoreSetShaderValueV( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_istable( L, 3 )
-	|| !lua_isnumber( L, 4 ) || !lua_isnumber( L, 5 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetShaderValueV( Shader shader, int locIndex, number{} values, int uniformType, int count )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t shaderId = lua_tointeger( L, 1 );
-	int locIndex = lua_tointeger( L, 2 );
+	Shader *shader = luaL_checkudata( L, 1, "Shader" );
+	int locIndex = luaL_checkinteger( L, 2 );
 	size_t valueCount = uluaGetTableLenIndex( L, 3 );
-	int uniformType = lua_tointeger( L, 4 );
-	int count = lua_tointeger( L, 5 );
+	int uniformType = luaL_checkinteger( L, 4 );
+	int count = luaL_checkinteger( L, 5 );
 
 	/* Read values. */
 	float floats[ valueCount * count ];
@@ -1368,48 +1171,15 @@ int lcoreSetShaderValueV( lua_State *L ) {
 	lua_pop( L, 1 );
 	/* Read values end. */
 
-	if ( !validShader( shaderId ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-
 	if ( uniformType == SHADER_UNIFORM_FLOAT || uniformType == SHADER_UNIFORM_VEC2
 	|| uniformType == SHADER_UNIFORM_VEC3 || uniformType == SHADER_UNIFORM_VEC4 ) {
-		SetShaderValueV( *state->shaders[ shaderId ], locIndex, floats, uniformType, count );
+		SetShaderValueV( *shader, locIndex, floats, uniformType, count );
 	}
 	else {
-		SetShaderValueV( *state->shaders[ shaderId ], locIndex, ints, uniformType, count );
+		SetShaderValueV( *shader, locIndex, ints, uniformType, count );
 	}
-	lua_pushboolean( L, true );
 
-	return 1;
-}
-
-/*
-> success = RL.UnloadShader( Shader shader )
-
-Unload shader from GPU memory ( VRAM )
-
-- Failure return false
-- Success return true
-*/
-int lcoreUnloadShader( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.UnloadShader( Shader shader )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t id = lua_tointeger( L, 1 );
-
-	if ( !validShader( id ) ) {
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	UnloadShader( *state->shaders[ id ] );
-	state->shaders[ id ] = NULL;
-	lua_pushboolean( L, true );
-
-	return 1;
+	return 0;
 }
 
 /*
@@ -2510,73 +2280,34 @@ int lcoreGetFileModTime( lua_State *L ) {
 /*
 > camera2D = RL.CreateCamera2D()
 
-Return camera2D id set to default configuration
+Return camera2D set to default configuration
 
-- Success return int
+- Success return Camera2D
 */
 int lcoreCreateCamera2D( lua_State *L ) {
-	int i = 0;
+	Camera2D camera = { 0 };
+	
+	camera.offset = (Vector2){ 0.0, 0.0 };
+	camera.target = (Vector2){ 0.0, 0.0 };
+	camera.rotation = 0.0;
+	camera.zoom = 1.0;
 
-	for ( i = 0; i < state->camera2DCount; i++ ) {
-		if ( state->camera2Ds[i] == NULL ) {
-			break;
-		}
-	}
-	state->camera2Ds[i] = malloc( sizeof( Camera2D ) );
-	state->camera2Ds[i]->offset = (Vector2){ 0.0, 0.0 };
-	state->camera2Ds[i]->target = (Vector2){ 0.0, 0.0 };
-	state->camera2Ds[i]->rotation = 0.0;
-	state->camera2Ds[i]->zoom = 1.0;
-
-	lua_pushinteger( L, i );
-	checkCamera2DRealloc(i);
+	uluaPushCamera2D( L, camera );
 
 	return 1;
 }
 
 /*
-> success = RL.UnloadCamera2D( camera2D camera )
+> RL.BeginMode2D( camera2D camera )
 
-Unload Camera2D
-
-- Failure return false
-- Success return true
-*/
-int lcoreUnloadCamera2D( lua_State *L ) {
-	if ( !isValidCamera2D( L, 1, false ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.UnloadCamera2D( int Camera2D )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-
-	free( state->camera2Ds[ cameraId ] );
-	state->camera2Ds[ cameraId ] = NULL;
-	lua_pushboolean( L, true );
-
-	return 1;
-}
-
-/*
-> success = RL.BeginMode2D( camera2D camera )
-
-Begin 2D mode with custom camera ( 2D )
-
-- Failure return false
-- Success return true
+Begin 2D mode with custom camera (2D)
 */
 int lcoreBeginMode2D( lua_State *L ) {
-	if ( !isValidCamera2D( L, 1, true ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.BeginMode2D( camera2D camera )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	Camera2D camera = uluaGetCamera2D( L, 1 );
+	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
 
-	BeginMode2D( camera );
-	lua_pushboolean( L, true );
+	BeginMode2D( *camera );
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -2587,99 +2318,63 @@ Ends 2D mode with custom camera
 int lcoreEndMode2D( lua_State *L ) {
 	EndMode2D();
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetCamera2DTarget( camera2D camera, Vector2 target )
+> RL.SetCamera2DTarget( camera2D camera, Vector2 target )
 
-Set camera target ( rotation and zoom origin )
-
-- Failure return false
-- Success return true
+Set camera target (rotation and zoom origin)
 */
 int lcoreSetCamera2DTarget( lua_State *L ) {
-	if ( !isValidCamera2D( L, 1, false ) || !lua_istable( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetCamera2DTarget( camera2D camera, Vector2 target )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
 	Vector2 target = uluaGetVector2Index( L, 2 );
 
-	state->camera2Ds[ cameraId ]->target = target;
-	lua_pushboolean( L, true );
+	camera->target = target;
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetCamera2DOffset( camera2D camera, Vector2 offset )
+> RL.SetCamera2DOffset( camera2D camera, Vector2 offset )
 
-Set camera offset ( displacement from target )
-
-- Failure return false
-- Success return true
+Set camera offset (displacement from target)
 */
 int lcoreSetCamera2DOffset( lua_State *L ) {
-	if ( !isValidCamera2D( L, 1, false ) || !lua_istable( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetCamera2DOffset( camera2D camera, Vector2 offset )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
 	Vector2 offset = uluaGetVector2Index( L, 2 );
 
-	state->camera2Ds[ cameraId ]->offset = offset;
-	lua_pushboolean( L, true );
+	camera->offset = offset;
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetCamera2DRotation( camera2D camera, float rotation )
+> RL.SetCamera2DRotation( camera2D camera, float rotation )
 
 Set camera rotation in degrees
-
-- Failure return false
-- Success return true
 */
 int lcoreSetCamera2DRotation( lua_State *L ) {
-	if ( !isValidCamera2D( L, 1, false ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetCamera2DRotation( camera2D camera, float rotation )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-	float rotation = lua_tonumber( L, 2 );
+	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+	float rotation = luaL_checknumber( L, 2 );
 
-	state->camera2Ds[ cameraId ]->rotation = rotation;
-	lua_pushboolean( L, true );
+	camera->rotation = rotation;
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetCamera2DZoom( camera2D camera, float zoom )
+> RL.SetCamera2DZoom( camera2D camera, float zoom )
 
-Set camera zoom ( scaling ), should be 1.0f by default
-
-- Failure return false
-- Success return true
+Set camera zoom (scaling), should be 1.0f by default
 */
 int lcoreSetCamera2DZoom( lua_State *L ) {
-	if ( !isValidCamera2D( L, 1, false ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetCamera2DZoom( camera2D camera, float zoom )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-	float zoom = lua_tonumber( L, 2 );
+	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+	float zoom = luaL_checknumber( L, 2 );
 
-	state->camera2Ds[ cameraId ]->zoom = zoom;
-	lua_pushboolean( L, true );
+	camera->zoom = zoom;
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -2687,17 +2382,12 @@ int lcoreSetCamera2DZoom( lua_State *L ) {
 
 Get camera2D target
 
-- Failure return nil
 - Success return Vector2
 */
 int lcoreGetCamera2DTarget( lua_State *L ) {
-	if ( !isValidCamera2D( L, 1, false ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCamera2DTarget( camera2D camera )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-	uluaPushVector2( L, state->camera2Ds[ cameraId ]->target );
+	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+
+	uluaPushVector2( L, camera->target );
 
 	return 1;
 }
@@ -2707,17 +2397,11 @@ int lcoreGetCamera2DTarget( lua_State *L ) {
 
 Get camera2D offset
 
-- Failure return nil
 - Success return Vector2
 */
 int lcoreGetCamera2DOffset( lua_State *L ) {
-	if ( !isValidCamera2D( L, 1, false ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCamera2DOffset( camera2D camera )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-	uluaPushVector2( L, state->camera2Ds[ cameraId ]->offset );
+	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+	uluaPushVector2( L, camera->offset );
 
 	return 1;
 }
@@ -2727,17 +2411,11 @@ int lcoreGetCamera2DOffset( lua_State *L ) {
 
 Get camera2D rotation
 
-- Failure return nil
 - Success return float
 */
 int lcoreGetCamera2DRotation( lua_State *L ) {
-	if ( !isValidCamera2D( L, 1, false ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCamera2DRotation( camera2D camera )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-	lua_pushnumber( L, state->camera2Ds[ cameraId ]->rotation );
+	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+	lua_pushnumber( L, camera->rotation );
 
 	return 1;
 }
@@ -2747,17 +2425,11 @@ int lcoreGetCamera2DRotation( lua_State *L ) {
 
 Get camera2D zoom
 
-- Failure return nil
 - Success return float
 */
 int lcoreGetCamera2DZoom( lua_State *L ) {
-	if ( !isValidCamera2D( L, 1, false ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCamera2DZoom( camera2D camera )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-	lua_pushnumber( L, state->camera2Ds[ cameraId ]->zoom );
+	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+	lua_pushnumber( L, camera->zoom );
 
 	return 1;
 }
@@ -2774,69 +2446,30 @@ Return camera3D id set to default configuration
 - Success return int
 */
 int lcoreCreateCamera3D( lua_State *L ) {
-	int i = 0;
+	Camera3D camera = { 0 };
 
-	for ( i = 0; i < state->camera3DCount; i++ ) {
-		if ( state->camera3Ds[i] == NULL ) {
-			break;
-		}
-	}
-	state->camera3Ds[i] = malloc( sizeof( Camera3D ) );
-	state->camera3Ds[i]->position = (Vector3){ 0.0, 0.0, 0.0 };
-	state->camera3Ds[i]->target = (Vector3){ 0.0, 0.0, 0.0 };
-	state->camera3Ds[i]->up = (Vector3){ 0.0, 0.0, 0.0 };
-	state->camera3Ds[i]->fovy = 45.0f;
-	state->camera3Ds[i]->projection = CAMERA_PERSPECTIVE;
+	camera.position = (Vector3){ 0.0, 0.0, 0.0 };
+	camera.target = (Vector3){ 0.0, 0.0, 0.0 };
+	camera.up = (Vector3){ 0.0, 0.0, 0.0 };
+	camera.fovy = 45.0f;
+	camera.projection = CAMERA_PERSPECTIVE;
 
-	lua_pushinteger( L, i );
-	checkCamera3DRealloc(i);
+	uluaPushCamera3D( L, camera );
 
 	return 1;
 }
 
 /*
-> success = RL.UnloadCamera3D( int Camera3D )
+> RL.BeginMode3D( camera3D camera )
 
-Unload Camera3D
-
-- Failure return false
-- Success return true
-*/
-int lcoreUnloadCamera3D( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.UnloadCamera3D( int Camera3D )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-
-	free( state->camera3Ds[ cameraId ] );
-	state->camera3Ds[ cameraId ] = NULL;
-	lua_pushboolean( L, true );
-
-	return 1;
-}
-
-/*
-> success = RL.BeginMode3D( camera3D camera )
-
-Begin 3D mode with custom camera ( 3D )
-
-- Failure return false
-- Success return true
+Begin 3D mode with custom camera (3D)
 */
 int lcoreBeginMode3D( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, true ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.BeginMode3D( camera3D camera )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	Camera3D camera = uluaGetCamera3D( L, 1 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
 
-	BeginMode3D( camera );
-	lua_pushboolean( L, true );
+	BeginMode3D( *camera );
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -2847,122 +2480,77 @@ Ends 3D mode and returns to default 2D orthographic mode
 int lcoreEndMode3D( lua_State *L ) {
 	EndMode3D();
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetCamera3DPosition( camera3D camera, Vector3 position )
+> RL.SetCamera3DPosition( camera3D camera, Vector3 position )
 
-Set camera position ( Remember to call "RL.UpdateCamera3D()" to apply changes )
-
-- Failure return false
-- Success return true
+Set camera position (Remember to call "RL.UpdateCamera3D()" to apply changes)
 */
 int lcoreSetCamera3DPosition( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) || !lua_istable( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetCamera3DPosition( camera3D camera, Vector3 position )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
 	Vector3 pos = uluaGetVector3Index( L, 2 );
 
-	state->camera3Ds[ cameraId ]->position = pos;
-	lua_pushboolean( L, true );
+	camera->position = pos;
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetCamera3DTarget( camera3D camera, Vector3 target )
+> RL.SetCamera3DTarget( camera3D camera, Vector3 target )
 
 Set camera target it looks-at
-
-- Failure return false
-- Success return true
 */
 int lcoreSetCamera3DTarget( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) || !lua_istable( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetCamera3DTarget( camera3D camera, Vector3 target )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
 	Vector3 target = uluaGetVector3Index( L, 2 );
 
-	state->camera3Ds[ cameraId ]->target = target;
-	lua_pushboolean( L, true );
+	camera->target = target;
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetCamera3DUp( camera3D camera, Vector3 up )
+> RL.SetCamera3DUp( camera3D camera, Vector3 up )
 
-Set camera up vector ( Rotation over it's axis )
-
-- Failure return false
-- Success return true
+Set camera up vector (Rotation over it's axis)
 */
 int lcoreSetCamera3DUp( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) || !lua_istable( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetCamera3DUp( camera3D camera, Vector3 up )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
 	Vector3 up = uluaGetVector3Index( L, 2 );
 
-	state->camera3Ds[ cameraId ]->up = up;
-	lua_pushboolean( L, true );
+	camera->up = up;
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetCamera3DFovy( camera3D camera, float fovy )
+> RL.SetCamera3DFovy( camera3D camera, float fovy )
 
-Set camera field-of-view apperture in Y ( degrees ) in perspective, used as near plane width in orthographic
-
-- Failure return false
-- Success return true
+Set camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic
 */
 int lcoreSetCamera3DFovy( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetCamera3DFovy( camera3D camera, float fovy )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-	float fovy = lua_tonumber( L, 2 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	float fovy = luaL_checknumber( L, 2 );
 
-	state->camera3Ds[ cameraId ]->fovy = fovy;
-	lua_pushboolean( L, true );
+	camera->fovy = fovy;
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.SetCamera3DProjection( camera3D camera, int projection )
+> RL.SetCamera3DProjection( camera3D camera, int projection )
 
-Set camera projection mode ( CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC )
-
-- Failure return false
-- Success return true
+Set camera projection mode (CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC)
 */
 int lcoreSetCamera3DProjection( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetCamera3DProjection( camera3D camera, int projection )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-	int projection = lua_tointeger( L, 2 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	int projection = luaL_checkinteger( L, 2 );
 
-	state->camera3Ds[ cameraId ]->projection = projection;
-	lua_pushboolean( L, true );
+	camera->projection = projection;
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -2970,18 +2558,12 @@ int lcoreSetCamera3DProjection( lua_State *L ) {
 
 Get camera position
 
-- Failure return nil
 - Success return Vector3
 */
 int lcoreGetCamera3DPosition( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCamera3DPosition( camera3D camera )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
 
-	uluaPushVector3( L, state->camera3Ds[ cameraId ]->position );
+	uluaPushVector3( L, camera->position );
 
 	return 1;
 }
@@ -2991,18 +2573,12 @@ int lcoreGetCamera3DPosition( lua_State *L ) {
 
 Get camera target it looks-at
 
-- Failure return nil
 - Success return Vector3
 */
 int lcoreGetCamera3DTarget( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCamera3DTarget( camera3D camera )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
 
-	uluaPushVector3( L, state->camera3Ds[ cameraId ]->target );
+	uluaPushVector3( L, camera->target );
 
 	return 1;
 }
@@ -3010,20 +2586,14 @@ int lcoreGetCamera3DTarget( lua_State *L ) {
 /*
 > up = RL.GetCamera3DUp( camera3D camera )
 
-Get camera up vector ( Rotation over it's axis )
+Get camera up vector (Rotation over it's axis)
 
-- Failure return nil
 - Success return Vector3
 */
 int lcoreGetCamera3DUp( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCamera3DUp( camera3D camera )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
 
-	uluaPushVector3( L, state->camera3Ds[ cameraId ]->up );
+	uluaPushVector3( L, camera->up );
 
 	return 1;
 }
@@ -3031,20 +2601,14 @@ int lcoreGetCamera3DUp( lua_State *L ) {
 /*
 > fovy = RL.GetCamera3DFovy( camera3D camera )
 
-Get camera field-of-view apperture in Y ( degrees ) in perspective, used as near plane width in orthographic
+Get camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic
 
-- Failure return nil
 - Success return float
 */
 int lcoreGetCamera3DFovy( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCamera3DFovy( camera3D camera )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
 
-	lua_pushnumber( L, state->camera3Ds[ cameraId ]->fovy );
+	lua_pushnumber( L, camera->fovy );
 
 	return 1;
 }
@@ -3054,18 +2618,12 @@ int lcoreGetCamera3DFovy( lua_State *L ) {
 
 Get camera projection mode
 
-- Failure return nil
 - Success return int
 */
 int lcoreGetCamera3DProjection( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCamera3DProjection( camera3D camera )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
 
-	lua_pushinteger( L, state->camera3Ds[ cameraId ]->projection );
+	lua_pushinteger( L, camera->projection );
 
 	return 1;
 }
@@ -3073,20 +2631,14 @@ int lcoreGetCamera3DProjection( lua_State *L ) {
 /*
 > forward = RL.GetCamera3DForward( camera3D camera )
 
-Returns the cameras forward vector ( normalized )
+Returns the cameras forward vector (normalized)
 
-- Failure return nil
 - Success return Vector3
 */
 int lcoreGetCamera3DForward( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, true ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCamera3DForward( camera3D camera )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	Camera3D camera = uluaGetCamera3D( L, 1 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
 
-	uluaPushVector3( L, GetCameraForward( &camera ) );
+	uluaPushVector3( L, GetCameraForward( camera ) );
 
 	return 1;
 }
@@ -3094,21 +2646,15 @@ int lcoreGetCamera3DForward( lua_State *L ) {
 /*
 > up = RL.GetCamera3DUpNormalized( camera3D camera )
 
-Returns the cameras up vector ( normalized )
+Returns the cameras up vector (normalized)
 Note: The up vector might not be perpendicular to the forward vector
 
-- Failure return nil
 - Success return Vector3
 */
 int lcoreGetCamera3DUpNormalized( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, true ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCamera3DUpNormalized( camera3D camera )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
 
-	uluaPushVector3( L, GetCameraUp( state->camera3Ds[ cameraId ] ) );
+	uluaPushVector3( L, GetCameraUp( camera ) );
 
 	return 1;
 }
@@ -3116,199 +2662,129 @@ int lcoreGetCamera3DUpNormalized( lua_State *L ) {
 /*
 > right = RL.GetCamera3DRight( camera3D camera )
 
-Returns the cameras right vector ( normalized )
+Returns the cameras right vector (normalized)
 
-- Failure return nil
 - Success return Vector3
 */
 int lcoreGetCamera3DRight( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, true ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCamera3DRight( camera3D camera )" );
-		lua_pushnil( L );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
 
-	uluaPushVector3( L, GetCameraRight( state->camera3Ds[ cameraId ] ) );
+	uluaPushVector3( L, GetCameraRight( camera ) );
 
 	return 1;
 }
 
 /*
-> success = RL.Camera3DMoveForward( camera3D camera, float distance, bool moveInWorldPlane )
+> RL.Camera3DMoveForward( camera3D camera, float distance, bool moveInWorldPlane )
 
 Moves the camera in it's forward direction
-
-- Failure return false
-- Success return true
 */
 int lcoreCamera3DMoveForward( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCamera3DRight( camera3D camera )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-	float distance = lua_tonumber( L, 2 );
-	bool moveInWorldPlane = lua_toboolean( L, 3 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	float distance = luaL_checknumber( L, 2 );
+	bool moveInWorldPlane = uluaGetBoolean( L, 3 );
 
-	CameraMoveForward( state->camera3Ds[ cameraId ], distance, moveInWorldPlane );
-	lua_pushboolean( L, true );
+	CameraMoveForward( camera, distance, moveInWorldPlane );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.Camera3DMoveUp( camera3D camera, float distance )
+> RL.Camera3DMoveUp( camera3D camera, float distance )
 
 Moves the camera in it's up direction
-
-- Failure return false
-- Success return true
 */
 int lcoreCamera3DMoveUp( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Camera3DMoveUp( camera3D camera, float distance )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-	float distance = lua_tonumber( L, 2 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	float distance = luaL_checknumber( L, 2 );
 
-	CameraMoveUp( state->camera3Ds[ cameraId ], distance );
-	lua_pushboolean( L, true );
+	CameraMoveUp( camera, distance );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.Camera3DMoveRight( camera3D camera, float distance, bool moveInWorldPlane )
+> RL.Camera3DMoveRight( camera3D camera, float distance, bool moveInWorldPlane )
 
 Moves the camera target in it's current right direction
-
-- Failure return false
-- Success return true
 */
 int lcoreCamera3DMoveRight( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Camera3DMoveRight( camera3D camera, float distance, bool moveInWorldPlane )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-	float distance = lua_tonumber( L, 2 );
-	bool moveInWorldPlane = lua_toboolean( L, 3 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	float distance = luaL_checknumber( L, 2 );
+	bool moveInWorldPlane = uluaGetBoolean( L, 3 );
 
-	CameraMoveRight( state->camera3Ds[ cameraId ], distance, moveInWorldPlane );
-	lua_pushboolean( L, true );
+	CameraMoveRight( camera, distance, moveInWorldPlane );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.Camera3DMoveToTarget( camera3D camera, float delta )
+> RL.Camera3DMoveToTarget( camera3D camera, float delta )
 
 Moves the camera position closer/farther to/from the camera target
-
-- Failure return false
-- Success return true
 */
 int lcoreCamera3DMoveToTarget( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Camera3DMoveToTarget( camera3D camera, float delta )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-	float delta = lua_tonumber( L, 2 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	float delta = luaL_checknumber( L, 2 );
 
-	CameraMoveToTarget( state->camera3Ds[ cameraId ], delta );
-	lua_pushboolean( L, true );
+	CameraMoveToTarget( camera, delta );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.Camera3DYaw( camera3D camera, float angle, bool rotateAroundTarget )
+> RL.Camera3DYaw( camera3D camera, float angle, bool rotateAroundTarget )
 
 Rotates the camera around it's up vector
 Yaw is "looking left and right"
 If rotateAroundTarget is false, the camera rotates around it's position
 Note: angle must be provided in radians
-
-- Failure return false
-- Success return true
 */
 int lcoreCamera3DYaw( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Camera3DYaw( camera3D camera, float angle, bool rotateAroundTarget )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-	float delta = lua_tonumber( L, 2 );
-	bool rotateAroundTarget = lua_toboolean( L, 3 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	float delta = luaL_checknumber( L, 2 );
+	bool rotateAroundTarget = uluaGetBoolean( L, 3 );
 
-	CameraYaw( state->camera3Ds[ cameraId ], delta, rotateAroundTarget );
-	lua_pushboolean( L, true );
+	CameraYaw( camera, delta, rotateAroundTarget );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.Camera3DPitch( camera3D camera, float angle, bool lockView, bool rotateAroundTarget, bool rotateUp )
+> RL.Camera3DPitch( camera3D camera, float angle, bool lockView, bool rotateAroundTarget, bool rotateUp )
 
 Rotates the camera around it's right vector, pitch is "looking up and down"
  - lockView prevents camera overrotation (aka "somersaults")
  - rotateAroundTarget defines if rotation is around target or around it's position
  - rotateUp rotates the up direction as well (typically only usefull in CAMERA_FREE)
 NOTE: angle must be provided in radians
-
-- Failure return false
-- Success return true
 */
 int lcoreCamera3DPitch( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) || !lua_isboolean( L, 3 )
-	|| !lua_isboolean( L, 4 ) || !lua_isboolean( L, 5 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Camera3DYaw( camera3D camera, float angle, bool rotateAroundTarget )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-	float delta = lua_tonumber( L, 2 );
-	bool lockView = lua_toboolean( L, 3 );
-	bool rotateAroundTarget = lua_toboolean( L, 4 );
-	bool rotateUp = lua_toboolean( L, 5 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	float delta = luaL_checknumber( L, 2 );
+	bool lockView = uluaGetBoolean( L, 3 );
+	bool rotateAroundTarget = uluaGetBoolean( L, 4 );
+	bool rotateUp = uluaGetBoolean( L, 5 );
 
-	CameraPitch( state->camera3Ds[ cameraId ], delta, lockView, rotateAroundTarget, rotateUp );
-	lua_pushboolean( L, true );
+	CameraPitch( camera, delta, lockView, rotateAroundTarget, rotateUp );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.Camera3DRoll( camera3D camera, float angle )
+> RL.Camera3DRoll( camera3D camera, float angle )
 
 Rotates the camera around it's forward vector
 Roll is "turning your head sideways to the left or right"
 Note: angle must be provided in radians
-
-- Failure return false
-- Success return true
 */
 int lcoreCamera3DRoll( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.Camera3DRoll( camera3D camera, float angle )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-	float angle = lua_tonumber( L, 2 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	float angle = luaL_checknumber( L, 2 );
 
-	CameraRoll( state->camera3Ds[ cameraId ], angle );
-	lua_pushboolean( L, true );
+	CameraRoll( camera, angle );
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -3316,18 +2792,12 @@ int lcoreCamera3DRoll( lua_State *L ) {
 
 Returns the camera view matrix
 
-- Failure return false
 - Success return Matrix
 */
 int lcoreGetCamera3DViewMatrix( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, true ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCamera3DViewMatrix( camera3D camera )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	Camera3D camera = uluaGetCamera3D( L, 1 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
 
-	uluaPushMatrix( L, GetCameraViewMatrix( &camera ) );
+	uluaPushMatrix( L, GetCameraViewMatrix( camera ) );
 
 	return 1;
 }
@@ -3337,69 +2807,45 @@ int lcoreGetCamera3DViewMatrix( lua_State *L ) {
 
 Returns the camera projection matrix
 
-- Failure return false
 - Success return Matrix
 */
 int lcoreGetCamera3DProjectionMatrix( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, true ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCamera3DProjectionMatrix( camera3D camera, float aspect )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	Camera3D camera = uluaGetCamera3D( L, 1 );
-	float aspect = lua_tonumber( L, 2 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	float aspect = luaL_checknumber( L, 2 );
 
-	uluaPushMatrix( L, GetCameraProjectionMatrix( &camera, aspect ) );
+	uluaPushMatrix( L, GetCameraProjectionMatrix( camera, aspect ) );
 
 	return 1;
 }
 
 /*
-> success = RL.UpdateCamera3D( camera3D camera, int mode )
+> RL.UpdateCamera3D( camera3D camera, int mode )
 
 Update camera position for selected mode
-
-- Failure return false
-- Success return true
 */
 int lcoreUpdateCamera3D( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.UpdateCamera3D( camera3D camera, int mode )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
-	int mode = lua_tointeger( L, 2 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	int mode = luaL_checkinteger( L, 2 );
 
-	UpdateCamera( state->camera3Ds[ cameraId ], mode );
-	lua_pushboolean( L, true );
+	UpdateCamera( camera, mode );
 
-	return 1;
+	return 0;
 }
 
 /*
-> success = RL.UpdateCamera3DPro( camera3D camera, Vector3 movement, Vector3 rotation, float zoom )
+> RL.UpdateCamera3DPro( camera3D camera, Vector3 movement, Vector3 rotation, float zoom )
 
 Update camera movement, movement/rotation values should be provided by user
-
-- Failure return false
-- Success return true
 */
 int lcoreUpdateCamera3DPro( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, false ) || !lua_istable( L, 2 ) || !lua_istable( L, 3 ) || !lua_isnumber( L, 4 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.UpdateCamera3DPro( camera3D camera, Vector3 movement, Vector3 rotation, float zoom )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t cameraId = lua_tointeger( L, 1 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
 	Vector3 movement = uluaGetVector3Index( L, 2 );
 	Vector3 rotation = uluaGetVector3Index( L, 3 );
-	float zoom = lua_tointeger( L, 4 );
+	float zoom = luaL_checknumber( L, 4 );
 
-	UpdateCameraPro( state->camera3Ds[ cameraId ], movement, rotation, zoom );
-	lua_pushboolean( L, true );
+	UpdateCameraPro( camera, movement, rotation, zoom );
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -3411,19 +2857,13 @@ int lcoreUpdateCamera3DPro( lua_State *L ) {
 
 Get a ray trace from mouse position
 
-- Failure return false
 - Success return Ray
 */
 int lcoreGetMouseRay( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) || !isValidCamera3D( L, 2, true ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetMouseRay( Vector2 mousePosition, Camera3D camera )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
 	Vector2 mousePosition = uluaGetVector2Index( L, 1 );
-	Camera3D camera = uluaGetCamera3D( L, 2 );
+	Camera3D *camera = luaL_checkudata( L, 2, "Camera3D" );
 
-	uluaPushRay( L, GetMouseRay( mousePosition, camera ) );
+	uluaPushRay( L, GetMouseRay( mousePosition, *camera ) );
 
 	return 1;
 }
@@ -3431,20 +2871,14 @@ int lcoreGetMouseRay( lua_State *L ) {
 /*
 > matrix = RL.GetCameraMatrix( Camera3D camera )
 
-Get camera transform matrix ( view matrix )
+Get camera transform matrix (view matrix)
 
-- Failure return false
 - Success return Matrix
 */
 int lcoreGetCameraMatrix( lua_State *L ) {
-	if ( !isValidCamera3D( L, 1, true ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCameraMatrix( Camera3D camera )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	Camera3D camera = uluaGetCamera3D( L, 1 );
+	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
 
-	uluaPushMatrix( L, GetCameraMatrix( camera ) );
+	uluaPushMatrix( L, GetCameraMatrix( *camera ) );
 
 	return 1;
 }
@@ -3454,17 +2888,12 @@ int lcoreGetCameraMatrix( lua_State *L ) {
 
 Get camera 2d transform matrix
 
-- Failure return false
 - Success return Matrix
 */
 int lcoreGetCameraMatrix2D( lua_State *L ) {
-	if ( !isValidCamera2D( L, 1, true ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetCameraMatrix2D( Camera2D camera )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	Camera2D camera = uluaGetCamera2D( L, 1 );
-	uluaPushMatrix( L, GetCameraMatrix2D( camera ) );
+	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+
+	uluaPushMatrix( L, GetCameraMatrix2D( *camera ) );
 
 	return 1;
 }
@@ -3474,19 +2903,13 @@ int lcoreGetCameraMatrix2D( lua_State *L ) {
 
 Get the screen space position for a 3d world space position
 
-- Failure return false
 - Success return Vector2
 */
 int lcoreGetWorldToScreen( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) || !isValidCamera3D( L, 2, true ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetWorldToScreen( Vector3 position, Camera3D camera )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
 	Vector3 position = uluaGetVector3Index( L, 1 );
-	Camera3D camera = uluaGetCamera3D( L, 2 );
+	Camera3D *camera = luaL_checkudata( L, 2, "Camera3D" );
 
-	uluaPushVector2( L, GetWorldToScreen( position, camera ) );
+	uluaPushVector2( L, GetWorldToScreen( position, *camera ) );
 
 	return 1;
 }
@@ -3496,20 +2919,14 @@ int lcoreGetWorldToScreen( lua_State *L ) {
 
 Get size position for a 3d world space position
 
-- Failure return false
 - Success return Vector2
 */
 int lcoreGetWorldToScreenEx( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) || !isValidCamera3D( L, 2, true ) || !lua_istable( L, 3 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetWorldToScreenEx( Vector3 position, Camera3D camera, Vector2 size )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
 	Vector3 position = uluaGetVector3Index( L, 1 );
-	Camera3D camera = uluaGetCamera3D( L, 2 );
+	Camera3D *camera = luaL_checkudata( L, 2, "Camera3D" );
 	Vector2 size = uluaGetVector2Index( L, 3 );
 
-	uluaPushVector2( L, GetWorldToScreenEx( position, camera, size.x, size.y ) );
+	uluaPushVector2( L, GetWorldToScreenEx( position, *camera, size.x, size.y ) );
 
 	return 1;
 }
@@ -3519,19 +2936,13 @@ int lcoreGetWorldToScreenEx( lua_State *L ) {
 
 Get the screen space position for a 2d camera world space position
 
-- Failure return false
 - Success return Vector2
 */
 int lcoreGetWorldToScreen2D( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) || !isValidCamera2D( L, 2, true ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetWorldToScreen2D( Vector2 position, Camera2D camera )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
 	Vector2 position = uluaGetVector2Index( L, 1 );
-	Camera2D camera = uluaGetCamera2D( L, 1 );
+	Camera2D *camera = luaL_checkudata( L, 2, "Camera2D" );
 
-	uluaPushVector2( L, GetWorldToScreen2D( position, camera ) );
+	uluaPushVector2( L, GetWorldToScreen2D( position, *camera ) );
 
 	return 1;
 }
@@ -3541,19 +2952,13 @@ int lcoreGetWorldToScreen2D( lua_State *L ) {
 
 Get the world space position for a 2d camera screen space position
 
-- Failure return false
 - Success return Vector2
 */
 int lcoreGetScreenToWorld2D( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) || !isValidCamera2D( L, 2, true ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GetScreenToWorld2D( Vector2 position, Camera2D camera )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
 	Vector2 position = uluaGetVector2Index( L, 1 );
-	Camera2D camera = uluaGetCamera2D( L, 1 );
+	Camera2D *camera = luaL_checkudata( L, 2, "Camera2D" );
 
-	uluaPushVector2( L, GetScreenToWorld2D( position, camera ) );
+	uluaPushVector2( L, GetScreenToWorld2D( position, *camera ) );
 
 	return 1;
 }
@@ -3563,16 +2968,12 @@ int lcoreGetScreenToWorld2D( lua_State *L ) {
 
 Creates buffer as userdata. Type should be one of the Buffer types
 
-- Failure return false
 - Success return Buffer
 */
 int lcoreLoadBuffer( lua_State *L ) {
-	if ( !lua_istable( L, 1 ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadBuffer( data{} buffer, int type )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	int type = lua_tointeger( L, 2 );
+	luaL_checktype( L, 1, LUA_TTABLE );
+	int type = luaL_checkinteger( L, 2 );
+
 	Buffer *buffer = lua_newuserdata( L, sizeof( Buffer ) );
 	int len = uluaGetTableLenIndex( L, 1 );
 

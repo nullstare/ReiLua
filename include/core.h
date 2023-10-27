@@ -1,8 +1,5 @@
 #pragma once
 
-/* Validators. */
-bool validCamera3D( size_t id );
-bool validShader( size_t id );
 /* Window. */
 int lcoreIsWindowReady( lua_State *L );
 int lcoreIsWindowFullscreen( lua_State *L );
@@ -75,7 +72,6 @@ int lcoreSetShaderValueMatrix( lua_State *L );
 int lcoreSetShaderValueTexture( lua_State *L );
 int lcoreSetShaderValue( lua_State *L );
 int lcoreSetShaderValueV( lua_State *L );
-int lcoreUnloadShader( lua_State *L );
 /* File. */
 int lcoreGetBasePath( lua_State *L );
 int lcoreFileExists( lua_State *L );
@@ -97,7 +93,6 @@ int lcoreLoadDroppedFiles( lua_State *L );
 int lcoreGetFileModTime( lua_State *L );
 /* Camera2D. */
 int lcoreCreateCamera2D( lua_State *L );
-int lcoreUnloadCamera2D( lua_State *L );
 int lcoreBeginMode2D( lua_State *L );
 int lcoreEndMode2D( lua_State *L );
 int lcoreSetCamera2DTarget( lua_State *L );
@@ -110,7 +105,6 @@ int lcoreGetCamera2DRotation( lua_State *L );
 int lcoreGetCamera2DZoom( lua_State *L );
 /* Camera3D. */
 int lcoreCreateCamera3D( lua_State *L );
-int lcoreUnloadCamera3D( lua_State *L );
 int lcoreBeginMode3D( lua_State *L );
 int lcoreEndMode3D( lua_State *L );
 int lcoreSetCamera3DPosition( lua_State *L );

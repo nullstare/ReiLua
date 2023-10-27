@@ -9,28 +9,19 @@
 */
 
 /*
-> success = RL.SetShapesTexture( Texture2D texture, Rectangle source )
+> RL.SetShapesTexture( Texture texture, Rectangle source )
 
 Set texture and rectangle to be used on shapes drawing
 NOTE: It can be useful when using basic shapes and one single font,
 defining a font char white rectangle would allow drawing everything in a single draw call
-
-- Failure return false
-- Success return true
 */
 int lshapesSetShapesTexture( lua_State *L ) {
-	if ( !isValidTexture( L, 1, true ) || !lua_isnumber( L, 2 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.SetShapesTexture( Texture2D texture, Rectangle source )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	Texture texture = uluaGetTexture( L, 1 );
+	Texture *texture = luaL_checkudata( L, 1, "Texture" );
 	Rectangle source = uluaGetRectangleIndex( L, 2 );
 
-	SetShapesTexture( texture, source );
-	lua_pushboolean( L, true );
+	SetShapesTexture( *texture, source );
 
-	return 1;
+	return 0;
 }
 
 /*

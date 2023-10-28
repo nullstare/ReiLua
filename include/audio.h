@@ -6,8 +6,6 @@ int laudioSetMasterVolume( lua_State *L );
 int laudioLoadSound( lua_State *L );
 int laudioLoadWave( lua_State *L );
 int laudioLoadSoundFromWave( lua_State *L );
-int laudioUnloadSound( lua_State *L );
-int laudioUnloadWave( lua_State *L );
 int laudioExportWave( lua_State *L );
 int laudioExportWaveAsCode( lua_State *L );
 /* Wave/Sound management. */

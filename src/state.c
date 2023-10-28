@@ -17,18 +17,6 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 	state->resolution = (Vector2){ 800, 600 };
 	state->luaState = NULL;
 	state->logLevelInvalid = LOG_ERROR;
-	/* Waves. */
-	state->waveAlloc = ALLOC_PAGE_SIZE;
-	state->waveCount = 0;
-	state->waves = malloc( state->waveAlloc * sizeof( Wave* ) );
-	/* Sounds. */
-	state->soundAlloc = ALLOC_PAGE_SIZE;
-	state->soundCount = 0;
-	state->sounds = malloc( state->soundAlloc * sizeof( Sound* ) );
-	/* Musics. */
-	state->musicAlloc = ALLOC_PAGE_SIZE;
-	state->musicCount = 0;
-	state->musics = malloc( state->musicAlloc * sizeof( Music* ) );
 	/* Meshes. */
 	state->meshAlloc = ALLOC_PAGE_SIZE;
 	state->meshCount = 0;
@@ -45,18 +33,11 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 	state->animationAlloc = ALLOC_PAGE_SIZE;
 	state->animationCount = 0;
 	state->animations = malloc( state->animationAlloc * sizeof( ModelAnimations* ) );
-	/* Lights. */
-	state->lightAlloc = ALLOC_PAGE_SIZE;
-	state->lightCount = 0;
-	state->lights = malloc( state->lightAlloc * sizeof( Light* ) );
 
 	for ( int i = 0; i < ALLOC_PAGE_SIZE; i++ ) {
-		state->waves[i] = NULL;
-		state->sounds[i] = NULL;
 		state->meshes[i] = NULL;
 		state->models[i] = NULL;
 		state->animations[i] = NULL;
-		state->lights[i] = NULL;
 
 		/* The ones we want to save the first. */
 		if ( 0 < i ) {
@@ -86,24 +67,6 @@ void stateInitInterpret( int argn, const char **argc ) {
 }
 
 void stateFree() {
-	for ( int i = 0; i < state->waveCount; ++i ) {
-		if ( state->waves[i] != NULL ) {
-			UnloadWave( *state->waves[i] );
-			free( state->waves[i] );
-		}
-	}
-	for ( int i = 0; i < state->soundCount; ++i ) {
-		if ( state->sounds[i] != NULL ) {
-			UnloadSound( *state->sounds[i] );
-			free( state->sounds[i] );
-		}
-	}
-	for ( int i = 0; i < state->musicCount; ++i ) {
-		if ( state->musics[i] != NULL ) {
-			UnloadMusicStream( *state->musics[i] );
-			free( state->musics[i] );
-		}
-	}
 	for ( int i = 0; i < state->modelCount; ++i ) {
 		if ( state->models[i] != NULL ) {
 			//TODO Test if UnloadModel causes segfaults on exit.
@@ -134,13 +97,6 @@ void stateFree() {
 		}
 	}
 	
-#if !defined( PLATFORM_RPI ) || !defined( PLATFORM_DRM )
-	for ( int i = 0; i < state->lightCount; ++i ) {
-		if ( state->lights[i] != NULL ) {
-			free( state->lights[i] );
-		}
-	}
-#endif
 	if ( IsAudioDeviceReady() ) {
 		CloseAudioDevice();
 	}
@@ -151,14 +107,10 @@ void stateFree() {
 	if ( state->hasWindow ) {
 		CloseWindow();
 	}
-	free( state->waves );
-	free( state->sounds );
-	free( state->musics );
 	free( state->meshes );
 	free( state->materials );
 	free( state->models );
 	free( state->animations );
-	free( state->lights );
 	free( state->exePath );
 	free( state );
 }

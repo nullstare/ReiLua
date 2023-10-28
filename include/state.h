@@ -15,18 +15,6 @@ typedef struct {
 	Vector2 resolution;
 	int logLevelInvalid;
 	/* Resources. */
-		/* Sounds. */
-	Wave **waves;
-	size_t waveCount;
-	size_t waveAlloc;
-		/* Sounds. */
-	Sound **sounds;
-	size_t soundCount;
-	size_t soundAlloc;
-		/* Music. */
-	Music **musics;
-	size_t musicCount;
-	size_t musicAlloc;
 		/* Meshes. */
 	Mesh **meshes;
 	size_t meshCount;
@@ -43,10 +31,6 @@ typedef struct {
 	ModelAnimations **animations;
 	size_t animationCount;
 	size_t animationAlloc;
-		/* Lights. */
-	Light **lights;
-	size_t lightCount;
-	size_t lightAlloc;
 	/* Raylib GLFW input callback events. */
 		/* Window events. */
 	GLFWwindowsizefun raylibWindowSizeCallback;

@@ -140,6 +140,69 @@ static void defineFont() {
 	lua_setfield( L, -2, "__gc" );
 }
 
+/* Wave. */
+static int gcWave( lua_State *L ) {
+	Wave *wave = luaL_checkudata ( L, 1, "Wave" );
+	printf( "gcWave\n" );
+
+	UnloadWave( *wave );
+}
+
+static void defineWave() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "Wave" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcWave );
+	lua_setfield( L, -2, "__gc" );
+}
+
+/* Sound. */
+static int gcSound( lua_State *L ) {
+	Sound *sound = luaL_checkudata ( L, 1, "Sound" );
+	printf( "gcSound\n" );
+
+	UnloadSound( *sound );
+}
+
+static void defineSound() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "Sound" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcSound );
+	lua_setfield( L, -2, "__gc" );
+}
+
+/* Music. */
+static int gcMusic( lua_State *L ) {
+	Music *music = luaL_checkudata ( L, 1, "Music" );
+	printf( "gcMusic\n" );
+
+	UnloadMusicStream( *music );
+}
+
+static void defineMusic() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "Music" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcMusic );
+	lua_setfield( L, -2, "__gc" );
+}
+
+/* Music. */
+static void defineLight() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "Light" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+}
+
 /* Assing globals. */
 
 static void assignGlobalInt( int value, const char *name ) {
@@ -1162,6 +1225,10 @@ bool luaInit( int argn, const char **argc ) {
 	defineCamera3D();
 	defineShader();
 	defineFont();
+	defineWave();
+	defineSound();
+	defineMusic();
+	defineLight();
 	/* Define globals. */
 	defineGlobals();
 
@@ -1777,8 +1844,6 @@ void luaRegister() {
 	assingGlobalFunction( "LoadSound", laudioLoadSound );
 	assingGlobalFunction( "LoadWave", laudioLoadWave );
 	assingGlobalFunction( "LoadSoundFromWave", laudioLoadSoundFromWave );
-	assingGlobalFunction( "UnloadSound", laudioUnloadSound );
-	assingGlobalFunction( "UnloadWave", laudioUnloadWave );
 	assingGlobalFunction( "ExportWave", laudioExportWave );
 	assingGlobalFunction( "ExportWaveAsCode", laudioExportWaveAsCode );
 		/* Wave/Sound management */
@@ -2897,6 +2962,30 @@ void uluaPushFont( lua_State *L, Font font ) {
 	Font *fontP = lua_newuserdata( L, sizeof( Font ) );
 	*fontP = font;
 	luaL_setmetatable( L, "Font" );
+}
+
+void uluaPushWave( lua_State *L, Wave wave ) {
+	Wave *waveP = lua_newuserdata( L, sizeof( Wave ) );
+	*waveP = wave;
+	luaL_setmetatable( L, "Wave" );
+}
+
+void uluaPushSound( lua_State *L, Sound sound ) {
+	Sound *soundP = lua_newuserdata( L, sizeof( Sound ) );
+	*soundP = sound;
+	luaL_setmetatable( L, "Sound" );
+}
+
+void uluaPushMusic( lua_State *L, Music music ) {
+	Music *musicP = lua_newuserdata( L, sizeof( Music ) );
+	*musicP = music;
+	luaL_setmetatable( L, "Music" );
+}
+
+void uluaPushLight( lua_State *L, Light light ) {
+	Light *lightP = lua_newuserdata( L, sizeof( Light ) );
+	*lightP = light;
+	luaL_setmetatable( L, "Light" );
 }
 
 int uluaGetTableLen( lua_State *L ) {

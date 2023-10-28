@@ -2814,7 +2814,7 @@ function RL.LoadFont( fileName ) end
 ---@return any font 
 function RL.LoadFontEx( fileName, fontSize, fontChars{} ) end
 
----Load font from Image ( XNA style )
+---Load font from Image ( XNA style)
 ---- Success return Font
 ---@param image any
 ---@param key table
@@ -3573,60 +3573,41 @@ function RL.GetRayCollisionQuad( ray, p1, p2, p3, p4 ) end
 
 -- Audio - Audio device management
 
----Set master volume ( listener )
----- Failure return false
----- Success return true
+---Set master volume (listener)
 ---@param volume number
----@return any success 
-function RL.SetMasterVolume( volume ) end
+---@return any RL.SetMasterVolume
+function  RL.SetMasterVolume( volume ) end
 
 -- Audio - Wave/Sound Loading
 
 ---Load sound from file
----- Failure return -1
----- Success return int
+---- Failure return nil
+---- Success return Sound
 ---@param fileName string
 ---@return any sound 
 function RL.LoadSound( fileName ) end
 
 ---Load wave data from file
----- Failure return -1
----- Success return int
+---- Failure return nil
+---- Success return Wave
 ---@param fileName string
 ---@return any wave 
 function RL.LoadWave( fileName ) end
 
 ---Load sound from wave data
----- Failure return -1
----- Success return int
+---- Success return Sound
 ---@param wave any
 ---@return any sound 
 function RL.LoadSoundFromWave( wave ) end
 
----Unload sound
----- Failure return false
----- Success return true
----@param sound any
----@return any success 
-function RL.UnloadSound( sound ) end
-
----Unload wave data
----- Failure return false
----- Success return true
----@param wave any
----@return any success 
-function RL.UnloadWave( wave ) end
-
 ---Export wave data to file, returns true on success
----- Failure return false
----- Success return true
+---- Success return bool
 ---@param wave any
 ---@param fileName string
 ---@return any success 
 function RL.ExportWave( wave, fileName ) end
 
 ---Export wave sample data to code (.h), returns true on success
----- Failure return false
 ---- Success return true
 ---@param wave any
 ---@param fileName string
@@ -3636,200 +3617,155 @@ function RL.ExportWaveAsCode( wave, fileName ) end
 -- Audio - Wave/Sound management
 
 ---Play a sound
----- Failure return false
----- Success return true
 ---@param sound any
----@return any success 
-function RL.PlaySound( sound ) end
+---@return any RL.PlaySound
+function  RL.PlaySound( sound ) end
 
 ---Stop playing a sound
----- Failure return false
----- Success return true
 ---@param sound any
----@return any success 
-function RL.StopSound( sound ) end
+---@return any RL.StopSound
+function  RL.StopSound( sound ) end
 
 ---Pause a sound
----- Failure return false
----- Success return true
 ---@param sound any
----@return any success 
-function RL.PauseSound( sound ) end
+---@return any RL.PauseSound
+function  RL.PauseSound( sound ) end
 
 ---Resume a paused sound
----- Failure return false
----- Success return true
 ---@param sound any
----@return any success 
-function RL.ResumeSound( sound ) end
+---@return any RL.ResumeSound
+function  RL.ResumeSound( sound ) end
 
 ---Check if a sound is currently playing
----- Failure return nil
 ---- Success return bool
 ---@param sound any
 ---@return any playing 
 function RL.IsSoundPlaying( sound ) end
 
----Set volume for a sound ( 1.0 is max level )
----- Failure return false
----- Success return true
+---Set volume for a sound (1.0 is max level)
 ---@param sound any
 ---@param volume number
----@return any success 
-function RL.SetSoundVolume( sound, volume ) end
+---@return any RL.SetSoundVolume
+function  RL.SetSoundVolume( sound, volume ) end
 
----Set pitch for a sound ( 1.0 is base level )
----- Failure return false
----- Success return true
+---Set pitch for a sound (1.0 is base level)
 ---@param sound any
 ---@param pitch number
----@return any success 
-function RL.SetSoundPitch( sound, pitch ) end
+---@return any RL.SetSoundPitch
+function  RL.SetSoundPitch( sound, pitch ) end
 
----Set pan for a sound ( 0.5 is center )
----- Failure return false
----- Success return true
+---Set pan for a sound (0.5 is center)
 ---@param sound any
 ---@param pan number
----@return any success 
-function RL.SetSoundPan( sound, pan ) end
+---@return any RL.SetSoundPan
+function  RL.SetSoundPan( sound, pan ) end
 
 ---Convert wave data to desired format
----- Failure return false
----- Success return true
 ---@param wave any
 ---@param sampleRate integer
 ---@param sampleSize integer
 ---@param channels integer
----@return any success 
-function RL.WaveFormat( wave, sampleRate, sampleSize, channels ) end
+---@return any RL.WaveFormat
+function  RL.WaveFormat( wave, sampleRate, sampleSize, channels ) end
 
 ---Copy a wave to a new wave
----- Failure return -1
----- Success return int
+---- Success return Wave
 ---@param wave any
 ---@return any wave 
 function RL.WaveCopy( wave ) end
 
 ---Crop a wave to defined samples range
----- Failure return false
----- Success return true
 ---@param wave any
 ---@param initSample integer
 ---@param finalSample integer
----@return any success 
-function RL.WaveCrop( wave, initSample, finalSample ) end
+---@return any RL.WaveCrop
+function  RL.WaveCrop( wave, initSample, finalSample ) end
 
 -- Audio - Music management
 
 ---Load music stream from file
----- Failure return -1
----- Success return int
+---- Success return Music
 ---@param fileName string
 ---@return any music 
 function RL.LoadMusicStream( fileName ) end
 
 ---Start music playing
----- Failure return false
----- Success return true
 ---@param music any
----@return any success 
-function RL.PlayMusicStream( music ) end
+---@return any RL.PlayMusicStream
+function  RL.PlayMusicStream( music ) end
 
 ---Check if music is playing
----- Failure return nil
 ---- Success return bool
 ---@param music any
 ---@return any playing 
 function RL.IsMusicStreamPlaying( music ) end
 
 ---Updates buffers for music streaming
----- Failure return false
----- Success return true
 ---@param music any
----@return any success 
-function RL.UpdateMusicStream( music ) end
+---@return any RL.UpdateMusicStream
+function  RL.UpdateMusicStream( music ) end
 
 ---Stop music playing
----- Failure return false
----- Success return true
 ---@param music any
----@return any success 
-function RL.StopMusicStream( music ) end
+---@return any RL.StopMusicStream
+function  RL.StopMusicStream( music ) end
 
 ---Pause music playing
----- Failure return false
----- Success return true
 ---@param music any
----@return any success 
-function RL.PauseMusicStream( music ) end
+---@return any RL.PauseMusicStream
+function  RL.PauseMusicStream( music ) end
 
 ---Resume playing paused music
----- Failure return false
----- Success return true
 ---@param music any
----@return any success 
-function RL.ResumeMusicStream( music ) end
+---@return any RL.ResumeMusicStream
+function  RL.ResumeMusicStream( music ) end
 
----Seek music to a position ( in seconds )
----- Failure return false
----- Success return true
+---Seek music to a position (in seconds)
 ---@param music any
 ---@param position number
----@return any success 
-function RL.SeekMusicStream( music, position ) end
+---@return any RL.SeekMusicStream
+function  RL.SeekMusicStream( music, position ) end
 
----Set volume for music ( 1.0 is max level )
----- Failure return false
----- Success return true
+---Set volume for music (1.0 is max level)
 ---@param music any
 ---@param volume number
----@return any success 
-function RL.SetMusicVolume( music, volume ) end
+---@return any RL.SetMusicVolume
+function  RL.SetMusicVolume( music, volume ) end
 
----Set pitch for a music ( 1.0 is base level )
----- Failure return false
----- Success return true
+---Set pitch for a music (1.0 is base level)
 ---@param music any
 ---@param pitch number
----@return any success 
-function RL.SetMusicPitch( music, pitch ) end
+---@return any RL.SetMusicPitch
+function  RL.SetMusicPitch( music, pitch ) end
 
----Set pan for a music ( 0.5 is center )
----- Failure return false
----- Success return true
+---Set pan for a music (0.5 is center)
 ---@param music any
 ---@param pan number
----@return any success 
-function RL.SetMusicPan( music, pan ) end
+---@return any RL.SetMusicPan
+function  RL.SetMusicPan( music, pan ) end
 
 ---Set looping for a music
----- Failure return false
----- Success return true
 ---@param music any
 ---@param looping boolean
----@return any success 
-function RL.SetMusicLooping( music, looping ) end
+---@return any RL.SetMusicLooping
+function  RL.SetMusicLooping( music, looping ) end
 
 ---Get looping of a music
----- Failure return nil
 ---- Success return bool
 ---@param music any
 ---@return any looping 
 function RL.GetMusicLooping( music ) end
 
----Get music time length ( in seconds )
----- Failure return false
+---Get music time length (in seconds)
 ---- Success return float
 ---@param music any
 ---@return any length 
 function RL.GetMusicTimeLength( music ) end
 
----Get current music time played ( in seconds )
----- Failure return false
+---Get current music time played (in seconds)
 ---- Success return float
 ---@param music any
----@return any played 
+---@return any timePlayed 
 function RL.GetMusicTimePlayed( music ) end
 
 -- Math - Utils
@@ -5189,8 +5125,7 @@ function RL.GuiCheckIconPixel( iconId, pos ) end
 -- Lights - Basics
 
 ---Create a light and get shader locations
----- Failure return -1
----- Success return int
+---- Success return Light
 ---@param type integer
 ---@param position table
 ---@param target table
@@ -5206,75 +5141,60 @@ function RL.CreateLight( type, position, target, color, shader ) end
 function  RL.UpdateLightValues( shader, light ) end
 
 ---Set light type
----- Failure return false
----- Success return true
 ---@param light any
 ---@param type integer
----@return any success 
-function RL.SetLightType( light, type ) end
+---@return any RL.SetLightType
+function  RL.SetLightType( light, type ) end
 
 ---Set light position
----- Failure return false
----- Success return true
 ---@param light any
 ---@param position table
----@return any success 
-function RL.SetLightPosition( light, position ) end
+---@return any RL.SetLightPosition
+function  RL.SetLightPosition( light, position ) end
 
 ---Set light target
----- Failure return false
----- Success return true
 ---@param light any
 ---@param target table
----@return any success 
-function RL.SetLightTarget( light, target ) end
+---@return any RL.SetLightTarget
+function  RL.SetLightTarget( light, target ) end
 
 ---Set light color
----- Failure return false
----- Success return true
 ---@param light any
 ---@param color table
----@return any success 
-function RL.SetLightColor( light, color ) end
+---@return any RL.SetLightColor
+function  RL.SetLightColor( light, color ) end
 
 ---Set light enabled
----- Failure return false
----- Success return true
 ---@param light any
 ---@param enabled boolean
----@return any success 
-function RL.SetLightEnabled( light, enabled ) end
+---@return any RL.SetLightEnabled
+function  RL.SetLightEnabled( light, enabled ) end
 
 ---Get light type
----- Failure return false
 ---- Success return int
 ---@param light any
 ---@return any type 
 function RL.GetLightType( light ) end
 
 ---Get light position
----- Failure return false
 ---- Success return Vector3
 ---@param light any
 ---@return any position 
 function RL.GetLightPosition( light ) end
 
 ---Get light target
----- Failure return false
 ---- Success return Vector3
 ---@param light any
 ---@return any target 
 function RL.GetLightTarget( light ) end
 
 ---Get light color
----- Failure return false
 ---- Success return Color
 ---@param light any
 ---@return any color 
 function RL.GetLightColor( light ) end
 
 ---Get light enabled
----- Failure return nil
 ---- Success return boolean
 ---@param light any
 ---@return any enabled 

@@ -15,7 +15,7 @@ Copy a block of pixels from one framebuffer object to another.
 Use -1 RenderTexture for window framebuffer.
 */
 int lglBlitFramebuffer( lua_State *L ) {
-	// TOCO Currently doesn't support setting window render target because of luaL_checkudata.
+	// TODO Currently doesn't support setting window render target because of luaL_checkudata.
 	RenderTexture *srcTex = luaL_checkudata( L, 1, "RenderTexture" );
 	RenderTexture *dstTex = luaL_checkudata( L, 2, "RenderTexture" );
 	Rectangle srcRect = uluaGetRectangleIndex( L, 3 );

@@ -33,7 +33,7 @@ int ltextLoadFont( lua_State *L ) {
 
 		return 1;
 	}
-	TraceLog( state->logLevelInvalid, "Invalid file path '%s'", lua_tostring( L, 1 ) );
+	TraceLog( state->logLevelInvalid, "Invalid file '%s'", lua_tostring( L, 1 ) );
 	lua_pushnil( L );
 
 	return 1;
@@ -73,7 +73,7 @@ int ltextLoadFontEx( lua_State *L ) {
 
 		return 1;
 	}
-	TraceLog( state->logLevelInvalid, "Invalid file path '%s'", lua_tostring( L, 1 ) );
+	TraceLog( state->logLevelInvalid, "Invalid file '%s'", lua_tostring( L, 1 ) );
 	lua_pushnil( L );
 
 	return 1;
@@ -82,7 +82,7 @@ int ltextLoadFontEx( lua_State *L ) {
 /*
 > font = RL.LoadFontFromImage( Image image, Color key, int firstChar )
 
-Load font from Image ( XNA style )
+Load font from Image ( XNA style)
 
 - Success return Font
 */

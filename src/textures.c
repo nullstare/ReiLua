@@ -21,7 +21,7 @@ int ltexturesLoadImage( lua_State *L ) {
 
 		return 1;
 	}
-	TraceLog( state->logLevelInvalid, "Invalid file path '%s'", lua_tostring( L, 1 ) );
+	TraceLog( state->logLevelInvalid, "Invalid file '%s'", lua_tostring( L, 1 ) );
 	lua_pushnil( L );
 
 	return 1;
@@ -929,7 +929,7 @@ int ltexturesLoadTexture( lua_State *L ) {
 
 		return 1;
 	}
-	TraceLog( state->logLevelInvalid, "Invalid file path '%s'", lua_tostring( L, 1 ) );
+	TraceLog( state->logLevelInvalid, "Invalid file '%s'", lua_tostring( L, 1 ) );
 	lua_pushnil( L );
 
 	return 1;

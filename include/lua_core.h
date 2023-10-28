@@ -75,6 +75,10 @@ void uluaPushCamera2D( lua_State *L, Camera2D camera );
 void uluaPushCamera3D( lua_State *L, Camera3D camera );
 void uluaPushShader( lua_State *L, Shader shader );
 void uluaPushFont( lua_State *L, Font font );
+void uluaPushWave( lua_State *L, Wave wave );
+void uluaPushSound( lua_State *L, Sound sound );
+void uluaPushMusic( lua_State *L, Music music );
+void uluaPushLight( lua_State *L, Light light );
 
 int uluaGetTableLen( lua_State *L );
 int uluaGetTableLenIndex( lua_State *L, int index );

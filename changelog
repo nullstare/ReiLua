@@ -14,7 +14,9 @@ DETAILED CHANGES:
 	- ADDED: GetRenderTextureTexture and GetRenderTextureDepthTexture.
 	- REMOVED: UnloadCamera2D and UnloadCamera3D.
 	- REMOVED: UnloadShader.
+	- REMOVED: UnloadFont.
 	- ADDED: LoadFontEx takes also fontChars.
+	- REMOVED: UnloadWave and UnloadSound.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.5.0		Using Raylib 4.5

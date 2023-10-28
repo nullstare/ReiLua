@@ -3879,7 +3879,7 @@ Load font from file with extended parameters. Loading the default character set
 
 > font = RL.LoadFontFromImage( Image image, Color key, int firstChar )
 
-Load font from Image ( XNA style )
+Load font from Image ( XNA style)
 
 - Success return Font
 
@@ -4646,12 +4646,9 @@ Get collision info between ray and quad
 
 ---
 
-> success = RL.SetMasterVolume( float volume )
+> RL.SetMasterVolume( float volume )
 
-Set master volume ( listener )
-
-- Failure return false
-- Success return true
+Set master volume (listener)
 
 ---
 
@@ -4663,8 +4660,8 @@ Set master volume ( listener )
 
 Load sound from file
 
-- Failure return -1
-- Success return int
+- Failure return nil
+- Success return Sound
 
 ---
 
@@ -4672,8 +4669,8 @@ Load sound from file
 
 Load wave data from file
 
-- Failure return -1
-- Success return int
+- Failure return nil
+- Success return Wave
 
 ---
 
@@ -4681,26 +4678,7 @@ Load wave data from file
 
 Load sound from wave data
 
-- Failure return -1
-- Success return int
-
----
-
-> success = RL.UnloadSound( Sound sound )
-
-Unload sound
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.UnloadWave( Wave wave )
-
-Unload wave data
-
-- Failure return false
-- Success return true
+- Success return Sound
 
 ---
 
@@ -4708,8 +4686,7 @@ Unload wave data
 
 Export wave data to file, returns true on success
 
-- Failure return false
-- Success return true
+- Success return bool
 
 ---
 
@@ -4717,7 +4694,6 @@ Export wave data to file, returns true on success
 
 Export wave sample data to code (.h), returns true on success
 
-- Failure return false
 - Success return true
 
 ---
@@ -4726,39 +4702,27 @@ Export wave sample data to code (.h), returns true on success
 
 ---
 
-> success = RL.PlaySound( Sound sound )
+> RL.PlaySound( Sound sound )
 
 Play a sound
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.StopSound( Sound sound )
+> RL.StopSound( Sound sound )
 
 Stop playing a sound
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.PauseSound( Sound sound )
+> RL.PauseSound( Sound sound )
 
 Pause a sound
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ResumeSound( Sound sound )
+> RL.ResumeSound( Sound sound )
 
 Resume a paused sound
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -4766,44 +4730,31 @@ Resume a paused sound
 
 Check if a sound is currently playing
 
-- Failure return nil
 - Success return bool
 
 ---
 
-> success = RL.SetSoundVolume( Sound sound, float volume )
+> RL.SetSoundVolume( Sound sound, float volume )
 
-Set volume for a sound ( 1.0 is max level )
-
-- Failure return false
-- Success return true
+Set volume for a sound (1.0 is max level)
 
 ---
 
-> success = RL.SetSoundPitch( Sound sound, float pitch )
+> RL.SetSoundPitch( Sound sound, float pitch )
 
-Set pitch for a sound ( 1.0 is base level )
-
-- Failure return false
-- Success return true
+Set pitch for a sound (1.0 is base level)
 
 ---
 
-> success = RL.SetSoundPan( Sound sound, float pan )
+> RL.SetSoundPan( Sound sound, float pan )
 
-Set pan for a sound ( 0.5 is center )
-
-- Failure return false
-- Success return true
+Set pan for a sound (0.5 is center)
 
 ---
 
-> success = RL.WaveFormat( Wave wave, int sampleRate, int sampleSize, int channels )
+> RL.WaveFormat( Wave wave, int sampleRate, int sampleSize, int channels )
 
 Convert wave data to desired format
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -4811,17 +4762,13 @@ Convert wave data to desired format
 
 Copy a wave to a new wave
 
-- Failure return -1
-- Success return int
+- Success return Wave
 
 ---
 
-> success = RL.WaveCrop( Wave wave, int initSample, int finalSample )
+> RL.WaveCrop( Wave wave, int initSample, int finalSample )
 
 Crop a wave to defined samples range
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -4833,17 +4780,13 @@ Crop a wave to defined samples range
 
 Load music stream from file
 
-- Failure return -1
-- Success return int
+- Success return Music
 
 ---
 
-> success = RL.PlayMusicStream( Music music )
+> RL.PlayMusicStream( Music music )
 
 Start music playing
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -4851,89 +4794,61 @@ Start music playing
 
 Check if music is playing
 
-- Failure return nil
 - Success return bool
 
 ---
 
-> success = RL.UpdateMusicStream( Music music )
+> RL.UpdateMusicStream( Music music )
 
 Updates buffers for music streaming
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.StopMusicStream( Music music )
+> RL.StopMusicStream( Music music )
 
 Stop music playing
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.PauseMusicStream( Music music )
+> RL.PauseMusicStream( Music music )
 
 Pause music playing
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.ResumeMusicStream( Music music )
+> RL.ResumeMusicStream( Music music )
 
 Resume playing paused music
 
-- Failure return false
-- Success return true
+---
+
+> RL.SeekMusicStream( Music music, float position )
+
+Seek music to a position (in seconds)
 
 ---
 
-> success = RL.SeekMusicStream( Music music, float position )
+> RL.SetMusicVolume( Music music, float volume )
 
-Seek music to a position ( in seconds )
-
-- Failure return false
-- Success return true
+Set volume for music (1.0 is max level)
 
 ---
 
-> success = RL.SetMusicVolume( Music music, float volume )
+> RL.SetMusicPitch( Music music, float pitch )
 
-Set volume for music ( 1.0 is max level )
-
-- Failure return false
-- Success return true
+Set pitch for a music (1.0 is base level)
 
 ---
 
-> success = RL.SetMusicPitch( Music music, float pitch )
+> RL.SetMusicPan( Music music, float pan )
 
-Set pitch for a music ( 1.0 is base level )
-
-- Failure return false
-- Success return true
+Set pan for a music (0.5 is center)
 
 ---
 
-> success = RL.SetMusicPan( Music music, float pan )
-
-Set pan for a music ( 0.5 is center )
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.SetMusicLooping( Music music, bool looping )
+> RL.SetMusicLooping( Music music, bool looping )
 
 Set looping for a music
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -4941,25 +4856,22 @@ Set looping for a music
 
 Get looping of a music
 
-- Failure return nil
 - Success return bool
 
 ---
 
 > length = RL.GetMusicTimeLength( Music music )
 
-Get music time length ( in seconds )
+Get music time length (in seconds)
 
-- Failure return false
 - Success return float
 
 ---
 
-> played = RL.GetMusicTimePlayed( Music music )
+> timePlayed = RL.GetMusicTimePlayed( Music music )
 
-Get current music time played ( in seconds )
+Get current music time played (in seconds)
 
-- Failure return false
 - Success return float
 
 ---
@@ -6466,8 +6378,7 @@ Check icon pixel value
 
 Create a light and get shader locations
 
-- Failure return -1
-- Success return int
+- Success return Light
 
 ---
 
@@ -6477,48 +6388,33 @@ Send light properties to shader
 
 ---
 
-> success = RL.SetLightType( Light light, int type )
+> RL.SetLightType( Light light, int type )
 
 Set light type
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.SetLightPosition( Light light, Vector3 position )
+> RL.SetLightPosition( Light light, Vector3 position )
 
 Set light position
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.SetLightTarget( Light light, Vector3 target )
+> RL.SetLightTarget( Light light, Vector3 target )
 
 Set light target
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.SetLightColor( Light light, Color color )
+> RL.SetLightColor( Light light, Color color )
 
 Set light color
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.SetLightEnabled( Light light, bool enabled )
+> RL.SetLightEnabled( Light light, bool enabled )
 
 Set light enabled
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -6526,7 +6422,6 @@ Set light enabled
 
 Get light type
 
-- Failure return false
 - Success return int
 
 ---
@@ -6535,7 +6430,6 @@ Get light type
 
 Get light position
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -6544,7 +6438,6 @@ Get light position
 
 Get light target
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -6553,7 +6446,6 @@ Get light target
 
 Get light color
 
-- Failure return false
 - Success return Color
 
 ---
@@ -6562,7 +6454,6 @@ Get light color
 
 Get light enabled
 
-- Failure return nil
 - Success return boolean
 
 ---

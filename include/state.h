@@ -13,13 +13,8 @@ typedef struct {
 	bool run;
 	lua_State *luaState;
 	Vector2 resolution;
-	size_t guiFont;
 	int logLevelInvalid;
 	/* Resources. */
-		/* Fonts. */
-	Font **fonts;
-	size_t fontCount;
-	size_t fontAlloc;
 		/* Sounds. */
 	Wave **waves;
 	size_t waveCount;

@@ -16,12 +16,7 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 	state->run = true;
 	state->resolution = (Vector2){ 800, 600 };
 	state->luaState = NULL;
-	state->guiFont = 0;
 	state->logLevelInvalid = LOG_ERROR;
-	/* Fonts. */
-	state->fontAlloc = ALLOC_PAGE_SIZE;
-	state->fontCount = 1;
-	state->fonts = malloc( state->fontAlloc * sizeof( Font* ) );
 	/* Waves. */
 	state->waveAlloc = ALLOC_PAGE_SIZE;
 	state->waveCount = 0;
@@ -65,7 +60,6 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 
 		/* The ones we want to save the first. */
 		if ( 0 < i ) {
-			state->fonts[i] = NULL;
 			state->materials[i] = NULL;
 		}
 	}
@@ -73,8 +67,6 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 	/* Has to be after InitWindod where opengl context is created. */
 	state->materials[0] = malloc( sizeof( Material ) );
 	*state->materials[0] = LoadMaterialDefault();
-	state->fonts[0] = malloc( sizeof( Font ) );
-	*state->fonts[0] = GetFontDefault();
 
 	if ( !IsWindowReady() ) {
 		state->hasWindow = false;
@@ -94,12 +86,6 @@ void stateInitInterpret( int argn, const char **argc ) {
 }
 
 void stateFree() {
-	for ( int i = 0; i < state->fontCount; ++i ) {
-		if ( state->fonts[i] != NULL ) {
-			UnloadFont( *state->fonts[i] );
-			free( state->fonts[i] );
-		}
-	}
 	for ( int i = 0; i < state->waveCount; ++i ) {
 		if ( state->waves[i] != NULL ) {
 			UnloadWave( *state->waves[i] );
@@ -165,7 +151,6 @@ void stateFree() {
 	if ( state->hasWindow ) {
 		CloseWindow();
 	}
-	free( state->fonts );
 	free( state->waves );
 	free( state->sounds );
 	free( state->musics );

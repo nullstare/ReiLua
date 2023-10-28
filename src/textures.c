@@ -924,7 +924,7 @@ Load texture from file into GPU memory ( VRAM )
 - Success return Texture
 */
 int ltexturesLoadTexture( lua_State *L ) {
-	if ( FileExists( lua_tostring( L, 1 ) ) ) {
+	if ( FileExists( luaL_checkstring( L, 1 ) ) ) {
 		uluaPushTexture( L, LoadTexture( lua_tostring( L, 1 ) ) );
 
 		return 1;

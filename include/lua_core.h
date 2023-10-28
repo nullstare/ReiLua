@@ -74,6 +74,7 @@ void uluaPushRenderTexture( lua_State *L, RenderTexture renderTexture );
 void uluaPushCamera2D( lua_State *L, Camera2D camera );
 void uluaPushCamera3D( lua_State *L, Camera3D camera );
 void uluaPushShader( lua_State *L, Shader shader );
+void uluaPushFont( lua_State *L, Font font );
 
 int uluaGetTableLen( lua_State *L );
 int uluaGetTableLenIndex( lua_State *L, int index );

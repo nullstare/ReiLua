@@ -11,7 +11,6 @@ function RL.init()
 	print( "path", path )
 
 	texture = RL.LoadTexture( path )
-
 	print( "texture", texture )
 end
 
@@ -33,5 +32,5 @@ end
 function RL.draw()
 	RL.ClearBackground( RL.RAYWHITE )
 	RL.DrawTexture( texture, { 20, 20 }, RL.WHITE )
-    RL.DrawText( 0, text, textPos, 20, 2, textColor )
+    RL.DrawText( RL.fontDefault, text, textPos, 20, 2, textColor )
 end

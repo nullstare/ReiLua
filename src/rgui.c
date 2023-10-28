@@ -129,26 +129,16 @@ int lguiGuiGetState( lua_State *L ) {
 */
 
 /*
-> success = RL.GuiSetFont( Font font )
+> RL.GuiSetFont( Font font )
 
-Set gui custom font ( global state )
-
-- Failure return false
-- Success return true
+Set gui custom font (global state)
 */
 int lguiGuiSetFont( lua_State *L ) {
-	if ( !lua_isnumber( L, 1 ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.GuiSetFont( Font font )" );
-		lua_pushboolean( L, false );
-		return 1;
-	}
-	size_t fontId = lua_tointeger( L, 1 );
-	state->guiFont = fontId;
+	Font *font = luaL_checkudata( L, 1, "Font" );
 
-	GuiSetFont( *state->fonts[ fontId ] );
-	lua_pushboolean( L, true );
+	GuiSetFont( *font );
 
-	return 1;
+	return 0;
 }
 
 /*
@@ -159,7 +149,7 @@ Get gui custom font ( global state )
 - Success return int
 */
 int lguiGuiGetFont( lua_State *L ) {
-	lua_pushinteger( L, state->guiFont );
+	uluaPushFont( L, GuiGetFont() );
 
 	return 1;
 }

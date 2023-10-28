@@ -2794,61 +2794,52 @@ function RL.GetPixelDataSize( width, height, format ) end
 
 -- Text - Loading
 
----Load font from file into GPU memory ( VRAM )
----- Failure return -1
----- Success return int
+---Get the default Font
+---@return any RL.GetFontDefault
+function  RL.GetFontDefault() end
+
+---Load font from file into GPU memory (VRAM)
+---- Failure return nil
+---- Success return Font
 ---@param fileName string
 ---@return any font 
 function RL.LoadFont( fileName ) end
 
 ---Load font from file with extended parameters. Loading the default character set
----- Failure return -1
----- Success return int
+---- Failure return nil
+---- Success return Font
 ---@param fileName string
 ---@param fontSize integer
+---@param fontChars{} integer
 ---@return any font 
-function RL.LoadFontEx( fileName, fontSize ) end
+function RL.LoadFontEx( fileName, fontSize, fontChars{} ) end
 
 ---Load font from Image ( XNA style )
----- Failure return -1
----- Success return int
+---- Success return Font
 ---@param image any
 ---@param key table
 ---@param firstChar integer
 ---@return any font 
 function RL.LoadFontFromImage( image, key, firstChar ) end
 
----Unload Font from GPU memory ( VRAM )
----- Failure return false
----- Success return true
----@param font any
----@return any success 
-function RL.UnloadFont( font ) end
-
 -- Text - Draw
 
 ---Draw current FPS
----- Failure return false
----- Success return true
 ---@param pos table
----@return any success 
-function RL.DrawFPS( pos ) end
+---@return any RL.DrawFPS
+function  RL.DrawFPS( pos ) end
 
 ---Draw text using font and additional parameters
----- Failure return false
----- Success return true
 ---@param font any
 ---@param text string
 ---@param position table
 ---@param fontSize number
 ---@param spacing number
 ---@param tint table
----@return any success 
-function RL.DrawText( font, text, position, fontSize, spacing, tint ) end
+---@return any RL.DrawText
+function  RL.DrawText( font, text, position, fontSize, spacing, tint ) end
 
----Draw text using Font and pro parameters ( rotation )
----- Failure return false
----- Success return true
+---Draw text using Font and pro parameters (rotation)
 ---@param font any
 ---@param text string
 ---@param position table
@@ -2857,13 +2848,12 @@ function RL.DrawText( font, text, position, fontSize, spacing, tint ) end
 ---@param fontSize number
 ---@param spacing number
 ---@param tint table
----@return any success 
-function RL.DrawTextPro( font, text, position, origin, rotation, fontSize, spacing, tint ) end
+---@return any RL.DrawTextPro
+function  RL.DrawTextPro( font, text, position, origin, rotation, fontSize, spacing, tint ) end
 
 -- Text - Misc
 
 ---Measure string size for Font
----- Failure return false
 ---- Success return Vector2
 ---@param font any
 ---@param text string
@@ -2872,32 +2862,28 @@ function RL.DrawTextPro( font, text, position, origin, rotation, fontSize, spaci
 ---@return any size 
 function RL.MeasureText( font, text, fontSize, spacing ) end
 
----Get font base size ( default chars height )
----- Failure return false
+---Get font base size (default chars height)
 ---- Success return int
 ---@param font any
 ---@return any baseSize 
 function RL.GetFontBaseSize( font ) end
 
 ---Get font number of glyph characters
----- Failure return false
 ---- Success return int
 ---@param font any
 ---@return any glyphCount 
 function RL.GetFontGlyphCount( font ) end
 
 ---Get font padding around the glyph characters
----- Failure return false
 ---- Success return int
 ---@param font any
 ---@return any glyphPadding 
 function RL.GetFontGlyphPadding( font ) end
 
----Get font texture atlas containing the glyphs. NOTE! Texture in table form.
----- Failure return false
----- Success return table
+---Get font texture atlas containing the glyphs.
+---- Success return Texture
 ---@param font any
----@return any textureTable 
+---@return any texture 
 function RL.GetFontTexture( font ) end
 
 -- Models - Basic
@@ -4784,12 +4770,10 @@ function RL.GuiGetState() end
 
 -- Gui - Font
 
----Set gui custom font ( global state )
----- Failure return false
----- Success return true
+---Set gui custom font (global state)
 ---@param font any
----@return any success 
-function RL.GuiSetFont( font ) end
+---@return any RL.GuiSetFont
+function  RL.GuiSetFont( font ) end
 
 ---Get gui custom font ( global state )
 ---- Success return int

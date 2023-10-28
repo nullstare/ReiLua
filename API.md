@@ -3853,21 +3853,27 @@ Get pixel data size in bytes for certain format
 
 ---
 
-> font = RL.LoadFont( string fileName )
+> RL.GetFontDefault()
 
-Load font from file into GPU memory ( VRAM )
-
-- Failure return -1
-- Success return int
+Get the default Font
 
 ---
 
-> font = RL.LoadFontEx( string fileName, int fontSize )
+> font = RL.LoadFont( string fileName )
+
+Load font from file into GPU memory (VRAM)
+
+- Failure return nil
+- Success return Font
+
+---
+
+> font = RL.LoadFontEx( string fileName, int fontSize, int fontChars{} )
 
 Load font from file with extended parameters. Loading the default character set
 
-- Failure return -1
-- Success return int
+- Failure return nil
+- Success return Font
 
 ---
 
@@ -3875,17 +3881,7 @@ Load font from file with extended parameters. Loading the default character set
 
 Load font from Image ( XNA style )
 
-- Failure return -1
-- Success return int
-
----
-
-> success = RL.UnloadFont( Font font )
-
-Unload Font from GPU memory ( VRAM )
-
-- Failure return false
-- Success return true
+- Success return Font
 
 ---
 
@@ -3893,30 +3889,21 @@ Unload Font from GPU memory ( VRAM )
 
 ---
 
-> success = RL.DrawFPS( Vector2 pos )
+> RL.DrawFPS( Vector2 pos )
 
 Draw current FPS
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawText( Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
+> RL.DrawText( Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
 
 Draw text using font and additional parameters
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawTextPro( Font font, string text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint )
+> RL.DrawTextPro( Font font, string text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint )
 
-Draw text using Font and pro parameters ( rotation )
-
-- Failure return false
-- Success return true
+Draw text using Font and pro parameters (rotation)
 
 ---
 
@@ -3928,16 +3915,14 @@ Draw text using Font and pro parameters ( rotation )
 
 Measure string size for Font
 
-- Failure return false
 - Success return Vector2
 
 ---
 
 > baseSize = RL.GetFontBaseSize( Font font )
 
-Get font base size ( default chars height )
+Get font base size (default chars height)
 
-- Failure return false
 - Success return int
 
 ---
@@ -3946,7 +3931,6 @@ Get font base size ( default chars height )
 
 Get font number of glyph characters
 
-- Failure return false
 - Success return int
 
 ---
@@ -3955,17 +3939,15 @@ Get font number of glyph characters
 
 Get font padding around the glyph characters
 
-- Failure return false
 - Success return int
 
 ---
 
-> textureTable = RL.GetFontTexture( Font font )
+> texture = RL.GetFontTexture( Font font )
 
-Get font texture atlas containing the glyphs. NOTE! Texture in table form.
+Get font texture atlas containing the glyphs.
 
-- Failure return false
-- Success return table
+- Success return Texture
 
 ---
 
@@ -6067,12 +6049,9 @@ Get gui state ( global state )
 
 ---
 
-> success = RL.GuiSetFont( Font font )
+> RL.GuiSetFont( Font font )
 
-Set gui custom font ( global state )
-
-- Failure return false
-- Success return true
+Set gui custom font (global state)
 
 ---
 

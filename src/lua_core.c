@@ -122,6 +122,24 @@ static void defineShader() {
 	lua_setfield( L, -2, "__gc" );
 }
 
+/* Font. */
+static int gcFont( lua_State *L ) {
+	Font *font = luaL_checkudata ( L, 1, "Font" );
+	printf( "gcFont\n" );
+
+	UnloadFont( *font );
+}
+
+static void defineFont() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "Font" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcFont );
+	lua_setfield( L, -2, "__gc" );
+}
+
 /* Assing globals. */
 
 static void assignGlobalInt( int value, const char *name ) {
@@ -160,6 +178,9 @@ static void defineGlobals() {
 	lua_newtable( L );
 	lua_setglobal( L, "RL" );
 	lua_getglobal( L, "RL" );
+
+	uluaPushFont( L, GetFontDefault() );
+	lua_setfield( L, -2, "fontDefault" );
 
 /*DOC_START*/
 	/* ConfigFlags */
@@ -1130,10 +1151,8 @@ bool luaInit( int argn, const char **argc ) {
 
 	if ( L == NULL ) {
 		TraceLog( LOG_WARNING, "%s", "Failed to init Lua" );
-
 		return false;
 	}
-	defineGlobals();
 	/* Define object types. */
 	defineBuffer();
 	defineImage();
@@ -1142,6 +1161,9 @@ bool luaInit( int argn, const char **argc ) {
 	defineCamera2D();
 	defineCamera3D();
 	defineShader();
+	defineFont();
+	/* Define globals. */
+	defineGlobals();
 
 	/* Set arguments. */
 	lua_getglobal( L, "RL" );
@@ -1733,10 +1755,10 @@ void luaRegister() {
 
 	/* Text. */
 		/* Loading. */
+	assingGlobalFunction( "GetFontDefault", ltextGetFontDefault );
 	assingGlobalFunction( "LoadFont", ltextLoadFont );
 	assingGlobalFunction( "LoadFontEx", ltextLoadFontEx );
 	assingGlobalFunction( "LoadFontFromImage", ltextLoadFontFromImage );
-	assingGlobalFunction( "UnloadFont", ltextUnloadFont );
 		/* Drawing. */
 	assingGlobalFunction( "DrawFPS", ltextDrawFPS );
 	assingGlobalFunction( "DrawText", ltextDrawText );
@@ -2869,6 +2891,12 @@ void uluaPushShader( lua_State *L, Shader shader ) {
 	Shader *shaderP = lua_newuserdata( L, sizeof( Shader ) );
 	*shaderP = shader;
 	luaL_setmetatable( L, "Shader" );
+}
+
+void uluaPushFont( lua_State *L, Font font ) {
+	Font *fontP = lua_newuserdata( L, sizeof( Font ) );
+	*fontP = font;
+	luaL_setmetatable( L, "Font" );
 }
 
 int uluaGetTableLen( lua_State *L ) {

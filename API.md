@@ -45,6 +45,284 @@ This function will be called on program close. Cleanup could be done here.
 
 Arguments are stored in 'RL.arg' array.
 
+## Types
+
+Raylib structs in Lua
+
+---
+
+> Vector2 = { 1.0, 1.0 } or { x = 1.0, y = 1.0 }
+
+Vector2, 2 components
+
+---
+
+> Vector3 = { 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0 }
+
+Vector3, 3 components
+
+---
+
+> Vector4 = { 1.0, 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0, w = 1.0 }
+
+Vector4, 4 components
+
+---
+
+> Quaternion = { 1.0, 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0, w = 1.0 }
+
+Quaternion, 4 components (Vector4 alias)
+
+---
+
+> Matrix = { { 1.0, 0.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0, 0.0 }, { 0.0, 0.0, 1.0, 0.0 }, { 0.0, 0.0, 0.0, 1.0 } }
+
+Matrix, 4x4 components, column major, OpenGL style, right-handed. Identity matrix example
+
+---
+
+> Color = { 255, 255, 255, 255 } or { r = 255, g = 255, b = 255, a = 255 }
+
+Color, 4 components, R8G8B8A8 (32bit)
+
+---
+
+> Rectangle = { 0.0, 0.0, 1.0, 1.0 } or { x = 0.0, y = 0.0, width = 1.0, height = 1.0 }
+
+Rectangle, 4 components
+
+---
+
+> Image = Userdata
+
+Image, pixel data stored in CPU memory (RAM)
+
+---
+
+> Texture = Userdata
+
+Texture, tex data stored in GPU memory (VRAM)
+```
+textureData = {
+	id = unsigned int,		--OpenGL texture id
+	width = int,			--Texture base width
+	height = int,			--Texture base height
+	mipmaps = int,			--Mipmap levels, 1 by default
+	format = int			--Data format (PixelFormat type)
+}
+```
+
+---
+
+> RenderTexture = Userdata
+
+RenderTexture, fbo for texture rendering
+```
+renderTextureData = {
+	id = unsigned int,		--OpenGL texture id
+	texture = Texture,		--Texture base width
+	depth = Texture,		--Texture base height
+}
+```
+
+---
+
+> Font = Userdata
+
+Font, font texture and GlyphInfo array data
+
+---
+
+> Camera2D = Userdata
+
+Camera2D, defines position/orientation in 2d space
+
+---
+
+> Camera3D = Userdata
+
+Camera, defines position/orientation in 3d space
+
+---
+
+> Mesh = Userdata
+
+Mesh, vertex data and vao/vbo
+
+```
+meshData = {
+	vertices = Vector3{},		--Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
+	texcoords = Vector2{},		--Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
+	texcoords2 = Vector2{},		--Vertex texture second coordinates (UV - 2 components per vertex) (shader-location = 5)
+	normals = Vector3{},		--Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)
+	tangents = Vector4{},		--Vertex tangents (XYZW - 4 components per vertex) (shader-location = 4)
+	colors = Color{},			--Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
+	indices = int{}				--Vertex indices (in case vertex data comes indexed)
+}
+```
+
+---
+
+> Material = Userdata
+
+Material, includes shader and maps
+
+```
+materialData = {
+	shader = Shader,
+	maps = {									--Material maps array (MAX_MATERIAL_MAPS)
+		{
+    		MATERIAL_MAP_*,						--Example MATERIAL_MAP_ALBEDO
+			{
+    			texture = Texture,				--Material map texture
+        		color = Color,					--Material map color
+        		value = float,					--Material map value
+      		},
+    	},
+    	...
+  	},
+  	params = { float, float, float, float }		--Material generic parameters (if required)
+}
+```
+
+---
+
+> Model = Userdata
+
+Model, meshes, materials and animation data
+
+---
+
+> Ray = { { 0.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0 } } or { position = { 0.0, 0.0, 0.0 }, direction = { 1.0, 0.0, 0.0 } }
+
+Ray, ray for raycasting
+
+---
+
+> RayCollision = { hit = true, distance = 1.0, point = { 0.0, 0.0, 0.0 }, normal = { 0.0, 0.0, 1.0 } }
+
+RayCollision, ray hit information
+
+---
+
+> BoundingBox = { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } } or { min = { 0.0, 0.0, 0.0 }, max = { 1.0, 1.0, 1.0 } }
+
+BoundingBox
+
+---
+
+> Wave = Userdata
+
+Wave, audio wave data
+
+---
+
+> Sound = Userdata
+
+Sound
+
+---
+
+> Music = Userdata
+
+Music, audio stream, anything longer than ~10 seconds should be streamed
+
+---
+
+> NPatchInfo = { { 0, 0, 24, 24 }, 8, 8, 8, 8, NPATCH_NINE_PATCH } or { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = NPATCH_NINE_PATCH }
+
+NPatchInfo, n-patch layout info
+
+---
+
+> ModelAnimations = Userdata
+
+ModelAnimation
+
+---
+
+> Buffer = Buffer userdata
+
+Data buffer for C primitive types. Type should be one of the Buffer types.
+
+---
+
+## Events
+
+Content of event table received by RL.event.
+
+### Window events
+
+---
+> { type: RL.EVENT_WINDOW_SIZE, int width, int height }
+
+ WindowSize Callback, runs when window is resized.
+
+---
+
+> { type RL.EVENT_WINDOW_MAXIMIZE, int maximized }
+
+ Window Maximize Callback, runs when window is maximized.
+
+---
+
+> { type RL.EVENT_WINDOW_ICONYFY, int iconified }
+
+ WindowIconify Callback, runs when window is minimized/restored.
+
+---
+
+> { type RL.EVENT_WINDOW_FOCUS, int focused }
+
+ WindowFocus Callback, runs when window get/lose focus.
+
+---
+
+> { type RL.EVENT_WINDOW_DROP, int count, string{} paths }
+
+ Window Drop Callback, runs when drop files into window.
+
+---
+
+### Input events
+
+---
+> { type: RL.EVENT_KEY, int key, int scancode, int action, int mods }
+
+ Keyboard Callback, runs on key pressed.
+
+---
+
+> { type RL.EVENT_CHAR, int key }
+
+ Char Key Callback, runs on key pressed (get char value).
+
+---
+
+> { type RL.EVENT_MOUSE_BUTTON, int button, int action, int mods }
+
+ Mouse Button Callback, runs on mouse button pressed.
+
+---
+
+> { type RL.EVENT_MOUSE_CURSOR_POS, number x, number y }
+
+ Cursor Position Callback, runs on mouse move.
+
+---
+
+> { type RL.EVENT_MOUSE_SCROLL, number xoffset, number yoffset }
+
+ Srolling Callback, runs on mouse wheel.
+
+---
+
+> { type RL.EVENT_CURSOR_ENTER, int enter }
+
+ Cursor Enter Callback, cursor enters client area.
+
+---
+
 ## Globals - ConfigFlags
 FLAG_VSYNC_HINT = 64
 
@@ -1208,257 +1486,6 @@ EVENT_MOUSE_SCROLL = 9
 EVENT_CURSOR_ENTER = 10
 
 
-## Types
-
-Raylib structs in Lua
-
----
-
-> Vector2 = { 1.0, 1.0 } or { x = 1.0, y = 1.0 }
-
-Vector2 type
-
----
-
-> Vector3 = { 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0 }
-
-Vector3 type
-
----
-
-> Vector4 = { 1.0, 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0, w = 1.0 }
-
-Vector4 type
-
----
-
-> Quaternion = { 1.0, 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0, w = 1.0 }
-
-Quaternion type
-
----
-
-> Matrix = { { 1.0, 0.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0, 0.0 }, { 0.0, 0.0, 1.0, 0.0 }, { 0.0, 0.0, 0.0, 1.0 } }
-
-OpenGL style 4x4. Identity matrix example
-
----
-
-> Color = { 255, 255, 255, 255 } or { r = 255, g = 255, b = 255, a = 255 }
-
-{ r, g, b ,a }. Color type, RGBA (32bit)
-
----
-
-> Rectangle = { 0.0, 0.0, 1.0, 1.0 } or { x = 0.0, y = 0.0, width = 1.0, height = 1.0 }
-
-{ x, y, width ,height }. Rectangle type
-
----
-
-> Image = ImageId
-
-int id. Image type (multiple pixel formats supported). NOTE: Data stored in CPU memory (RAM)
-
----
-
-> Texture = TextureId or { id, width, height, mipmaps, format }
-
-int id. Texture type (multiple internal formats supported). NOTE: Data stored in GPU memory (VRAM)
-
----
-
-> RenderTexture = RenderTextureId or { id, texture, depth }
-
-int id. RenderTexture type, for texture rendering
-
----
-
-> Font = FontId
-
-int id. Font type, includes texture and chars data
-
----
-
-> Camera2D = CameraId or { offset, target, rotation, zoom }
-
-int id. Defines 2D camera position/orientation
-
----
-
-> Camera = CameraId or { position, target, up, fovy, projection }
-
-int id. Defines 3D camera3D position/orientation
-
----
-
-> Mesh = MeshId
-
-int id. Vertex data defining a mesh
-
-```
-mesh{} = {
-  vertices = { Vector3, ... },
-  texcoords = { Vector2, ... },
-  texcoords2 = { Vector2, ... },
-  normals = { Vector3, ... },
-  tangents = { Vector4, ... },
-  colors = { Color, ... },
-  indices = { int, ... },
-}
-```
-
----
-
-> Material = MaterialId
-
-int id. Material type
-
-```
-material{} = {
-  shader = Shader,
-  maps = {
-    {
-      MATERIAL_MAP_ALBEDO,
-      {
-        texture = Texture,
-        color = WHITE,
-        value = 1.0,
-      },
-    },
-    ...
-  },
-  params = { 1.0, 2.0, 3.0, 4.0 },
-}
-```
-
----
-
-> Model = ModelId
-
-int id. Basic 3d Model type
-
----
-
-> Ray = { { 0.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0 } } or { position = { 0.0, 0.0, 0.0 }, direction = { 1.0, 0.0, 0.0 } }
-
-{ position, direction }. Ray type (useful for raycast)
-
----
-
-> RayCollision = { hit = true, distance = 1.0, point = { 0.0, 0.0, 0.0 }, normal = { 0.0, 0.0, 1.0 } }
-
-Raycast hit information. NOTE: Data in named keys
-
----
-
-> BoundingBox = { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } } or { min = { 0.0, 0.0, 0.0 }, max = { 1.0, 1.0, 1.0 } }
-
-{ min, max }. Accepts Vector3. Bounding box type for 3d mesh
-
----
-
-> Sound = SoundId
-
-int id. Basic Sound source and buffer
-
----
-
-> NPatchInfo = { { 0, 0, 24, 24 }, 8, 8, 8, 8, NPATCH_NINE_PATCH } or { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = NPATCH_NINE_PATCH }
-
-{ Rectangle source, int left, int top, int right, int bottom, int layout }.
-{ Texture source rectangle, Left border offset, Top border offset, Right border offset, Bottom border offset, Layout of the n-patch: 3x3, 1x3 or 3x1 }
-
----
-
-> ModelAnimations = ModelAnimationsId
-
-int id. ModelAnimations
-
----
-
-> Buffer = Buffer userdata
-
-Userdata.
-
----
-
-## Events
-
-Content of event table received by RL.event.
-
-### Window events
-
----
-> { type: RL.EVENT_WINDOW_SIZE, int width, int height }
-
- WindowSize Callback, runs when window is resized.
-
----
-
-> { type RL.EVENT_WINDOW_MAXIMIZE, int maximized }
-
- Window Maximize Callback, runs when window is maximized.
-
----
-
-> { type RL.EVENT_WINDOW_ICONYFY, int iconified }
-
- WindowIconify Callback, runs when window is minimized/restored.
-
----
-
-> { type RL.EVENT_WINDOW_FOCUS, int focused }
-
- WindowFocus Callback, runs when window get/lose focus.
-
----
-
-> { type RL.EVENT_WINDOW_DROP, int count, string{} paths }
-
- Window Drop Callback, runs when drop files into window.
-
----
-
-### Input events
-
----
-> { type: RL.EVENT_KEY, int key, int scancode, int action, int mods }
-
- Keyboard Callback, runs on key pressed.
-
----
-
-> { type RL.EVENT_CHAR, int key }
-
- Char Key Callback, runs on key pressed (get char value).
-
----
-
-> { type RL.EVENT_MOUSE_BUTTON, int button, int action, int mods }
-
- Mouse Button Callback, runs on mouse button pressed.
-
----
-
-> { type RL.EVENT_MOUSE_CURSOR_POS, number x, number y }
-
- Cursor Position Callback, runs on mouse move.
-
----
-
-> { type RL.EVENT_MOUSE_SCROLL, number xoffset, number yoffset }
-
- Srolling Callback, runs on mouse wheel.
-
----
-
-> { type RL.EVENT_CURSOR_ENTER, int enter }
-
- Cursor Enter Callback, cursor enters client area.
-
----
-
 ## Core - Window
 
 ---
@@ -1761,7 +1788,7 @@ Open URL with default system browser (If available)
 
 > buffer = RL.LoadBuffer( data{} buffer, int type )
 
-Creates buffer as userdata. Type should be one of the Buffer types
+Load Buffer. Type should be one of the Buffer types
 
 - Success return Buffer
 
@@ -3474,9 +3501,25 @@ Load cubemap from image, multiple image cubemap layouts supported
 
 ---
 
+> texture = RL.LoadTextureFromData( Texture{} textureData )
+
+Load Texture from data
+
+- Success return Texture
+
+---
+
 > renderTexture = RL.LoadRenderTexture( Vector2 size )
 
 Load texture for rendering (framebuffer)
+
+- Success return RenderTexture
+
+---
+
+> renderTexture = RL.LoadRenderTextureFromData( Texture{} renderTextureData )
+
+Load RenderTexture from data (framebuffer)
 
 - Success return RenderTexture
 

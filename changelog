@@ -3,9 +3,11 @@ Release:	ReiLua version 0.6.0		Using Raylib 4.5
 ------------------------------------------------------------------------
 KEY CHANGES:
 	- CHANGED: Switch from ID based objects to userdata.
-	- CHANGED: Wrong arguments now largely crash the application instead of TraceLog state->logLevelInvalid.
+	- REMOVED: Unload* functions since unloading is now handled by Lua garbage collection.
 	- CHANGED: Rely mostly on luaL_check* functions for arg checking.
 	- CHANGED: ModelAnimations are changed to separate ModelAnimation types as in Raylib.
+	- ADDED: LoadTextureFromData.
+	- ADDED: LoadRenderTextureFromData.
 
 DETAILED CHANGES:
 	- CHANGED: GenImageColor now takes Vector2 as size.

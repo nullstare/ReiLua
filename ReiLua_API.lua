@@ -938,7 +938,7 @@ function RL.GetLogLevelInvalid() end
 ---@return any RL.OpenURL
 function  RL.OpenURL( url ) end
 
----Creates buffer as userdata. Type should be one of the Buffer types
+---Load Buffer. Type should be one of the Buffer types
 ---- Success return Buffer
 ---@param buffer any
 ---@param type integer
@@ -2483,11 +2483,23 @@ function RL.LoadTextureFromImage( image ) end
 ---@return any texture 
 function RL.LoadTextureCubemap( image, layout ) end
 
+---Load Texture from data
+---- Success return Texture
+---@param textureData any
+---@return any texture 
+function RL.LoadTextureFromData( textureData ) end
+
 ---Load texture for rendering (framebuffer)
 ---- Success return RenderTexture
 ---@param size table
 ---@return any renderTexture 
 function RL.LoadRenderTexture( size ) end
+
+---Load RenderTexture from data (framebuffer)
+---- Success return RenderTexture
+---@param renderTextureData any
+---@return any renderTexture 
+function RL.LoadRenderTextureFromData( renderTextureData ) end
 
 ---Check if a texture is ready
 ---- Success return bool

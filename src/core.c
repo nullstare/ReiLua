@@ -544,7 +544,7 @@ int lcoreOpenURL( lua_State *L ) {
 /*
 > buffer = RL.LoadBuffer( data{} buffer, int type )
 
-Creates buffer as userdata. Type should be one of the Buffer types
+Load Buffer. Type should be one of the Buffer types
 
 - Success return Buffer
 */

@@ -127,6 +127,128 @@ luaApiFile:write(
 apiFile:write( "\n## Arguments\n" )
 apiFile:write( "\nArguments are stored in 'RL.arg' array.\n" )
 
+-- Types.
+
+apiFile:write( "\n## Types\n\
+Raylib structs in Lua\n\n---\n" )
+
+apiFile:write( "\n> Vector2 = { 1.0, 1.0 } or { x = 1.0, y = 1.0 }\n\
+Vector2, 2 components\n\n---\n" )
+apiFile:write( "\n> Vector3 = { 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0 }\n\
+Vector3, 3 components\n\n---\n" )
+apiFile:write( "\n> Vector4 = { 1.0, 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0, w = 1.0 }\n\
+Vector4, 4 components\n\n---\n" )
+apiFile:write( "\n> Quaternion = { 1.0, 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0, w = 1.0 }\n\
+Quaternion, 4 components (Vector4 alias)\n\n---\n" )
+apiFile:write( "\n> Matrix = { { 1.0, 0.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0, 0.0 }, { 0.0, 0.0, 1.0, 0.0 }, { 0.0, 0.0, 0.0, 1.0 } }\n\
+Matrix, 4x4 components, column major, OpenGL style, right-handed. Identity matrix example\n\n---\n" )
+apiFile:write( "\n> Color = { 255, 255, 255, 255 } or { r = 255, g = 255, b = 255, a = 255 }\n\
+Color, 4 components, R8G8B8A8 (32bit)\n\n---\n" )
+apiFile:write( "\n> Rectangle = { 0.0, 0.0, 1.0, 1.0 } or { x = 0.0, y = 0.0, width = 1.0, height = 1.0 }\n\
+Rectangle, 4 components\n\n---\n" )
+apiFile:write( "\n> Image = Userdata\n\
+Image, pixel data stored in CPU memory (RAM)\n\n---\n" )
+apiFile:write( "\n> Texture = Userdata\n\
+Texture, tex data stored in GPU memory (VRAM)\
+```\
+textureData = {\
+	id = unsigned int,		--OpenGL texture id\
+	width = int,			--Texture base width\
+	height = int,			--Texture base height\
+	mipmaps = int,			--Mipmap levels, 1 by default\
+	format = int			--Data format (PixelFormat type)\
+}\
+```\n\n---\n" )
+apiFile:write( "\n> RenderTexture = Userdata\n\
+RenderTexture, fbo for texture rendering\
+```\
+renderTextureData = {\
+	id = unsigned int,		--OpenGL texture id\
+	texture = Texture,		--Texture base width\
+	depth = Texture,		--Texture base height\
+}\
+```\n\n---\n" )
+apiFile:write( "\n> Font = Userdata\n\
+Font, font texture and GlyphInfo array data\n\n---\n" )
+apiFile:write( "\n> Camera2D = Userdata\n\
+Camera2D, defines position/orientation in 2d space\n\n---\n" )
+apiFile:write( "\n> Camera3D = Userdata\n\
+Camera, defines position/orientation in 3d space\n\n---\n" )
+apiFile:write( "\n> Mesh = Userdata\n\
+Mesh, vertex data and vao/vbo\n\
+```\
+meshData = {\
+	vertices = Vector3{},		--Vertex position (XYZ - 3 components per vertex) (shader-location = 0)\
+	texcoords = Vector2{},		--Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)\
+	texcoords2 = Vector2{},		--Vertex texture second coordinates (UV - 2 components per vertex) (shader-location = 5)\
+	normals = Vector3{},		--Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)\
+	tangents = Vector4{},		--Vertex tangents (XYZW - 4 components per vertex) (shader-location = 4)\
+	colors = Color{},			--Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)\
+	indices = int{}				--Vertex indices (in case vertex data comes indexed)\
+}\
+```\n\n---\n" )
+apiFile:write( "\n> Material = Userdata\n\
+Material, includes shader and maps\n\
+```\
+materialData = {\
+	shader = Shader,\
+	maps = {									--Material maps array (MAX_MATERIAL_MAPS)\
+		{\
+    		MATERIAL_MAP_*,						--Example MATERIAL_MAP_ALBEDO\
+			{\
+    			texture = Texture,				--Material map texture\
+        		color = Color,					--Material map color\
+        		value = float,					--Material map value\
+      		},\
+    	},\
+    	...\
+  	},\
+  	params = { float, float, float, float }		--Material generic parameters (if required)\
+}\
+```\n\n---\n" )
+apiFile:write( "\n> Model = Userdata\n\
+Model, meshes, materials and animation data\n\n---\n" )
+apiFile:write( "\n> Ray = { { 0.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0 } } or { position = { 0.0, 0.0, 0.0 }, direction = { 1.0, 0.0, 0.0 } }\n\
+Ray, ray for raycasting\n\n---\n" )
+apiFile:write( "\n> RayCollision = { hit = true, distance = 1.0, point = { 0.0, 0.0, 0.0 }, normal = { 0.0, 0.0, 1.0 } }\n\
+RayCollision, ray hit information\n\n---\n" )
+apiFile:write( "\n> BoundingBox = { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } } or { min = { 0.0, 0.0, 0.0 }, max = { 1.0, 1.0, 1.0 } }\n\
+BoundingBox\n\n---\n" )
+apiFile:write( "\n> Wave = Userdata\n\
+Wave, audio wave data\n\n---\n" )
+apiFile:write( "\n> Sound = Userdata\n\
+Sound\n\n---\n" )
+apiFile:write( "\n> Music = Userdata\n\
+Music, audio stream, anything longer than ~10 seconds should be streamed\n\n---\n" )
+apiFile:write( "\n> NPatchInfo = { { 0, 0, 24, 24 }, 8, 8, 8, 8, NPATCH_NINE_PATCH } or { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = NPATCH_NINE_PATCH }\n\
+NPatchInfo, n-patch layout info\n\n---\n" )
+apiFile:write( "\n> ModelAnimations = Userdata\n\
+ModelAnimation\n\n---\n" )
+apiFile:write( "\n> Buffer = Buffer userdata\n\
+Data buffer for C primitive types. Type should be one of the Buffer types.\n\n---\n" )
+
+-- Events.
+
+apiFile:write( "\n## Events\n" )
+apiFile:write( "\nContent of event table received by RL.event.\n" )
+apiFile:write( "\n### Window events\n" )
+apiFile:write( "\n---\n> { type: RL.EVENT_WINDOW_SIZE, int width, int height }\n\n WindowSize Callback, runs when window is resized.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_WINDOW_MAXIMIZE, int maximized }\n\n Window Maximize Callback, runs when window is maximized.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_WINDOW_ICONYFY, int iconified }\n\n WindowIconify Callback, runs when window is minimized/restored.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_WINDOW_FOCUS, int focused }\n\n WindowFocus Callback, runs when window get/lose focus.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_WINDOW_DROP, int count, string{} paths }\n\n Window Drop Callback, runs when drop files into window.\n\n---\n" )
+apiFile:write( "\n### Input events\n" )
+apiFile:write( "\n---\n> { type: RL.EVENT_KEY, int key, int scancode, int action, int mods }\n\n Keyboard Callback, runs on key pressed.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_CHAR, int key }\n\n Char Key Callback, runs on key pressed (get char value).\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_MOUSE_BUTTON, int button, int action, int mods }\n\n Mouse Button Callback, runs on mouse button pressed.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_MOUSE_CURSOR_POS, number x, number y }\n\n Cursor Position Callback, runs on mouse move.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_MOUSE_SCROLL, number xoffset, number yoffset }\n\n Srolling Callback, runs on mouse wheel.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_CURSOR_ENTER, int enter }\n\n Cursor Enter Callback, cursor enters client area.\n\n---\n" )
+
+if separate then
+	apiFile:close()
+end
+
 -- Globals.
 
 local srcFile = io.open( "../src/lua_core.c", "r" )
@@ -178,109 +300,6 @@ repeat
 until line == nil
 
 srcFile:close()
-
--- Types.
-
-apiFile:write( "\n## Types\n\
-Raylib structs in Lua\n\n---\n" )
-
-apiFile:write( "\n> Vector2 = { 1.0, 1.0 } or { x = 1.0, y = 1.0 }\n\
-Vector2 type\n\n---\n" )
-apiFile:write( "\n> Vector3 = { 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0 }\n\
-Vector3 type\n\n---\n" )
-apiFile:write( "\n> Vector4 = { 1.0, 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0, w = 1.0 }\n\
-Vector4 type\n\n---\n" )
-apiFile:write( "\n> Quaternion = { 1.0, 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0, w = 1.0 }\n\
-Quaternion type\n\n---\n" )
-apiFile:write( "\n> Matrix = { { 1.0, 0.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0, 0.0 }, { 0.0, 0.0, 1.0, 0.0 }, { 0.0, 0.0, 0.0, 1.0 } }\n\
-OpenGL style 4x4. Identity matrix example\n\n---\n" )
-apiFile:write( "\n> Color = { 255, 255, 255, 255 } or { r = 255, g = 255, b = 255, a = 255 }\n\
-{ r, g, b ,a }. Color type, RGBA (32bit)\n\n---\n" )
-apiFile:write( "\n> Rectangle = { 0.0, 0.0, 1.0, 1.0 } or { x = 0.0, y = 0.0, width = 1.0, height = 1.0 }\n\
-{ x, y, width ,height }. Rectangle type\n\n---\n" )
-apiFile:write( "\n> Image = ImageId\n\
-int id. Image type (multiple pixel formats supported). NOTE: Data stored in CPU memory (RAM)\n\n---\n" )
-apiFile:write( "\n> Texture = TextureId or { id, width, height, mipmaps, format }\n\
-int id. Texture type (multiple internal formats supported). NOTE: Data stored in GPU memory (VRAM)\n\n---\n" )
-apiFile:write( "\n> RenderTexture = RenderTextureId or { id, texture, depth }\n\
-int id. RenderTexture type, for texture rendering\n\n---\n" )
-apiFile:write( "\n> Font = FontId\n\
-int id. Font type, includes texture and chars data\n\n---\n" )
-apiFile:write( "\n> Camera2D = CameraId or { offset, target, rotation, zoom }\n\
-int id. Defines 2D camera position/orientation\n\n---\n" )
-apiFile:write( "\n> Camera = CameraId or { position, target, up, fovy, projection }\n\
-int id. Defines 3D camera3D position/orientation\n\n---\n" )
-apiFile:write( "\n> Mesh = MeshId\n\
-int id. Vertex data defining a mesh\n\
-```\
-mesh{} = {\
-  vertices = { Vector3, ... },\
-  texcoords = { Vector2, ... },\
-  texcoords2 = { Vector2, ... },\
-  normals = { Vector3, ... },\
-  tangents = { Vector4, ... },\
-  colors = { Color, ... },\
-  indices = { int, ... },\
-}\
-```\n\n---\n" )
-apiFile:write( "\n> Material = MaterialId\n\
-int id. Material type\n\
-```\
-material{} = {\
-  shader = Shader,\
-  maps = {\
-    {\
-      MATERIAL_MAP_ALBEDO,\
-      {\
-        texture = Texture,\
-        color = WHITE,\
-        value = 1.0,\
-      },\
-    },\
-    ...\
-  },\
-  params = { 1.0, 2.0, 3.0, 4.0 },\
-}\
-```\n\n---\n" )
-apiFile:write( "\n> Model = ModelId\n\
-int id. Basic 3d Model type\n\n---\n" )
-apiFile:write( "\n> Ray = { { 0.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0 } } or { position = { 0.0, 0.0, 0.0 }, direction = { 1.0, 0.0, 0.0 } }\n\
-{ position, direction }. Ray type (useful for raycast)\n\n---\n" )
-apiFile:write( "\n> RayCollision = { hit = true, distance = 1.0, point = { 0.0, 0.0, 0.0 }, normal = { 0.0, 0.0, 1.0 } }\n\
-Raycast hit information. NOTE: Data in named keys\n\n---\n" )
-apiFile:write( "\n> BoundingBox = { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } } or { min = { 0.0, 0.0, 0.0 }, max = { 1.0, 1.0, 1.0 } }\n\
-{ min, max }. Accepts Vector3. Bounding box type for 3d mesh\n\n---\n" )
-apiFile:write( "\n> Sound = SoundId\n\
-int id. Basic Sound source and buffer\n\n---\n" )
-apiFile:write( "\n> NPatchInfo = { { 0, 0, 24, 24 }, 8, 8, 8, 8, NPATCH_NINE_PATCH } or { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = NPATCH_NINE_PATCH }\n\
-{ Rectangle source, int left, int top, int right, int bottom, int layout }.\
-{ Texture source rectangle, Left border offset, Top border offset, Right border offset, Bottom border offset, Layout of the n-patch: 3x3, 1x3 or 3x1 }\n\n---\n" )
-apiFile:write( "\n> ModelAnimations = ModelAnimationsId\n\
-int id. ModelAnimations\n\n---\n" )
-apiFile:write( "\n> Buffer = Buffer userdata\n\
-Userdata.\n\n---\n" )
-
--- Events.
-
-apiFile:write( "\n## Events\n" )
-apiFile:write( "\nContent of event table received by RL.event.\n" )
-apiFile:write( "\n### Window events\n" )
-apiFile:write( "\n---\n> { type: RL.EVENT_WINDOW_SIZE, int width, int height }\n\n WindowSize Callback, runs when window is resized.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_WINDOW_MAXIMIZE, int maximized }\n\n Window Maximize Callback, runs when window is maximized.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_WINDOW_ICONYFY, int iconified }\n\n WindowIconify Callback, runs when window is minimized/restored.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_WINDOW_FOCUS, int focused }\n\n WindowFocus Callback, runs when window get/lose focus.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_WINDOW_DROP, int count, string{} paths }\n\n Window Drop Callback, runs when drop files into window.\n\n---\n" )
-apiFile:write( "\n### Input events\n" )
-apiFile:write( "\n---\n> { type: RL.EVENT_KEY, int key, int scancode, int action, int mods }\n\n Keyboard Callback, runs on key pressed.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_CHAR, int key }\n\n Char Key Callback, runs on key pressed (get char value).\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_MOUSE_BUTTON, int button, int action, int mods }\n\n Mouse Button Callback, runs on mouse button pressed.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_MOUSE_CURSOR_POS, number x, number y }\n\n Cursor Position Callback, runs on mouse move.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_MOUSE_SCROLL, number xoffset, number yoffset }\n\n Srolling Callback, runs on mouse wheel.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_CURSOR_ENTER, int enter }\n\n Cursor Enter Callback, cursor enters client area.\n\n---\n" )
-
-if separate then
-	apiFile:close()
-end
 
 -- Functions.
 

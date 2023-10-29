@@ -1791,7 +1791,9 @@ void luaRegister() {
 	assingGlobalFunction( "LoadTexture", ltexturesLoadTexture );
 	assingGlobalFunction( "LoadTextureFromImage", ltexturesLoadTextureFromImage );
 	assingGlobalFunction( "LoadTextureCubemap", ltexturesLoadTextureCubemap );
+	assingGlobalFunction( "LoadTextureFromData", ltexturesLoadTextureFromData );
 	assingGlobalFunction( "LoadRenderTexture", ltexturesLoadRenderTexture );
+	assingGlobalFunction( "LoadRenderTextureFromData", ltexturesLoadRenderTextureFromData );
 	assingGlobalFunction( "IsTextureReady", ltexturesIsTextureReady );
 	assingGlobalFunction( "UpdateTexture", ltexturesUpdateTexture );
 	assingGlobalFunction( "UpdateTextureRec", ltexturesUpdateTextureRec );

@@ -940,6 +940,44 @@ int ltexturesLoadTextureCubemap( lua_State *L ) {
 }
 
 /*
+> texture = RL.LoadTextureFromData( Texture{} textureData )
+
+Load Texture from data
+
+- Success return Texture
+*/
+int ltexturesLoadTextureFromData( lua_State *L ) {
+	luaL_checktype( L, 1, LUA_TTABLE );
+
+	Texture2D texture = { 0 };
+
+	int t = 1;
+    lua_pushnil( L );
+
+    while ( lua_next( L, t ) != 0 ) {
+		if ( strcmp( "id", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			texture.id = (unsigned int)luaL_checkinteger( L, -1 );
+		}
+		else if ( strcmp( "width", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			texture.width = luaL_checkinteger( L, -1 );
+		}
+		else if ( strcmp( "height", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			texture.height = luaL_checkinteger( L, -1 );
+		}
+		else if ( strcmp( "mipmaps", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			texture.mipmaps = luaL_checkinteger( L, -1 );
+		}
+		else if ( strcmp( "format", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			texture.format = luaL_checkinteger( L, -1 );
+		}
+        lua_pop( L, 1 );
+    }
+	uluaPushTexture( L, texture );
+
+	return 1;
+}
+
+/*
 > renderTexture = RL.LoadRenderTexture( Vector2 size )
 
 Load texture for rendering (framebuffer)
@@ -953,6 +991,41 @@ int ltexturesLoadRenderTexture( lua_State *L ) {
 
 	return 1;
 }
+
+/*
+> renderTexture = RL.LoadRenderTextureFromData( Texture{} renderTextureData )
+
+Load RenderTexture from data (framebuffer)
+
+- Success return RenderTexture
+*/
+int ltexturesLoadRenderTextureFromData( lua_State *L ) {
+	luaL_checktype( L, 1, LUA_TTABLE );
+
+	RenderTexture renTexture = { 0 };
+
+	int t = 1;
+    lua_pushnil( L );
+
+    while ( lua_next( L, t ) != 0 ) {
+		if ( strcmp( "id", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			renTexture.id = (unsigned int)luaL_checkinteger( L, -1 );
+		}
+		else if ( strcmp( "texture", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			Texture *texture = luaL_checkudata( L, -1, "Texture" );
+			renTexture.texture = *texture;
+		}
+		else if ( strcmp( "depth", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			Texture *depth = luaL_checkudata( L, -1, "Texture" );
+			renTexture.depth = *depth;
+		}
+        lua_pop( L, 1 );
+    }
+	uluaPushRenderTexture( L, renTexture );
+
+	return 1;
+}
+
 
 /*
 > isReady = RL.IsTextureReady( Texture texture )

@@ -1,17 +1,10 @@
 local textColor = RL.BLACK
 local textPos = { 192, 200 }
 local text = "Congrats! You created your first window!"
-local texture = nil
 
 function RL.init()
 	RL.SetWindowTitle( "First window" )
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
-
-	local path = RL.GetBasePath().."../resources/images/cat.png"
-	print( "path", path )
-
-	texture = RL.LoadTexture( path )
-	print( "texture", texture )
 end
 
 function RL.process( delta )
@@ -31,6 +24,5 @@ end
 
 function RL.draw()
 	RL.ClearBackground( RL.RAYWHITE )
-	RL.DrawTexture( texture, { 20, 20 }, RL.WHITE )
     RL.DrawText( RL.defaultFont, text, textPos, 20, 2, textColor )
 end

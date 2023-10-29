@@ -29,7 +29,7 @@ int lglBlitFramebuffer( lua_State *L ) {
 		glBindFramebuffer( GL_READ_FRAMEBUFFER, 0 );
 	}
 	else {
-		RenderTexture *srcTex = luaL_checkudata( L, 1, "RenderTexture" );
+		RenderTexture *srcTex = uluaGetRenderTexture( L, 1 );
 		glBindFramebuffer( GL_READ_FRAMEBUFFER, srcTex->id );
 	}
 
@@ -37,7 +37,7 @@ int lglBlitFramebuffer( lua_State *L ) {
 		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
 	}
 	else {
-		RenderTexture *dstTex = luaL_checkudata( L, 2, "RenderTexture" );
+		RenderTexture *dstTex = uluaGetRenderTexture( L, 2 );
 		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, dstTex->id );
 	}
 

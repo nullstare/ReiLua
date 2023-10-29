@@ -87,7 +87,7 @@ Load font from Image ( XNA style)
 - Success return Font
 */
 int ltextLoadFontFromImage( lua_State *L ) {
-	Image *image = luaL_checkudata( L, 1, "Image" );
+	Image *image = uluaGetImage( L, 1 );
 	Color key = uluaGetColorIndex( L, 2 );
 	int firstChar = luaL_checkinteger( L, 3 );
 
@@ -119,7 +119,7 @@ int ltextDrawFPS( lua_State *L ) {
 Draw text using font and additional parameters
 */
 int ltextDrawText( lua_State *L ) {
-	Font *font = luaL_checkudata( L, 1, "Font" );
+	Font *font = uluaGetFont( L, 1 );
 	Vector2 position = uluaGetVector2Index( L, 3 );
 	float fontSize = luaL_checknumber( L, 4 );
 	float spacing = luaL_checknumber( L, 5 );
@@ -136,7 +136,7 @@ int ltextDrawText( lua_State *L ) {
 Draw text using Font and pro parameters (rotation)
 */
 int ltextDrawTextPro( lua_State *L ) {
-	Font *font = luaL_checkudata( L, 1, "Font" );
+	Font *font = uluaGetFont( L, 1 );
 	Vector2 position = uluaGetVector2Index( L, 3 );
 	Vector2 origin = uluaGetVector2Index( L, 4 );
 	float rotation = luaL_checknumber( L, 5 );
@@ -161,7 +161,7 @@ Measure string size for Font
 - Success return Vector2
 */
 int ltextMeasureText( lua_State *L ) {
-	Font *font = luaL_checkudata( L, 1, "Font" );
+	Font *font = uluaGetFont( L, 1 );
 	float fontSize = luaL_checknumber( L, 3 );
 	float spacing = luaL_checknumber( L, 4 );
 
@@ -178,7 +178,7 @@ Get font base size (default chars height)
 - Success return int
 */
 int ltextGetFontBaseSize( lua_State *L ) {
-	Font *font = luaL_checkudata( L, 1, "Font" );
+	Font *font = uluaGetFont( L, 1 );
 
 	lua_pushinteger( L, font->baseSize );
 
@@ -193,7 +193,7 @@ Get font number of glyph characters
 - Success return int
 */
 int ltextGetFontGlyphCount( lua_State *L ) {
-	Font *font = luaL_checkudata( L, 1, "Font" );
+	Font *font = uluaGetFont( L, 1 );
 
 	lua_pushinteger( L, font->glyphCount );
 
@@ -208,7 +208,7 @@ Get font padding around the glyph characters
 - Success return int
 */
 int ltextGetFontGlyphPadding( lua_State *L ) {
-	Font *font = luaL_checkudata( L, 1, "Font" );
+	Font *font = uluaGetFont( L, 1 );
 
 	lua_pushinteger( L, font->glyphPadding );
 
@@ -223,7 +223,7 @@ Get font texture atlas containing the glyphs.
 - Success return Texture
 */
 int ltextGetFontTexture( lua_State *L ) {
-	Font *font = luaL_checkudata( L, 1, "Font" );
+	Font *font = uluaGetFont( L, 1 );
 
 	uluaPushTexture( L, font->texture );
 

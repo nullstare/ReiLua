@@ -258,7 +258,7 @@ int lcoreIsWindowResized( lua_State *L ) {
 Set icon for window (Only PLATFORM_DESKTOP)
 */
 int lcoreSetWindowIcon( lua_State *L ) {
-	Image *image = luaL_checkudata( L, 1, "Image" );
+	Image *image = uluaGetImage( L, 1 );
 
 	SetWindowIcon( *image );
 
@@ -867,7 +867,7 @@ int lcoreLoadShaderFromMemory( lua_State *L ) {
 Begin custom shader drawing
 */
 int lcoreBeginShaderMode( lua_State *L ) {
-	Shader *shader = luaL_checkudata( L, 1, "Shader" );
+	Shader *shader = uluaGetShader( L, 1 );
 
 	BeginShaderMode( *shader );
 
@@ -893,7 +893,7 @@ Get shader uniform location
 - Success return int
 */
 int lcoreGetShaderLocation( lua_State *L ) {
-	Shader *shader = luaL_checkudata( L, 1, "Shader" );
+	Shader *shader = uluaGetShader( L, 1 );
 
 	lua_pushinteger( L, GetShaderLocation( *shader, luaL_checkstring( L, 2 ) ) );
 
@@ -908,7 +908,7 @@ Get shader attribute location
 - Success return int
 */
 int lcoreGetShaderLocationAttrib( lua_State *L ) {
-	Shader *shader = luaL_checkudata( L, 1, "Shader" );
+	Shader *shader = uluaGetShader( L, 1 );
 
 	lua_pushinteger( L, GetShaderLocationAttrib( *shader, luaL_checkstring( L, 2 ) ) );
 
@@ -921,7 +921,7 @@ int lcoreGetShaderLocationAttrib( lua_State *L ) {
 Set shader location index
 */
 int lcoreSetShaderLocationIndex( lua_State *L ) {
-	Shader *shader = luaL_checkudata( L, 1, "Shader" );
+	Shader *shader = uluaGetShader( L, 1 );
 	int shaderLocationIndex = luaL_checkinteger( L, 2 );
 	int location = luaL_checkinteger( L, 3 );
 
@@ -938,7 +938,7 @@ Get shader location index
 - Success return int
 */
 int lcoreGetShaderLocationIndex( lua_State *L ) {
-	Shader *shader = luaL_checkudata( L, 1, "Shader" );
+	Shader *shader = uluaGetShader( L, 1 );
 	int shaderLocationIndex = luaL_checkinteger( L, 2 );
 
 	lua_pushinteger( L, shader->locs[ shaderLocationIndex ] );
@@ -952,7 +952,7 @@ int lcoreGetShaderLocationIndex( lua_State *L ) {
 Set shader uniform value (matrix 4x4)
 */
 int lcoreSetShaderValueMatrix( lua_State *L ) {
-	Shader *shader = luaL_checkudata( L, 1, "Shader" );
+	Shader *shader = uluaGetShader( L, 1 );
 	int locIndex = luaL_checkinteger( L, 2 );
 	Matrix mat = uluaGetMatrixIndex( L, 3 );
 
@@ -967,9 +967,9 @@ int lcoreSetShaderValueMatrix( lua_State *L ) {
 Set shader uniform value for texture (sampler2d)
 */
 int lcoreSetShaderValueTexture( lua_State *L ) {
-	Shader *shader = luaL_checkudata( L, 1, "Shader" );
+	Shader *shader = uluaGetShader( L, 1 );
 	int locIndex = luaL_checkinteger( L, 2 );
-	Texture *texture = luaL_checkudata( L, 3, "Texture" );
+	Texture *texture = uluaGetTexture( L, 3 );
 
 	SetShaderValueTexture( *shader, locIndex, *texture );
 
@@ -983,7 +983,7 @@ Set shader uniform value
 NOTE: Even one value should be in table
 */
 int lcoreSetShaderValue( lua_State *L ) {
-	Shader *shader = luaL_checkudata( L, 1, "Shader" );
+	Shader *shader = uluaGetShader( L, 1 );
 	int locIndex = luaL_checkinteger( L, 2 );
 	size_t valueCount = uluaGetTableLenIndex( L, 3 );
 	int uniformType = luaL_checkinteger( L, 4 );
@@ -1025,7 +1025,7 @@ Set shader uniform value vector
 NOTE: Even one value should be in table
 */
 int lcoreSetShaderValueV( lua_State *L ) {
-	Shader *shader = luaL_checkudata( L, 1, "Shader" );
+	Shader *shader = uluaGetShader( L, 1 );
 	int locIndex = luaL_checkinteger( L, 2 );
 	size_t valueCount = uluaGetTableLenIndex( L, 3 );
 	int uniformType = luaL_checkinteger( L, 4 );
@@ -1933,7 +1933,7 @@ int lcoreCreateCamera2D( lua_State *L ) {
 Begin 2D mode with custom camera (2D)
 */
 int lcoreBeginMode2D( lua_State *L ) {
-	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+	Camera2D *camera = uluaGetCamera2D( L, 1 );
 
 	BeginMode2D( *camera );
 
@@ -1957,7 +1957,7 @@ int lcoreEndMode2D( lua_State *L ) {
 Set camera target (rotation and zoom origin)
 */
 int lcoreSetCamera2DTarget( lua_State *L ) {
-	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+	Camera2D *camera = uluaGetCamera2D( L, 1 );
 	Vector2 target = uluaGetVector2Index( L, 2 );
 
 	camera->target = target;
@@ -1971,7 +1971,7 @@ int lcoreSetCamera2DTarget( lua_State *L ) {
 Set camera offset (displacement from target)
 */
 int lcoreSetCamera2DOffset( lua_State *L ) {
-	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+	Camera2D *camera = uluaGetCamera2D( L, 1 );
 	Vector2 offset = uluaGetVector2Index( L, 2 );
 
 	camera->offset = offset;
@@ -1985,7 +1985,7 @@ int lcoreSetCamera2DOffset( lua_State *L ) {
 Set camera rotation in degrees
 */
 int lcoreSetCamera2DRotation( lua_State *L ) {
-	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+	Camera2D *camera = uluaGetCamera2D( L, 1 );
 	float rotation = luaL_checknumber( L, 2 );
 
 	camera->rotation = rotation;
@@ -1999,7 +1999,7 @@ int lcoreSetCamera2DRotation( lua_State *L ) {
 Set camera zoom (scaling), should be 1.0f by default
 */
 int lcoreSetCamera2DZoom( lua_State *L ) {
-	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+	Camera2D *camera = uluaGetCamera2D( L, 1 );
 	float zoom = luaL_checknumber( L, 2 );
 
 	camera->zoom = zoom;
@@ -2015,7 +2015,7 @@ Get camera2D target
 - Success return Vector2
 */
 int lcoreGetCamera2DTarget( lua_State *L ) {
-	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+	Camera2D *camera = uluaGetCamera2D( L, 1 );
 
 	uluaPushVector2( L, camera->target );
 
@@ -2030,7 +2030,7 @@ Get camera2D offset
 - Success return Vector2
 */
 int lcoreGetCamera2DOffset( lua_State *L ) {
-	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+	Camera2D *camera = uluaGetCamera2D( L, 1 );
 	uluaPushVector2( L, camera->offset );
 
 	return 1;
@@ -2044,7 +2044,7 @@ Get camera2D rotation
 - Success return float
 */
 int lcoreGetCamera2DRotation( lua_State *L ) {
-	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+	Camera2D *camera = uluaGetCamera2D( L, 1 );
 	lua_pushnumber( L, camera->rotation );
 
 	return 1;
@@ -2058,7 +2058,7 @@ Get camera2D zoom
 - Success return float
 */
 int lcoreGetCamera2DZoom( lua_State *L ) {
-	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+	Camera2D *camera = uluaGetCamera2D( L, 1 );
 	lua_pushnumber( L, camera->zoom );
 
 	return 1;
@@ -2095,7 +2095,7 @@ int lcoreCreateCamera3D( lua_State *L ) {
 Begin 3D mode with custom camera (3D)
 */
 int lcoreBeginMode3D( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 
 	BeginMode3D( *camera );
 
@@ -2119,7 +2119,7 @@ int lcoreEndMode3D( lua_State *L ) {
 Set camera position (Remember to call "RL.UpdateCamera3D()" to apply changes)
 */
 int lcoreSetCamera3DPosition( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	Vector3 pos = uluaGetVector3Index( L, 2 );
 
 	camera->position = pos;
@@ -2133,7 +2133,7 @@ int lcoreSetCamera3DPosition( lua_State *L ) {
 Set camera target it looks-at
 */
 int lcoreSetCamera3DTarget( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	Vector3 target = uluaGetVector3Index( L, 2 );
 
 	camera->target = target;
@@ -2147,7 +2147,7 @@ int lcoreSetCamera3DTarget( lua_State *L ) {
 Set camera up vector (Rotation over it's axis)
 */
 int lcoreSetCamera3DUp( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	Vector3 up = uluaGetVector3Index( L, 2 );
 
 	camera->up = up;
@@ -2161,7 +2161,7 @@ int lcoreSetCamera3DUp( lua_State *L ) {
 Set camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic
 */
 int lcoreSetCamera3DFovy( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	float fovy = luaL_checknumber( L, 2 );
 
 	camera->fovy = fovy;
@@ -2175,7 +2175,7 @@ int lcoreSetCamera3DFovy( lua_State *L ) {
 Set camera projection mode (CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC)
 */
 int lcoreSetCamera3DProjection( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	int projection = luaL_checkinteger( L, 2 );
 
 	camera->projection = projection;
@@ -2191,7 +2191,7 @@ Get camera position
 - Success return Vector3
 */
 int lcoreGetCamera3DPosition( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 
 	uluaPushVector3( L, camera->position );
 
@@ -2206,7 +2206,7 @@ Get camera target it looks-at
 - Success return Vector3
 */
 int lcoreGetCamera3DTarget( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 
 	uluaPushVector3( L, camera->target );
 
@@ -2221,7 +2221,7 @@ Get camera up vector (Rotation over it's axis)
 - Success return Vector3
 */
 int lcoreGetCamera3DUp( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 
 	uluaPushVector3( L, camera->up );
 
@@ -2236,7 +2236,7 @@ Get camera field-of-view apperture in Y (degrees) in perspective, used as near p
 - Success return float
 */
 int lcoreGetCamera3DFovy( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 
 	lua_pushnumber( L, camera->fovy );
 
@@ -2251,7 +2251,7 @@ Get camera projection mode
 - Success return int
 */
 int lcoreGetCamera3DProjection( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 
 	lua_pushinteger( L, camera->projection );
 
@@ -2266,7 +2266,7 @@ Returns the cameras forward vector (normalized)
 - Success return Vector3
 */
 int lcoreGetCamera3DForward( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 
 	uluaPushVector3( L, GetCameraForward( camera ) );
 
@@ -2282,7 +2282,7 @@ Note: The up vector might not be perpendicular to the forward vector
 - Success return Vector3
 */
 int lcoreGetCamera3DUpNormalized( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 
 	uluaPushVector3( L, GetCameraUp( camera ) );
 
@@ -2297,7 +2297,7 @@ Returns the cameras right vector (normalized)
 - Success return Vector3
 */
 int lcoreGetCamera3DRight( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 
 	uluaPushVector3( L, GetCameraRight( camera ) );
 
@@ -2310,7 +2310,7 @@ int lcoreGetCamera3DRight( lua_State *L ) {
 Moves the camera in it's forward direction
 */
 int lcoreCamera3DMoveForward( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	float distance = luaL_checknumber( L, 2 );
 	bool moveInWorldPlane = uluaGetBoolean( L, 3 );
 
@@ -2325,7 +2325,7 @@ int lcoreCamera3DMoveForward( lua_State *L ) {
 Moves the camera in it's up direction
 */
 int lcoreCamera3DMoveUp( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	float distance = luaL_checknumber( L, 2 );
 
 	CameraMoveUp( camera, distance );
@@ -2339,7 +2339,7 @@ int lcoreCamera3DMoveUp( lua_State *L ) {
 Moves the camera target in it's current right direction
 */
 int lcoreCamera3DMoveRight( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	float distance = luaL_checknumber( L, 2 );
 	bool moveInWorldPlane = uluaGetBoolean( L, 3 );
 
@@ -2354,7 +2354,7 @@ int lcoreCamera3DMoveRight( lua_State *L ) {
 Moves the camera position closer/farther to/from the camera target
 */
 int lcoreCamera3DMoveToTarget( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	float delta = luaL_checknumber( L, 2 );
 
 	CameraMoveToTarget( camera, delta );
@@ -2371,7 +2371,7 @@ If rotateAroundTarget is false, the camera rotates around it's position
 Note: angle must be provided in radians
 */
 int lcoreCamera3DYaw( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	float delta = luaL_checknumber( L, 2 );
 	bool rotateAroundTarget = uluaGetBoolean( L, 3 );
 
@@ -2390,7 +2390,7 @@ Rotates the camera around it's right vector, pitch is "looking up and down"
 NOTE: angle must be provided in radians
 */
 int lcoreCamera3DPitch( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	float delta = luaL_checknumber( L, 2 );
 	bool lockView = uluaGetBoolean( L, 3 );
 	bool rotateAroundTarget = uluaGetBoolean( L, 4 );
@@ -2409,7 +2409,7 @@ Roll is "turning your head sideways to the left or right"
 Note: angle must be provided in radians
 */
 int lcoreCamera3DRoll( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	float angle = luaL_checknumber( L, 2 );
 
 	CameraRoll( camera, angle );
@@ -2425,7 +2425,7 @@ Returns the camera view matrix
 - Success return Matrix
 */
 int lcoreGetCamera3DViewMatrix( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 
 	uluaPushMatrix( L, GetCameraViewMatrix( camera ) );
 
@@ -2440,7 +2440,7 @@ Returns the camera projection matrix
 - Success return Matrix
 */
 int lcoreGetCamera3DProjectionMatrix( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	float aspect = luaL_checknumber( L, 2 );
 
 	uluaPushMatrix( L, GetCameraProjectionMatrix( camera, aspect ) );
@@ -2454,7 +2454,7 @@ int lcoreGetCamera3DProjectionMatrix( lua_State *L ) {
 Update camera position for selected mode
 */
 int lcoreUpdateCamera3D( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	int mode = luaL_checkinteger( L, 2 );
 
 	UpdateCamera( camera, mode );
@@ -2468,7 +2468,7 @@ int lcoreUpdateCamera3D( lua_State *L ) {
 Update camera movement, movement/rotation values should be provided by user
 */
 int lcoreUpdateCamera3DPro( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	Vector3 movement = uluaGetVector3Index( L, 2 );
 	Vector3 rotation = uluaGetVector3Index( L, 3 );
 	float zoom = luaL_checknumber( L, 4 );
@@ -2491,7 +2491,7 @@ Get a ray trace from mouse position
 */
 int lcoreGetMouseRay( lua_State *L ) {
 	Vector2 mousePosition = uluaGetVector2Index( L, 1 );
-	Camera3D *camera = luaL_checkudata( L, 2, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 2 );
 
 	uluaPushRay( L, GetMouseRay( mousePosition, *camera ) );
 
@@ -2506,7 +2506,7 @@ Get camera transform matrix (view matrix)
 - Success return Matrix
 */
 int lcoreGetCameraMatrix( lua_State *L ) {
-	Camera3D *camera = luaL_checkudata( L, 1, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 
 	uluaPushMatrix( L, GetCameraMatrix( *camera ) );
 
@@ -2521,7 +2521,7 @@ Get camera 2d transform matrix
 - Success return Matrix
 */
 int lcoreGetCameraMatrix2D( lua_State *L ) {
-	Camera2D *camera = luaL_checkudata( L, 1, "Camera2D" );
+	Camera2D *camera = uluaGetCamera2D( L, 1 );
 
 	uluaPushMatrix( L, GetCameraMatrix2D( *camera ) );
 
@@ -2537,7 +2537,7 @@ Get the screen space position for a 3d world space position
 */
 int lcoreGetWorldToScreen( lua_State *L ) {
 	Vector3 position = uluaGetVector3Index( L, 1 );
-	Camera3D *camera = luaL_checkudata( L, 2, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 2 );
 
 	uluaPushVector2( L, GetWorldToScreen( position, *camera ) );
 
@@ -2553,7 +2553,7 @@ Get size position for a 3d world space position
 */
 int lcoreGetWorldToScreenEx( lua_State *L ) {
 	Vector3 position = uluaGetVector3Index( L, 1 );
-	Camera3D *camera = luaL_checkudata( L, 2, "Camera3D" );
+	Camera3D *camera = uluaGetCamera3D( L, 2 );
 	Vector2 size = uluaGetVector2Index( L, 3 );
 
 	uluaPushVector2( L, GetWorldToScreenEx( position, *camera, size.x, size.y ) );
@@ -2570,7 +2570,7 @@ Get the screen space position for a 2d camera world space position
 */
 int lcoreGetWorldToScreen2D( lua_State *L ) {
 	Vector2 position = uluaGetVector2Index( L, 1 );
-	Camera2D *camera = luaL_checkudata( L, 2, "Camera2D" );
+	Camera2D *camera = uluaGetCamera2D( L, 2 );
 
 	uluaPushVector2( L, GetWorldToScreen2D( position, *camera ) );
 
@@ -2586,7 +2586,7 @@ Get the world space position for a 2d camera screen space position
 */
 int lcoreGetScreenToWorld2D( lua_State *L ) {
 	Vector2 position = uluaGetVector2Index( L, 1 );
-	Camera2D *camera = luaL_checkudata( L, 2, "Camera2D" );
+	Camera2D *camera = uluaGetCamera2D( L, 2 );
 
 	uluaPushVector2( L, GetScreenToWorld2D( position, *camera ) );
 

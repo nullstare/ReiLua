@@ -6,7 +6,6 @@ local STATE = { TITLE = 0, GAME = 1, OVER = 2 } -- Enum wannabe.
 
 -- Resources
 local framebuffer = nil
-local framebufferTex = nil
 local monitor = 0
 local monitorPos = RL.GetMonitorPosition( monitor )
 local monitorSize = RL.GetMonitorSize( monitor )
@@ -74,7 +73,6 @@ function RL.init()
 	RL.SetWindowIcon( RL.LoadImage( RL.GetBasePath().."../resources/images/apple.png" ) )
 
 	framebuffer = RL.LoadRenderTexture( RESOLUTION )
-	framebufferTex = RL.GetRenderTextureTexture( framebuffer )
 	grassTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/grass.png" )
 	snakeTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/snake.png" )
 	appleTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/apple.png" )
@@ -220,5 +218,5 @@ function RL.draw()
 	RL.EndTextureMode()
 
 	-- Draw framebuffer to window.
-	RL.DrawTexturePro( framebufferTex, { 0, 0, RESOLUTION[1], -RESOLUTION[2] }, { 0, 0, winSize[1], winSize[2] }, { 0, 0 }, 0.0, RL.WHITE )
+	RL.DrawTexturePro( RL.GetRenderTextureTexture( framebuffer ), { 0, 0, RESOLUTION[1], -RESOLUTION[2] }, { 0, 0, winSize[1], winSize[2] }, { 0, 0 }, 0.0, RL.WHITE )
 end

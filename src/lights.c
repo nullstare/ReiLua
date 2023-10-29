@@ -23,7 +23,7 @@ int llightsCreateLight( lua_State *L ) {
 	Vector3 position = uluaGetVector3Index( L, 2 );
 	Vector3 target = uluaGetVector3Index( L, 3 );
 	Color color = uluaGetColorIndex( L, 4 );
-	Shader *shader = luaL_checkudata( L, 5, "Shader" );
+	Shader *shader = uluaGetShader( L, 5 );
 
 	uluaPushLight( L, CreateLight( type, position, target, color, *shader ) );
 
@@ -36,8 +36,8 @@ int llightsCreateLight( lua_State *L ) {
 Send light properties to shader
 */
 int llightsUpdateLightValues( lua_State *L ) {
-	Shader *shader = luaL_checkudata( L, 1, "Shader" );
-	Light *light = luaL_checkudata( L, 2, "Light" );
+	Shader *shader = uluaGetShader( L, 1 );
+	Light *light = uluaGetLight( L, 2 );
 
 	UpdateLightValues( *shader, *light );
 
@@ -50,7 +50,7 @@ int llightsUpdateLightValues( lua_State *L ) {
 Set light type
 */
 int llightsSetLightType( lua_State *L ) {
-	Light *light = luaL_checkudata( L, 1, "Light" );
+	Light *light = uluaGetLight( L, 1 );
 	int type = luaL_checkinteger( L, 2 );
 
 	light->type = type;
@@ -64,7 +64,7 @@ int llightsSetLightType( lua_State *L ) {
 Set light position
 */
 int llightsSetLightPosition( lua_State *L ) {
-	Light *light = luaL_checkudata( L, 1, "Light" );
+	Light *light = uluaGetLight( L, 1 );
 	Vector3 position = uluaGetVector3Index( L, 2 );
 
 	light->position = position;
@@ -78,7 +78,7 @@ int llightsSetLightPosition( lua_State *L ) {
 Set light target
 */
 int llightsSetLightTarget( lua_State *L ) {
-	Light *light = luaL_checkudata( L, 1, "Light" );
+	Light *light = uluaGetLight( L, 1 );
 	Vector3 target = uluaGetVector3Index( L, 2 );
 
 	light->target = target;
@@ -92,7 +92,7 @@ int llightsSetLightTarget( lua_State *L ) {
 Set light color
 */
 int llightsSetLightColor( lua_State *L ) {
-	Light *light = luaL_checkudata( L, 1, "Light" );
+	Light *light = uluaGetLight( L, 1 );
 	Color color = uluaGetColorIndex( L, 2 );
 
 	light->color = color;
@@ -106,7 +106,7 @@ int llightsSetLightColor( lua_State *L ) {
 Set light enabled
 */
 int llightsSetLightEnabled( lua_State *L ) {
-	Light *light = luaL_checkudata( L, 1, "Light" );
+	Light *light = uluaGetLight( L, 1 );
 	bool enabled = uluaGetBoolean( L, 2 );
 
 	light->enabled = enabled;
@@ -122,7 +122,7 @@ Get light type
 - Success return int
 */
 int llightsGetLightType( lua_State *L ) {
-	Light *light = luaL_checkudata( L, 1, "Light" );
+	Light *light = uluaGetLight( L, 1 );
 
 	lua_pushinteger( L, light->type );
 
@@ -137,7 +137,7 @@ Get light position
 - Success return Vector3
 */
 int llightsGetLightPosition( lua_State *L ) {
-	Light *light = luaL_checkudata( L, 1, "Light" );
+	Light *light = uluaGetLight( L, 1 );
 
 	uluaPushVector3( L, light->position );
 
@@ -152,7 +152,7 @@ Get light target
 - Success return Vector3
 */
 int llightsGetLightTarget( lua_State *L ) {
-	Light *light = luaL_checkudata( L, 1, "Light" );
+	Light *light = uluaGetLight( L, 1 );
 
 	uluaPushVector3( L, light->target );
 
@@ -167,7 +167,7 @@ Get light color
 - Success return Color
 */
 int llightsGetLightColor( lua_State *L ) {
-	Light *light = luaL_checkudata( L, 1, "Light" );
+	Light *light = uluaGetLight( L, 1 );
 
 	uluaPushColor( L, light->color );
 
@@ -182,7 +182,7 @@ Get light enabled
 - Success return boolean
 */
 int llightsIsLightEnabled( lua_State *L ) {
-	Light *light = luaL_checkudata( L, 1, "Light" );
+	Light *light = uluaGetLight( L, 1 );
 
 	lua_pushboolean( L, light->enabled );
 

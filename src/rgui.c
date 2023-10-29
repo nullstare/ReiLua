@@ -116,7 +116,7 @@ int lguiGuiGetState( lua_State *L ) {
 Set gui custom font (global state)
 */
 int lguiGuiSetFont( lua_State *L ) {
-	Font *font = luaL_checkudata( L, 1, "Font" );
+	Font *font = uluaGetFont( L, 1 );
 
 	GuiSetFont( *font );
 

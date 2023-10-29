@@ -2619,13 +2619,13 @@ function RL.GetTextureFormat( texture ) end
 ---@return any id 
 function RL.GetRenderTextureId( renderTexture ) end
 
----Get color buffer attachment texture
+---Get color buffer attachment texture. Returns as lightuserdata
 ---- Success return Texture
 ---@param renderTexture any
 ---@return any texture 
 function RL.GetRenderTextureTexture( renderTexture ) end
 
----Get depth buffer attachment texture
+---Get depth buffer attachment texture. Returns as lightuserdata
 ---- Success return Texture
 ---@param renderTexture any
 ---@return any texture 
@@ -3178,7 +3178,7 @@ function RL.GetMaterialColor( material, mapType ) end
 function RL.GetMaterialValue( material, mapType ) end
 
 ---Get material shader
----- Success return Shader
+---- Success return Shader. Returns as lightuserdata
 ---@param material any
 ---@return any shader 
 function RL.GetMaterialShader( material ) end

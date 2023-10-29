@@ -5,7 +5,6 @@ local monitor = 0
 local mPos = RL.GetMonitorPosition( monitor )
 local mSize = RL.GetMonitorSize( monitor )
 local framebuffer = nil
-local framebufferTex = nil
 local res = { 320, 180 }
 local scale = 5
 local winSize = { res[1] * scale, res[2] * scale }
@@ -18,7 +17,6 @@ function RL.init()
 	tex = RL.LoadTexture( RL.GetBasePath().."../resources/images/cat.png" )
 	-- Create framebuffer.
 	framebuffer = RL.LoadRenderTexture( res )
-	framebufferTex = RL.GetRenderTextureTexture( framebuffer )
 end
 
 function RL.process( delta )
@@ -52,5 +50,5 @@ function RL.draw()
 		RL.DrawTriangle( { 0, 32 }, { 32, 16 }, { 0, 0 }, RL.RED )
 	RL.EndTextureMode()
 
-	RL.DrawTexturePro( framebufferTex, { 0, 0, res[1], -res[2] }, { 0, 0, winSize[1], winSize[2] }, { 0, 0 }, 0.0, { 255, 255, 255 } )
+	RL.DrawTexturePro( RL.GetRenderTextureTexture( framebuffer ), { 0, 0, res[1], -res[2] }, { 0, 0, winSize[1], winSize[2] }, { 0, 0 }, 0.0, { 255, 255, 255 } )
 end

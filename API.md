@@ -3090,7 +3090,7 @@ Load image from file into CPU memory (RAM)
 
 ---
 
-> image = RL.LoadImageFromTexture( Texture2D texture )
+> image = RL.LoadImageFromTexture( Texture texture )
 
 Load image from GPU texture data
 
@@ -3665,7 +3665,7 @@ Get OpenGL framebuffer object id
 
 > texture = RL.GetRenderTextureTexture( RenderTexture renderTexture )
 
-Get color buffer attachment texture
+Get color buffer attachment texture. Returns as lightuserdata
 
 - Success return Texture
 
@@ -3673,7 +3673,7 @@ Get color buffer attachment texture
 
 > texture = RL.GetRenderTextureDepthTexture( RenderTexture renderTexture )
 
-Get depth buffer attachment texture
+Get depth buffer attachment texture. Returns as lightuserdata
 
 - Success return Texture
 
@@ -4170,7 +4170,7 @@ Load material from table. See material table definition
 
 ---
 
-> RL.SetMaterialTexture( Material material, int mapType, Texture2D texture )
+> RL.SetMaterialTexture( Material material, int mapType, Texture texture )
 
 Set texture for a material map type (MATERIAL_MAP_ALBEDO, MATERIAL_MAP_METALNESS...)
 
@@ -4228,7 +4228,7 @@ Get color from material map type
 
 Get material shader
 
-- Success return Shader
+- Success return Shader. Returns as lightuserdata
 
 ---
 

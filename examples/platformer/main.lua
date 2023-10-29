@@ -16,7 +16,6 @@ local res = Vec2:new( 160, 144 )
 local winScale = 5
 local winSize = res:scale( winScale )
 local framebuffer = RL.LoadRenderTexture( res )
-local framebufferTex = RL.GetRenderTextureTexture( framebuffer )
 local monitor = 0
 local tilemap = {
 	size = Vec2:new( res.x / TILE_SIZE, res.y / TILE_SIZE ),
@@ -294,12 +293,6 @@ function RL.draw()
 		drawPlayer()
 	RL.EndTextureMode()
 
-	-- local framebufferTex = RL.GetRenderTextureTexture( framebuffer )
-	-- local texId = RL.GetTextureId( framebufferTex )
-	-- print( "texId", texId )
-
-	RL.DrawTexturePro( framebufferTex, { 0, 0, res.x, -res.y }, { 0, 0, winSize.x, winSize.y }, { 0, 0 }, 0.0, RL.WHITE )
-
-	-- collectgarbage( "collect" )
+	RL.DrawTexturePro( RL.GetRenderTextureTexture( framebuffer ), { 0, 0, res.x, -res.y }, { 0, 0, winSize.x, winSize.y }, { 0, 0 }, 0.0, RL.WHITE )
 	-- RL.glBlitFramebuffer( framebuffer, -1, res, winSize, RL.GL_COLOR_BUFFER_BIT, RL.GL_NEAREST )
 end

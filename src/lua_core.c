@@ -200,7 +200,6 @@ static int gcMaterial( lua_State *L ) {
 	Material *material = luaL_checkudata ( L, 1, "Material" );
 
 	// int MAX_MATERIAL_MAPS = 12;
-
 	
 	// Unload loaded texture maps (avoid unloading default texture, managed by raylib)
     // if ( material->maps != NULL ) {
@@ -2787,6 +2786,201 @@ NPatchInfo uluaGetNPatchInfoIndex( lua_State *L, int index ) {
 		lua_pop( L, 1 );
     }
 	return npatch;
+}
+
+Image* uluaGetImage( lua_State *L, int index ) {
+	Image *image = NULL;
+
+	if ( lua_islightuserdata( L, index ) ) {
+		image = (Image*)lua_touserdata( L, index );
+	}
+	else if ( lua_isuserdata( L, index ) ) {
+		image = luaL_checkudata( L, index, "Image" );
+	}
+
+	return image;
+}
+
+Texture* uluaGetTexture( lua_State *L, int index ) {
+	Texture *texture = NULL;
+
+	if ( lua_islightuserdata( L, index ) ) {
+		texture = (Texture*)lua_touserdata( L, index );
+	}
+	else if ( lua_isuserdata( L, index ) ) {
+		texture = luaL_checkudata( L, index, "Texture" );
+	}
+
+	return texture;
+}
+
+RenderTexture* uluaGetRenderTexture( lua_State *L, int index ) {
+	RenderTexture *renderTexture = NULL;
+
+	if ( lua_islightuserdata( L, index ) ) {
+		renderTexture = (RenderTexture*)lua_touserdata( L, index );
+	}
+	else if ( lua_isuserdata( L, index ) ) {
+		renderTexture = luaL_checkudata( L, index, "RenderTexture" );
+	}
+
+	return renderTexture;
+}
+
+Shader* uluaGetShader( lua_State *L, int index ) {
+	Shader *shader = NULL;
+
+	if ( lua_islightuserdata( L, index ) ) {
+		shader = (Shader*)lua_touserdata( L, index );
+	}
+	else if ( lua_isuserdata( L, index ) ) {
+		shader = luaL_checkudata( L, index, "Shader" );
+	}
+
+	return shader;
+}
+
+Mesh* uluaGetMesh( lua_State *L, int index ) {
+	Mesh *mesh = NULL;
+
+	if ( lua_islightuserdata( L, index ) ) {
+		mesh = (Mesh*)lua_touserdata( L, index );
+	}
+	else if ( lua_isuserdata( L, index ) ) {
+		mesh = luaL_checkudata( L, index, "Mesh" );
+	}
+
+	return mesh;
+}
+
+Camera2D* uluaGetCamera2D( lua_State *L, int index ) {
+	Camera2D *camera = NULL;
+
+	if ( lua_islightuserdata( L, index ) ) {
+		camera = (Camera2D*)lua_touserdata( L, index );
+	}
+	else if ( lua_isuserdata( L, index ) ) {
+		camera = luaL_checkudata( L, index, "Camera2D" );
+	}
+
+	return camera;
+}
+
+Camera3D* uluaGetCamera3D( lua_State *L, int index ) {
+	Camera3D *camera = NULL;
+
+	if ( lua_islightuserdata( L, index ) ) {
+		camera = (Camera3D*)lua_touserdata( L, index );
+	}
+	else if ( lua_isuserdata( L, index ) ) {
+		camera = luaL_checkudata( L, index, "Camera3D" );
+	}
+
+	return camera;
+}
+
+Font* uluaGetFont( lua_State *L, int index ) {
+	Font *font = NULL;
+
+	if ( lua_islightuserdata( L, index ) ) {
+		font = (Font*)lua_touserdata( L, index );
+	}
+	else if ( lua_isuserdata( L, index ) ) {
+		font = luaL_checkudata( L, index, "Font" );
+	}
+
+	return font;
+}
+
+Wave* uluaGetWave( lua_State *L, int index ) {
+	Wave *wave = NULL;
+
+	if ( lua_islightuserdata( L, index ) ) {
+		wave = (Wave*)lua_touserdata( L, index );
+	}
+	else if ( lua_isuserdata( L, index ) ) {
+		wave = luaL_checkudata( L, index, "Wave" );
+	}
+
+	return wave;
+}
+
+Sound* uluaGetSound( lua_State *L, int index ) {
+	Sound *sound = NULL;
+
+	if ( lua_islightuserdata( L, index ) ) {
+		sound = (Sound*)lua_touserdata( L, index );
+	}
+	else if ( lua_isuserdata( L, index ) ) {
+		sound = luaL_checkudata( L, index, "Sound" );
+	}
+
+	return sound;
+}
+
+Music* uluaGetMusic( lua_State *L, int index ) {
+	Music *music = NULL;
+
+	if ( lua_islightuserdata( L, index ) ) {
+		music = (Music*)lua_touserdata( L, index );
+	}
+	else if ( lua_isuserdata( L, index ) ) {
+		music = luaL_checkudata( L, index, "Music" );
+	}
+
+	return music;
+}
+
+Light* uluaGetLight( lua_State *L, int index ) {
+	Light *light = NULL;
+
+	if ( lua_islightuserdata( L, index ) ) {
+		light = (Light*)lua_touserdata( L, index );
+	}
+	else if ( lua_isuserdata( L, index ) ) {
+		light = luaL_checkudata( L, index, "Light" );
+	}
+
+	return light;
+}
+
+Material* uluaGetMaterial( lua_State *L, int index ) {
+	Material *material = NULL;
+
+	if ( lua_islightuserdata( L, index ) ) {
+		material = (Material*)lua_touserdata( L, index );
+	}
+	else if ( lua_isuserdata( L, index ) ) {
+		material = luaL_checkudata( L, index, "Material" );
+	}
+
+	return material;
+}
+
+Model* uluaGetModel( lua_State *L, int index ) {
+	Model *model = NULL;
+
+	if ( lua_islightuserdata( L, index ) ) {
+		model = (Model*)lua_touserdata( L, index );
+	}
+	else if ( lua_isuserdata( L, index ) ) {
+		model = luaL_checkudata( L, index, "Model" );
+	}
+
+	return model;
+}
+
+ModelAnimation* uluaGetModelAnimation( lua_State *L, int index ) {
+	ModelAnimation *anim = NULL;
+
+	if ( lua_islightuserdata( L, index ) ) {
+		anim = (ModelAnimation*)lua_touserdata( L, index );
+	}
+	else if ( lua_isuserdata( L, index ) ) {
+		anim = luaL_checkudata( L, index, "ModelAnimation" );
+	}
+
+	return anim;
 }
 
 /* Push types. */

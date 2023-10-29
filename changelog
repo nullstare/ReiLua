@@ -8,6 +8,7 @@ KEY CHANGES:
 	- CHANGED: ModelAnimations are changed to separate ModelAnimation types as in Raylib.
 	- ADDED: LoadTextureFromData.
 	- ADDED: LoadRenderTextureFromData.
+	- ADDED: Userdata objects can be referenced with lightuserdata.
 
 DETAILED CHANGES:
 	- CHANGED: GenImageColor now takes Vector2 as size.

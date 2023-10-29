@@ -16,7 +16,7 @@ NOTE: It can be useful when using basic shapes and one single font,
 defining a font char white rectangle would allow drawing everything in a single draw call
 */
 int lshapesSetShapesTexture( lua_State *L ) {
-	Texture *texture = luaL_checkudata( L, 1, "Texture" );
+	Texture *texture = uluaGetTexture( L, 1 );
 	Rectangle source = uluaGetRectangleIndex( L, 2 );
 
 	SetShapesTexture( *texture, source );

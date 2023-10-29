@@ -16,7 +16,7 @@
 
 /* Define types. */
 
-/* Buffer. */
+	/* Buffer. */
 static int gcBuffer( lua_State *L ) {
 	Buffer *buffer = luaL_checkudata ( L, 1, "Buffer" );
 	free( buffer->data );
@@ -32,7 +32,7 @@ static void defineBuffer() {
 	lua_setfield( L, -2, "__gc" );
 }
 
-/* Image */
+	/* Image */
 static int gcImage( lua_State *L ) {
 	Image *image = luaL_checkudata ( L, 1, "Image" );
 	printf( "gcImage\n" );
@@ -50,7 +50,7 @@ static void defineImage() {
 	lua_setfield( L, -2, "__gc" );
 }
 
-/* Texture */
+	/* Texture */
 static int gcTexture( lua_State *L ) {
 	Texture *texture = luaL_checkudata ( L, 1, "Texture" );
 	printf( "gcTexture\n" );
@@ -68,7 +68,7 @@ static void defineTexture() {
 	lua_setfield( L, -2, "__gc" );
 }
 
-/* RenderRexture. */
+	/* RenderRexture. */
 static int gcRenderTexture( lua_State *L ) {
 	RenderTexture *renderTexture = luaL_checkudata ( L, 1, "RenderTexture" );
 	printf( "gcRenderTexture\n" );
@@ -86,7 +86,7 @@ static void defineRenderTexture() {
 	lua_setfield( L, -2, "__gc" );
 }
 
-/* Camera2D. */
+	/* Camera2D. */
 static void defineCamera2D() {
 	lua_State *L = state->luaState;
 
@@ -95,7 +95,7 @@ static void defineCamera2D() {
 	lua_setfield( L, -2, "__index" );
 }
 
-/* Camera3D. */
+	/* Camera3D. */
 static void defineCamera3D() {
 	lua_State *L = state->luaState;
 
@@ -104,7 +104,7 @@ static void defineCamera3D() {
 	lua_setfield( L, -2, "__index" );
 }
 
-/* Shader. */
+	/* Shader. */
 static int gcShader( lua_State *L ) {
 	Shader *shader = luaL_checkudata ( L, 1, "Shader" );
 	printf( "gcShader\n" );
@@ -122,7 +122,7 @@ static void defineShader() {
 	lua_setfield( L, -2, "__gc" );
 }
 
-/* Font. */
+	/* Font. */
 static int gcFont( lua_State *L ) {
 	Font *font = luaL_checkudata ( L, 1, "Font" );
 	printf( "gcFont\n" );
@@ -140,7 +140,7 @@ static void defineFont() {
 	lua_setfield( L, -2, "__gc" );
 }
 
-/* Wave. */
+	/* Wave. */
 static int gcWave( lua_State *L ) {
 	Wave *wave = luaL_checkudata ( L, 1, "Wave" );
 	printf( "gcWave\n" );
@@ -158,7 +158,7 @@ static void defineWave() {
 	lua_setfield( L, -2, "__gc" );
 }
 
-/* Sound. */
+	/* Sound. */
 static int gcSound( lua_State *L ) {
 	Sound *sound = luaL_checkudata ( L, 1, "Sound" );
 	printf( "gcSound\n" );
@@ -176,7 +176,7 @@ static void defineSound() {
 	lua_setfield( L, -2, "__gc" );
 }
 
-/* Music. */
+	/* Music. */
 static int gcMusic( lua_State *L ) {
 	Music *music = luaL_checkudata ( L, 1, "Music" );
 	printf( "gcMusic\n" );
@@ -194,7 +194,7 @@ static void defineMusic() {
 	lua_setfield( L, -2, "__gc" );
 }
 
-/* Light. */
+	/* Light. */
 static void defineLight() {
 	lua_State *L = state->luaState;
 
@@ -203,7 +203,7 @@ static void defineLight() {
 	lua_setfield( L, -2, "__index" );
 }
 
-/* Material. */
+	/* Material. */
 static int gcMaterial( lua_State *L ) {
 	Material *material = luaL_checkudata ( L, 1, "Material" );
 	printf( "gcMaterial\n" );
@@ -235,7 +235,7 @@ static void defineMaterial() {
 	lua_setfield( L, -2, "__gc" );
 }
 
-/* Mesh. */
+	/* Mesh. */
 static int gcMesh( lua_State *L ) {
 	Mesh *mesh = luaL_checkudata ( L, 1, "Mesh" );
 	printf( "gcMesh\n" );
@@ -253,7 +253,7 @@ static void defineMesh() {
 	lua_setfield( L, -2, "__gc" );
 }
 
-/* Model. */
+	/* Model. */
 static int gcModel( lua_State *L ) {
 	Model *model = luaL_checkudata ( L, 1, "Model" );
 	printf( "gcModel\n" );
@@ -272,7 +272,7 @@ static void defineModel() {
 	lua_setfield( L, -2, "__gc" );
 }
 
-/* ModelAnimation. */
+	/* ModelAnimation. */
 static int gcModelAnimation( lua_State *L ) {
 	ModelAnimation *modelAnimation = luaL_checkudata ( L, 1, "ModelAnimation" );
 	printf( "gcModelAnimation\n" );
@@ -2332,10 +2332,6 @@ Color uluaGetColorIndex( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Color color = { 0, 0, 0, 255 };
 
-    if ( !lua_istable( L, index ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong color value. Returning { 0, 0, 0, 255 }" );
-        return color;
-    }
 	int t = index, i = 0;
     lua_pushnil( L );
 
@@ -2388,10 +2384,6 @@ Vector2 uluaGetVector2Index( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Vector2 vector = { 0.0f, 0.0f };
 
-    if ( !lua_istable( L, index ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong vector2 value. Returning { 0, 0 }" );
-        return vector;
-    }
 	int t = index, i = 0;
     lua_pushnil( L );
 
@@ -2432,10 +2424,6 @@ Vector3 uluaGetVector3Index( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Vector3 vector = { 0.0f, 0.0f, 0.0f };
 
-    if ( !lua_istable( L, index ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong vector3 value. Returning { 0, 0, 0 }" );
-        return vector;
-    }
 	int t = index, i = 0;
     lua_pushnil( L );
 
@@ -2482,10 +2470,6 @@ Vector4 uluaGetVector4Index( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Vector4 vector = { 0.0f, 0.0f, 0.0f, 0.0f };
 
-    if ( !lua_istable( L, index ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong vector4 value. Returning { 0, 0, 0, 0 }" );
-        return vector;
-    }
 	int t = index, i = 0;
     lua_pushnil( L );
 
@@ -2537,11 +2521,6 @@ Rectangle uluaGetRectangle( lua_State *L ) {
 Rectangle uluaGetRectangleIndex( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Rectangle rect = { 0.0f, 0.0f, 0.0f, 0.0f };
-
-    if ( !lua_istable( L, index ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong rectangle value. Returning { 0, 0, 0, 0 }" );
-        return rect;
-    }
 
 	int t = index, i = 0;
     lua_pushnil( L );
@@ -2595,10 +2574,6 @@ Quaternion uluaGetQuaternionIndex( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Quaternion quaternion = { 0.0f, 0.0f, 0.0f, 0.0f };
 
-    if ( !lua_istable( L, index ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong quaternion value. Returning { 0, 0, 0, 0 }" );
-        return quaternion;
-    }
 	int t = index, i = 0;
     lua_pushnil( L );
 
@@ -2652,10 +2627,6 @@ Matrix uluaGetMatrixIndex( lua_State *L, int index ) {
 	Matrix matrix = { 0.0f };
 	float m[4][4];
 
-    if ( !lua_istable( L, index ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong matrix value. Returning MatrixIdentity." );
-        return MatrixIdentity();
-    }
 	int t = index, i = 0;
     lua_pushnil( L );
 
@@ -2691,10 +2662,6 @@ BoundingBox uluaGetBoundingBoxIndex( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	BoundingBox box = { .min = { 0.0, 0.0, 0.0 }, .max = { 0.0, 0.0, 0.0 } };
 
-	if ( !lua_istable( L, index ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong boundingbox value. Returning { min{ 0, 0, 0 }, max{ 0, 0, 0 } }." );
-        return box;
-    }
 	int t = index, i = 0;
     lua_pushnil( L );
 
@@ -2736,10 +2703,6 @@ Ray uluaGetRayIndex( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	Ray ray = { .position = { 0.0, 0.0, 0.0 }, .direction = { 0.0, 0.0, 0.0 } };
 
-	if ( !lua_istable( L, index ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong ray value. Returning { position{ 0, 0, 0 }, direction{ 0, 0, 0 } }." );
-        return ray;
-    }
 	int t = index, i = 0;
     lua_pushnil( L );
 
@@ -2781,10 +2744,6 @@ NPatchInfo uluaGetNPatchInfoIndex( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	NPatchInfo npatch = { .source = { 0.0, 0.0, 0.0, 0.0 }, .left = 0, .top = 0, .right = 0, .bottom = 0, .layout = NPATCH_NINE_PATCH };
 
-	if ( !lua_istable( L, index ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Error. Wrong ray value. Returning { source = { 0.0, 0.0, 0.0, 0.0 }, left = 0, top = 0, right = 0, bottom = 0, layout = NPATCH_NINE_PATCH }." );
-        return npatch;
-    }
 	int t = index, i = 0;
     lua_pushnil( L );
 

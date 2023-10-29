@@ -2771,282 +2771,189 @@ defining a font char white rectangle would allow drawing everything in a single 
 
 ---
 
-> success = RL.DrawPixel( Vector2 pos, Color color )
+> RL.DrawPixel( Vector2 pos, Color color )
 
 Draw a pixel
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawLine( Vector2 startPos, Vector2 endPos, float thickness, Color color )
+> RL.DrawLine( Vector2 startPos, Vector2 endPos, float thickness, Color color )
 
 Draw a line defining thickness
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawLineBezier( Vector2 startPos, Vector2 endPos, float thickness, Color color )
+> RL.DrawLineBezier( Vector2 startPos, Vector2 endPos, float thickness, Color color )
 
 Draw a line using cubic-bezier curves in-out
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawLineBezierQuad( Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thickness, Color color )
+> RL.DrawLineBezierQuad( Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thickness, Color color )
 
 Draw line using quadratic bezier curves with a control point
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawLineBezierCubic( Vector2 startPos, Vector2 endPos, Vector2 startControlPos, Vector2 endControlPos, float thickness, Color color )
+> RL.DrawLineBezierCubic( Vector2 startPos, Vector2 endPos, Vector2 startControlPos, Vector2 endControlPos, float thickness, Color color )
 
 Draw line using quadratic bezier curves with a control point
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawLineStrip( Vector2{} points, Color color )
+> RL.DrawLineStrip( Vector2{} points, Color color )
 
 Draw lines sequence
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawCircle( Vector2 center, float radius, Color color )
+> RL.DrawCircle( Vector2 center, float radius, Color color )
 
 Draw a color-filled circle
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawCircleSector( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
+> RL.DrawCircleSector( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
 
 Draw a piece of a circle
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawCircleSectorLines( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
+> RL.DrawCircleSectorLines( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
 
 Draw circle sector outline
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawCircleGradient( Vector2 center, float radius, Color color1, Color color2 )
+> RL.DrawCircleGradient( Vector2 center, float radius, Color color1, Color color2 )
 
 Draw a gradient-filled circle
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawCircleLines( Vector2 center, float radius, Color color )
+> RL.DrawCircleLines( Vector2 center, float radius, Color color )
 
 Draw circle outline
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawEllipse( Vector2 center, float radiusH, float radiusV, Color color )
+> RL.DrawEllipse( Vector2 center, float radiusH, float radiusV, Color color )
 
 Draw ellipse
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawEllipseLines( Vector2 center, float radiusH, float radiusV, Color color )
+> RL.DrawEllipseLines( Vector2 center, float radiusH, float radiusV, Color color )
 
 Draw ellipse outline
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawRing( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
+> RL.DrawRing( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
 
 Draw ring
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawRingLines( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
+> RL.DrawRingLines( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
 
 Draw ring outline
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawRectangle( Rectangle rec, Color color )
+> RL.DrawRectangle( Rectangle rec, Color color )
 
 Draw a color-filled rectangle
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawRectanglePro( Rectangle rec, Vector2 origin, float rotation, Color color )
+> RL.DrawRectanglePro( Rectangle rec, Vector2 origin, float rotation, Color color )
 
 Draw a color-filled rectangle with pro parameters
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawRectangleGradientV( Rectangle rectangle, Color color1, Color color2 )
+> RL.DrawRectangleGradientV( Rectangle rectangle, Color color1, Color color2 )
 
 Draw a vertical-gradient-filled rectangle
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawRectangleGradientH( Rectangle rectangle, Color color1, Color color2 )
+> RL.DrawRectangleGradientH( Rectangle rectangle, Color color1, Color color2 )
 
 Draw a horizontal-gradient-filled rectangle
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawRectangleGradientEx( Rectangle rectangle, Color col1, Color col2, Color col3, Color col4 )
+> RL.DrawRectangleGradientEx( Rectangle rectangle, Color col1, Color col2, Color col3, Color col4 )
 
 Draw a gradient-filled rectangle with custom vertex colors
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawRectangleLines( Rectangle rec, Color color )
+> RL.DrawRectangleLines( Rectangle rec, Color color )
 
 Draw rectangle outline
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawRectangleLinesEx( Rectangle rec, int lineThick, Color color )
+> RL.DrawRectangleLinesEx( Rectangle rec, int lineThick, Color color )
 
 Draw rectangle outline with extended parameters
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawRectangleRounded( Rectangle rec, float roundness, int segments, Color color )
+> RL.DrawRectangleRounded( Rectangle rec, float roundness, int segments, Color color )
 
 Draw rectangle with rounded edges
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawRectangleRoundedLines( Rectangle rec, float roundness, int segments, int lineThick, Color color )
+> RL.DrawRectangleRoundedLines( Rectangle rec, float roundness, int segments, int lineThick, Color color )
 
 Draw rectangle with rounded edges outline
 
-- Failure return false
-- Success return true
+---
+
+> RL.DrawTriangle( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
+
+Draw a color-filled triangle (Vertex in counter-clockwise order!)
 
 ---
 
-> success = RL.DrawTriangle( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
+> RL.DrawTriangleLines( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
 
-Draw a color-filled triangle ( Vertex in counter-clockwise order! )
-
-- Failure return false
-- Success return true
+Draw triangle outline (Vertex in counter-clockwise order!)
 
 ---
 
-> success = RL.DrawTriangleLines( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
+> RL.DrawTriangleFan( Vector2{} points, Color color )
 
-Draw triangle outline ( Vertex in counter-clockwise order! )
-
-- Failure return false
-- Success return true
+Draw a triangle fan defined by points (first vertex is the center)
 
 ---
 
-> success = RL.DrawTriangleFan( Vector2{} points, Color color )
-
-Draw a triangle fan defined by points ( first vertex is the center )
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.DrawTriangleStrip( Vector2{} points, Color color )
+> RL.DrawTriangleStrip( Vector2{} points, Color color )
 
 Draw a triangle strip defined by points
 
-- Failure return false
-- Success return true
+---
+
+> RL.DrawPoly( Vector2 center, int sides, float radius, float rotation, Color color )
+
+Draw a regular polygon (Vector version)
 
 ---
 
-> success = RL.DrawPoly( Vector2 center, int sides, float radius, float rotation, Color color )
-
-Draw a regular polygon ( Vector version )
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.DrawPolyLines( Vector2 center, int sides, float radius, float rotation, Color color )
+> RL.DrawPolyLines( Vector2 center, int sides, float radius, float rotation, Color color )
 
 Draw a polygon outline of n sides
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawPolyLinesEx( Vector2 center, int sides, float radius, float rotation, float lineThick, Color color )
+> RL.DrawPolyLinesEx( Vector2 center, int sides, float radius, float rotation, float lineThick, Color color )
 
 Draw a polygon outline of n sides with extended parameters
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -3058,7 +2965,6 @@ Draw a polygon outline of n sides with extended parameters
 
 Check collision between two rectangles
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -3067,7 +2973,6 @@ Check collision between two rectangles
 
 Check collision between two circles
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -3076,7 +2981,6 @@ Check collision between two circles
 
 Check collision between circle and rectangle
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -3085,7 +2989,6 @@ Check collision between circle and rectangle
 
 Check if point is inside rectangle
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -3094,7 +2997,6 @@ Check if point is inside rectangle
 
 Check if point is inside circle
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -3103,7 +3005,6 @@ Check if point is inside circle
 
 Check if point is inside a triangle
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -3112,7 +3013,6 @@ Check if point is inside a triangle
 
 Check if point is within a polygon described by array of vertices
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -3121,7 +3021,6 @@ Check if point is within a polygon described by array of vertices
 
 Check the collision between two lines defined by two points each, returns collision point by reference
 
-- Failure return nil
 - Success return bool, Vector2
 
 ---
@@ -3130,7 +3029,6 @@ Check the collision between two lines defined by two points each, returns collis
 
 Check if point belongs to line created between two points [p1] and [p2] with defined margin in pixels [threshold]
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -3139,7 +3037,6 @@ Check if point belongs to line created between two points [p1] and [p2] with def
 
 Get collision rectangle for two rectangles collision
 
-- Failure return nil
 - Success return Rectangle
 
 ---
@@ -3288,8 +3185,7 @@ Create an image from another image piece
 
 Create an image from text (custom sprite font)
 
-- Failure return -1
-- Success return int
+- Success return Image
 
 ---
 
@@ -4721,7 +4617,6 @@ Get current music time played (in seconds)
 
 Clamp float value
 
-- Failure return false
 - Success return float
 
 ---
@@ -4730,7 +4625,6 @@ Clamp float value
 
 Calculate linear interpolation between two floats
 
-- Failure return false
 - Success return float
 
 ---
@@ -4739,7 +4633,6 @@ Calculate linear interpolation between two floats
 
 Normalize input value within input range
 
-- Failure return false
 - Success return float
 
 ---
@@ -4748,7 +4641,6 @@ Normalize input value within input range
 
 Remap input value within input range to output range
 
-- Failure return false
 - Success return float
 
 ---
@@ -4757,7 +4649,6 @@ Remap input value within input range to output range
 
 Wrap input value from min to max
 
-- Failure return false
 - Success return float
 
 ---
@@ -4766,7 +4657,6 @@ Wrap input value from min to max
 
 Check whether two given floats are almost equal
 
-- Failure return false
 - Success return int
 
 ---
@@ -4795,7 +4685,6 @@ Vector with components value 1.0f
 
 Add two vectors (v1 + v2)
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -4804,7 +4693,6 @@ Add two vectors (v1 + v2)
 
 Add vector and float value
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -4813,7 +4701,6 @@ Add vector and float value
 
 Subtract two vectors (v1 - v2)
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -4822,7 +4709,6 @@ Subtract two vectors (v1 - v2)
 
 Subtract vector by float value
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -4831,7 +4717,6 @@ Subtract vector by float value
 
 Calculate vector length
 
-- Failure return false
 - Success return float
 
 ---
@@ -4840,7 +4725,6 @@ Calculate vector length
 
 Calculate vector square length
 
-- Failure return false
 - Success return float
 
 ---
@@ -4849,7 +4733,6 @@ Calculate vector square length
 
 Calculate two vectors dot product
 
-- Failure return false
 - Success return float
 
 ---
@@ -4858,7 +4741,6 @@ Calculate two vectors dot product
 
 Calculate distance between two vectors
 
-- Failure return false
 - Success return float
 
 ---
@@ -4867,7 +4749,6 @@ Calculate distance between two vectors
 
 Calculate square distance between two vectors
 
-- Failure return false
 - Success return float
 
 ---
@@ -4876,7 +4757,6 @@ Calculate square distance between two vectors
 
 Calculate angle from two vectors
 
-- Failure return false
 - Success return float
 
 ---
@@ -4887,16 +4767,14 @@ Calculate angle defined by a two vectors line.
 NOTE: Parameters need to be normalized.
 Current implementation should be aligned with glm::angle.
 
-- Failure return false
 - Success return float
 
 ---
 
 > result = RL.Vector2Scale( Vector2 v, float scale )
 
-Scale vector ( multiply by value )
+Scale vector (multiply by value)
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -4905,7 +4783,6 @@ Scale vector ( multiply by value )
 
 Multiply vector by vector
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -4914,7 +4791,6 @@ Multiply vector by vector
 
 Negate vector
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -4923,7 +4799,6 @@ Negate vector
 
 Divide vector by vector
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -4932,7 +4807,6 @@ Divide vector by vector
 
 Normalize provided vector
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -4941,7 +4815,6 @@ Normalize provided vector
 
 Transforms a Vector2 by a given Matrix
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -4950,7 +4823,6 @@ Transforms a Vector2 by a given Matrix
 
 Calculate linear interpolation between two vectors
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -4959,7 +4831,6 @@ Calculate linear interpolation between two vectors
 
 Calculate reflected vector to normal
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -4968,7 +4839,6 @@ Calculate reflected vector to normal
 
 Rotate vector by angle
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -4977,7 +4847,6 @@ Rotate vector by angle
 
 Move Vector towards target
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -4986,7 +4855,6 @@ Move Vector towards target
 
 Invert the given vector
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -4996,7 +4864,6 @@ Invert the given vector
 Clamp the components of the vector between
 min and max values specified by the given vectors
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -5005,7 +4872,6 @@ min and max values specified by the given vectors
 
 Clamp the magnitude of the vector between two min and max values
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -5014,7 +4880,6 @@ Clamp the magnitude of the vector between two min and max values
 
 Check whether two given vectors are almost equal
 
-- Failure return false
 - Success return int
 
 ---
@@ -5043,7 +4908,6 @@ Vector with components value 1.0f
 
 Add two vectors
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5052,7 +4916,6 @@ Add two vectors
 
 Add vector and float value
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5061,7 +4924,6 @@ Add vector and float value
 
 Subtract two vectors
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5070,7 +4932,6 @@ Subtract two vectors
 
 Subtract vector by float value
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5079,7 +4940,6 @@ Subtract vector by float value
 
 Multiply vector by scalar
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5088,7 +4948,6 @@ Multiply vector by scalar
 
 Multiply vector by vector
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5097,7 +4956,6 @@ Multiply vector by vector
 
 Calculate two vectors cross product
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5106,7 +4964,6 @@ Calculate two vectors cross product
 
 Calculate one vector perpendicular vector
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5115,7 +4972,6 @@ Calculate one vector perpendicular vector
 
 Calculate vector length
 
-- Failure return false
 - Success return float
 
 ---
@@ -5124,7 +4980,6 @@ Calculate vector length
 
 Calculate vector square length
 
-- Failure return false
 - Success return float
 
 ---
@@ -5133,7 +4988,6 @@ Calculate vector square length
 
 Calculate two vectors dot product
 
-- Failure return false
 - Success return float
 
 ---
@@ -5142,7 +4996,6 @@ Calculate two vectors dot product
 
 Calculate distance between two vectors
 
-- Failure return false
 - Success return float
 
 ---
@@ -5151,7 +5004,6 @@ Calculate distance between two vectors
 
 Calculate square distance between two vectors
 
-- Failure return false
 - Success return float
 
 ---
@@ -5160,16 +5012,14 @@ Calculate square distance between two vectors
 
 Calculate angle between two vectors
 
-- Failure return false
 - Success return float
 
 ---
 
 > result = RL.Vector3Negate( Vector3 v )
 
-Negate provided vector ( invert direction )
+Negate provided vector (invert direction)
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5178,7 +5028,6 @@ Negate provided vector ( invert direction )
 
 Divide vector by vector
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5187,7 +5036,6 @@ Divide vector by vector
 
 Normalize provided vector
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5197,7 +5045,6 @@ Normalize provided vector
 Orthonormalize provided vectors. Makes vectors normalized and orthogonal to each other.
 Gram-Schmidt function implementation
 
-- Failure return false
 - Success return Vector3, Vector3
 
 ---
@@ -5206,7 +5053,6 @@ Gram-Schmidt function implementation
 
 Transforms a Vector3 by a given Matrix
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5215,7 +5061,6 @@ Transforms a Vector3 by a given Matrix
 
 Transform a vector by quaternion rotation
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5224,7 +5069,6 @@ Transform a vector by quaternion rotation
 
 Rotates a vector around an axis
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5233,7 +5077,6 @@ Rotates a vector around an axis
 
 Calculate linear interpolation between two vectors
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5242,7 +5085,6 @@ Calculate linear interpolation between two vectors
 
 Calculate reflected vector to normal
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5251,7 +5093,6 @@ Calculate reflected vector to normal
 
 Get min value for each pair of components
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5260,17 +5101,15 @@ Get min value for each pair of components
 
 Get max value for each pair of components
 
-- Failure return false
 - Success return Vector3
 
 ---
 
 > result = RL.Vector3Barycenter( Vector3 p, Vector3 a, Vector3 b, Vector3 c )
 
-Compute barycenter coordinates ( u, v, w ) for point p with respect to triangle ( a, b, c )
+Compute barycenter coordinates (u, v, w) for point p with respect to triangle (a, b, c)
 NOTE: Assumes P is on the plane of the triangle
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5280,7 +5119,6 @@ NOTE: Assumes P is on the plane of the triangle
 Projects a Vector3 from screen space into object space
 NOTE: We are avoiding calling other raymath functions despite available
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5289,7 +5127,6 @@ NOTE: We are avoiding calling other raymath functions despite available
 
 Invert the given vector
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5299,7 +5136,6 @@ Invert the given vector
 Clamp the components of the vector between
 min and max values specified by the given vectors
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5308,7 +5144,6 @@ min and max values specified by the given vectors
 
 Clamp the magnitude of the vector between two values
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5317,7 +5152,6 @@ Clamp the magnitude of the vector between two values
 
 Check whether two given vectors are almost equal
 
-- Failure return false
 - Success return int
 
 ---
@@ -5331,7 +5165,6 @@ and r specifies the ratio of the refractive index of the medium
 from where the ray comes to the refractive index of the medium
 on the other side of the surface
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5344,16 +5177,14 @@ on the other side of the surface
 
 Compute matrix determinant
 
-- Failure return false
 - Success return float
 
 ---
 
 > result = RL.MatrixTrace( Matrix mat )
 
-Get the trace of the matrix ( sum of the values along the diagonal )
+Get the trace of the matrix (sum of the values along the diagonal)
 
-- Failure return false
 - Success return float
 
 ---
@@ -5362,7 +5193,6 @@ Get the trace of the matrix ( sum of the values along the diagonal )
 
 Transposes provided matrix
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -5371,7 +5201,6 @@ Transposes provided matrix
 
 Invert provided matrix
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -5388,7 +5217,6 @@ Get identity matrix
 
 Add two matrices
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -5397,7 +5225,6 @@ Add two matrices
 
 Subtract two matrices (left - right)
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -5406,7 +5233,6 @@ Subtract two matrices (left - right)
 
 Get two matrix multiplication
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -5415,7 +5241,6 @@ Get two matrix multiplication
 
 Get translation matrix
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -5424,52 +5249,46 @@ Get translation matrix
 
 Create rotation matrix from axis and angle. NOTE: Angle should be provided in radians
 
-- Failure return false
 - Success return Matrix
 
 ---
 
 > result = RL.MatrixRotateX( float angle )
 
-Get x-rotation matrix ( angle in radians )
+Get x-rotation matrix (angle in radians)
 
-- Failure return false
 - Success return Matrix
 
 ---
 
 > result = RL.MatrixRotateY( float angle )
 
-Get y-rotation matrix ( angle in radians )
+Get y-rotation matrix (angle in radians)
 
-- Failure return false
 - Success return Matrix
 
 ---
 
 > result = RL.MatrixRotateZ( float angle )
 
-Get z-rotation matrix ( angle in radians )
+Get z-rotation matrix (angle in radians)
 
-- Failure return false
 - Success return Matrix
 
 ---
 
 > result = RL.MatrixRotateXYZ( Vector3 angle )
 
-Get xyz-rotation matrix ( angles in radians )
+Get xyz-rotation matrix (angles in radians)
 
-- Failure return false
 - Success return Matrix
 
 ---
 
 > result = RL.MatrixRotateZYX( Vector3 angle )
 
-Get zyx-rotation matrix ( angles in radians )
+Get zyx-rotation matrix (angles in radians)
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -5478,7 +5297,6 @@ Get zyx-rotation matrix ( angles in radians )
 
 Get scaling matrix
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -5487,7 +5305,6 @@ Get scaling matrix
 
 Get perspective projection matrix
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -5496,7 +5313,6 @@ Get perspective projection matrix
 
 Get perspective projection matrix
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -5505,16 +5321,14 @@ Get perspective projection matrix
 
 Get orthographic projection matrix
 
-- Failure return false
 - Success return Matrix
 
 ---
 
 > result = RL.MatrixLookAt( Vector3 eye, Vector3 target, Vector3 up )
 
-Get camera look-at matrix ( View matrix )
+Get camera look-at matrix (View matrix)
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -5527,7 +5341,6 @@ Get camera look-at matrix ( View matrix )
 
 Add two quaternions
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5536,7 +5349,6 @@ Add two quaternions
 
 Add quaternion and float value
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5545,7 +5357,6 @@ Add quaternion and float value
 
 Subtract two quaternions
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5554,7 +5365,6 @@ Subtract two quaternions
 
 Subtract quaternion and float value
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5571,7 +5381,6 @@ Get identity quaternion
 
 Computes the length of a quaternion
 
-- Failure return false
 - Success return float
 
 ---
@@ -5580,7 +5389,6 @@ Computes the length of a quaternion
 
 Normalize provided quaternion
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5589,7 +5397,6 @@ Normalize provided quaternion
 
 Invert provided quaternion
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5598,7 +5405,6 @@ Invert provided quaternion
 
 Calculate two quaternion multiplication
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5607,7 +5413,6 @@ Calculate two quaternion multiplication
 
 Scale quaternion by float value
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5616,7 +5421,6 @@ Scale quaternion by float value
 
 Divide two quaternions
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5625,7 +5429,6 @@ Divide two quaternions
 
 Calculate linear interpolation between two quaternions
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5634,7 +5437,6 @@ Calculate linear interpolation between two quaternions
 
 Calculate slerp-optimized interpolation between two quaternions
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5643,7 +5445,6 @@ Calculate slerp-optimized interpolation between two quaternions
 
 Calculates spherical linear interpolation between two quaternions
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5652,7 +5453,6 @@ Calculates spherical linear interpolation between two quaternions
 
 Calculate quaternion based on the rotation from one vector to another
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5661,7 +5461,6 @@ Calculate quaternion based on the rotation from one vector to another
 
 Get a quaternion for a given rotation matrix
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5670,7 +5469,6 @@ Get a quaternion for a given rotation matrix
 
 Get a quaternion for a given rotation matrix
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -5680,7 +5478,6 @@ Get a quaternion for a given rotation matrix
 Get rotation quaternion for an angle and axis
 NOTE: angle must be provided in radians
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5689,7 +5486,6 @@ NOTE: angle must be provided in radians
 
 Get the rotation angle and axis for a given quaternion
 
-- Failure return false
 - Success return Vector3, float
 
 ---
@@ -5699,7 +5495,6 @@ Get the rotation angle and axis for a given quaternion
 Get the quaternion equivalent to Euler angles
 NOTE: Rotation order is ZYX
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5709,7 +5504,6 @@ NOTE: Rotation order is ZYX
 Get the Euler angles equivalent to quaternion (roll, pitch, yaw)
 NOTE: Angles are returned in a Vector3 struct in radians
 
-- Failure return false
 - Success return Vector3
 
 ---
@@ -5718,7 +5512,6 @@ NOTE: Angles are returned in a Vector3 struct in radians
 
 Transform a quaternion given a transformation matrix
 
-- Failure return false
 - Success return Quaternion
 
 ---
@@ -5727,7 +5520,6 @@ Transform a quaternion given a transformation matrix
 
 Check whether two given quaternions are almost equal
 
-- Failure return false
 - Success return int
 
 ---
@@ -5738,57 +5530,51 @@ Check whether two given quaternions are almost equal
 
 > RL.GuiEnable()
 
-Enable gui controls ( global state )
+Enable gui controls (global state)
 
 ---
 
 > RL.GuiDisable()
 
-Disable gui controls ( global state )
+Disable gui controls (global state)
 
 ---
 
 > RL.GuiLock()
 
-Lock gui controls ( global state )
+Lock gui controls (global state)
 
 ---
 
 > RL.GuiUnlock()
 
-Unlock gui controls ( global state )
+Unlock gui controls (global state)
 
 ---
 
 > locked = RL.GuiIsLocked()
 
-Check if gui is locked ( global state )
+Check if gui is locked (global state)
 
 - Success return bool
 
 ---
 
-> success = RL.GuiFade( float alpha )
+> RL.GuiFade( float alpha )
 
-Set gui controls alpha ( global state ), alpha goes from 0.0f to 1.0f
-
-- Failure return false
-- Success return true
+Set gui controls alpha (global state), alpha goes from 0.0f to 1.0f
 
 ---
 
-> success = RL.GuiSetState( int state )
+> RL.GuiSetState( int state )
 
-Set gui state ( global state )
-
-- Failure return false
-- Success return true
+Set gui state (global state)
 
 ---
 
 > state = RL.GuiGetState()
 
-Get gui state ( global state )
+Get gui state (global state)
 
 - Success return int
 
@@ -5806,9 +5592,9 @@ Set gui custom font (global state)
 
 > font = RL.GuiGetFont()
 
-Get gui custom font ( global state )
+Get gui custom font (global state)
 
-- Success return int
+- Success return Font
 
 ---
 
@@ -5816,12 +5602,9 @@ Get gui custom font ( global state )
 
 ---
 
-> success = RL.GuiSetStyle( int control, int property, int value )
+> RL.GuiSetStyle( int control, int property, int value )
 
 Set one style property
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -5829,14 +5612,13 @@ Set one style property
 
 Get one style property
 
-- Failure return false
 - Success return int
 
 ---
 
 > success = RL.GuiLoadStyle( string fileName )
 
-Load style file over global style variable ( .rgs )
+Load style file over global style variable (.rgs)
 
 - Failure return false
 - Success return true
@@ -5857,35 +5639,25 @@ Load style default over global style
 
 Window Box control, shows a window that can be closed
 
-- Failure return nil
 - Success return bool
 
 ---
 
-> success = RL.GuiGroupBox( Rectangle bounds, string text )
+> RL.GuiGroupBox( Rectangle bounds, string text )
 
 Group Box control with text name
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.GuiLine( Rectangle bounds, string text )
+> RL.GuiLine( Rectangle bounds, string text )
 
 Line separator control, could contain text
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.GuiPanel( Rectangle bounds, string text )
+> RL.GuiPanel( Rectangle bounds, string text )
 
 Panel control, useful to group controls
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -5893,7 +5665,6 @@ Panel control, useful to group controls
 
 Scroll Panel control
 
-- Failure return false
 - Success return Rectangle, Vector2
 
 ---
@@ -5902,12 +5673,9 @@ Scroll Panel control
 
 ---
 
-> success = RL.GuiLabel( Rectangle bounds, string text )
+> RL.GuiLabel( Rectangle bounds, string text )
 
 Label control, shows text
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -5915,7 +5683,6 @@ Label control, shows text
 
 Button control, returns true when clicked
 
-- Failure return nil
 - Success return boolean
 
 ---
@@ -5924,7 +5691,6 @@ Button control, returns true when clicked
 
 Label button control, show true when clicked
 
-- Failure return nil
 - Success return boolean
 
 ---
@@ -5933,7 +5699,6 @@ Label button control, show true when clicked
 
 Toggle Button control, returns true when active
 
-- Failure return nil
 - Success return boolean
 
 ---
@@ -5942,7 +5707,6 @@ Toggle Button control, returns true when active
 
 Toggle Group control, returns active toggle index
 
-- Failure return false
 - Success return int
 
 ---
@@ -5951,7 +5715,6 @@ Toggle Group control, returns active toggle index
 
 Check Box control, returns true when active
 
-- Failure return nil
 - Success return boolean
 
 ---
@@ -5960,7 +5723,6 @@ Check Box control, returns true when active
 
 Combo Box control, returns selected item index
 
-- Failure return nil
 - Success return int
 
 ---
@@ -5969,7 +5731,6 @@ Combo Box control, returns selected item index
 
 Text Box control, updates input text
 
-- Failure return nil
 - Success return boolean, string
 
 ---
@@ -5978,7 +5739,6 @@ Text Box control, updates input text
 
 Text Box control with multiple lines
 
-- Failure return nil
 - Success return boolean, string
 
 ---
@@ -5987,7 +5747,6 @@ Text Box control with multiple lines
 
 Spinner control, returns selected value
 
-- Failure return nil
 - Success return boolean, int
 
 ---
@@ -5996,7 +5755,6 @@ Spinner control, returns selected value
 
 Value Box control, updates input text with numbers
 
-- Failure return nil
 - Success return boolean, int
 
 ---
@@ -6005,7 +5763,6 @@ Value Box control, updates input text with numbers
 
 Slider control, returns selected value
 
-- Failure return nil
 - Success return float
 
 ---
@@ -6014,7 +5771,6 @@ Slider control, returns selected value
 
 Slider Bar control, returns selected value
 
-- Failure return nil
 - Success return float
 
 ---
@@ -6023,7 +5779,6 @@ Slider Bar control, returns selected value
 
 Progress Bar control, shows current progress value
 
-- Failure return nil
 - Success return float
 
 ---
@@ -6032,7 +5787,6 @@ Progress Bar control, shows current progress value
 
 Scroll Bar control
 
-- Failure return nil
 - Success return int
 
 ---
@@ -6041,26 +5795,19 @@ Scroll Bar control
 
 Dropdown Box control, returns selected item
 
-- Failure return nil
 - Success return bool, int
 
 ---
 
-> success = RL.GuiStatusBar( Rectangle bounds, string text )
+> RL.GuiStatusBar( Rectangle bounds, string text )
 
 Status Bar control, shows info text
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.GuiDummyRec( Rectangle bounds, string text )
+> RL.GuiDummyRec( Rectangle bounds, string text )
 
 Dummy control for placeholders
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -6068,7 +5815,6 @@ Dummy control for placeholders
 
 Grid control, returns mouse cell position
 
-- Failure return false
 - Success return Vector2
 
 ---
@@ -6081,7 +5827,6 @@ Grid control, returns mouse cell position
 
 List View control, returns selected list item index and scroll index
 
-- Failure return nil
 - Success return int, int
 
 ---
@@ -6090,16 +5835,14 @@ List View control, returns selected list item index and scroll index
 
 List View with extended parameters, returns selected list item index, scroll index and focus
 
-- Failure return nil
 - Success return int, int, int
 
 ---
 
 > buttonIndex = RL.GuiMessageBox( Rectangle bounds, string title, string message, string buttons )
 
-Message Box control, displays a message, returns button index ( 0 is x button )
+Message Box control, displays a message, returns button index (0 is x button)
 
-- Failure return false
 - Success return int
 
 ---
@@ -6108,16 +5851,14 @@ Message Box control, displays a message, returns button index ( 0 is x button )
 
 Text Input Box control, ask for text, supports secret
 
-- Failure return false
 - Success return int, string, int
 
 ---
 
 > color = RL.GuiColorPicker( Rectangle bounds, string text, Color color )
 
-Color Picker control ( multiple color controls )
+Color Picker control (multiple color controls)
 
-- Failure return false
 - Success return Color
 
 ---
@@ -6126,7 +5867,6 @@ Color Picker control ( multiple color controls )
 
 Color Panel control
 
-- Failure return false
 - Success return Color
 
 ---
@@ -6135,7 +5875,6 @@ Color Panel control
 
 Color Bar Alpha control
 
-- Failure return false
 - Success return float
 
 ---
@@ -6144,7 +5883,6 @@ Color Bar Alpha control
 
 Color Bar Hue control
 
-- Failure return false
 - Success return float
 
 ---
@@ -6155,46 +5893,33 @@ Color Bar Hue control
 
 > text = RL.GuiIconText( int iconId, string text )
 
-Get text with icon id prepended ( if supported )
+Get text with icon id prepended (if supported)
 
-- Failure return false
 - Success return string
 
 ---
 
-> success = RL.GuiDrawIcon( int iconId, Vector2 pos, int pixelSize, Color color )
+> RL.GuiDrawIcon( int iconId, Vector2 pos, int pixelSize, Color color )
 
 Draw icon
 
-- Failure return false
-- Success return true
+---
+
+> RL.GuiSetIconScale( int scale )
+
+Set icon scale (1 by default)
 
 ---
 
-> success = RL.GuiSetIconScale( int scale )
-
-Set icon scale ( 1 by default )
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.GuiSetIconPixel( int iconId, Vector2 pos )
+> RL.GuiSetIconPixel( int iconId, Vector2 pos )
 
 Set icon pixel value
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.GuiClearIconPixel( int iconId, Vector2 pos )
+> RL.GuiClearIconPixel( int iconId, Vector2 pos )
 
 Clear icon pixel value
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -6202,7 +5927,6 @@ Clear icon pixel value
 
 Check icon pixel value
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -6299,12 +6023,9 @@ Get light enabled
 
 ---
 
-> success = RL.rlMatrixMode( int mode )
+> RL.rlMatrixMode( int mode )
 
 Choose the current matrix to be transformed
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -6326,67 +6047,46 @@ Reset current matrix to identity matrix
 
 ---
 
-> success = RL.rlTranslatef( Vector3 translation )
+> RL.rlTranslatef( Vector3 translation )
 
 Multiply the current matrix by a translation matrix
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlRotatef( float angle, Vector3 rotation )
+> RL.rlRotatef( float angle, Vector3 rotation )
 
 Multiply the current matrix by a rotation matrix
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlScalef( Vector3 scale )
+> RL.rlScalef( Vector3 scale )
 
 Multiply the current matrix by a scaling matrix
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlMultMatrixf( Matrix matrix )
+> RL.rlMultMatrixf( Matrix matrix )
 
 Multiply the current matrix by another matrix
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlFrustum( float left, float right, float bottom, float top, float znear, float zfar )
+> RL.rlFrustum( float left, float right, float bottom, float top, float znear, float zfar )
 
 Multiply the current matrix by a perspective matrix generated by parameters
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlOrtho( float left, float right, float bottom, float top, float znear, float zfar )
+> RL.rlOrtho( float left, float right, float bottom, float top, float znear, float zfar )
 
 Multiply the current matrix by an orthographic matrix generated by parameters
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlViewport( Rectangle viewport )
+> RL.rlViewport( Rectangle viewport )
 
-Set the viewport area ( transformation from normalized device coordinates to window coordinates )
+Set the viewport area (transformation from normalized device coordinates to window coordinates)
 NOTE: We store current viewport dimensions
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -6394,12 +6094,9 @@ NOTE: We store current viewport dimensions
 
 ---
 
-> success = RL.rlBegin( int mode )
+> RL.rlBegin( int mode )
 
-Initialize drawing mode ( how to organize vertex )
-
-- Failure return false
-- Success return true
+Initialize drawing mode (how to organize vertex)
 
 ---
 
@@ -6409,66 +6106,45 @@ Finish vertex providing
 
 ---
 
-> success = RL.rlVertex2f( Vector2 position )
+> RL.rlVertex2f( Vector2 position )
 
-Define one vertex ( position )
-
-- Failure return false
-- Success return true
+Define one vertex (position)
 
 ---
 
-> success = RL.rlVertex3f( Vector3 position )
+> RL.rlVertex3f( Vector3 position )
 
-Define one vertex ( position )
-
-- Failure return false
-- Success return true
+Define one vertex (position)
 
 ---
 
-> success = RL.rlTexCoord2f( Vector2 texCoord )
+> RL.rlTexCoord2f( Vector2 texCoord )
 
-Define one vertex ( texture coordinate ) - 2 float
-
-- Failure return false
-- Success return true
+Define one vertex (texture coordinate) - 2 float
 
 ---
 
-> success = RL.rlNormal3f( Vector3 normal )
+> RL.rlNormal3f( Vector3 normal )
 
-Define one vertex ( normal ) - 3 float
-
-- Failure return false
-- Success return true
+Define one vertex (normal) - 3 float
 
 ---
 
-> success = RL.rlColor4ub( Color color )
+> RL.rlColor4ub( Color color )
 
-Define one vertex ( color ) - 4 byte
-
-- Failure return false
-- Success return true
+Define one vertex (color) - 4 byte
 
 ---
 
-> success = RL.rlColor3f( Vector3 color )
+> RL.rlColor3f( Vector3 color )
 
-Define one vertex ( color ) - 3 float
-
-- Failure return false
-- Success return true
+Define one vertex (color) - 3 float
 
 ---
 
-> success = RL.rlColor4f( Vector4 color )
+> RL.rlColor4f( Vector4 color )
 
-Define one vertex ( color ) - 4 float
-
-- Failure return false
-- Success return true
+Define one vertex (color) - 4 float
 
 ---
 
@@ -6478,22 +6154,21 @@ Define one vertex ( color ) - 4 float
 
 > supported = RL.rlEnableVertexArray( int vaoId )
 
-Enable vertex array ( VAO, if supported )
+Enable vertex array (VAO, if supported)
 
-- Failure return nil
 - Success return bool
 
 ---
 
 > RL.rlDisableVertexArray()
 
-Disable vertex array ( VAO, if supported )
+Disable vertex array (VAO, if supported)
 
 ---
 
-> success = RL.rlEnableVertexBuffer( int id )
+> RL.rlEnableVertexBuffer( int id )
 
-Enable vertex buffer ( VBO )
+Enable vertex buffer (VBO)
 
 - Failure return false
 - Success return true
@@ -6502,40 +6177,31 @@ Enable vertex buffer ( VBO )
 
 > RL.rlDisableVertexBuffer()
 
-Disable vertex buffer ( VBO )
+Disable vertex buffer (VBO)
 
 ---
 
-> success = RL.rlEnableVertexBufferElement( int id )
+> RL.rlEnableVertexBufferElement( int id )
 
-Enable vertex buffer element ( VBO element )
-
-- Failure return false
-- Success return true
+Enable vertex buffer element (VBO element)
 
 ---
 
 > RL.rlDisableVertexBufferElement()
 
-Disable vertex buffer element ( VBO element )
+Disable vertex buffer element (VBO element)
 
 ---
 
-> success = RL.rlEnableVertexAttribute( int index )
+> RL.rlEnableVertexAttribute( int index )
 
 Enable vertex attribute index
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlDisableVertexAttribute( int index )
+> RL.rlDisableVertexAttribute( int index )
 
 Disable vertex attribute index
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -6543,21 +6209,15 @@ Disable vertex attribute index
 
 ---
 
-> success = RL.rlActiveTextureSlot( int slot )
+> RL.rlActiveTextureSlot( int slot )
 
 Select and active a texture slot
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlEnableTexture( int id )
+> RL.rlEnableTexture( int id )
 
 Enable texture
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -6567,12 +6227,9 @@ Disable texture
 
 ---
 
-> success = RL.rlEnableTextureCubemap( int id )
+> RL.rlEnableTextureCubemap( int id )
 
 Enable texture cubemap
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -6582,21 +6239,15 @@ Disable texture cubemap
 
 ---
 
-> success = RL.rlTextureParameters( int id, int param, int value )
+> RL.rlTextureParameters( int id, int param, int value )
 
-Set texture parameters ( filter, wrap )
-
-- Failure return false
-- Success return true
+Set texture parameters (filter, wrap)
 
 ---
 
-> success = RL.rlCubemapParameters( int id, int param, int value )
+> RL.rlCubemapParameters( int id, int param, int value )
 
-Set cubemap parameters ( filter, wrap )
-
-- Failure return false
-- Success return true
+Set cubemap parameters (filter, wrap)
 
 ---
 
@@ -6604,12 +6255,9 @@ Set cubemap parameters ( filter, wrap )
 
 ---
 
-> success = RL.rlEnableShader( int id )
+> RL.rlEnableShader( int id )
 
 Enable shader program
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -6623,12 +6271,9 @@ Disable shader program
 
 ---
 
-> success = RL.rlEnableFramebuffer( int id )
+> RL.rlEnableFramebuffer( int id )
 
 Enable render texture (fbo)
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -6638,12 +6283,9 @@ Disable render texture (fbo), return to default framebuffer
 
 ---
 
-> success = RL.rlActiveDrawBuffers( int count )
+> RL.rlActiveDrawBuffers( int count )
 
 Activate multiple draw color buffers
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -6699,12 +6341,9 @@ Disable backface culling
 
 ---
 
-> success = RL.rlSetCullFace( int mode )
+> RL.rlSetCullFace( int mode )
 
 Set face culling mode
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -6720,12 +6359,9 @@ Disable scissor test
 
 ---
 
-> success = RL.rlScissor( Rectangle area )
+> RL.rlScissor( Rectangle area )
 
 Scissor test
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -6741,12 +6377,9 @@ Disable wire mode
 
 ---
 
-> success = RL.rlSetLineWidth( float width )
+> RL.rlSetLineWidth( float width )
 
 Set the line drawing width
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -6790,18 +6423,15 @@ Check if stereo render is enabled
 
 ---
 
-> success = RL.rlClearColor( Color color )
+> RL.rlClearColor( Color color )
 
 Clear color buffer with color
-
-- Failure return false
-- Success return true
 
 ---
 
 > RL.rlClearScreenBuffers()
 
-Clear used screen buffers ( color and depth )
+Clear used screen buffers (color and depth)
 
 ---
 
@@ -6811,30 +6441,21 @@ Check and log OpenGL error codes
 
 ---
 
-> success = RL.rlSetBlendMode( int mode )
+> RL.rlSetBlendMode( int mode )
 
 Set blending mode
 
-- Failure return false
-- Success return true
+---
+
+> RL.rlSetBlendFactors( int glSrcFactor, int glDstFactor, int glEquation )
+
+Set blending mode factor and equation (using OpenGL factors)
 
 ---
 
-> success = RL.rlSetBlendFactors( int glSrcFactor, int glDstFactor, int glEquation )
+> RL.rlSetBlendFactorsSeparate( int glSrcRGB, int glDstRGB, int glSrcAlpha, int glDstAlpha, int glEqRGB, int glEqAlpha )
 
-Set blending mode factor and equation ( using OpenGL factors )
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.rlSetBlendFactorsSeparate( int glSrcRGB, int glDstRGB, int glSrcAlpha, int glDstAlpha, int glEqRGB, int glEqAlpha )
-
-Set blending mode factors and equations separately ( using OpenGL factors )
-
-- Failure return false
-- Success return true
+Set blending mode factors and equations separately (using OpenGL factors)
 
 ---
 
@@ -6864,17 +6485,13 @@ Update and draw internal render batch
 
 Check internal buffer overflow for a given number of vertex and force a rlRenderBatch draw call if required
 
-- Failure return nil
 - Success return bool
 
 ---
 
-> success = RL.rlSetTexture( int id )
+> RL.rlSetTexture( int id )
 
 Set current texture for render batch and check buffers limits
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -6894,7 +6511,6 @@ Load vertex array (vao) if supported
 
 Load a vertex buffer attribute
 
-- Failure return -1
 - Success return int
 
 ---
@@ -6903,107 +6519,73 @@ Load a vertex buffer attribute
 
 Load a new attributes element buffer
 
-- Failure return -1
 - Success return int
 
 ---
 
-> success = RL.rlUpdateVertexBuffer( int bufferId, Buffer buffer, int offset )
+> RL.rlUpdateVertexBuffer( int bufferId, Buffer buffer, int offset )
 
 Update GPU buffer with new data
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlUpdateVertexBufferElements( int id, Buffer buffer, int offset )
+> RL.rlUpdateVertexBufferElements( int id, Buffer buffer, int offset )
 
 Update vertex buffer elements with new data
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlUnloadVertexArray( int vaoId )
+> RL.rlUnloadVertexArray( int vaoId )
 
 Unload vertex array object (VAO)
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlUnloadVertexBuffer( int vboId )
+> RL.rlUnloadVertexBuffer( int vboId )
 
 Unload vertex buffer (VBO)
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlSetVertexAttribute( int index, int compSize, int type, bool normalized, int stride, int pointer )
+> RL.rlSetVertexAttribute( int index, int compSize, int type, bool normalized, int stride, int pointer )
 
 Set vertex attribute
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlSetVertexAttributeDivisor( int index, int divisor )
+> RL.rlSetVertexAttributeDivisor( int index, int divisor )
 
 Set vertex attribute divisor
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlSetVertexAttributeDefault( int locIndex, float{} value, int attribType )
+> RL.rlSetVertexAttributeDefault( int locIndex, float{} value, int attribType )
 
 Set vertex attribute default value
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlDrawVertexArray( int offset, int count )
+> RL.rlDrawVertexArray( int offset, int count )
 
 Draw vertex array
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlDrawVertexArrayElements( int offset, int count, Buffer buffer )
+> RL.rlDrawVertexArrayElements( int offset, int count, Buffer buffer )
 
 Draw vertex array elements
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlDrawVertexArrayInstanced( int offset, int count, int instances )
+> RL.rlDrawVertexArrayInstanced( int offset, int count, int instances )
 
 Draw vertex array instanced
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlDrawVertexArrayElementsInstanced( int offset, int count, Buffer buffer, int instances )
+> RL.rlDrawVertexArrayElementsInstanced( int offset, int count, Buffer buffer, int instances )
 
 Draw vertex array elements instanced
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -7015,26 +6597,21 @@ Draw vertex array elements instanced
 
 Load texture in GPU
 
-- Failure return -1
 - Success return int
 
 ---
 
 > id = RL.rlLoadTextureDepth( Vector2 size, bool useRenderBuffer )
 
-Load depth texture/renderbuffer ( to be attached to fbo )
+Load depth texture/renderbuffer (to be attached to fbo)
 
-- Failure return -1
 - Success return int
 
 ---
 
-> success = RL.rlUnloadTexture( int id )
+> RL.rlUnloadTexture( int id )
 
 Unload texture from GPU memory
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -7046,17 +6623,13 @@ Unload texture from GPU memory
 
 Load an empty framebuffer
 
-- Failure return -1
 - Success return int
 
 ---
 
-> success = RL.rlFramebufferAttach( int fboId, int texId, int attachType, int texType, int mipLevel )
+> RL.rlFramebufferAttach( int fboId, int texId, int attachType, int texType, int mipLevel )
 
 Attach texture/renderbuffer to a framebuffer
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -7064,17 +6637,13 @@ Attach texture/renderbuffer to a framebuffer
 
 Verify framebuffer is complete
 
-- Failure return nil
 - Success return bool
 
 ---
 
-> success = RL.rlUnloadFramebuffer( int id )
+> RL.rlUnloadFramebuffer( int id )
 
 Delete framebuffer from GPU
-
-- Failure return nil
-- Success return bool
 
 ---
 
@@ -7123,7 +6692,6 @@ Get internal accumulated transform matrix
 
 Get internal projection matrix for stereo render (selected eye)
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -7132,44 +6700,31 @@ Get internal projection matrix for stereo render (selected eye)
 
 Get internal view offset matrix for stereo render (selected eye)
 
-- Failure return false
 - Success return Matrix
 
 ---
 
-> success = RL.rlSetMatrixProjection( Matrix proj )
+> RL.rlSetMatrixProjection( Matrix proj )
 
 Set a custom projection matrix (replaces internal projection matrix)
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlSetMatrixModelview( Matrix view )
+> RL.rlSetMatrixModelview( Matrix view )
 
 Set a custom modelview matrix (replaces internal modelview matrix)
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlSetMatrixProjectionStereo( Matrix right, Matrix left )
+> RL.rlSetMatrixProjectionStereo( Matrix right, Matrix left )
 
 Set eyes projection matrices for stereo rendering
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.rlSetMatrixViewOffsetStereo( Matrix right, Matrix left )
+> RL.rlSetMatrixViewOffsetStereo( Matrix right, Matrix left )
 
 Set eyes view offsets matrices for stereo rendering
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -7192,7 +6747,6 @@ Use -1 RenderTexture for window framebuffer.
 
 Ease linear
 
-- Failure return false
 - Success return float
 
 ---
@@ -7205,7 +6759,6 @@ Ease linear
 
 Ease sine in
 
-- Failure return false
 - Success return float
 
 ---
@@ -7214,7 +6767,6 @@ Ease sine in
 
 Ease sine out
 
-- Failure return false
 - Success return float
 
 ---
@@ -7223,7 +6775,6 @@ Ease sine out
 
 Ease sine in out
 
-- Failure return false
 - Success return float
 
 ---
@@ -7236,7 +6787,6 @@ Ease sine in out
 
 Ease circle in
 
-- Failure return false
 - Success return float
 
 ---
@@ -7245,7 +6795,6 @@ Ease circle in
 
 Ease circle out
 
-- Failure return false
 - Success return float
 
 ---
@@ -7254,7 +6803,6 @@ Ease circle out
 
 Ease circle in out
 
-- Failure return false
 - Success return float
 
 ---
@@ -7267,7 +6815,6 @@ Ease circle in out
 
 Ease cubic in
 
-- Failure return false
 - Success return float
 
 ---
@@ -7276,7 +6823,6 @@ Ease cubic in
 
 Ease cubic out
 
-- Failure return false
 - Success return float
 
 ---
@@ -7285,7 +6831,6 @@ Ease cubic out
 
 Ease cubic in out
 
-- Failure return false
 - Success return float
 
 ---
@@ -7298,7 +6843,6 @@ Ease cubic in out
 
 Ease quadratic in
 
-- Failure return false
 - Success return float
 
 ---
@@ -7307,7 +6851,6 @@ Ease quadratic in
 
 Ease quadratic out
 
-- Failure return false
 - Success return float
 
 ---
@@ -7316,7 +6859,6 @@ Ease quadratic out
 
 Ease quadratic in out
 
-- Failure return false
 - Success return float
 
 ---
@@ -7329,7 +6871,6 @@ Ease quadratic in out
 
 Ease exponential in
 
-- Failure return false
 - Success return float
 
 ---
@@ -7338,7 +6879,6 @@ Ease exponential in
 
 Ease exponential out
 
-- Failure return false
 - Success return float
 
 ---
@@ -7347,7 +6887,6 @@ Ease exponential out
 
 Ease exponential in out
 
-- Failure return false
 - Success return float
 
 ---
@@ -7360,7 +6899,6 @@ Ease exponential in out
 
 Ease back in
 
-- Failure return false
 - Success return float
 
 ---
@@ -7369,7 +6907,6 @@ Ease back in
 
 Ease back out
 
-- Failure return false
 - Success return float
 
 ---
@@ -7378,7 +6915,6 @@ Ease back out
 
 Ease back in out
 
-- Failure return false
 - Success return float
 
 ---
@@ -7391,7 +6927,6 @@ Ease back in out
 
 Ease bounce in
 
-- Failure return false
 - Success return float
 
 ---
@@ -7400,7 +6935,6 @@ Ease bounce in
 
 Ease bounce out
 
-- Failure return false
 - Success return float
 
 ---
@@ -7409,7 +6943,6 @@ Ease bounce out
 
 Ease bounce in out
 
-- Failure return false
 - Success return float
 
 ---
@@ -7422,7 +6955,6 @@ Ease bounce in out
 
 Ease elastic in
 
-- Failure return false
 - Success return float
 
 ---
@@ -7431,7 +6963,6 @@ Ease elastic in
 
 Ease elastic out
 
-- Failure return false
 - Success return float
 
 ---
@@ -7440,7 +6971,6 @@ Ease elastic out
 
 Ease elastic in out
 
-- Failure return false
 - Success return float
 
 ---

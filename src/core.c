@@ -787,7 +787,7 @@ NOTE: Set nil if no shader
 */
 int lcoreLoadShader( lua_State *L ) {
 	if ( !( lua_isstring( L, 1 ) || lua_isnil( L, 1 ) ) || !( lua_isstring( L, 2 ) || lua_isnil( L, 2 ) ) ) {
-		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadShader( string vsFileName, string fsFileName )" );
+		TraceLog( state->logLevelInvalid, "%s", "Argument needs to be string or nil" );
 		lua_pushnil( L );
 		return 1;
 	}

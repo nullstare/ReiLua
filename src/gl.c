@@ -15,25 +15,29 @@ Copy a block of pixels from one framebuffer object to another.
 Use -1 RenderTexture for window framebuffer.
 */
 int lglBlitFramebuffer( lua_State *L ) {
-	// TODO Currently doesn't support setting window render target because of luaL_checkudata.
-	RenderTexture *srcTex = luaL_checkudata( L, 1, "RenderTexture" );
-	RenderTexture *dstTex = luaL_checkudata( L, 2, "RenderTexture" );
+	if ( !( lua_isuserdata( L, 1 ) || lua_isnil( L, 1 ) ) || !( lua_isuserdata( L, 2 ) || lua_isnil( L, 2 ) ) ) {
+		TraceLog( state->logLevelInvalid, "%s", "Argument needs to be RenderTexture or nil" );
+		lua_pushnil( L );
+		return 1;
+	}
 	Rectangle srcRect = uluaGetRectangleIndex( L, 3 );
 	Rectangle dstRect = uluaGetRectangleIndex( L, 4 );
 	int mask = luaL_checkinteger( L, 5 );
 	int filter = luaL_checkinteger( L, 6 );
 
-	if ( lua_tointeger( L, 1 ) == -1 ) {
+	if ( lua_isnil( L, 1 ) ) {
 		glBindFramebuffer( GL_READ_FRAMEBUFFER, 0 );
 	}
 	else {
+		RenderTexture *srcTex = luaL_checkudata( L, 1, "RenderTexture" );
 		glBindFramebuffer( GL_READ_FRAMEBUFFER, srcTex->id );
 	}
 
-	if ( lua_tointeger( L, 2 ) == -1 ) {
+	if ( lua_isnil( L, 2 ) ) {
 		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
 	}
 	else {
+		RenderTexture *dstTex = luaL_checkudata( L, 2, "RenderTexture" );
 		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, dstTex->id );
 	}
 

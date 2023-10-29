@@ -1744,139 +1744,111 @@ function RL.GetScreenToWorld2D( position, camera ) end
 function  RL.SetShapesTexture( texture, source ) end
 
 ---Draw a pixel
----- Failure return false
----- Success return true
 ---@param pos table
 ---@param color table
----@return any success 
-function RL.DrawPixel( pos, color ) end
+---@return any RL.DrawPixel
+function  RL.DrawPixel( pos, color ) end
 
 ---Draw a line defining thickness
----- Failure return false
----- Success return true
 ---@param startPos table
 ---@param endPos table
 ---@param thickness number
 ---@param color table
----@return any success 
-function RL.DrawLine( startPos, endPos, thickness, color ) end
+---@return any RL.DrawLine
+function  RL.DrawLine( startPos, endPos, thickness, color ) end
 
 ---Draw a line using cubic-bezier curves in-out
----- Failure return false
----- Success return true
 ---@param startPos table
 ---@param endPos table
 ---@param thickness number
 ---@param color table
----@return any success 
-function RL.DrawLineBezier( startPos, endPos, thickness, color ) end
+---@return any RL.DrawLineBezier
+function  RL.DrawLineBezier( startPos, endPos, thickness, color ) end
 
 ---Draw line using quadratic bezier curves with a control point
----- Failure return false
----- Success return true
 ---@param startPos table
 ---@param endPos table
 ---@param controlPos table
 ---@param thickness number
 ---@param color table
----@return any success 
-function RL.DrawLineBezierQuad( startPos, endPos, controlPos, thickness, color ) end
+---@return any RL.DrawLineBezierQuad
+function  RL.DrawLineBezierQuad( startPos, endPos, controlPos, thickness, color ) end
 
 ---Draw line using quadratic bezier curves with a control point
----- Failure return false
----- Success return true
 ---@param startPos table
 ---@param endPos table
 ---@param startControlPos table
 ---@param endControlPos table
 ---@param thickness number
 ---@param color table
----@return any success 
-function RL.DrawLineBezierCubic( startPos, endPos, startControlPos, endControlPos, thickness, color ) end
+---@return any RL.DrawLineBezierCubic
+function  RL.DrawLineBezierCubic( startPos, endPos, startControlPos, endControlPos, thickness, color ) end
 
 ---Draw lines sequence
----- Failure return false
----- Success return true
 ---@param points any
 ---@param color table
----@return any success 
-function RL.DrawLineStrip( points, color ) end
+---@return any RL.DrawLineStrip
+function  RL.DrawLineStrip( points, color ) end
 
 ---Draw a color-filled circle
----- Failure return false
----- Success return true
 ---@param center table
 ---@param radius number
 ---@param color table
----@return any success 
-function RL.DrawCircle( center, radius, color ) end
+---@return any RL.DrawCircle
+function  RL.DrawCircle( center, radius, color ) end
 
 ---Draw a piece of a circle
----- Failure return false
----- Success return true
 ---@param center table
 ---@param radius number
 ---@param startAngle number
 ---@param endAngle number
 ---@param segments integer
 ---@param color table
----@return any success 
-function RL.DrawCircleSector( center, radius, startAngle, endAngle, segments, color ) end
+---@return any RL.DrawCircleSector
+function  RL.DrawCircleSector( center, radius, startAngle, endAngle, segments, color ) end
 
 ---Draw circle sector outline
----- Failure return false
----- Success return true
 ---@param center table
 ---@param radius number
 ---@param startAngle number
 ---@param endAngle number
 ---@param segments integer
 ---@param color table
----@return any success 
-function RL.DrawCircleSectorLines( center, radius, startAngle, endAngle, segments, color ) end
+---@return any RL.DrawCircleSectorLines
+function  RL.DrawCircleSectorLines( center, radius, startAngle, endAngle, segments, color ) end
 
 ---Draw a gradient-filled circle
----- Failure return false
----- Success return true
 ---@param center table
 ---@param radius number
 ---@param color1 table
 ---@param color2 table
----@return any success 
-function RL.DrawCircleGradient( center, radius, color1, color2 ) end
+---@return any RL.DrawCircleGradient
+function  RL.DrawCircleGradient( center, radius, color1, color2 ) end
 
 ---Draw circle outline
----- Failure return false
----- Success return true
 ---@param center table
 ---@param radius number
 ---@param color table
----@return any success 
-function RL.DrawCircleLines( center, radius, color ) end
+---@return any RL.DrawCircleLines
+function  RL.DrawCircleLines( center, radius, color ) end
 
 ---Draw ellipse
----- Failure return false
----- Success return true
 ---@param center table
 ---@param radiusH number
 ---@param radiusV number
 ---@param color table
----@return any success 
-function RL.DrawEllipse( center, radiusH, radiusV, color ) end
+---@return any RL.DrawEllipse
+function  RL.DrawEllipse( center, radiusH, radiusV, color ) end
 
 ---Draw ellipse outline
----- Failure return false
----- Success return true
 ---@param center table
 ---@param radiusH number
 ---@param radiusV number
 ---@param color table
----@return any success 
-function RL.DrawEllipseLines( center, radiusH, radiusV, color ) end
+---@return any RL.DrawEllipseLines
+function  RL.DrawEllipseLines( center, radiusH, radiusV, color ) end
 
 ---Draw ring
----- Failure return false
----- Success return true
 ---@param center table
 ---@param innerRadius number
 ---@param outerRadius number
@@ -1884,12 +1856,10 @@ function RL.DrawEllipseLines( center, radiusH, radiusV, color ) end
 ---@param endAngle number
 ---@param segments integer
 ---@param color table
----@return any success 
-function RL.DrawRing( center, innerRadius, outerRadius, startAngle, endAngle, segments, color ) end
+---@return any RL.DrawRing
+function  RL.DrawRing( center, innerRadius, outerRadius, startAngle, endAngle, segments, color ) end
 
 ---Draw ring outline
----- Failure return false
----- Success return true
 ---@param center table
 ---@param innerRadius number
 ---@param outerRadius number
@@ -1897,168 +1867,135 @@ function RL.DrawRing( center, innerRadius, outerRadius, startAngle, endAngle, se
 ---@param endAngle number
 ---@param segments integer
 ---@param color table
----@return any success 
-function RL.DrawRingLines( center, innerRadius, outerRadius, startAngle, endAngle, segments, color ) end
+---@return any RL.DrawRingLines
+function  RL.DrawRingLines( center, innerRadius, outerRadius, startAngle, endAngle, segments, color ) end
 
 ---Draw a color-filled rectangle
----- Failure return false
----- Success return true
 ---@param rec table
 ---@param color table
----@return any success 
-function RL.DrawRectangle( rec, color ) end
+---@return any RL.DrawRectangle
+function  RL.DrawRectangle( rec, color ) end
 
 ---Draw a color-filled rectangle with pro parameters
----- Failure return false
----- Success return true
 ---@param rec table
 ---@param origin table
 ---@param rotation number
 ---@param color table
----@return any success 
-function RL.DrawRectanglePro( rec, origin, rotation, color ) end
+---@return any RL.DrawRectanglePro
+function  RL.DrawRectanglePro( rec, origin, rotation, color ) end
 
 ---Draw a vertical-gradient-filled rectangle
----- Failure return false
----- Success return true
 ---@param rectangle table
 ---@param color1 table
 ---@param color2 table
----@return any success 
-function RL.DrawRectangleGradientV( rectangle, color1, color2 ) end
+---@return any RL.DrawRectangleGradientV
+function  RL.DrawRectangleGradientV( rectangle, color1, color2 ) end
 
 ---Draw a horizontal-gradient-filled rectangle
----- Failure return false
----- Success return true
 ---@param rectangle table
 ---@param color1 table
 ---@param color2 table
----@return any success 
-function RL.DrawRectangleGradientH( rectangle, color1, color2 ) end
+---@return any RL.DrawRectangleGradientH
+function  RL.DrawRectangleGradientH( rectangle, color1, color2 ) end
 
 ---Draw a gradient-filled rectangle with custom vertex colors
----- Failure return false
----- Success return true
 ---@param rectangle table
 ---@param col1 table
 ---@param col2 table
 ---@param col3 table
 ---@param col4 table
----@return any success 
-function RL.DrawRectangleGradientEx( rectangle, col1, col2, col3, col4 ) end
+---@return any RL.DrawRectangleGradientEx
+function  RL.DrawRectangleGradientEx( rectangle, col1, col2, col3, col4 ) end
 
 ---Draw rectangle outline
----- Failure return false
----- Success return true
 ---@param rec table
 ---@param color table
----@return any success 
-function RL.DrawRectangleLines( rec, color ) end
+---@return any RL.DrawRectangleLines
+function  RL.DrawRectangleLines( rec, color ) end
 
 ---Draw rectangle outline with extended parameters
----- Failure return false
----- Success return true
 ---@param rec table
 ---@param lineThick integer
 ---@param color table
----@return any success 
-function RL.DrawRectangleLinesEx( rec, lineThick, color ) end
+---@return any RL.DrawRectangleLinesEx
+function  RL.DrawRectangleLinesEx( rec, lineThick, color ) end
 
 ---Draw rectangle with rounded edges
----- Failure return false
----- Success return true
 ---@param rec table
 ---@param roundness number
 ---@param segments integer
 ---@param color table
----@return any success 
-function RL.DrawRectangleRounded( rec, roundness, segments, color ) end
+---@return any RL.DrawRectangleRounded
+function  RL.DrawRectangleRounded( rec, roundness, segments, color ) end
 
 ---Draw rectangle with rounded edges outline
----- Failure return false
----- Success return true
 ---@param rec table
 ---@param roundness number
 ---@param segments integer
 ---@param lineThick integer
 ---@param color table
----@return any success 
-function RL.DrawRectangleRoundedLines( rec, roundness, segments, lineThick, color ) end
+---@return any RL.DrawRectangleRoundedLines
+function  RL.DrawRectangleRoundedLines( rec, roundness, segments, lineThick, color ) end
 
----Draw a color-filled triangle ( Vertex in counter-clockwise order! )
----- Failure return false
----- Success return true
+---Draw a color-filled triangle (Vertex in counter-clockwise order!)
 ---@param v1 table
 ---@param v2 table
 ---@param v3 table
 ---@param color table
----@return any success 
-function RL.DrawTriangle( v1, v2, v3, color ) end
+---@return any RL.DrawTriangle
+function  RL.DrawTriangle( v1, v2, v3, color ) end
 
----Draw triangle outline ( Vertex in counter-clockwise order! )
----- Failure return false
----- Success return true
+---Draw triangle outline (Vertex in counter-clockwise order!)
 ---@param v1 table
 ---@param v2 table
 ---@param v3 table
 ---@param color table
----@return any success 
-function RL.DrawTriangleLines( v1, v2, v3, color ) end
+---@return any RL.DrawTriangleLines
+function  RL.DrawTriangleLines( v1, v2, v3, color ) end
 
----Draw a triangle fan defined by points ( first vertex is the center )
----- Failure return false
----- Success return true
+---Draw a triangle fan defined by points (first vertex is the center)
 ---@param points any
 ---@param color table
----@return any success 
-function RL.DrawTriangleFan( points, color ) end
+---@return any RL.DrawTriangleFan
+function  RL.DrawTriangleFan( points, color ) end
 
 ---Draw a triangle strip defined by points
----- Failure return false
----- Success return true
 ---@param points any
 ---@param color table
----@return any success 
-function RL.DrawTriangleStrip( points, color ) end
+---@return any RL.DrawTriangleStrip
+function  RL.DrawTriangleStrip( points, color ) end
 
----Draw a regular polygon ( Vector version )
----- Failure return false
----- Success return true
+---Draw a regular polygon (Vector version)
 ---@param center table
 ---@param sides integer
 ---@param radius number
 ---@param rotation number
 ---@param color table
----@return any success 
-function RL.DrawPoly( center, sides, radius, rotation, color ) end
+---@return any RL.DrawPoly
+function  RL.DrawPoly( center, sides, radius, rotation, color ) end
 
 ---Draw a polygon outline of n sides
----- Failure return false
----- Success return true
 ---@param center table
 ---@param sides integer
 ---@param radius number
 ---@param rotation number
 ---@param color table
----@return any success 
-function RL.DrawPolyLines( center, sides, radius, rotation, color ) end
+---@return any RL.DrawPolyLines
+function  RL.DrawPolyLines( center, sides, radius, rotation, color ) end
 
 ---Draw a polygon outline of n sides with extended parameters
----- Failure return false
----- Success return true
 ---@param center table
 ---@param sides integer
 ---@param radius number
 ---@param rotation number
 ---@param lineThick number
 ---@param color table
----@return any success 
-function RL.DrawPolyLinesEx( center, sides, radius, rotation, lineThick, color ) end
+---@return any RL.DrawPolyLinesEx
+function  RL.DrawPolyLinesEx( center, sides, radius, rotation, lineThick, color ) end
 
 -- Shapes - Collision
 
 ---Check collision between two rectangles
----- Failure return nil
 ---- Success return bool
 ---@param rec1 table
 ---@param rec2 table
@@ -2066,7 +2003,6 @@ function RL.DrawPolyLinesEx( center, sides, radius, rotation, lineThick, color )
 function RL.CheckCollisionRecs( rec1, rec2 ) end
 
 ---Check collision between two circles
----- Failure return nil
 ---- Success return bool
 ---@param center1 table
 ---@param radius1 number
@@ -2076,7 +2012,6 @@ function RL.CheckCollisionRecs( rec1, rec2 ) end
 function RL.CheckCollisionCircles( center1, radius1, center2, radius2 ) end
 
 ---Check collision between circle and rectangle
----- Failure return nil
 ---- Success return bool
 ---@param center table
 ---@param radius number
@@ -2085,7 +2020,6 @@ function RL.CheckCollisionCircles( center1, radius1, center2, radius2 ) end
 function RL.CheckCollisionCircleRec( center, radius, rec ) end
 
 ---Check if point is inside rectangle
----- Failure return nil
 ---- Success return bool
 ---@param point table
 ---@param rec table
@@ -2093,7 +2027,6 @@ function RL.CheckCollisionCircleRec( center, radius, rec ) end
 function RL.CheckCollisionPointRec( point, rec ) end
 
 ---Check if point is inside circle
----- Failure return nil
 ---- Success return bool
 ---@param point table
 ---@param center table
@@ -2102,7 +2035,6 @@ function RL.CheckCollisionPointRec( point, rec ) end
 function RL.CheckCollisionPointCircle( point, center, radius ) end
 
 ---Check if point is inside a triangle
----- Failure return nil
 ---- Success return bool
 ---@param point table
 ---@param p1 table
@@ -2112,7 +2044,6 @@ function RL.CheckCollisionPointCircle( point, center, radius ) end
 function RL.CheckCollisionPointTriangle( point, p1, p2, p3 ) end
 
 ---Check if point is within a polygon described by array of vertices
----- Failure return nil
 ---- Success return bool
 ---@param point table
 ---@param points any
@@ -2120,7 +2051,6 @@ function RL.CheckCollisionPointTriangle( point, p1, p2, p3 ) end
 function RL.CheckCollisionPointPoly( point, points ) end
 
 ---Check the collision between two lines defined by two points each, returns collision point by reference
----- Failure return nil
 ---- Success return bool, Vector2
 ---@param startPos1 table
 ---@param endPos1 table
@@ -2131,7 +2061,6 @@ function RL.CheckCollisionPointPoly( point, points ) end
 function RL.CheckCollisionLines( startPos1, endPos1, startPos2, endPos2 ) end
 
 ---Check if point belongs to line created between two points [p1] and [p2] with defined margin in pixels [threshold]
----- Failure return nil
 ---- Success return bool
 ---@param point table
 ---@param p1 table
@@ -2141,7 +2070,6 @@ function RL.CheckCollisionLines( startPos1, endPos1, startPos2, endPos2 ) end
 function RL.CheckCollisionPointLine( point, p1, p2, threshold ) end
 
 ---Get collision rectangle for two rectangles collision
----- Failure return nil
 ---- Success return Rectangle
 ---@param rec1 table
 ---@param rec2 table
@@ -2269,8 +2197,7 @@ function RL.ImageCopy( image ) end
 function RL.ImageFromImage( image, rec ) end
 
 ---Create an image from text (custom sprite font)
----- Failure return -1
----- Success return int
+---- Success return Image
 ---@param font any
 ---@param text string
 ---@param fontSize number
@@ -3644,7 +3571,6 @@ function RL.GetMusicTimePlayed( music ) end
 -- Math - Utils
 
 ---Clamp float value
----- Failure return false
 ---- Success return float
 ---@param value number
 ---@param min number
@@ -3653,7 +3579,6 @@ function RL.GetMusicTimePlayed( music ) end
 function RL.Clamp( value, min, max ) end
 
 ---Calculate linear interpolation between two floats
----- Failure return false
 ---- Success return float
 ---@param a number
 ---@param b number
@@ -3662,7 +3587,6 @@ function RL.Clamp( value, min, max ) end
 function RL.Lerp( a, b, amount ) end
 
 ---Normalize input value within input range
----- Failure return false
 ---- Success return float
 ---@param value number
 ---@param a number
@@ -3671,7 +3595,6 @@ function RL.Lerp( a, b, amount ) end
 function RL.Normalize( value, a, b ) end
 
 ---Remap input value within input range to output range
----- Failure return false
 ---- Success return float
 ---@param value number
 ---@param inputStart number
@@ -3682,7 +3605,6 @@ function RL.Normalize( value, a, b ) end
 function RL.Remap( value, inputStart, inputEnd, outputStart, outputEnd ) end
 
 ---Wrap input value from min to max
----- Failure return false
 ---- Success return float
 ---@param value number
 ---@param min number
@@ -3691,7 +3613,6 @@ function RL.Remap( value, inputStart, inputEnd, outputStart, outputEnd ) end
 function RL.Wrap( value, min, max ) end
 
 ---Check whether two given floats are almost equal
----- Failure return false
 ---- Success return int
 ---@param x number
 ---@param y number
@@ -3711,7 +3632,6 @@ function RL.Vector2Zero() end
 function RL.Vector2One() end
 
 ---Add two vectors (v1 + v2)
----- Failure return false
 ---- Success return Vector2
 ---@param v1 table
 ---@param v2 table
@@ -3719,7 +3639,6 @@ function RL.Vector2One() end
 function RL.Vector2Add( v1, v2 ) end
 
 ---Add vector and float value
----- Failure return false
 ---- Success return Vector2
 ---@param v table
 ---@param add number
@@ -3727,7 +3646,6 @@ function RL.Vector2Add( v1, v2 ) end
 function RL.Vector2AddValue( v, add ) end
 
 ---Subtract two vectors (v1 - v2)
----- Failure return false
 ---- Success return Vector2
 ---@param v1 table
 ---@param v2 table
@@ -3735,7 +3653,6 @@ function RL.Vector2AddValue( v, add ) end
 function RL.Vector2Subtract( v1, v2 ) end
 
 ---Subtract vector by float value
----- Failure return false
 ---- Success return Vector2
 ---@param v table
 ---@param sub number
@@ -3743,21 +3660,18 @@ function RL.Vector2Subtract( v1, v2 ) end
 function RL.Vector2SubtractValue( v, sub ) end
 
 ---Calculate vector length
----- Failure return false
 ---- Success return float
 ---@param v any
 ---@return any result 
 function RL.Vector2Length( v ) end
 
 ---Calculate vector square length
----- Failure return false
 ---- Success return float
 ---@param v any
 ---@return any result 
 function RL.Vector2LengthSqr( v ) end
 
 ---Calculate two vectors dot product
----- Failure return false
 ---- Success return float
 ---@param v1 table
 ---@param v2 table
@@ -3765,7 +3679,6 @@ function RL.Vector2LengthSqr( v ) end
 function RL.Vector2DotProduct( v1, v2 ) end
 
 ---Calculate distance between two vectors
----- Failure return false
 ---- Success return float
 ---@param v1 table
 ---@param v2 table
@@ -3773,7 +3686,6 @@ function RL.Vector2DotProduct( v1, v2 ) end
 function RL.Vector2Distance( v1, v2 ) end
 
 ---Calculate square distance between two vectors
----- Failure return false
 ---- Success return float
 ---@param v1 table
 ---@param v2 table
@@ -3781,7 +3693,6 @@ function RL.Vector2Distance( v1, v2 ) end
 function RL.Vector2DistanceSqr( v1, v2 ) end
 
 ---Calculate angle from two vectors
----- Failure return false
 ---- Success return float
 ---@param v1 table
 ---@param v2 table
@@ -3791,15 +3702,13 @@ function RL.Vector2Angle( v1, v2 ) end
 ---Calculate angle defined by a two vectors line.
 ---NOTE: Parameters need to be normalized.
 ---Current implementation should be aligned with glm::angle.
----- Failure return false
 ---- Success return float
 ---@param a table
 ---@param b table
 ---@return any result 
 function RL.Vector2LineAngle( a, b ) end
 
----Scale vector ( multiply by value )
----- Failure return false
+---Scale vector (multiply by value)
 ---- Success return Vector2
 ---@param v table
 ---@param scale number
@@ -3807,7 +3716,6 @@ function RL.Vector2LineAngle( a, b ) end
 function RL.Vector2Scale( v, scale ) end
 
 ---Multiply vector by vector
----- Failure return false
 ---- Success return Vector2
 ---@param v1 table
 ---@param v2 table
@@ -3815,14 +3723,12 @@ function RL.Vector2Scale( v, scale ) end
 function RL.Vector2Multiply( v1, v2 ) end
 
 ---Negate vector
----- Failure return false
 ---- Success return Vector2
 ---@param v table
 ---@return any result 
 function RL.Vector2Negate( v ) end
 
 ---Divide vector by vector
----- Failure return false
 ---- Success return Vector2
 ---@param v1 table
 ---@param v2 table
@@ -3830,14 +3736,12 @@ function RL.Vector2Negate( v ) end
 function RL.Vector2Divide( v1, v2 ) end
 
 ---Normalize provided vector
----- Failure return false
 ---- Success return Vector2
 ---@param v table
 ---@return any result 
 function RL.Vector2Normalize( v ) end
 
 ---Transforms a Vector2 by a given Matrix
----- Failure return false
 ---- Success return Vector2
 ---@param v table
 ---@param mat table
@@ -3845,7 +3749,6 @@ function RL.Vector2Normalize( v ) end
 function RL.Vector2Transform( v, mat ) end
 
 ---Calculate linear interpolation between two vectors
----- Failure return false
 ---- Success return Vector2
 ---@param v1 table
 ---@param v2 table
@@ -3854,7 +3757,6 @@ function RL.Vector2Transform( v, mat ) end
 function RL.Vector2Lerp( v1, v2, amount ) end
 
 ---Calculate reflected vector to normal
----- Failure return false
 ---- Success return Vector2
 ---@param v table
 ---@param normal table
@@ -3862,7 +3764,6 @@ function RL.Vector2Lerp( v1, v2, amount ) end
 function RL.Vector2Reflect( v, normal ) end
 
 ---Rotate vector by angle
----- Failure return false
 ---- Success return Vector2
 ---@param v table
 ---@param angle number
@@ -3870,7 +3771,6 @@ function RL.Vector2Reflect( v, normal ) end
 function RL.Vector2Rotate( v, angle ) end
 
 ---Move Vector towards target
----- Failure return false
 ---- Success return Vector2
 ---@param v table
 ---@param target table
@@ -3879,7 +3779,6 @@ function RL.Vector2Rotate( v, angle ) end
 function RL.Vector2MoveTowards( v, target, maxDistance ) end
 
 ---Invert the given vector
----- Failure return false
 ---- Success return Vector2
 ---@param v table
 ---@return any result 
@@ -3887,7 +3786,6 @@ function RL.Vector2Invert( v ) end
 
 ---Clamp the components of the vector between
 ---min and max values specified by the given vectors
----- Failure return false
 ---- Success return Vector2
 ---@param v table
 ---@param min table
@@ -3896,7 +3794,6 @@ function RL.Vector2Invert( v ) end
 function RL.Vector2Clamp( v, min, max ) end
 
 ---Clamp the magnitude of the vector between two min and max values
----- Failure return false
 ---- Success return Vector2
 ---@param v table
 ---@param min number
@@ -3905,7 +3802,6 @@ function RL.Vector2Clamp( v, min, max ) end
 function RL.Vector2ClampValue( v, min, max ) end
 
 ---Check whether two given vectors are almost equal
----- Failure return false
 ---- Success return int
 ---@param v1 table
 ---@param v2 table
@@ -3925,7 +3821,6 @@ function RL.Vector3Zero() end
 function RL.Vector3One() end
 
 ---Add two vectors
----- Failure return false
 ---- Success return Vector3
 ---@param v1 table
 ---@param v2 table
@@ -3933,7 +3828,6 @@ function RL.Vector3One() end
 function RL.Vector3Add( v1, v2 ) end
 
 ---Add vector and float value
----- Failure return false
 ---- Success return Vector3
 ---@param v table
 ---@param add number
@@ -3941,7 +3835,6 @@ function RL.Vector3Add( v1, v2 ) end
 function RL.Vector3AddValue( v, add ) end
 
 ---Subtract two vectors
----- Failure return false
 ---- Success return Vector3
 ---@param v1 table
 ---@param v2 table
@@ -3949,7 +3842,6 @@ function RL.Vector3AddValue( v, add ) end
 function RL.Vector3Subtract( v1, v2 ) end
 
 ---Subtract vector by float value
----- Failure return false
 ---- Success return Vector3
 ---@param v table
 ---@param sub number
@@ -3957,7 +3849,6 @@ function RL.Vector3Subtract( v1, v2 ) end
 function RL.Vector3SubtractValue( v, sub ) end
 
 ---Multiply vector by scalar
----- Failure return false
 ---- Success return Vector3
 ---@param v table
 ---@param scalar number
@@ -3965,7 +3856,6 @@ function RL.Vector3SubtractValue( v, sub ) end
 function RL.Vector3Scale( v, scalar ) end
 
 ---Multiply vector by vector
----- Failure return false
 ---- Success return Vector3
 ---@param v1 table
 ---@param v2 table
@@ -3973,7 +3863,6 @@ function RL.Vector3Scale( v, scalar ) end
 function RL.Vector3Multiply( v1, v2 ) end
 
 ---Calculate two vectors cross product
----- Failure return false
 ---- Success return Vector3
 ---@param v1 table
 ---@param v2 table
@@ -3981,28 +3870,24 @@ function RL.Vector3Multiply( v1, v2 ) end
 function RL.Vector3CrossProduct( v1, v2 ) end
 
 ---Calculate one vector perpendicular vector
----- Failure return false
 ---- Success return Vector3
 ---@param v table
 ---@return any result 
 function RL.Vector3Perpendicular( v ) end
 
 ---Calculate vector length
----- Failure return false
 ---- Success return float
 ---@param v table
 ---@return any result 
 function RL.Vector3Length( v ) end
 
 ---Calculate vector square length
----- Failure return false
 ---- Success return float
 ---@param v table
 ---@return any result 
 function RL.Vector3LengthSqr( v ) end
 
 ---Calculate two vectors dot product
----- Failure return false
 ---- Success return float
 ---@param v1 table
 ---@param v2 table
@@ -4010,7 +3895,6 @@ function RL.Vector3LengthSqr( v ) end
 function RL.Vector3DotProduct( v1, v2 ) end
 
 ---Calculate distance between two vectors
----- Failure return false
 ---- Success return float
 ---@param v1 table
 ---@param v2 table
@@ -4018,7 +3902,6 @@ function RL.Vector3DotProduct( v1, v2 ) end
 function RL.Vector3Distance( v1, v2 ) end
 
 ---Calculate square distance between two vectors
----- Failure return false
 ---- Success return float
 ---@param v1 table
 ---@param v2 table
@@ -4026,22 +3909,19 @@ function RL.Vector3Distance( v1, v2 ) end
 function RL.Vector3DistanceSqr( v1, v2 ) end
 
 ---Calculate angle between two vectors
----- Failure return false
 ---- Success return float
 ---@param v1 table
 ---@param v2 table
 ---@return any result 
 function RL.Vector3Angle( v1, v2 ) end
 
----Negate provided vector ( invert direction )
----- Failure return false
+---Negate provided vector (invert direction)
 ---- Success return Vector3
 ---@param v table
 ---@return any result 
 function RL.Vector3Negate( v ) end
 
 ---Divide vector by vector
----- Failure return false
 ---- Success return Vector3
 ---@param v1 table
 ---@param v2 table
@@ -4049,7 +3929,6 @@ function RL.Vector3Negate( v ) end
 function RL.Vector3Divide( v1, v2 ) end
 
 ---Normalize provided vector
----- Failure return false
 ---- Success return Vector3
 ---@param v table
 ---@return any result 
@@ -4057,7 +3936,6 @@ function RL.Vector3Normalize( v ) end
 
 ---Orthonormalize provided vectors. Makes vectors normalized and orthogonal to each other.
 ---Gram-Schmidt function implementation
----- Failure return false
 ---- Success return Vector3, Vector3
 ---@param v1 table
 ---@param v2 table
@@ -4066,7 +3944,6 @@ function RL.Vector3Normalize( v ) end
 function RL.Vector3OrthoNormalize( v1, v2 ) end
 
 ---Transforms a Vector3 by a given Matrix
----- Failure return false
 ---- Success return Vector3
 ---@param v table
 ---@param mat table
@@ -4074,7 +3951,6 @@ function RL.Vector3OrthoNormalize( v1, v2 ) end
 function RL.Vector3Transform( v, mat ) end
 
 ---Transform a vector by quaternion rotation
----- Failure return false
 ---- Success return Vector3
 ---@param v table
 ---@param q table
@@ -4082,7 +3958,6 @@ function RL.Vector3Transform( v, mat ) end
 function RL.Vector3RotateByQuaternion( v, q ) end
 
 ---Rotates a vector around an axis
----- Failure return false
 ---- Success return Vector3
 ---@param v table
 ---@param axis table
@@ -4091,7 +3966,6 @@ function RL.Vector3RotateByQuaternion( v, q ) end
 function RL.Vector3RotateByAxisAngle( v, axis, angle ) end
 
 ---Calculate linear interpolation between two vectors
----- Failure return false
 ---- Success return Vector3
 ---@param v1 table
 ---@param v2 table
@@ -4100,7 +3974,6 @@ function RL.Vector3RotateByAxisAngle( v, axis, angle ) end
 function RL.Vector3Lerp( v1, v2, amount ) end
 
 ---Calculate reflected vector to normal
----- Failure return false
 ---- Success return Vector3
 ---@param v table
 ---@param normal table
@@ -4108,7 +3981,6 @@ function RL.Vector3Lerp( v1, v2, amount ) end
 function RL.Vector3Reflect( v, normal ) end
 
 ---Get min value for each pair of components
----- Failure return false
 ---- Success return Vector3
 ---@param v1 table
 ---@param v2 table
@@ -4116,16 +3988,14 @@ function RL.Vector3Reflect( v, normal ) end
 function RL.Vector3Min( v1, v2 ) end
 
 ---Get max value for each pair of components
----- Failure return false
 ---- Success return Vector3
 ---@param v1 table
 ---@param v2 table
 ---@return any result 
 function RL.Vector3Max( v1, v2 ) end
 
----Compute barycenter coordinates ( u, v, w ) for point p with respect to triangle ( a, b, c )
+---Compute barycenter coordinates (u, v, w) for point p with respect to triangle (a, b, c)
 ---NOTE: Assumes P is on the plane of the triangle
----- Failure return false
 ---- Success return Vector3
 ---@param p table
 ---@param a table
@@ -4136,7 +4006,6 @@ function RL.Vector3Barycenter( p, a, b, c ) end
 
 ---Projects a Vector3 from screen space into object space
 ---NOTE: We are avoiding calling other raymath functions despite available
----- Failure return false
 ---- Success return Vector3
 ---@param source table
 ---@param projection table
@@ -4145,7 +4014,6 @@ function RL.Vector3Barycenter( p, a, b, c ) end
 function RL.Vector3Unproject( source, projection, view ) end
 
 ---Invert the given vector
----- Failure return false
 ---- Success return Vector3
 ---@param v table
 ---@return any result 
@@ -4153,7 +4021,6 @@ function RL.Vector3Invert( v ) end
 
 ---Clamp the components of the vector between
 ---min and max values specified by the given vectors
----- Failure return false
 ---- Success return Vector3
 ---@param v table
 ---@param min table
@@ -4162,7 +4029,6 @@ function RL.Vector3Invert( v ) end
 function RL.Vector3Clamp( v, min, max ) end
 
 ---Clamp the magnitude of the vector between two values
----- Failure return false
 ---- Success return Vector3
 ---@param v table
 ---@param min number
@@ -4171,7 +4037,6 @@ function RL.Vector3Clamp( v, min, max ) end
 function RL.Vector3ClampValue( v, min, max ) end
 
 ---Check whether two given vectors are almost equal
----- Failure return false
 ---- Success return int
 ---@param v1 table
 ---@param v2 table
@@ -4184,7 +4049,6 @@ function RL.Vector3Equals( v1, v2 ) end
 ---and r specifies the ratio of the refractive index of the medium
 ---from where the ray comes to the refractive index of the medium
 ---on the other side of the surface
----- Failure return false
 ---- Success return Vector3
 ---@param v table
 ---@param n table
@@ -4195,28 +4059,24 @@ function RL.Vector3Refract( v, n, r ) end
 -- Math - Matrix
 
 ---Compute matrix determinant
----- Failure return false
 ---- Success return float
 ---@param mat table
 ---@return any result 
 function RL.MatrixDeterminant( mat ) end
 
----Get the trace of the matrix ( sum of the values along the diagonal )
----- Failure return false
+---Get the trace of the matrix (sum of the values along the diagonal)
 ---- Success return float
 ---@param mat table
 ---@return any result 
 function RL.MatrixTrace( mat ) end
 
 ---Transposes provided matrix
----- Failure return false
 ---- Success return Matrix
 ---@param mat table
 ---@return any result 
 function RL.MatrixTranspose( mat ) end
 
 ---Invert provided matrix
----- Failure return false
 ---- Success return Matrix
 ---@param mat table
 ---@return any result 
@@ -4228,7 +4088,6 @@ function RL.MatrixInvert( mat ) end
 function RL.MatrixIdentity() end
 
 ---Add two matrices
----- Failure return false
 ---- Success return Matrix
 ---@param left table
 ---@param right table
@@ -4236,7 +4095,6 @@ function RL.MatrixIdentity() end
 function RL.MatrixAdd( left, right ) end
 
 ---Subtract two matrices (left - right)
----- Failure return false
 ---- Success return Matrix
 ---@param left table
 ---@param right table
@@ -4244,7 +4102,6 @@ function RL.MatrixAdd( left, right ) end
 function RL.MatrixSubtract( left, right ) end
 
 ---Get two matrix multiplication
----- Failure return false
 ---- Success return Matrix
 ---@param left table
 ---@param right table
@@ -4252,64 +4109,55 @@ function RL.MatrixSubtract( left, right ) end
 function RL.MatrixMultiply( left, right ) end
 
 ---Get translation matrix
----- Failure return false
 ---- Success return Matrix
 ---@param translate table
 ---@return any result 
 function RL.MatrixTranslate( translate ) end
 
 ---Create rotation matrix from axis and angle. NOTE: Angle should be provided in radians
----- Failure return false
 ---- Success return Matrix
 ---@param axis table
 ---@param angle number
 ---@return any result 
 function RL.MatrixRotate( axis, angle ) end
 
----Get x-rotation matrix ( angle in radians )
----- Failure return false
+---Get x-rotation matrix (angle in radians)
 ---- Success return Matrix
 ---@param angle number
 ---@return any result 
 function RL.MatrixRotateX( angle ) end
 
----Get y-rotation matrix ( angle in radians )
----- Failure return false
+---Get y-rotation matrix (angle in radians)
 ---- Success return Matrix
 ---@param angle number
 ---@return any result 
 function RL.MatrixRotateY( angle ) end
 
----Get z-rotation matrix ( angle in radians )
----- Failure return false
+---Get z-rotation matrix (angle in radians)
 ---- Success return Matrix
 ---@param angle number
 ---@return any result 
 function RL.MatrixRotateZ( angle ) end
 
----Get xyz-rotation matrix ( angles in radians )
----- Failure return false
+---Get xyz-rotation matrix (angles in radians)
 ---- Success return Matrix
 ---@param angle table
 ---@return any result 
 function RL.MatrixRotateXYZ( angle ) end
 
----Get zyx-rotation matrix ( angles in radians )
----- Failure return false
+---Get zyx-rotation matrix (angles in radians)
 ---- Success return Matrix
 ---@param angle table
 ---@return any result 
 function RL.MatrixRotateZYX( angle ) end
 
 ---Get scaling matrix
----- Failure return false
 ---- Success return Matrix
 ---@param scale table
 ---@return any result 
 function RL.MatrixScale( scale ) end
 
 ---Get perspective projection matrix
----- Failure return false
 ---- Success return Matrix
 ---@param left any
 ---@param right any
@@ -4321,7 +4169,6 @@ function RL.MatrixScale( scale ) end
 function RL.MatrixFrustum( left, right, bottom, top, near, far ) end
 
 ---Get perspective projection matrix
----- Failure return false
 ---- Success return Matrix
 ---@param fovy any
 ---@param aspect any
@@ -4331,7 +4178,6 @@ function RL.MatrixFrustum( left, right, bottom, top, near, far ) end
 function RL.MatrixPerspective( fovy, aspect, near, far ) end
 
 ---Get orthographic projection matrix
----- Failure return false
 ---- Success return Matrix
 ---@param left any
 ---@param right any
@@ -4342,8 +4188,7 @@ function RL.MatrixPerspective( fovy, aspect, near, far ) end
 ---@return any result 
 function RL.MatrixOrtho( left, right, bottom, top, near, far ) end
 
----Get camera look-at matrix ( View matrix )
----- Failure return false
+---Get camera look-at matrix (View matrix)
 ---- Success return Matrix
 ---@param eye table
 ---@param target table
@@ -4354,7 +4199,6 @@ function RL.MatrixLookAt( eye, target, up ) end
 -- Math - Quaternion
 
 ---Add two quaternions
----- Failure return false
 ---- Success return Quaternion
 ---@param q1 table
 ---@param q2 table
@@ -4362,7 +4206,6 @@ function RL.MatrixLookAt( eye, target, up ) end
 function RL.QuaternionAdd( q1, q2 ) end
 
 ---Add quaternion and float value
----- Failure return false
 ---- Success return Quaternion
 ---@param q table
 ---@param add number
@@ -4370,7 +4213,6 @@ function RL.QuaternionAdd( q1, q2 ) end
 function RL.QuaternionAddValue( q, add ) end
 
 ---Subtract two quaternions
----- Failure return false
 ---- Success return Quaternion
 ---@param q1 table
 ---@param q2 table
@@ -4378,7 +4220,6 @@ function RL.QuaternionAddValue( q, add ) end
 function RL.QuaternionSubtract( q1, q2 ) end
 
 ---Subtract quaternion and float value
----- Failure return false
 ---- Success return Quaternion
 ---@param q table
 ---@param sub number
@@ -4391,28 +4232,24 @@ function RL.QuaternionSubtractValue( q, sub ) end
 function RL.QuaternionIdentity() end
 
 ---Computes the length of a quaternion
----- Failure return false
 ---- Success return float
 ---@param q table
 ---@return any result 
 function RL.QuaternionLength( q ) end
 
 ---Normalize provided quaternion
----- Failure return false
 ---- Success return Quaternion
 ---@param q table
 ---@return any result 
 function RL.QuaternionNormalize( q ) end
 
 ---Invert provided quaternion
----- Failure return false
 ---- Success return Quaternion
 ---@param q table
 ---@return any result 
 function RL.QuaternionInvert( q ) end
 
 ---Calculate two quaternion multiplication
----- Failure return false
 ---- Success return Quaternion
 ---@param q1 table
 ---@param q2 table
@@ -4420,7 +4257,6 @@ function RL.QuaternionInvert( q ) end
 function RL.QuaternionMultiply( q1, q2 ) end
 
 ---Scale quaternion by float value
----- Failure return false
 ---- Success return Quaternion
 ---@param q table
 ---@param mul number
@@ -4428,7 +4264,6 @@ function RL.QuaternionMultiply( q1, q2 ) end
 function RL.QuaternionScale( q, mul ) end
 
 ---Divide two quaternions
----- Failure return false
 ---- Success return Quaternion
 ---@param q1 table
 ---@param q2 table
@@ -4436,7 +4271,6 @@ function RL.QuaternionScale( q, mul ) end
 function RL.QuaternionDivide( q1, q2 ) end
 
 ---Calculate linear interpolation between two quaternions
----- Failure return false
 ---- Success return Quaternion
 ---@param q1 table
 ---@param q2 table
@@ -4445,7 +4279,6 @@ function RL.QuaternionDivide( q1, q2 ) end
 function RL.QuaternionLerp( q1, q2, amount ) end
 
 ---Calculate slerp-optimized interpolation between two quaternions
----- Failure return false
 ---- Success return Quaternion
 ---@param q1 table
 ---@param q2 table
@@ -4454,7 +4287,6 @@ function RL.QuaternionLerp( q1, q2, amount ) end
 function RL.QuaternionNlerp( q1, q2, amount ) end
 
 ---Calculates spherical linear interpolation between two quaternions
----- Failure return false
 ---- Success return Quaternion
 ---@param q1 table
 ---@param q2 table
@@ -4463,7 +4295,6 @@ function RL.QuaternionNlerp( q1, q2, amount ) end
 function RL.QuaternionSlerp( q1, q2, amount ) end
 
 ---Calculate quaternion based on the rotation from one vector to another
----- Failure return false
 ---- Success return Quaternion
 ---@param from table
 ---@param to table
@@ -4471,14 +4302,12 @@ function RL.QuaternionSlerp( q1, q2, amount ) end
 function RL.QuaternionFromVector3ToVector3( from, to ) end
 
 ---Get a quaternion for a given rotation matrix
----- Failure return false
 ---- Success return Quaternion
 ---@param mat table
 ---@return any result 
 function RL.QuaternionFromMatrix( mat ) end
 
 ---Get a quaternion for a given rotation matrix
----- Failure return false
 ---- Success return Matrix
 ---@param q table
 ---@return any result 
@@ -4486,7 +4315,6 @@ function RL.QuaternionToMatrix( q ) end
 
 ---Get rotation quaternion for an angle and axis
 ---NOTE: angle must be provided in radians
----- Failure return false
 ---- Success return Quaternion
 ---@param axis table
 ---@param angle number
@@ -4494,7 +4322,6 @@ function RL.QuaternionToMatrix( q ) end
 function RL.QuaternionFromAxisAngle( axis, angle ) end
 
 ---Get the rotation angle and axis for a given quaternion
----- Failure return false
 ---- Success return Vector3, float
 ---@param q table
 ---@return any axis
@@ -4503,7 +4330,6 @@ function RL.QuaternionToAxisAngle( q ) end
 
 ---Get the quaternion equivalent to Euler angles
 ---NOTE: Rotation order is ZYX
----- Failure return false
 ---- Success return Quaternion
 ---@param pitch number
 ---@param yaw number
@@ -4513,14 +4339,12 @@ function RL.QuaternionFromEuler( pitch, yaw, roll ) end
 
 ---Get the Euler angles equivalent to quaternion (roll, pitch, yaw)
 ---NOTE: Angles are returned in a Vector3 struct in radians
----- Failure return false
 ---- Success return Vector3
 ---@param q table
 ---@return any result 
 function RL.QuaternionToEuler( q ) end
 
 ---Transform a quaternion given a transformation matrix
----- Failure return false
 ---- Success return Quaternion
 ---@param q table
 ---@param mat table
@@ -4528,7 +4352,6 @@ function RL.QuaternionToEuler( q ) end
 function RL.QuaternionTransform( q, mat ) end
 
 ---Check whether two given quaternions are almost equal
----- Failure return false
 ---- Success return int
 ---@param q1 table
 ---@param q2 table
@@ -4537,42 +4360,38 @@ function RL.QuaternionEquals( q1, q2 ) end
 
 -- Gui - Global
 
----Enable gui controls ( global state )
+---Enable gui controls (global state)
 ---@return any RL.GuiEnable
 function  RL.GuiEnable() end
 
----Disable gui controls ( global state )
+---Disable gui controls (global state)
 ---@return any RL.GuiDisable
 function  RL.GuiDisable() end
 
----Lock gui controls ( global state )
+---Lock gui controls (global state)
 ---@return any RL.GuiLock
 function  RL.GuiLock() end
 
----Unlock gui controls ( global state )
+---Unlock gui controls (global state)
 ---@return any RL.GuiUnlock
 function  RL.GuiUnlock() end
 
----Check if gui is locked ( global state )
+---Check if gui is locked (global state)
 ---- Success return bool
 ---@return any locked 
 function RL.GuiIsLocked() end
 
----Set gui controls alpha ( global state ), alpha goes from 0.0f to 1.0f
----- Failure return false
----- Success return true
+---Set gui controls alpha (global state), alpha goes from 0.0f to 1.0f
 ---@param alpha number
----@return any success 
-function RL.GuiFade( alpha ) end
+---@return any RL.GuiFade
+function  RL.GuiFade( alpha ) end
 
----Set gui state ( global state )
----- Failure return false
----- Success return true
+---Set gui state (global state)
 ---@param state integer
----@return any success 
-function RL.GuiSetState( state ) end
+---@return any RL.GuiSetState
+function  RL.GuiSetState( state ) end
 
----Get gui state ( global state )
+---Get gui state (global state)
 ---- Success return int
 ---@return any state 
 function RL.GuiGetState() end
@@ -4584,31 +4403,28 @@ function RL.GuiGetState() end
 ---@return any RL.GuiSetFont
 function  RL.GuiSetFont( font ) end
 
----Get gui custom font ( global state )
----- Success return int
+---Get gui custom font (global state)
+---- Success return Font
 ---@return any font 
 function RL.GuiGetFont() end
 
 -- Gui - Style
 
 ---Set one style property
----- Failure return false
----- Success return true
 ---@param control integer
 ---@param property integer
 ---@param value integer
----@return any success 
-function RL.GuiSetStyle( control, property, value ) end
+---@return any RL.GuiSetStyle
+function  RL.GuiSetStyle( control, property, value ) end
 
 ---Get one style property
----- Failure return false
 ---- Success return int
 ---@param control integer
 ---@param property integer
 ---@return any value 
 function RL.GuiGetStyle( control, property ) end
 
----Load style file over global style variable ( .rgs )
+---Load style file over global style variable (.rgs)
 ---- Failure return false
 ---- Success return true
 ---@param fileName string
@@ -4622,7 +4438,6 @@ function  RL.GuiLoadStyleDefault() end
 -- Gui - Container
 
 ---Window Box control, shows a window that can be closed
----- Failure return nil
 ---- Success return bool
 ---@param bounds table
 ---@param title string
@@ -4630,31 +4445,24 @@ function  RL.GuiLoadStyleDefault() end
 function RL.GuiWindowBox( bounds, title ) end
 
 ---Group Box control with text name
----- Failure return false
----- Success return true
 ---@param bounds table
 ---@param text string
----@return any success 
-function RL.GuiGroupBox( bounds, text ) end
+---@return any RL.GuiGroupBox
+function  RL.GuiGroupBox( bounds, text ) end
 
 ---Line separator control, could contain text
----- Failure return false
----- Success return true
 ---@param bounds table
 ---@param text string
----@return any success 
-function RL.GuiLine( bounds, text ) end
+---@return any RL.GuiLine
+function  RL.GuiLine( bounds, text ) end
 
 ---Panel control, useful to group controls
----- Failure return false
----- Success return true
 ---@param bounds table
 ---@param text string
----@return any success 
-function RL.GuiPanel( bounds, text ) end
+---@return any RL.GuiPanel
+function  RL.GuiPanel( bounds, text ) end
 
 ---Scroll Panel control
----- Failure return false
 ---- Success return Rectangle, Vector2
 ---@param bounds table
 ---@param text string
@@ -4667,15 +4475,12 @@ function RL.GuiScrollPanel( bounds, text, content, scroll ) end
 -- Gui - Basic
 
 ---Label control, shows text
----- Failure return false
----- Success return true
 ---@param bounds table
 ---@param text string
----@return any success 
-function RL.GuiLabel( bounds, text ) end
+---@return any RL.GuiLabel
+function  RL.GuiLabel( bounds, text ) end
 
 ---Button control, returns true when clicked
----- Failure return nil
 ---- Success return boolean
 ---@param bounds table
 ---@param text string
@@ -4683,7 +4488,6 @@ function RL.GuiLabel( bounds, text ) end
 function RL.GuiButton( bounds, text ) end
 
 ---Label button control, show true when clicked
----- Failure return nil
 ---- Success return boolean
 ---@param bounds table
 ---@param text string
@@ -4691,7 +4495,6 @@ function RL.GuiButton( bounds, text ) end
 function RL.GuiLabelButton( bounds, text ) end
 
 ---Toggle Button control, returns true when active
----- Failure return nil
 ---- Success return boolean
 ---@param bounds table
 ---@param text string
@@ -4700,7 +4503,6 @@ function RL.GuiLabelButton( bounds, text ) end
 function RL.GuiToggle( bounds, text, active ) end
 
 ---Toggle Group control, returns active toggle index
----- Failure return false
 ---- Success return int
 ---@param bounds table
 ---@param text string
@@ -4709,7 +4511,6 @@ function RL.GuiToggle( bounds, text, active ) end
 function RL.GuiToggleGroup( bounds, text, active ) end
 
 ---Check Box control, returns true when active
----- Failure return nil
 ---- Success return boolean
 ---@param bounds table
 ---@param text string
@@ -4718,7 +4519,6 @@ function RL.GuiToggleGroup( bounds, text, active ) end
 function RL.GuiCheckBox( bounds, text, checked ) end
 
 ---Combo Box control, returns selected item index
----- Failure return nil
 ---- Success return int
 ---@param bounds table
 ---@param text string
@@ -4727,7 +4527,6 @@ function RL.GuiCheckBox( bounds, text, checked ) end
 function RL.GuiComboBox( bounds, text, active ) end
 
 ---Text Box control, updates input text
----- Failure return nil
 ---- Success return boolean, string
 ---@param bounds table
 ---@param text string
@@ -4738,7 +4537,6 @@ function RL.GuiComboBox( bounds, text, active ) end
 function RL.GuiTextBox( bounds, text, textSize, editMode ) end
 
 ---Text Box control with multiple lines
----- Failure return nil
 ---- Success return boolean, string
 ---@param bounds table
 ---@param text string
@@ -4749,7 +4547,6 @@ function RL.GuiTextBox( bounds, text, textSize, editMode ) end
 function RL.GuiTextBoxMulti( bounds, text, textSize, editMode ) end
 
 ---Spinner control, returns selected value
----- Failure return nil
 ---- Success return boolean, int
 ---@param bounds table
 ---@param text string
@@ -4762,7 +4559,6 @@ function RL.GuiTextBoxMulti( bounds, text, textSize, editMode ) end
 function RL.GuiSpinner( bounds, text, value, minValue, maxValue, editMode ) end
 
 ---Value Box control, updates input text with numbers
----- Failure return nil
 ---- Success return boolean, int
 ---@param bounds table
 ---@param text string
@@ -4775,7 +4571,6 @@ function RL.GuiSpinner( bounds, text, value, minValue, maxValue, editMode ) end
 function RL.GuiValueBox( bounds, text, value, minValue, maxValue, editMode ) end
 
 ---Slider control, returns selected value
----- Failure return nil
 ---- Success return float
 ---@param bounds table
 ---@param textLeft string
@@ -4787,7 +4582,6 @@ function RL.GuiValueBox( bounds, text, value, minValue, maxValue, editMode ) end
 function RL.GuiSlider( bounds, textLeft, textRight, value, minValue, maxValue ) end
 
 ---Slider Bar control, returns selected value
----- Failure return nil
 ---- Success return float
 ---@param bounds table
 ---@param textLeft string
@@ -4799,7 +4593,6 @@ function RL.GuiSlider( bounds, textLeft, textRight, value, minValue, maxValue ) 
 function RL.GuiSliderBar( bounds, textLeft, textRight, value, minValue, maxValue ) end
 
 ---Progress Bar control, shows current progress value
----- Failure return nil
 ---- Success return float
 ---@param bounds table
 ---@param textLeft string
@@ -4811,7 +4604,6 @@ function RL.GuiSliderBar( bounds, textLeft, textRight, value, minValue, maxValue
 function RL.GuiProgressBar( bounds, textLeft, textRight, value, minValue, maxValue ) end
 
 ---Scroll Bar control
----- Failure return nil
 ---- Success return int
 ---@param bounds table
 ---@param value integer
@@ -4821,7 +4613,6 @@ function RL.GuiProgressBar( bounds, textLeft, textRight, value, minValue, maxVal
 function RL.GuiScrollBar( bounds, value, minValue, maxValue ) end
 
 ---Dropdown Box control, returns selected item
----- Failure return nil
 ---- Success return bool, int
 ---@param bounds table
 ---@param text string
@@ -4832,23 +4623,18 @@ function RL.GuiScrollBar( bounds, value, minValue, maxValue ) end
 function RL.GuiDropdownBox( bounds, text, active, editMode ) end
 
 ---Status Bar control, shows info text
----- Failure return false
----- Success return true
 ---@param bounds table
 ---@param text string
----@return any success 
-function RL.GuiStatusBar( bounds, text ) end
+---@return any RL.GuiStatusBar
+function  RL.GuiStatusBar( bounds, text ) end
 
 ---Dummy control for placeholders
----- Failure return false
----- Success return true
 ---@param bounds table
 ---@param text string
----@return any success 
-function RL.GuiDummyRec( bounds, text ) end
+---@return any RL.GuiDummyRec
+function  RL.GuiDummyRec( bounds, text ) end
 
 ---Grid control, returns mouse cell position
----- Failure return false
 ---- Success return Vector2
 ---@param bounds table
 ---@param text string
@@ -4860,7 +4646,6 @@ function RL.GuiGrid( bounds, text, spacing, subdivs ) end
 -- Gui - Advanced
 
 ---List View control, returns selected list item index and scroll index
----- Failure return nil
 ---- Success return int, int
 ---@param bounds table
 ---@param text string
@@ -4871,7 +4656,6 @@ function RL.GuiGrid( bounds, text, spacing, subdivs ) end
 function RL.GuiListView( bounds, text, scrollIndex, active ) end
 
 ---List View with extended parameters, returns selected list item index, scroll index and focus
----- Failure return nil
 ---- Success return int, int, int
 ---@param bounds table
 ---@param text string
@@ -4883,8 +4667,7 @@ function RL.GuiListView( bounds, text, scrollIndex, active ) end
 ---@return any focus 
 function RL.GuiListViewEx( bounds, text, focus, scrollIndex, active ) end
 
----Message Box control, displays a message, returns button index ( 0 is x button )
----- Failure return false
+---Message Box control, displays a message, returns button index (0 is x button)
 ---- Success return int
 ---@param bounds table
 ---@param title string
@@ -4894,7 +4677,6 @@ function RL.GuiListViewEx( bounds, text, focus, scrollIndex, active ) end
 function RL.GuiMessageBox( bounds, title, message, buttons ) end
 
 ---Text Input Box control, ask for text, supports secret
----- Failure return false
 ---- Success return int, string, int
 ---@param bounds table
 ---@param title string
@@ -4908,8 +4690,7 @@ function RL.GuiMessageBox( bounds, title, message, buttons ) end
 ---@return any secretViewActive 
 function RL.GuiTextInputBox( bounds, title, message, buttons, text, textMaxSize, secretViewActive ) end
 
----Color Picker control ( multiple color controls )
----- Failure return false
+---Color Picker control (multiple color controls)
 ---- Success return Color
 ---@param bounds table
 ---@param text string
@@ -4918,7 +4699,6 @@ function RL.GuiTextInputBox( bounds, title, message, buttons, text, textMaxSize,
 function RL.GuiColorPicker( bounds, text, color ) end
 
 ---Color Panel control
----- Failure return false
 ---- Success return Color
 ---@param bounds table
 ---@param text string
@@ -4927,7 +4707,6 @@ function RL.GuiColorPicker( bounds, text, color ) end
 function RL.GuiColorPanel( bounds, text, color ) end
 
 ---Color Bar Alpha control
----- Failure return false
 ---- Success return float
 ---@param bounds table
 ---@param text string
@@ -4936,7 +4715,6 @@ function RL.GuiColorPanel( bounds, text, color ) end
 function RL.GuiColorBarAlpha( bounds, text, alpha ) end
 
 ---Color Bar Hue control
----- Failure return false
 ---- Success return float
 ---@param bounds table
 ---@param text string
@@ -4946,8 +4724,7 @@ function RL.GuiColorBarHue( bounds, text, value ) end
 
 -- Gui - Icons
 
----Get text with icon id prepended ( if supported )
----- Failure return false
+---Get text with icon id prepended (if supported)
 ---- Success return string
 ---@param iconId integer
 ---@param text string
@@ -4955,40 +4732,31 @@ function RL.GuiColorBarHue( bounds, text, value ) end
 function RL.GuiIconText( iconId, text ) end
 
 ---Draw icon
----- Failure return false
----- Success return true
 ---@param iconId integer
 ---@param pos table
 ---@param pixelSize integer
 ---@param color table
----@return any success 
-function RL.GuiDrawIcon( iconId, pos, pixelSize, color ) end
+---@return any RL.GuiDrawIcon
+function  RL.GuiDrawIcon( iconId, pos, pixelSize, color ) end
 
----Set icon scale ( 1 by default )
----- Failure return false
----- Success return true
+---Set icon scale (1 by default)
 ---@param scale integer
----@return any success 
-function RL.GuiSetIconScale( scale ) end
+---@return any RL.GuiSetIconScale
+function  RL.GuiSetIconScale( scale ) end
 
 ---Set icon pixel value
----- Failure return false
----- Success return true
 ---@param iconId integer
 ---@param pos table
----@return any success 
-function RL.GuiSetIconPixel( iconId, pos ) end
+---@return any RL.GuiSetIconPixel
+function  RL.GuiSetIconPixel( iconId, pos ) end
 
 ---Clear icon pixel value
----- Failure return false
----- Success return true
 ---@param iconId integer
 ---@param pos table
----@return any success 
-function RL.GuiClearIconPixel( iconId, pos ) end
+---@return any RL.GuiClearIconPixel
+function  RL.GuiClearIconPixel( iconId, pos ) end
 
 ---Check icon pixel value
----- Failure return nil
 ---- Success return bool
 ---@param iconId integer
 ---@param pos table
@@ -5076,11 +4844,9 @@ function RL.IsLightEnabled( light ) end
 -- RLGL - Matrix operations
 
 ---Choose the current matrix to be transformed
----- Failure return false
----- Success return true
 ---@param mode integer
----@return any success 
-function RL.rlMatrixMode( mode ) end
+---@return any RL.rlMatrixMode
+function  RL.rlMatrixMode( mode ) end
 
 ---Push the current matrix to stack
 ---@return any RL.rlPushMatrix
@@ -5095,234 +4861,185 @@ function  RL.rlPopMatrix() end
 function  RL.rlLoadIdentity() end
 
 ---Multiply the current matrix by a translation matrix
----- Failure return false
----- Success return true
 ---@param translation table
----@return any success 
-function RL.rlTranslatef( translation ) end
+---@return any RL.rlTranslatef
+function  RL.rlTranslatef( translation ) end
 
 ---Multiply the current matrix by a rotation matrix
----- Failure return false
----- Success return true
 ---@param angle number
 ---@param rotation table
----@return any success 
-function RL.rlRotatef( angle, rotation ) end
+---@return any RL.rlRotatef
+function  RL.rlRotatef( angle, rotation ) end
 
 ---Multiply the current matrix by a scaling matrix
----- Failure return false
----- Success return true
 ---@param scale table
----@return any success 
-function RL.rlScalef( scale ) end
+---@return any RL.rlScalef
+function  RL.rlScalef( scale ) end
 
 ---Multiply the current matrix by another matrix
----- Failure return false
----- Success return true
 ---@param matrix table
----@return any success 
-function RL.rlMultMatrixf( matrix ) end
+---@return any RL.rlMultMatrixf
+function  RL.rlMultMatrixf( matrix ) end
 
 ---Multiply the current matrix by a perspective matrix generated by parameters
----- Failure return false
----- Success return true
 ---@param left number
 ---@param right number
 ---@param bottom number
 ---@param top number
 ---@param znear number
 ---@param zfar number
----@return any success 
-function RL.rlFrustum( left, right, bottom, top, znear, zfar ) end
+---@return any RL.rlFrustum
+function  RL.rlFrustum( left, right, bottom, top, znear, zfar ) end
 
 ---Multiply the current matrix by an orthographic matrix generated by parameters
----- Failure return false
----- Success return true
 ---@param left number
 ---@param right number
 ---@param bottom number
 ---@param top number
 ---@param znear number
 ---@param zfar number
----@return any success 
-function RL.rlOrtho( left, right, bottom, top, znear, zfar ) end
+---@return any RL.rlOrtho
+function  RL.rlOrtho( left, right, bottom, top, znear, zfar ) end
 
----Set the viewport area ( transformation from normalized device coordinates to window coordinates )
+---Set the viewport area (transformation from normalized device coordinates to window coordinates)
 ---NOTE: We store current viewport dimensions
----- Failure return false
----- Success return true
 ---@param viewport table
----@return any success 
-function RL.rlViewport( viewport ) end
+---@return any RL.rlViewport
+function  RL.rlViewport( viewport ) end
 
 -- RLGL - Vertex level operations
 
----Initialize drawing mode ( how to organize vertex )
----- Failure return false
----- Success return true
+---Initialize drawing mode (how to organize vertex)
 ---@param mode integer
----@return any success 
-function RL.rlBegin( mode ) end
+---@return any RL.rlBegin
+function  RL.rlBegin( mode ) end
 
 ---Finish vertex providing
 ---@return any RL.rlEnd
 function  RL.rlEnd() end
 
----Define one vertex ( position )
----- Failure return false
----- Success return true
+---Define one vertex (position)
 ---@param position table
----@return any success 
-function RL.rlVertex2f( position ) end
+---@return any RL.rlVertex2f
+function  RL.rlVertex2f( position ) end
 
----Define one vertex ( position )
----- Failure return false
----- Success return true
+---Define one vertex (position)
 ---@param position table
----@return any success 
-function RL.rlVertex3f( position ) end
+---@return any RL.rlVertex3f
+function  RL.rlVertex3f( position ) end
 
----Define one vertex ( texture coordinate ) - 2 float
----- Failure return false
----- Success return true
+---Define one vertex (texture coordinate) - 2 float
 ---@param texCoord table
----@return any success 
-function RL.rlTexCoord2f( texCoord ) end
+---@return any RL.rlTexCoord2f
+function  RL.rlTexCoord2f( texCoord ) end
 
----Define one vertex ( normal ) - 3 float
----- Failure return false
----- Success return true
+---Define one vertex (normal) - 3 float
 ---@param normal table
----@return any success 
-function RL.rlNormal3f( normal ) end
+---@return any RL.rlNormal3f
+function  RL.rlNormal3f( normal ) end
 
----Define one vertex ( color ) - 4 byte
----- Failure return false
----- Success return true
+---Define one vertex (color) - 4 byte
 ---@param color table
----@return any success 
-function RL.rlColor4ub( color ) end
+---@return any RL.rlColor4ub
+function  RL.rlColor4ub( color ) end
 
----Define one vertex ( color ) - 3 float
----- Failure return false
----- Success return true
+---Define one vertex (color) - 3 float
 ---@param color table
----@return any success 
-function RL.rlColor3f( color ) end
+---@return any RL.rlColor3f
+function  RL.rlColor3f( color ) end
 
----Define one vertex ( color ) - 4 float
----- Failure return false
----- Success return true
+---Define one vertex (color) - 4 float
 ---@param color table
----@return any success 
-function RL.rlColor4f( color ) end
+---@return any RL.rlColor4f
+function  RL.rlColor4f( color ) end
 
 -- RLGL - Vertex buffers state
 
----Enable vertex array ( VAO, if supported )
----- Failure return nil
+---Enable vertex array (VAO, if supported)
 ---- Success return bool
 ---@param vaoId integer
 ---@return any supported 
 function RL.rlEnableVertexArray( vaoId ) end
 
----Disable vertex array ( VAO, if supported )
+---Disable vertex array (VAO, if supported)
 ---@return any RL.rlDisableVertexArray
 function  RL.rlDisableVertexArray() end
 
----Enable vertex buffer ( VBO )
+---Enable vertex buffer (VBO)
 ---- Failure return false
 ---- Success return true
 ---@param id integer
----@return any success 
-function RL.rlEnableVertexBuffer( id ) end
+---@return any RL.rlEnableVertexBuffer
+function  RL.rlEnableVertexBuffer( id ) end
 
----Disable vertex buffer ( VBO )
+---Disable vertex buffer (VBO)
 ---@return any RL.rlDisableVertexBuffer
 function  RL.rlDisableVertexBuffer() end
 
----Enable vertex buffer element ( VBO element )
----- Failure return false
----- Success return true
+---Enable vertex buffer element (VBO element)
 ---@param id integer
----@return any success 
-function RL.rlEnableVertexBufferElement( id ) end
+---@return any RL.rlEnableVertexBufferElement
+function  RL.rlEnableVertexBufferElement( id ) end
 
----Disable vertex buffer element ( VBO element )
+---Disable vertex buffer element (VBO element)
 ---@return any RL.rlDisableVertexBufferElement
 function  RL.rlDisableVertexBufferElement() end
 
 ---Enable vertex attribute index
----- Failure return false
----- Success return true
 ---@param index integer
----@return any success 
-function RL.rlEnableVertexAttribute( index ) end
+---@return any RL.rlEnableVertexAttribute
+function  RL.rlEnableVertexAttribute( index ) end
 
 ---Disable vertex attribute index
----- Failure return false
----- Success return true
 ---@param index integer
----@return any success 
-function RL.rlDisableVertexAttribute( index ) end
+---@return any RL.rlDisableVertexAttribute
+function  RL.rlDisableVertexAttribute( index ) end
 
 -- RLGL - Textures state
 
 ---Select and active a texture slot
----- Failure return false
----- Success return true
 ---@param slot integer
----@return any success 
-function RL.rlActiveTextureSlot( slot ) end
+---@return any RL.rlActiveTextureSlot
+function  RL.rlActiveTextureSlot( slot ) end
 
 ---Enable texture
----- Failure return false
----- Success return true
 ---@param id integer
----@return any success 
-function RL.rlEnableTexture( id ) end
+---@return any RL.rlEnableTexture
+function  RL.rlEnableTexture( id ) end
 
 ---Disable texture
 ---@return any RL.rlDisableTexture
 function  RL.rlDisableTexture() end
 
 ---Enable texture cubemap
----- Failure return false
----- Success return true
 ---@param id integer
----@return any success 
-function RL.rlEnableTextureCubemap( id ) end
+---@return any RL.rlEnableTextureCubemap
+function  RL.rlEnableTextureCubemap( id ) end
 
 ---Disable texture cubemap
 ---@return any RL.rlDisableTextureCubemap
 function  RL.rlDisableTextureCubemap() end
 
----Set texture parameters ( filter, wrap )
----- Failure return false
----- Success return true
+---Set texture parameters (filter, wrap)
 ---@param id integer
 ---@param param integer
 ---@param value integer
----@return any success 
-function RL.rlTextureParameters( id, param, value ) end
+---@return any RL.rlTextureParameters
+function  RL.rlTextureParameters( id, param, value ) end
 
----Set cubemap parameters ( filter, wrap )
----- Failure return false
----- Success return true
+---Set cubemap parameters (filter, wrap)
 ---@param id integer
 ---@param param integer
 ---@param value integer
----@return any success 
-function RL.rlCubemapParameters( id, param, value ) end
+---@return any RL.rlCubemapParameters
+function  RL.rlCubemapParameters( id, param, value ) end
 
 -- RLGL - Shader state
 
 ---Enable shader program
----- Failure return false
----- Success return true
 ---@param id integer
----@return any success 
-function RL.rlEnableShader( id ) end
+---@return any RL.rlEnableShader
+function  RL.rlEnableShader( id ) end
 
 ---Disable shader program
 ---@return any RL.rlDisableShader
@@ -5331,22 +5048,18 @@ function  RL.rlDisableShader() end
 -- RLGL - Framebuffer state
 
 ---Enable render texture (fbo)
----- Failure return false
----- Success return true
 ---@param id integer
----@return any success 
-function RL.rlEnableFramebuffer( id ) end
+---@return any RL.rlEnableFramebuffer
+function  RL.rlEnableFramebuffer( id ) end
 
 ---Disable render texture (fbo), return to default framebuffer
 ---@return any RL.rlDisableFramebuffer
 function  RL.rlDisableFramebuffer() end
 
 ---Activate multiple draw color buffers
----- Failure return false
----- Success return true
 ---@param count integer
----@return any success 
-function RL.rlActiveDrawBuffers( count ) end
+---@return any RL.rlActiveDrawBuffers
+function  RL.rlActiveDrawBuffers( count ) end
 
 -- RLGL - General render state
 
@@ -5383,11 +5096,9 @@ function  RL.rlEnableBackfaceCulling() end
 function  RL.rlDisableBackfaceCulling() end
 
 ---Set face culling mode
----- Failure return false
----- Success return true
 ---@param mode integer
----@return any success 
-function RL.rlSetCullFace( mode ) end
+---@return any RL.rlSetCullFace
+function  RL.rlSetCullFace( mode ) end
 
 ---Enable scissor test
 ---@return any RL.rlEnableScissorTest
@@ -5398,11 +5109,9 @@ function  RL.rlEnableScissorTest() end
 function  RL.rlDisableScissorTest() end
 
 ---Scissor test
----- Failure return false
----- Success return true
 ---@param area table
----@return any success 
-function RL.rlScissor( area ) end
+---@return any RL.rlScissor
+function  RL.rlScissor( area ) end
 
 ---Enable wire mode
 ---@return any RL.rlEnableWireMode
@@ -5413,11 +5122,9 @@ function  RL.rlEnableWireMode() end
 function  RL.rlDisableWireMode() end
 
 ---Set the line drawing width
----- Failure return false
----- Success return true
 ---@param width number
----@return any success 
-function RL.rlSetLineWidth( width ) end
+---@return any RL.rlSetLineWidth
+function  RL.rlSetLineWidth( width ) end
 
 ---Get the line drawing width
 ---- Success return float
@@ -5446,13 +5153,11 @@ function  RL.rlDisableStereoRender() end
 function RL.rlIsStereoRenderEnabled() end
 
 ---Clear color buffer with color
----- Failure return false
----- Success return true
 ---@param color table
----@return any success 
-function RL.rlClearColor( color ) end
+---@return any RL.rlClearColor
+function  RL.rlClearColor( color ) end
 
----Clear used screen buffers ( color and depth )
+---Clear used screen buffers (color and depth)
 ---@return any RL.rlClearScreenBuffers
 function  RL.rlClearScreenBuffers() end
 
@@ -5461,32 +5166,26 @@ function  RL.rlClearScreenBuffers() end
 function  RL.rlCheckErrors() end
 
 ---Set blending mode
----- Failure return false
----- Success return true
 ---@param mode integer
----@return any success 
-function RL.rlSetBlendMode( mode ) end
+---@return any RL.rlSetBlendMode
+function  RL.rlSetBlendMode( mode ) end
 
----Set blending mode factor and equation ( using OpenGL factors )
----- Failure return false
----- Success return true
+---Set blending mode factor and equation (using OpenGL factors)
 ---@param glSrcFactor integer
 ---@param glDstFactor integer
 ---@param glEquation integer
----@return any success 
-function RL.rlSetBlendFactors( glSrcFactor, glDstFactor, glEquation ) end
+---@return any RL.rlSetBlendFactors
+function  RL.rlSetBlendFactors( glSrcFactor, glDstFactor, glEquation ) end
 
----Set blending mode factors and equations separately ( using OpenGL factors )
----- Failure return false
----- Success return true
+---Set blending mode factors and equations separately (using OpenGL factors)
 ---@param glSrcRGB integer
 ---@param glDstRGB integer
 ---@param glSrcAlpha integer
 ---@param glDstAlpha integer
 ---@param glEqRGB integer
 ---@param glEqAlpha integer
----@return any success 
-function RL.rlSetBlendFactorsSeparate( glSrcRGB, glDstRGB, glSrcAlpha, glDstAlpha, glEqRGB, glEqAlpha ) end
+---@return any RL.rlSetBlendFactorsSeparate
+function  RL.rlSetBlendFactorsSeparate( glSrcRGB, glDstRGB, glSrcAlpha, glDstAlpha, glEqRGB, glEqAlpha ) end
 
 -- RLGL - Initialization functions
 
@@ -5502,18 +5201,15 @@ function RL.rlGetVersion() end
 function  RL.rlDrawRenderBatchActive() end
 
 ---Check internal buffer overflow for a given number of vertex and force a rlRenderBatch draw call if required
----- Failure return nil
 ---- Success return bool
 ---@param vCount integer
 ---@return any overflow 
 function RL.rlCheckRenderBatchLimit( vCount ) end
 
 ---Set current texture for render batch and check buffers limits
----- Failure return false
----- Success return true
 ---@param id integer
----@return any success 
-function RL.rlSetTexture( id ) end
+---@return any RL.rlSetTexture
+function  RL.rlSetTexture( id ) end
 
 -- RLGL - Vertex buffers management
 
@@ -5523,7 +5219,6 @@ function RL.rlSetTexture( id ) end
 function RL.rlLoadVertexArray() end
 
 ---Load a vertex buffer attribute
----- Failure return -1
 ---- Success return int
 ---@param buffer any
 ---@param dynamic boolean
@@ -5531,7 +5226,6 @@ function RL.rlLoadVertexArray() end
 function RL.rlLoadVertexBuffer( buffer, dynamic ) end
 
 ---Load a new attributes element buffer
----- Failure return -1
 ---- Success return int
 ---@param buffer any
 ---@param dynamic boolean
@@ -5539,106 +5233,83 @@ function RL.rlLoadVertexBuffer( buffer, dynamic ) end
 function RL.rlLoadVertexBufferElement( buffer, dynamic ) end
 
 ---Update GPU buffer with new data
----- Failure return false
----- Success return true
 ---@param bufferId integer
 ---@param buffer any
 ---@param offset integer
----@return any success 
-function RL.rlUpdateVertexBuffer( bufferId, buffer, offset ) end
+---@return any RL.rlUpdateVertexBuffer
+function  RL.rlUpdateVertexBuffer( bufferId, buffer, offset ) end
 
 ---Update vertex buffer elements with new data
----- Failure return false
----- Success return true
 ---@param id integer
 ---@param buffer any
 ---@param offset integer
----@return any success 
-function RL.rlUpdateVertexBufferElements( id, buffer, offset ) end
+---@return any RL.rlUpdateVertexBufferElements
+function  RL.rlUpdateVertexBufferElements( id, buffer, offset ) end
 
 ---Unload vertex array object (VAO)
----- Failure return false
----- Success return true
 ---@param vaoId integer
----@return any success 
-function RL.rlUnloadVertexArray( vaoId ) end
+---@return any RL.rlUnloadVertexArray
+function  RL.rlUnloadVertexArray( vaoId ) end
 
 ---Unload vertex buffer (VBO)
----- Failure return false
----- Success return true
 ---@param vboId integer
----@return any success 
-function RL.rlUnloadVertexBuffer( vboId ) end
+---@return any RL.rlUnloadVertexBuffer
+function  RL.rlUnloadVertexBuffer( vboId ) end
 
 ---Set vertex attribute
----- Failure return false
----- Success return true
 ---@param index integer
 ---@param compSize integer
 ---@param type integer
 ---@param normalized boolean
 ---@param stride integer
 ---@param pointer integer
----@return any success 
-function RL.rlSetVertexAttribute( index, compSize, type, normalized, stride, pointer ) end
+---@return any RL.rlSetVertexAttribute
+function  RL.rlSetVertexAttribute( index, compSize, type, normalized, stride, pointer ) end
 
 ---Set vertex attribute divisor
----- Failure return false
----- Success return true
 ---@param index integer
 ---@param divisor integer
----@return any success 
-function RL.rlSetVertexAttributeDivisor( index, divisor ) end
+---@return any RL.rlSetVertexAttributeDivisor
+function  RL.rlSetVertexAttributeDivisor( index, divisor ) end
 
 ---Set vertex attribute default value
----- Failure return false
----- Success return true
 ---@param locIndex integer
 ---@param value any
 ---@param attribType integer
----@return any success 
-function RL.rlSetVertexAttributeDefault( locIndex, value, attribType ) end
+---@return any RL.rlSetVertexAttributeDefault
+function  RL.rlSetVertexAttributeDefault( locIndex, value, attribType ) end
 
 ---Draw vertex array
----- Failure return false
----- Success return true
 ---@param offset integer
 ---@param count integer
----@return any success 
-function RL.rlDrawVertexArray( offset, count ) end
+---@return any RL.rlDrawVertexArray
+function  RL.rlDrawVertexArray( offset, count ) end
 
 ---Draw vertex array elements
----- Failure return false
----- Success return true
 ---@param offset integer
 ---@param count integer
 ---@param buffer any
----@return any success 
-function RL.rlDrawVertexArrayElements( offset, count, buffer ) end
+---@return any RL.rlDrawVertexArrayElements
+function  RL.rlDrawVertexArrayElements( offset, count, buffer ) end
 
 ---Draw vertex array instanced
----- Failure return false
----- Success return true
 ---@param offset integer
 ---@param count integer
 ---@param instances integer
----@return any success 
-function RL.rlDrawVertexArrayInstanced( offset, count, instances ) end
+---@return any RL.rlDrawVertexArrayInstanced
+function  RL.rlDrawVertexArrayInstanced( offset, count, instances ) end
 
 ---Draw vertex array elements instanced
----- Failure return false
----- Success return true
 ---@param offset integer
 ---@param count integer
 ---@param buffer any
 ---@param instances integer
----@return any success 
-function RL.rlDrawVertexArrayElementsInstanced( offset, count, buffer, instances ) end
+---@return any RL.rlDrawVertexArrayElementsInstanced
+function  RL.rlDrawVertexArrayElementsInstanced( offset, count, buffer, instances ) end
 
 -- RLGL - Textures management
 
 ---Load texture in GPU
----- Failure return -1
 ---- Success return int
 ---@param size table
 ---@param format integer
@@ -5646,8 +5317,7 @@ function RL.rlDrawVertexArrayElementsInstanced( offset, count, buffer, instances
 ---@return any id 
 function RL.rlLoadTexture( size, format, mipmapCount ) end
 
----Load depth texture/renderbuffer ( to be attached to fbo )
----- Failure return -1
+---Load depth texture/renderbuffer (to be attached to fbo)
 ---- Success return int
 ---@param size table
 ---@param useRenderBuffer boolean
@@ -5655,45 +5325,37 @@ function RL.rlLoadTexture( size, format, mipmapCount ) end
 function RL.rlLoadTextureDepth( size, useRenderBuffer ) end
 
 ---Unload texture from GPU memory
----- Failure return false
----- Success return true
 ---@param id integer
----@return any success 
-function RL.rlUnloadTexture( id ) end
+---@return any RL.rlUnloadTexture
+function  RL.rlUnloadTexture( id ) end
 
 -- RLGL - Framebuffer management (fbo)
 
 ---Load an empty framebuffer
----- Failure return -1
 ---- Success return int
 ---@param size table
 ---@return any fboId 
 function RL.rlLoadFramebuffer( size ) end
 
 ---Attach texture/renderbuffer to a framebuffer
----- Failure return false
----- Success return true
 ---@param fboId integer
 ---@param texId integer
 ---@param attachType integer
 ---@param texType integer
 ---@param mipLevel integer
----@return any success 
-function RL.rlFramebufferAttach( fboId, texId, attachType, texType, mipLevel ) end
+---@return any RL.rlFramebufferAttach
+function  RL.rlFramebufferAttach( fboId, texId, attachType, texType, mipLevel ) end
 
 ---Verify framebuffer is complete
----- Failure return nil
 ---- Success return bool
 ---@param id integer
 ---@return any isComplete 
 function RL.rlFramebufferComplete( id ) end
 
 ---Delete framebuffer from GPU
----- Failure return nil
----- Success return bool
 ---@param id integer
----@return any success 
-function RL.rlUnloadFramebuffer( id ) end
+---@return any RL.rlUnloadFramebuffer
+function  RL.rlUnloadFramebuffer( id ) end
 
 -- RLGL - Shaders management
 
@@ -5723,48 +5385,38 @@ function RL.rlGetMatrixProjection() end
 function RL.rlGetMatrixTransform() end
 
 ---Get internal projection matrix for stereo render (selected eye)
----- Failure return false
 ---- Success return Matrix
 ---@param eye integer
 ---@return any projection 
 function RL.rlGetMatrixProjectionStereo( eye ) end
 
 ---Get internal view offset matrix for stereo render (selected eye)
----- Failure return false
 ---- Success return Matrix
 ---@param eye integer
 ---@return any viewOffset 
 function RL.rlGetMatrixViewOffsetStereo( eye ) end
 
 ---Set a custom projection matrix (replaces internal projection matrix)
----- Failure return false
----- Success return true
 ---@param proj table
----@return any success 
-function RL.rlSetMatrixProjection( proj ) end
+---@return any RL.rlSetMatrixProjection
+function  RL.rlSetMatrixProjection( proj ) end
 
 ---Set a custom modelview matrix (replaces internal modelview matrix)
----- Failure return false
----- Success return true
 ---@param view table
----@return any success 
-function RL.rlSetMatrixModelview( view ) end
+---@return any RL.rlSetMatrixModelview
+function  RL.rlSetMatrixModelview( view ) end
 
 ---Set eyes projection matrices for stereo rendering
----- Failure return false
----- Success return true
 ---@param right table
 ---@param left table
----@return any success 
-function RL.rlSetMatrixProjectionStereo( right, left ) end
+---@return any RL.rlSetMatrixProjectionStereo
+function  RL.rlSetMatrixProjectionStereo( right, left ) end
 
 ---Set eyes view offsets matrices for stereo rendering
----- Failure return false
----- Success return true
 ---@param right table
 ---@param left table
----@return any success 
-function RL.rlSetMatrixViewOffsetStereo( right, left ) end
+---@return any RL.rlSetMatrixViewOffsetStereo
+function  RL.rlSetMatrixViewOffsetStereo( right, left ) end
 
 -- OpenGL - Framebuffer management
 
@@ -5782,7 +5434,6 @@ function  RL.glBlitFramebuffer( srcTex, dstTex, srcRect, dstRect, mask, filter )
 -- Easings - Linear Easing functions
 
 ---Ease linear
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5794,7 +5445,6 @@ function RL.EaseLinear( t, b, c, d ) end
 -- Easings - Sine Easing functions
 
 ---Ease sine in
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5804,7 +5454,6 @@ function RL.EaseLinear( t, b, c, d ) end
 function RL.EaseSineIn( t, b, c, d ) end
 
 ---Ease sine out
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5814,7 +5463,6 @@ function RL.EaseSineIn( t, b, c, d ) end
 function RL.EaseSineOut( t, b, c, d ) end
 
 ---Ease sine in out
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5826,7 +5474,6 @@ function RL.EaseSineInOut( t, b, c, d ) end
 -- Easings - Circular Easing functions
 
 ---Ease circle in
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5836,7 +5483,6 @@ function RL.EaseSineInOut( t, b, c, d ) end
 function RL.EaseCircIn( t, b, c, d ) end
 
 ---Ease circle out
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5846,7 +5492,6 @@ function RL.EaseCircIn( t, b, c, d ) end
 function RL.EaseCircOut( t, b, c, d ) end
 
 ---Ease circle in out
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5858,7 +5503,6 @@ function RL.EaseCircInOut( t, b, c, d ) end
 -- Easings - Cubic Easing functions
 
 ---Ease cubic in
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5868,7 +5512,6 @@ function RL.EaseCircInOut( t, b, c, d ) end
 function RL.EaseCubicIn( t, b, c, d ) end
 
 ---Ease cubic out
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5878,7 +5521,6 @@ function RL.EaseCubicIn( t, b, c, d ) end
 function RL.EaseCubicOut( t, b, c, d ) end
 
 ---Ease cubic in out
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5890,7 +5532,6 @@ function RL.EaseCubicInOut( t, b, c, d ) end
 -- Easings - Quadratic Easing functions
 
 ---Ease quadratic in
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5900,7 +5541,6 @@ function RL.EaseCubicInOut( t, b, c, d ) end
 function RL.EaseQuadIn( t, b, c, d ) end
 
 ---Ease quadratic out
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5910,7 +5550,6 @@ function RL.EaseQuadIn( t, b, c, d ) end
 function RL.EaseQuadOut( t, b, c, d ) end
 
 ---Ease quadratic in out
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5922,7 +5561,6 @@ function RL.EaseQuadInOut( t, b, c, d ) end
 -- Easings - Exponential Easing functions
 
 ---Ease exponential in
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5932,7 +5570,6 @@ function RL.EaseQuadInOut( t, b, c, d ) end
 function RL.EaseExpoIn( t, b, c, d ) end
 
 ---Ease exponential out
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5942,7 +5579,6 @@ function RL.EaseExpoIn( t, b, c, d ) end
 function RL.EaseExpoOut( t, b, c, d ) end
 
 ---Ease exponential in out
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5954,7 +5590,6 @@ function RL.EaseExpoInOut( t, b, c, d ) end
 -- Easings - Back Easing functions
 
 ---Ease back in
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5964,7 +5599,6 @@ function RL.EaseExpoInOut( t, b, c, d ) end
 function RL.EaseBackIn( t, b, c, d ) end
 
 ---Ease back out
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5974,7 +5608,6 @@ function RL.EaseBackIn( t, b, c, d ) end
 function RL.EaseBackOut( t, b, c, d ) end
 
 ---Ease back in out
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5986,7 +5619,6 @@ function RL.EaseBackInOut( t, b, c, d ) end
 -- Easings - Bounce Easing functions
 
 ---Ease bounce in
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -5996,7 +5628,6 @@ function RL.EaseBackInOut( t, b, c, d ) end
 function RL.EaseBounceIn( t, b, c, d ) end
 
 ---Ease bounce out
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -6006,7 +5637,6 @@ function RL.EaseBounceIn( t, b, c, d ) end
 function RL.EaseBounceOut( t, b, c, d ) end
 
 ---Ease bounce in out
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -6018,7 +5648,6 @@ function RL.EaseBounceInOut( t, b, c, d ) end
 -- Easings - Elastic Easing functions
 
 ---Ease elastic in
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -6028,7 +5657,6 @@ function RL.EaseBounceInOut( t, b, c, d ) end
 function RL.EaseElasticIn( t, b, c, d ) end
 
 ---Ease elastic out
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number
@@ -6038,7 +5666,6 @@ function RL.EaseElasticIn( t, b, c, d ) end
 function RL.EaseElasticOut( t, b, c, d ) end
 
 ---Ease elastic in out
----- Failure return false
 ---- Success return float
 ---@param t number
 ---@param b number

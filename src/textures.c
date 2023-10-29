@@ -276,30 +276,17 @@ int ltexturesImageFromImage( lua_State *L ) {
 
 Create an image from text (custom sprite font)
 
-- Failure return -1
-- Success return int
+- Success return Image
 */
 int ltexturesImageText( lua_State *L ) {
-	// if ( !lua_isnumber( L, 1 ) || !lua_isstring( L, 2 ) || !lua_isnumber( L, 3 )
-	// || !lua_isnumber( L, 4 ) || !lua_istable( L, 5 ) ) {
-	// 	TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageText( Font font, string text, float fontSize, float spacing, Color tint )" );
-	// 	lua_pushinteger( L, -1 );
-	// 	return 1;
-	// }
-	// size_t fontId = lua_tointeger( L, 1 );
-	// float fontSize = lua_tonumber( L, 3 );
-	// float spacing = lua_tonumber( L, 4 );
-	// Color tint = uluaGetColorIndex( L, 5 );
+	Font *font = luaL_checkudata( L, 1, "Font" );
+	float fontSize = lua_tonumber( L, 3 );
+	float spacing = lua_tonumber( L, 4 );
+	Color tint = uluaGetColorIndex( L, 5 );
 
-	// if ( !validFont( fontId ) ) {
-	// 	lua_pushinteger( L, -1 );
-	// 	return 1;
-	// }
-	// int i = newImage();
-	// *state->images[i] = ImageTextEx( *state->fonts[ fontId ], lua_tostring( L, 2 ), fontSize, spacing, tint );
-	// lua_pushinteger( L, i );
+	uluaPushImage( L, ImageTextEx( *font, luaL_checkstring( L, 2 ), fontSize, spacing, tint ) );
 
-	return 0;
+	return 1;
 }
 
 /*

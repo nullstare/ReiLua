@@ -40,7 +40,7 @@ Gui = {
 	},
 
 	mouseButton = RL.MOUSE_BUTTON_LEFT,
-	font = 0,
+	font = RL.defaultFont,
 	fontSize = 20,
 	padding = 2,
 	spacing = 4,

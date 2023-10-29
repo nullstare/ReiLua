@@ -335,7 +335,7 @@ Toggle Button control, returns true when active
 */
 int lguiGuiToggle( lua_State *L ) {
 	Rectangle bounds = uluaGetRectangleIndex( L, 1 );
-	bool checked = lua_toboolean( L, 3 );
+	bool checked = uluaGetBoolean( L, 3 );
 
 	lua_pushboolean( L, GuiToggle( bounds, luaL_checkstring( L, 2 ), checked ) );
 
@@ -367,7 +367,7 @@ Check Box control, returns true when active
 */
 int lguiGuiCheckBox( lua_State *L ) {
 	Rectangle bounds = uluaGetRectangleIndex( L, 1 );
-	bool checked = lua_toboolean( L, 3 );
+	bool checked = uluaGetBoolean( L, 3 );
 
 	lua_pushboolean( L, GuiCheckBox( bounds, luaL_checkstring( L, 2 ), checked ) );
 
@@ -403,7 +403,7 @@ int lguiGuiTextBox( lua_State *L ) {
 	// char text[ STRING_LEN ] = { '\0' };
 	char text[ textSize + 1 ];
 	strcpy( text, luaL_checkstring( L, 2 ) );
-	bool editMode = lua_toboolean( L, 4 );
+	bool editMode = uluaGetBoolean( L, 4 );
 
 	lua_pushboolean( L, GuiTextBox( bounds, text, textSize, editMode ) );
 	lua_pushstring( L, text );
@@ -424,7 +424,7 @@ int lguiGuiTextBoxMulti( lua_State *L ) {
 	// char text[ STRING_LEN ] = { '\0' };
 	char text[ textSize + 1 ];
 	strcpy( text, luaL_checkstring( L, 2 ) );
-	bool editMode = lua_toboolean( L, 4 );
+	bool editMode = uluaGetBoolean( L, 4 );
 
 	lua_pushboolean( L, GuiTextBoxMulti( bounds, text, textSize, editMode ) );
 	lua_pushstring( L, text );
@@ -444,7 +444,7 @@ int lguiGuiSpinner( lua_State *L ) {
 	int value = luaL_checkinteger( L, 3 );
 	int minValue = luaL_checkinteger( L, 4 );
 	int maxValue = luaL_checkinteger( L, 5 );
-	bool editMode = lua_toboolean( L, 6 );
+	bool editMode = uluaGetBoolean( L, 6 );
 
 	lua_pushboolean( L, GuiSpinner( bounds, luaL_checkstring( L, 2 ), &value, minValue, maxValue, editMode ) );
 	lua_pushinteger( L, value );
@@ -464,7 +464,7 @@ int lguiGuiValueBox( lua_State *L ) {
 	int value = luaL_checkinteger( L, 3 );
 	int minValue = luaL_checkinteger( L, 4 );
 	int maxValue = luaL_checkinteger( L, 5 );
-	bool editMode = lua_toboolean( L, 6 );
+	bool editMode = uluaGetBoolean( L, 6 );
 
 	lua_pushboolean( L, GuiValueBox( bounds, luaL_checkstring( L, 2 ), &value, minValue, maxValue, editMode ) );
 	lua_pushinteger( L, value );
@@ -554,7 +554,7 @@ Dropdown Box control, returns selected item
 int lguiGuiDropdownBox( lua_State *L ) {
 	Rectangle bounds = uluaGetRectangleIndex( L, 1 );
 	int active = luaL_checkinteger( L, 3 );
-	bool editMode = lua_toboolean( L, 4 );
+	bool editMode = uluaGetBoolean( L, 4 );
 
 	lua_pushboolean( L, GuiDropdownBox( bounds, luaL_checkstring( L, 2 ), &active, editMode ) );
 	lua_pushinteger( L, active );

@@ -100,5 +100,5 @@ function RL.draw()
 		RL.ClearBackground( RL.RED )
 	end
 
-    RL.DrawText( 0, text, textPos, 20, 2, RL.BLACK )
+    RL.DrawText( RL.defaultFont, text, textPos, 20, 2, RL.BLACK )
 end

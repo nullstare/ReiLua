@@ -25,15 +25,11 @@ local function getParamType( param )
 	if param == "Color" or param == "Vector2" or param == "Vector3" or param == "Vector4"
 	or param == "Quaternion" or param == "Matrix" or param == "Rectangle" then
 		return "table"
-	elseif param == "float" then
-		return "number"
-	elseif param == "int" then
-		return "integer"
-	elseif param == "string" then
-		return "string"
-	elseif param == "bool" then
-		return "boolean"
-	else
+	elseif param == "float" then return "number"
+	elseif param == "int" then return "integer"
+	elseif param == "string" then return "string"
+	elseif param == "bool" then return "boolean"
+	else 
 		return "any"
 	end
 end
@@ -124,8 +120,20 @@ luaApiFile:write(
 luaApiFile:write(
 "---"..FUNC_DESC.exit.."\nfunction RL.exit() end\n" )
 
+-- Arguments.
+
 apiFile:write( "\n## Arguments\n" )
 apiFile:write( "\nArguments are stored in 'RL.arg' array.\n" )
+
+-- Default objects.
+
+apiFile:write( "\n## Default objects\n" )
+apiFile:write( "\n> RL.defaultFont\n\nDefault Font object\n" )
+apiFile:write( "\n> RL.defaultMaterial\n\nDefault Material object\n" )
+
+-- luaApiFile:write( "\n--Default objects\n\n" )
+-- luaApiFile:write( "--Default Font object\nRL.defaultFont = RL.GetFontDefault()\n" )
+-- luaApiFile:write( "--Default Material object\nRL.defaultMaterial\n" )
 
 -- Types.
 

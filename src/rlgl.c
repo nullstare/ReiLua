@@ -929,7 +929,7 @@ Load a vertex buffer attribute
 */
 int lrlglLoadVertexBuffer( lua_State *L ) {
 	Buffer *buffer = luaL_checkudata( L, 1, "Buffer" );
-	bool dynamic = luaL_checkinteger( L, 2 );
+	bool dynamic = uluaGetBoolean( L, 2 );
 
 	lua_pushinteger( L, rlLoadVertexBuffer( buffer->data, buffer->size, dynamic ) );
 
@@ -945,7 +945,7 @@ Load a new attributes element buffer
 */
 int lrlglLoadVertexBufferElement( lua_State *L ) {
 	Buffer *buffer = luaL_checkudata( L, 1, "Buffer" );
-	bool dynamic = luaL_checkinteger( L, 2 );
+	bool dynamic = uluaGetBoolean( L, 2 );
 
 	lua_pushinteger( L, rlLoadVertexBufferElement( buffer->data, buffer->size, dynamic ) );
 
@@ -1013,7 +1013,7 @@ int lrlglSetVertexAttribute( lua_State *L ) {
 	int index = luaL_checkinteger( L, 1 );
 	int compSize = luaL_checkinteger( L, 2 );
 	int type = luaL_checkinteger( L, 3 );
-	bool normalized = lua_toboolean( L, 4 );
+	bool normalized = uluaGetBoolean( L, 4 );
 	int stride = luaL_checkinteger( L, 5 );
 	int pointer = luaL_checkinteger( L, 6 );
 
@@ -1151,7 +1151,7 @@ Load depth texture/renderbuffer (to be attached to fbo)
 */
 int lrlglLoadTextureDepth( lua_State *L ) {
 	Vector2 size = uluaGetVector2Index( L, 1 );
-	bool useRenderBuffer = lua_toboolean( L, 2 );
+	bool useRenderBuffer = uluaGetBoolean( L, 2 );
 
 	lua_pushinteger( L, rlLoadTextureDepth( size.x, size.y, useRenderBuffer ) );
 

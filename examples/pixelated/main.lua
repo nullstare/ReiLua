@@ -4,7 +4,8 @@ local speed = 60.0
 local monitor = 0
 local mPos = RL.GetMonitorPosition( monitor )
 local mSize = RL.GetMonitorSize( monitor )
-local framebuffer = -1
+local framebuffer = nil
+local framebufferTex = nil
 local res = { 320, 180 }
 local scale = 5
 local winSize = { res[1] * scale, res[2] * scale }
@@ -17,6 +18,7 @@ function RL.init()
 	tex = RL.LoadTexture( RL.GetBasePath().."../resources/images/cat.png" )
 	-- Create framebuffer.
 	framebuffer = RL.LoadRenderTexture( res )
+	framebufferTex = RL.GetRenderTextureTexture( framebuffer )
 end
 
 function RL.process( delta )
@@ -46,9 +48,9 @@ function RL.draw()
 		RL.DrawLine( { 120, 100 }, { 140, 150 }, 2.4, { 255, 150, 255 } )
 		RL.DrawRectangle( { 200, 120, 40, 50 }, { 100, 170, 255 } )
 		RL.DrawTexturePro( tex, { 166, 138, 128, 128 }, { pos[1], pos[2], 128, 128 }, { 16, 16 }, 0.0, RL.WHITE )
-		RL.DrawText( 0, "Cat MIAU!!", { 16, 32 }, 10, 1, { 255, 180, 155 } )
+		RL.DrawText( RL.defaultFont, "Cat MIAU!!", { 16, 32 }, 10, 1, { 255, 180, 155 } )
 		RL.DrawTriangle( { 0, 32 }, { 32, 16 }, { 0, 0 }, RL.RED )
 	RL.EndTextureMode()
 
-	RL.DrawTexturePro( framebuffer, { 0, 0, res[1], -res[2] }, { 0, 0, winSize[1], winSize[2] }, { 0, 0 }, 0.0, { 255, 255, 255 } )
+	RL.DrawTexturePro( framebufferTex, { 0, 0, res[1], -res[2] }, { 0, 0, winSize[1], winSize[2] }, { 0, 0 }, 0.0, { 255, 255, 255 } )
 end

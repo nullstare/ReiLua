@@ -83,7 +83,7 @@ function RL.draw()
 	end
 
 	RL.DrawRectangle( { 0, 0, screenWidth, 40 }, RL.BLACK)
-	RL.DrawText( 0, "bunnies: " .. #bunnies, { 120, 10 }, 20, 2, RL.GREEN )
-	RL.DrawText( 0, "batched draw calls: " .. math.ceil( 1 + #bunnies / MAX_BATCH_ELEMENTS ), { 320, 10 }, 20, 2, RL.RED )
+	RL.DrawText( RL.defaultFont, "bunnies: " .. #bunnies, { 120, 10 }, 20, 2, RL.GREEN )
+	RL.DrawText( RL.defaultFont, "batched draw calls: " .. math.ceil( 1 + #bunnies / MAX_BATCH_ELEMENTS ), { 320, 10 }, 20, 2, RL.RED )
 	RL.DrawFPS( { 10, 10 } )
 end

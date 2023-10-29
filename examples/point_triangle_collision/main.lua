@@ -116,5 +116,5 @@ function RL.draw()
 		RL.DrawSphereWires( point.pos, point.radius, 3, 8, point.color )
 	RL.EndMode3D()
 
-	RL.DrawText( 0, debugText, { 10, 10 }, 30, 4, RL.WHITE )
+	RL.DrawText( RL.defaultFont, debugText, { 10, 10 }, 30, 4, RL.WHITE )
 end

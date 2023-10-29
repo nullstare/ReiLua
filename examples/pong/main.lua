@@ -121,7 +121,7 @@ function RL.draw()
 	RL.DrawCircle( ball.pos, ball.radius, RL.WHITE )
 
 	-- Draw scire
-    RL.DrawText( 0, playerLeft.score, { 50, 10 }, 40, 2, RL.WHITE )
-	local rightTextSize = RL.MeasureText( 0, playerRight.score, 40, 2 )
-    RL.DrawText( 0, playerRight.score, { winSize[1] - 50 - rightTextSize[1], 10 }, 40, 2, RL.WHITE )
+    RL.DrawText( RL.defaultFont, playerLeft.score, { 50, 10 }, 40, 2, RL.WHITE )
+	local rightTextSize = RL.MeasureText( RL.defaultFont, playerRight.score, 40, 2 )
+    RL.DrawText( RL.defaultFont, playerRight.score, { winSize[1] - 50 - rightTextSize[1], 10 }, 40, 2, RL.WHITE )
 end

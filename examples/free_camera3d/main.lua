@@ -68,5 +68,5 @@ function RL.draw()
 
 	text = text.."\nPress T to toggle target visible.\nVisible: "..tostring( targetVisible )
 
-	RL.DrawText( 0, text, { 16, 16 }, 30, 4, RL.WHITE )
+	RL.DrawText( RL.defaultFont, text, { 16, 16 }, 30, 4, RL.WHITE )
 end

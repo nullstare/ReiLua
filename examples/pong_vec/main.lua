@@ -126,7 +126,7 @@ function RL.draw()
 	RL.DrawCircle( ball.pos, ball.radius, RL.WHITE )
 
 	-- Draw score.
-    RL.DrawText( 0, tostring( playerLeft.score ), { 50, 10 }, 40, 2, RL.WHITE )
-	local rightTextSize = Vec2:new( RL.MeasureText( 0, tostring( playerRight.score ), 40, 2 ) )
-    RL.DrawText( 0, tostring( playerRight.score ), { winSize.x - 50 - rightTextSize.x, 10 }, 40, 2, RL.WHITE )
+    RL.DrawText( RL.defaultFont, tostring( playerLeft.score ), { 50, 10 }, 40, 2, RL.WHITE )
+	local rightTextSize = Vec2:new( RL.MeasureText( RL.defaultFont, tostring( playerRight.score ), 40, 2 ) )
+    RL.DrawText( RL.defaultFont, tostring( playerRight.score ), { winSize.x - 50 - rightTextSize.x, 10 }, 40, 2, RL.WHITE )
 end

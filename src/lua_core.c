@@ -35,7 +35,6 @@ static void defineBuffer() {
 	/* Image */
 static int gcImage( lua_State *L ) {
 	Image *image = luaL_checkudata ( L, 1, "Image" );
-	printf( "gcImage\n" );
 
 	UnloadImage( *image );
 }
@@ -53,7 +52,6 @@ static void defineImage() {
 	/* Texture */
 static int gcTexture( lua_State *L ) {
 	Texture *texture = luaL_checkudata ( L, 1, "Texture" );
-	printf( "gcTexture\n" );
 
 	UnloadTexture( *texture );
 }
@@ -71,7 +69,6 @@ static void defineTexture() {
 	/* RenderRexture. */
 static int gcRenderTexture( lua_State *L ) {
 	RenderTexture *renderTexture = luaL_checkudata ( L, 1, "RenderTexture" );
-	printf( "gcRenderTexture\n" );
 
 	UnloadRenderTexture( *renderTexture );
 }
@@ -107,7 +104,6 @@ static void defineCamera3D() {
 	/* Shader. */
 static int gcShader( lua_State *L ) {
 	Shader *shader = luaL_checkudata ( L, 1, "Shader" );
-	printf( "gcShader\n" );
 
 	UnloadShader( *shader );
 }
@@ -125,7 +121,6 @@ static void defineShader() {
 	/* Font. */
 static int gcFont( lua_State *L ) {
 	Font *font = luaL_checkudata ( L, 1, "Font" );
-	printf( "gcFont\n" );
 
 	UnloadFont( *font );
 }
@@ -143,7 +138,6 @@ static void defineFont() {
 	/* Wave. */
 static int gcWave( lua_State *L ) {
 	Wave *wave = luaL_checkudata ( L, 1, "Wave" );
-	printf( "gcWave\n" );
 
 	UnloadWave( *wave );
 }
@@ -161,7 +155,6 @@ static void defineWave() {
 	/* Sound. */
 static int gcSound( lua_State *L ) {
 	Sound *sound = luaL_checkudata ( L, 1, "Sound" );
-	printf( "gcSound\n" );
 
 	UnloadSound( *sound );
 }
@@ -179,7 +172,6 @@ static void defineSound() {
 	/* Music. */
 static int gcMusic( lua_State *L ) {
 	Music *music = luaL_checkudata ( L, 1, "Music" );
-	printf( "gcMusic\n" );
 
 	UnloadMusicStream( *music );
 }
@@ -206,7 +198,6 @@ static void defineLight() {
 	/* Material. */
 static int gcMaterial( lua_State *L ) {
 	Material *material = luaL_checkudata ( L, 1, "Material" );
-	printf( "gcMaterial\n" );
 
 	// int MAX_MATERIAL_MAPS = 12;
 
@@ -238,7 +229,6 @@ static void defineMaterial() {
 	/* Mesh. */
 static int gcMesh( lua_State *L ) {
 	Mesh *mesh = luaL_checkudata ( L, 1, "Mesh" );
-	printf( "gcMesh\n" );
 
 	UnloadMesh( *mesh );
 }
@@ -256,7 +246,6 @@ static void defineMesh() {
 	/* Model. */
 static int gcModel( lua_State *L ) {
 	Model *model = luaL_checkudata ( L, 1, "Model" );
-	printf( "gcModel\n" );
 
 	UnloadModel( *model );
 	// UnloadModelKeepMeshes( *model );
@@ -275,7 +264,6 @@ static void defineModel() {
 	/* ModelAnimation. */
 static int gcModelAnimation( lua_State *L ) {
 	ModelAnimation *modelAnimation = luaL_checkudata ( L, 1, "ModelAnimation" );
-	printf( "gcModelAnimation\n" );
 
 	UnloadModelAnimation( *modelAnimation );
 }

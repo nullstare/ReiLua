@@ -45,6 +45,16 @@ This function will be called on program close. Cleanup could be done here.
 
 Arguments are stored in 'RL.arg' array.
 
+## Default objects
+
+> RL.defaultFont
+
+Default Font object
+
+> RL.defaultMaterial
+
+Default Material object
+
 ## Types
 
 Raylib structs in Lua

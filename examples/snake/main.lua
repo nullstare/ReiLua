@@ -215,7 +215,7 @@ function RL.draw()
 		drawApple()
 
 		if gameState == STATE.OVER then
-			RL.DrawText( 0, "Press Enter to\nrestart", { 10, 10 }, 10, 2, RL.WHITE )
+			RL.DrawText( RL.defaultFont, "Press Enter to\nrestart", { 10, 10 }, 10, 2, RL.WHITE )
 		end
 	RL.EndTextureMode()
 

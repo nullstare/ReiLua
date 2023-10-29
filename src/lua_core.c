@@ -194,13 +194,100 @@ static void defineMusic() {
 	lua_setfield( L, -2, "__gc" );
 }
 
-/* Music. */
+/* Light. */
 static void defineLight() {
 	lua_State *L = state->luaState;
 
 	luaL_newmetatable( L, "Light" );
 	lua_pushvalue( L, -1 );
 	lua_setfield( L, -2, "__index" );
+}
+
+/* Material. */
+static int gcMaterial( lua_State *L ) {
+	Material *material = luaL_checkudata ( L, 1, "Material" );
+	printf( "gcMaterial\n" );
+
+	// int MAX_MATERIAL_MAPS = 12;
+
+	
+	// Unload loaded texture maps (avoid unloading default texture, managed by raylib)
+    // if ( material->maps != NULL ) {
+    //     for ( int i = 0; i < MAX_MATERIAL_MAPS; i++ ) {
+    //         if ( material->maps[i].texture.id != rlGetTextureIdDefault() ) {
+	// 			printf( "gcMaterial material->maps[i].texture.id = %d\n", material->maps[i].texture.id );
+	// 			rlUnloadTexture( material->maps[i].texture.id );
+	// 		} 
+    //     }
+    // }
+
+	/* Custom UnloadMaterial since we don't want to free Shaders or Textures. */
+    RL_FREE( material->maps );
+}
+
+static void defineMaterial() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "Material" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcMaterial );
+	lua_setfield( L, -2, "__gc" );
+}
+
+/* Mesh. */
+static int gcMesh( lua_State *L ) {
+	Mesh *mesh = luaL_checkudata ( L, 1, "Mesh" );
+	printf( "gcMesh\n" );
+
+	UnloadMesh( *mesh );
+}
+
+static void defineMesh() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "Mesh" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcMesh );
+	lua_setfield( L, -2, "__gc" );
+}
+
+/* Model. */
+static int gcModel( lua_State *L ) {
+	Model *model = luaL_checkudata ( L, 1, "Model" );
+	printf( "gcModel\n" );
+
+	UnloadModel( *model );
+	// UnloadModelKeepMeshes( *model );
+}
+
+static void defineModel() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "Model" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcModel );
+	lua_setfield( L, -2, "__gc" );
+}
+
+/* ModelAnimation. */
+static int gcModelAnimation( lua_State *L ) {
+	ModelAnimation *modelAnimation = luaL_checkudata ( L, 1, "ModelAnimation" );
+	printf( "gcModelAnimation\n" );
+
+	UnloadModelAnimation( *modelAnimation );
+}
+
+static void defineModelAnimation() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "ModelAnimation" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcModelAnimation );
+	lua_setfield( L, -2, "__gc" );
 }
 
 /* Assing globals. */
@@ -243,7 +330,10 @@ static void defineGlobals() {
 	lua_getglobal( L, "RL" );
 
 	uluaPushFont( L, GetFontDefault() );
-	lua_setfield( L, -2, "fontDefault" );
+	lua_setfield( L, -2, "defaultFont" );
+
+	uluaPushMaterial( L, LoadMaterialDefault() );
+	lua_setfield( L, -2, "defaultMaterial" );
 
 /*DOC_START*/
 	/* ConfigFlags */
@@ -1229,6 +1319,10 @@ bool luaInit( int argn, const char **argc ) {
 	defineSound();
 	defineMusic();
 	defineLight();
+	defineMaterial();
+	defineMesh();
+	defineModel();
+	defineModelAnimation();
 	/* Define globals. */
 	defineGlobals();
 
@@ -1769,7 +1863,6 @@ void luaRegister() {
 	assingGlobalFunction( "GenMeshHeightmap", lmodelsGenMeshHeightmap );
 	assingGlobalFunction( "GenMeshCustom", lmodelsGenMeshCustom );
 	assingGlobalFunction( "UpdateMesh", lmodelsUpdateMesh );
-	assingGlobalFunction( "UnloadMesh", lmodelsUnloadMesh );
 	assingGlobalFunction( "DrawMesh", lmodelsDrawMesh );
 	assingGlobalFunction( "DrawMeshInstanced", lmodelsDrawMeshInstanced );
 	assingGlobalFunction( "SetMeshColor", lmodelsSetMeshColor );
@@ -1779,7 +1872,6 @@ void luaRegister() {
 		/* Material. */
 	assingGlobalFunction( "LoadMaterialDefault", lmodelsLoadMaterialDefault );
 	assingGlobalFunction( "CreateMaterial", lmodelsCreateMaterial );
-	assingGlobalFunction( "UnloadMaterial", lmodelsUnloadMaterial );
 	assingGlobalFunction( "SetMaterialTexture", lmodelsSetMaterialTexture );
 	assingGlobalFunction( "SetMaterialColor", lmodelsSetMaterialColor );
 	assingGlobalFunction( "SetMaterialValue", lmodelsSetMaterialValue );
@@ -1793,7 +1885,6 @@ void luaRegister() {
 		/* Model. */
 	assingGlobalFunction( "LoadModel", lmodelsLoadModel );
 	assingGlobalFunction( "LoadModelFromMesh", lmodelsLoadModelFromMesh );
-	assingGlobalFunction( "UnloadModel", lmodelsUnloadModel );
 	assingGlobalFunction( "DrawModel", lmodelsDrawModel );
 	assingGlobalFunction( "DrawModelEx", lmodelsDrawModelEx );
 	assingGlobalFunction( "SetModelMaterial", lmodelsSetModelMaterial );
@@ -1806,7 +1897,6 @@ void luaRegister() {
 		/* Animations. */
 	assingGlobalFunction( "LoadModelAnimations", lmodelsLoadModelAnimations );
 	assingGlobalFunction( "UpdateModelAnimation", lmodelsUpdateModelAnimation );
-	assingGlobalFunction( "UnloadModelAnimations", lmodelsUnloadModelAnimations );
 	assingGlobalFunction( "IsModelAnimationValid", lmodelsIsModelAnimationValid );
 	assingGlobalFunction( "GetModelAnimationBoneCount", lmodelsGetModelAnimationBoneCount );
 	assingGlobalFunction( "GetModelAnimationFrameCount", lmodelsGetModelAnimationFrameCount );
@@ -2986,6 +3076,30 @@ void uluaPushLight( lua_State *L, Light light ) {
 	Light *lightP = lua_newuserdata( L, sizeof( Light ) );
 	*lightP = light;
 	luaL_setmetatable( L, "Light" );
+}
+
+void uluaPushMaterial( lua_State *L, Material material ) {
+	Material *materialP = lua_newuserdata( L, sizeof( Material ) );
+	*materialP = material;
+	luaL_setmetatable( L, "Material" );
+}
+
+void uluaPushMesh( lua_State *L, Mesh mesh ) {
+	Mesh *meshP = lua_newuserdata( L, sizeof( Mesh ) );
+	*meshP = mesh;
+	luaL_setmetatable( L, "Mesh" );
+}
+
+void uluaPushModel( lua_State *L, Model model ) {
+	Model *modelP = lua_newuserdata( L, sizeof( Model ) );
+	*modelP = model;
+	luaL_setmetatable( L, "Model" );
+}
+
+void uluaPushModelAnimation( lua_State *L, ModelAnimation modelAnimation ) {
+	ModelAnimation *modelAnimationP = lua_newuserdata( L, sizeof( ModelAnimation ) );
+	*modelAnimationP = modelAnimation;
+	luaL_setmetatable( L, "ModelAnimation" );
 }
 
 int uluaGetTableLen( lua_State *L ) {

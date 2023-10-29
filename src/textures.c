@@ -831,35 +831,21 @@ int ltexturesImageDraw( lua_State *L ) {
 }
 
 /*
-> success = RL.ImageDrawTextEx( Image dst, Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
+> RL.ImageDrawTextEx( Image dst, Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
 
-Draw text ( Custom sprite font ) within an image ( Destination )
-
-- Failure return false
-- Success return true
+Draw text (Custom sprite font) within an image (Destination)
 */
 int ltexturesImageDrawTextEx( lua_State *L ) {
-	// if ( !lua_isnumber( L, 1 ) || !lua_isnumber( L, 2 ) || !lua_isstring( L, 3 ) || !lua_istable( L, 4 )
-	// || !lua_isnumber( L, 5 ) || !lua_isnumber( L, 6 ) || !lua_istable( L, 7 ) ) {
-	// 	TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.ImageDrawTextEx( Image dst, Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )" );
-	// 	lua_pushboolean( L, false );
-	// 	return 1;
-	// }
-	// size_t imageId = lua_tointeger( L, 1 );
-	// size_t fontId = lua_tointeger( L, 2 );
-	// Vector2 position = uluaGetVector2Index( L, 4 );
-	// float fontSize = lua_tonumber( L, 5 );
-	// float spacing = lua_tonumber( L, 6 );
-	// Color tint = uluaGetColorIndex( L, 7 );
+	Image *image = luaL_checkudata( L, 1, "Image" );
+	Font *font = luaL_checkudata( L, 2, "Font" );
+	Vector2 position = uluaGetVector2Index( L, 4 );
+	float fontSize = luaL_checknumber( L, 5 );
+	float spacing = luaL_checknumber( L, 6 );
+	Color tint = uluaGetColorIndex( L, 7 );
 
-	// if ( !validImage( imageId ) || !validFont( fontId ) ) {
-	// 	lua_pushboolean( L, false );
-	// 	return 1;
-	// }
-	// ImageDrawTextEx( state->images[ imageId ], *state->fonts[ fontId ], lua_tostring( L, 3 ), position, fontSize, spacing, tint );
-	// lua_pushboolean( L, true );
+	ImageDrawTextEx( image, *font, luaL_checkstring( L, 3 ), position, fontSize, spacing, tint );
 
-	return 1;
+	return 0;
 }
 
 /*

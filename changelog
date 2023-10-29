@@ -5,6 +5,7 @@ KEY CHANGES:
 	- CHANGED: Switch from ID based objects to userdata.
 	- CHANGED: Wrong arguments now largely crash the application instead of TraceLog state->logLevelInvalid.
 	- CHANGED: Rely mostly on luaL_check* functions for arg checking.
+	- CHANGED: ModelAnimations are changed to separate ModelAnimation types as in Raylib.
 
 DETAILED CHANGES:
 	- CHANGED: GenImageColor now takes Vector2 as size.
@@ -17,6 +18,7 @@ DETAILED CHANGES:
 	- REMOVED: UnloadFont.
 	- ADDED: LoadFontEx takes also fontChars.
 	- REMOVED: UnloadWave and UnloadSound.
+	- REMOVED: UnloadMesh, UnloadMaterial, UnloadModel and UnloadModelAnimations.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.5.0		Using Raylib 4.5

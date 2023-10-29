@@ -9,6 +9,7 @@ local TILE_SIZE = 32
 
 local monitor = 0
 local camera = {}
+local groundRenderTexture = -1
 local groundTexture = -1
 local tilesetTex = -1
 local heigthImage = -1
@@ -47,10 +48,11 @@ function RL.init()
 
 	mesh = RL.GenMeshHeightmap( heigthImage, { 16, 4, 16 } )
 	tilesetTex = RL.LoadTexture( RL.GetBasePath().."../resources/images/tiles.png" )
-	groundTexture = RL.LoadRenderTexture( { TILE_SIZE * 16, TILE_SIZE * 16 } )
+	groundRenderTexture = RL.LoadRenderTexture( { TILE_SIZE * 16, TILE_SIZE * 16 } )
+	groundTexture = RL.GetRenderTextureTexture( groundRenderTexture )
 
 	-- Draw to ground texture.
-	RL.BeginTextureMode( groundTexture )
+	RL.BeginTextureMode( groundRenderTexture )
 
 	for x = 1, 16 do
 		for y = 1, 16 do

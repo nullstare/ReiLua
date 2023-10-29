@@ -3515,12 +3515,9 @@ Draw a source image within a destination image (Tint applied to source)
 
 ---
 
-> success = RL.ImageDrawTextEx( Image dst, Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
+> RL.ImageDrawTextEx( Image dst, Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
 
-Draw text ( Custom sprite font ) within an image ( Destination )
-
-- Failure return false
-- Success return true
+Draw text (Custom sprite font) within an image (Destination)
 
 ---
 
@@ -3868,7 +3865,7 @@ Load font from file into GPU memory (VRAM)
 
 ---
 
-> font = RL.LoadFontEx( string fileName, int fontSize, int fontChars{} )
+> font = RL.LoadFontEx( string fileName, int fontSize, int{} fontChars )
 
 Load font from file with extended parameters. Loading the default character set
 
@@ -3955,171 +3952,117 @@ Get font texture atlas containing the glyphs.
 
 ---
 
-> success = RL.DrawLine3D( Vector3 startPos, Vector3 endPos, Color color )
+> RL.DrawLine3D( Vector3 startPos, Vector3 endPos, Color color )
 
 Draw a line in 3D world space
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawPoint3D( Vector3 position, Color color )
+> RL.DrawPoint3D( Vector3 position, Color color )
 
 Draw a point in 3D space, actually a small line
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawCircle3D( Vector3 center, float radius, Vector3 rotationAxis, float rotationAngle, Color color )
+> RL.DrawCircle3D( Vector3 center, float radius, Vector3 rotationAxis, float rotationAngle, Color color )
 
 Draw a circle in 3D world space
 
-- Failure return false
-- Success return true
+---
+
+> RL.DrawTriangle3D( Vector3 v1, Vector3 v2, Vector3 v3, Color color )
+
+Draw a color-filled triangle (Vertex in counter-clockwise order!)
 
 ---
 
-> success = RL.DrawTriangle3D( Vector3 v1, Vector3 v2, Vector3 v3, Color color )
-
-Draw a color-filled triangle ( Vertex in counter-clockwise order! )
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.DrawCube( Vector3 position, Vector3 size, Color color )
+> RL.DrawCube( Vector3 position, Vector3 size, Color color )
 
 Draw cube
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawCubeWires( Vector3 position, Vector3 size, Color color )
+> RL.DrawCubeWires( Vector3 position, Vector3 size, Color color )
 
 Draw cube wires
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawSphere( Vector3 centerPos, float radius, Color color )
+> RL.DrawSphere( Vector3 centerPos, float radius, Color color )
 
 Draw sphere
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawSphereEx( Vector3 centerPos, float radius, int rings, int slices, Color color )
+> RL.DrawSphereEx( Vector3 centerPos, float radius, int rings, int slices, Color color )
 
 Draw sphere with extended parameters
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawSphereWires( Vector3 centerPos, float radius, int rings, int slices, Color color )
+> RL.DrawSphereWires( Vector3 centerPos, float radius, int rings, int slices, Color color )
 
 Draw sphere wires
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawCylinder( Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color )
+> RL.DrawCylinder( Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color )
 
 Draw a cylinder/cone
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawCylinderEx( Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, Color color )
+> RL.DrawCylinderEx( Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, Color color )
 
 Draw a cylinder with base at startPos and top at endPos
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawCylinderWires( Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color )
+> RL.DrawCylinderWires( Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color )
 
 Draw a cylinder/cone wires
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawCylinderWiresEx( Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, Color color )
+> RL.DrawCylinderWiresEx( Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, Color color )
 
 Draw a cylinder wires with base at startPos and top at endPos
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawCapsule( Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, Color color )
+> RL.DrawCapsule( Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, Color color )
 
 Draw a capsule with the center of its sphere caps at startPos and endPos
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawCapsuleWires( Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, Color color )
+> RL.DrawCapsuleWires( Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, Color color )
 
 Draw capsule wireframe with the center of its sphere caps at startPos and endPos
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawPlane( Vector3 centerPos, Vector2 size, Color color )
+> RL.DrawPlane( Vector3 centerPos, Vector2 size, Color color )
 
 Draw a plane XZ
-
-- Failure return false
-- Success return true
 
 ---
 
 > RL.DrawQuad3DTexture( Texture texture, Vector3{} vertices, Vector2{} texCoords, Color{} colors )
 
-Draw 3D textured quad. ( Texture coordinates opengl style 0.0 - 1.0 ).
+Draw 3D textured quad. (Texture coordinates opengl style 0.0 - 1.0).
 
 ---
 
-> success = RL.DrawRay( Ray ray, Color color )
+> RL.DrawRay( Ray ray, Color color )
 
 Draw a ray line
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawGrid( int slices, float spacing )
+> RL.DrawGrid( int slices, float spacing )
 
-Draw a grid ( Centered at ( 0, 0, 0 ) )
-
-- Failure return false
-- Success return true
+Draw a grid (Centered at ( 0, 0, 0 ))
 
 ---
 
@@ -4131,17 +4074,15 @@ Draw a grid ( Centered at ( 0, 0, 0 ) )
 
 Generate polygonal mesh
 
-- Failure return -1
-- Success return int
+- Success return Mesh
 
 ---
 
 > mesh = RL.GenMeshPlane( float width, float length, int resX, int resZ )
 
-Generate plane mesh ( With subdivisions )
+Generate plane mesh (With subdivisions)
 
-- Failure return -1
-- Success return int
+- Success return Mesh
 
 ---
 
@@ -4149,17 +4090,15 @@ Generate plane mesh ( With subdivisions )
 
 Generate cuboid mesh
 
-- Failure return -1
-- Success return int
+- Success return Mesh
 
 ---
 
 > mesh = RL.GenMeshSphere( float radius, int rings, int slices )
 
-Generate sphere mesh ( Standard sphere )
+Generate sphere mesh (Standard sphere)
 
-- Failure return -1
-- Success return int
+- Success return Mesh
 
 ---
 
@@ -4167,8 +4106,7 @@ Generate sphere mesh ( Standard sphere )
 
 Generate cylinder mesh
 
-- Failure return -1
-- Success return int
+- Success return Mesh
 
 ---
 
@@ -4176,8 +4114,7 @@ Generate cylinder mesh
 
 Generate cone/pyramid mesh
 
-- Failure return -1
-- Success return int
+- Success return Mesh
 
 ---
 
@@ -4185,8 +4122,7 @@ Generate cone/pyramid mesh
 
 Generate torus mesh
 
-- Failure return -1
-- Success return int
+- Success return Mesh
 
 ---
 
@@ -4194,8 +4130,7 @@ Generate torus mesh
 
 Generate torus mesh
 
-- Failure return -1
-- Success return int
+- Success return Mesh
 
 ---
 
@@ -4203,54 +4138,34 @@ Generate torus mesh
 
 Generate heightmap mesh from image data
 
-- Failure return -1
-- Success return int
+- Success return Mesh
 
 ---
 
-> mesh = RL.GenMeshCustom( Mesh{} mesh, bool dynamic )
+> mesh = RL.GenMeshCustom( Mesh{} meshData, bool dynamic )
 
-Generate custom mesh from vertex attribute data and uploads it into a VAO ( if supported ) and VBO
+Generate custom mesh from vertex attribute data and uploads it into a VAO (if supported) and VBO
 
-- Failure return -1
-- Success return int
+- Success return Mesh
 
 ---
 
-> success = RL.UpdateMesh( Mesh mesh, Mesh{} updatedMesh )
+> RL.UpdateMesh( Mesh mesh, Mesh{} meshData )
 
 Update mesh vertex data in GPU.
 Note! Mainly intented to be used with custom meshes.
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.UnloadMesh( Mesh mesh )
-
-Unload mesh data from CPU and GPU
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.DrawMesh( Mesh mesh, Material material, Matrix transform )
+> RL.DrawMesh( Mesh mesh, Material material, Matrix transform )
 
 Draw a 3d mesh with material and transform
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.DrawMeshInstanced( Mesh mesh, Material material, Matrix{} transforms, int instances )
+> RL.DrawMeshInstanced( Mesh mesh, Material material, Matrix{} transforms, int instances )
 
 Draw multiple mesh instances with material and different transforms
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -4268,8 +4183,7 @@ NOTE: Currently only works on custom mesh
 
 Export mesh data to file, returns true on success
 
-- Failure return false
-- Success return true
+- Success return bool
 
 ---
 
@@ -4277,17 +4191,13 @@ Export mesh data to file, returns true on success
 
 Compute mesh bounding box limits
 
-- Failure return false
 - Success return BoundingBox
 
 ---
 
-> success = RL.GenMeshTangents( Mesh mesh )
+> RL.GenMeshTangents( Mesh mesh )
 
 Compute mesh tangents
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -4299,49 +4209,33 @@ Compute mesh tangents
 
 Load default material
 
-- Success return int
+- Success return Material
 
 ---
 
-> material = RL.CreateMaterial( Material{} material )
+> material = RL.CreateMaterial( Material{} materialData )
 
 Load material from table. See material table definition
 
-- Failure return false
-- Success return int
-
----
-
-> success = RL.UnloadMaterial( Material material )
-
-Unload material from GPU memory ( VRAM )
-
-- Failure return false
-- Success return true
+- Success return Material
 
 ---
 
 > RL.SetMaterialTexture( Material material, int mapType, Texture2D texture )
 
-Set texture for a material map type ( MATERIAL_MAP_ALBEDO, MATERIAL_MAP_METALNESS... )
+Set texture for a material map type (MATERIAL_MAP_ALBEDO, MATERIAL_MAP_METALNESS...)
 
 ---
 
-> success = RL.SetMaterialColor( Material material, int mapType, Color color )
+> RL.SetMaterialColor( Material material, int mapType, Color color )
 
 Set color for a material map type
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.SetMaterialValue( Material material, int mapType, float value )
+> RL.SetMaterialValue( Material material, int mapType, float value )
 
 Set value for a material map type
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -4351,56 +4245,48 @@ Set shader for material
 
 ---
 
-> success = RL.SetMaterialParams( Material material, float{} params )
+> RL.SetMaterialParams( Material material, float{} params )
 
-Set material generic parameters ( if required )
-
-- Failure return false
-- Success return true
+Set material generic parameters (if required)
 
 ---
 
 > texture = RL.GetMaterialTexture( Material material, int mapType )
 
-Get texture from material map type. Returns -1 if no texture.
+Get texture from material map type. Returns -1 if no texture
 
-- Failure return false
-- Success return int
+- Success return Texture
 
 ---
 
 > color = RL.GetMaterialColor( Material material, int mapType )
 
-Get color from material map type.
+Get color from material map type
 
-- Failure return false
 - Success return Color
 
 ---
 
 > value = RL.GetMaterialValue( Material material, int mapType )
 
-Get color from material map type.
+Get color from material map type
 
-- Failure return false
 - Success return float
 
 ---
 
 > shader = RL.GetMaterialShader( Material material )
 
-Get material shader. Returns -1 if no shader.
+Get material shader
 
-- Failure return false
 - Success return Shader
 
 ---
 
 > params = RL.GetMaterialParams( Material material )
 
-Get material parameters.
+Get material parameters
 
-- Failure return false
 - Success return float{}
 
 ---
@@ -4411,64 +4297,42 @@ Get material parameters.
 
 > model = RL.LoadModel( string fileName )
 
-Load model from files ( Meshes and materials )
+Load model from files (Meshes and materials)
 
-- Failure return -1
-- Success return int
+- Failure return nil
+- Success return Model
 
 ---
 
 > model = RL.LoadModelFromMesh( Mesh mesh )
 
-Load model from generated mesh ( Default material )
+Load model from generated mesh (Default material)
 
-- Failure return -1
-- Success return int
-
----
-
-> success = RL.UnloadModel( Model model )
-
-Unload model ( Including meshes ) from memory ( RAM and/or VRAM )
-
-- Failure return false
-- Success return true
+- Success return Model
 
 ---
 
-> success = RL.DrawModel( Model model, Vector3 position, float scale, Color tint )
+> RL.DrawModel( Model model, Vector3 position, float scale, Color tint )
 
-Draw a model ( With texture if set )
-
-- Failure return false
-- Success return true
+Draw a model (With texture if set)
 
 ---
 
-> success = RL.DrawModelEx( Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint )
+> RL.DrawModelEx( Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint )
 
 Draw a model with extended parameters
 
-- Failure return false
-- Success return true
+---
+
+> RL.SetModelMaterial( Model model, Material modelMaterial, Material material )
+
+Copies material to model material. (Model material is the material id in models.)
 
 ---
 
-> success = RL.SetModelMaterial( Model model, Material modelMaterial, Material material )
+> RL.SetModelMeshMaterial( Model model, int meshId, int materialId )
 
-Copies material to model material. ( Model material is the material id in models. Material can be deleted if not used elsewhere )
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.SetModelMeshMaterial( Model model, int meshId, int materialId )
-
-Set material for a mesh ( Mesh and material on this model )
-
-- Failure return false
-- Success return true
+Set material for a mesh (Mesh and material on this model)
 
 ---
 
@@ -4490,12 +4354,9 @@ Draw a billboard texture defined by source and rotation
 
 ---
 
-> success = RL.SetModelTransform( Model model, Matrix transform )
+> RL.SetModelTransform( Model model, Matrix transform )
 
 Set model transform matrix
-
-- Failure return false
-- Success return true
 
 ---
 
@@ -4503,7 +4364,6 @@ Set model transform matrix
 
 Get model transform matrix
 
-- Failure return false
 - Success return Matrix
 
 ---
@@ -4512,56 +4372,41 @@ Get model transform matrix
 
 ---
 
-> animations, animationCount = RL.LoadModelAnimations( string fileName )
+> animations = RL.LoadModelAnimations( string fileName )
 
 Load model animations from file
 
-- Failure return -1
-- Success return int, int
+- Failure return nil
+- Success return ModelAnimations{}
 
 ---
 
-> success = RL.UpdateModelAnimation( Model model, ModelAnimations animations, int animation, int frame )
+> RL.UpdateModelAnimation( Model model, ModelAnimation animation, int frame )
 
 Update model animation pose
 
-- Failure return false
-- Success return true
-
 ---
 
-> success = RL.UnloadModelAnimations( ModelAnimations animations )
-
-Unload animation data
-
-- Failure return false
-- Success return true
-
----
-
-> valid = RL.IsModelAnimationValid( Model model, ModelAnimations animations )
+> valid = RL.IsModelAnimationValid( Model model, ModelAnimation animation )
 
 Check model animation skeleton match
 
-- Failure return nil
 - Success return bool
 
 ---
 
-> boneCount = RL.GetModelAnimationBoneCount( ModelAnimations animations, int animation )
+> boneCount = RL.GetModelAnimationBoneCount( ModelAnimation animation )
 
 Return modelAnimation bone count
 
-- Failure return false
 - Success return int
 
 ---
 
-> frameCount = RL.GetModelAnimationFrameCount( ModelAnimations animations, int animation )
+> frameCount = RL.GetModelAnimationFrameCount( ModelAnimation animation )
 
 Return modelAnimation frame count
 
-- Failure return false
 - Success return int
 
 ---
@@ -4574,7 +4419,6 @@ Return modelAnimation frame count
 
 Check collision between two spheres
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -4583,7 +4427,6 @@ Check collision between two spheres
 
 Check collision between two bounding boxes
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -4592,7 +4435,6 @@ Check collision between two bounding boxes
 
 Check collision between box and sphere
 
-- Failure return nil
 - Success return bool
 
 ---
@@ -4601,7 +4443,6 @@ Check collision between box and sphere
 
 Get collision info between ray and sphere. ( RayCollision is Lua table of { hit, distance, point, normal } )
 
-- Failure return nil
 - Success return RayCollision
 
 ---
@@ -4610,7 +4451,6 @@ Get collision info between ray and sphere. ( RayCollision is Lua table of { hit,
 
 Get collision info between ray and box
 
-- Failure return nil
 - Success return RayCollision
 
 ---
@@ -4619,7 +4459,6 @@ Get collision info between ray and box
 
 Get collision info between ray and mesh
 
-- Failure return nil
 - Success return RayCollision
 
 ---
@@ -4628,7 +4467,6 @@ Get collision info between ray and mesh
 
 Get collision info between ray and triangle
 
-- Failure return nil
 - Success return RayCollision
 
 ---
@@ -4637,7 +4475,6 @@ Get collision info between ray and triangle
 
 Get collision info between ray and quad
 
-- Failure return nil
 - Success return RayCollision
 
 ---

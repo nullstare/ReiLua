@@ -55,6 +55,8 @@ function RL.init()
 	shader = RL.LoadShader( RL.GetBasePath().."../resources/shaders/glsl330/lightmap.vs",
 						    RL.GetBasePath().."../resources/shaders/glsl330/lightmap.fs" )
 
+	print( "shader", shader )
+
 	local materialData = {
 		shader = shader,
 		maps = {
@@ -77,6 +79,9 @@ function RL.init()
 		},
 	}
 	material = RL.CreateMaterial( materialData )
+
+	print( "material", material )
+
 	matrix = RL.MatrixMultiply( RL.MatrixIdentity(), RL.MatrixTranslate( { -4, 0, -4 } ) )
 end
 
@@ -101,4 +106,11 @@ function RL.draw()
 	camera:beginMode3D()
 		RL.DrawMesh( mesh, material, matrix )
 	camera:endMode3D()
+end
+
+function RL.exit()
+	material = nil
+	collectgarbage( "collect" )
+	tileTexture = nil
+	collectgarbage( "collect" )
 end

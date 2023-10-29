@@ -2,10 +2,10 @@
 
 local monitor = 0
 local camera = -1
+local texture = nil
 local material = -1
 local model = -1
-local animations = -1
-local animationCount = 0
+local animations = {}
 local frame = 0
 local curAnim = 0
 local frameCount = 0
@@ -24,12 +24,14 @@ function RL.init()
 	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
 	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
 
+	texture = RL.LoadTexture( RL.GetBasePath().."../resources/images/monkey_tex.png" )
+
 	material = RL.CreateMaterial( {
 		maps = {
 			{
 				RL.MATERIAL_MAP_ALBEDO,
 				{
-					texture = RL.LoadTexture( RL.GetBasePath().."../resources/images/monkey_tex.png" ),
+					texture = texture,
 					color = RL.WHITE,
 				},
 			},
@@ -38,21 +40,19 @@ function RL.init()
 
 	model = RL.LoadModel( RL.GetBasePath().."../resources/iqm/monkey.iqm" )
 	RL.SetModelMaterial( model, 0, material )
-	animations, animationCount = RL.LoadModelAnimations( RL.GetBasePath().."../resources/iqm/monkey.iqm" )
-
-	print( "animationCount", animationCount )
+	animations = RL.LoadModelAnimations( RL.GetBasePath().."../resources/iqm/monkey.iqm" )
 end
 
 function RL.process( delta )
 	if RL.IsKeyPressed( RL.KEY_ENTER ) then
 		curAnim = curAnim + 1
 
-		if animationCount <= curAnim then
+		if #animations <= curAnim then
 			curAnim = 0
 		end
 
 		frame = 0.0
-		frameCount = RL.GetModelAnimationFrameCount( animations, curAnim )
+		frameCount = RL.GetModelAnimationFrameCount( animations[ curAnim + 1 ] )
 	elseif RL.IsKeyPressed( RL.KEY_UP ) then
 		animSpeed = animSpeed + 5
 	elseif RL.IsKeyPressed( RL.KEY_DOWN ) then
@@ -60,7 +60,7 @@ function RL.process( delta )
 	end
 
 	if RL.IsKeyDown( RL.KEY_SPACE ) then
-		RL.UpdateModelAnimation( model, animations, curAnim, math.floor( frame ) )
+		RL.UpdateModelAnimation( model, animations[ curAnim + 1 ], math.floor( frame ) )
 		frame = frame + animSpeed * delta
 
 		if frameCount < frame then
@@ -80,7 +80,7 @@ function RL.draw()
 		RL.DrawModelEx( model, { 0, 0, 0 }, { 1.0, 0.0, 0.0 }, -90.0, { 1.0, 1.0, 1.0 }, RL.WHITE )
 	RL.EndMode3D()
 
-	RL.DrawText( 0,
+	RL.DrawText( RL.defaultFont,
 "Enter: Change animation\
 Space: Play animation\
 Up arrow: Inreace animation speed\

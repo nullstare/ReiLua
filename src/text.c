@@ -40,7 +40,7 @@ int ltextLoadFont( lua_State *L ) {
 }
 
 /*
-> font = RL.LoadFontEx( string fileName, int fontSize, int fontChars{} )
+> font = RL.LoadFontEx( string fileName, int fontSize, int{} fontChars )
 
 Load font from file with extended parameters. Loading the default character set
 

@@ -2503,9 +2503,7 @@ function  RL.ImageDrawRectangleLines( dst, rec, thick, color ) end
 ---@return any RL.ImageDraw
 function  RL.ImageDraw( dst, src, srcRec, dstRec, tint ) end
 
----Draw text ( Custom sprite font ) within an image ( Destination )
----- Failure return false
----- Success return true
+---Draw text (Custom sprite font) within an image (Destination)
 ---@param dst any
 ---@param font any
 ---@param text string
@@ -2513,8 +2511,8 @@ function  RL.ImageDraw( dst, src, srcRec, dstRec, tint ) end
 ---@param fontSize number
 ---@param spacing number
 ---@param tint table
----@return any success 
-function RL.ImageDrawTextEx( dst, font, text, position, fontSize, spacing, tint ) end
+---@return any RL.ImageDrawTextEx
+function  RL.ImageDrawTextEx( dst, font, text, position, fontSize, spacing, tint ) end
 
 -- Textures - Image Configuration
 
@@ -2810,9 +2808,9 @@ function RL.LoadFont( fileName ) end
 ---- Success return Font
 ---@param fileName string
 ---@param fontSize integer
----@param fontChars{} integer
+---@param fontChars any
 ---@return any font 
-function RL.LoadFontEx( fileName, fontSize, fontChars{} ) end
+function RL.LoadFontEx( fileName, fontSize, fontChars ) end
 
 ---Load font from Image ( XNA style)
 ---- Success return Font
@@ -2889,174 +2887,142 @@ function RL.GetFontTexture( font ) end
 -- Models - Basic
 
 ---Draw a line in 3D world space
----- Failure return false
----- Success return true
 ---@param startPos table
 ---@param endPos table
 ---@param color table
----@return any success 
-function RL.DrawLine3D( startPos, endPos, color ) end
+---@return any RL.DrawLine3D
+function  RL.DrawLine3D( startPos, endPos, color ) end
 
 ---Draw a point in 3D space, actually a small line
----- Failure return false
----- Success return true
 ---@param position table
 ---@param color table
----@return any success 
-function RL.DrawPoint3D( position, color ) end
+---@return any RL.DrawPoint3D
+function  RL.DrawPoint3D( position, color ) end
 
 ---Draw a circle in 3D world space
----- Failure return false
----- Success return true
 ---@param center table
 ---@param radius number
 ---@param rotationAxis table
 ---@param rotationAngle number
 ---@param color table
----@return any success 
-function RL.DrawCircle3D( center, radius, rotationAxis, rotationAngle, color ) end
+---@return any RL.DrawCircle3D
+function  RL.DrawCircle3D( center, radius, rotationAxis, rotationAngle, color ) end
 
----Draw a color-filled triangle ( Vertex in counter-clockwise order! )
----- Failure return false
----- Success return true
+---Draw a color-filled triangle (Vertex in counter-clockwise order!)
 ---@param v1 table
 ---@param v2 table
 ---@param v3 table
 ---@param color table
----@return any success 
-function RL.DrawTriangle3D( v1, v2, v3, color ) end
+---@return any RL.DrawTriangle3D
+function  RL.DrawTriangle3D( v1, v2, v3, color ) end
 
 ---Draw cube
----- Failure return false
----- Success return true
 ---@param position table
 ---@param size table
 ---@param color table
----@return any success 
-function RL.DrawCube( position, size, color ) end
+---@return any RL.DrawCube
+function  RL.DrawCube( position, size, color ) end
 
 ---Draw cube wires
----- Failure return false
----- Success return true
 ---@param position table
 ---@param size table
 ---@param color table
----@return any success 
-function RL.DrawCubeWires( position, size, color ) end
+---@return any RL.DrawCubeWires
+function  RL.DrawCubeWires( position, size, color ) end
 
 ---Draw sphere
----- Failure return false
----- Success return true
 ---@param centerPos table
 ---@param radius number
 ---@param color table
----@return any success 
-function RL.DrawSphere( centerPos, radius, color ) end
+---@return any RL.DrawSphere
+function  RL.DrawSphere( centerPos, radius, color ) end
 
 ---Draw sphere with extended parameters
----- Failure return false
----- Success return true
 ---@param centerPos table
 ---@param radius number
 ---@param rings integer
 ---@param slices integer
 ---@param color table
----@return any success 
-function RL.DrawSphereEx( centerPos, radius, rings, slices, color ) end
+---@return any RL.DrawSphereEx
+function  RL.DrawSphereEx( centerPos, radius, rings, slices, color ) end
 
 ---Draw sphere wires
----- Failure return false
----- Success return true
 ---@param centerPos table
 ---@param radius number
 ---@param rings integer
 ---@param slices integer
 ---@param color table
----@return any success 
-function RL.DrawSphereWires( centerPos, radius, rings, slices, color ) end
+---@return any RL.DrawSphereWires
+function  RL.DrawSphereWires( centerPos, radius, rings, slices, color ) end
 
 ---Draw a cylinder/cone
----- Failure return false
----- Success return true
 ---@param position table
 ---@param radiusTop number
 ---@param radiusBottom number
 ---@param height number
 ---@param slices integer
 ---@param color table
----@return any success 
-function RL.DrawCylinder( position, radiusTop, radiusBottom, height, slices, color ) end
+---@return any RL.DrawCylinder
+function  RL.DrawCylinder( position, radiusTop, radiusBottom, height, slices, color ) end
 
 ---Draw a cylinder with base at startPos and top at endPos
----- Failure return false
----- Success return true
 ---@param startPos table
 ---@param endPos table
 ---@param startRadius number
 ---@param endRadius number
 ---@param sides integer
 ---@param color table
----@return any success 
-function RL.DrawCylinderEx( startPos, endPos, startRadius, endRadius, sides, color ) end
+---@return any RL.DrawCylinderEx
+function  RL.DrawCylinderEx( startPos, endPos, startRadius, endRadius, sides, color ) end
 
 ---Draw a cylinder/cone wires
----- Failure return false
----- Success return true
 ---@param position table
 ---@param radiusTop number
 ---@param radiusBottom number
 ---@param height number
 ---@param slices integer
 ---@param color table
----@return any success 
-function RL.DrawCylinderWires( position, radiusTop, radiusBottom, height, slices, color ) end
+---@return any RL.DrawCylinderWires
+function  RL.DrawCylinderWires( position, radiusTop, radiusBottom, height, slices, color ) end
 
 ---Draw a cylinder wires with base at startPos and top at endPos
----- Failure return false
----- Success return true
 ---@param startPos table
 ---@param endPos table
 ---@param startRadius number
 ---@param endRadius number
 ---@param sides integer
 ---@param color table
----@return any success 
-function RL.DrawCylinderWiresEx( startPos, endPos, startRadius, endRadius, sides, color ) end
+---@return any RL.DrawCylinderWiresEx
+function  RL.DrawCylinderWiresEx( startPos, endPos, startRadius, endRadius, sides, color ) end
 
 ---Draw a capsule with the center of its sphere caps at startPos and endPos
----- Failure return false
----- Success return true
 ---@param startPos table
 ---@param endPos table
 ---@param radius number
 ---@param slices integer
 ---@param rings integer
 ---@param color table
----@return any success 
-function RL.DrawCapsule( startPos, endPos, radius, slices, rings, color ) end
+---@return any RL.DrawCapsule
+function  RL.DrawCapsule( startPos, endPos, radius, slices, rings, color ) end
 
 ---Draw capsule wireframe with the center of its sphere caps at startPos and endPos
----- Failure return false
----- Success return true
 ---@param startPos table
 ---@param endPos table
 ---@param radius number
 ---@param slices integer
 ---@param rings integer
 ---@param color table
----@return any success 
-function RL.DrawCapsuleWires( startPos, endPos, radius, slices, rings, color ) end
+---@return any RL.DrawCapsuleWires
+function  RL.DrawCapsuleWires( startPos, endPos, radius, slices, rings, color ) end
 
 ---Draw a plane XZ
----- Failure return false
----- Success return true
 ---@param centerPos table
 ---@param size table
 ---@param color table
----@return any success 
-function RL.DrawPlane( centerPos, size, color ) end
+---@return any RL.DrawPlane
+function  RL.DrawPlane( centerPos, size, color ) end
 
----Draw 3D textured quad. ( Texture coordinates opengl style 0.0 - 1.0 ).
+---Draw 3D textured quad. (Texture coordinates opengl style 0.0 - 1.0).
 ---@param texture any
 ---@param vertices any
 ---@param texCoords any
@@ -3065,34 +3031,28 @@ function RL.DrawPlane( centerPos, size, color ) end
 function  RL.DrawQuad3DTexture( texture, vertices, texCoords, colors ) end
 
 ---Draw a ray line
----- Failure return false
----- Success return true
 ---@param ray any
 ---@param color table
----@return any success 
-function RL.DrawRay( ray, color ) end
+---@return any RL.DrawRay
+function  RL.DrawRay( ray, color ) end
 
----Draw a grid ( Centered at ( 0, 0, 0 ) )
----- Failure return false
----- Success return true
+---Draw a grid (Centered at ( 0, 0, 0 ))
 ---@param slices integer
 ---@param spacing number
----@return any success 
-function RL.DrawGrid( slices, spacing ) end
+---@return any RL.DrawGrid
+function  RL.DrawGrid( slices, spacing ) end
 
 -- Models - Mesh
 
 ---Generate polygonal mesh
----- Failure return -1
----- Success return int
+---- Success return Mesh
 ---@param sides integer
 ---@param radius number
 ---@return any mesh 
 function RL.GenMeshPoly( sides, radius ) end
 
----Generate plane mesh ( With subdivisions )
----- Failure return -1
----- Success return int
+---Generate plane mesh (With subdivisions)
+---- Success return Mesh
 ---@param width number
 ---@param length number
 ---@param resX integer
@@ -3101,15 +3061,13 @@ function RL.GenMeshPoly( sides, radius ) end
 function RL.GenMeshPlane( width, length, resX, resZ ) end
 
 ---Generate cuboid mesh
----- Failure return -1
----- Success return int
+---- Success return Mesh
 ---@param size table
 ---@return any mesh 
 function RL.GenMeshCube( size ) end
 
----Generate sphere mesh ( Standard sphere )
----- Failure return -1
----- Success return int
+---Generate sphere mesh (Standard sphere)
+---- Success return Mesh
 ---@param radius number
 ---@param rings integer
 ---@param slices integer
@@ -3117,8 +3075,7 @@ function RL.GenMeshCube( size ) end
 function RL.GenMeshSphere( radius, rings, slices ) end
 
 ---Generate cylinder mesh
----- Failure return -1
----- Success return int
+---- Success return Mesh
 ---@param radius number
 ---@param height number
 ---@param slices integer
@@ -3126,8 +3083,7 @@ function RL.GenMeshSphere( radius, rings, slices ) end
 function RL.GenMeshCylinder( radius, height, slices ) end
 
 ---Generate cone/pyramid mesh
----- Failure return -1
----- Success return int
+---- Success return Mesh
 ---@param radius number
 ---@param height number
 ---@param slices integer
@@ -3135,8 +3091,7 @@ function RL.GenMeshCylinder( radius, height, slices ) end
 function RL.GenMeshCone( radius, height, slices ) end
 
 ---Generate torus mesh
----- Failure return -1
----- Success return int
+---- Success return Mesh
 ---@param radius number
 ---@param size number
 ---@param radSeg integer
@@ -3145,8 +3100,7 @@ function RL.GenMeshCone( radius, height, slices ) end
 function RL.GenMeshTorus( radius, size, radSeg, sides ) end
 
 ---Generate torus mesh
----- Failure return -1
----- Success return int
+---- Success return Mesh
 ---@param radius number
 ---@param size number
 ---@param radSeg integer
@@ -3155,55 +3109,40 @@ function RL.GenMeshTorus( radius, size, radSeg, sides ) end
 function RL.GenMeshKnot( radius, size, radSeg, sides ) end
 
 ---Generate heightmap mesh from image data
----- Failure return -1
----- Success return int
+---- Success return Mesh
 ---@param heightmap any
 ---@param size table
 ---@return any mesh 
 function RL.GenMeshHeightmap( heightmap, size ) end
 
----Generate custom mesh from vertex attribute data and uploads it into a VAO ( if supported ) and VBO
----- Failure return -1
----- Success return int
----@param mesh any
+---Generate custom mesh from vertex attribute data and uploads it into a VAO (if supported) and VBO
+---- Success return Mesh
+---@param meshData any
 ---@param dynamic boolean
 ---@return any mesh 
-function RL.GenMeshCustom( mesh, dynamic ) end
+function RL.GenMeshCustom( meshData, dynamic ) end
 
 ---Update mesh vertex data in GPU.
 ---Note! Mainly intented to be used with custom meshes.
----- Failure return false
----- Success return true
 ---@param mesh any
----@param updatedMesh any
----@return any success 
-function RL.UpdateMesh( mesh, updatedMesh ) end
-
----Unload mesh data from CPU and GPU
----- Failure return false
----- Success return true
----@param mesh any
----@return any success 
-function RL.UnloadMesh( mesh ) end
+---@param meshData any
+---@return any RL.UpdateMesh
+function  RL.UpdateMesh( mesh, meshData ) end
 
 ---Draw a 3d mesh with material and transform
----- Failure return false
----- Success return true
 ---@param mesh any
 ---@param material any
 ---@param transform table
----@return any success 
-function RL.DrawMesh( mesh, material, transform ) end
+---@return any RL.DrawMesh
+function  RL.DrawMesh( mesh, material, transform ) end
 
 ---Draw multiple mesh instances with material and different transforms
----- Failure return false
----- Success return true
 ---@param mesh any
 ---@param material any
 ---@param transforms any
 ---@param instances integer
----@return any success 
-function RL.DrawMeshInstanced( mesh, material, transforms, instances ) end
+---@return any RL.DrawMeshInstanced
+function  RL.DrawMeshInstanced( mesh, material, transforms, instances ) end
 
 ---Updades mesh color vertex attribute buffer
 ---NOTE: Currently only works on custom mesh
@@ -3215,49 +3154,37 @@ function RL.DrawMeshInstanced( mesh, material, transforms, instances ) end
 function RL.SetMeshColor( mesh, color ) end
 
 ---Export mesh data to file, returns true on success
----- Failure return false
----- Success return true
+---- Success return bool
 ---@param mesh any
 ---@param fileName string
 ---@return any success 
 function RL.ExportMesh( mesh, fileName ) end
 
 ---Compute mesh bounding box limits
----- Failure return false
 ---- Success return BoundingBox
 ---@param mesh any
 ---@return any boundingBox 
 function RL.GetMeshBoundingBox( mesh ) end
 
 ---Compute mesh tangents
----- Failure return false
----- Success return true
 ---@param mesh any
----@return any success 
-function RL.GenMeshTangents( mesh ) end
+---@return any RL.GenMeshTangents
+function  RL.GenMeshTangents( mesh ) end
 
 -- Models - Material
 
 ---Load default material
----- Success return int
+---- Success return Material
 ---@return any material 
 function RL.LoadMaterialDefault() end
 
 ---Load material from table. See material table definition
----- Failure return false
----- Success return int
----@param material any
+---- Success return Material
+---@param materialData any
 ---@return any material 
-function RL.CreateMaterial( material ) end
+function RL.CreateMaterial( materialData ) end
 
----Unload material from GPU memory ( VRAM )
----- Failure return false
----- Success return true
----@param material any
----@return any success 
-function RL.UnloadMaterial( material ) end
-
----Set texture for a material map type ( MATERIAL_MAP_ALBEDO, MATERIAL_MAP_METALNESS... )
+---Set texture for a material map type (MATERIAL_MAP_ALBEDO, MATERIAL_MAP_METALNESS...)
 ---@param material any
 ---@param mapType integer
 ---@param texture any
@@ -3265,22 +3192,18 @@ function RL.UnloadMaterial( material ) end
 function  RL.SetMaterialTexture( material, mapType, texture ) end
 
 ---Set color for a material map type
----- Failure return false
----- Success return true
 ---@param material any
 ---@param mapType integer
 ---@param color table
----@return any success 
-function RL.SetMaterialColor( material, mapType, color ) end
+---@return any RL.SetMaterialColor
+function  RL.SetMaterialColor( material, mapType, color ) end
 
 ---Set value for a material map type
----- Failure return false
----- Success return true
 ---@param material any
 ---@param mapType integer
 ---@param value number
----@return any success 
-function RL.SetMaterialValue( material, mapType, value ) end
+---@return any RL.SetMaterialValue
+function  RL.SetMaterialValue( material, mapType, value ) end
 
 ---Set shader for material
 ---@param material any
@@ -3288,47 +3211,40 @@ function RL.SetMaterialValue( material, mapType, value ) end
 ---@return any RL.SetMaterialShader
 function  RL.SetMaterialShader( material, shader ) end
 
----Set material generic parameters ( if required )
----- Failure return false
----- Success return true
+---Set material generic parameters (if required)
 ---@param material any
 ---@param params any
----@return any success 
-function RL.SetMaterialParams( material, params ) end
+---@return any RL.SetMaterialParams
+function  RL.SetMaterialParams( material, params ) end
 
----Get texture from material map type. Returns -1 if no texture.
----- Failure return false
----- Success return int
+---Get texture from material map type. Returns -1 if no texture
+---- Success return Texture
 ---@param material any
 ---@param mapType integer
 ---@return any texture 
 function RL.GetMaterialTexture( material, mapType ) end
 
----Get color from material map type.
----- Failure return false
+---Get color from material map type
 ---- Success return Color
 ---@param material any
 ---@param mapType integer
 ---@return any color 
 function RL.GetMaterialColor( material, mapType ) end
 
----Get color from material map type.
----- Failure return false
+---Get color from material map type
 ---- Success return float
 ---@param material any
 ---@param mapType integer
 ---@return any value 
 function RL.GetMaterialValue( material, mapType ) end
 
----Get material shader. Returns -1 if no shader.
----- Failure return false
+---Get material shader
 ---- Success return Shader
 ---@param material any
 ---@return any shader 
 function RL.GetMaterialShader( material ) end
 
----Get material parameters.
----- Failure return false
+---Get material parameters
 ---- Success return float{}
 ---@param material any
 ---@return any params 
@@ -3336,66 +3252,50 @@ function RL.GetMaterialParams( material ) end
 
 -- Models - Model
 
----Load model from files ( Meshes and materials )
----- Failure return -1
----- Success return int
+---Load model from files (Meshes and materials)
+---- Failure return nil
+---- Success return Model
 ---@param fileName string
 ---@return any model 
 function RL.LoadModel( fileName ) end
 
----Load model from generated mesh ( Default material )
----- Failure return -1
----- Success return int
+---Load model from generated mesh (Default material)
+---- Success return Model
 ---@param mesh any
 ---@return any model 
 function RL.LoadModelFromMesh( mesh ) end
 
----Unload model ( Including meshes ) from memory ( RAM and/or VRAM )
----- Failure return false
----- Success return true
----@param model any
----@return any success 
-function RL.UnloadModel( model ) end
-
----Draw a model ( With texture if set )
----- Failure return false
----- Success return true
+---Draw a model (With texture if set)
 ---@param model any
 ---@param position table
 ---@param scale number
 ---@param tint table
----@return any success 
-function RL.DrawModel( model, position, scale, tint ) end
+---@return any RL.DrawModel
+function  RL.DrawModel( model, position, scale, tint ) end
 
 ---Draw a model with extended parameters
----- Failure return false
----- Success return true
 ---@param model any
 ---@param position table
 ---@param rotationAxis table
 ---@param rotationAngle number
 ---@param scale table
 ---@param tint table
----@return any success 
-function RL.DrawModelEx( model, position, rotationAxis, rotationAngle, scale, tint ) end
+---@return any RL.DrawModelEx
+function  RL.DrawModelEx( model, position, rotationAxis, rotationAngle, scale, tint ) end
 
----Copies material to model material. ( Model material is the material id in models. Material can be deleted if not used elsewhere )
----- Failure return false
----- Success return true
+---Copies material to model material. (Model material is the material id in models.)
 ---@param model any
 ---@param modelMaterial any
 ---@param material any
----@return any success 
-function RL.SetModelMaterial( model, modelMaterial, material ) end
+---@return any RL.SetModelMaterial
+function  RL.SetModelMaterial( model, modelMaterial, material ) end
 
----Set material for a mesh ( Mesh and material on this model )
----- Failure return false
----- Success return true
+---Set material for a mesh (Mesh and material on this model)
 ---@param model any
 ---@param meshId integer
 ---@param materialId integer
----@return any success 
-function RL.SetModelMeshMaterial( model, meshId, materialId ) end
+---@return any RL.SetModelMeshMaterial
+function  RL.SetModelMeshMaterial( model, meshId, materialId ) end
 
 ---Draw a billboard texture
 ---@param camera any
@@ -3430,15 +3330,12 @@ function  RL.DrawBillboardRec( camera, texture, source, position, size, tint ) e
 function  RL.DrawBillboardPro( camera, texture, source, position, up, size, origin, rotation, tint ) end
 
 ---Set model transform matrix
----- Failure return false
----- Success return true
 ---@param model any
 ---@param transform table
----@return any success 
-function RL.SetModelTransform( model, transform ) end
+---@return any RL.SetModelTransform
+function  RL.SetModelTransform( model, transform ) end
 
 ---Get model transform matrix
----- Failure return false
 ---- Success return Matrix
 ---@param model any
 ---@return any transform 
@@ -3447,58 +3344,41 @@ function RL.GetModelTransform( model ) end
 -- Model - Animations
 
 ---Load model animations from file
----- Failure return -1
----- Success return int, int
+---- Failure return nil
+---- Success return ModelAnimations{}
 ---@param fileName string
----@return any animations
----@return any animationCount 
+---@return any animations 
 function RL.LoadModelAnimations( fileName ) end
 
 ---Update model animation pose
----- Failure return false
----- Success return true
 ---@param model any
----@param animations any
----@param animation integer
+---@param animation any
 ---@param frame integer
----@return any success 
-function RL.UpdateModelAnimation( model, animations, animation, frame ) end
-
----Unload animation data
----- Failure return false
----- Success return true
----@param animations any
----@return any success 
-function RL.UnloadModelAnimations( animations ) end
+---@return any RL.UpdateModelAnimation
+function  RL.UpdateModelAnimation( model, animation, frame ) end
 
 ---Check model animation skeleton match
----- Failure return nil
 ---- Success return bool
 ---@param model any
----@param animations any
+---@param animation any
 ---@return any valid 
-function RL.IsModelAnimationValid( model, animations ) end
+function RL.IsModelAnimationValid( model, animation ) end
 
 ---Return modelAnimation bone count
----- Failure return false
 ---- Success return int
----@param animations any
----@param animation integer
+---@param animation any
 ---@return any boneCount 
-function RL.GetModelAnimationBoneCount( animations, animation ) end
+function RL.GetModelAnimationBoneCount( animation ) end
 
 ---Return modelAnimation frame count
----- Failure return false
 ---- Success return int
----@param animations any
----@param animation integer
+---@param animation any
 ---@return any frameCount 
-function RL.GetModelAnimationFrameCount( animations, animation ) end
+function RL.GetModelAnimationFrameCount( animation ) end
 
 -- Model - Collision
 
 ---Check collision between two spheres
----- Failure return nil
 ---- Success return bool
 ---@param center1 table
 ---@param radius1 number
@@ -3508,7 +3388,6 @@ function RL.GetModelAnimationFrameCount( animations, animation ) end
 function RL.CheckCollisionSpheres( center1, radius1, center2, radius2 ) end
 
 ---Check collision between two bounding boxes
----- Failure return nil
 ---- Success return bool
 ---@param box1 any
 ---@param box2 any
@@ -3516,7 +3395,6 @@ function RL.CheckCollisionSpheres( center1, radius1, center2, radius2 ) end
 function RL.CheckCollisionBoxes( box1, box2 ) end
 
 ---Check collision between box and sphere
----- Failure return nil
 ---- Success return bool
 ---@param box any
 ---@param center table
@@ -3525,7 +3403,6 @@ function RL.CheckCollisionBoxes( box1, box2 ) end
 function RL.CheckCollisionBoxSphere( box, center, radius ) end
 
 ---Get collision info between ray and sphere. ( RayCollision is Lua table of { hit, distance, point, normal } )
----- Failure return nil
 ---- Success return RayCollision
 ---@param ray any
 ---@param center table
@@ -3534,7 +3411,6 @@ function RL.CheckCollisionBoxSphere( box, center, radius ) end
 function RL.GetRayCollisionSphere( ray, center, radius ) end
 
 ---Get collision info between ray and box
----- Failure return nil
 ---- Success return RayCollision
 ---@param ray any
 ---@param box any
@@ -3542,7 +3418,6 @@ function RL.GetRayCollisionSphere( ray, center, radius ) end
 function RL.GetRayCollisionBox( ray, box ) end
 
 ---Get collision info between ray and mesh
----- Failure return nil
 ---- Success return RayCollision
 ---@param ray any
 ---@param mesh any
@@ -3551,7 +3426,6 @@ function RL.GetRayCollisionBox( ray, box ) end
 function RL.GetRayCollisionMesh( ray, mesh, transform ) end
 
 ---Get collision info between ray and triangle
----- Failure return nil
 ---- Success return RayCollision
 ---@param ray any
 ---@param p1 table
@@ -3561,7 +3435,6 @@ function RL.GetRayCollisionMesh( ray, mesh, transform ) end
 function RL.GetRayCollisionTriangle( ray, p1, p2, p3 ) end
 
 ---Get collision info between ray and quad
----- Failure return nil
 ---- Success return RayCollision
 ---@param ray any
 ---@param p1 table

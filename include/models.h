@@ -38,7 +38,6 @@ int lmodelsGenMeshKnot( lua_State *L );
 int lmodelsGenMeshHeightmap( lua_State *L );
 int lmodelsGenMeshCustom( lua_State *L );
 int lmodelsUpdateMesh( lua_State *L );
-int lmodelsUnloadMesh( lua_State *L );
 int lmodelsDrawMesh( lua_State *L );
 int lmodelsDrawMeshInstanced( lua_State *L );
 int lmodelsSetMeshColor( lua_State *L );
@@ -48,7 +47,6 @@ int lmodelsGenMeshTangents( lua_State *L );
 /* Material. */
 int lmodelsLoadMaterialDefault( lua_State *L );
 int lmodelsCreateMaterial( lua_State *L );
-int lmodelsUnloadMaterial( lua_State *L );
 int lmodelsSetMaterialTexture( lua_State *L );
 int lmodelsSetMaterialColor( lua_State *L );
 int lmodelsSetMaterialValue( lua_State *L );
@@ -62,7 +60,6 @@ int lmodelsGetMaterialParams( lua_State *L );
 /* Model. */
 int lmodelsLoadModel( lua_State *L );
 int lmodelsLoadModelFromMesh( lua_State *L );
-int lmodelsUnloadModel( lua_State *L );
 int lmodelsDrawModel( lua_State *L );
 int lmodelsDrawModelEx( lua_State *L );
 int lmodelsSetModelMaterial( lua_State *L );
@@ -75,7 +72,6 @@ int lmodelsGetModelTransform( lua_State *L );
 /* Animations. */
 int lmodelsLoadModelAnimations( lua_State *L );
 int lmodelsUpdateModelAnimation( lua_State *L );
-int lmodelsUnloadModelAnimations( lua_State *L );
 int lmodelsIsModelAnimationValid( lua_State *L );
 int lmodelsGetModelAnimationBoneCount( lua_State *L );
 int lmodelsGetModelAnimationFrameCount( lua_State *L );

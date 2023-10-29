@@ -79,6 +79,10 @@ void uluaPushWave( lua_State *L, Wave wave );
 void uluaPushSound( lua_State *L, Sound sound );
 void uluaPushMusic( lua_State *L, Music music );
 void uluaPushLight( lua_State *L, Light light );
+void uluaPushMaterial( lua_State *L, Material material );
+void uluaPushMesh( lua_State *L, Mesh mesh );
+void uluaPushModel( lua_State *L, Model model );
+void uluaPushModelAnimation( lua_State *L, ModelAnimation modelAnimation );
 
 int uluaGetTableLen( lua_State *L );
 int uluaGetTableLenIndex( lua_State *L, int index );

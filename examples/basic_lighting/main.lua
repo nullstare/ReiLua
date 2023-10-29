@@ -136,5 +136,5 @@ function RL.draw()
 
 	camera:endMode3D()
 
-	RL.DrawText( 0, "Use keys [Y][R][G][B] to toggle lights", { 10, 10 }, 20, 4, RL.DARKGRAY )
+	RL.DrawText( RL.defaultFont, "Use keys [Y][R][G][B] to toggle lights", { 10, 10 }, 20, 4, RL.DARKGRAY )
 end

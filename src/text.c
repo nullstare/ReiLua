@@ -11,10 +11,10 @@
 /*
 > RL.GetFontDefault()
 
-Get the default Font
+Get the default Font. Return as lightuserdata
 */
 int ltextGetFontDefault( lua_State *L ) {
-	uluaPushFont( L, GetFontDefault() );
+	lua_pushlightuserdata( L, &state->defaultFont );
 
 	return 1;
 }
@@ -94,6 +94,34 @@ int ltextLoadFontFromImage( lua_State *L ) {
 	uluaPushFont( L, LoadFontFromImage( *image, key, firstChar ) );
 
 	return 1;
+}
+
+/*
+> isReady = RL.IsFontReady( Font font )
+
+Check if a font is ready
+
+- Success return bool
+*/
+int ltextIsFontReady( lua_State *L ) {
+	Font *font = uluaGetFont( L, 1 );
+
+	lua_pushboolean( L, IsFontReady( *font ) );
+
+	return 1;
+}
+
+/*
+> RL.UnloadFont( Font font )
+
+Unload font from GPU memory (VRAM)
+*/
+int ltextUnloadFont( lua_State *L ) {
+	Font *font = uluaGetFont( L, 1 );
+
+	UnloadFont( *font );
+
+	return 0;
 }
 
 /*
@@ -218,14 +246,15 @@ int ltextGetFontGlyphPadding( lua_State *L ) {
 /*
 > texture = RL.GetFontTexture( Font font )
 
-Get font texture atlas containing the glyphs.
+Get font texture atlas containing the glyphs. Returns as lightuserdata
 
 - Success return Texture
 */
 int ltextGetFontTexture( lua_State *L ) {
 	Font *font = uluaGetFont( L, 1 );
 
-	uluaPushTexture( L, font->texture );
+	// uluaPushTexture( L, font->texture );
+	lua_pushlightuserdata( L, &font->texture );
 
 	return 1;
 }

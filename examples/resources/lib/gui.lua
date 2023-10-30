@@ -40,7 +40,7 @@ Gui = {
 	},
 
 	mouseButton = RL.MOUSE_BUTTON_LEFT,
-	font = RL.defaultFont,
+	font = RL.GetFontDefault(),
 	fontSize = 20,
 	padding = 2,
 	spacing = 4,

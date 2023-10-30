@@ -18,7 +18,8 @@
 
 	/* Buffer. */
 static int gcBuffer( lua_State *L ) {
-	Buffer *buffer = luaL_checkudata ( L, 1, "Buffer" );
+	Buffer *buffer = luaL_checkudata( L, 1, "Buffer" );
+
 	free( buffer->data );
 }
 
@@ -28,13 +29,15 @@ static void defineBuffer() {
 	luaL_newmetatable( L, "Buffer" );
 	lua_pushvalue( L, -1 );
 	lua_setfield( L, -2, "__index" );
+#ifdef GC_UNLOAD
 	lua_pushcfunction( L, gcBuffer );
 	lua_setfield( L, -2, "__gc" );
+#endif
 }
 
 	/* Image */
 static int gcImage( lua_State *L ) {
-	Image *image = luaL_checkudata ( L, 1, "Image" );
+	Image *image = luaL_checkudata( L, 1, "Image" );
 
 	UnloadImage( *image );
 }
@@ -45,13 +48,15 @@ static void defineImage() {
 	luaL_newmetatable( L, "Image" );
 	lua_pushvalue( L, -1 );
 	lua_setfield( L, -2, "__index" );
+#ifdef GC_UNLOAD
 	lua_pushcfunction( L, gcImage );
 	lua_setfield( L, -2, "__gc" );
+#endif
 }
 
 	/* Texture */
 static int gcTexture( lua_State *L ) {
-	Texture *texture = luaL_checkudata ( L, 1, "Texture" );
+	Texture *texture = luaL_checkudata( L, 1, "Texture" );
 
 	UnloadTexture( *texture );
 }
@@ -62,13 +67,15 @@ static void defineTexture() {
 	luaL_newmetatable( L, "Texture" );
 	lua_pushvalue( L, -1 );
 	lua_setfield( L, -2, "__index" );
+#ifdef GC_UNLOAD
 	lua_pushcfunction( L, gcTexture );
 	lua_setfield( L, -2, "__gc" );
+#endif
 }
 
 	/* RenderRexture. */
 static int gcRenderTexture( lua_State *L ) {
-	RenderTexture *renderTexture = luaL_checkudata ( L, 1, "RenderTexture" );
+	RenderTexture *renderTexture = luaL_checkudata( L, 1, "RenderTexture" );
 
 	UnloadRenderTexture( *renderTexture );
 }
@@ -79,8 +86,10 @@ static void defineRenderTexture() {
 	luaL_newmetatable( L, "RenderTexture" );
 	lua_pushvalue( L, -1 );
 	lua_setfield( L, -2, "__index" );
+#ifdef GC_UNLOAD
 	lua_pushcfunction( L, gcRenderTexture );
 	lua_setfield( L, -2, "__gc" );
+#endif
 }
 
 	/* Camera2D. */
@@ -103,7 +112,7 @@ static void defineCamera3D() {
 
 	/* Shader. */
 static int gcShader( lua_State *L ) {
-	Shader *shader = luaL_checkudata ( L, 1, "Shader" );
+	Shader *shader = luaL_checkudata( L, 1, "Shader" );
 
 	UnloadShader( *shader );
 }
@@ -114,13 +123,15 @@ static void defineShader() {
 	luaL_newmetatable( L, "Shader" );
 	lua_pushvalue( L, -1 );
 	lua_setfield( L, -2, "__index" );
+#ifdef GC_UNLOAD
 	lua_pushcfunction( L, gcShader );
 	lua_setfield( L, -2, "__gc" );
+#endif
 }
 
 	/* Font. */
 static int gcFont( lua_State *L ) {
-	Font *font = luaL_checkudata ( L, 1, "Font" );
+	Font *font = luaL_checkudata( L, 1, "Font" );
 
 	UnloadFont( *font );
 }
@@ -131,13 +142,15 @@ static void defineFont() {
 	luaL_newmetatable( L, "Font" );
 	lua_pushvalue( L, -1 );
 	lua_setfield( L, -2, "__index" );
+#ifdef GC_UNLOAD
 	lua_pushcfunction( L, gcFont );
 	lua_setfield( L, -2, "__gc" );
+#endif
 }
 
 	/* Wave. */
 static int gcWave( lua_State *L ) {
-	Wave *wave = luaL_checkudata ( L, 1, "Wave" );
+	Wave *wave = luaL_checkudata( L, 1, "Wave" );
 
 	UnloadWave( *wave );
 }
@@ -148,13 +161,15 @@ static void defineWave() {
 	luaL_newmetatable( L, "Wave" );
 	lua_pushvalue( L, -1 );
 	lua_setfield( L, -2, "__index" );
+#ifdef GC_UNLOAD
 	lua_pushcfunction( L, gcWave );
 	lua_setfield( L, -2, "__gc" );
+#endif
 }
 
 	/* Sound. */
 static int gcSound( lua_State *L ) {
-	Sound *sound = luaL_checkudata ( L, 1, "Sound" );
+	Sound *sound = luaL_checkudata( L, 1, "Sound" );
 
 	UnloadSound( *sound );
 }
@@ -165,13 +180,15 @@ static void defineSound() {
 	luaL_newmetatable( L, "Sound" );
 	lua_pushvalue( L, -1 );
 	lua_setfield( L, -2, "__index" );
+#ifdef GC_UNLOAD
 	lua_pushcfunction( L, gcSound );
 	lua_setfield( L, -2, "__gc" );
+#endif
 }
 
 	/* Music. */
 static int gcMusic( lua_State *L ) {
-	Music *music = luaL_checkudata ( L, 1, "Music" );
+	Music *music = luaL_checkudata( L, 1, "Music" );
 
 	UnloadMusicStream( *music );
 }
@@ -182,8 +199,10 @@ static void defineMusic() {
 	luaL_newmetatable( L, "Music" );
 	lua_pushvalue( L, -1 );
 	lua_setfield( L, -2, "__index" );
+#ifdef GC_UNLOAD
 	lua_pushcfunction( L, gcMusic );
 	lua_setfield( L, -2, "__gc" );
+#endif
 }
 
 	/* Light. */
@@ -197,22 +216,12 @@ static void defineLight() {
 
 	/* Material. */
 static int gcMaterial( lua_State *L ) {
-	Material *material = luaL_checkudata ( L, 1, "Material" );
-
-	// int MAX_MATERIAL_MAPS = 12;
-	
-	// Unload loaded texture maps (avoid unloading default texture, managed by raylib)
-    // if ( material->maps != NULL ) {
-    //     for ( int i = 0; i < MAX_MATERIAL_MAPS; i++ ) {
-    //         if ( material->maps[i].texture.id != rlGetTextureIdDefault() ) {
-	// 			printf( "gcMaterial material->maps[i].texture.id = %d\n", material->maps[i].texture.id );
-	// 			rlUnloadTexture( material->maps[i].texture.id );
-	// 		} 
-    //     }
-    // }
+	Material *material = luaL_checkudata( L, 1, "Material" );
 
 	/* Custom UnloadMaterial since we don't want to free Shaders or Textures. */
-    RL_FREE( material->maps );
+	RL_FREE( material->maps );
+
+	// UnloadMaterial( *material );
 }
 
 static void defineMaterial() {
@@ -221,13 +230,15 @@ static void defineMaterial() {
 	luaL_newmetatable( L, "Material" );
 	lua_pushvalue( L, -1 );
 	lua_setfield( L, -2, "__index" );
+#ifdef GC_UNLOAD
 	lua_pushcfunction( L, gcMaterial );
 	lua_setfield( L, -2, "__gc" );
+#endif
 }
 
 	/* Mesh. */
 static int gcMesh( lua_State *L ) {
-	Mesh *mesh = luaL_checkudata ( L, 1, "Mesh" );
+	Mesh *mesh = luaL_checkudata( L, 1, "Mesh" );
 
 	UnloadMesh( *mesh );
 }
@@ -238,13 +249,15 @@ static void defineMesh() {
 	luaL_newmetatable( L, "Mesh" );
 	lua_pushvalue( L, -1 );
 	lua_setfield( L, -2, "__index" );
+#ifdef GC_UNLOAD
 	lua_pushcfunction( L, gcMesh );
 	lua_setfield( L, -2, "__gc" );
+#endif
 }
 
 	/* Model. */
 static int gcModel( lua_State *L ) {
-	Model *model = luaL_checkudata ( L, 1, "Model" );
+	Model *model = luaL_checkudata( L, 1, "Model" );
 
 	UnloadModel( *model );
 	// UnloadModelKeepMeshes( *model );
@@ -256,13 +269,15 @@ static void defineModel() {
 	luaL_newmetatable( L, "Model" );
 	lua_pushvalue( L, -1 );
 	lua_setfield( L, -2, "__index" );
+#ifdef GC_UNLOAD
 	lua_pushcfunction( L, gcModel );
 	lua_setfield( L, -2, "__gc" );
+#endif
 }
 
 	/* ModelAnimation. */
 static int gcModelAnimation( lua_State *L ) {
-	ModelAnimation *modelAnimation = luaL_checkudata ( L, 1, "ModelAnimation" );
+	ModelAnimation *modelAnimation = luaL_checkudata( L, 1, "ModelAnimation" );
 
 	UnloadModelAnimation( *modelAnimation );
 }
@@ -273,8 +288,10 @@ static void defineModelAnimation() {
 	luaL_newmetatable( L, "ModelAnimation" );
 	lua_pushvalue( L, -1 );
 	lua_setfield( L, -2, "__index" );
+#ifdef GC_UNLOAD
 	lua_pushcfunction( L, gcModelAnimation );
 	lua_setfield( L, -2, "__gc" );
+#endif
 }
 
 /* Assing globals. */
@@ -315,12 +332,6 @@ static void defineGlobals() {
 	lua_newtable( L );
 	lua_setglobal( L, "RL" );
 	lua_getglobal( L, "RL" );
-
-	uluaPushFont( L, GetFontDefault() );
-	lua_setfield( L, -2, "defaultFont" );
-
-	uluaPushMaterial( L, LoadMaterialDefault() );
-	lua_setfield( L, -2, "defaultMaterial" );
 
 /*DOC_START*/
 	/* ConfigFlags */
@@ -1527,6 +1538,8 @@ void luaRegister() {
 	assingGlobalFunction( "GetLogLevelInvalid", lcoreGetLogLevelInvalid );
 	assingGlobalFunction( "OpenURL", lcoreOpenURL );
 	assingGlobalFunction( "LoadBuffer", lcoreLoadBuffer );
+	assingGlobalFunction( "UnloadBuffer", lcoreUnloadBuffer );
+	assingGlobalFunction( "IsGCUnloadEnabled", lcoreIsGCUnloadEnabled );
 		/* Cursor. */
 	assingGlobalFunction( "ShowCursor", lcoreShowCursor );
 	assingGlobalFunction( "HideCursor", lcoreHideCursor );
@@ -1545,6 +1558,7 @@ void luaRegister() {
 		/* Shader. */
 	assingGlobalFunction( "LoadShader", lcoreLoadShader );
 	assingGlobalFunction( "LoadShaderFromMemory", lcoreLoadShaderFromMemory );
+	assingGlobalFunction( "IsShaderReady", lcoreIsShaderReady );
 	assingGlobalFunction( "BeginShaderMode", lcoreBeginShaderMode );
 	assingGlobalFunction( "EndShaderMode", lcoreEndShaderMode );
 	assingGlobalFunction( "GetShaderLocation", lcoreGetShaderLocation );
@@ -1555,6 +1569,7 @@ void luaRegister() {
 	assingGlobalFunction( "SetShaderValueTexture", lcoreSetShaderValueTexture );
 	assingGlobalFunction( "SetShaderValue", lcoreSetShaderValue );
 	assingGlobalFunction( "SetShaderValueV", lcoreSetShaderValueV );
+	assingGlobalFunction( "UnloadShader", lcoreUnloadShader );
 		/* File. */
 	assingGlobalFunction( "GetBasePath", lcoreGetBasePath );
 	assingGlobalFunction( "FileExists", lcoreFileExists );
@@ -1717,6 +1732,8 @@ void luaRegister() {
 	assingGlobalFunction( "LoadImage", ltexturesLoadImage );
 	assingGlobalFunction( "LoadImageFromTexture", ltexturesLoadImageFromTexture );
 	assingGlobalFunction( "LoadImageFromScreen", ltexturesLoadImageFromScreen );
+	assingGlobalFunction( "IsImageReady", ltextureIsImageReady );
+	assingGlobalFunction( "UnloadImage", ltextureUnloadImage );
 	assingGlobalFunction( "ExportImage", ltexturesExportImage );
 	assingGlobalFunction( "ExportImageAsCode", ltexturesExportImageAsCode );
 		/* Image Generation. */
@@ -1782,6 +1799,9 @@ void luaRegister() {
 	assingGlobalFunction( "LoadRenderTexture", ltexturesLoadRenderTexture );
 	assingGlobalFunction( "LoadRenderTextureFromData", ltexturesLoadRenderTextureFromData );
 	assingGlobalFunction( "IsTextureReady", ltexturesIsTextureReady );
+	assingGlobalFunction( "UnloadTexture", ltextureUnloadTexture );
+	assingGlobalFunction( "IsRenderTextureReady", ltexturesIsRenderTextureReady );
+	assingGlobalFunction( "UnloadRenderTexture", ltextureUnloadRenderTexture );
 	assingGlobalFunction( "UpdateTexture", ltexturesUpdateTexture );
 	assingGlobalFunction( "UpdateTextureRec", ltexturesUpdateTextureRec );
 		/* Texture Drawing. */
@@ -1852,6 +1872,7 @@ void luaRegister() {
 	assingGlobalFunction( "GenMeshHeightmap", lmodelsGenMeshHeightmap );
 	assingGlobalFunction( "GenMeshCustom", lmodelsGenMeshCustom );
 	assingGlobalFunction( "UpdateMesh", lmodelsUpdateMesh );
+	assingGlobalFunction( "UnloadMesh", lmodelsUnloadMesh );
 	assingGlobalFunction( "DrawMesh", lmodelsDrawMesh );
 	assingGlobalFunction( "DrawMeshInstanced", lmodelsDrawMeshInstanced );
 	assingGlobalFunction( "SetMeshColor", lmodelsSetMeshColor );
@@ -1859,8 +1880,11 @@ void luaRegister() {
 	assingGlobalFunction( "GetMeshBoundingBox", lmodelsGetMeshBoundingBox );
 	assingGlobalFunction( "GenMeshTangents", lmodelsGenMeshTangents );
 		/* Material. */
+	assingGlobalFunction( "GetMaterialDefault", lmodelsGetMaterialDefault );
 	assingGlobalFunction( "LoadMaterialDefault", lmodelsLoadMaterialDefault );
 	assingGlobalFunction( "CreateMaterial", lmodelsCreateMaterial );
+	assingGlobalFunction( "IsMaterialReady", lmodelsIsMaterialReady );
+	assingGlobalFunction( "UnloadMaterial", lmodelsUnloadMaterial );
 	assingGlobalFunction( "SetMaterialTexture", lmodelsSetMaterialTexture );
 	assingGlobalFunction( "SetMaterialColor", lmodelsSetMaterialColor );
 	assingGlobalFunction( "SetMaterialValue", lmodelsSetMaterialValue );
@@ -1874,6 +1898,8 @@ void luaRegister() {
 		/* Model. */
 	assingGlobalFunction( "LoadModel", lmodelsLoadModel );
 	assingGlobalFunction( "LoadModelFromMesh", lmodelsLoadModelFromMesh );
+	assingGlobalFunction( "IsModelReady", lmodelsIsModelReady );
+	assingGlobalFunction( "UnloadModel", lmodelsUnloadModel );
 	assingGlobalFunction( "DrawModel", lmodelsDrawModel );
 	assingGlobalFunction( "DrawModelEx", lmodelsDrawModelEx );
 	assingGlobalFunction( "SetModelMaterial", lmodelsSetModelMaterial );
@@ -1905,6 +1931,8 @@ void luaRegister() {
 	assingGlobalFunction( "LoadFont", ltextLoadFont );
 	assingGlobalFunction( "LoadFontEx", ltextLoadFontEx );
 	assingGlobalFunction( "LoadFontFromImage", ltextLoadFontFromImage );
+	assingGlobalFunction( "IsFontReady", ltextIsFontReady );
+	assingGlobalFunction( "UnloadFont", ltextUnloadFont );
 		/* Drawing. */
 	assingGlobalFunction( "DrawFPS", ltextDrawFPS );
 	assingGlobalFunction( "DrawText", ltextDrawText );
@@ -1922,7 +1950,11 @@ void luaRegister() {
 		/* Wave/Sound Loading. */
 	assingGlobalFunction( "LoadSound", laudioLoadSound );
 	assingGlobalFunction( "LoadWave", laudioLoadWave );
+	assingGlobalFunction( "IsWaveReady", laudioIsWaveReady );
 	assingGlobalFunction( "LoadSoundFromWave", laudioLoadSoundFromWave );
+	assingGlobalFunction( "IsSoundReady", laudioIsSoundReady );
+	assingGlobalFunction( "UnloadWave", laudioUnloadWave );
+	assingGlobalFunction( "UnloadSound", laudioUnloadSound );
 	assingGlobalFunction( "ExportWave", laudioExportWave );
 	assingGlobalFunction( "ExportWaveAsCode", laudioExportWaveAsCode );
 		/* Wave/Sound management */
@@ -1939,6 +1971,8 @@ void luaRegister() {
 	assingGlobalFunction( "WaveCrop", laudioWaveCrop );
 		/* Music management. */
 	assingGlobalFunction( "LoadMusicStream", laudioLoadMusicStream );
+	assingGlobalFunction( "IsMusicReady", laudioIsMusicReady );
+	assingGlobalFunction( "UnloadMusicStream", laudioUnloadMusicStream );
 	assingGlobalFunction( "PlayMusicStream", laudioPlayMusicStream );
 	assingGlobalFunction( "IsMusicStreamPlaying", laudioIsMusicStreamPlaying );
 	assingGlobalFunction( "UpdateMusicStream", laudioUpdateMusicStream );
@@ -2788,6 +2822,13 @@ NPatchInfo uluaGetNPatchInfoIndex( lua_State *L, int index ) {
 	return npatch;
 }
 
+Buffer* uluaGetBuffer( lua_State *L, int index ) {
+	if ( lua_islightuserdata( L, index ) ) {
+		return (Buffer*)lua_touserdata( L, index );
+	}
+	return luaL_checkudata( L, index, "Buffer" );
+}
+
 Image* uluaGetImage( lua_State *L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (Image*)lua_touserdata( L, index );
@@ -3063,6 +3104,12 @@ void uluaPushBoundingBox( lua_State *L, BoundingBox box ) {
 	lua_pushnumber( L, box.max.z );
 	lua_rawseti( L, -2, 3 );
 	lua_rawseti( L, -2, 2 );
+}
+
+void uluaPushBuffer( lua_State *L, Buffer buffer ) {
+	Buffer *bufferP = lua_newuserdata( L, sizeof( Buffer ) );
+	*bufferP = buffer;
+	luaL_setmetatable( L, "Buffer" );
 }
 
 void uluaPushImage( lua_State *L, Image image ) {

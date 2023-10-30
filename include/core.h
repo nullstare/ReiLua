@@ -44,6 +44,8 @@ int lcoreSetLogLevelInvalid( lua_State *L );
 int lcoreGetLogLevelInvalid( lua_State *L );
 int lcoreOpenURL( lua_State *L );
 int lcoreLoadBuffer( lua_State *L );
+int lcoreUnloadBuffer( lua_State *L );
+int lcoreIsGCUnloadEnabled( lua_State *L );
 /* Cursor. */
 int lcoreShowCursor( lua_State *L );
 int lcoreHideCursor( lua_State *L );
@@ -62,6 +64,7 @@ int lcoreEndScissorMode( lua_State *L );
 /* Shader. */
 int lcoreLoadShader( lua_State *L );
 int lcoreLoadShaderFromMemory( lua_State *L );
+int lcoreIsShaderReady( lua_State *L );
 int lcoreBeginShaderMode( lua_State *L );
 int lcoreEndShaderMode( lua_State *L );
 int lcoreGetShaderLocation( lua_State *L );
@@ -72,6 +75,7 @@ int lcoreSetShaderValueMatrix( lua_State *L );
 int lcoreSetShaderValueTexture( lua_State *L );
 int lcoreSetShaderValue( lua_State *L );
 int lcoreSetShaderValueV( lua_State *L );
+int lcoreUnloadShader( lua_State *L );
 /* File. */
 int lcoreGetBasePath( lua_State *L );
 int lcoreFileExists( lua_State *L );

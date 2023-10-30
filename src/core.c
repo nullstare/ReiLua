@@ -552,33 +552,34 @@ int lcoreLoadBuffer( lua_State *L ) {
 	luaL_checktype( L, 1, LUA_TTABLE );
 	int type = luaL_checkinteger( L, 2 );
 
-	Buffer *buffer = lua_newuserdata( L, sizeof( Buffer ) );
+	Buffer buffer = { 0 };
+	// Buffer *buffer = lua_newuserdata( L, sizeof( Buffer ) );
 	int len = uluaGetTableLenIndex( L, 1 );
 
 	switch ( type ) {
 		case BUFFER_UNSIGNED_CHAR:
-			buffer->size = len * sizeof( unsigned char );
+			buffer.size = len * sizeof( unsigned char );
 			break;
 		case BUFFER_UNSIGNED_SHORT:
-			buffer->size = len * sizeof( unsigned short );
+			buffer.size = len * sizeof( unsigned short );
 			break;
 		case BUFFER_UNSIGNED_INT:
-			buffer->size = len * sizeof( unsigned int );
+			buffer.size = len * sizeof( unsigned int );
 			break;
 		case BUFFER_FLOAT:
-			buffer->size = len * sizeof( float );
+			buffer.size = len * sizeof( float );
 			break;
 		default:
 			break;
 	}
-	buffer->data = malloc( buffer->size );
+	buffer.data = malloc( buffer.size );
 
 	int t = 1;
 	int i = 0;
-	unsigned char *up = buffer->data;
-	unsigned short *sp = buffer->data;
-	unsigned int *ip = buffer->data;
-	float *fp = buffer->data;
+	unsigned char *up = buffer.data;
+	unsigned short *sp = buffer.data;
+	unsigned int *ip = buffer.data;
+	float *fp = buffer.data;
 	
 	lua_pushnil( L );
 
@@ -606,7 +607,33 @@ int lcoreLoadBuffer( lua_State *L ) {
 		lua_pop( L, 1 );
 		i++;
 	}
-	luaL_setmetatable( L, "Buffer" );
+	uluaPushBuffer( L, buffer );
+
+	return 1;
+}
+
+/*
+> RL.UnloadBuffer( Buffer buffer )
+
+Unload buffer data
+*/
+int lcoreUnloadBuffer( lua_State *L ) {
+	Buffer *buffer = uluaGetBuffer( L, 1 );
+
+	free( buffer->data );
+
+	return 0;
+}
+
+/*
+> enabled = RL.IsGCUnloadEnabled()
+
+Check if Lua garbage collection is set to unload object data
+
+- Success return bool
+*/
+int lcoreIsGCUnloadEnabled( lua_State *L ) {
+	lua_pushboolean( L, state->gcUnload );
 
 	return 1;
 }
@@ -862,6 +889,21 @@ int lcoreLoadShaderFromMemory( lua_State *L ) {
 }
 
 /*
+> isReady = RL.IsShaderReady( Shader shader )
+
+Check if a shader is ready
+
+- Success return bool
+*/
+int lcoreIsShaderReady( lua_State *L ) {
+	Shader *shader = uluaGetShader( L, 1 );
+
+	lua_pushboolean( L, IsShaderReady( *shader ) );
+
+	return 1;
+}
+
+/*
 > RL.BeginShaderMode( Shader shader )
 
 Begin custom shader drawing
@@ -1057,6 +1099,19 @@ int lcoreSetShaderValueV( lua_State *L ) {
 	else {
 		SetShaderValueV( *shader, locIndex, ints, uniformType, count );
 	}
+
+	return 0;
+}
+
+/*
+> RL.UnloadShader( Shader shader )
+
+Unload shader from GPU memory (VRAM)
+*/
+int lcoreUnloadShader( lua_State *L ) {
+	Shader *shader = uluaGetShader( L, 1 );
+
+	UnloadShader( *shader );
 
 	return 0;
 }

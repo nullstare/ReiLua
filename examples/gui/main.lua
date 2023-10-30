@@ -26,7 +26,7 @@ function RL.init()
 	local mSize = RL.GetMonitorSize( monitor )
 	local winSize = { 1920, 1080 }
 
-	RL.GuiSetFont( RL.defaultFont )
+	RL.GuiSetFont( RL.GetFontDefault() )
 	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 	RL.SetWindowSize( winSize )

@@ -45,16 +45,6 @@ This function will be called on program close. Cleanup could be done here.
 
 Arguments are stored in 'RL.arg' array.
 
-## Default objects
-
-> RL.defaultFont
-
-Default Font object
-
-> RL.defaultMaterial
-
-Default Material object
-
 ## Types
 
 Raylib structs in Lua
@@ -1804,6 +1794,20 @@ Load Buffer. Type should be one of the Buffer types
 
 ---
 
+> RL.UnloadBuffer( Buffer buffer )
+
+Unload buffer data
+
+---
+
+> enabled = RL.IsGCUnloadEnabled()
+
+Check if Lua garbage collection is set to unload object data
+
+- Success return bool
+
+---
+
 ## Core - Cursor
 
 ---
@@ -1918,6 +1922,14 @@ NOTE: Set nil if no shader
 
 ---
 
+> isReady = RL.IsShaderReady( Shader shader )
+
+Check if a shader is ready
+
+- Success return bool
+
+---
+
 > RL.BeginShaderMode( Shader shader )
 
 Begin custom shader drawing
@@ -1983,6 +1995,12 @@ NOTE: Even one value should be in table
 
 Set shader uniform value vector
 NOTE: Even one value should be in table
+
+---
+
+> RL.UnloadShader( Shader shader )
+
+Unload shader from GPU memory (VRAM)
 
 ---
 
@@ -3106,6 +3124,20 @@ Load image from screen buffer and (screenshot)
 
 ---
 
+> isReady = RL.IsImageReady( Image image )
+
+Check if an image is ready
+
+- Success return bool
+
+---
+
+> RL.UnloadImage( Image image )
+
+Unload image from CPU memory (RAM)
+
+---
+
 > success = RL.ExportImage( Image image, string fileName )
 
 Export image data to file, returns true on success
@@ -3543,6 +3575,26 @@ Check if a texture is ready
 
 ---
 
+> RL.UnloadTexture( Texture texture )
+
+Unload texture from GPU memory (VRAM)
+
+---
+
+> isReady = RL.IsRenderTextureReady( RenderTexture target )
+
+Check if a render texture is ready
+
+- Success return bool
+
+---
+
+> RL.UnloadRenderTexture( RenderTexture target )
+
+Unload render texture from GPU memory (VRAM)
+
+---
+
 > RL.UpdateTexture( Texture texture, int{} pixels )
 
 Update GPU texture with new data
@@ -3801,7 +3853,7 @@ Get pixel data size in bytes for certain format
 
 > RL.GetFontDefault()
 
-Get the default Font
+Get the default Font. Return as lightuserdata
 
 ---
 
@@ -3828,6 +3880,20 @@ Load font from file with extended parameters. Loading the default character set
 Load font from Image ( XNA style)
 
 - Success return Font
+
+---
+
+> isReady = RL.IsFontReady( Font font )
+
+Check if a font is ready
+
+- Success return bool
+
+---
+
+> RL.UnloadFont( Font font )
+
+Unload font from GPU memory (VRAM)
 
 ---
 
@@ -3891,7 +3957,7 @@ Get font padding around the glyph characters
 
 > texture = RL.GetFontTexture( Font font )
 
-Get font texture atlas containing the glyphs.
+Get font texture atlas containing the glyphs. Returns as lightuserdata
 
 - Success return Texture
 
@@ -4106,6 +4172,12 @@ Note! Mainly intented to be used with custom meshes.
 
 ---
 
+> RL.UnloadMesh( Mesh mesh )
+
+Unload mesh data from CPU and GPU
+
+---
+
 > RL.DrawMesh( Mesh mesh, Material material, Matrix transform )
 
 Draw a 3d mesh with material and transform
@@ -4154,9 +4226,17 @@ Compute mesh tangents
 
 ---
 
+> material = RL.GetMaterialDefault()
+
+Default material for reference. Return as lightuserdata
+
+- Success return Material
+
+---
+
 > material = RL.LoadMaterialDefault()
 
-Load default material
+Load default material as new object
 
 - Success return Material
 
@@ -4167,6 +4247,20 @@ Load default material
 Load material from table. See material table definition
 
 - Success return Material
+
+---
+
+> isReady = RL.IsMaterialReady( Material material )
+
+Check if a material is ready
+
+- Success return bool
+
+---
+
+> RL.UnloadMaterial( Material material )
+
+Unload material from GPU memory (VRAM)
 
 ---
 
@@ -4228,7 +4322,7 @@ Get color from material map type
 
 Get material shader
 
-- Success return Shader. Returns as lightuserdata
+- Success return Shader. Return as lightuserdata
 
 ---
 
@@ -4258,6 +4352,20 @@ Load model from files (Meshes and materials)
 Load model from generated mesh (Default material)
 
 - Success return Model
+
+---
+
+> isReady = RL.IsModelReady( Model model )
+
+Check if a model is ready
+
+- Success return bool
+
+---
+
+> RL.UnloadModel( Model model )
+
+Unload model (including meshes) from memory (RAM and/or VRAM)
 
 ---
 
@@ -4460,11 +4568,39 @@ Load wave data from file
 
 ---
 
+> isReady = RL.IsWaveReady( Wave wave )
+
+Checks if wave data is ready
+
+- Success return bool
+
+---
+
 > sound = RL.LoadSoundFromWave( Wave wave )
 
 Load sound from wave data
 
 - Success return Sound
+
+---
+
+> isReady = RL.IsSoundReady( Sound sound )
+
+Checks if a sound is ready
+
+- Success return bool
+
+---
+
+> RL.UnloadWave( Wave wave )
+
+Unload wave data
+
+---
+
+> RL.UnloadSound( Sound sound )
+
+Unload sound
 
 ---
 
@@ -4567,6 +4703,20 @@ Crop a wave to defined samples range
 Load music stream from file
 
 - Success return Music
+
+---
+
+> isReady = RL.IsMusicReady( Music music )
+
+Checks if a music stream is ready
+
+- Success return bool
+
+---
+
+> RL.UnloadMusicStream( Music music )
+
+Unload music stream
 
 ---
 

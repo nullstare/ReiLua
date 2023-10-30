@@ -53,7 +53,7 @@ function RL.draw()
 		RL.DrawGrid( 8, 1 )
 		RL.DrawRay( ray, { 255, 100, 100 } )
 
-		RL.DrawMesh( sphereMesh, RL.defaultMaterial, RL.MatrixIdentity() )
+		RL.DrawMesh( sphereMesh, RL.GetMaterialDefault(), RL.MatrixIdentity() )
 		RL.DrawSphereWires( rayCol.point, 0.05, 4, 8, RL.BLUE )
 		RL.DrawLine3D( rayCol.point, RL.Vector3Add( rayCol.point, rayCol.normal ), RL.GREEN )
 	RL.EndMode3D()

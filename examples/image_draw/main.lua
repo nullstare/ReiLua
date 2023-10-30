@@ -1,9 +1,9 @@
 local monitor = 0
-local texture = -1
-local image = -1
-local catImage = -1
-local catCopy = -1
-local textImage = -1
+local texture = nil
+local image = nil
+local catImage = nil
+local catCopy = nil
+local textImage = nil
 
 function RL.init()
 	local mPos = RL.GetMonitorPosition( monitor )
@@ -24,14 +24,14 @@ function RL.init()
 	RL.ImageDrawRectangle( image, { 120, 64, 32, 64 }, RL.BLUE )
 	RL.ImageDrawRectangleLines( image, { 160, 64, 32, 64 }, 2.0, RL.BLUE )
 	RL.ImageDraw( image, catImage, { 143, 25, 230, 250 }, { 200, 200, 230, 250 }, RL.WHITE )
-	RL.ImageDrawTextEx( image, RL.defaultFont, "Hello", { 300, 32 }, 48.0, 1.0, RL.WHITE )
+	RL.ImageDrawTextEx( image, RL.GetFontDefault(), "Hello", { 300, 32 }, 48.0, 1.0, RL.WHITE )
 
 	local src = { 80, 70, 96, 96 }
 	catCopy = RL.ImageFromImage( catImage, src )
 
 	RL.ImageDraw( image, catCopy, src, { 600, 200, src[3], src[4] }, RL.WHITE )
 
-	textImage = RL.ImageText( RL.defaultFont, "Cat", 10, 4, RL.WHITE )
+	textImage = RL.ImageText( RL.GetFontDefault(), "Cat", 10, 4, RL.WHITE )
 	local imageSize = RL.GetImageSize( textImage )
 	RL.ImageDraw( image, textImage, { 0, 0, imageSize[1], imageSize[2] }, { 250, 40, imageSize[1], imageSize[2] }, RL.WHITE )
 

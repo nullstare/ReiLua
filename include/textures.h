@@ -4,6 +4,8 @@
 int ltexturesLoadImage( lua_State *L );
 int ltexturesLoadImageFromTexture( lua_State *L );
 int ltexturesLoadImageFromScreen( lua_State *L );
+int ltextureIsImageReady( lua_State *L );
+int ltextureUnloadImage( lua_State *L );
 int ltexturesExportImage( lua_State *L );
 int ltexturesExportImageAsCode( lua_State *L );
 /* Image Generation. */
@@ -69,6 +71,9 @@ int ltexturesLoadTextureFromData( lua_State *L );
 int ltexturesLoadRenderTexture( lua_State *L );
 int ltexturesLoadRenderTextureFromData( lua_State *L );
 int ltexturesIsTextureReady( lua_State *L );
+int ltextureUnloadTexture( lua_State *L );
+int ltexturesIsRenderTextureReady( lua_State *L );
+int ltextureUnloadRenderTexture( lua_State *L );
 int ltexturesUpdateTexture( lua_State *L );
 int ltexturesUpdateTextureRec( lua_State *L );
 /* Texture Drawing. */

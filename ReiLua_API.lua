@@ -945,6 +945,16 @@ function  RL.OpenURL( url ) end
 ---@return any buffer 
 function RL.LoadBuffer( buffer, type ) end
 
+---Unload buffer data
+---@param buffer any
+---@return any RL.UnloadBuffer
+function  RL.UnloadBuffer( buffer ) end
+
+---Check if Lua garbage collection is set to unload object data
+---- Success return bool
+---@return any enabled 
+function RL.IsGCUnloadEnabled() end
+
 -- Core - Cursor
 
 ---Shows cursor
@@ -1026,6 +1036,12 @@ function RL.LoadShader( vsFileName, fsFileName ) end
 ---@return any shader 
 function RL.LoadShaderFromMemory( vsCode, fsCode ) end
 
+---Check if a shader is ready
+---- Success return bool
+---@param shader any
+---@return any isReady 
+function RL.IsShaderReady( shader ) end
+
 ---Begin custom shader drawing
 ---@param shader any
 ---@return any RL.BeginShaderMode
@@ -1095,6 +1111,11 @@ function  RL.SetShaderValue( shader, locIndex, values, uniformType ) end
 ---@param count integer
 ---@return any RL.SetShaderValueV
 function  RL.SetShaderValueV( shader, locIndex, values, uniformType, count ) end
+
+---Unload shader from GPU memory (VRAM)
+---@param shader any
+---@return any RL.UnloadShader
+function  RL.UnloadShader( shader ) end
 
 -- Core - Input-related Keyboard
 
@@ -2095,6 +2116,17 @@ function RL.LoadImageFromTexture( texture ) end
 ---@return any image 
 function RL.LoadImageFromScreen() end
 
+---Check if an image is ready
+---- Success return bool
+---@param image any
+---@return any isReady 
+function RL.IsImageReady( image ) end
+
+---Unload image from CPU memory (RAM)
+---@param image any
+---@return any RL.UnloadImage
+function  RL.UnloadImage( image ) end
+
 ---Export image data to file, returns true on success
 ---- Success return bool
 ---@param image any
@@ -2507,6 +2539,22 @@ function RL.LoadRenderTextureFromData( renderTextureData ) end
 ---@return any isReady 
 function RL.IsTextureReady( texture ) end
 
+---Unload texture from GPU memory (VRAM)
+---@param texture any
+---@return any RL.UnloadTexture
+function  RL.UnloadTexture( texture ) end
+
+---Check if a render texture is ready
+---- Success return bool
+---@param target any
+---@return any isReady 
+function RL.IsRenderTextureReady( target ) end
+
+---Unload render texture from GPU memory (VRAM)
+---@param target any
+---@return any RL.UnloadRenderTexture
+function  RL.UnloadRenderTexture( target ) end
+
 ---Update GPU texture with new data
 ---NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 ---@param texture any
@@ -2731,7 +2779,7 @@ function RL.GetPixelDataSize( width, height, format ) end
 
 -- Text - Loading
 
----Get the default Font
+---Get the default Font. Return as lightuserdata
 ---@return any RL.GetFontDefault
 function  RL.GetFontDefault() end
 
@@ -2758,6 +2806,17 @@ function RL.LoadFontEx( fileName, fontSize, fontChars ) end
 ---@param firstChar integer
 ---@return any font 
 function RL.LoadFontFromImage( image, key, firstChar ) end
+
+---Check if a font is ready
+---- Success return bool
+---@param font any
+---@return any isReady 
+function RL.IsFontReady( font ) end
+
+---Unload font from GPU memory (VRAM)
+---@param font any
+---@return any RL.UnloadFont
+function  RL.UnloadFont( font ) end
 
 -- Text - Draw
 
@@ -2817,7 +2876,7 @@ function RL.GetFontGlyphCount( font ) end
 ---@return any glyphPadding 
 function RL.GetFontGlyphPadding( font ) end
 
----Get font texture atlas containing the glyphs.
+---Get font texture atlas containing the glyphs. Returns as lightuserdata
 ---- Success return Texture
 ---@param font any
 ---@return any texture 
@@ -3068,6 +3127,11 @@ function RL.GenMeshCustom( meshData, dynamic ) end
 ---@return any RL.UpdateMesh
 function  RL.UpdateMesh( mesh, meshData ) end
 
+---Unload mesh data from CPU and GPU
+---@param mesh any
+---@return any RL.UnloadMesh
+function  RL.UnloadMesh( mesh ) end
+
 ---Draw a 3d mesh with material and transform
 ---@param mesh any
 ---@param material any
@@ -3112,7 +3176,12 @@ function  RL.GenMeshTangents( mesh ) end
 
 -- Models - Material
 
----Load default material
+---Default material for reference. Return as lightuserdata
+---- Success return Material
+---@return any material 
+function RL.GetMaterialDefault() end
+
+---Load default material as new object
 ---- Success return Material
 ---@return any material 
 function RL.LoadMaterialDefault() end
@@ -3122,6 +3191,17 @@ function RL.LoadMaterialDefault() end
 ---@param materialData any
 ---@return any material 
 function RL.CreateMaterial( materialData ) end
+
+---Check if a material is ready
+---- Success return bool
+---@param material any
+---@return any isReady 
+function RL.IsMaterialReady( material ) end
+
+---Unload material from GPU memory (VRAM)
+---@param material any
+---@return any RL.UnloadMaterial
+function  RL.UnloadMaterial( material ) end
 
 ---Set texture for a material map type (MATERIAL_MAP_ALBEDO, MATERIAL_MAP_METALNESS...)
 ---@param material any
@@ -3178,7 +3258,7 @@ function RL.GetMaterialColor( material, mapType ) end
 function RL.GetMaterialValue( material, mapType ) end
 
 ---Get material shader
----- Success return Shader. Returns as lightuserdata
+---- Success return Shader. Return as lightuserdata
 ---@param material any
 ---@return any shader 
 function RL.GetMaterialShader( material ) end
@@ -3203,6 +3283,17 @@ function RL.LoadModel( fileName ) end
 ---@param mesh any
 ---@return any model 
 function RL.LoadModelFromMesh( mesh ) end
+
+---Check if a model is ready
+---- Success return bool
+---@param model any
+---@return any isReady 
+function RL.IsModelReady( model ) end
+
+---Unload model (including meshes) from memory (RAM and/or VRAM)
+---@param model any
+---@return any RL.UnloadModel
+function  RL.UnloadModel( model ) end
 
 ---Draw a model (With texture if set)
 ---@param model any
@@ -3406,11 +3497,33 @@ function RL.LoadSound( fileName ) end
 ---@return any wave 
 function RL.LoadWave( fileName ) end
 
+---Checks if wave data is ready
+---- Success return bool
+---@param wave any
+---@return any isReady 
+function RL.IsWaveReady( wave ) end
+
 ---Load sound from wave data
 ---- Success return Sound
 ---@param wave any
 ---@return any sound 
 function RL.LoadSoundFromWave( wave ) end
+
+---Checks if a sound is ready
+---- Success return bool
+---@param sound any
+---@return any isReady 
+function RL.IsSoundReady( sound ) end
+
+---Unload wave data
+---@param wave any
+---@return any RL.UnloadWave
+function  RL.UnloadWave( wave ) end
+
+---Unload sound
+---@param sound any
+---@return any RL.UnloadSound
+function  RL.UnloadSound( sound ) end
 
 ---Export wave data to file, returns true on success
 ---- Success return bool
@@ -3500,6 +3613,17 @@ function  RL.WaveCrop( wave, initSample, finalSample ) end
 ---@param fileName string
 ---@return any music 
 function RL.LoadMusicStream( fileName ) end
+
+---Checks if a music stream is ready
+---- Success return bool
+---@param music any
+---@return any isReady 
+function RL.IsMusicReady( music ) end
+
+---Unload music stream
+---@param music any
+---@return any RL.UnloadMusicStream
+function  RL.UnloadMusicStream( music ) end
 
 ---Start music playing
 ---@param music any

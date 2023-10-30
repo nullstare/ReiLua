@@ -924,6 +924,19 @@ int lmodelsUpdateMesh( lua_State *L ) {
 }
 
 /*
+> RL.UnloadMesh( Mesh mesh )
+
+Unload mesh data from CPU and GPU
+*/
+int lmodelsUnloadMesh( lua_State *L ) {
+	Mesh *mesh = uluaGetMesh( L, 1 );
+
+	UnloadMesh( *mesh );
+
+	return 0;
+}
+
+/*
 > RL.DrawMesh( Mesh mesh, Material material, Matrix transform )
 
 Draw a 3d mesh with material and transform
@@ -1047,9 +1060,22 @@ int lmodelsGenMeshTangents( lua_State *L ) {
 */
 
 /*
+> material = RL.GetMaterialDefault()
+
+Default material for reference. Return as lightuserdata
+
+- Success return Material
+*/
+int lmodelsGetMaterialDefault( lua_State *L ) {
+	lua_pushlightuserdata( L, &state->defaultMaterial );
+
+	return 1;
+}
+
+/*
 > material = RL.LoadMaterialDefault()
 
-Load default material
+Load default material as new object
 
 - Success return Material
 */
@@ -1142,6 +1168,37 @@ int lmodelsCreateMaterial( lua_State *L ) {
 	uluaPushMaterial( L, material );
 
 	return 1;
+}
+
+/*
+> isReady = RL.IsMaterialReady( Material material )
+
+Check if a material is ready
+
+- Success return bool
+*/
+int lmodelsIsMaterialReady( lua_State *L ) {
+	Material *material = uluaGetMaterial( L, 1 );
+
+	lua_pushboolean( L, IsMaterialReady( *material ) );
+
+	return 1;
+}
+
+/*
+> RL.UnloadMaterial( Material material )
+
+Unload material from GPU memory (VRAM)
+*/
+int lmodelsUnloadMaterial( lua_State *L ) {
+	Material *material = uluaGetMaterial( L, 1 );
+
+	/* Custom UnloadMaterial since we don't want to free Shaders or Textures. */
+	RL_FREE( material->maps );
+
+	// UnloadMaterial( *material );
+
+	return 0;
 }
 
 /*
@@ -1286,7 +1343,7 @@ int lmodelsGetMaterialValue( lua_State *L ) {
 
 Get material shader
 
-- Success return Shader. Returns as lightuserdata
+- Success return Shader. Return as lightuserdata
 */
 int lmodelsGetMaterialShader( lua_State *L ) {
 	Material *material = uluaGetMaterial( L, 1 );
@@ -1357,6 +1414,34 @@ int lmodelsLoadModelFromMesh( lua_State *L ) {
 }
 
 /*
+> isReady = RL.IsModelReady( Model model )
+
+Check if a model is ready
+
+- Success return bool
+*/
+int lmodelsIsModelReady( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+
+	lua_pushboolean( L, IsModelReady( *model ) );
+
+	return 1;
+}
+
+/*
+> RL.UnloadModel( Model model )
+
+Unload model (including meshes) from memory (RAM and/or VRAM)
+*/
+int lmodelsUnloadModel( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+
+	UnloadModel( *model );
+
+	return 0;
+}
+
+/*
 > RL.DrawModel( Model model, Vector3 position, float scale, Color tint )
 
 Draw a model (With texture if set)
@@ -1399,6 +1484,8 @@ int lmodelsSetModelMaterial( lua_State *L ) {
 	Model *model = uluaGetModel( L, 1 );
 	int modelMaterialId = luaL_checkinteger( L, 2 );
 	Material *material = uluaGetMaterial( L, 3 );
+
+	//TODO Could maybe return old shader and textures for storage or get garbage collected?
 
 	/* Copy material data instead of using pointer. Pointer would result in double free error. */
 	model->materials[ modelMaterialId ].shader = material->shader;

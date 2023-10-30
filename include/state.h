@@ -6,9 +6,12 @@ typedef struct {
 	char *exePath;
 	bool hasWindow;
 	bool run;
+	bool gcUnload;
 	lua_State *luaState;
 	Vector2 resolution;
 	int logLevelInvalid;
+	Font defaultFont;
+	Material defaultMaterial;
 	/* Raylib GLFW input callback events. */
 		/* Window events. */
 	GLFWwindowsizefun raylibWindowSizeCallback;

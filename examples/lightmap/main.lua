@@ -5,12 +5,12 @@ Cam3D = require( "camera3d" )
 local PLANE_SIZE = 8
 
 local monitor = 0
-local camera = -1
-local tileTexture = -1
-local mesh = -1
-local material = -1
-local lightmap = -1
-local shader = -1
+local camera = {}
+local tileTexture = nil
+local mesh = nil
+local material = nil
+local lightmap = nil
+local shader = nil
 
 local matrix = {}
 
@@ -80,8 +80,6 @@ function RL.init()
 	}
 	material = RL.CreateMaterial( materialData )
 
-	print( "material", material )
-
 	matrix = RL.MatrixMultiply( RL.MatrixIdentity(), RL.MatrixTranslate( { -4, 0, -4 } ) )
 end
 
@@ -99,18 +97,8 @@ end
 
 function RL.draw()
 	RL.ClearBackground( { 25, 50, 50 } )
-	-- RL.UpdateCamera3D( camera, RL.CAMERA_ORBITAL )
-	-- RL.UpdateCamera3D( camera, RL.CAMERA_FREE )
-	-- RL.UpdateCamera3D( camera, RL.CAMERA_FIRST_PERSON )
 
 	camera:beginMode3D()
 		RL.DrawMesh( mesh, material, matrix )
 	camera:endMode3D()
-end
-
-function RL.exit()
-	material = nil
-	collectgarbage( "collect" )
-	tileTexture = nil
-	collectgarbage( "collect" )
 end

@@ -18,6 +18,12 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 	state->luaState = NULL;
 	state->logLevelInvalid = LOG_ERROR;
 
+#ifdef GC_UNLOAD
+	state->gcUnload = true;
+#else
+	state->gcUnload = false;
+#endif
+
     InitWindow( state->resolution.x, state->resolution.y, "ReiLua" );
 
 	if ( !IsWindowReady() ) {
@@ -28,6 +34,8 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 		InitAudioDevice();
 		state->run = luaInit( argn, argc );
 	}
+	state->defaultFont = GetFontDefault();
+	state->defaultMaterial = LoadMaterialDefault();
 
 	return state->run;
 }

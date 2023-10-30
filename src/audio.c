@@ -65,6 +65,21 @@ int laudioLoadWave( lua_State *L ) {
 }
 
 /*
+> isReady = RL.IsWaveReady( Wave wave )
+
+Checks if wave data is ready
+
+- Success return bool
+*/
+int laudioIsWaveReady( lua_State *L ) {
+	Wave *wave = uluaGetWave( L, 1 );
+
+	lua_pushboolean( L, IsWaveReady( *wave ) );
+
+	return 1;
+}
+
+/*
 > sound = RL.LoadSoundFromWave( Wave wave )
 
 Load sound from wave data
@@ -77,6 +92,47 @@ int laudioLoadSoundFromWave( lua_State *L ) {
 	uluaPushSound( L, LoadSoundFromWave( *wave ) );
 
 	return 1;
+}
+
+/*
+> isReady = RL.IsSoundReady( Sound sound )
+
+Checks if a sound is ready
+
+- Success return bool
+*/
+int laudioIsSoundReady( lua_State *L ) {
+	Sound *sound = uluaGetSound( L, 1 );
+
+	lua_pushboolean( L, IsSoundReady( *sound ) );
+
+	return 1;
+}
+
+/*
+> RL.UnloadWave( Wave wave )
+
+Unload wave data
+*/
+int laudioUnloadWave( lua_State *L ) {
+	Wave *wave = uluaGetWave( L, 1 );
+
+	UnloadWave( *wave );
+
+	return 0;
+}
+
+/*
+> RL.UnloadSound( Sound sound )
+
+Unload sound
+*/
+int laudioUnloadSound( lua_State *L ) {
+	Sound *sound = uluaGetSound( L, 1 );
+
+	UnloadSound( *sound );
+
+	return 0;
 }
 
 /*
@@ -289,6 +345,34 @@ int laudioLoadMusicStream( lua_State *L ) {
 	lua_pushnil( L );
 
 	return 1;
+}
+
+/*
+> isReady = RL.IsMusicReady( Music music )
+
+Checks if a music stream is ready
+
+- Success return bool
+*/
+int laudioIsMusicReady( lua_State *L ) {
+	Music *music = uluaGetMusic( L, 1 );
+
+	lua_pushboolean( L, IsMusicReady( *music ) );
+
+	return 1;
+}
+
+/*
+> RL.UnloadMusicStream( Music music )
+
+Unload music stream
+*/
+int laudioUnloadMusicStream( lua_State *L ) {
+	Music *music = uluaGetMusic( L, 1 );
+
+	UnloadMusicStream( *music );
+
+	return 0;
 }
 
 /*

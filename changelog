@@ -3,25 +3,26 @@ Release:	ReiLua version 0.6.0		Using Raylib 4.5
 ------------------------------------------------------------------------
 KEY CHANGES:
 	- CHANGED: Switch from ID based objects to userdata.
-	- REMOVED: Unload* functions since unloading is now handled by Lua garbage collection.
+	- CHANGED: Object unloading is handled by Lua garbage collection by default.
 	- CHANGED: Rely mostly on luaL_check* functions for arg checking.
 	- CHANGED: ModelAnimations are changed to separate ModelAnimation types as in Raylib.
-	- ADDED: LoadTextureFromData.
-	- ADDED: LoadRenderTextureFromData.
 	- ADDED: Userdata objects can be referenced with lightuserdata.
+	- ADDED: GC_UNLOAD build time define for enabling/disabling Lua garbage collection for objects.
+	Can be checked with IsGCUnloadEnabled
 
 DETAILED CHANGES:
 	- CHANGED: GenImageColor now takes Vector2 as size.
-	- REMOVED: UnloadImage.
-	- REMOVED: UnloadTexture.
-	- REMOVED: GetTextureType and texture type DEFINES.
+	- REMOVED: GetTextureType and texture type enums.
 	- ADDED: GetRenderTextureTexture and GetRenderTextureDepthTexture.
 	- REMOVED: UnloadCamera2D and UnloadCamera3D.
-	- REMOVED: UnloadShader.
-	- REMOVED: UnloadFont.
 	- ADDED: LoadFontEx takes also fontChars.
-	- REMOVED: UnloadWave and UnloadSound.
-	- REMOVED: UnloadMesh, UnloadMaterial, UnloadModel and UnloadModelAnimations.
+	- ADDED: LoadTextureFromData.
+	- ADDED: LoadRenderTextureFromData.
+	- ADDED: IsRenderTextureReady, IsMaterialReady, IsFontReady, IsModelReady, IsShaderReady,
+	IsImageReady, IsWaveReady, IsSoundReady and IsMusicReady.
+	- ADDED: UnloadBuffer.
+	- ADDED: GetMaterialDefault returns lightuserdata reference to default material.
+	- REMOVED: Some examples.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.5.0		Using Raylib 4.5

@@ -55,6 +55,34 @@ int ltexturesLoadImageFromScreen( lua_State *L ) {
 }
 
 /*
+> isReady = RL.IsImageReady( Image image )
+
+Check if an image is ready
+
+- Success return bool
+*/
+int ltextureIsImageReady( lua_State *L ) {
+	Image *image = uluaGetImage( L, 1 );
+
+	lua_pushboolean( L, IsImageReady( *image ) );
+
+	return 1;
+}
+
+/*
+> RL.UnloadImage( Image image )
+
+Unload image from CPU memory (RAM)
+*/
+int ltextureUnloadImage( lua_State *L ) {
+	Image *image = uluaGetImage( L, 1 );
+
+	UnloadImage( *image );
+
+	return 0;
+}
+
+/*
 > success = RL.ExportImage( Image image, string fileName )
 
 Export image data to file, returns true on success
@@ -1039,6 +1067,47 @@ int ltexturesIsTextureReady( lua_State *L ) {
 	lua_pushboolean( L, IsTextureReady( *texture ) );
 
 	return 1;
+}
+
+/*
+> RL.UnloadTexture( Texture texture )
+
+Unload texture from GPU memory (VRAM)
+*/
+int ltextureUnloadTexture( lua_State *L ) {
+	Texture *texture = uluaGetTexture( L, 1 );
+
+	UnloadTexture( *texture );
+
+	return 0;
+}
+
+/*
+> isReady = RL.IsRenderTextureReady( RenderTexture target )
+
+Check if a render texture is ready
+
+- Success return bool
+*/
+int ltexturesIsRenderTextureReady( lua_State *L ) {
+	RenderTexture *target = uluaGetRenderTexture( L, 1 );
+
+	lua_pushboolean( L, IsRenderTextureReady( *target ) );
+
+	return 1;
+}
+
+/*
+> RL.UnloadRenderTexture( RenderTexture target )
+
+Unload render texture from GPU memory (VRAM)
+*/
+int ltextureUnloadRenderTexture( lua_State *L ) {
+	RenderTexture *target = uluaGetRenderTexture( L, 1 );
+
+	UnloadRenderTexture( *target );
+
+	return 0;
 }
 
 /*

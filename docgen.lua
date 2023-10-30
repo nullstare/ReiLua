@@ -125,16 +125,6 @@ luaApiFile:write(
 apiFile:write( "\n## Arguments\n" )
 apiFile:write( "\nArguments are stored in 'RL.arg' array.\n" )
 
--- Default objects.
-
-apiFile:write( "\n## Default objects\n" )
-apiFile:write( "\n> RL.defaultFont\n\nDefault Font object\n" )
-apiFile:write( "\n> RL.defaultMaterial\n\nDefault Material object\n" )
-
--- luaApiFile:write( "\n--Default objects\n\n" )
--- luaApiFile:write( "--Default Font object\nRL.defaultFont = RL.GetFontDefault()\n" )
--- luaApiFile:write( "--Default Material object\nRL.defaultMaterial\n" )
-
 -- Types.
 
 apiFile:write( "\n## Types\n\

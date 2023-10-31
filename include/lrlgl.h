@@ -76,6 +76,13 @@ int lrlglSetBlendFactors( lua_State *L );
 int lrlglSetBlendFactorsSeparate( lua_State *L );
 /* Initialization functions */
 int lrlglGetVersion( lua_State *L );
+int lrlglSetFramebufferWidth( lua_State *L );
+int lrlglGetFramebufferWidth( lua_State *L );
+int lrlglSetFramebufferHeight( lua_State *L );
+int lrlglGetFramebufferHeight( lua_State *L );
+int lrlglGetTextureIdDefault( lua_State *L );
+int lrlglGetShaderIdDefault( lua_State *L );
+int lrlglGetShaderLocsDefault( lua_State *L );
 /* Render batch management */
 int lrlglDrawRenderBatchActive( lua_State *L );
 int lrlglCheckRenderBatchLimit( lua_State *L );

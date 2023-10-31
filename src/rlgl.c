@@ -865,6 +865,104 @@ int lrlglGetVersion( lua_State *L ) {
 }
 
 /*
+> version = RL.rlSetFramebufferWidth( int width )
+
+Set current framebuffer width
+*/
+int lrlglSetFramebufferWidth( lua_State *L ) {
+	int width = luaL_checkinteger( L, 1 );
+
+	rlSetFramebufferWidth( width );
+
+	return 0;
+}
+
+/*
+> width = RL.rlGetFramebufferWidth()
+
+Get default framebuffer width
+
+- Success return int
+*/
+int lrlglGetFramebufferWidth( lua_State *L ) {
+	lua_pushinteger( L, rlGetFramebufferWidth() );
+
+	return 1;
+}
+
+/*
+> version = RL.rlSetFramebufferHeight( int height )
+
+Set current framebuffer height
+*/
+int lrlglSetFramebufferHeight( lua_State *L ) {
+	int height = luaL_checkinteger( L, 1 );
+
+	rlSetFramebufferWidth( height );
+
+	return 0;
+}
+
+/*
+> height = RL.rlGetFramebufferHeight()
+
+Get default framebuffer height
+
+- Success return int
+*/
+int lrlglGetFramebufferHeight( lua_State *L ) {
+	lua_pushinteger( L, rlGetFramebufferHeight() );
+
+	return 1;
+}
+
+/*
+> id = RL.rlGetTextureIdDefault()
+
+Get default texture id
+
+- Success return int
+*/
+int lrlglGetTextureIdDefault( lua_State *L ) {
+	lua_pushinteger( L, rlGetTextureIdDefault() );
+
+	return 1;
+}
+
+/*
+> id = RL.rlGetShaderIdDefault()
+
+Get default shader id
+
+- Success return int
+*/
+int lrlglGetShaderIdDefault( lua_State *L ) {
+	lua_pushinteger( L, rlGetShaderIdDefault() );
+
+	return 1;
+}
+
+/*
+> locations = RL.rlGetShaderLocsDefault()
+
+Get default shader locations
+
+- Success return int{}
+*/
+int lrlglGetShaderLocsDefault( lua_State *L ) {
+	int *locs = rlGetShaderLocsDefault();
+
+	lua_createtable( L, RL_MAX_SHADER_LOCATIONS, 0 );
+
+	for ( int i = 0; i < RL_MAX_SHADER_LOCATIONS; i++ ) {
+		lua_pushinteger( L, locs[i] );
+		lua_rawseti( L, -2, i + 1 );
+	}
+
+	return 1;
+}
+
+/*
 ## RLGL - Render batch management
 */
 

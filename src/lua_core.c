@@ -2257,6 +2257,13 @@ void luaRegister() {
 	assingGlobalFunction( "rlSetBlendFactorsSeparate", lrlglSetBlendFactorsSeparate );
 		/* Initialization functions. */
 	assingGlobalFunction( "rlGetVersion", lrlglGetVersion );
+	assingGlobalFunction( "rlSetFramebufferWidth", lrlglSetFramebufferWidth );
+	assingGlobalFunction( "rlGetFramebufferWidth", lrlglGetFramebufferWidth );
+	assingGlobalFunction( "rlSetFramebufferHeight", lrlglSetFramebufferHeight );
+	assingGlobalFunction( "rlGetFramebufferHeight", lrlglGetFramebufferHeight );
+	assingGlobalFunction( "rlGetTextureIdDefault", lrlglGetTextureIdDefault );
+	assingGlobalFunction( "rlGetShaderIdDefault", lrlglGetShaderIdDefault );
+	assingGlobalFunction( "rlGetShaderLocsDefault", lrlglGetShaderLocsDefault );
 		/* Render batch management. */
 	assingGlobalFunction( "rlDrawRenderBatchActive", lrlglDrawRenderBatchActive );
 	assingGlobalFunction( "rlCheckRenderBatchLimit", lrlglCheckRenderBatchLimit );

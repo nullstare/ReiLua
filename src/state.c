@@ -41,6 +41,7 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 
 	for ( int i = 0; i < RL_MAX_SHADER_LOCATIONS; i++ ) {
 		state->RLGLcurrentShaderLocs[i] = defaultShaderLocs[i];
+		printf( "defaultShaderLocs[%d] %d\n", i, defaultShaderLocs[i] );
 	}
 
 	return state->run;

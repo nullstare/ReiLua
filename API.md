@@ -6674,6 +6674,58 @@ Get current OpenGL version
 
 ---
 
+> version = RL.rlSetFramebufferWidth( int width )
+
+Set current framebuffer width
+
+---
+
+> width = RL.rlGetFramebufferWidth()
+
+Get default framebuffer width
+
+- Success return int
+
+---
+
+> version = RL.rlSetFramebufferHeight( int height )
+
+Set current framebuffer height
+
+---
+
+> height = RL.rlGetFramebufferHeight()
+
+Get default framebuffer height
+
+- Success return int
+
+---
+
+> id = RL.rlGetTextureIdDefault()
+
+Get default texture id
+
+- Success return int
+
+---
+
+> id = RL.rlGetShaderIdDefault()
+
+Get default shader id
+
+- Success return int
+
+---
+
+> locations = RL.rlGetShaderLocsDefault()
+
+Get default shader locations
+
+- Success return int{}
+
+---
+
 ## RLGL - Render batch management
 
 ---

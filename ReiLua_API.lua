@@ -5330,6 +5330,41 @@ function  RL.rlSetBlendFactorsSeparate( glSrcRGB, glDstRGB, glSrcAlpha, glDstAlp
 ---@return any version 
 function RL.rlGetVersion() end
 
+---Set current framebuffer width
+---@param width integer
+---@return any version 
+function RL.rlSetFramebufferWidth( width ) end
+
+---Get default framebuffer width
+---- Success return int
+---@return any width 
+function RL.rlGetFramebufferWidth() end
+
+---Set current framebuffer height
+---@param height integer
+---@return any version 
+function RL.rlSetFramebufferHeight( height ) end
+
+---Get default framebuffer height
+---- Success return int
+---@return any height 
+function RL.rlGetFramebufferHeight() end
+
+---Get default texture id
+---- Success return int
+---@return any id 
+function RL.rlGetTextureIdDefault() end
+
+---Get default shader id
+---- Success return int
+---@return any id 
+function RL.rlGetShaderIdDefault() end
+
+---Get default shader locations
+---- Success return int{}
+---@return any locations 
+function RL.rlGetShaderLocsDefault() end
+
 -- RLGL - Render batch management
 
 ---Update and draw internal render batch

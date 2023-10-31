@@ -11,6 +11,7 @@ KEY CHANGES:
 	Can be checked with IsGCUnloadEnabled
 	- ADDED: Shaders management functions.
 	- ADDED: Compute shader management and Buffer management.
+	- ADDED: More RLGL Initialization functions.
 
 DETAILED CHANGES:
 	- CHANGED: GenImageColor now takes Vector2 as size.

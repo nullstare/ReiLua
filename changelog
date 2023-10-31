@@ -10,6 +10,7 @@ KEY CHANGES:
 	- ADDED: GC_UNLOAD build time define for enabling/disabling Lua garbage collection for objects.
 	Can be checked with IsGCUnloadEnabled
 	- ADDED: Shaders management functions.
+	- ADDED: Compute shader management and Buffer management.
 
 DETAILED CHANGES:
 	- CHANGED: GenImageColor now takes Vector2 as size.

@@ -6924,6 +6924,34 @@ Set shader currently active (id and locations)
 
 ---
 
+## RLGL - Compute shader management
+
+---
+
+> programId = RL.rlLoadComputeShaderProgram( int shaderId )
+
+Load compute shader program
+
+- Success return int
+
+---
+
+> RL.rlComputeShaderDispatch( int groupX, int groupY, int groupZ )
+
+Dispatch compute shader (equivalent to *draw* for graphics pipeline)
+
+---
+
+## RLGL - Buffer management
+
+---
+
+> RL.rlBindImageTexture( int id, int index, int format, bool readonly )
+
+Bind image texture
+
+---
+
 ## RLGL - Matrix state management
 
 ---

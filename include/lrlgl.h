@@ -115,6 +115,11 @@ int lrlglSetUniform( lua_State *L );
 int lrlglSetUniformMatrix( lua_State *L );
 int lrlglSetUniformSampler( lua_State *L );
 int lrlglSetShader( lua_State *L );
+/* Compute shader management */
+int lrlglLoadComputeShaderProgram( lua_State *L );
+int lrlglComputeShaderDispatch( lua_State *L );
+/* Buffer management */
+int lrlglBindImageTexture( lua_State *L );
 /* Matrix state management */
 int lrlglGetMatrixModelview( lua_State *L );
 int lrlglGetMatrixProjection( lua_State *L );

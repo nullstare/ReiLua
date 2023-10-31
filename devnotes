@@ -2,8 +2,6 @@ Current {
 }
 
 Backlog {
-	* rlgl
-		* Compute shader management
 	* Text
 		* Codepoints?
 	* Audio
@@ -14,6 +12,8 @@ Backlog {
 	* Models
 		* LoadMaterials (Load materials from model file).
 		* LoadMaterialsFromModel (Could then for example edit and set back to model).
+	* rlgl
+		* Shader buffer storage object management (ssbo)
 
 	* Extend color lib functionality.
 	* Global variable descriptions for API.

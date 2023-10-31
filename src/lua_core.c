@@ -2296,6 +2296,11 @@ void luaRegister() {
 	assingGlobalFunction( "rlSetUniformMatrix", lrlglSetUniformMatrix );
 	assingGlobalFunction( "rlSetUniformSampler", lrlglSetUniformSampler );
 	assingGlobalFunction( "rlSetShader", lrlglSetShader );
+		/* Compute shader management */
+	assingGlobalFunction( "rlLoadComputeShaderProgram", lrlglLoadComputeShaderProgram );
+	assingGlobalFunction( "rlComputeShaderDispatch", lrlglComputeShaderDispatch );
+		/* Buffer management */
+	assingGlobalFunction( "rlBindImageTexture", lrlglBindImageTexture );
 		/* Matrix state management. */
 	assingGlobalFunction( "rlGetMatrixModelview", lrlglGetMatrixModelview );
 	assingGlobalFunction( "rlGetMatrixProjection", lrlglGetMatrixProjection );

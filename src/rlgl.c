@@ -1394,6 +1394,60 @@ int lrlglSetShader( lua_State *L ) {
 }
 
 /*
+## RLGL - Compute shader management
+*/
+
+/*
+> programId = RL.rlLoadComputeShaderProgram( int shaderId )
+
+Load compute shader program
+
+- Success return int
+*/
+int lrlglLoadComputeShaderProgram( lua_State *L ) {
+	unsigned int shaderId = (unsigned int)luaL_checkinteger( L, 1 );
+
+	lua_pushinteger( L, rlLoadComputeShaderProgram( shaderId ) );
+
+	return 1;
+}
+
+/*
+> RL.rlComputeShaderDispatch( int groupX, int groupY, int groupZ )
+
+Dispatch compute shader (equivalent to *draw* for graphics pipeline)
+*/
+int lrlglComputeShaderDispatch( lua_State *L ) {
+	unsigned int groupX = (unsigned int)luaL_checkinteger( L, 1 );
+	unsigned int groupY = (unsigned int)luaL_checkinteger( L, 2 );
+	unsigned int groupZ = (unsigned int)luaL_checkinteger( L, 3 );
+
+	rlComputeShaderDispatch( groupX, groupY, groupZ );
+
+	return 0;
+}
+
+/*
+## RLGL - Buffer management
+*/
+
+/*
+> RL.rlBindImageTexture( int id, int index, int format, bool readonly )
+
+Bind image texture
+*/
+int lrlglBindImageTexture( lua_State *L ) {
+	unsigned int id = (unsigned int)luaL_checkinteger( L, 1 );
+	unsigned int index = (unsigned int)luaL_checkinteger( L, 2 );
+	int format = luaL_checkinteger( L, 3 );
+	bool readonly = uluaGetBoolean( L, 4 );
+
+	rlBindImageTexture( id, index, format, readonly );
+
+	return 0;
+}
+
+/*
 ## RLGL - Matrix state management
 */
 

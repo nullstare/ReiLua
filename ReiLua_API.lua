@@ -5561,6 +5561,31 @@ function  RL.rlSetUniformSampler( locIndex, textureId ) end
 ---@return any RL.rlSetShader
 function  RL.rlSetShader( id, locs ) end
 
+-- RLGL - Compute shader management
+
+---Load compute shader program
+---- Success return int
+---@param shaderId integer
+---@return any programId 
+function RL.rlLoadComputeShaderProgram( shaderId ) end
+
+---Dispatch compute shader (equivalent to *draw* for graphics pipeline)
+---@param groupX integer
+---@param groupY integer
+---@param groupZ integer
+---@return any RL.rlComputeShaderDispatch
+function  RL.rlComputeShaderDispatch( groupX, groupY, groupZ ) end
+
+-- RLGL - Buffer management
+
+---Bind image texture
+---@param id integer
+---@param index integer
+---@param format integer
+---@param readonly boolean
+---@return any RL.rlBindImageTexture
+function  RL.rlBindImageTexture( id, index, format, readonly ) end
+
 -- RLGL - Matrix state management
 
 ---Get internal modelview matrix

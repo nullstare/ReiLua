@@ -22,8 +22,6 @@ List of some MISSING features that are planned to be included. For specific func
 
 * Core
 	* VR stereo config functions for VR simulator
-* Text
-	* GlyphInfo
 * Audio
 	* AudioStream management functions
 

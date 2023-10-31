@@ -271,8 +271,18 @@ repeat
 		else
 			-- Remove comma from the end.
 			local globalName = lineSplit[2]:sub( 1, -2 )
-
 			local value = RL[ globalName ]
+			local comment = lineSplit[6] -- First split after //
+
+			if comment ~= nil then
+				local i = 7
+
+				while lineSplit[i] ~= nil do
+					comment = comment.." "..lineSplit[i]
+					i = i + 1
+				end
+				luaApiFile:write( "---"..comment.."\n" )
+			end
 			
 			globalVariableCount = globalVariableCount + 1
 
@@ -288,9 +298,15 @@ repeat
 					..math.tointeger( value[1] )..","..math.tointeger( value[2] )..","
 					..math.tointeger( value[3] )..","..math.tointeger( value[4] ).."}\n" )
 			else
-				apiFile:write( globalName.." = "..value.."\n\n" )
+				apiFile:write( "> "..globalName.." = "..value.."\n\n" )
 				luaApiFile:write( "RL."..globalName.."="..value.."\n" )
 			end
+
+			if comment ~= nil then
+				apiFile:write( comment.."\n\n" )
+			end
+
+			apiFile:write( "---\n\n" )
 		end
 	end
 

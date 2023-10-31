@@ -330,1166 +330,3154 @@ Content of event table received by RL.event.
 ---
 
 ## Globals - ConfigFlags
-FLAG_VSYNC_HINT = 64
+> FLAG_VSYNC_HINT = 64
 
-FLAG_FULLSCREEN_MODE = 2
+Set to try enabling V-Sync on GPU
 
-FLAG_WINDOW_RESIZABLE = 4
+---
 
-FLAG_WINDOW_UNDECORATED = 8
+> FLAG_FULLSCREEN_MODE = 2
 
-FLAG_WINDOW_HIDDEN = 128
+Set to run program in fullscreen
 
-FLAG_WINDOW_MINIMIZED = 512
+---
 
-FLAG_WINDOW_MAXIMIZED = 1024
+> FLAG_WINDOW_RESIZABLE = 4
 
-FLAG_WINDOW_UNFOCUSED = 2048
+Set to allow resizable window
 
-FLAG_WINDOW_TOPMOST = 4096
+---
 
-FLAG_WINDOW_ALWAYS_RUN = 256
+> FLAG_WINDOW_UNDECORATED = 8
 
-FLAG_WINDOW_TRANSPARENT = 16
+Set to disable window decoration (frame and buttons)
 
-FLAG_WINDOW_HIGHDPI = 8192
+---
 
-FLAG_MSAA_4X_HINT = 32
+> FLAG_WINDOW_HIDDEN = 128
 
-FLAG_INTERLACED_HINT = 65536
+Set to hide window
+
+---
+
+> FLAG_WINDOW_MINIMIZED = 512
+
+Set to minimize window (iconify)
+
+---
+
+> FLAG_WINDOW_MAXIMIZED = 1024
+
+Set to maximize window (expanded to monitor)
+
+---
+
+> FLAG_WINDOW_UNFOCUSED = 2048
+
+Set to window non focused
+
+---
+
+> FLAG_WINDOW_TOPMOST = 4096
+
+Set to window always on top
+
+---
+
+> FLAG_WINDOW_ALWAYS_RUN = 256
+
+Set to allow windows running while minimized
+
+---
+
+> FLAG_WINDOW_TRANSPARENT = 16
+
+Set to allow transparent framebuffer
+
+---
+
+> FLAG_WINDOW_HIGHDPI = 8192
+
+Set to support HighDPI
+
+---
+
+> FLAG_WINDOW_MOUSE_PASSTHROUGH = 16384
+
+Set to support mouse passthrough, only supported when FLAG_WINDOW_UNDECORATED
+
+---
+
+> FLAG_MSAA_4X_HINT = 32
+
+Set to try enabling MSAA 4X
+
+---
+
+> FLAG_INTERLACED_HINT = 65536
+
+Set to try enabling interlaced video format (for V3D)
+
+---
 
 
 ## Globals - TraceLogLevel
-LOG_ALL = 0
+> LOG_ALL = 0
 
-LOG_TRACE = 1
+Display all logs
 
-LOG_DEBUG = 2
+---
 
-LOG_INFO = 3
+> LOG_TRACE = 1
 
-LOG_WARNING = 4
+Trace logging, intended for internal use only
 
-LOG_ERROR = 5
+---
 
-LOG_FATAL = 6
+> LOG_DEBUG = 2
 
-LOG_NONE = 7
+Debug logging, used for internal debugging, it should be disabled on release builds
+
+---
+
+> LOG_INFO = 3
+
+Info logging, used for program execution info
+
+---
+
+> LOG_WARNING = 4
+
+Warning logging, used on recoverable failures
+
+---
+
+> LOG_ERROR = 5
+
+Error logging, used on unrecoverable failures
+
+---
+
+> LOG_FATAL = 6
+
+Fatal logging, used to abort program: exit(EXIT_FAILURE)
+
+---
+
+> LOG_NONE = 7
+
+Disable logging
+
+---
 
 
 ## Globals - KeyboardKey
 
 GLFW_KEY_UNKNOWN = nil
 
-KEY_NULL = 0
+Key: Unknown
 
-KEY_APOSTROPHE = 39
+---
 
-KEY_COMMA = 44
+> KEY_NULL = 0
 
-KEY_MINUS = 45
+Key: NULL, used for no key pressed
 
-KEY_PERIOD = 46
+---
 
-KEY_SLASH = 47
+> KEY_APOSTROPHE = 39
 
-KEY_ZERO = 48
+Key: '
 
-KEY_ONE = 49
+---
 
-KEY_TWO = 50
+> KEY_COMMA = 44
 
-KEY_THREE = 51
+Key: ,
 
-KEY_FOUR = 52
+---
 
-KEY_FIVE = 53
+> KEY_MINUS = 45
 
-KEY_SIX = 54
+Key: -
 
-KEY_SEVEN = 55
+---
 
-KEY_EIGHT = 56
+> KEY_PERIOD = 46
 
-KEY_NINE = 57
+Key: .
 
-KEY_SEMICOLON = 59
+---
 
-KEY_EQUAL = 61
+> KEY_SLASH = 47
 
-KEY_A = 65
+Key: /
 
-KEY_B = 66
+---
 
-KEY_C = 67
+> KEY_ZERO = 48
 
-KEY_D = 68
+Key: 0
 
-KEY_E = 69
+---
 
-KEY_F = 70
+> KEY_ONE = 49
 
-KEY_G = 71
+Key: 1
 
-KEY_H = 72
+---
 
-KEY_I = 73
+> KEY_TWO = 50
 
-KEY_J = 74
+Key: 2
 
-KEY_K = 75
+---
 
-KEY_L = 76
+> KEY_THREE = 51
 
-KEY_M = 77
+Key: 3
 
-KEY_N = 78
+---
 
-KEY_O = 79
+> KEY_FOUR = 52
 
-KEY_P = 80
+Key: 4
 
-KEY_Q = 81
+---
 
-KEY_R = 82
+> KEY_FIVE = 53
 
-KEY_S = 83
+Key: 5
 
-KEY_T = 84
+---
 
-KEY_U = 85
+> KEY_SIX = 54
 
-KEY_V = 86
+Key: 6
 
-KEY_W = 87
+---
 
-KEY_X = 88
+> KEY_SEVEN = 55
 
-KEY_Y = 89
+Key: 7
 
-KEY_Z = 90
+---
 
-KEY_LEFT_BRACKET = 91
+> KEY_EIGHT = 56
 
-KEY_BACKSLASH = 92
+Key: 8
 
-KEY_RIGHT_BRACKET = 93
+---
 
-KEY_GRAVE = 96
+> KEY_NINE = 57
 
-KEY_SPACE = 32
+Key: 9
 
-KEY_ESCAPE = 256
+---
 
-KEY_ENTER = 257
+> KEY_SEMICOLON = 59
 
-KEY_TAB = 258
+Key: ;
 
-KEY_BACKSPACE = 259
+---
 
-KEY_INSERT = 260
+> KEY_EQUAL = 61
 
-KEY_DELETE = 261
+Key: =
 
-KEY_RIGHT = 262
+---
 
-KEY_LEFT = 263
+> KEY_A = 65
 
-KEY_DOWN = 264
+Key: A | a
 
-KEY_UP = 265
+---
 
-KEY_PAGE_UP = 266
+> KEY_B = 66
 
-KEY_PAGE_DOWN = 267
+Key: B | b
 
-KEY_HOME = 268
+---
 
-KEY_END = 269
+> KEY_C = 67
 
-KEY_CAPS_LOCK = 280
+Key: C | c
 
-KEY_SCROLL_LOCK = 281
+---
 
-KEY_NUM_LOCK = 282
+> KEY_D = 68
 
-KEY_PRINT_SCREEN = 283
+Key: D | d
 
-KEY_PAUSE = 284
+---
 
-KEY_F1 = 290
+> KEY_E = 69
 
-KEY_F2 = 291
+Key: E | e
 
-KEY_F3 = 292
+---
 
-KEY_F4 = 293
+> KEY_F = 70
 
-KEY_F5 = 294
+Key: F | f
 
-KEY_F6 = 295
+---
 
-KEY_F7 = 296
+> KEY_G = 71
 
-KEY_F8 = 297
+Key: G | g
 
-KEY_F9 = 298
+---
 
-KEY_F10 = 299
+> KEY_H = 72
 
-KEY_F11 = 300
+Key: H | h
 
-KEY_F12 = 301
+---
 
-KEY_LEFT_SHIFT = 340
+> KEY_I = 73
 
-KEY_LEFT_CONTROL = 341
+Key: I | i
 
-KEY_LEFT_ALT = 342
+---
 
-KEY_LEFT_SUPER = 343
+> KEY_J = 74
 
-KEY_RIGHT_SHIFT = 344
+Key: J | j
 
-KEY_RIGHT_CONTROL = 345
+---
 
-KEY_RIGHT_ALT = 346
+> KEY_K = 75
 
-KEY_RIGHT_SUPER = 347
+Key: K | k
 
-KEY_KB_MENU = 348
+---
 
-KEY_KP_0 = 320
+> KEY_L = 76
 
-KEY_KP_1 = 321
+Key: L | l
 
-KEY_KP_2 = 322
+---
 
-KEY_KP_3 = 323
+> KEY_M = 77
 
-KEY_KP_4 = 324
+Key: M | m
 
-KEY_KP_5 = 325
+---
 
-KEY_KP_6 = 326
+> KEY_N = 78
 
-KEY_KP_7 = 327
+Key: N | n
 
-KEY_KP_8 = 328
+---
 
-KEY_KP_9 = 329
+> KEY_O = 79
 
-KEY_KP_DECIMAL = 330
+Key: O | o
 
-KEY_KP_DIVIDE = 331
+---
 
-KEY_KP_MULTIPLY = 332
+> KEY_P = 80
 
-KEY_KP_SUBTRACT = 333
+Key: P | p
 
-KEY_KP_ADD = 334
+---
 
-KEY_KP_ENTER = 335
+> KEY_Q = 81
 
-KEY_KP_EQUAL = 336
+Key: Q | q
 
-KEY_BACK = 4
+---
 
-KEY_MENU = 82
+> KEY_R = 82
 
-KEY_VOLUME_UP = 24
+Key: R | r
 
-KEY_VOLUME_DOWN = 25
+---
+
+> KEY_S = 83
+
+Key: S | s
+
+---
+
+> KEY_T = 84
+
+Key: T | t
+
+---
+
+> KEY_U = 85
+
+Key: U | u
+
+---
+
+> KEY_V = 86
+
+Key: V | v
+
+---
+
+> KEY_W = 87
+
+Key: W | w
+
+---
+
+> KEY_X = 88
+
+Key: X | x
+
+---
+
+> KEY_Y = 89
+
+Key: Y | y
+
+---
+
+> KEY_Z = 90
+
+Key: Z | z
+
+---
+
+> KEY_LEFT_BRACKET = 91
+
+Key: [
+
+---
+
+> KEY_BACKSLASH = 92
+
+Key: '\'
+
+---
+
+> KEY_RIGHT_BRACKET = 93
+
+Key: ]
+
+---
+
+> KEY_GRAVE = 96
+
+Key: `
+
+---
+
+> KEY_SPACE = 32
+
+Key: Space
+
+---
+
+> KEY_ESCAPE = 256
+
+Key: Esc
+
+---
+
+> KEY_ENTER = 257
+
+Key: Enter
+
+---
+
+> KEY_TAB = 258
+
+Key: Tab
+
+---
+
+> KEY_BACKSPACE = 259
+
+Key: Backspace
+
+---
+
+> KEY_INSERT = 260
+
+Key: Ins
+
+---
+
+> KEY_DELETE = 261
+
+Key: Del
+
+---
+
+> KEY_RIGHT = 262
+
+Key: Cursor right
+
+---
+
+> KEY_LEFT = 263
+
+Key: Cursor left
+
+---
+
+> KEY_DOWN = 264
+
+Key: Cursor down
+
+---
+
+> KEY_UP = 265
+
+Key: Cursor up
+
+---
+
+> KEY_PAGE_UP = 266
+
+Key: Page up
+
+---
+
+> KEY_PAGE_DOWN = 267
+
+Key: Page down
+
+---
+
+> KEY_HOME = 268
+
+Key: Home
+
+---
+
+> KEY_END = 269
+
+Key: End
+
+---
+
+> KEY_CAPS_LOCK = 280
+
+Key: Caps lock
+
+---
+
+> KEY_SCROLL_LOCK = 281
+
+Key: Scroll down
+
+---
+
+> KEY_NUM_LOCK = 282
+
+Key: Num lock
+
+---
+
+> KEY_PRINT_SCREEN = 283
+
+Key: Print screen
+
+---
+
+> KEY_PAUSE = 284
+
+Key: Pause
+
+---
+
+> KEY_F1 = 290
+
+Key: F1
+
+---
+
+> KEY_F2 = 291
+
+Key: F2
+
+---
+
+> KEY_F3 = 292
+
+Key: F3
+
+---
+
+> KEY_F4 = 293
+
+Key: F4
+
+---
+
+> KEY_F5 = 294
+
+Key: F5
+
+---
+
+> KEY_F6 = 295
+
+Key: F6
+
+---
+
+> KEY_F7 = 296
+
+Key: F7
+
+---
+
+> KEY_F8 = 297
+
+Key: F8
+
+---
+
+> KEY_F9 = 298
+
+Key: F9
+
+---
+
+> KEY_F10 = 299
+
+Key: F10
+
+---
+
+> KEY_F11 = 300
+
+Key: F11
+
+---
+
+> KEY_F12 = 301
+
+Key: F12
+
+---
+
+> KEY_LEFT_SHIFT = 340
+
+Key: Shift left
+
+---
+
+> KEY_LEFT_CONTROL = 341
+
+Key: Control left
+
+---
+
+> KEY_LEFT_ALT = 342
+
+Key: Alt left
+
+---
+
+> KEY_LEFT_SUPER = 343
+
+Key: Super left
+
+---
+
+> KEY_RIGHT_SHIFT = 344
+
+Key: Shift right
+
+---
+
+> KEY_RIGHT_CONTROL = 345
+
+Key: Control right
+
+---
+
+> KEY_RIGHT_ALT = 346
+
+Key: Alt right
+
+---
+
+> KEY_RIGHT_SUPER = 347
+
+Key: Super right
+
+---
+
+> KEY_KB_MENU = 348
+
+Key: KB menu
+
+---
+
+> KEY_KP_0 = 320
+
+Key: Keypad 0
+
+---
+
+> KEY_KP_1 = 321
+
+Key: Keypad 1
+
+---
+
+> KEY_KP_2 = 322
+
+Key: Keypad 2
+
+---
+
+> KEY_KP_3 = 323
+
+Key: Keypad 3
+
+---
+
+> KEY_KP_4 = 324
+
+Key: Keypad 4
+
+---
+
+> KEY_KP_5 = 325
+
+Key: Keypad 5
+
+---
+
+> KEY_KP_6 = 326
+
+Key: Keypad 6
+
+---
+
+> KEY_KP_7 = 327
+
+Key: Keypad 7
+
+---
+
+> KEY_KP_8 = 328
+
+Key: Keypad 8
+
+---
+
+> KEY_KP_9 = 329
+
+Key: Keypad 9
+
+---
+
+> KEY_KP_DECIMAL = 330
+
+Key: Keypad .
+
+---
+
+> KEY_KP_DIVIDE = 331
+
+Key: Keypad /
+
+---
+
+> KEY_KP_MULTIPLY = 332
+
+Key: Keypad *
+
+---
+
+> KEY_KP_SUBTRACT = 333
+
+Key: Keypad -
+
+---
+
+> KEY_KP_ADD = 334
+
+Key: Keypad +
+
+---
+
+> KEY_KP_ENTER = 335
+
+Key: Keypad Enter
+
+---
+
+> KEY_KP_EQUAL = 336
+
+Key: Keypad =
+
+---
+
+> KEY_BACK = 4
+
+Key: Android back button
+
+---
+
+> KEY_MENU = 82
+
+Key: Android menu button
+
+---
+
+> KEY_VOLUME_UP = 24
+
+Key: Android volume up button
+
+---
+
+> KEY_VOLUME_DOWN = 25
+
+Key: Android volume down button
+
+---
 
 
 ## Globals - MouseButtons
-MOUSE_BUTTON_LEFT = 0
+> MOUSE_BUTTON_LEFT = 0
 
-MOUSE_BUTTON_RIGHT = 1
+Mouse button left
 
-MOUSE_BUTTON_MIDDLE = 2
+---
 
-MOUSE_BUTTON_SIDE = 3
+> MOUSE_BUTTON_RIGHT = 1
 
-MOUSE_BUTTON_EXTRA = 4
+Mouse button right
 
-MOUSE_BUTTON_FORWARD = 5
+---
 
-MOUSE_BUTTON_BACK = 6
+> MOUSE_BUTTON_MIDDLE = 2
+
+Mouse button middle (pressed wheel)
+
+---
+
+> MOUSE_BUTTON_SIDE = 3
+
+Mouse button side (advanced mouse device)
+
+---
+
+> MOUSE_BUTTON_EXTRA = 4
+
+Mouse button extra (advanced mouse device)
+
+---
+
+> MOUSE_BUTTON_FORWARD = 5
+
+Mouse button forward (advanced mouse device)
+
+---
+
+> MOUSE_BUTTON_BACK = 6
+
+Mouse button back (advanced mouse device)
+
+---
 
 
 ## Globals - MouseCursor
-MOUSE_CURSOR_DEFAULT = 0
+> MOUSE_CURSOR_DEFAULT = 0
 
-MOUSE_CURSOR_ARROW = 1
+Default pointer shape
 
-MOUSE_CURSOR_IBEAM = 2
+---
 
-MOUSE_CURSOR_CROSSHAIR = 3
+> MOUSE_CURSOR_ARROW = 1
 
-MOUSE_CURSOR_POINTING_HAND = 4
+Arrow shape
 
-MOUSE_CURSOR_RESIZE_EW = 5
+---
 
-MOUSE_CURSOR_RESIZE_NS = 6
+> MOUSE_CURSOR_IBEAM = 2
 
-MOUSE_CURSOR_RESIZE_NWSE = 7
+Text writing cursor shape
 
-MOUSE_CURSOR_RESIZE_NESW = 8
+---
 
-MOUSE_CURSOR_RESIZE_ALL = 9
+> MOUSE_CURSOR_CROSSHAIR = 3
 
-MOUSE_CURSOR_NOT_ALLOWED = 10
+Cross shape
+
+---
+
+> MOUSE_CURSOR_POINTING_HAND = 4
+
+Pointing hand cursor
+
+---
+
+> MOUSE_CURSOR_RESIZE_EW = 5
+
+Horizontal resize/move arrow shape
+
+---
+
+> MOUSE_CURSOR_RESIZE_NS = 6
+
+Vertical resize/move arrow shape
+
+---
+
+> MOUSE_CURSOR_RESIZE_NWSE = 7
+
+Top-left to bottom-right diagonal resize/move arrow shape
+
+---
+
+> MOUSE_CURSOR_RESIZE_NESW = 8
+
+The top-right to bottom-left diagonal resize/move arrow shape
+
+---
+
+> MOUSE_CURSOR_RESIZE_ALL = 9
+
+The omnidirectional resize/move cursor shape
+
+---
+
+> MOUSE_CURSOR_NOT_ALLOWED = 10
+
+The operation-not-allowed shape
+
+---
 
 
 ## Globals - GamepadButtons
-GAMEPAD_BUTTON_UNKNOWN = 0
+> GAMEPAD_BUTTON_UNKNOWN = 0
 
-GAMEPAD_BUTTON_LEFT_FACE_UP = 1
+Unknown button, just for error checking
 
-GAMEPAD_BUTTON_LEFT_FACE_RIGHT = 2
+---
 
-GAMEPAD_BUTTON_LEFT_FACE_DOWN = 3
+> GAMEPAD_BUTTON_LEFT_FACE_UP = 1
 
-GAMEPAD_BUTTON_LEFT_FACE_LEFT = 4
+Gamepad left DPAD up button
 
-GAMEPAD_BUTTON_RIGHT_FACE_UP = 5
+---
 
-GAMEPAD_BUTTON_RIGHT_FACE_RIGHT = 6
+> GAMEPAD_BUTTON_LEFT_FACE_RIGHT = 2
 
-GAMEPAD_BUTTON_RIGHT_FACE_DOWN = 7
+Gamepad left DPAD right button
 
-GAMEPAD_BUTTON_RIGHT_FACE_LEFT = 8
+---
 
-GAMEPAD_BUTTON_LEFT_TRIGGER_1 = 9
+> GAMEPAD_BUTTON_LEFT_FACE_DOWN = 3
 
-GAMEPAD_BUTTON_LEFT_TRIGGER_2 = 10
+Gamepad left DPAD down button
 
-GAMEPAD_BUTTON_RIGHT_TRIGGER_1 = 11
+---
 
-GAMEPAD_BUTTON_RIGHT_TRIGGER_2 = 12
+> GAMEPAD_BUTTON_LEFT_FACE_LEFT = 4
 
-GAMEPAD_BUTTON_MIDDLE_LEFT = 13
+Gamepad left DPAD left button
 
-GAMEPAD_BUTTON_MIDDLE = 14
+---
 
-GAMEPAD_BUTTON_MIDDLE_RIGHT = 15
+> GAMEPAD_BUTTON_RIGHT_FACE_UP = 5
 
-GAMEPAD_BUTTON_LEFT_THUMB = 16
+Gamepad right button up (i.e. PS3: Triangle, Xbox: Y)
 
-GAMEPAD_BUTTON_RIGHT_THUMB = 17
+---
+
+> GAMEPAD_BUTTON_RIGHT_FACE_RIGHT = 6
+
+Gamepad right button right (i.e. PS3: Square, Xbox: X)
+
+---
+
+> GAMEPAD_BUTTON_RIGHT_FACE_DOWN = 7
+
+Gamepad right button down (i.e. PS3: Cross, Xbox: A)
+
+---
+
+> GAMEPAD_BUTTON_RIGHT_FACE_LEFT = 8
+
+Gamepad right button left (i.e. PS3: Circle, Xbox: B)
+
+---
+
+> GAMEPAD_BUTTON_LEFT_TRIGGER_1 = 9
+
+Gamepad top/back trigger left (first), it could be a trailing button
+
+---
+
+> GAMEPAD_BUTTON_LEFT_TRIGGER_2 = 10
+
+Gamepad top/back trigger left (second), it could be a trailing button
+
+---
+
+> GAMEPAD_BUTTON_RIGHT_TRIGGER_1 = 11
+
+Gamepad top/back trigger right (one), it could be a trailing button
+
+---
+
+> GAMEPAD_BUTTON_RIGHT_TRIGGER_2 = 12
+
+Gamepad top/back trigger right (second), it could be a trailing button
+
+---
+
+> GAMEPAD_BUTTON_MIDDLE_LEFT = 13
+
+Gamepad center buttons, left one (i.e. PS3: Select)
+
+---
+
+> GAMEPAD_BUTTON_MIDDLE = 14
+
+Gamepad center buttons, middle one (i.e. PS3: PS, Xbox: XBOX)
+
+---
+
+> GAMEPAD_BUTTON_MIDDLE_RIGHT = 15
+
+Gamepad center buttons, right one (i.e. PS3: Start)
+
+---
+
+> GAMEPAD_BUTTON_LEFT_THUMB = 16
+
+Gamepad joystick pressed button left
+
+---
+
+> GAMEPAD_BUTTON_RIGHT_THUMB = 17
+
+Gamepad joystick pressed button right
+
+---
 
 
 ## Globals - GamepadAxis
-GAMEPAD_AXIS_LEFT_X = 0
+> GAMEPAD_AXIS_LEFT_X = 0
 
-GAMEPAD_AXIS_LEFT_Y = 1
+Gamepad left stick X axis
 
-GAMEPAD_AXIS_RIGHT_X = 2
+---
 
-GAMEPAD_AXIS_RIGHT_Y = 3
+> GAMEPAD_AXIS_LEFT_Y = 1
 
-GAMEPAD_AXIS_LEFT_TRIGGER = 4
+Gamepad left stick Y axis
 
-GAMEPAD_AXIS_RIGHT_TRIGGER = 5
+---
+
+> GAMEPAD_AXIS_RIGHT_X = 2
+
+Gamepad right stick X axis
+
+---
+
+> GAMEPAD_AXIS_RIGHT_Y = 3
+
+Gamepad right stick Y axis
+
+---
+
+> GAMEPAD_AXIS_LEFT_TRIGGER = 4
+
+Gamepad back trigger left, pressure level: [1..-1]
+
+---
+
+> GAMEPAD_AXIS_RIGHT_TRIGGER = 5
+
+Gamepad back trigger right, pressure level: [1..-1]
+
+---
 
 
 ## Globals - MapTypes
-MATERIAL_MAP_ALBEDO = 0
+> MATERIAL_MAP_ALBEDO = 0
 
-MATERIAL_MAP_METALNESS = 1
+Albedo material (same as: MATERIAL_MAP_DIFFUSE)
 
-MATERIAL_MAP_NORMAL = 2
+---
 
-MATERIAL_MAP_ROUGHNESS = 3
+> MATERIAL_MAP_METALNESS = 1
 
-MATERIAL_MAP_OCCLUSION = 4
+Metalness material (same as: MATERIAL_MAP_SPECULAR)
 
-MATERIAL_MAP_EMISSION = 5
+---
 
-MATERIAL_MAP_HEIGHT = 6
+> MATERIAL_MAP_NORMAL = 2
 
-MATERIAL_MAP_CUBEMAP = 7
+Normal material
 
-MATERIAL_MAP_IRRADIANCE = 8
+---
 
-MATERIAL_MAP_PREFILTER = 9
+> MATERIAL_MAP_ROUGHNESS = 3
 
-MATERIAL_MAP_BRDF = 10
+Roughness material
 
-MATERIAL_MAP_DIFFUSE = 0
+---
 
-MATERIAL_MAP_SPECULAR = 1
+> MATERIAL_MAP_OCCLUSION = 4
+
+Ambient occlusion material
+
+---
+
+> MATERIAL_MAP_EMISSION = 5
+
+Emission material
+
+---
+
+> MATERIAL_MAP_HEIGHT = 6
+
+Heightmap material
+
+---
+
+> MATERIAL_MAP_CUBEMAP = 7
+
+Cubemap material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
+
+---
+
+> MATERIAL_MAP_IRRADIANCE = 8
+
+Irradiance material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
+
+---
+
+> MATERIAL_MAP_PREFILTER = 9
+
+Prefilter material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
+
+---
+
+> MATERIAL_MAP_BRDF = 10
+
+Brdf material
+
+---
+
+> MATERIAL_MAP_DIFFUSE = 0
+
+Diffuce material (same as: MATERIAL_MAP_ALBEDO)
+
+---
+
+> MATERIAL_MAP_SPECULAR = 1
+
+Specular material (same as: MATERIAL_MAP_METALNESS)
+
+---
 
 
 ## Globals - ShaderLocationIndex
-SHADER_LOC_VERTEX_POSITION = 0
+> SHADER_LOC_VERTEX_POSITION = 0
 
-SHADER_LOC_VERTEX_TEXCOORD01 = 1
+Shader location: vertex attribute: position
 
-SHADER_LOC_VERTEX_TEXCOORD02 = 2
+---
 
-SHADER_LOC_VERTEX_NORMAL = 3
+> SHADER_LOC_VERTEX_TEXCOORD01 = 1
 
-SHADER_LOC_VERTEX_TANGENT = 4
+Shader location: vertex attribute: texcoord01
 
-SHADER_LOC_VERTEX_COLOR = 5
+---
 
-SHADER_LOC_MATRIX_MVP = 6
+> SHADER_LOC_VERTEX_TEXCOORD02 = 2
 
-SHADER_LOC_MATRIX_VIEW = 7
+Shader location: vertex attribute: texcoord02
 
-SHADER_LOC_MATRIX_PROJECTION = 8
+---
 
-SHADER_LOC_MATRIX_MODEL = 9
+> SHADER_LOC_VERTEX_NORMAL = 3
 
-SHADER_LOC_MATRIX_NORMAL = 10
+Shader location: vertex attribute: normal
 
-SHADER_LOC_VECTOR_VIEW = 11
+---
 
-SHADER_LOC_COLOR_DIFFUSE = 12
+> SHADER_LOC_VERTEX_TANGENT = 4
 
-SHADER_LOC_COLOR_SPECULAR = 13
+Shader location: vertex attribute: tangent
 
-SHADER_LOC_COLOR_AMBIENT = 14
+---
 
-SHADER_LOC_MAP_ALBEDO = 15
+> SHADER_LOC_VERTEX_COLOR = 5
 
-SHADER_LOC_MAP_METALNESS = 16
+Shader location: vertex attribute: color
 
-SHADER_LOC_MAP_NORMAL = 17
+---
 
-SHADER_LOC_MAP_ROUGHNESS = 18
+> SHADER_LOC_MATRIX_MVP = 6
 
-SHADER_LOC_MAP_OCCLUSION = 19
+Shader location: matrix uniform: model-view-projection
 
-SHADER_LOC_MAP_EMISSION = 20
+---
 
-SHADER_LOC_MAP_HEIGHT = 21
+> SHADER_LOC_MATRIX_VIEW = 7
 
-SHADER_LOC_MAP_CUBEMAP = 22
+Shader location: matrix uniform: view (camera transform)
 
-SHADER_LOC_MAP_IRRADIANCE = 23
+---
 
-SHADER_LOC_MAP_PREFILTER = 24
+> SHADER_LOC_MATRIX_PROJECTION = 8
 
-SHADER_LOC_MAP_BRDF = 25
+Shader location: matrix uniform: projection
 
-SHADER_LOC_MAP_DIFFUSE = 15
+---
 
-SHADER_LOC_MAP_SPECULAR = 16
+> SHADER_LOC_MATRIX_MODEL = 9
+
+Shader location: matrix uniform: model (transform)
+
+---
+
+> SHADER_LOC_MATRIX_NORMAL = 10
+
+Shader location: matrix uniform: normal
+
+---
+
+> SHADER_LOC_VECTOR_VIEW = 11
+
+Shader location: vector uniform: view
+
+---
+
+> SHADER_LOC_COLOR_DIFFUSE = 12
+
+Shader location: vector uniform: diffuse color
+
+---
+
+> SHADER_LOC_COLOR_SPECULAR = 13
+
+Shader location: vector uniform: specular color
+
+---
+
+> SHADER_LOC_COLOR_AMBIENT = 14
+
+Shader location: vector uniform: ambient color
+
+---
+
+> SHADER_LOC_MAP_ALBEDO = 15
+
+Shader location: sampler2d texture: albedo (same as: SHADER_LOC_MAP_DIFFUSE)
+
+---
+
+> SHADER_LOC_MAP_METALNESS = 16
+
+Shader location: sampler2d texture: metalness (same as: SHADER_LOC_MAP_SPECULAR)
+
+---
+
+> SHADER_LOC_MAP_NORMAL = 17
+
+Shader location: sampler2d texture: normal
+
+---
+
+> SHADER_LOC_MAP_ROUGHNESS = 18
+
+Shader location: sampler2d texture: roughness
+
+---
+
+> SHADER_LOC_MAP_OCCLUSION = 19
+
+Shader location: sampler2d texture: occlusion
+
+---
+
+> SHADER_LOC_MAP_EMISSION = 20
+
+Shader location: sampler2d texture: emission
+
+---
+
+> SHADER_LOC_MAP_HEIGHT = 21
+
+Shader location: sampler2d texture: height
+
+---
+
+> SHADER_LOC_MAP_CUBEMAP = 22
+
+Shader location: samplerCube texture: cubemap
+
+---
+
+> SHADER_LOC_MAP_IRRADIANCE = 23
+
+Shader location: samplerCube texture: irradiance
+
+---
+
+> SHADER_LOC_MAP_PREFILTER = 24
+
+Shader location: samplerCube texture: prefilter
+
+---
+
+> SHADER_LOC_MAP_BRDF = 25
+
+Shader location: sampler2d texture: brdf
+
+---
+
+> SHADER_LOC_MAP_DIFFUSE = 15
+
+Shader location: sampler2d texture: diffuce (same as: SHADER_LOC_MAP_ALBEDO)
+
+---
+
+> SHADER_LOC_MAP_SPECULAR = 16
+
+Shader location: sampler2d texture: specular (same as: SHADER_LOC_MAP_METALNESS)
+
+---
 
 
 ## Globals - ShaderUniformDataType
-SHADER_UNIFORM_FLOAT = 0
+> SHADER_UNIFORM_FLOAT = 0
 
-SHADER_UNIFORM_VEC2 = 1
+Shader uniform type: float
 
-SHADER_UNIFORM_VEC3 = 2
+---
 
-SHADER_UNIFORM_VEC4 = 3
+> SHADER_UNIFORM_VEC2 = 1
 
-SHADER_UNIFORM_INT = 4
+Shader uniform type: vec2 (2 float)
 
-SHADER_UNIFORM_IVEC2 = 5
+---
 
-SHADER_UNIFORM_IVEC3 = 6
+> SHADER_UNIFORM_VEC3 = 2
 
-SHADER_UNIFORM_IVEC4 = 7
+Shader uniform type: vec3 (3 float)
 
-SHADER_UNIFORM_SAMPLER2D = 8
+---
+
+> SHADER_UNIFORM_VEC4 = 3
+
+Shader uniform type: vec4 (4 float)
+
+---
+
+> SHADER_UNIFORM_INT = 4
+
+Shader uniform type: int
+
+---
+
+> SHADER_UNIFORM_IVEC2 = 5
+
+Shader uniform type: ivec2 (2 int)
+
+---
+
+> SHADER_UNIFORM_IVEC3 = 6
+
+Shader uniform type: ivec3 (3 int)
+
+---
+
+> SHADER_UNIFORM_IVEC4 = 7
+
+Shader uniform type: ivec4 (4 int)
+
+---
+
+> SHADER_UNIFORM_SAMPLER2D = 8
+
+Shader uniform type: sampler2d
+
+---
 
 
 ## Globals - ShaderAttributeDataTypes
-SHADER_ATTRIB_FLOAT = 0
+> SHADER_ATTRIB_FLOAT = 0
 
-SHADER_ATTRIB_VEC2 = 1
+Shader attribute type: float
 
-SHADER_ATTRIB_VEC3 = 2
+---
 
-SHADER_ATTRIB_VEC4 = 3
+> SHADER_ATTRIB_VEC2 = 1
+
+Shader attribute type: vec2 (2 float)
+
+---
+
+> SHADER_ATTRIB_VEC3 = 2
+
+Shader attribute type: vec3 (3 float)
+
+---
+
+> SHADER_ATTRIB_VEC4 = 3
+
+Shader attribute type: vec4 (4 float)
+
+---
 
 
 ## Globals - PixelFormats
-PIXELFORMAT_UNCOMPRESSED_GRAYSCALE = 1
+> PIXELFORMAT_UNCOMPRESSED_GRAYSCALE = 1
 
-PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA = 2
+8 bit per pixel (no alpha)
 
-PIXELFORMAT_UNCOMPRESSED_R5G6B5 = 3
+---
 
-PIXELFORMAT_UNCOMPRESSED_R8G8B8 = 4
+> PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA = 2
 
-PIXELFORMAT_UNCOMPRESSED_R5G5B5A1 = 5
+8*2 bpp (2 channels)
 
-PIXELFORMAT_UNCOMPRESSED_R4G4B4A4 = 6
+---
 
-PIXELFORMAT_UNCOMPRESSED_R8G8B8A8 = 7
+> PIXELFORMAT_UNCOMPRESSED_R5G6B5 = 3
 
-PIXELFORMAT_UNCOMPRESSED_R32 = 8
+16 bpp
 
-PIXELFORMAT_UNCOMPRESSED_R32G32B32 = 9
+---
 
-PIXELFORMAT_UNCOMPRESSED_R32G32B32A32 = 10
+> PIXELFORMAT_UNCOMPRESSED_R8G8B8 = 4
 
-PIXELFORMAT_COMPRESSED_DXT1_RGB = 11
+24 bpp
 
-PIXELFORMAT_COMPRESSED_DXT1_RGBA = 12
+---
 
-PIXELFORMAT_COMPRESSED_DXT3_RGBA = 13
+> PIXELFORMAT_UNCOMPRESSED_R5G5B5A1 = 5
 
-PIXELFORMAT_COMPRESSED_DXT5_RGBA = 14
+16 bpp (1 bit alpha)
 
-PIXELFORMAT_COMPRESSED_ETC1_RGB = 15
+---
 
-PIXELFORMAT_COMPRESSED_ETC2_RGB = 16
+> PIXELFORMAT_UNCOMPRESSED_R4G4B4A4 = 6
 
-PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA = 17
+16 bpp (4 bit alpha)
 
-PIXELFORMAT_COMPRESSED_PVRT_RGB = 18
+---
 
-PIXELFORMAT_COMPRESSED_PVRT_RGBA = 19
+> PIXELFORMAT_UNCOMPRESSED_R8G8B8A8 = 7
 
-PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA = 20
+32 bpp
 
-PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA = 21
+---
+
+> PIXELFORMAT_UNCOMPRESSED_R32 = 8
+
+32 bpp (1 channel - float)
+
+---
+
+> PIXELFORMAT_UNCOMPRESSED_R32G32B32 = 9
+
+32*3 bpp (3 channels - float)
+
+---
+
+> PIXELFORMAT_UNCOMPRESSED_R32G32B32A32 = 10
+
+32*4 bpp (4 channels - float)
+
+---
+
+> PIXELFORMAT_COMPRESSED_DXT1_RGB = 11
+
+4 bpp (no alpha)
+
+---
+
+> PIXELFORMAT_COMPRESSED_DXT1_RGBA = 12
+
+4 bpp (1 bit alpha)
+
+---
+
+> PIXELFORMAT_COMPRESSED_DXT3_RGBA = 13
+
+8 bpp
+
+---
+
+> PIXELFORMAT_COMPRESSED_DXT5_RGBA = 14
+
+8 bpp
+
+---
+
+> PIXELFORMAT_COMPRESSED_ETC1_RGB = 15
+
+4 bpp
+
+---
+
+> PIXELFORMAT_COMPRESSED_ETC2_RGB = 16
+
+4 bpp
+
+---
+
+> PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA = 17
+
+8 bpp
+
+---
+
+> PIXELFORMAT_COMPRESSED_PVRT_RGB = 18
+
+4 bpp
+
+---
+
+> PIXELFORMAT_COMPRESSED_PVRT_RGBA = 19
+
+4 bpp
+
+---
+
+> PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA = 20
+
+8 bpp
+
+---
+
+> PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA = 21
+
+2 bpp
+
+---
 
 
 ## Globals - TextureFilters
-TEXTURE_FILTER_POINT = 0
+> TEXTURE_FILTER_POINT = 0
 
-TEXTURE_FILTER_BILINEAR = 1
+No filter, just pixel approximation
 
-TEXTURE_FILTER_TRILINEAR = 2
+---
 
-TEXTURE_FILTER_ANISOTROPIC_4X = 3
+> TEXTURE_FILTER_BILINEAR = 1
 
-TEXTURE_FILTER_ANISOTROPIC_8X = 4
+Linear filtering
 
-TEXTURE_FILTER_ANISOTROPIC_16X = 5
+---
+
+> TEXTURE_FILTER_TRILINEAR = 2
+
+Trilinear filtering (linear with mipmaps)
+
+---
+
+> TEXTURE_FILTER_ANISOTROPIC_4X = 3
+
+Anisotropic filtering 4x
+
+---
+
+> TEXTURE_FILTER_ANISOTROPIC_8X = 4
+
+Anisotropic filtering 8x
+
+---
+
+> TEXTURE_FILTER_ANISOTROPIC_16X = 5
+
+Anisotropic filtering 16x
+
+---
 
 
 ## Globals - TextureWrap
-TEXTURE_WRAP_REPEAT = 0
+> TEXTURE_WRAP_REPEAT = 0
 
-TEXTURE_WRAP_CLAMP = 1
+Repeats texture in tiled mode
 
-TEXTURE_WRAP_MIRROR_REPEAT = 2
+---
 
-TEXTURE_WRAP_MIRROR_CLAMP = 3
+> TEXTURE_WRAP_CLAMP = 1
+
+Clamps texture to edge pixel in tiled mode
+
+---
+
+> TEXTURE_WRAP_MIRROR_REPEAT = 2
+
+Mirrors and repeats the texture in tiled mode
+
+---
+
+> TEXTURE_WRAP_MIRROR_CLAMP = 3
+
+Mirrors and clamps to border the texture in tiled mode
+
+---
 
 
 ## Globals - CubemapLayout
-CUBEMAP_LAYOUT_AUTO_DETECT = 0
+> CUBEMAP_LAYOUT_AUTO_DETECT = 0
 
-CUBEMAP_LAYOUT_LINE_VERTICAL = 1
+Automatically detect layout type
 
-CUBEMAP_LAYOUT_LINE_HORIZONTAL = 2
+---
 
-CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR = 3
+> CUBEMAP_LAYOUT_LINE_VERTICAL = 1
 
-CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE = 4
+Layout is defined by a vertical line with faces
 
-CUBEMAP_LAYOUT_PANORAMA = 5
+---
+
+> CUBEMAP_LAYOUT_LINE_HORIZONTAL = 2
+
+Layout is defined by a horizontal line with faces
+
+---
+
+> CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR = 3
+
+Layout is defined by a 3x4 cross with cubemap faces
+
+---
+
+> CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE = 4
+
+Layout is defined by a 4x3 cross with cubemap faces
+
+---
+
+> CUBEMAP_LAYOUT_PANORAMA = 5
+
+Layout is defined by a panorama image (equirrectangular map)
+
+---
 
 
 ## Globals - FontType
-FONT_DEFAULT = 0
+> FONT_DEFAULT = 0
 
-FONT_BITMAP = 1
+Default font generation, anti-aliased
 
-FONT_SDF = 2
+---
+
+> FONT_BITMAP = 1
+
+Bitmap font generation, no anti-aliasing
+
+---
+
+> FONT_SDF = 2
+
+SDF font generation, requires external shader
+
+---
 
 
 ## Globals - BlendModes
-BLEND_ALPHA = 0
+> BLEND_ALPHA = 0
 
-BLEND_ADDITIVE = 1
+Blend textures considering alpha (default)
 
-BLEND_MULTIPLIED = 2
+---
 
-BLEND_ADD_COLORS = 3
+> BLEND_ADDITIVE = 1
 
-BLEND_SUBTRACT_COLORS = 4
+Blend textures adding colors
 
-BLEND_ALPHA_PREMULTIPLY = 5
+---
 
-BLEND_CUSTOM = 6
+> BLEND_MULTIPLIED = 2
 
-BLEND_CUSTOM_SEPARATE = 7
+Blend textures multiplying colors
+
+---
+
+> BLEND_ADD_COLORS = 3
+
+Blend textures adding colors (alternative)
+
+---
+
+> BLEND_SUBTRACT_COLORS = 4
+
+Blend textures subtracting colors (alternative)
+
+---
+
+> BLEND_ALPHA_PREMULTIPLY = 5
+
+Blend premultiplied textures considering alpha
+
+---
+
+> BLEND_CUSTOM = 6
+
+Blend textures using custom src/dst factors (use rlSetBlendFactors())
+
+---
+
+> BLEND_CUSTOM_SEPARATE = 7
+
+Blend textures using custom rgb/alpha separate src/dst factors (use rlSetBlendFactorsSeparate())
+
+---
 
 
 ## Globals - Gesture
-GESTURE_NONE = 0
+> GESTURE_NONE = 0
 
-GESTURE_TAP = 1
+No gesture
 
-GESTURE_DOUBLETAP = 2
+---
 
-GESTURE_HOLD = 4
+> GESTURE_TAP = 1
 
-GESTURE_DRAG = 8
+Tap gesture
 
-GESTURE_SWIPE_RIGHT = 16
+---
 
-GESTURE_SWIPE_LEFT = 32
+> GESTURE_DOUBLETAP = 2
 
-GESTURE_SWIPE_UP = 64
+Double tap gesture
 
-GESTURE_SWIPE_DOWN = 128
+---
 
-GESTURE_PINCH_IN = 256
+> GESTURE_HOLD = 4
 
-GESTURE_PINCH_OUT = 512
+Hold gesture
+
+---
+
+> GESTURE_DRAG = 8
+
+Drag gesture
+
+---
+
+> GESTURE_SWIPE_RIGHT = 16
+
+Swipe right gesture
+
+---
+
+> GESTURE_SWIPE_LEFT = 32
+
+Swipe left gesture
+
+---
+
+> GESTURE_SWIPE_UP = 64
+
+Swipe up gesture
+
+---
+
+> GESTURE_SWIPE_DOWN = 128
+
+Swipe down gesture
+
+---
+
+> GESTURE_PINCH_IN = 256
+
+Pinch in gesture
+
+---
+
+> GESTURE_PINCH_OUT = 512
+
+Pinch out gesture
+
+---
 
 
 ## Globals - CameraMode
-CAMERA_CUSTOM = 0
+> CAMERA_CUSTOM = 0
 
-CAMERA_FREE = 1
+Custom camera
 
-CAMERA_ORBITAL = 2
+---
 
-CAMERA_FIRST_PERSON = 3
+> CAMERA_FREE = 1
 
-CAMERA_THIRD_PERSON = 4
+Free camera
+
+---
+
+> CAMERA_ORBITAL = 2
+
+Orbital camera
+
+---
+
+> CAMERA_FIRST_PERSON = 3
+
+First person camera
+
+---
+
+> CAMERA_THIRD_PERSON = 4
+
+Third person camera
+
+---
 
 
 ## Globals - CameraProjections
-CAMERA_PERSPECTIVE = 0
+> CAMERA_PERSPECTIVE = 0
 
-CAMERA_ORTHOGRAPHIC = 1
+Perspective projection
+
+---
+
+> CAMERA_ORTHOGRAPHIC = 1
+
+Orthographic projection
+
+---
 
 
 ## Globals - N-patchLayout
-NPATCH_NINE_PATCH = 0
+> NPATCH_NINE_PATCH = 0
 
-NPATCH_THREE_PATCH_VERTICAL = 1
+Npatch layout: 3x3 tiles
 
-NPATCH_THREE_PATCH_HORIZONTAL = 2
+---
+
+> NPATCH_THREE_PATCH_VERTICAL = 1
+
+Npatch layout: 1x3 tiles
+
+---
+
+> NPATCH_THREE_PATCH_HORIZONTAL = 2
+
+Npatch layout: 3x1 tiles
+
+---
 
 
 ## Globals - Colors
 LIGHTGRAY = { 200, 200, 200, 255 }
 
+Light Gray
+
+---
+
 GRAY = { 130, 130, 130, 255 }
+
+Gray
+
+---
 
 DARKGRAY = { 80, 80, 80, 255 }
 
+Dark Gray
+
+---
+
 YELLOW = { 253, 249, 0, 255 }
+
+Yellow
+
+---
 
 GOLD = { 255, 203, 0, 255 }
 
+Gold
+
+---
+
 ORANGE = { 255, 161, 0, 255 }
+
+Orange
+
+---
 
 PINK = { 255, 109, 194, 255 }
 
+Pink
+
+---
+
 RED = { 230, 41, 55, 255 }
+
+Red
+
+---
 
 MAROON = { 190, 33, 55, 255 }
 
+Maroon
+
+---
+
 GREEN = { 0, 228, 48, 255 }
+
+Green
+
+---
 
 LIME = { 0, 158, 47, 255 }
 
+Lime
+
+---
+
 DARKGREEN = { 0, 117, 44, 255 }
+
+Dark Green
+
+---
 
 SKYBLUE = { 102, 191, 255, 255 }
 
+Sky Blue
+
+---
+
 BLUE = { 0, 121, 241, 255 }
+
+Blue
+
+---
 
 DARKBLUE = { 0, 82, 172, 255 }
 
+Dark Blue
+
+---
+
 PURPLE = { 200, 122, 255, 255 }
+
+Purple
+
+---
 
 VIOLET = { 135, 60, 190, 255 }
 
+Violet
+
+---
+
 DARKPURPLE = { 112, 31, 126, 255 }
+
+Dark Purple
+
+---
 
 BEIGE = { 211, 176, 131, 255 }
 
+Beige
+
+---
+
 BROWN = { 127, 106, 79, 255 }
+
+Brown
+
+---
 
 DARKBROWN = { 76, 63, 47, 255 }
 
+Dark Brown
+
+---
+
 WHITE = { 255, 255, 255, 255 }
+
+White
+
+---
 
 BLACK = { 0, 0, 0, 255 }
 
+Black
+
+---
+
 BLANK = { 0, 0, 0, 0 }
+
+Blank (Transparent)
+
+---
 
 MAGENTA = { 255, 0, 255, 255 }
 
+Magenta
+
+---
+
 RAYWHITE = { 245, 245, 245, 255 }
+
+My own White (raylib logo)
+
+---
 
 
 ## Globals - Math
-PI = 3.1415927410126
+> PI = 3.1415927410126
 
-DEG2RAD = 0.017453292384744
+Pi
 
-RAD2DEG = 57.295776367188
+---
+
+> DEG2RAD = 0.017453292384744
+
+Degrees to radians
+
+---
+
+> RAD2DEG = 57.295776367188
+
+Radians to degrees
+
+---
 
 
 ## Globals - GuiControlState
-STATE_NORMAL = 0
+> STATE_NORMAL = 0
 
-STATE_FOCUSED = 1
+---
 
-STATE_PRESSED = 2
+> STATE_FOCUSED = 1
 
-STATE_DISABLED = 3
+---
+
+> STATE_PRESSED = 2
+
+---
+
+> STATE_DISABLED = 3
+
+---
 
 
 ## Globals - GuiTextAlignment
-TEXT_ALIGN_LEFT = 0
+> TEXT_ALIGN_LEFT = 0
 
-TEXT_ALIGN_CENTER = 1
+---
 
-TEXT_ALIGN_RIGHT = 2
+> TEXT_ALIGN_CENTER = 1
+
+---
+
+> TEXT_ALIGN_RIGHT = 2
+
+---
 
 
 ## Globals - GuiControl
-DEFAULT = 0
+> DEFAULT = 0
 
-LABEL = 1
+---
 
-BUTTON = 2
+> LABEL = 1
 
-TOGGLE = 3
+Used also for: LABELBUTTON
 
-SLIDER = 4
+---
 
-PROGRESSBAR = 5
+> BUTTON = 2
 
-CHECKBOX = 6
+---
 
-COMBOBOX = 7
+> TOGGLE = 3
 
-DROPDOWNBOX = 8
+Used also for: TOGGLEGROUP
 
-TEXTBOX = 9
+---
 
-VALUEBOX = 10
+> SLIDER = 4
 
-SPINNER = 11
+Used also for: SLIDERBAR
 
-LISTVIEW = 12
+---
 
-COLORPICKER = 13
+> PROGRESSBAR = 5
 
-SCROLLBAR = 14
+---
 
-STATUSBAR = 15
+> CHECKBOX = 6
+
+---
+
+> COMBOBOX = 7
+
+---
+
+> DROPDOWNBOX = 8
+
+---
+
+> TEXTBOX = 9
+
+Used also for: TEXTBOXMULTI
+
+---
+
+> VALUEBOX = 10
+
+---
+
+> SPINNER = 11
+
+Uses: BUTTON, VALUEBOX
+
+---
+
+> LISTVIEW = 12
+
+---
+
+> COLORPICKER = 13
+
+---
+
+> SCROLLBAR = 14
+
+---
+
+> STATUSBAR = 15
+
+---
 
 
 ## Globals - GuiControlProperty
-BORDER_COLOR_NORMAL = 0
+> BORDER_COLOR_NORMAL = 0
 
-BASE_COLOR_NORMAL = 1
+---
 
-TEXT_COLOR_NORMAL = 2
+> BASE_COLOR_NORMAL = 1
 
-BORDER_COLOR_FOCUSED = 3
+---
 
-BASE_COLOR_FOCUSED = 4
+> TEXT_COLOR_NORMAL = 2
 
-TEXT_COLOR_FOCUSED = 5
+---
 
-BORDER_COLOR_PRESSED = 6
+> BORDER_COLOR_FOCUSED = 3
 
-BASE_COLOR_PRESSED = 7
+---
 
-TEXT_COLOR_PRESSED = 8
+> BASE_COLOR_FOCUSED = 4
 
-BORDER_COLOR_DISABLED = 9
+---
 
-BASE_COLOR_DISABLED = 10
+> TEXT_COLOR_FOCUSED = 5
 
-TEXT_COLOR_DISABLED = 11
+---
 
-BORDER_WIDTH = 12
+> BORDER_COLOR_PRESSED = 6
 
-TEXT_PADDING = 13
+---
 
-TEXT_ALIGNMENT = 14
+> BASE_COLOR_PRESSED = 7
 
-RESERVED = 15
+---
+
+> TEXT_COLOR_PRESSED = 8
+
+---
+
+> BORDER_COLOR_DISABLED = 9
+
+---
+
+> BASE_COLOR_DISABLED = 10
+
+---
+
+> TEXT_COLOR_DISABLED = 11
+
+---
+
+> BORDER_WIDTH = 12
+
+---
+
+> TEXT_PADDING = 13
+
+---
+
+> TEXT_ALIGNMENT = 14
+
+---
+
+> RESERVED = 15
+
+---
 
 
 ## Globals - GuiDefaultProperty
-TEXT_SIZE = 16
+> TEXT_SIZE = 16
 
-TEXT_SPACING = 17
+Text size (glyphs max height)
 
-LINE_COLOR = 18
+---
 
-BACKGROUND_COLOR = 19
+> TEXT_SPACING = 17
+
+Text spacing between glyphs
+
+---
+
+> LINE_COLOR = 18
+
+Line control color
+
+---
+
+> BACKGROUND_COLOR = 19
+
+Background color
+
+---
 
 
 ## Globals - GuiToggleProperty
-GROUP_PADDING = 16
+> GROUP_PADDING = 16
+
+ToggleGroup separation between toggles
+
+---
 
 
 ## Globals - GuiSliderProperty
-SLIDER_WIDTH = 16
+> SLIDER_WIDTH = 16
 
-SLIDER_PADDING = 17
+Slider size of internal bar
+
+---
+
+> SLIDER_PADDING = 17
+
+Slider/SliderBar internal bar padding
+
+---
 
 
 ## Globals - GuiProgressBarProperty
-PROGRESS_PADDING = 16
+> PROGRESS_PADDING = 16
+
+ProgressBar internal padding
+
+---
 
 
 ## Globals - GuiScrollBarProperty
-ARROWS_SIZE = 16
+> ARROWS_SIZE = 16
 
-ARROWS_VISIBLE = 17
+---
 
-SCROLL_SLIDER_PADDING = 18
+> ARROWS_VISIBLE = 17
 
-SCROLL_SLIDER_SIZE = 19
+---
 
-SCROLL_PADDING = 20
+> SCROLL_SLIDER_PADDING = 18
 
-SCROLL_SPEED = 21
+(SLIDERBAR, SLIDER_PADDING)
+
+---
+
+> SCROLL_SLIDER_SIZE = 19
+
+---
+
+> SCROLL_PADDING = 20
+
+---
+
+> SCROLL_SPEED = 21
+
+---
 
 
 ## Globals - GuiCheckBoxProperty
-CHECK_PADDING = 16
+> CHECK_PADDING = 16
+
+CheckBox internal check padding
+
+---
 
 
 ## Globals - GuiComboBoxProperty
-COMBO_BUTTON_WIDTH = 16
+> COMBO_BUTTON_WIDTH = 16
 
-COMBO_BUTTON_SPACING = 17
+ComboBox right button width
+
+---
+
+> COMBO_BUTTON_SPACING = 17
+
+ComboBox button separation
+
+---
 
 
 ## Globals - GuiDropdownBoxProperty
-ARROW_PADDING = 16
+> ARROW_PADDING = 16
 
-DROPDOWN_ITEMS_SPACING = 17
+DropdownBox arrow separation from border and items
+
+---
+
+> DROPDOWN_ITEMS_SPACING = 17
+
+DropdownBox items separation
+
+---
 
 
 ## Globals - GuiTextBoxProperty
-TEXT_INNER_PADDING = 16
+> TEXT_INNER_PADDING = 16
 
-TEXT_LINES_SPACING = 17
+TextBox/TextBoxMulti/ValueBox/Spinner inner text padding
+
+---
+
+> TEXT_LINES_SPACING = 17
+
+TextBoxMulti lines separation
+
+---
 
 
 ## Globals - GuiSpinnerProperty
-SPIN_BUTTON_WIDTH = 16
+> SPIN_BUTTON_WIDTH = 16
 
-SPIN_BUTTON_SPACING = 17
+Spinner left/right buttons width
+
+---
+
+> SPIN_BUTTON_SPACING = 17
+
+Spinner buttons separation
+
+---
 
 
 ## Globals - GuiListViewProperty
-LIST_ITEMS_HEIGHT = 16
+> LIST_ITEMS_HEIGHT = 16
 
-LIST_ITEMS_SPACING = 17
+ListView items height
 
-SCROLLBAR_WIDTH = 18
+---
 
-SCROLLBAR_SIDE = 19
+> LIST_ITEMS_SPACING = 17
+
+ListView items separation
+
+---
+
+> SCROLLBAR_WIDTH = 18
+
+ListView scrollbar size (usually width)
+
+---
+
+> SCROLLBAR_SIDE = 19
+
+ListView scrollbar side (0-left, 1-right)
+
+---
 
 
 ## Globals - GuiColorPickerProperty
-COLOR_SELECTOR_SIZE = 16
+> COLOR_SELECTOR_SIZE = 16
 
-HUEBAR_WIDTH = 17
+---
 
-HUEBAR_PADDING = 18
+> HUEBAR_WIDTH = 17
 
-HUEBAR_SELECTOR_HEIGHT = 19
+ColorPicker right hue bar width
 
-HUEBAR_SELECTOR_OVERFLOW = 20
+---
+
+> HUEBAR_PADDING = 18
+
+ColorPicker right hue bar separation from panel
+
+---
+
+> HUEBAR_SELECTOR_HEIGHT = 19
+
+ColorPicker right hue bar selector height
+
+---
+
+> HUEBAR_SELECTOR_OVERFLOW = 20
+
+ColorPicker right hue bar selector overflow
+
+---
 
 
 ## Globals - LightType
-LIGHT_DIRECTIONAL = 0
+> LIGHT_DIRECTIONAL = 0
 
-LIGHT_POINT = 1
+---
 
+> LIGHT_POINT = 1
 
-## Globals - RLGL
-RL_DEFAULT_BATCH_BUFFER_ELEMENTS = 8192
-
-RL_DEFAULT_BATCH_BUFFERS = 1
-
-RL_DEFAULT_BATCH_DRAWCALLS = 256
-
-RL_DEFAULT_BATCH_MAX_TEXTURE_UNITS = 4
+---
 
 
 ## Globals - RLGL
-RL_MAX_MATRIX_STACK_SIZE = 32
+> RL_DEFAULT_BATCH_BUFFER_ELEMENTS = 8192
+
+Default internal render batch elements limits
+
+---
+
+> RL_DEFAULT_BATCH_BUFFERS = 1
+
+Default number of batch buffers (multi-buffering)
+
+---
+
+> RL_DEFAULT_BATCH_DRAWCALLS = 256
+
+Default number of batch draw calls (by state changes: mode, texture)
+
+---
+
+> RL_DEFAULT_BATCH_MAX_TEXTURE_UNITS = 4
+
+Maximum number of textures units that can be activated on batch drawing (SetShaderValueTexture())
+
+---
 
 
 ## Globals - RLGL
-RL_MAX_SHADER_LOCATIONS = 32
+> RL_MAX_MATRIX_STACK_SIZE = 32
+
+Maximum size of internal Matrix stack
+
+---
 
 
 ## Globals - RLGL
-RL_CULL_DISTANCE_NEAR = 0.01
+> RL_MAX_SHADER_LOCATIONS = 32
 
-RL_CULL_DISTANCE_FAR = 1000.0
+Maximum number of shader locations supported
 
-
-## Globals - RLGL
-RL_TEXTURE_WRAP_S = 10242
-
-RL_TEXTURE_WRAP_T = 10243
-
-RL_TEXTURE_MAG_FILTER = 10240
-
-RL_TEXTURE_MIN_FILTER = 10241
-
-RL_TEXTURE_FILTER_NEAREST = 9728
-
-RL_TEXTURE_FILTER_LINEAR = 9729
-
-RL_TEXTURE_FILTER_MIP_NEAREST = 9984
-
-RL_TEXTURE_FILTER_NEAREST_MIP_LINEAR = 9986
-
-RL_TEXTURE_FILTER_LINEAR_MIP_NEAREST = 9985
-
-RL_TEXTURE_FILTER_MIP_LINEAR = 9987
-
-RL_TEXTURE_FILTER_ANISOTROPIC = 12288
-
-RL_TEXTURE_MIPMAP_BIAS_RATIO = 16384
-
-RL_TEXTURE_WRAP_REPEAT = 10497
-
-RL_TEXTURE_WRAP_CLAMP = 33071
-
-RL_TEXTURE_WRAP_MIRROR_REPEAT = 33648
-
-RL_TEXTURE_WRAP_MIRROR_CLAMP = 34626
+---
 
 
 ## Globals - RLGL
-RL_MODELVIEW = 5888
+> RL_CULL_DISTANCE_NEAR = 0.01
 
-RL_PROJECTION = 5889
+Default projection matrix near cull distance
 
-RL_TEXTURE = 5890
+---
 
+> RL_CULL_DISTANCE_FAR = 1000.0
 
-## Globals - RLGL
-RL_LINES = 1
+Default projection matrix far cull distance
 
-RL_TRIANGLES = 4
-
-RL_QUADS = 7
+---
 
 
 ## Globals - RLGL
-RL_UNSIGNED_BYTE = 5121
+> RL_TEXTURE_WRAP_S = 10242
 
-RL_FLOAT = 5126
+GL_TEXTURE_WRAP_S
 
+---
 
-## Globals - RLGL
-RL_STREAM_DRAW = 35040
+> RL_TEXTURE_WRAP_T = 10243
 
-RL_STREAM_READ = 35041
+GL_TEXTURE_WRAP_T
 
-RL_STREAM_COPY = 35042
+---
 
-RL_STATIC_DRAW = 35044
+> RL_TEXTURE_MAG_FILTER = 10240
 
-RL_STATIC_READ = 35045
+GL_TEXTURE_MAG_FILTER
 
-RL_STATIC_COPY = 35046
+---
 
-RL_DYNAMIC_DRAW = 35048
+> RL_TEXTURE_MIN_FILTER = 10241
 
-RL_DYNAMIC_READ = 35049
+GL_TEXTURE_MIN_FILTER
 
-RL_DYNAMIC_COPY = 35050
+---
 
+> RL_TEXTURE_FILTER_NEAREST = 9728
 
-## Globals - RLGL
-RL_FRAGMENT_SHADER = 35632
+GL_NEAREST
 
-RL_VERTEX_SHADER = 35633
+---
 
-RL_COMPUTE_SHADER = 37305
+> RL_TEXTURE_FILTER_LINEAR = 9729
 
+GL_LINEAR
 
-## Globals - RLGL
-RL_ZERO = 0
+---
 
-RL_ONE = 1
+> RL_TEXTURE_FILTER_MIP_NEAREST = 9984
 
-RL_SRC_COLOR = 768
+GL_NEAREST_MIPMAP_NEAREST
 
-RL_ONE_MINUS_SRC_COLOR = 769
+---
 
-RL_SRC_ALPHA = 770
+> RL_TEXTURE_FILTER_NEAREST_MIP_LINEAR = 9986
 
-RL_ONE_MINUS_SRC_ALPHA = 771
+GL_NEAREST_MIPMAP_LINEAR
 
-RL_DST_ALPHA = 772
+---
 
-RL_ONE_MINUS_DST_ALPHA = 773
+> RL_TEXTURE_FILTER_LINEAR_MIP_NEAREST = 9985
 
-RL_DST_COLOR = 774
+GL_LINEAR_MIPMAP_NEAREST
 
-RL_ONE_MINUS_DST_COLOR = 775
+---
 
-RL_SRC_ALPHA_SATURATE = 776
+> RL_TEXTURE_FILTER_MIP_LINEAR = 9987
 
-RL_CONSTANT_COLOR = 32769
+GL_LINEAR_MIPMAP_LINEAR
 
-RL_ONE_MINUS_CONSTANT_COLOR = 32770
+---
 
-RL_CONSTANT_ALPHA = 32771
+> RL_TEXTURE_FILTER_ANISOTROPIC = 12288
 
-RL_ONE_MINUS_CONSTANT_ALPHA = 32772
+Anisotropic filter (custom identifier)
 
+---
 
-## Globals - RLGL
-RL_FUNC_ADD = 32774
+> RL_TEXTURE_MIPMAP_BIAS_RATIO = 16384
 
-RL_MIN = 32775
+Texture mipmap bias, percentage ratio (custom identifier)
 
-RL_MAX = 32776
+---
 
-RL_FUNC_SUBTRACT = 32778
+> RL_TEXTURE_WRAP_REPEAT = 10497
 
-RL_FUNC_REVERSE_SUBTRACT = 32779
+GL_REPEAT
 
-RL_BLEND_EQUATION = 32777
+---
 
-RL_BLEND_EQUATION_RGB = 32777
+> RL_TEXTURE_WRAP_CLAMP = 33071
 
-RL_BLEND_EQUATION_ALPHA = 34877
+GL_CLAMP_TO_EDGE
 
-RL_BLEND_DST_RGB = 32968
+---
 
-RL_BLEND_SRC_RGB = 32969
+> RL_TEXTURE_WRAP_MIRROR_REPEAT = 33648
 
-RL_BLEND_DST_ALPHA = 32970
+GL_MIRRORED_REPEAT
 
-RL_BLEND_SRC_ALPHA = 32971
+---
 
-RL_BLEND_COLOR = 32773
+> RL_TEXTURE_WRAP_MIRROR_CLAMP = 34626
 
+GL_MIRROR_CLAMP_EXT
 
-## Globals - RLGL
-RL_OPENGL_11 = 1
-
-RL_OPENGL_21 = 2
-
-RL_OPENGL_33 = 3
-
-RL_OPENGL_43 = 4
-
-RL_OPENGL_ES_20 = 5
+---
 
 
 ## Globals - RLGL
-RL_ATTACHMENT_COLOR_CHANNEL0 = 0
+> RL_MODELVIEW = 5888
 
-RL_ATTACHMENT_COLOR_CHANNEL1 = 1
+GL_MODELVIEW
 
-RL_ATTACHMENT_COLOR_CHANNEL2 = 2
+---
 
-RL_ATTACHMENT_COLOR_CHANNEL3 = 3
+> RL_PROJECTION = 5889
 
-RL_ATTACHMENT_COLOR_CHANNEL4 = 4
+GL_PROJECTION
 
-RL_ATTACHMENT_COLOR_CHANNEL5 = 5
+---
 
-RL_ATTACHMENT_COLOR_CHANNEL6 = 6
+> RL_TEXTURE = 5890
 
-RL_ATTACHMENT_COLOR_CHANNEL7 = 7
+GL_TEXTURE
 
-RL_ATTACHMENT_DEPTH = 100
-
-RL_ATTACHMENT_STENCIL = 200
+---
 
 
 ## Globals - RLGL
-RL_ATTACHMENT_CUBEMAP_POSITIVE_X = 0
+> RL_LINES = 1
 
-RL_ATTACHMENT_CUBEMAP_NEGATIVE_X = 1
+GL_LINES
 
-RL_ATTACHMENT_CUBEMAP_POSITIVE_Y = 2
+---
 
-RL_ATTACHMENT_CUBEMAP_NEGATIVE_Y = 3
+> RL_TRIANGLES = 4
 
-RL_ATTACHMENT_CUBEMAP_POSITIVE_Z = 4
+GL_TRIANGLES
 
-RL_ATTACHMENT_CUBEMAP_NEGATIVE_Z = 5
+---
 
-RL_ATTACHMENT_TEXTURE2D = 100
+> RL_QUADS = 7
 
-RL_ATTACHMENT_RENDERBUFFER = 200
+GL_QUADS
+
+---
 
 
 ## Globals - RLGL
-RL_CULL_FACE_FRONT = 0
+> RL_UNSIGNED_BYTE = 5121
 
-RL_CULL_FACE_BACK = 1
+GL_UNSIGNED_BYTE
+
+---
+
+> RL_FLOAT = 5126
+
+GL_FLOAT
+
+---
+
+
+## Globals - RLGL
+> RL_STREAM_DRAW = 35040
+
+GL_STREAM_DRAW
+
+---
+
+> RL_STREAM_READ = 35041
+
+GL_STREAM_READ
+
+---
+
+> RL_STREAM_COPY = 35042
+
+GL_STREAM_COPY
+
+---
+
+> RL_STATIC_DRAW = 35044
+
+GL_STATIC_DRAW
+
+---
+
+> RL_STATIC_READ = 35045
+
+GL_STATIC_READ
+
+---
+
+> RL_STATIC_COPY = 35046
+
+GL_STATIC_COPY
+
+---
+
+> RL_DYNAMIC_DRAW = 35048
+
+GL_DYNAMIC_DRAW
+
+---
+
+> RL_DYNAMIC_READ = 35049
+
+GL_DYNAMIC_READ
+
+---
+
+> RL_DYNAMIC_COPY = 35050
+
+GL_DYNAMIC_COPY
+
+---
+
+
+## Globals - RLGL
+> RL_FRAGMENT_SHADER = 35632
+
+GL_FRAGMENT_SHADER
+
+---
+
+> RL_VERTEX_SHADER = 35633
+
+GL_VERTEX_SHADER
+
+---
+
+> RL_COMPUTE_SHADER = 37305
+
+GL_COMPUTE_SHADER
+
+---
+
+
+## Globals - RLGL
+> RL_ZERO = 0
+
+GL_ZERO
+
+---
+
+> RL_ONE = 1
+
+GL_ONE
+
+---
+
+> RL_SRC_COLOR = 768
+
+GL_SRC_COLOR
+
+---
+
+> RL_ONE_MINUS_SRC_COLOR = 769
+
+GL_ONE_MINUS_SRC_COLOR
+
+---
+
+> RL_SRC_ALPHA = 770
+
+GL_SRC_ALPHA
+
+---
+
+> RL_ONE_MINUS_SRC_ALPHA = 771
+
+GL_ONE_MINUS_SRC_ALPHA
+
+---
+
+> RL_DST_ALPHA = 772
+
+GL_DST_ALPHA
+
+---
+
+> RL_ONE_MINUS_DST_ALPHA = 773
+
+GL_ONE_MINUS_DST_ALPHA
+
+---
+
+> RL_DST_COLOR = 774
+
+GL_DST_COLOR
+
+---
+
+> RL_ONE_MINUS_DST_COLOR = 775
+
+GL_ONE_MINUS_DST_COLOR
+
+---
+
+> RL_SRC_ALPHA_SATURATE = 776
+
+GL_SRC_ALPHA_SATURATE
+
+---
+
+> RL_CONSTANT_COLOR = 32769
+
+GL_CONSTANT_COLOR
+
+---
+
+> RL_ONE_MINUS_CONSTANT_COLOR = 32770
+
+GL_ONE_MINUS_CONSTANT_COLOR
+
+---
+
+> RL_CONSTANT_ALPHA = 32771
+
+GL_CONSTANT_ALPHA
+
+---
+
+> RL_ONE_MINUS_CONSTANT_ALPHA = 32772
+
+GL_ONE_MINUS_CONSTANT_ALPHA
+
+---
+
+
+## Globals - RLGL
+> RL_FUNC_ADD = 32774
+
+GL_FUNC_ADD
+
+---
+
+> RL_MIN = 32775
+
+GL_MIN
+
+---
+
+> RL_MAX = 32776
+
+GL_MAX
+
+---
+
+> RL_FUNC_SUBTRACT = 32778
+
+GL_FUNC_SUBTRACT
+
+---
+
+> RL_FUNC_REVERSE_SUBTRACT = 32779
+
+GL_FUNC_REVERSE_SUBTRACT
+
+---
+
+> RL_BLEND_EQUATION = 32777
+
+GL_BLEND_EQUATION
+
+---
+
+> RL_BLEND_EQUATION_RGB = 32777
+
+GL_BLEND_EQUATION_RGB // (Same as BLEND_EQUATION)
+
+---
+
+> RL_BLEND_EQUATION_ALPHA = 34877
+
+GL_BLEND_EQUATION_ALPHA
+
+---
+
+> RL_BLEND_DST_RGB = 32968
+
+GL_BLEND_DST_RGB
+
+---
+
+> RL_BLEND_SRC_RGB = 32969
+
+GL_BLEND_SRC_RGB
+
+---
+
+> RL_BLEND_DST_ALPHA = 32970
+
+GL_BLEND_DST_ALPHA
+
+---
+
+> RL_BLEND_SRC_ALPHA = 32971
+
+GL_BLEND_SRC_ALPHA
+
+---
+
+> RL_BLEND_COLOR = 32773
+
+GL_BLEND_COLOR
+
+---
+
+
+## Globals - RLGL
+> RL_OPENGL_11 = 1
+
+OpenGL 1.1
+
+---
+
+> RL_OPENGL_21 = 2
+
+OpenGL 2.1 (GLSL 120)
+
+---
+
+> RL_OPENGL_33 = 3
+
+OpenGL 3.3 (GLSL 330)
+
+---
+
+> RL_OPENGL_43 = 4
+
+OpenGL 4.3 (using GLSL 330)
+
+---
+
+> RL_OPENGL_ES_20 = 5
+
+OpenGL ES 2.0 (GLSL 100)
+
+---
+
+
+## Globals - RLGL
+> RL_ATTACHMENT_COLOR_CHANNEL0 = 0
+
+Framebuffer attachment type: color 0
+
+---
+
+> RL_ATTACHMENT_COLOR_CHANNEL1 = 1
+
+Framebuffer attachment type: color 1
+
+---
+
+> RL_ATTACHMENT_COLOR_CHANNEL2 = 2
+
+Framebuffer attachment type: color 2
+
+---
+
+> RL_ATTACHMENT_COLOR_CHANNEL3 = 3
+
+Framebuffer attachment type: color 3
+
+---
+
+> RL_ATTACHMENT_COLOR_CHANNEL4 = 4
+
+Framebuffer attachment type: color 4
+
+---
+
+> RL_ATTACHMENT_COLOR_CHANNEL5 = 5
+
+Framebuffer attachment type: color 5
+
+---
+
+> RL_ATTACHMENT_COLOR_CHANNEL6 = 6
+
+Framebuffer attachment type: color 6
+
+---
+
+> RL_ATTACHMENT_COLOR_CHANNEL7 = 7
+
+Framebuffer attachment type: color 7
+
+---
+
+> RL_ATTACHMENT_DEPTH = 100
+
+Framebuffer attachment type: depth
+
+---
+
+> RL_ATTACHMENT_STENCIL = 200
+
+Framebuffer attachment type: stencil
+
+---
+
+
+## Globals - RLGL
+> RL_ATTACHMENT_CUBEMAP_POSITIVE_X = 0
+
+Framebuffer texture attachment type: cubemap, +X side
+
+---
+
+> RL_ATTACHMENT_CUBEMAP_NEGATIVE_X = 1
+
+Framebuffer texture attachment type: cubemap, -X side
+
+---
+
+> RL_ATTACHMENT_CUBEMAP_POSITIVE_Y = 2
+
+Framebuffer texture attachment type: cubemap, +Y side
+
+---
+
+> RL_ATTACHMENT_CUBEMAP_NEGATIVE_Y = 3
+
+Framebuffer texture attachment type: cubemap, -Y side
+
+---
+
+> RL_ATTACHMENT_CUBEMAP_POSITIVE_Z = 4
+
+Framebuffer texture attachment type: cubemap, +Z side
+
+---
+
+> RL_ATTACHMENT_CUBEMAP_NEGATIVE_Z = 5
+
+Framebuffer texture attachment type: cubemap, -Z side
+
+---
+
+> RL_ATTACHMENT_TEXTURE2D = 100
+
+Framebuffer texture attachment type: texture2d
+
+---
+
+> RL_ATTACHMENT_RENDERBUFFER = 200
+
+Framebuffer texture attachment type: renderbuffer
+
+---
+
+
+## Globals - RLGL
+> RL_CULL_FACE_FRONT = 0
+
+---
+
+> RL_CULL_FACE_BACK = 1
+
+---
 
 
 ## Globals - OpenGL
-GL_COLOR_BUFFER_BIT = 16384
+> GL_COLOR_BUFFER_BIT = 16384
 
-GL_DEPTH_BUFFER_BIT = 256
+---
 
-GL_STENCIL_BUFFER_BIT = 1024
+> GL_DEPTH_BUFFER_BIT = 256
 
-GL_NEAREST = 9728
+---
 
-GL_LINEAR = 9729
+> GL_STENCIL_BUFFER_BIT = 1024
+
+---
+
+> GL_NEAREST = 9728
+
+---
+
+> GL_LINEAR = 9729
+
+---
 
 
 ## Globals - GLFW
-GLFW_RELEASE = 0
+> GLFW_RELEASE = 0
 
-GLFW_PRESS = 1
+The key or mouse button was released
 
-GLFW_REPEAT = 2
+---
+
+> GLFW_PRESS = 1
+
+The key or mouse button was pressed
+
+---
+
+> GLFW_REPEAT = 2
+
+The key was held down until it repeated
+
+---
 
 
 ## Globals - CBuffer
-BUFFER_UNSIGNED_CHAR = 0
+> BUFFER_UNSIGNED_CHAR = 0
 
-BUFFER_UNSIGNED_SHORT = 1
+C type char
 
-BUFFER_UNSIGNED_INT = 2
+---
 
-BUFFER_FLOAT = 3
+> BUFFER_UNSIGNED_SHORT = 1
+
+C type short
+
+---
+
+> BUFFER_UNSIGNED_INT = 2
+
+C type int
+
+---
+
+> BUFFER_FLOAT = 3
+
+C type float
+
+---
 
 
 ## Globals - Window
-EVENT_WINDOW_SIZE = 0
+> EVENT_WINDOW_SIZE = 0
 
-EVENT_WINDOW_MAXIMIZE = 1
+GLFW event window size changed
 
-EVENT_WINDOW_ICONYFY = 2
+---
 
-EVENT_WINDOW_FOCUS = 3
+> EVENT_WINDOW_MAXIMIZE = 1
 
-EVENT_WINDOW_DROP = 4
+GLFW event window maximize
+
+---
+
+> EVENT_WINDOW_ICONYFY = 2
+
+GLFW event window iconify
+
+---
+
+> EVENT_WINDOW_FOCUS = 3
+
+GLFW event window focus
+
+---
+
+> EVENT_WINDOW_DROP = 4
+
+GLFW event window drop
+
+---
 
 
 ## Globals - Input
-EVENT_KEY = 5
+> EVENT_KEY = 5
 
-EVENT_CHAR = 6
+GLFW event keyboard key
 
-EVENT_MOUSE_BUTTON = 7
+---
 
-EVENT_MOUSE_CURSOR_POS = 8
+> EVENT_CHAR = 6
 
-EVENT_MOUSE_SCROLL = 9
+GLFW event Unicode character
 
-EVENT_CURSOR_ENTER = 10
+---
+
+> EVENT_MOUSE_BUTTON = 7
+
+GLFW event mouse button
+
+---
+
+> EVENT_MOUSE_CURSOR_POS = 8
+
+GLFW event cursor position
+
+---
+
+> EVENT_MOUSE_SCROLL = 9
+
+GLFW event mouse scroll
+
+---
+
+> EVENT_CURSOR_ENTER = 10
+
+GLFW event cursor enter/leave
+
+---
 
 
 ## Core - Window

@@ -16,7 +16,6 @@ Backlog {
 		* Shader buffer storage object management (ssbo)
 
 	* Extend color lib functionality.
-	* Global variable descriptions for API.
 
 	* Examples
 		* Improve Dungeon crawler example by generating custom mesh instead of drawing 3D quads.

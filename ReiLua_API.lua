@@ -25,398 +25,727 @@ function RL.exit() end
 
 -- Globals - ConfigFlags
 
+---Set to try enabling V-Sync on GPU
 RL.FLAG_VSYNC_HINT=64
+---Set to run program in fullscreen
 RL.FLAG_FULLSCREEN_MODE=2
+---Set to allow resizable window
 RL.FLAG_WINDOW_RESIZABLE=4
+---Set to disable window decoration (frame and buttons)
 RL.FLAG_WINDOW_UNDECORATED=8
+---Set to hide window
 RL.FLAG_WINDOW_HIDDEN=128
+---Set to minimize window (iconify)
 RL.FLAG_WINDOW_MINIMIZED=512
+---Set to maximize window (expanded to monitor)
 RL.FLAG_WINDOW_MAXIMIZED=1024
+---Set to window non focused
 RL.FLAG_WINDOW_UNFOCUSED=2048
+---Set to window always on top
 RL.FLAG_WINDOW_TOPMOST=4096
+---Set to allow windows running while minimized
 RL.FLAG_WINDOW_ALWAYS_RUN=256
+---Set to allow transparent framebuffer
 RL.FLAG_WINDOW_TRANSPARENT=16
+---Set to support HighDPI
 RL.FLAG_WINDOW_HIGHDPI=8192
+---Set to support mouse passthrough, only supported when FLAG_WINDOW_UNDECORATED
+RL.FLAG_WINDOW_MOUSE_PASSTHROUGH=16384
+---Set to try enabling MSAA 4X
 RL.FLAG_MSAA_4X_HINT=32
+---Set to try enabling interlaced video format (for V3D)
 RL.FLAG_INTERLACED_HINT=65536
 
 -- Globals - TraceLogLevel
 
+---Display all logs
 RL.LOG_ALL=0
+---Trace logging, intended for internal use only
 RL.LOG_TRACE=1
+---Debug logging, used for internal debugging, it should be disabled on release builds
 RL.LOG_DEBUG=2
+---Info logging, used for program execution info
 RL.LOG_INFO=3
+---Warning logging, used on recoverable failures
 RL.LOG_WARNING=4
+---Error logging, used on unrecoverable failures
 RL.LOG_ERROR=5
+---Fatal logging, used to abort program: exit(EXIT_FAILURE)
 RL.LOG_FATAL=6
+---Disable logging
 RL.LOG_NONE=7
 
 -- Globals - KeyboardKey
 
+---Key: Unknown
 RL.GLFW_KEY_UNKNOWN=nil
+---Key: NULL, used for no key pressed
 RL.KEY_NULL=0
+---Key: '
 RL.KEY_APOSTROPHE=39
+---Key: ,
 RL.KEY_COMMA=44
+---Key: -
 RL.KEY_MINUS=45
+---Key: .
 RL.KEY_PERIOD=46
+---Key: /
 RL.KEY_SLASH=47
+---Key: 0
 RL.KEY_ZERO=48
+---Key: 1
 RL.KEY_ONE=49
+---Key: 2
 RL.KEY_TWO=50
+---Key: 3
 RL.KEY_THREE=51
+---Key: 4
 RL.KEY_FOUR=52
+---Key: 5
 RL.KEY_FIVE=53
+---Key: 6
 RL.KEY_SIX=54
+---Key: 7
 RL.KEY_SEVEN=55
+---Key: 8
 RL.KEY_EIGHT=56
+---Key: 9
 RL.KEY_NINE=57
+---Key: ;
 RL.KEY_SEMICOLON=59
+---Key: =
 RL.KEY_EQUAL=61
+---Key: A | a
 RL.KEY_A=65
+---Key: B | b
 RL.KEY_B=66
+---Key: C | c
 RL.KEY_C=67
+---Key: D | d
 RL.KEY_D=68
+---Key: E | e
 RL.KEY_E=69
+---Key: F | f
 RL.KEY_F=70
+---Key: G | g
 RL.KEY_G=71
+---Key: H | h
 RL.KEY_H=72
+---Key: I | i
 RL.KEY_I=73
+---Key: J | j
 RL.KEY_J=74
+---Key: K | k
 RL.KEY_K=75
+---Key: L | l
 RL.KEY_L=76
+---Key: M | m
 RL.KEY_M=77
+---Key: N | n
 RL.KEY_N=78
+---Key: O | o
 RL.KEY_O=79
+---Key: P | p
 RL.KEY_P=80
+---Key: Q | q
 RL.KEY_Q=81
+---Key: R | r
 RL.KEY_R=82
+---Key: S | s
 RL.KEY_S=83
+---Key: T | t
 RL.KEY_T=84
+---Key: U | u
 RL.KEY_U=85
+---Key: V | v
 RL.KEY_V=86
+---Key: W | w
 RL.KEY_W=87
+---Key: X | x
 RL.KEY_X=88
+---Key: Y | y
 RL.KEY_Y=89
+---Key: Z | z
 RL.KEY_Z=90
+---Key: [
 RL.KEY_LEFT_BRACKET=91
+---Key: '\'
 RL.KEY_BACKSLASH=92
+---Key: ]
 RL.KEY_RIGHT_BRACKET=93
+---Key: `
 RL.KEY_GRAVE=96
+---Key: Space
 RL.KEY_SPACE=32
+---Key: Esc
 RL.KEY_ESCAPE=256
+---Key: Enter
 RL.KEY_ENTER=257
+---Key: Tab
 RL.KEY_TAB=258
+---Key: Backspace
 RL.KEY_BACKSPACE=259
+---Key: Ins
 RL.KEY_INSERT=260
+---Key: Del
 RL.KEY_DELETE=261
+---Key: Cursor right
 RL.KEY_RIGHT=262
+---Key: Cursor left
 RL.KEY_LEFT=263
+---Key: Cursor down
 RL.KEY_DOWN=264
+---Key: Cursor up
 RL.KEY_UP=265
+---Key: Page up
 RL.KEY_PAGE_UP=266
+---Key: Page down
 RL.KEY_PAGE_DOWN=267
+---Key: Home
 RL.KEY_HOME=268
+---Key: End
 RL.KEY_END=269
+---Key: Caps lock
 RL.KEY_CAPS_LOCK=280
+---Key: Scroll down
 RL.KEY_SCROLL_LOCK=281
+---Key: Num lock
 RL.KEY_NUM_LOCK=282
+---Key: Print screen
 RL.KEY_PRINT_SCREEN=283
+---Key: Pause
 RL.KEY_PAUSE=284
+---Key: F1
 RL.KEY_F1=290
+---Key: F2
 RL.KEY_F2=291
+---Key: F3
 RL.KEY_F3=292
+---Key: F4
 RL.KEY_F4=293
+---Key: F5
 RL.KEY_F5=294
+---Key: F6
 RL.KEY_F6=295
+---Key: F7
 RL.KEY_F7=296
+---Key: F8
 RL.KEY_F8=297
+---Key: F9
 RL.KEY_F9=298
+---Key: F10
 RL.KEY_F10=299
+---Key: F11
 RL.KEY_F11=300
+---Key: F12
 RL.KEY_F12=301
+---Key: Shift left
 RL.KEY_LEFT_SHIFT=340
+---Key: Control left
 RL.KEY_LEFT_CONTROL=341
+---Key: Alt left
 RL.KEY_LEFT_ALT=342
+---Key: Super left
 RL.KEY_LEFT_SUPER=343
+---Key: Shift right
 RL.KEY_RIGHT_SHIFT=344
+---Key: Control right
 RL.KEY_RIGHT_CONTROL=345
+---Key: Alt right
 RL.KEY_RIGHT_ALT=346
+---Key: Super right
 RL.KEY_RIGHT_SUPER=347
+---Key: KB menu
 RL.KEY_KB_MENU=348
+---Key: Keypad 0
 RL.KEY_KP_0=320
+---Key: Keypad 1
 RL.KEY_KP_1=321
+---Key: Keypad 2
 RL.KEY_KP_2=322
+---Key: Keypad 3
 RL.KEY_KP_3=323
+---Key: Keypad 4
 RL.KEY_KP_4=324
+---Key: Keypad 5
 RL.KEY_KP_5=325
+---Key: Keypad 6
 RL.KEY_KP_6=326
+---Key: Keypad 7
 RL.KEY_KP_7=327
+---Key: Keypad 8
 RL.KEY_KP_8=328
+---Key: Keypad 9
 RL.KEY_KP_9=329
+---Key: Keypad .
 RL.KEY_KP_DECIMAL=330
+---Key: Keypad /
 RL.KEY_KP_DIVIDE=331
+---Key: Keypad *
 RL.KEY_KP_MULTIPLY=332
+---Key: Keypad -
 RL.KEY_KP_SUBTRACT=333
+---Key: Keypad +
 RL.KEY_KP_ADD=334
+---Key: Keypad Enter
 RL.KEY_KP_ENTER=335
+---Key: Keypad =
 RL.KEY_KP_EQUAL=336
+---Key: Android back button
 RL.KEY_BACK=4
+---Key: Android menu button
 RL.KEY_MENU=82
+---Key: Android volume up button
 RL.KEY_VOLUME_UP=24
+---Key: Android volume down button
 RL.KEY_VOLUME_DOWN=25
 
 -- Globals - MouseButtons
 
+---Mouse button left
 RL.MOUSE_BUTTON_LEFT=0
+---Mouse button right
 RL.MOUSE_BUTTON_RIGHT=1
+---Mouse button middle (pressed wheel)
 RL.MOUSE_BUTTON_MIDDLE=2
+---Mouse button side (advanced mouse device)
 RL.MOUSE_BUTTON_SIDE=3
+---Mouse button extra (advanced mouse device)
 RL.MOUSE_BUTTON_EXTRA=4
+---Mouse button forward (advanced mouse device)
 RL.MOUSE_BUTTON_FORWARD=5
+---Mouse button back (advanced mouse device)
 RL.MOUSE_BUTTON_BACK=6
 
 -- Globals - MouseCursor
 
+---Default pointer shape
 RL.MOUSE_CURSOR_DEFAULT=0
+---Arrow shape
 RL.MOUSE_CURSOR_ARROW=1
+---Text writing cursor shape
 RL.MOUSE_CURSOR_IBEAM=2
+---Cross shape
 RL.MOUSE_CURSOR_CROSSHAIR=3
+---Pointing hand cursor
 RL.MOUSE_CURSOR_POINTING_HAND=4
+---Horizontal resize/move arrow shape
 RL.MOUSE_CURSOR_RESIZE_EW=5
+---Vertical resize/move arrow shape
 RL.MOUSE_CURSOR_RESIZE_NS=6
+---Top-left to bottom-right diagonal resize/move arrow shape
 RL.MOUSE_CURSOR_RESIZE_NWSE=7
+---The top-right to bottom-left diagonal resize/move arrow shape
 RL.MOUSE_CURSOR_RESIZE_NESW=8
+---The omnidirectional resize/move cursor shape
 RL.MOUSE_CURSOR_RESIZE_ALL=9
+---The operation-not-allowed shape
 RL.MOUSE_CURSOR_NOT_ALLOWED=10
 
 -- Globals - GamepadButtons
 
+---Unknown button, just for error checking
 RL.GAMEPAD_BUTTON_UNKNOWN=0
+---Gamepad left DPAD up button
 RL.GAMEPAD_BUTTON_LEFT_FACE_UP=1
+---Gamepad left DPAD right button
 RL.GAMEPAD_BUTTON_LEFT_FACE_RIGHT=2
+---Gamepad left DPAD down button
 RL.GAMEPAD_BUTTON_LEFT_FACE_DOWN=3
+---Gamepad left DPAD left button
 RL.GAMEPAD_BUTTON_LEFT_FACE_LEFT=4
+---Gamepad right button up (i.e. PS3: Triangle, Xbox: Y)
 RL.GAMEPAD_BUTTON_RIGHT_FACE_UP=5
+---Gamepad right button right (i.e. PS3: Square, Xbox: X)
 RL.GAMEPAD_BUTTON_RIGHT_FACE_RIGHT=6
+---Gamepad right button down (i.e. PS3: Cross, Xbox: A)
 RL.GAMEPAD_BUTTON_RIGHT_FACE_DOWN=7
+---Gamepad right button left (i.e. PS3: Circle, Xbox: B)
 RL.GAMEPAD_BUTTON_RIGHT_FACE_LEFT=8
+---Gamepad top/back trigger left (first), it could be a trailing button
 RL.GAMEPAD_BUTTON_LEFT_TRIGGER_1=9
+---Gamepad top/back trigger left (second), it could be a trailing button
 RL.GAMEPAD_BUTTON_LEFT_TRIGGER_2=10
+---Gamepad top/back trigger right (one), it could be a trailing button
 RL.GAMEPAD_BUTTON_RIGHT_TRIGGER_1=11
+---Gamepad top/back trigger right (second), it could be a trailing button
 RL.GAMEPAD_BUTTON_RIGHT_TRIGGER_2=12
+---Gamepad center buttons, left one (i.e. PS3: Select)
 RL.GAMEPAD_BUTTON_MIDDLE_LEFT=13
+---Gamepad center buttons, middle one (i.e. PS3: PS, Xbox: XBOX)
 RL.GAMEPAD_BUTTON_MIDDLE=14
+---Gamepad center buttons, right one (i.e. PS3: Start)
 RL.GAMEPAD_BUTTON_MIDDLE_RIGHT=15
+---Gamepad joystick pressed button left
 RL.GAMEPAD_BUTTON_LEFT_THUMB=16
+---Gamepad joystick pressed button right
 RL.GAMEPAD_BUTTON_RIGHT_THUMB=17
 
 -- Globals - GamepadAxis
 
+---Gamepad left stick X axis
 RL.GAMEPAD_AXIS_LEFT_X=0
+---Gamepad left stick Y axis
 RL.GAMEPAD_AXIS_LEFT_Y=1
+---Gamepad right stick X axis
 RL.GAMEPAD_AXIS_RIGHT_X=2
+---Gamepad right stick Y axis
 RL.GAMEPAD_AXIS_RIGHT_Y=3
+---Gamepad back trigger left, pressure level: [1..-1]
 RL.GAMEPAD_AXIS_LEFT_TRIGGER=4
+---Gamepad back trigger right, pressure level: [1..-1]
 RL.GAMEPAD_AXIS_RIGHT_TRIGGER=5
 
 -- Globals - MapTypes
 
+---Albedo material (same as: MATERIAL_MAP_DIFFUSE)
 RL.MATERIAL_MAP_ALBEDO=0
+---Metalness material (same as: MATERIAL_MAP_SPECULAR)
 RL.MATERIAL_MAP_METALNESS=1
+---Normal material
 RL.MATERIAL_MAP_NORMAL=2
+---Roughness material
 RL.MATERIAL_MAP_ROUGHNESS=3
+---Ambient occlusion material
 RL.MATERIAL_MAP_OCCLUSION=4
+---Emission material
 RL.MATERIAL_MAP_EMISSION=5
+---Heightmap material
 RL.MATERIAL_MAP_HEIGHT=6
+---Cubemap material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
 RL.MATERIAL_MAP_CUBEMAP=7
+---Irradiance material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
 RL.MATERIAL_MAP_IRRADIANCE=8
+---Prefilter material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
 RL.MATERIAL_MAP_PREFILTER=9
+---Brdf material
 RL.MATERIAL_MAP_BRDF=10
+---Diffuce material (same as: MATERIAL_MAP_ALBEDO)
 RL.MATERIAL_MAP_DIFFUSE=0
+---Specular material (same as: MATERIAL_MAP_METALNESS)
 RL.MATERIAL_MAP_SPECULAR=1
 
 -- Globals - ShaderLocationIndex
 
+---Shader location: vertex attribute: position
 RL.SHADER_LOC_VERTEX_POSITION=0
+---Shader location: vertex attribute: texcoord01
 RL.SHADER_LOC_VERTEX_TEXCOORD01=1
+---Shader location: vertex attribute: texcoord02
 RL.SHADER_LOC_VERTEX_TEXCOORD02=2
+---Shader location: vertex attribute: normal
 RL.SHADER_LOC_VERTEX_NORMAL=3
+---Shader location: vertex attribute: tangent
 RL.SHADER_LOC_VERTEX_TANGENT=4
+---Shader location: vertex attribute: color
 RL.SHADER_LOC_VERTEX_COLOR=5
+---Shader location: matrix uniform: model-view-projection
 RL.SHADER_LOC_MATRIX_MVP=6
+---Shader location: matrix uniform: view (camera transform)
 RL.SHADER_LOC_MATRIX_VIEW=7
+---Shader location: matrix uniform: projection
 RL.SHADER_LOC_MATRIX_PROJECTION=8
+---Shader location: matrix uniform: model (transform)
 RL.SHADER_LOC_MATRIX_MODEL=9
+---Shader location: matrix uniform: normal
 RL.SHADER_LOC_MATRIX_NORMAL=10
+---Shader location: vector uniform: view
 RL.SHADER_LOC_VECTOR_VIEW=11
+---Shader location: vector uniform: diffuse color
 RL.SHADER_LOC_COLOR_DIFFUSE=12
+---Shader location: vector uniform: specular color
 RL.SHADER_LOC_COLOR_SPECULAR=13
+---Shader location: vector uniform: ambient color
 RL.SHADER_LOC_COLOR_AMBIENT=14
+---Shader location: sampler2d texture: albedo (same as: SHADER_LOC_MAP_DIFFUSE)
 RL.SHADER_LOC_MAP_ALBEDO=15
+---Shader location: sampler2d texture: metalness (same as: SHADER_LOC_MAP_SPECULAR)
 RL.SHADER_LOC_MAP_METALNESS=16
+---Shader location: sampler2d texture: normal
 RL.SHADER_LOC_MAP_NORMAL=17
+---Shader location: sampler2d texture: roughness
 RL.SHADER_LOC_MAP_ROUGHNESS=18
+---Shader location: sampler2d texture: occlusion
 RL.SHADER_LOC_MAP_OCCLUSION=19
+---Shader location: sampler2d texture: emission
 RL.SHADER_LOC_MAP_EMISSION=20
+---Shader location: sampler2d texture: height
 RL.SHADER_LOC_MAP_HEIGHT=21
+---Shader location: samplerCube texture: cubemap
 RL.SHADER_LOC_MAP_CUBEMAP=22
+---Shader location: samplerCube texture: irradiance
 RL.SHADER_LOC_MAP_IRRADIANCE=23
+---Shader location: samplerCube texture: prefilter
 RL.SHADER_LOC_MAP_PREFILTER=24
+---Shader location: sampler2d texture: brdf
 RL.SHADER_LOC_MAP_BRDF=25
+---Shader location: sampler2d texture: diffuce (same as: SHADER_LOC_MAP_ALBEDO)
 RL.SHADER_LOC_MAP_DIFFUSE=15
+---Shader location: sampler2d texture: specular (same as: SHADER_LOC_MAP_METALNESS)
 RL.SHADER_LOC_MAP_SPECULAR=16
 
 -- Globals - ShaderUniformDataType
 
+---Shader uniform type: float
 RL.SHADER_UNIFORM_FLOAT=0
+---Shader uniform type: vec2 (2 float)
 RL.SHADER_UNIFORM_VEC2=1
+---Shader uniform type: vec3 (3 float)
 RL.SHADER_UNIFORM_VEC3=2
+---Shader uniform type: vec4 (4 float)
 RL.SHADER_UNIFORM_VEC4=3
+---Shader uniform type: int
 RL.SHADER_UNIFORM_INT=4
+---Shader uniform type: ivec2 (2 int)
 RL.SHADER_UNIFORM_IVEC2=5
+---Shader uniform type: ivec3 (3 int)
 RL.SHADER_UNIFORM_IVEC3=6
+---Shader uniform type: ivec4 (4 int)
 RL.SHADER_UNIFORM_IVEC4=7
+---Shader uniform type: sampler2d
 RL.SHADER_UNIFORM_SAMPLER2D=8
 
 -- Globals - ShaderAttributeDataTypes
 
+---Shader attribute type: float
 RL.SHADER_ATTRIB_FLOAT=0
+---Shader attribute type: vec2 (2 float)
 RL.SHADER_ATTRIB_VEC2=1
+---Shader attribute type: vec3 (3 float)
 RL.SHADER_ATTRIB_VEC3=2
+---Shader attribute type: vec4 (4 float)
 RL.SHADER_ATTRIB_VEC4=3
 
 -- Globals - PixelFormats
 
+---8 bit per pixel (no alpha)
 RL.PIXELFORMAT_UNCOMPRESSED_GRAYSCALE=1
+---8*2 bpp (2 channels)
 RL.PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA=2
+---16 bpp
 RL.PIXELFORMAT_UNCOMPRESSED_R5G6B5=3
+---24 bpp
 RL.PIXELFORMAT_UNCOMPRESSED_R8G8B8=4
+---16 bpp (1 bit alpha)
 RL.PIXELFORMAT_UNCOMPRESSED_R5G5B5A1=5
+---16 bpp (4 bit alpha)
 RL.PIXELFORMAT_UNCOMPRESSED_R4G4B4A4=6
+---32 bpp
 RL.PIXELFORMAT_UNCOMPRESSED_R8G8B8A8=7
+---32 bpp (1 channel - float)
 RL.PIXELFORMAT_UNCOMPRESSED_R32=8
+---32*3 bpp (3 channels - float)
 RL.PIXELFORMAT_UNCOMPRESSED_R32G32B32=9
+---32*4 bpp (4 channels - float)
 RL.PIXELFORMAT_UNCOMPRESSED_R32G32B32A32=10
+---4 bpp (no alpha)
 RL.PIXELFORMAT_COMPRESSED_DXT1_RGB=11
+---4 bpp (1 bit alpha)
 RL.PIXELFORMAT_COMPRESSED_DXT1_RGBA=12
+---8 bpp
 RL.PIXELFORMAT_COMPRESSED_DXT3_RGBA=13
+---8 bpp
 RL.PIXELFORMAT_COMPRESSED_DXT5_RGBA=14
+---4 bpp
 RL.PIXELFORMAT_COMPRESSED_ETC1_RGB=15
+---4 bpp
 RL.PIXELFORMAT_COMPRESSED_ETC2_RGB=16
+---8 bpp
 RL.PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA=17
+---4 bpp
 RL.PIXELFORMAT_COMPRESSED_PVRT_RGB=18
+---4 bpp
 RL.PIXELFORMAT_COMPRESSED_PVRT_RGBA=19
+---8 bpp
 RL.PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA=20
+---2 bpp
 RL.PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA=21
 
 -- Globals - TextureFilters
 
+---No filter, just pixel approximation
 RL.TEXTURE_FILTER_POINT=0
+---Linear filtering
 RL.TEXTURE_FILTER_BILINEAR=1
+---Trilinear filtering (linear with mipmaps)
 RL.TEXTURE_FILTER_TRILINEAR=2
+---Anisotropic filtering 4x
 RL.TEXTURE_FILTER_ANISOTROPIC_4X=3
+---Anisotropic filtering 8x
 RL.TEXTURE_FILTER_ANISOTROPIC_8X=4
+---Anisotropic filtering 16x
 RL.TEXTURE_FILTER_ANISOTROPIC_16X=5
 
 -- Globals - TextureWrap
 
+---Repeats texture in tiled mode
 RL.TEXTURE_WRAP_REPEAT=0
+---Clamps texture to edge pixel in tiled mode
 RL.TEXTURE_WRAP_CLAMP=1
+---Mirrors and repeats the texture in tiled mode
 RL.TEXTURE_WRAP_MIRROR_REPEAT=2
+---Mirrors and clamps to border the texture in tiled mode
 RL.TEXTURE_WRAP_MIRROR_CLAMP=3
 
 -- Globals - CubemapLayout
 
+---Automatically detect layout type
 RL.CUBEMAP_LAYOUT_AUTO_DETECT=0
+---Layout is defined by a vertical line with faces
 RL.CUBEMAP_LAYOUT_LINE_VERTICAL=1
+---Layout is defined by a horizontal line with faces
 RL.CUBEMAP_LAYOUT_LINE_HORIZONTAL=2
+---Layout is defined by a 3x4 cross with cubemap faces
 RL.CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR=3
+---Layout is defined by a 4x3 cross with cubemap faces
 RL.CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE=4
+---Layout is defined by a panorama image (equirrectangular map)
 RL.CUBEMAP_LAYOUT_PANORAMA=5
 
 -- Globals - FontType
 
+---Default font generation, anti-aliased
 RL.FONT_DEFAULT=0
+---Bitmap font generation, no anti-aliasing
 RL.FONT_BITMAP=1
+---SDF font generation, requires external shader
 RL.FONT_SDF=2
 
 -- Globals - BlendModes
 
+---Blend textures considering alpha (default)
 RL.BLEND_ALPHA=0
+---Blend textures adding colors
 RL.BLEND_ADDITIVE=1
+---Blend textures multiplying colors
 RL.BLEND_MULTIPLIED=2
+---Blend textures adding colors (alternative)
 RL.BLEND_ADD_COLORS=3
+---Blend textures subtracting colors (alternative)
 RL.BLEND_SUBTRACT_COLORS=4
+---Blend premultiplied textures considering alpha
 RL.BLEND_ALPHA_PREMULTIPLY=5
+---Blend textures using custom src/dst factors (use rlSetBlendFactors())
 RL.BLEND_CUSTOM=6
+---Blend textures using custom rgb/alpha separate src/dst factors (use rlSetBlendFactorsSeparate())
 RL.BLEND_CUSTOM_SEPARATE=7
 
 -- Globals - Gesture
 
+---No gesture
 RL.GESTURE_NONE=0
+---Tap gesture
 RL.GESTURE_TAP=1
+---Double tap gesture
 RL.GESTURE_DOUBLETAP=2
+---Hold gesture
 RL.GESTURE_HOLD=4
+---Drag gesture
 RL.GESTURE_DRAG=8
+---Swipe right gesture
 RL.GESTURE_SWIPE_RIGHT=16
+---Swipe left gesture
 RL.GESTURE_SWIPE_LEFT=32
+---Swipe up gesture
 RL.GESTURE_SWIPE_UP=64
+---Swipe down gesture
 RL.GESTURE_SWIPE_DOWN=128
+---Pinch in gesture
 RL.GESTURE_PINCH_IN=256
+---Pinch out gesture
 RL.GESTURE_PINCH_OUT=512
 
 -- Globals - CameraMode
 
+---Custom camera
 RL.CAMERA_CUSTOM=0
+---Free camera
 RL.CAMERA_FREE=1
+---Orbital camera
 RL.CAMERA_ORBITAL=2
+---First person camera
 RL.CAMERA_FIRST_PERSON=3
+---Third person camera
 RL.CAMERA_THIRD_PERSON=4
 
 -- Globals - CameraProjections
 
+---Perspective projection
 RL.CAMERA_PERSPECTIVE=0
+---Orthographic projection
 RL.CAMERA_ORTHOGRAPHIC=1
 
 -- Globals - N-patchLayout
 
+---Npatch layout: 3x3 tiles
 RL.NPATCH_NINE_PATCH=0
+---Npatch layout: 1x3 tiles
 RL.NPATCH_THREE_PATCH_VERTICAL=1
+---Npatch layout: 3x1 tiles
 RL.NPATCH_THREE_PATCH_HORIZONTAL=2
 
 -- Globals - Colors
 
+---Light Gray
 RL.LIGHTGRAY={200,200,200,255}
+---Gray
 RL.GRAY={130,130,130,255}
+---Dark Gray
 RL.DARKGRAY={80,80,80,255}
+---Yellow
 RL.YELLOW={253,249,0,255}
+---Gold
 RL.GOLD={255,203,0,255}
+---Orange
 RL.ORANGE={255,161,0,255}
+---Pink
 RL.PINK={255,109,194,255}
+---Red
 RL.RED={230,41,55,255}
+---Maroon
 RL.MAROON={190,33,55,255}
+---Green
 RL.GREEN={0,228,48,255}
+---Lime
 RL.LIME={0,158,47,255}
+---Dark Green
 RL.DARKGREEN={0,117,44,255}
+---Sky Blue
 RL.SKYBLUE={102,191,255,255}
+---Blue
 RL.BLUE={0,121,241,255}
+---Dark Blue
 RL.DARKBLUE={0,82,172,255}
+---Purple
 RL.PURPLE={200,122,255,255}
+---Violet
 RL.VIOLET={135,60,190,255}
+---Dark Purple
 RL.DARKPURPLE={112,31,126,255}
+---Beige
 RL.BEIGE={211,176,131,255}
+---Brown
 RL.BROWN={127,106,79,255}
+---Dark Brown
 RL.DARKBROWN={76,63,47,255}
+---White
 RL.WHITE={255,255,255,255}
+---Black
 RL.BLACK={0,0,0,255}
+---Blank (Transparent)
 RL.BLANK={0,0,0,0}
+---Magenta
 RL.MAGENTA={255,0,255,255}
+---My own White (raylib logo)
 RL.RAYWHITE={245,245,245,255}
 
 -- Globals - Math
 
+---Pi
 RL.PI=3.1415927410126
+---Degrees to radians
 RL.DEG2RAD=0.017453292384744
+---Radians to degrees
 RL.RAD2DEG=57.295776367188
 
 -- Globals - GuiControlState
@@ -435,16 +764,21 @@ RL.TEXT_ALIGN_RIGHT=2
 -- Globals - GuiControl
 
 RL.DEFAULT=0
+---Used also for: LABELBUTTON
 RL.LABEL=1
 RL.BUTTON=2
+---Used also for: TOGGLEGROUP
 RL.TOGGLE=3
+---Used also for: SLIDERBAR
 RL.SLIDER=4
 RL.PROGRESSBAR=5
 RL.CHECKBOX=6
 RL.COMBOBOX=7
 RL.DROPDOWNBOX=8
+---Used also for: TEXTBOXMULTI
 RL.TEXTBOX=9
 RL.VALUEBOX=10
+---Uses: BUTTON, VALUEBOX
 RL.SPINNER=11
 RL.LISTVIEW=12
 RL.COLORPICKER=13
@@ -472,28 +806,37 @@ RL.RESERVED=15
 
 -- Globals - GuiDefaultProperty
 
+---Text size (glyphs max height)
 RL.TEXT_SIZE=16
+---Text spacing between glyphs
 RL.TEXT_SPACING=17
+---Line control color
 RL.LINE_COLOR=18
+---Background color
 RL.BACKGROUND_COLOR=19
 
 -- Globals - GuiToggleProperty
 
+---ToggleGroup separation between toggles
 RL.GROUP_PADDING=16
 
 -- Globals - GuiSliderProperty
 
+---Slider size of internal bar
 RL.SLIDER_WIDTH=16
+---Slider/SliderBar internal bar padding
 RL.SLIDER_PADDING=17
 
 -- Globals - GuiProgressBarProperty
 
+---ProgressBar internal padding
 RL.PROGRESS_PADDING=16
 
 -- Globals - GuiScrollBarProperty
 
 RL.ARROWS_SIZE=16
 RL.ARROWS_VISIBLE=17
+---(SLIDERBAR, SLIDER_PADDING)
 RL.SCROLL_SLIDER_PADDING=18
 RL.SCROLL_SLIDER_SIZE=19
 RL.SCROLL_PADDING=20
@@ -501,41 +844,58 @@ RL.SCROLL_SPEED=21
 
 -- Globals - GuiCheckBoxProperty
 
+---CheckBox internal check padding
 RL.CHECK_PADDING=16
 
 -- Globals - GuiComboBoxProperty
 
+---ComboBox right button width
 RL.COMBO_BUTTON_WIDTH=16
+---ComboBox button separation
 RL.COMBO_BUTTON_SPACING=17
 
 -- Globals - GuiDropdownBoxProperty
 
+---DropdownBox arrow separation from border and items
 RL.ARROW_PADDING=16
+---DropdownBox items separation
 RL.DROPDOWN_ITEMS_SPACING=17
 
 -- Globals - GuiTextBoxProperty
 
+---TextBox/TextBoxMulti/ValueBox/Spinner inner text padding
 RL.TEXT_INNER_PADDING=16
+---TextBoxMulti lines separation
 RL.TEXT_LINES_SPACING=17
 
 -- Globals - GuiSpinnerProperty
 
+---Spinner left/right buttons width
 RL.SPIN_BUTTON_WIDTH=16
+---Spinner buttons separation
 RL.SPIN_BUTTON_SPACING=17
 
 -- Globals - GuiListViewProperty
 
+---ListView items height
 RL.LIST_ITEMS_HEIGHT=16
+---ListView items separation
 RL.LIST_ITEMS_SPACING=17
+---ListView scrollbar size (usually width)
 RL.SCROLLBAR_WIDTH=18
+---ListView scrollbar side (0-left, 1-right)
 RL.SCROLLBAR_SIDE=19
 
 -- Globals - GuiColorPickerProperty
 
 RL.COLOR_SELECTOR_SIZE=16
+---ColorPicker right hue bar width
 RL.HUEBAR_WIDTH=17
+---ColorPicker right hue bar separation from panel
 RL.HUEBAR_PADDING=18
+---ColorPicker right hue bar selector height
 RL.HUEBAR_SELECTOR_HEIGHT=19
+---ColorPicker right hue bar selector overflow
 RL.HUEBAR_SELECTOR_OVERFLOW=20
 
 -- Globals - LightType
@@ -545,142 +905,237 @@ RL.LIGHT_POINT=1
 
 -- Globals - RLGL
 
+---Default internal render batch elements limits
 RL.RL_DEFAULT_BATCH_BUFFER_ELEMENTS=8192
+---Default number of batch buffers (multi-buffering)
 RL.RL_DEFAULT_BATCH_BUFFERS=1
+---Default number of batch draw calls (by state changes: mode, texture)
 RL.RL_DEFAULT_BATCH_DRAWCALLS=256
+---Maximum number of textures units that can be activated on batch drawing (SetShaderValueTexture())
 RL.RL_DEFAULT_BATCH_MAX_TEXTURE_UNITS=4
 
 -- Globals - RLGL
 
+---Maximum size of internal Matrix stack
 RL.RL_MAX_MATRIX_STACK_SIZE=32
 
 -- Globals - RLGL
 
+---Maximum number of shader locations supported
 RL.RL_MAX_SHADER_LOCATIONS=32
 
 -- Globals - RLGL
 
+---Default projection matrix near cull distance
 RL.RL_CULL_DISTANCE_NEAR=0.01
+---Default projection matrix far cull distance
 RL.RL_CULL_DISTANCE_FAR=1000.0
 
 -- Globals - RLGL
 
+---GL_TEXTURE_WRAP_S
 RL.RL_TEXTURE_WRAP_S=10242
+---GL_TEXTURE_WRAP_T
 RL.RL_TEXTURE_WRAP_T=10243
+---GL_TEXTURE_MAG_FILTER
 RL.RL_TEXTURE_MAG_FILTER=10240
+---GL_TEXTURE_MIN_FILTER
 RL.RL_TEXTURE_MIN_FILTER=10241
+---GL_NEAREST
 RL.RL_TEXTURE_FILTER_NEAREST=9728
+---GL_LINEAR
 RL.RL_TEXTURE_FILTER_LINEAR=9729
+---GL_NEAREST_MIPMAP_NEAREST
 RL.RL_TEXTURE_FILTER_MIP_NEAREST=9984
+---GL_NEAREST_MIPMAP_LINEAR
 RL.RL_TEXTURE_FILTER_NEAREST_MIP_LINEAR=9986
+---GL_LINEAR_MIPMAP_NEAREST
 RL.RL_TEXTURE_FILTER_LINEAR_MIP_NEAREST=9985
+---GL_LINEAR_MIPMAP_LINEAR
 RL.RL_TEXTURE_FILTER_MIP_LINEAR=9987
+---Anisotropic filter (custom identifier)
 RL.RL_TEXTURE_FILTER_ANISOTROPIC=12288
+---Texture mipmap bias, percentage ratio (custom identifier)
 RL.RL_TEXTURE_MIPMAP_BIAS_RATIO=16384
+---GL_REPEAT
 RL.RL_TEXTURE_WRAP_REPEAT=10497
+---GL_CLAMP_TO_EDGE
 RL.RL_TEXTURE_WRAP_CLAMP=33071
+---GL_MIRRORED_REPEAT
 RL.RL_TEXTURE_WRAP_MIRROR_REPEAT=33648
+---GL_MIRROR_CLAMP_EXT
 RL.RL_TEXTURE_WRAP_MIRROR_CLAMP=34626
 
 -- Globals - RLGL
 
+---GL_MODELVIEW
 RL.RL_MODELVIEW=5888
+---GL_PROJECTION
 RL.RL_PROJECTION=5889
+---GL_TEXTURE
 RL.RL_TEXTURE=5890
 
 -- Globals - RLGL
 
+---GL_LINES
 RL.RL_LINES=1
+---GL_TRIANGLES
 RL.RL_TRIANGLES=4
+---GL_QUADS
 RL.RL_QUADS=7
 
 -- Globals - RLGL
 
+---GL_UNSIGNED_BYTE
 RL.RL_UNSIGNED_BYTE=5121
+---GL_FLOAT
 RL.RL_FLOAT=5126
 
 -- Globals - RLGL
 
+---GL_STREAM_DRAW
 RL.RL_STREAM_DRAW=35040
+---GL_STREAM_READ
 RL.RL_STREAM_READ=35041
+---GL_STREAM_COPY
 RL.RL_STREAM_COPY=35042
+---GL_STATIC_DRAW
 RL.RL_STATIC_DRAW=35044
+---GL_STATIC_READ
 RL.RL_STATIC_READ=35045
+---GL_STATIC_COPY
 RL.RL_STATIC_COPY=35046
+---GL_DYNAMIC_DRAW
 RL.RL_DYNAMIC_DRAW=35048
+---GL_DYNAMIC_READ
 RL.RL_DYNAMIC_READ=35049
+---GL_DYNAMIC_COPY
 RL.RL_DYNAMIC_COPY=35050
 
 -- Globals - RLGL
 
+---GL_FRAGMENT_SHADER
 RL.RL_FRAGMENT_SHADER=35632
+---GL_VERTEX_SHADER
 RL.RL_VERTEX_SHADER=35633
+---GL_COMPUTE_SHADER
 RL.RL_COMPUTE_SHADER=37305
 
 -- Globals - RLGL
 
+---GL_ZERO
 RL.RL_ZERO=0
+---GL_ONE
 RL.RL_ONE=1
+---GL_SRC_COLOR
 RL.RL_SRC_COLOR=768
+---GL_ONE_MINUS_SRC_COLOR
 RL.RL_ONE_MINUS_SRC_COLOR=769
+---GL_SRC_ALPHA
 RL.RL_SRC_ALPHA=770
+---GL_ONE_MINUS_SRC_ALPHA
 RL.RL_ONE_MINUS_SRC_ALPHA=771
+---GL_DST_ALPHA
 RL.RL_DST_ALPHA=772
+---GL_ONE_MINUS_DST_ALPHA
 RL.RL_ONE_MINUS_DST_ALPHA=773
+---GL_DST_COLOR
 RL.RL_DST_COLOR=774
+---GL_ONE_MINUS_DST_COLOR
 RL.RL_ONE_MINUS_DST_COLOR=775
+---GL_SRC_ALPHA_SATURATE
 RL.RL_SRC_ALPHA_SATURATE=776
+---GL_CONSTANT_COLOR
 RL.RL_CONSTANT_COLOR=32769
+---GL_ONE_MINUS_CONSTANT_COLOR
 RL.RL_ONE_MINUS_CONSTANT_COLOR=32770
+---GL_CONSTANT_ALPHA
 RL.RL_CONSTANT_ALPHA=32771
+---GL_ONE_MINUS_CONSTANT_ALPHA
 RL.RL_ONE_MINUS_CONSTANT_ALPHA=32772
 
 -- Globals - RLGL
 
+---GL_FUNC_ADD
 RL.RL_FUNC_ADD=32774
+---GL_MIN
 RL.RL_MIN=32775
+---GL_MAX
 RL.RL_MAX=32776
+---GL_FUNC_SUBTRACT
 RL.RL_FUNC_SUBTRACT=32778
+---GL_FUNC_REVERSE_SUBTRACT
 RL.RL_FUNC_REVERSE_SUBTRACT=32779
+---GL_BLEND_EQUATION
 RL.RL_BLEND_EQUATION=32777
+---GL_BLEND_EQUATION_RGB // (Same as BLEND_EQUATION)
 RL.RL_BLEND_EQUATION_RGB=32777
+---GL_BLEND_EQUATION_ALPHA
 RL.RL_BLEND_EQUATION_ALPHA=34877
+---GL_BLEND_DST_RGB
 RL.RL_BLEND_DST_RGB=32968
+---GL_BLEND_SRC_RGB
 RL.RL_BLEND_SRC_RGB=32969
+---GL_BLEND_DST_ALPHA
 RL.RL_BLEND_DST_ALPHA=32970
+---GL_BLEND_SRC_ALPHA
 RL.RL_BLEND_SRC_ALPHA=32971
+---GL_BLEND_COLOR
 RL.RL_BLEND_COLOR=32773
 
 -- Globals - RLGL
 
+---OpenGL 1.1
 RL.RL_OPENGL_11=1
+---OpenGL 2.1 (GLSL 120)
 RL.RL_OPENGL_21=2
+---OpenGL 3.3 (GLSL 330)
 RL.RL_OPENGL_33=3
+---OpenGL 4.3 (using GLSL 330)
 RL.RL_OPENGL_43=4
+---OpenGL ES 2.0 (GLSL 100)
 RL.RL_OPENGL_ES_20=5
 
 -- Globals - RLGL
 
+---Framebuffer attachment type: color 0
 RL.RL_ATTACHMENT_COLOR_CHANNEL0=0
+---Framebuffer attachment type: color 1
 RL.RL_ATTACHMENT_COLOR_CHANNEL1=1
+---Framebuffer attachment type: color 2
 RL.RL_ATTACHMENT_COLOR_CHANNEL2=2
+---Framebuffer attachment type: color 3
 RL.RL_ATTACHMENT_COLOR_CHANNEL3=3
+---Framebuffer attachment type: color 4
 RL.RL_ATTACHMENT_COLOR_CHANNEL4=4
+---Framebuffer attachment type: color 5
 RL.RL_ATTACHMENT_COLOR_CHANNEL5=5
+---Framebuffer attachment type: color 6
 RL.RL_ATTACHMENT_COLOR_CHANNEL6=6
+---Framebuffer attachment type: color 7
 RL.RL_ATTACHMENT_COLOR_CHANNEL7=7
+---Framebuffer attachment type: depth
 RL.RL_ATTACHMENT_DEPTH=100
+---Framebuffer attachment type: stencil
 RL.RL_ATTACHMENT_STENCIL=200
 
 -- Globals - RLGL
 
+---Framebuffer texture attachment type: cubemap, +X side
 RL.RL_ATTACHMENT_CUBEMAP_POSITIVE_X=0
+---Framebuffer texture attachment type: cubemap, -X side
 RL.RL_ATTACHMENT_CUBEMAP_NEGATIVE_X=1
+---Framebuffer texture attachment type: cubemap, +Y side
 RL.RL_ATTACHMENT_CUBEMAP_POSITIVE_Y=2
+---Framebuffer texture attachment type: cubemap, -Y side
 RL.RL_ATTACHMENT_CUBEMAP_NEGATIVE_Y=3
+---Framebuffer texture attachment type: cubemap, +Z side
 RL.RL_ATTACHMENT_CUBEMAP_POSITIVE_Z=4
+---Framebuffer texture attachment type: cubemap, -Z side
 RL.RL_ATTACHMENT_CUBEMAP_NEGATIVE_Z=5
+---Framebuffer texture attachment type: texture2d
 RL.RL_ATTACHMENT_TEXTURE2D=100
+---Framebuffer texture attachment type: renderbuffer
 RL.RL_ATTACHMENT_RENDERBUFFER=200
 
 -- Globals - RLGL
@@ -698,32 +1153,50 @@ RL.GL_LINEAR=9729
 
 -- Globals - GLFW
 
+---The key or mouse button was released
 RL.GLFW_RELEASE=0
+---The key or mouse button was pressed
 RL.GLFW_PRESS=1
+---The key was held down until it repeated
 RL.GLFW_REPEAT=2
 
 -- Globals - CBuffer
 
+---C type char
 RL.BUFFER_UNSIGNED_CHAR=0
+---C type short
 RL.BUFFER_UNSIGNED_SHORT=1
+---C type int
 RL.BUFFER_UNSIGNED_INT=2
+---C type float
 RL.BUFFER_FLOAT=3
 
 -- Globals - Window
 
+---GLFW event window size changed
 RL.EVENT_WINDOW_SIZE=0
+---GLFW event window maximize
 RL.EVENT_WINDOW_MAXIMIZE=1
+---GLFW event window iconify
 RL.EVENT_WINDOW_ICONYFY=2
+---GLFW event window focus
 RL.EVENT_WINDOW_FOCUS=3
+---GLFW event window drop
 RL.EVENT_WINDOW_DROP=4
 
 -- Globals - Input
 
+---GLFW event keyboard key
 RL.EVENT_KEY=5
+---GLFW event Unicode character
 RL.EVENT_CHAR=6
+---GLFW event mouse button
 RL.EVENT_MOUSE_BUTTON=7
+---GLFW event cursor position
 RL.EVENT_MOUSE_CURSOR_POS=8
+---GLFW event mouse scroll
 RL.EVENT_MOUSE_SCROLL=9
+---GLFW event cursor enter/leave
 RL.EVENT_CURSOR_ENTER=10
 -- Core - Window
 

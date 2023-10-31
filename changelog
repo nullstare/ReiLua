@@ -15,6 +15,7 @@ KEY CHANGES:
 	- ADDED: GlyphInfo type.
 	- ADDED: DrawTextEx.
 	- CHANGED: DrawText is now DrawTextEx like in Raylib.
+	- ADDED: Global variable descriptions for API.
 
 DETAILED CHANGES:
 	- CHANGED: GenImageColor now takes Vector2 as size.

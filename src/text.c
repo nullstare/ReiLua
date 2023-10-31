@@ -52,7 +52,7 @@ int ltextLoadFontEx( lua_State *L ) {
 
 	if ( FileExists( luaL_checkstring( L, 1 ) ) ) {
 		if ( lua_istable( L, 3 ) ) {
-			int glyphCount = uluaGetTableLenIndex( L, 3 );
+			int glyphCount = uluaGetTableLen( L, 3 );
 			int fontChars[ glyphCount ];
 		
 			int t = lua_gettop( L );
@@ -88,7 +88,7 @@ Load font from Image ( XNA style)
 */
 int ltextLoadFontFromImage( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Color key = uluaGetColorIndex( L, 2 );
+	Color key = uluaGetColor( L, 2 );
 	int firstChar = luaL_checkinteger( L, 3 );
 
 	uluaPushFont( L, LoadFontFromImage( *image, key, firstChar ) );
@@ -134,7 +134,7 @@ int ltextUnloadFont( lua_State *L ) {
 Draw current FPS
 */
 int ltextDrawFPS( lua_State *L ) {
-	Vector2 pos = uluaGetVector2Index( L, 1 );
+	Vector2 pos = uluaGetVector2( L, 1 );
 
 	DrawFPS( pos.x, pos.y );
 
@@ -147,9 +147,9 @@ int ltextDrawFPS( lua_State *L ) {
 Draw text (using default font)
 */
 int ltextDrawText( lua_State *L ) {
-	Vector2 position = uluaGetVector2Index( L, 2 );
+	Vector2 position = uluaGetVector2( L, 2 );
 	float fontSize = luaL_checknumber( L, 3 );
-	Color tint = uluaGetColorIndex( L, 4 );
+	Color tint = uluaGetColor( L, 4 );
 
 	DrawText( luaL_checkstring( L, 1 ), position.x, position.y, fontSize, tint );
 
@@ -163,10 +163,10 @@ Draw text using font and additional parameters
 */
 int ltextDrawTextEx( lua_State *L ) {
 	Font *font = uluaGetFont( L, 1 );
-	Vector2 position = uluaGetVector2Index( L, 3 );
+	Vector2 position = uluaGetVector2( L, 3 );
 	float fontSize = luaL_checknumber( L, 4 );
 	float spacing = luaL_checknumber( L, 5 );
-	Color tint = uluaGetColorIndex( L, 6 );
+	Color tint = uluaGetColor( L, 6 );
 
 	DrawTextEx( *font, luaL_checkstring( L, 2 ), position, fontSize, spacing, tint );
 
@@ -180,12 +180,12 @@ Draw text using Font and pro parameters (rotation)
 */
 int ltextDrawTextPro( lua_State *L ) {
 	Font *font = uluaGetFont( L, 1 );
-	Vector2 position = uluaGetVector2Index( L, 3 );
-	Vector2 origin = uluaGetVector2Index( L, 4 );
+	Vector2 position = uluaGetVector2( L, 3 );
+	Vector2 origin = uluaGetVector2( L, 4 );
 	float rotation = luaL_checknumber( L, 5 );
 	float fontSize = luaL_checknumber( L, 6 );
 	float spacing = luaL_checknumber( L, 7 );
-	Color tint = uluaGetColorIndex( L, 8 );
+	Color tint = uluaGetColor( L, 8 );
 
 	DrawTextPro( *font, luaL_checkstring( L, 2 ), position, origin, rotation, fontSize, spacing, tint );
 
@@ -200,9 +200,9 @@ Draw one character (codepoint)
 int ltextDrawTextCodepoint( lua_State *L ) {
 	Font *font = uluaGetFont( L, 1 );
 	int codepoint = luaL_checkinteger( L, 2 );
-	Vector2 position = uluaGetVector2Index( L, 3 );
+	Vector2 position = uluaGetVector2( L, 3 );
 	float fontSize = luaL_checknumber( L, 4 );
-	Color tint = uluaGetColorIndex( L, 5 );
+	Color tint = uluaGetColor( L, 5 );
 
 	DrawTextCodepoint( *font, codepoint, position, fontSize, tint );
 
@@ -216,12 +216,12 @@ Draw multiple character (codepoint)
 */
 int ltextDrawTextCodepoints( lua_State *L ) {
 	Font *font = uluaGetFont( L, 1 );
-	Vector2 position = uluaGetVector2Index( L, 3 );
+	Vector2 position = uluaGetVector2( L, 3 );
 	float fontSize = luaL_checknumber( L, 4 );
 	float spacing = luaL_checknumber( L, 5 );
-	Color tint = uluaGetColorIndex( L, 6 );
+	Color tint = uluaGetColor( L, 6 );
 
-	int count = uluaGetTableLenIndex( L, 2 );
+	int count = uluaGetTableLen( L, 2 );
 	int codepoints[ count ];
 
 	int t = 2;

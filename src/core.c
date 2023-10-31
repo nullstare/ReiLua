@@ -105,7 +105,7 @@ int lcoreSetWindowMonitor( lua_State *L ) {
 Set window position on screen
 */
 int lcoreSetWindowPosition( lua_State *L ) {
-	Vector2 pos = uluaGetVector2Index( L, 1 );
+	Vector2 pos = uluaGetVector2( L, 1 );
 
 	SetWindowPosition( pos.x, pos.y );
 
@@ -118,7 +118,7 @@ int lcoreSetWindowPosition( lua_State *L ) {
 Set window dimensions
 */
 int lcoreSetWindowSize( lua_State *L ) {
-	Vector2 size = uluaGetVector2Index( L, 1 );
+	Vector2 size = uluaGetVector2( L, 1 );
 
 	SetWindowSize( (int)size.x, (int)size.y );
 
@@ -157,7 +157,7 @@ int lcoreGetWindowHandle( lua_State *L ) {
 Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
 */
 int lcoreSetWindowMinSize( lua_State *L ) {
-	Vector2 size = uluaGetVector2Index( L, 1 );
+	Vector2 size = uluaGetVector2( L, 1 );
 
 	SetWindowMinSize( (int)size.x, (int)size.y );
 
@@ -297,7 +297,7 @@ int lcoreSetWindowIcon( lua_State *L ) {
 Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
 */
 int lcoreSetWindowIcons( lua_State *L ) {
-	int count = uluaGetTableLenIndex( L, 1 );
+	int count = uluaGetTableLen( L, 1 );
 	Image images[ count ];
 
 	int t = 1;
@@ -603,7 +603,7 @@ int lcoreLoadBuffer( lua_State *L ) {
 	int type = luaL_checkinteger( L, 2 );
 
 	Buffer buffer = { 0 };
-	int len = uluaGetTableLenIndex( L, 1 );
+	int len = uluaGetTableLen( L, 1 );
 
 	switch ( type ) {
 		case BUFFER_UNSIGNED_CHAR:
@@ -771,7 +771,7 @@ int lcoreIsCursorOnScreen( lua_State *L ) {
 Set background color (framebuffer clear color)
 */
 int lcoreClearBackground( lua_State *L ) {
-	Color color = uluaGetColorIndex( L, 1 );
+	Color color = uluaGetColor( L, 1 );
 
 	ClearBackground( color );
 
@@ -830,7 +830,7 @@ int lcoreEndBlendMode( lua_State *L ) {
 Begin scissor mode (define screen area for following drawing)
 */
 int lcoreBeginScissorMode( lua_State *L ) {
-	Rectangle rect = uluaGetRectangleIndex( L, 1 );
+	Rectangle rect = uluaGetRectangle( L, 1 );
 
 	BeginScissorMode( rect.x, rect.y, rect.width, rect.height );
 
@@ -914,13 +914,13 @@ int lcoreLoadShaderFromMemory( lua_State *L ) {
 	char *fs = NULL;
 
 	if ( lua_isstring( L, 1 ) ) {
-		size_t vsLen = uluaGetTableLenIndex( L, 1 ) + 1;
+		size_t vsLen = uluaGetTableLen( L, 1 ) + 1;
 
 		vs = malloc( vsLen * sizeof( char ) );
 		strcpy( vs, lua_tostring( L, 1 ) );
 	}
 	if ( lua_isstring( L, 2 ) ) {
-		size_t fsLen = uluaGetTableLenIndex( L, 2 ) + 1;
+		size_t fsLen = uluaGetTableLen( L, 2 ) + 1;
 
 		fs = malloc( fsLen * sizeof( char ) );
 		strcpy( fs, lua_tostring( L, 2 ) );
@@ -1045,7 +1045,7 @@ Set shader uniform value (matrix 4x4)
 int lcoreSetShaderValueMatrix( lua_State *L ) {
 	Shader *shader = uluaGetShader( L, 1 );
 	int locIndex = luaL_checkinteger( L, 2 );
-	Matrix mat = uluaGetMatrixIndex( L, 3 );
+	Matrix mat = uluaGetMatrix( L, 3 );
 
 	SetShaderValueMatrix( *shader, locIndex, mat );
 
@@ -1076,7 +1076,7 @@ NOTE: Even one value should be in table
 int lcoreSetShaderValue( lua_State *L ) {
 	Shader *shader = uluaGetShader( L, 1 );
 	int locIndex = luaL_checkinteger( L, 2 );
-	size_t valueCount = uluaGetTableLenIndex( L, 3 );
+	size_t valueCount = uluaGetTableLen( L, 3 );
 	int uniformType = luaL_checkinteger( L, 4 );
 
 	/* Read values. */
@@ -1118,7 +1118,7 @@ NOTE: Even one value should be in table
 int lcoreSetShaderValueV( lua_State *L ) {
 	Shader *shader = uluaGetShader( L, 1 );
 	int locIndex = luaL_checkinteger( L, 2 );
-	size_t valueCount = uluaGetTableLenIndex( L, 3 );
+	size_t valueCount = uluaGetTableLen( L, 3 );
 	int uniformType = luaL_checkinteger( L, 4 );
 	int count = luaL_checkinteger( L, 5 );
 
@@ -1527,7 +1527,7 @@ int lcoreGetMouseDelta( lua_State *L ) {
 Set mouse position XY
 */
 int lcoreSetMousePosition( lua_State *L ) {
-	Vector2 pos = uluaGetVector2Index( L, 1 );
+	Vector2 pos = uluaGetVector2( L, 1 );
 
 	SetMousePosition( pos.x, pos.y );
 
@@ -1540,7 +1540,7 @@ int lcoreSetMousePosition( lua_State *L ) {
 Set mouse offset
 */
 int lcoreSetMouseOffset( lua_State *L ) {
-	Vector2 offset = uluaGetVector2Index( L, 1 );
+	Vector2 offset = uluaGetVector2( L, 1 );
 
 	SetMouseOffset( offset.x, offset.y );
 
@@ -1553,7 +1553,7 @@ int lcoreSetMouseOffset( lua_State *L ) {
 Set mouse scaling
 */
 int lcoreSetMouseScale( lua_State *L ) {
-	Vector2 scale = uluaGetVector2Index( L, 1 );
+	Vector2 scale = uluaGetVector2( L, 1 );
 
 	SetMouseScale( scale.x, scale.y );
 
@@ -2062,7 +2062,7 @@ Set camera target (rotation and zoom origin)
 */
 int lcoreSetCamera2DTarget( lua_State *L ) {
 	Camera2D *camera = uluaGetCamera2D( L, 1 );
-	Vector2 target = uluaGetVector2Index( L, 2 );
+	Vector2 target = uluaGetVector2( L, 2 );
 
 	camera->target = target;
 
@@ -2076,7 +2076,7 @@ Set camera offset (displacement from target)
 */
 int lcoreSetCamera2DOffset( lua_State *L ) {
 	Camera2D *camera = uluaGetCamera2D( L, 1 );
-	Vector2 offset = uluaGetVector2Index( L, 2 );
+	Vector2 offset = uluaGetVector2( L, 2 );
 
 	camera->offset = offset;
 
@@ -2224,7 +2224,7 @@ Set camera position (Remember to call "RL.UpdateCamera3D()" to apply changes)
 */
 int lcoreSetCamera3DPosition( lua_State *L ) {
 	Camera3D *camera = uluaGetCamera3D( L, 1 );
-	Vector3 pos = uluaGetVector3Index( L, 2 );
+	Vector3 pos = uluaGetVector3( L, 2 );
 
 	camera->position = pos;
 
@@ -2238,7 +2238,7 @@ Set camera target it looks-at
 */
 int lcoreSetCamera3DTarget( lua_State *L ) {
 	Camera3D *camera = uluaGetCamera3D( L, 1 );
-	Vector3 target = uluaGetVector3Index( L, 2 );
+	Vector3 target = uluaGetVector3( L, 2 );
 
 	camera->target = target;
 
@@ -2252,7 +2252,7 @@ Set camera up vector (Rotation over it's axis)
 */
 int lcoreSetCamera3DUp( lua_State *L ) {
 	Camera3D *camera = uluaGetCamera3D( L, 1 );
-	Vector3 up = uluaGetVector3Index( L, 2 );
+	Vector3 up = uluaGetVector3( L, 2 );
 
 	camera->up = up;
 
@@ -2573,8 +2573,8 @@ Update camera movement, movement/rotation values should be provided by user
 */
 int lcoreUpdateCamera3DPro( lua_State *L ) {
 	Camera3D *camera = uluaGetCamera3D( L, 1 );
-	Vector3 movement = uluaGetVector3Index( L, 2 );
-	Vector3 rotation = uluaGetVector3Index( L, 3 );
+	Vector3 movement = uluaGetVector3( L, 2 );
+	Vector3 rotation = uluaGetVector3( L, 3 );
 	float zoom = luaL_checknumber( L, 4 );
 
 	UpdateCameraPro( camera, movement, rotation, zoom );
@@ -2594,7 +2594,7 @@ Get a ray trace from mouse position
 - Success return Ray
 */
 int lcoreGetMouseRay( lua_State *L ) {
-	Vector2 mousePosition = uluaGetVector2Index( L, 1 );
+	Vector2 mousePosition = uluaGetVector2( L, 1 );
 	Camera3D *camera = uluaGetCamera3D( L, 2 );
 
 	uluaPushRay( L, GetMouseRay( mousePosition, *camera ) );
@@ -2640,7 +2640,7 @@ Get the screen space position for a 3d world space position
 - Success return Vector2
 */
 int lcoreGetWorldToScreen( lua_State *L ) {
-	Vector3 position = uluaGetVector3Index( L, 1 );
+	Vector3 position = uluaGetVector3( L, 1 );
 	Camera3D *camera = uluaGetCamera3D( L, 2 );
 
 	uluaPushVector2( L, GetWorldToScreen( position, *camera ) );
@@ -2656,9 +2656,9 @@ Get size position for a 3d world space position
 - Success return Vector2
 */
 int lcoreGetWorldToScreenEx( lua_State *L ) {
-	Vector3 position = uluaGetVector3Index( L, 1 );
+	Vector3 position = uluaGetVector3( L, 1 );
 	Camera3D *camera = uluaGetCamera3D( L, 2 );
-	Vector2 size = uluaGetVector2Index( L, 3 );
+	Vector2 size = uluaGetVector2( L, 3 );
 
 	uluaPushVector2( L, GetWorldToScreenEx( position, *camera, size.x, size.y ) );
 
@@ -2673,7 +2673,7 @@ Get the screen space position for a 2d camera world space position
 - Success return Vector2
 */
 int lcoreGetWorldToScreen2D( lua_State *L ) {
-	Vector2 position = uluaGetVector2Index( L, 1 );
+	Vector2 position = uluaGetVector2( L, 1 );
 	Camera2D *camera = uluaGetCamera2D( L, 2 );
 
 	uluaPushVector2( L, GetWorldToScreen2D( position, *camera ) );
@@ -2689,7 +2689,7 @@ Get the world space position for a 2d camera screen space position
 - Success return Vector2
 */
 int lcoreGetScreenToWorld2D( lua_State *L ) {
-	Vector2 position = uluaGetVector2Index( L, 1 );
+	Vector2 position = uluaGetVector2( L, 1 );
 	Camera2D *camera = uluaGetCamera2D( L, 2 );
 
 	uluaPushVector2( L, GetScreenToWorld2D( position, *camera ) );

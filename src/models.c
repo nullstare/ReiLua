@@ -132,9 +132,9 @@ void DrawBillboardRecNoRatio( Camera camera, Texture2D texture, Rectangle source
 Draw a line in 3D world space
 */
 int lmodelsDrawLine3D( lua_State *L ) {
-	Vector3 startPos = uluaGetVector3Index( L, 1 );
-	Vector3 endPos = uluaGetVector3Index( L, 2 );
-	Color color = uluaGetColorIndex( L, 3 );
+	Vector3 startPos = uluaGetVector3( L, 1 );
+	Vector3 endPos = uluaGetVector3( L, 2 );
+	Color color = uluaGetColor( L, 3 );
 
 	DrawLine3D( startPos, endPos, color);
 
@@ -147,8 +147,8 @@ int lmodelsDrawLine3D( lua_State *L ) {
 Draw a point in 3D space, actually a small line
 */
 int lmodelsDrawPoint3D( lua_State *L ) {
-	Vector3 position = uluaGetVector3Index( L, 1 );
-	Color color = uluaGetColorIndex( L, 2 );
+	Vector3 position = uluaGetVector3( L, 1 );
+	Color color = uluaGetColor( L, 2 );
 
 	DrawPoint3D( position, color );
 
@@ -161,11 +161,11 @@ int lmodelsDrawPoint3D( lua_State *L ) {
 Draw a circle in 3D world space
 */
 int lmodelsDrawCircle3D( lua_State *L ) {
-	Vector3 center = uluaGetVector3Index( L, 1 );
+	Vector3 center = uluaGetVector3( L, 1 );
 	float radius = luaL_checknumber( L, 2 );
-	Vector3 rotationAxis = uluaGetVector3Index( L, 3 );
+	Vector3 rotationAxis = uluaGetVector3( L, 3 );
 	float rotationAngle = luaL_checknumber( L, 4 );
-	Color color = uluaGetColorIndex( L, 5 );
+	Color color = uluaGetColor( L, 5 );
 
 	DrawCircle3D( center, radius, rotationAxis, rotationAngle, color );
 
@@ -178,10 +178,10 @@ int lmodelsDrawCircle3D( lua_State *L ) {
 Draw a color-filled triangle (Vertex in counter-clockwise order!)
 */
 int lmodelsDrawTriangle3D( lua_State *L ) {
-	Vector3 v1 = uluaGetVector3Index( L, 1 );
-	Vector3 v2 = uluaGetVector3Index( L, 2 );
-	Vector3 v3 = uluaGetVector3Index( L, 3 );
-	Color color = uluaGetColorIndex( L, 4 );
+	Vector3 v1 = uluaGetVector3( L, 1 );
+	Vector3 v2 = uluaGetVector3( L, 2 );
+	Vector3 v3 = uluaGetVector3( L, 3 );
+	Color color = uluaGetColor( L, 4 );
 
 	DrawTriangle3D( v1, v2, v3, color );
 
@@ -194,9 +194,9 @@ int lmodelsDrawTriangle3D( lua_State *L ) {
 Draw cube
 */
 int lmodelsDrawCube( lua_State *L ) {
-	Vector3 pos = uluaGetVector3Index( L, 1 );
-	Vector3 size = uluaGetVector3Index( L, 2 );
-	Color color = uluaGetColorIndex( L, 3 );
+	Vector3 pos = uluaGetVector3( L, 1 );
+	Vector3 size = uluaGetVector3( L, 2 );
+	Color color = uluaGetColor( L, 3 );
 
 	DrawCubeV( pos, size, color );
 
@@ -209,9 +209,9 @@ int lmodelsDrawCube( lua_State *L ) {
 Draw cube wires
 */
 int lmodelsDrawCubeWires( lua_State *L ) {
-	Vector3 pos = uluaGetVector3Index( L, 1 );
-	Vector3 size = uluaGetVector3Index( L, 2 );
-	Color color = uluaGetColorIndex( L, 3 );
+	Vector3 pos = uluaGetVector3( L, 1 );
+	Vector3 size = uluaGetVector3( L, 2 );
+	Color color = uluaGetColor( L, 3 );
 
 	DrawCubeWiresV( pos, size, color );
 
@@ -224,9 +224,9 @@ int lmodelsDrawCubeWires( lua_State *L ) {
 Draw sphere
 */
 int lmodelsDrawSphere( lua_State *L ) {
-	Vector3 centerPos = uluaGetVector3Index( L, 1 );
+	Vector3 centerPos = uluaGetVector3( L, 1 );
 	float radius = luaL_checknumber( L, 2 );
-	Color color = uluaGetColorIndex( L, 3 );
+	Color color = uluaGetColor( L, 3 );
 
 	DrawSphere( centerPos, radius, color );
 
@@ -239,11 +239,11 @@ int lmodelsDrawSphere( lua_State *L ) {
 Draw sphere with extended parameters
 */
 int lmodelsDrawSphereEx( lua_State *L ) {
-	Vector3 centerPos = uluaGetVector3Index( L, 1 );
+	Vector3 centerPos = uluaGetVector3( L, 1 );
 	float radius = luaL_checknumber( L, 2 );
 	int rings = luaL_checkinteger( L, 3 );
 	int slices = luaL_checkinteger( L, 4 );
-	Color color = uluaGetColorIndex( L, 5 );
+	Color color = uluaGetColor( L, 5 );
 
 	DrawSphereEx( centerPos, radius, rings, slices, color );
 
@@ -256,11 +256,11 @@ int lmodelsDrawSphereEx( lua_State *L ) {
 Draw sphere wires
 */
 int lmodelsDrawSphereWires( lua_State *L ) {
-	Vector3 centerPos = uluaGetVector3Index( L, 1 );
+	Vector3 centerPos = uluaGetVector3( L, 1 );
 	float radius = luaL_checknumber( L, 2 );
 	int rings = luaL_checkinteger( L, 3 );
 	int slices = luaL_checkinteger( L, 4 );
-	Color color = uluaGetColorIndex( L, 5 );
+	Color color = uluaGetColor( L, 5 );
 
 	DrawSphereWires( centerPos, radius, rings, slices, color );
 
@@ -273,12 +273,12 @@ int lmodelsDrawSphereWires( lua_State *L ) {
 Draw a cylinder/cone
 */
 int lmodelsDrawCylinder( lua_State *L ) {
-	Vector3 position = uluaGetVector3Index( L, 1 );
+	Vector3 position = uluaGetVector3( L, 1 );
 	float radiusTop = luaL_checknumber( L, 2 );
 	float radiusBottom = luaL_checknumber( L, 3 );
 	float height = luaL_checknumber( L, 4 );
 	int slices = luaL_checkinteger( L, 5 );
-	Color color = uluaGetColorIndex( L, 6 );
+	Color color = uluaGetColor( L, 6 );
 
 	DrawCylinder( position, radiusTop, radiusBottom, height, slices, color );
 
@@ -291,12 +291,12 @@ int lmodelsDrawCylinder( lua_State *L ) {
 Draw a cylinder with base at startPos and top at endPos
 */
 int lmodelsDrawCylinderEx( lua_State *L ) {
-	Vector3 startPos = uluaGetVector3Index( L, 1 );
-	Vector3 endPos = uluaGetVector3Index( L, 2 );
+	Vector3 startPos = uluaGetVector3( L, 1 );
+	Vector3 endPos = uluaGetVector3( L, 2 );
 	float startRadius = luaL_checknumber( L, 3 );
 	float endRadius = luaL_checknumber( L, 4 );
 	int sides = luaL_checkinteger( L, 5 );
-	Color color = uluaGetColorIndex( L, 6 );
+	Color color = uluaGetColor( L, 6 );
 
 	DrawCylinderEx( startPos, endPos, startRadius, endRadius, sides, color );
 
@@ -309,12 +309,12 @@ int lmodelsDrawCylinderEx( lua_State *L ) {
 Draw a cylinder/cone wires
 */
 int lmodelsDrawCylinderWires( lua_State *L ) {
-	Vector3 position = uluaGetVector3Index( L, 1 );
+	Vector3 position = uluaGetVector3( L, 1 );
 	float radiusTop = luaL_checknumber( L, 2 );
 	float radiusBottom = luaL_checknumber( L, 3 );
 	float height = luaL_checknumber( L, 4 );
 	int slices = luaL_checkinteger( L, 5 );
-	Color color = uluaGetColorIndex( L, 6 );
+	Color color = uluaGetColor( L, 6 );
 
 	DrawCylinderWires( position, radiusTop, radiusBottom, height, slices, color );
 
@@ -327,12 +327,12 @@ int lmodelsDrawCylinderWires( lua_State *L ) {
 Draw a cylinder wires with base at startPos and top at endPos
 */
 int lmodelsDrawCylinderWiresEx( lua_State *L ) {
-	Vector3 startPos = uluaGetVector3Index( L, 1 );
-	Vector3 endPos = uluaGetVector3Index( L, 2 );
+	Vector3 startPos = uluaGetVector3( L, 1 );
+	Vector3 endPos = uluaGetVector3( L, 2 );
 	float startRadius = luaL_checknumber( L, 3 );
 	float endRadius = luaL_checknumber( L, 4 );
 	int sides = luaL_checkinteger( L, 5 );
-	Color color = uluaGetColorIndex( L, 6 );
+	Color color = uluaGetColor( L, 6 );
 
 	DrawCylinderWiresEx( startPos, endPos, startRadius, endRadius, sides, color );
 
@@ -345,12 +345,12 @@ int lmodelsDrawCylinderWiresEx( lua_State *L ) {
 Draw a capsule with the center of its sphere caps at startPos and endPos
 */
 int lmodelsDrawCapsule( lua_State *L ) {
-	Vector3 startPos = uluaGetVector3Index( L, 1 );
-	Vector3 endPos = uluaGetVector3Index( L, 2 );
+	Vector3 startPos = uluaGetVector3( L, 1 );
+	Vector3 endPos = uluaGetVector3( L, 2 );
 	float radius = luaL_checknumber( L, 3 );
 	int slices = luaL_checkinteger( L, 4 );
 	int rings = luaL_checkinteger( L, 5 );
-	Color color = uluaGetColorIndex( L, 6 );
+	Color color = uluaGetColor( L, 6 );
 
 	DrawCapsule( startPos, endPos, radius, slices, rings, color );
 
@@ -363,12 +363,12 @@ int lmodelsDrawCapsule( lua_State *L ) {
 Draw capsule wireframe with the center of its sphere caps at startPos and endPos
 */
 int lmodelsDrawCapsuleWires( lua_State *L ) {
-	Vector3 startPos = uluaGetVector3Index( L, 1 );
-	Vector3 endPos = uluaGetVector3Index( L, 2 );
+	Vector3 startPos = uluaGetVector3( L, 1 );
+	Vector3 endPos = uluaGetVector3( L, 2 );
 	float radius = luaL_checknumber( L, 3 );
 	int slices = luaL_checkinteger( L, 4 );
 	int rings = luaL_checkinteger( L, 5 );
-	Color color = uluaGetColorIndex( L, 6 );
+	Color color = uluaGetColor( L, 6 );
 
 	DrawCapsuleWires( startPos, endPos, radius, slices, rings, color );
 
@@ -381,9 +381,9 @@ int lmodelsDrawCapsuleWires( lua_State *L ) {
 Draw a plane XZ
 */
 int lmodelsDrawPlane( lua_State *L ) {
-	Vector3 centerPos = uluaGetVector3Index( L, 1 );
-	Vector2 size = uluaGetVector2Index( L, 2 );
-	Color color = uluaGetColorIndex( L, 3 );
+	Vector3 centerPos = uluaGetVector3( L, 1 );
+	Vector2 size = uluaGetVector2( L, 2 );
+	Color color = uluaGetColor( L, 3 );
 
 	DrawPlane( centerPos, size, color );
 
@@ -406,7 +406,7 @@ int lmodelDrawQuad3DTexture( lua_State *L ) {
 
 	while ( lua_next( L, t ) != 0 ) {
         if ( lua_istable( L, -1 ) && i < 4 ) {
-			vertices[i] = uluaGetVector3( L );
+			vertices[i] = uluaGetVector3( L, lua_gettop( L ) );
         }
         i++;
         lua_pop( L, 1 );
@@ -420,7 +420,7 @@ int lmodelDrawQuad3DTexture( lua_State *L ) {
 
 	while ( lua_next( L, t ) != 0 ) {
         if ( lua_istable( L, -1 ) && i < 4 ) {
-			texcoords[i] = uluaGetVector2( L );
+			texcoords[i] = uluaGetVector2( L, lua_gettop( L ) );
         }
         i++;
         lua_pop( L, 1 );
@@ -434,7 +434,7 @@ int lmodelDrawQuad3DTexture( lua_State *L ) {
 
 	while ( lua_next( L, t ) != 0 ) {
         if ( lua_istable( L, -1 ) && i < 4 ) {
-			colors[i] = uluaGetColor( L );
+			colors[i] = uluaGetColor( L, lua_gettop( L ) );
         }
         i++;
         lua_pop( L, 1 );
@@ -464,8 +464,8 @@ int lmodelDrawQuad3DTexture( lua_State *L ) {
 Draw a ray line
 */
 int lmodelsDrawRay( lua_State *L ) {
-	Ray ray = uluaGetRayIndex( L, 1 );
-	Color color = uluaGetColorIndex( L, 2 );
+	Ray ray = uluaGetRay( L, 1 );
+	Color color = uluaGetColor( L, 2 );
 
 	DrawRay( ray, color );
 
@@ -532,7 +532,7 @@ Generate cuboid mesh
 - Success return Mesh
 */
 int lmodelsGenMeshCube( lua_State *L ) {
-	Vector3 size = uluaGetVector3Index( L, 1 );
+	Vector3 size = uluaGetVector3( L, 1 );
 
 	uluaPushMesh( L, GenMeshCube( size.x, size.y, size.z ) );
 
@@ -635,7 +635,7 @@ Generate heightmap mesh from image data
 */
 int lmodelsGenMeshHeightmap( lua_State *L ) {
 	Image *heightmap = uluaGetImage( L, 1 );
-	Vector3 size = uluaGetVector3Index( L, 2 );
+	Vector3 size = uluaGetVector3( L, 2 );
 
 	uluaPushMesh( L, GenMeshHeightmap( *heightmap, size ) );
 
@@ -660,7 +660,7 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 
 	while ( lua_next( L, t ) != 0 ) {
 		if ( strcmp( "vertices", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L );
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
 
 			mesh.vertexCount = len;
 			mesh.triangleCount = len / 3;
@@ -671,7 +671,7 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 			lua_pushnil( L );
 
 			while ( lua_next( L, t2 ) != 0 ) {
-				Vector3 vec = uluaGetVector3( L );
+				Vector3 vec = uluaGetVector3( L, lua_gettop( L ) );
 
 				mesh.vertices[(i*3)+0] = vec.x;
 				mesh.vertices[(i*3)+1] = vec.y;
@@ -681,7 +681,7 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 			}
 		}
 		else if ( strcmp( "texcoords", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L );
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
 
 			mesh.texcoords = (float*)MemAlloc( len * 2 * sizeof(float) );
 
@@ -690,7 +690,7 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 			lua_pushnil( L );
 
 			while ( lua_next( L, t2 ) != 0 ) {
-				Vector2 vec = uluaGetVector2( L );
+				Vector2 vec = uluaGetVector2( L, lua_gettop( L ) );
 
 				mesh.texcoords[(i*2)+0] = vec.x;
 				mesh.texcoords[(i*2)+1] = vec.y;
@@ -699,7 +699,7 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 			}
 		}
 		else if ( strcmp( "texcoords2", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L );
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
 
 			mesh.texcoords2 = (float*)MemAlloc( len * 2 * sizeof(float) );
 
@@ -708,7 +708,7 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 			lua_pushnil( L );
 
 			while ( lua_next( L, t2 ) != 0 ) {
-				Vector2 vec = uluaGetVector2( L );
+				Vector2 vec = uluaGetVector2( L, lua_gettop( L ) );
 
 				mesh.texcoords2[(i*2)+0] = vec.x;
 				mesh.texcoords2[(i*2)+1] = vec.y;
@@ -717,7 +717,7 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 			}
 		}
 		else if ( strcmp( "normals", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L );
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
 
 			mesh.normals = (float*)MemAlloc( len * 3 * sizeof(float) );
 
@@ -726,7 +726,7 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 			lua_pushnil( L );
 
 			while ( lua_next( L, t2 ) != 0 ) {
-				Vector3 vec = uluaGetVector3( L );
+				Vector3 vec = uluaGetVector3( L, lua_gettop( L ) );
 
 				mesh.normals[(i*3)+0] = vec.x;
 				mesh.normals[(i*3)+1] = vec.y;
@@ -736,7 +736,7 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 			}
 		}
 		else if ( strcmp( "tangents", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L );
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
 
 			mesh.tangents = (float*)MemAlloc( len * 4 * sizeof(float) );
 
@@ -745,7 +745,7 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 			lua_pushnil( L );
 
 			while ( lua_next( L, t2 ) != 0 ) {
-				Vector4 vec = uluaGetVector4( L );
+				Vector4 vec = uluaGetVector4( L, lua_gettop( L ) );
 
 				mesh.tangents[(i*4)+0] = vec.x;
 				mesh.tangents[(i*4)+1] = vec.y;
@@ -756,7 +756,7 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 			}
 		}
 		else if ( strcmp( "colors", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L );
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
 
 			mesh.colors = (unsigned char*)MemAlloc( len * 4 * sizeof(unsigned char) );
 
@@ -765,7 +765,7 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 			lua_pushnil( L );
 
 			while ( lua_next( L, t2 ) != 0 ) {
-				Color color = uluaGetColor( L );
+				Color color = uluaGetColor( L, lua_gettop( L ) );
 
 				mesh.colors[(i*4)+0] = color.r;
 				mesh.colors[(i*4)+1] = color.g;
@@ -776,7 +776,7 @@ int lmodelsGenMeshCustom( lua_State *L ) {
 			}
 		}
 		else if ( strcmp( "indices", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L );
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
 
 			mesh.indices = (unsigned short*)MemAlloc( len * sizeof(unsigned short) );
 
@@ -813,7 +813,7 @@ int lmodelsUpdateMesh( lua_State *L ) {
 
 	while ( lua_next( L, t ) != 0 ) {
 		if ( strcmp( "vertices", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L );
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
 			Vector3 data[ len ];
 
 			int t2 = lua_gettop( L );
@@ -821,14 +821,14 @@ int lmodelsUpdateMesh( lua_State *L ) {
 			lua_pushnil( L );
 
 			while ( lua_next( L, t2 ) != 0 && i < mesh->vertexCount ) {
-				data[i] = uluaGetVector3( L );
+				data[i] = uluaGetVector3( L, lua_gettop( L ) );
 				i++;
 				lua_pop( L, 1 );
 			}
 			UpdateMeshBuffer( *mesh, 0, (void*)data, len * 3 * sizeof( float ), 0 );
 		}
 		else if ( strcmp( "texcoords", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L );
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
 			Vector2 data[ len ];
 
 			int t2 = lua_gettop( L );
@@ -836,14 +836,14 @@ int lmodelsUpdateMesh( lua_State *L ) {
 			lua_pushnil( L );
 
 			while ( lua_next( L, t2 ) != 0 ) {
-				data[i] = uluaGetVector2( L );
+				data[i] = uluaGetVector2( L, lua_gettop( L ) );
 				i++;
 				lua_pop( L, 1 );
 			}
 			UpdateMeshBuffer( *mesh, 1, (void*)data, len * 2 * sizeof( float ), 0 );
 		}
 		else if ( strcmp( "texcoords2", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L );
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
 			Vector2 data[ len ];
 
 			int t2 = lua_gettop( L );
@@ -851,14 +851,14 @@ int lmodelsUpdateMesh( lua_State *L ) {
 			lua_pushnil( L );
 
 			while ( lua_next( L, t2 ) != 0 ) {
-				data[i] = uluaGetVector2( L );
+				data[i] = uluaGetVector2( L, lua_gettop( L ) );
 				i++;
 				lua_pop( L, 1 );
 			}
 			UpdateMeshBuffer( *mesh, 5, (void*)data, len * 2 * sizeof( float ), 0 );
 		}
 		else if ( strcmp( "normals", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L );
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
 			Vector3 data[ len ];
 
 			int t2 = lua_gettop( L );
@@ -866,14 +866,14 @@ int lmodelsUpdateMesh( lua_State *L ) {
 			lua_pushnil( L );
 
 			while ( lua_next( L, t2 ) != 0 ) {
-				data[i] = uluaGetVector3( L );
+				data[i] = uluaGetVector3( L, lua_gettop( L ) );
 				i++;
 				lua_pop( L, 1 );
 			}
 			UpdateMeshBuffer( *mesh, 2, (void*)data, len * 3 * sizeof( float ), 0 );
 		}
 		else if ( strcmp( "tangents", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L );
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
 			Vector4 data[ len ];
 
 			int t2 = lua_gettop( L );
@@ -881,14 +881,14 @@ int lmodelsUpdateMesh( lua_State *L ) {
 			lua_pushnil( L );
 
 			while ( lua_next( L, t2 ) != 0 ) {
-				data[i] = uluaGetVector4( L );
+				data[i] = uluaGetVector4( L, lua_gettop( L ) );
 				i++;
 				lua_pop( L, 1 );
 			}
 			UpdateMeshBuffer( *mesh, 4, (void*)data, len * 4 * sizeof( float ), 0 );
 		}
 		else if ( strcmp( "colors", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L );
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
 			Color data[ len ];
 
 			int t2 = lua_gettop( L );
@@ -896,14 +896,14 @@ int lmodelsUpdateMesh( lua_State *L ) {
 			lua_pushnil( L );
 
 			while ( lua_next( L, t2 ) != 0 ) {
-				data[i] = uluaGetColor( L );
+				data[i] = uluaGetColor( L, lua_gettop( L ) );
 				i++;
 				lua_pop( L, 1 );
 			}
 			UpdateMeshBuffer( *mesh, 3, (void*)data, len * 4 * sizeof( unsigned char ), 0 );
 		}
 		else if ( strcmp( "indices", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L );
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
 			unsigned short data[ len ];
 
 			int t2 = lua_gettop( L );
@@ -944,7 +944,7 @@ Draw a 3d mesh with material and transform
 int lmodelsDrawMesh( lua_State *L ) {
 	Mesh *mesh = uluaGetMesh( L, 1 );
 	Material *material = uluaGetMaterial( L, 2 );
-	Matrix matrix = uluaGetMatrixIndex( L, 3 );
+	Matrix matrix = uluaGetMatrix( L, 3 );
 
 	DrawMesh( *mesh, *material, matrix );
 
@@ -969,7 +969,7 @@ int lmodelsDrawMeshInstanced( lua_State *L ) {
 
 	while ( lua_next( L, t ) != 0 ) {
         if ( lua_istable( L, -1 ) ) {
-			transforms[i] = uluaGetMatrix( L );
+			transforms[i] = uluaGetMatrix( L, lua_gettop( L ) );
         }
         i++;
         lua_pop( L, 1 );
@@ -990,7 +990,7 @@ NOTE: Currently only works on custom mesh
 */
 int lmodelsSetMeshColor( lua_State *L ) {
 	Mesh *mesh = uluaGetMesh( L, 1 );
-	Color color = uluaGetColorIndex( L, 2 );
+	Color color = uluaGetColor( L, 2 );
 
 	if ( mesh->colors == NULL ) {
 		TraceLog( state->logLevelInvalid, "Mesh doesn't have vertex colors allocated" );
@@ -1128,7 +1128,7 @@ int lmodelsCreateMaterial( lua_State *L ) {
 										printf( "Material Create material.maps[map].texture.id = %d\n", material.maps[map].texture.id );
 									}
 									else if ( strcmp( "color", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-										material.maps[map].color = uluaGetColorIndex( L, lua_gettop( L ) );
+										material.maps[map].color = uluaGetColor( L, lua_gettop( L ) );
 									}
 									else if ( strcmp( "value", (char*)lua_tostring( L, -2 ) ) == 0 ) {
 										material.maps[map].value = luaL_checkinteger( L, -1 );
@@ -1224,7 +1224,7 @@ Set color for a material map type
 int lmodelsSetMaterialColor( lua_State *L ) {
 	Material *material = uluaGetMaterial( L, 1 );
 	int mapType = luaL_checkinteger( L, 2 );
-	Color color = uluaGetColorIndex( L, 3 );
+	Color color = uluaGetColor( L, 3 );
 
 	material->maps[ mapType ].color = color;
 
@@ -1268,7 +1268,7 @@ Set material generic parameters (if required)
 int lmodelsSetMaterialParams( lua_State *L ) {
 	Material *material = uluaGetMaterial( L, 1 );
 
-	size_t len = uluaGetTableLenIndex( L, 2 );
+	size_t len = uluaGetTableLen( L, 2 );
 
 	float params[ len ];
 
@@ -1448,9 +1448,9 @@ Draw a model (With texture if set)
 */
 int lmodelsDrawModel( lua_State *L ) {
 	Model *model = uluaGetModel( L, 1 );
-	Vector3 position = uluaGetVector3Index( L, 2 );
+	Vector3 position = uluaGetVector3( L, 2 );
 	float scale = luaL_checknumber( L, 3 );
-	Color tint = uluaGetColorIndex( L, 4 );
+	Color tint = uluaGetColor( L, 4 );
 
 	DrawModel( *model, position, scale, tint );
 
@@ -1464,11 +1464,11 @@ Draw a model with extended parameters
 */
 int lmodelsDrawModelEx( lua_State *L ) {
 	Model *model = uluaGetModel( L, 1 );
-	Vector3 position = uluaGetVector3Index( L, 2 );
-	Vector3 rotationAxis = uluaGetVector3Index( L, 3 );
+	Vector3 position = uluaGetVector3( L, 2 );
+	Vector3 rotationAxis = uluaGetVector3( L, 3 );
 	float rotationAngle = luaL_checknumber( L, 4 );
-	Vector3 scale = uluaGetVector3Index( L, 5 );
-	Color tint = uluaGetColorIndex( L, 6 );
+	Vector3 scale = uluaGetVector3( L, 5 );
+	Color tint = uluaGetColor( L, 6 );
 
 	DrawModelEx( *model, position, rotationAxis, rotationAngle, scale, tint );
 
@@ -1531,9 +1531,9 @@ Draw a billboard texture
 int lmodelsDrawBillboard( lua_State *L ) {
 	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	Texture *texture = uluaGetTexture( L, 2 );
-	Vector3 position = uluaGetVector3Index( L, 3 );
+	Vector3 position = uluaGetVector3( L, 3 );
 	float size = luaL_checknumber( L, 4 );
-	Color tint = uluaGetColorIndex( L, 5 );
+	Color tint = uluaGetColor( L, 5 );
 
 	DrawBillboard( *camera, *texture, position, size, tint );
 
@@ -1548,10 +1548,10 @@ Draw a billboard texture defined by source
 int lmodelsDrawBillboardRec( lua_State *L ) {
 	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	Texture *texture = uluaGetTexture( L, 2 );
-	Rectangle source = uluaGetRectangleIndex( L, 3 );
-	Vector3 position = uluaGetVector3Index( L, 4 );
-	Vector2 size = uluaGetVector2Index( L, 5 );
-	Color tint = uluaGetColorIndex( L, 6 );
+	Rectangle source = uluaGetRectangle( L, 3 );
+	Vector3 position = uluaGetVector3( L, 4 );
+	Vector2 size = uluaGetVector2( L, 5 );
+	Color tint = uluaGetColor( L, 6 );
 
 	DrawBillboardRecNoRatio( *camera, *texture, source, position, size, tint );
 
@@ -1566,13 +1566,13 @@ Draw a billboard texture defined by source and rotation
 int lmodelsDrawBillboardPro( lua_State *L ) {
 	Camera3D *camera = uluaGetCamera3D( L, 1 );
 	Texture *texture = uluaGetTexture( L, 2 );
-	Rectangle source = uluaGetRectangleIndex( L, 3 );
-	Vector3 position = uluaGetVector3Index( L, 4 );
-	Vector3 up = uluaGetVector3Index( L, 5 );
-	Vector2 size = uluaGetVector2Index( L, 6 );
-	Vector2 origin = uluaGetVector2Index( L, 7 );
+	Rectangle source = uluaGetRectangle( L, 3 );
+	Vector3 position = uluaGetVector3( L, 4 );
+	Vector3 up = uluaGetVector3( L, 5 );
+	Vector2 size = uluaGetVector2( L, 6 );
+	Vector2 origin = uluaGetVector2( L, 7 );
 	float rotation = luaL_checknumber( L, 8 );
-	Color tint = uluaGetColorIndex( L, 9 );
+	Color tint = uluaGetColor( L, 9 );
 
 	DrawBillboardProNoRatio( *camera, *texture, source, position, up, size, origin, rotation, tint );
 
@@ -1586,7 +1586,7 @@ Set model transform matrix
 */
 int lmodelsSetModelTransform( lua_State *L ) {
 	Model *model = uluaGetModel( L, 1 );
-	Matrix transform = uluaGetMatrixIndex( L, 2 );
+	Matrix transform = uluaGetMatrix( L, 2 );
 
 	model->transform = transform;
 
@@ -1713,9 +1713,9 @@ Check collision between two spheres
 - Success return bool
 */
 int lmodelsCheckCollisionSpheres( lua_State *L ) {
-	Vector3 center1 = uluaGetVector3Index( L, 1 );
+	Vector3 center1 = uluaGetVector3( L, 1 );
 	float radius1 = luaL_checknumber( L, 2 );
-	Vector3 center2 = uluaGetVector3Index( L, 3 );
+	Vector3 center2 = uluaGetVector3( L, 3 );
 	float radius2 = luaL_checknumber( L, 4 );
 
 	lua_pushboolean( L, CheckCollisionSpheres( center1, radius1, center2, radius2 ) );
@@ -1731,8 +1731,8 @@ Check collision between two bounding boxes
 - Success return bool
 */
 int lmodelsCheckCollisionBoxes( lua_State *L ) {
-	BoundingBox box1 = uluaGetBoundingBoxIndex( L, 1 );
-	BoundingBox box2 = uluaGetBoundingBoxIndex( L, 2 );
+	BoundingBox box1 = uluaGetBoundingBox( L, 1 );
+	BoundingBox box2 = uluaGetBoundingBox( L, 2 );
 
 	lua_pushboolean( L, CheckCollisionBoxes( box1, box2 ) );
 
@@ -1747,8 +1747,8 @@ Check collision between box and sphere
 - Success return bool
 */
 int lmodelsCheckCollisionBoxSphere( lua_State *L ) {
-	BoundingBox box = uluaGetBoundingBoxIndex( L, 1 );
-	Vector3 center = uluaGetVector3Index( L, 2 );
+	BoundingBox box = uluaGetBoundingBox( L, 1 );
+	Vector3 center = uluaGetVector3( L, 2 );
 	float radius = luaL_checknumber( L, 3 );
 
 	lua_pushboolean( L, CheckCollisionBoxSphere( box, center, radius ) );
@@ -1764,8 +1764,8 @@ Get collision info between ray and sphere. ( RayCollision is Lua table of { hit,
 - Success return RayCollision
 */
 int lmodelsGetRayCollisionSphere( lua_State *L ) {
-	Ray ray = uluaGetRayIndex( L, 1 );
-	Vector3 center = uluaGetVector3Index( L, 2 );
+	Ray ray = uluaGetRay( L, 1 );
+	Vector3 center = uluaGetVector3( L, 2 );
 	float radius = luaL_checknumber( L, 3 );
 
 	uluaPushRayCollision( L, GetRayCollisionSphere( ray, center, radius ) );
@@ -1781,8 +1781,8 @@ Get collision info between ray and box
 - Success return RayCollision
 */
 int lmodelsGetRayCollisionBox( lua_State *L ) {
-	Ray ray = uluaGetRayIndex( L, 1 );
-	BoundingBox box = uluaGetBoundingBoxIndex( L, 2 );
+	Ray ray = uluaGetRay( L, 1 );
+	BoundingBox box = uluaGetBoundingBox( L, 2 );
 
 	uluaPushRayCollision( L, GetRayCollisionBox( ray, box ) );
 
@@ -1797,9 +1797,9 @@ Get collision info between ray and mesh
 - Success return RayCollision
 */
 int lmodelsGetRayCollisionMesh( lua_State *L ) {
-	Ray ray = uluaGetRayIndex( L, 1 );
+	Ray ray = uluaGetRay( L, 1 );
 	Mesh *mesh = uluaGetMesh( L, 2 );
-	Matrix transform = uluaGetMatrixIndex( L, 3 );
+	Matrix transform = uluaGetMatrix( L, 3 );
 
 	uluaPushRayCollision( L, GetRayCollisionMesh( ray, *mesh, transform ) );
 
@@ -1814,10 +1814,10 @@ Get collision info between ray and triangle
 - Success return RayCollision
 */
 int lmodelsGetRayCollisionTriangle( lua_State *L ) {
-	Ray ray = uluaGetRayIndex( L, 1 );
-	Vector3 p1 = uluaGetVector3Index( L, 2 );
-	Vector3 p2 = uluaGetVector3Index( L, 3 );
-	Vector3 p3 = uluaGetVector3Index( L, 4 );
+	Ray ray = uluaGetRay( L, 1 );
+	Vector3 p1 = uluaGetVector3( L, 2 );
+	Vector3 p2 = uluaGetVector3( L, 3 );
+	Vector3 p3 = uluaGetVector3( L, 4 );
 
 	uluaPushRayCollision( L, GetRayCollisionTriangle( ray, p1, p2, p3 ) );
 
@@ -1832,11 +1832,11 @@ Get collision info between ray and quad
 - Success return RayCollision
 */
 int lmodelsGetRayCollisionQuad( lua_State *L ) {
-	Ray ray = uluaGetRayIndex( L, 1 );
-	Vector3 p1 = uluaGetVector3Index( L, 2 );
-	Vector3 p2 = uluaGetVector3Index( L, 3 );
-	Vector3 p3 = uluaGetVector3Index( L, 4 );
-	Vector3 p4 = uluaGetVector3Index( L, 5 );
+	Ray ray = uluaGetRay( L, 1 );
+	Vector3 p1 = uluaGetVector3( L, 2 );
+	Vector3 p2 = uluaGetVector3( L, 3 );
+	Vector3 p3 = uluaGetVector3( L, 4 );
+	Vector3 p4 = uluaGetVector3( L, 5 );
 
 	uluaPushRayCollision( L, GetRayCollisionQuad( ray, p1, p2, p3, p4 ) );
 

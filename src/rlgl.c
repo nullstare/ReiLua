@@ -57,7 +57,7 @@ int lrlglLoadIdentity( lua_State *L ) {
 Multiply the current matrix by a translation matrix
 */
 int lrlglTranslatef( lua_State *L ) {
-	Vector3 translation = uluaGetVector3Index( L, 1 );
+	Vector3 translation = uluaGetVector3( L, 1 );
 
 	rlTranslatef( translation.x, translation.y, translation.z );
 
@@ -71,7 +71,7 @@ Multiply the current matrix by a rotation matrix
 */
 int lrlglRotatef( lua_State *L ) {
 	float angle = luaL_checknumber( L, 1 );
-	Vector3 rotation = uluaGetVector3Index( L, 2 );
+	Vector3 rotation = uluaGetVector3( L, 2 );
 
 	rlRotatef( angle, rotation.x, rotation.y, rotation.z );
 
@@ -84,7 +84,7 @@ int lrlglRotatef( lua_State *L ) {
 Multiply the current matrix by a scaling matrix
 */
 int lrlglScalef( lua_State *L ) {
-	Vector3 scale = uluaGetVector3Index( L, 1 );
+	Vector3 scale = uluaGetVector3( L, 1 );
 
 	rlScalef( scale.x, scale.y, scale.z );
 
@@ -97,7 +97,7 @@ int lrlglScalef( lua_State *L ) {
 Multiply the current matrix by another matrix
 */
 int lrlglMultMatrixf( lua_State *L ) {
-	Matrix matrix = uluaGetMatrixIndex( L, 1 );
+	Matrix matrix = uluaGetMatrix( L, 1 );
 
 	float matf[16] = {
 		matrix.m0, matrix.m4, matrix.m8, matrix.m12,
@@ -153,7 +153,7 @@ Set the viewport area (transformation from normalized device coordinates to wind
 NOTE: We store current viewport dimensions
 */
 int lrlglViewport( lua_State *L ) {
-	Rectangle rect = uluaGetRectangleIndex( L, 1 );
+	Rectangle rect = uluaGetRectangle( L, 1 );
 
 	rlViewport( rect.x, rect.y, rect.width, rect.height );
 
@@ -192,7 +192,7 @@ int lrlglEnd( lua_State *L ) {
 Define one vertex (position)
 */
 int lrlglVertex2f( lua_State *L ) {
-	Vector2 position = uluaGetVector2Index( L, 1 );
+	Vector2 position = uluaGetVector2( L, 1 );
 
 	rlVertex2f( position.x, position.y );
 
@@ -205,7 +205,7 @@ int lrlglVertex2f( lua_State *L ) {
 Define one vertex (position)
 */
 int lrlglVertex3f( lua_State *L ) {
-	Vector3 position = uluaGetVector3Index( L, 1 );
+	Vector3 position = uluaGetVector3( L, 1 );
 
 	rlVertex3f( position.x, position.y, position.z );
 
@@ -218,7 +218,7 @@ int lrlglVertex3f( lua_State *L ) {
 Define one vertex (texture coordinate) - 2 float
 */
 int lrlglTexCoord2f( lua_State *L ) {
-	Vector2 texCoord = uluaGetVector2Index( L, 1 );
+	Vector2 texCoord = uluaGetVector2( L, 1 );
 
 	rlTexCoord2f( texCoord.x, texCoord.y );
 
@@ -231,7 +231,7 @@ int lrlglTexCoord2f( lua_State *L ) {
 Define one vertex (normal) - 3 float
 */
 int lrlglNormal3f( lua_State *L ) {
-	Vector3 normal = uluaGetVector3Index( L, 1 );
+	Vector3 normal = uluaGetVector3( L, 1 );
 
 	rlNormal3f( normal.x, normal.y, normal.z );
 
@@ -244,7 +244,7 @@ int lrlglNormal3f( lua_State *L ) {
 Define one vertex (color) - 4 byte
 */
 int lrlglColor4ub( lua_State *L ) {
-	Color color = uluaGetColorIndex( L, 1 );
+	Color color = uluaGetColor( L, 1 );
 
 	rlColor4ub( color.r, color.g, color.b, color.a );
 
@@ -257,7 +257,7 @@ int lrlglColor4ub( lua_State *L ) {
 Define one vertex (color) - 3 float
 */
 int lrlglColor3f( lua_State *L ) {
-	Vector3 color = uluaGetVector3Index( L, 1 );
+	Vector3 color = uluaGetVector3( L, 1 );
 
 	rlColor3f( color.x, color.y, color.z );
 
@@ -270,7 +270,7 @@ int lrlglColor3f( lua_State *L ) {
 Define one vertex (color) - 4 float
 */
 int lrlglColor4f( lua_State *L ) {
-	Vector4 color = uluaGetVector4Index( L, 1 );
+	Vector4 color = uluaGetVector4( L, 1 );
 
 	rlColor4f( color.x, color.y, color.z, color.w );
 
@@ -657,7 +657,7 @@ int lrlglDisableScissorTest( lua_State *L ) {
 Scissor test
 */
 int lrlglScissor( lua_State *L ) {
-	Rectangle area = uluaGetRectangleIndex( L, 1 );
+	Rectangle area = uluaGetRectangle( L, 1 );
 	
 	rlScissor( area.x, area.y, area.width, area.height );
 
@@ -773,7 +773,7 @@ int lrlglIsStereoRenderEnabled( lua_State *L ) {
 Clear color buffer with color
 */
 int lrlglClearColor( lua_State *L ) {
-	Color color = uluaGetColorIndex( L, 1 );
+	Color color = uluaGetColor( L, 1 );
 
 	rlClearColor( color.r, color.g, color.b, color.a );
 
@@ -1142,7 +1142,7 @@ Set vertex attribute default value
 int lrlglSetVertexAttributeDefault( lua_State *L ) {
 	int locIndex = luaL_checkinteger( L, 1 );
 	int attribType = luaL_checkinteger( L, 3 );
-	int count = uluaGetTableLenIndex( L, 2 );
+	int count = uluaGetTableLen( L, 2 );
 	float value[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	int t = 2;
@@ -1231,7 +1231,7 @@ Load texture in GPU
 - Success return int
 */
 int lrlglLoadTexture( lua_State *L ) {
-	Vector2 size = uluaGetVector2Index( L, 1 );
+	Vector2 size = uluaGetVector2( L, 1 );
 	int format = luaL_checkinteger( L, 2 );
 	int mipmapCount = luaL_checkinteger( L, 3 );
 
@@ -1248,7 +1248,7 @@ Load depth texture/renderbuffer (to be attached to fbo)
 - Success return int
 */
 int lrlglLoadTextureDepth( lua_State *L ) {
-	Vector2 size = uluaGetVector2Index( L, 1 );
+	Vector2 size = uluaGetVector2( L, 1 );
 	bool useRenderBuffer = uluaGetBoolean( L, 2 );
 
 	lua_pushinteger( L, rlLoadTextureDepth( size.x, size.y, useRenderBuffer ) );
@@ -1279,7 +1279,7 @@ Load an empty framebuffer
 - Success return int
 */
 int lrlglLoadFramebuffer( lua_State *L ) {
-	Vector2 size = uluaGetVector2Index( L, 1 );
+	Vector2 size = uluaGetVector2( L, 1 );
 
 	lua_pushinteger( L, rlLoadFramebuffer( size.x, size.y ) );
 
@@ -1445,7 +1445,7 @@ Set shader value matrix
 */
 int lrlglSetUniformMatrix( lua_State *L ) {
 	int locIndex = luaL_checkinteger( L, 1 );
-	Matrix mat = uluaGetMatrixIndex( L, 2 );
+	Matrix mat = uluaGetMatrix( L, 2 );
 
 	rlSetUniformMatrix( locIndex, mat );
 
@@ -1620,7 +1620,7 @@ int lrlglGetMatrixViewOffsetStereo( lua_State *L ) {
 Set a custom projection matrix (replaces internal projection matrix)
 */
 int lrlglSetMatrixProjection( lua_State *L ) {
-	rlSetMatrixProjection( uluaGetMatrixIndex( L, 1 ) );
+	rlSetMatrixProjection( uluaGetMatrix( L, 1 ) );
 
 	return 0;
 }
@@ -1631,7 +1631,7 @@ int lrlglSetMatrixProjection( lua_State *L ) {
 Set a custom modelview matrix (replaces internal modelview matrix)
 */
 int lrlglSetMatrixModelview( lua_State *L ) {
-	rlSetMatrixModelview( uluaGetMatrixIndex( L, 1 ) );
+	rlSetMatrixModelview( uluaGetMatrix( L, 1 ) );
 
 	return 0;
 }
@@ -1642,7 +1642,7 @@ int lrlglSetMatrixModelview( lua_State *L ) {
 Set eyes projection matrices for stereo rendering
 */
 int lrlglSetMatrixProjectionStereo( lua_State *L ) {
-	rlSetMatrixProjectionStereo( uluaGetMatrixIndex( L, 1 ), uluaGetMatrixIndex( L, 2 ) );
+	rlSetMatrixProjectionStereo( uluaGetMatrix( L, 1 ), uluaGetMatrix( L, 2 ) );
 
 	return 0;
 }
@@ -1653,7 +1653,7 @@ int lrlglSetMatrixProjectionStereo( lua_State *L ) {
 Set eyes view offsets matrices for stereo rendering
 */
 int lrlglSetMatrixViewOffsetStereo( lua_State *L ) {
-	rlSetMatrixViewOffsetStereo( uluaGetMatrixIndex( L, 1 ), uluaGetMatrixIndex( L, 2 ) );
+	rlSetMatrixViewOffsetStereo( uluaGetMatrix( L, 1 ), uluaGetMatrix( L, 2 ) );
 
 	return 0;
 }

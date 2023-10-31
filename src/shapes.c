@@ -17,7 +17,7 @@ defining a font char white rectangle would allow drawing everything in a single 
 */
 int lshapesSetShapesTexture( lua_State *L ) {
 	Texture *texture = uluaGetTexture( L, 1 );
-	Rectangle source = uluaGetRectangleIndex( L, 2 );
+	Rectangle source = uluaGetRectangle( L, 2 );
 
 	SetShapesTexture( *texture, source );
 
@@ -30,8 +30,8 @@ int lshapesSetShapesTexture( lua_State *L ) {
 Draw a pixel
 */
 int lshapesDrawPixel( lua_State *L ) {
-	Vector2 pos = uluaGetVector2Index( L, 1 );
-	Color color = uluaGetColorIndex( L, 2 );
+	Vector2 pos = uluaGetVector2( L, 1 );
+	Color color = uluaGetColor( L, 2 );
 
 	DrawPixelV( pos, color );
 
@@ -44,10 +44,10 @@ int lshapesDrawPixel( lua_State *L ) {
 Draw a line defining thickness
 */
 int lshapesDrawLine( lua_State *L ) {
-	Vector2 startPos = uluaGetVector2Index( L, 1 );
-	Vector2 endPos = uluaGetVector2Index( L, 2 );
+	Vector2 startPos = uluaGetVector2( L, 1 );
+	Vector2 endPos = uluaGetVector2( L, 2 );
 	float thickness = luaL_checknumber( L, 3 );
-	Color color = uluaGetColorIndex( L, 4 );
+	Color color = uluaGetColor( L, 4 );
 
 	DrawLineEx( startPos, endPos, thickness, color );
 
@@ -60,10 +60,10 @@ int lshapesDrawLine( lua_State *L ) {
 Draw a line using cubic-bezier curves in-out
 */
 int lshapesDrawLineBezier( lua_State *L ) {
-	Vector2 startPos = uluaGetVector2Index( L, 1 );
-	Vector2 endPos = uluaGetVector2Index( L, 2 );
+	Vector2 startPos = uluaGetVector2( L, 1 );
+	Vector2 endPos = uluaGetVector2( L, 2 );
 	float thickness = luaL_checknumber( L, 3 );
-	Color color = uluaGetColorIndex( L, 4 );
+	Color color = uluaGetColor( L, 4 );
 
 	DrawLineBezier( startPos, endPos, thickness, color );
 
@@ -76,11 +76,11 @@ int lshapesDrawLineBezier( lua_State *L ) {
 Draw line using quadratic bezier curves with a control point
 */
 int lshapesDrawLineBezierQuad( lua_State *L ) {
-	Vector2 startPos = uluaGetVector2Index( L, 1 );
-	Vector2 endPos = uluaGetVector2Index( L, 2 );
-	Vector2 controlPos = uluaGetVector2Index( L, 3 );
+	Vector2 startPos = uluaGetVector2( L, 1 );
+	Vector2 endPos = uluaGetVector2( L, 2 );
+	Vector2 controlPos = uluaGetVector2( L, 3 );
 	float thickness = luaL_checknumber( L, 4 );
-	Color color = uluaGetColorIndex( L, 5 );
+	Color color = uluaGetColor( L, 5 );
 
 	DrawLineBezierQuad( startPos, endPos, controlPos, thickness, color );
 
@@ -93,12 +93,12 @@ int lshapesDrawLineBezierQuad( lua_State *L ) {
 Draw line using quadratic bezier curves with a control point
 */
 int lshapesDrawLineBezierCubic( lua_State *L ) {
-	Vector2 startPos = uluaGetVector2Index( L, 1 );
-	Vector2 endPos = uluaGetVector2Index( L, 2 );
-	Vector2 startControlPos = uluaGetVector2Index( L, 3 );
-	Vector2 endControlPos = uluaGetVector2Index( L, 4 );
+	Vector2 startPos = uluaGetVector2( L, 1 );
+	Vector2 endPos = uluaGetVector2( L, 2 );
+	Vector2 startControlPos = uluaGetVector2( L, 3 );
+	Vector2 endControlPos = uluaGetVector2( L, 4 );
 	float thickness = luaL_checknumber( L, 5 );
-	Color color = uluaGetColorIndex( L, 6 );
+	Color color = uluaGetColor( L, 6 );
 
 	DrawLineBezierCubic( startPos, endPos, startControlPos, endControlPos, thickness, color );
 
@@ -111,8 +111,8 @@ int lshapesDrawLineBezierCubic( lua_State *L ) {
 Draw lines sequence
 */
 int lshapesDrawLineStrip( lua_State *L ) {
-	int pointsCount = uluaGetTableLenIndex( L, 1 );
-	Color color = uluaGetColorIndex( L, 2 );
+	int pointsCount = uluaGetTableLen( L, 1 );
+	Color color = uluaGetColor( L, 2 );
 
 	Vector2 points[ pointsCount ];
 
@@ -121,7 +121,7 @@ int lshapesDrawLineStrip( lua_State *L ) {
 	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-		points[i] = uluaGetVector2( L );
+		points[i] = uluaGetVector2( L, lua_gettop( L ) );
 		i++;
 		lua_pop( L, 1 );
 	}
@@ -136,9 +136,9 @@ int lshapesDrawLineStrip( lua_State *L ) {
 Draw a color-filled circle
 */
 int lshapesDrawCircle( lua_State *L ) {
-	Vector2 center = uluaGetVector2Index( L, 1 );
+	Vector2 center = uluaGetVector2( L, 1 );
 	float radius = luaL_checknumber( L, 2 );
-	Color color = uluaGetColorIndex( L, 3 );
+	Color color = uluaGetColor( L, 3 );
 
 	DrawCircleV( center, radius, color );
 
@@ -151,12 +151,12 @@ int lshapesDrawCircle( lua_State *L ) {
 Draw a piece of a circle
 */
 int lshapesDrawCircleSector( lua_State *L ) {
-	Vector2 center = uluaGetVector2Index( L, 1 );
+	Vector2 center = uluaGetVector2( L, 1 );
 	float radius = luaL_checknumber( L, 2 );
 	float startAngle = luaL_checknumber( L, 3 );
 	float endAngle = luaL_checknumber( L, 4 );
 	int segments = luaL_checkinteger( L, 5 );
-	Color color = uluaGetColorIndex( L, 6 );
+	Color color = uluaGetColor( L, 6 );
 
 	DrawCircleSector( center, radius, startAngle, endAngle, segments, color );
 
@@ -169,12 +169,12 @@ int lshapesDrawCircleSector( lua_State *L ) {
 Draw circle sector outline
 */
 int lshapesDrawCircleSectorLines( lua_State *L ) {
-	Vector2 center = uluaGetVector2Index( L, 1 );
+	Vector2 center = uluaGetVector2( L, 1 );
 	float radius = luaL_checknumber( L, 2 );
 	float startAngle = luaL_checknumber( L, 3 );
 	float endAngle = luaL_checknumber( L, 4 );
 	int segments = luaL_checkinteger( L, 5 );
-	Color color = uluaGetColorIndex( L, 6 );
+	Color color = uluaGetColor( L, 6 );
 
 	DrawCircleSectorLines( center, radius, startAngle, endAngle, segments, color );
 
@@ -187,10 +187,10 @@ int lshapesDrawCircleSectorLines( lua_State *L ) {
 Draw a gradient-filled circle
 */
 int lshapesDrawCircleGradient( lua_State *L ) {
-	Vector2 center = uluaGetVector2Index( L, 1 );
+	Vector2 center = uluaGetVector2( L, 1 );
 	float radius = luaL_checknumber( L, 2 );
-	Color color1 = uluaGetColorIndex( L, 3 );
-	Color color2 = uluaGetColorIndex( L, 4 );
+	Color color1 = uluaGetColor( L, 3 );
+	Color color2 = uluaGetColor( L, 4 );
 
 	DrawCircleGradient( center.x, center.y, radius, color1, color2 );
 
@@ -203,9 +203,9 @@ int lshapesDrawCircleGradient( lua_State *L ) {
 Draw circle outline
 */
 int lshapesDrawCircleLines( lua_State *L ) {
-	Vector2 center = uluaGetVector2Index( L, 1 );
+	Vector2 center = uluaGetVector2( L, 1 );
 	float radius = luaL_checknumber( L, 2 );
-	Color color = uluaGetColorIndex( L, 3 );
+	Color color = uluaGetColor( L, 3 );
 
 	DrawCircleLines( center.x, center.y, radius, color );
 
@@ -218,10 +218,10 @@ int lshapesDrawCircleLines( lua_State *L ) {
 Draw ellipse
 */
 int lshapesDrawEllipse( lua_State *L ) {
-	Vector2 center = uluaGetVector2Index( L, 1 );
+	Vector2 center = uluaGetVector2( L, 1 );
 	float radiusH = luaL_checknumber( L, 2 );
 	float radiusV = luaL_checknumber( L, 3 );
-	Color color = uluaGetColorIndex( L, 4 );
+	Color color = uluaGetColor( L, 4 );
 
 	DrawEllipse( center.x, center.y, radiusH, radiusV, color );
 
@@ -234,10 +234,10 @@ int lshapesDrawEllipse( lua_State *L ) {
 Draw ellipse outline
 */
 int lshapesDrawEllipseLines( lua_State *L ) {
-	Vector2 center = uluaGetVector2Index( L, 1 );
+	Vector2 center = uluaGetVector2( L, 1 );
 	float radiusH = luaL_checknumber( L, 2 );
 	float radiusV = luaL_checknumber( L, 3 );
-	Color color = uluaGetColorIndex( L, 4 );
+	Color color = uluaGetColor( L, 4 );
 
 	DrawEllipseLines( center.x, center.y, radiusH, radiusV, color );
 
@@ -250,13 +250,13 @@ int lshapesDrawEllipseLines( lua_State *L ) {
 Draw ring
 */
 int lshapesDrawRing( lua_State *L ) {
-	Vector2 center = uluaGetVector2Index( L, 1 );
+	Vector2 center = uluaGetVector2( L, 1 );
 	float innerRadius = luaL_checknumber( L, 2 );
 	float outerRadius = luaL_checknumber( L, 3 );
 	float startAngle = luaL_checknumber( L, 4 );
 	float endAngle = luaL_checknumber( L, 5 );
 	int segments = luaL_checkinteger( L, 6 );
-	Color color = uluaGetColorIndex( L, 7 );
+	Color color = uluaGetColor( L, 7 );
 
 	DrawRing( center, innerRadius, outerRadius, startAngle, endAngle, segments, color );
 
@@ -269,13 +269,13 @@ int lshapesDrawRing( lua_State *L ) {
 Draw ring outline
 */
 int lshapesDrawRingLines( lua_State *L ) {
-	Vector2 center = uluaGetVector2Index( L, 1 );
+	Vector2 center = uluaGetVector2( L, 1 );
 	float innerRadius = luaL_checknumber( L, 2 );
 	float outerRadius = luaL_checknumber( L, 3 );
 	float startAngle = luaL_checknumber( L, 4 );
 	float endAngle = luaL_checknumber( L, 5 );
 	int segments = luaL_checkinteger( L, 6 );
-	Color color = uluaGetColorIndex( L, 7 );
+	Color color = uluaGetColor( L, 7 );
 
 	DrawRingLines( center, innerRadius, outerRadius, startAngle, endAngle, segments, color );
 
@@ -288,8 +288,8 @@ int lshapesDrawRingLines( lua_State *L ) {
 Draw a color-filled rectangle
 */
 int lshapesDrawRectangle( lua_State *L ) {
-	Rectangle rect = uluaGetRectangleIndex( L, 1 );
-	Color color = uluaGetColorIndex( L, 2 );
+	Rectangle rect = uluaGetRectangle( L, 1 );
+	Color color = uluaGetColor( L, 2 );
 
 	DrawRectangleRec( rect, color );
 
@@ -302,10 +302,10 @@ int lshapesDrawRectangle( lua_State *L ) {
 Draw a color-filled rectangle with pro parameters
 */
 int lshapesDrawRectanglePro( lua_State *L ) {
-	Rectangle rec = uluaGetRectangleIndex( L, 1 );
-	Vector2 origin = uluaGetVector2Index( L, 2 );
+	Rectangle rec = uluaGetRectangle( L, 1 );
+	Vector2 origin = uluaGetVector2( L, 2 );
 	float rotation = luaL_checknumber( L, 3 );
-	Color color = uluaGetColorIndex( L, 4 );
+	Color color = uluaGetColor( L, 4 );
 
 	DrawRectanglePro( rec, origin, rotation, color );
 
@@ -318,9 +318,9 @@ int lshapesDrawRectanglePro( lua_State *L ) {
 Draw a vertical-gradient-filled rectangle
 */
 int lshapesDrawRectangleGradientV( lua_State *L ) {
-	Rectangle rect = uluaGetRectangleIndex( L, 1 );
-	Color color1 = uluaGetColorIndex( L, 2 );
-	Color color2 = uluaGetColorIndex( L, 3 );
+	Rectangle rect = uluaGetRectangle( L, 1 );
+	Color color1 = uluaGetColor( L, 2 );
+	Color color2 = uluaGetColor( L, 3 );
 
 	DrawRectangleGradientV( rect.x, rect.y, rect.width, rect.height, color1, color2 );
 
@@ -333,9 +333,9 @@ int lshapesDrawRectangleGradientV( lua_State *L ) {
 Draw a horizontal-gradient-filled rectangle
 */
 int lshapesDrawRectangleGradientH( lua_State *L ) {
-	Rectangle rect = uluaGetRectangleIndex( L, 1 );
-	Color color1 = uluaGetColorIndex( L, 2 );
-	Color color2 = uluaGetColorIndex( L, 3 );
+	Rectangle rect = uluaGetRectangle( L, 1 );
+	Color color1 = uluaGetColor( L, 2 );
+	Color color2 = uluaGetColor( L, 3 );
 
 	DrawRectangleGradientH( rect.x, rect.y, rect.width, rect.height, color1, color2 );
 
@@ -348,11 +348,11 @@ int lshapesDrawRectangleGradientH( lua_State *L ) {
 Draw a gradient-filled rectangle with custom vertex colors
 */
 int lshapesDrawRectangleGradientEx( lua_State *L ) {
-	Rectangle rect = uluaGetRectangleIndex( L, 1 );
-	Color color1 = uluaGetColorIndex( L, 2 );
-	Color color2 = uluaGetColorIndex( L, 3 );
-	Color color3 = uluaGetColorIndex( L, 4 );
-	Color color4 = uluaGetColorIndex( L, 5 );
+	Rectangle rect = uluaGetRectangle( L, 1 );
+	Color color1 = uluaGetColor( L, 2 );
+	Color color2 = uluaGetColor( L, 3 );
+	Color color3 = uluaGetColor( L, 4 );
+	Color color4 = uluaGetColor( L, 5 );
 
 	DrawRectangleGradientEx( rect, color1, color2, color3, color4 );
 
@@ -365,8 +365,8 @@ int lshapesDrawRectangleGradientEx( lua_State *L ) {
 Draw rectangle outline
 */
 int lshapesDrawRectangleLines( lua_State *L ) {
-	Rectangle rect = uluaGetRectangleIndex( L, 1 );
-	Color color = uluaGetColorIndex( L, 2 );
+	Rectangle rect = uluaGetRectangle( L, 1 );
+	Color color = uluaGetColor( L, 2 );
 
 	DrawRectangleLines( rect.x, rect.y, rect.width, rect.height, color );
 
@@ -379,9 +379,9 @@ int lshapesDrawRectangleLines( lua_State *L ) {
 Draw rectangle outline with extended parameters
 */
 int lshapesDrawRectangleLinesEx( lua_State *L ) {
-	Rectangle rect = uluaGetRectangleIndex( L, 1 );
+	Rectangle rect = uluaGetRectangle( L, 1 );
 	int lineThick = luaL_checkinteger( L, 2 );
-	Color color = uluaGetColorIndex( L, 3 );
+	Color color = uluaGetColor( L, 3 );
 
 	DrawRectangleLinesEx( rect, lineThick, color );
 
@@ -394,10 +394,10 @@ int lshapesDrawRectangleLinesEx( lua_State *L ) {
 Draw rectangle with rounded edges
 */
 int lshapesDrawRectangleRounded( lua_State *L ) {
-	Rectangle rect = uluaGetRectangleIndex( L, 1 );
+	Rectangle rect = uluaGetRectangle( L, 1 );
 	float roundness = luaL_checknumber( L, 2 );
 	int segments = luaL_checkinteger( L, 3 );
-	Color color = uluaGetColorIndex( L, 4 );
+	Color color = uluaGetColor( L, 4 );
 
 	DrawRectangleRounded( rect, roundness, segments, color );
 
@@ -410,11 +410,11 @@ int lshapesDrawRectangleRounded( lua_State *L ) {
 Draw rectangle with rounded edges outline
 */
 int lshapesDrawRectangleRoundedLines( lua_State *L ) {
-	Rectangle rect = uluaGetRectangleIndex( L, 1 );
+	Rectangle rect = uluaGetRectangle( L, 1 );
 	float roundness = luaL_checknumber( L, 2 );
 	int segments = luaL_checkinteger( L, 3 );
 	int lineThick = luaL_checkinteger( L, 4 );
-	Color color = uluaGetColorIndex( L, 5 );
+	Color color = uluaGetColor( L, 5 );
 
 	DrawRectangleRoundedLines( rect, roundness, segments, lineThick, color );
 
@@ -427,10 +427,10 @@ int lshapesDrawRectangleRoundedLines( lua_State *L ) {
 Draw a color-filled triangle (Vertex in counter-clockwise order!)
 */
 int lshapesDrawTriangle( lua_State *L ) {
-	Vector2 v1 = uluaGetVector2Index( L, 1 );
-	Vector2 v2 = uluaGetVector2Index( L, 2 );
-	Vector2 v3 = uluaGetVector2Index( L, 3 );
-	Color color = uluaGetColorIndex( L, 4 );
+	Vector2 v1 = uluaGetVector2( L, 1 );
+	Vector2 v2 = uluaGetVector2( L, 2 );
+	Vector2 v3 = uluaGetVector2( L, 3 );
+	Color color = uluaGetColor( L, 4 );
 
 	DrawTriangle( v1, v2, v3, color );
 
@@ -443,10 +443,10 @@ int lshapesDrawTriangle( lua_State *L ) {
 Draw triangle outline (Vertex in counter-clockwise order!)
 */
 int lshapesDrawTriangleLines( lua_State *L ) {
-	Vector2 v1 = uluaGetVector2Index( L, 1 );
-	Vector2 v2 = uluaGetVector2Index( L, 2 );
-	Vector2 v3 = uluaGetVector2Index( L, 3 );
-	Color color = uluaGetColorIndex( L, 4 );
+	Vector2 v1 = uluaGetVector2( L, 1 );
+	Vector2 v2 = uluaGetVector2( L, 2 );
+	Vector2 v3 = uluaGetVector2( L, 3 );
+	Color color = uluaGetColor( L, 4 );
 
 	DrawTriangleLines( v1, v2, v3, color );
 
@@ -459,8 +459,8 @@ int lshapesDrawTriangleLines( lua_State *L ) {
 Draw a triangle fan defined by points (first vertex is the center)
 */
 int lshapesDrawTriangleFan( lua_State *L ) {
-	int pointsCount = uluaGetTableLenIndex( L, 1 );
-	Color color = uluaGetColorIndex( L, 2 );
+	int pointsCount = uluaGetTableLen( L, 1 );
+	Color color = uluaGetColor( L, 2 );
 
 	Vector2 points[ pointsCount ];
 
@@ -469,7 +469,7 @@ int lshapesDrawTriangleFan( lua_State *L ) {
 	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-		points[i] = uluaGetVector2( L );
+		points[i] = uluaGetVector2( L, lua_gettop( L ) );
 		i++;
 		lua_pop( L, 1 );
 	}
@@ -484,8 +484,8 @@ int lshapesDrawTriangleFan( lua_State *L ) {
 Draw a triangle strip defined by points
 */
 int lshapesDrawTriangleStrip( lua_State *L ) {
-	int pointsCount = uluaGetTableLenIndex( L, 1 );
-	Color color = uluaGetColorIndex( L, 2 );
+	int pointsCount = uluaGetTableLen( L, 1 );
+	Color color = uluaGetColor( L, 2 );
 
 	Vector2 points[ pointsCount ];
 
@@ -494,7 +494,7 @@ int lshapesDrawTriangleStrip( lua_State *L ) {
 	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-		points[i] = uluaGetVector2( L );
+		points[i] = uluaGetVector2( L, lua_gettop( L ) );
 		i++;
 		lua_pop( L, 1 );
 	}
@@ -509,11 +509,11 @@ int lshapesDrawTriangleStrip( lua_State *L ) {
 Draw a regular polygon (Vector version)
 */
 int lshapesDrawPoly( lua_State *L ) {
-	Vector2 center = uluaGetVector2Index( L, 1 );
+	Vector2 center = uluaGetVector2( L, 1 );
 	int sides = luaL_checkinteger( L, 2 );
 	float radius = luaL_checknumber( L, 3 );
 	float rotation = luaL_checknumber( L, 4 );
-	Color color = uluaGetColorIndex( L, 5 );
+	Color color = uluaGetColor( L, 5 );
 
 	DrawPoly( center, sides, radius, rotation, color );
 
@@ -526,11 +526,11 @@ int lshapesDrawPoly( lua_State *L ) {
 Draw a polygon outline of n sides
 */
 int lshapesDrawPolyLines( lua_State *L ) {
-	Vector2 center = uluaGetVector2Index( L, 1 );
+	Vector2 center = uluaGetVector2( L, 1 );
 	int sides = luaL_checkinteger( L, 2 );
 	float radius = luaL_checknumber( L, 3 );
 	float rotation = luaL_checknumber( L, 4 );
-	Color color = uluaGetColorIndex( L, 5 );
+	Color color = uluaGetColor( L, 5 );
 
 	DrawPolyLines( center, sides, radius, rotation, color );
 
@@ -543,12 +543,12 @@ int lshapesDrawPolyLines( lua_State *L ) {
 Draw a polygon outline of n sides with extended parameters
 */
 int lshapesDrawPolyLinesEx( lua_State *L ) {
-	Vector2 center = uluaGetVector2Index( L, 1 );
+	Vector2 center = uluaGetVector2( L, 1 );
 	int sides = luaL_checkinteger( L, 2 );
 	float radius = luaL_checknumber( L, 3 );
 	float rotation = luaL_checknumber( L, 4 );
 	float lineThick = luaL_checknumber( L, 5 );
-	Color color = uluaGetColorIndex( L, 6 );
+	Color color = uluaGetColor( L, 6 );
 
 	DrawPolyLinesEx( center, sides, radius, rotation, lineThick, color );
 
@@ -567,8 +567,8 @@ Check collision between two rectangles
 - Success return bool
 */
 int lshapesCheckCollisionRecs( lua_State *L ) {
-	Rectangle rect1 = uluaGetRectangleIndex( L, 1 );
-	Rectangle rect2 = uluaGetRectangleIndex( L, 2 );
+	Rectangle rect1 = uluaGetRectangle( L, 1 );
+	Rectangle rect2 = uluaGetRectangle( L, 2 );
 
 	lua_pushboolean( L, CheckCollisionRecs( rect1, rect2 ) );
 
@@ -583,9 +583,9 @@ Check collision between two circles
 - Success return bool
 */
 int lshapesCheckCollisionCircles( lua_State *L ) {
-	Vector2 center1 = uluaGetVector2Index( L, 1 );
+	Vector2 center1 = uluaGetVector2( L, 1 );
 	float radius1 = luaL_checknumber( L, 2 );
-	Vector2 center2 = uluaGetVector2Index( L, 3 );
+	Vector2 center2 = uluaGetVector2( L, 3 );
 	float radius2 = luaL_checknumber( L, 4 );
 
 	lua_pushboolean( L, CheckCollisionCircles( center1, radius1, center2, radius2 ) );
@@ -601,9 +601,9 @@ Check collision between circle and rectangle
 - Success return bool
 */
 int lshapesCheckCollisionCircleRec( lua_State *L ) {
-	Vector2 center = uluaGetVector2Index( L, 1 );
+	Vector2 center = uluaGetVector2( L, 1 );
 	float radius = luaL_checknumber( L, 2 );
-	Rectangle rec = uluaGetRectangleIndex( L, 3 );
+	Rectangle rec = uluaGetRectangle( L, 3 );
 
 	lua_pushboolean( L, CheckCollisionCircleRec( center, radius, rec ) );
 
@@ -618,8 +618,8 @@ Check if point is inside rectangle
 - Success return bool
 */
 int lshapesCheckCollisionPointRec( lua_State *L ) {
-	Vector2 point = uluaGetVector2Index( L, 1 );
-	Rectangle rec = uluaGetRectangleIndex( L, 2 );
+	Vector2 point = uluaGetVector2( L, 1 );
+	Rectangle rec = uluaGetRectangle( L, 2 );
 
 	lua_pushboolean( L, CheckCollisionPointRec( point, rec ) );
 
@@ -634,8 +634,8 @@ Check if point is inside circle
 - Success return bool
 */
 int lshapesCheckCollisionPointCircle( lua_State *L ) {
-	Vector2 point = uluaGetVector2Index( L, 1 );
-	Vector2 center = uluaGetVector2Index( L, 2 );
+	Vector2 point = uluaGetVector2( L, 1 );
+	Vector2 center = uluaGetVector2( L, 2 );
 	float radius = luaL_checknumber( L, 3 );
 
 	lua_pushboolean( L, CheckCollisionPointCircle( point, center, radius ) );
@@ -651,10 +651,10 @@ Check if point is inside a triangle
 - Success return bool
 */
 int lshapesCheckCollisionPointTriangle( lua_State *L ) {
-	Vector2 point = uluaGetVector2Index( L, 1 );
-	Vector2 p1 = uluaGetVector2Index( L, 2 );
-	Vector2 p2 = uluaGetVector2Index( L, 3 );
-	Vector2 p3 = uluaGetVector2Index( L, 4 );
+	Vector2 point = uluaGetVector2( L, 1 );
+	Vector2 p1 = uluaGetVector2( L, 2 );
+	Vector2 p2 = uluaGetVector2( L, 3 );
+	Vector2 p3 = uluaGetVector2( L, 4 );
 
 	lua_pushboolean( L, CheckCollisionPointTriangle( point, p1, p2, p3 ) );
 
@@ -669,8 +669,8 @@ Check if point is within a polygon described by array of vertices
 - Success return bool
 */
 int lshapesCheckCollisionPointPoly( lua_State *L ) {
-	Vector2 point = uluaGetVector2Index( L, 1 );
-	int pointCount = uluaGetTableLenIndex( L, 2 );
+	Vector2 point = uluaGetVector2( L, 1 );
+	int pointCount = uluaGetTableLen( L, 2 );
 	Vector2 points[ pointCount ];
 
 	/* t = points index. */
@@ -678,7 +678,7 @@ int lshapesCheckCollisionPointPoly( lua_State *L ) {
 	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-		points[i] = uluaGetVector2( L );
+		points[i] = uluaGetVector2( L, lua_gettop( L ) );
 		i++;
 		lua_pop( L, 1 );
 	}
@@ -695,10 +695,10 @@ Check the collision between two lines defined by two points each, returns collis
 - Success return bool, Vector2
 */
 int lshapesCheckCollisionLines( lua_State *L ) {
-	Vector2 startPos1 = uluaGetVector2Index( L, 1 );
-	Vector2 endPos1 = uluaGetVector2Index( L, 2 );
-	Vector2 startPos2 = uluaGetVector2Index( L, 3 );
-	Vector2 endPos2 = uluaGetVector2Index( L, 4 );
+	Vector2 startPos1 = uluaGetVector2( L, 1 );
+	Vector2 endPos1 = uluaGetVector2( L, 2 );
+	Vector2 startPos2 = uluaGetVector2( L, 3 );
+	Vector2 endPos2 = uluaGetVector2( L, 4 );
 
 	Vector2 colPoint = { 0, 0 };
 
@@ -716,9 +716,9 @@ Check if point belongs to line created between two points [p1] and [p2] with def
 - Success return bool
 */
 int lshapesCheckCollisionPointLine( lua_State *L ) {
-	Vector2 point = uluaGetVector2Index( L, 1 );
-	Vector2 p1 = uluaGetVector2Index( L, 2 );
-	Vector2 p2 = uluaGetVector2Index( L, 3 );
+	Vector2 point = uluaGetVector2( L, 1 );
+	Vector2 p1 = uluaGetVector2( L, 2 );
+	Vector2 p2 = uluaGetVector2( L, 3 );
 	int threshold = luaL_checkinteger( L, 4 );
 
 	lua_pushboolean( L, CheckCollisionPointLine( point, p1, p2, threshold ) );
@@ -734,8 +734,8 @@ Get collision rectangle for two rectangles collision
 - Success return Rectangle
 */
 int lshapesGetCollisionRec( lua_State *L ) {
-	Rectangle rec1 = uluaGetRectangleIndex( L, 1 );
-	Rectangle rec2 = uluaGetRectangleIndex( L, 2 );
+	Rectangle rec1 = uluaGetRectangle( L, 1 );
+	Rectangle rec2 = uluaGetRectangle( L, 2 );
 
 	uluaPushRectangle( L, GetCollisionRec( rec1, rec2 ) );
 

@@ -35,28 +35,18 @@ void luaCallProcess();
 void luaCallDraw();
 void luaCallExit();
 void luaRegister();
-/* Lua Util functions. */
+/* Lua get types. */
 bool uluaGetBoolean( lua_State *L, int index );
-Color uluaGetColor( lua_State *L );
-Color uluaGetColorIndex( lua_State *L, int index );
-Vector2 uluaGetVector2( lua_State *L );
-Vector2 uluaGetVector2Index( lua_State *L, int index );
-Vector3 uluaGetVector3( lua_State *L );
-Vector3 uluaGetVector3Index( lua_State *L, int index );
-Vector4 uluaGetVector4( lua_State *L );
-Vector4 uluaGetVector4Index( lua_State *L, int index );
-Rectangle uluaGetRectangle( lua_State *L );
-Rectangle uluaGetRectangleIndex( lua_State *L, int index );
-Quaternion uluaGetQuaternion( lua_State *L );
-Quaternion uluaGetQuaternionIndex( lua_State *L, int index );
-Matrix uluaGetMatrix( lua_State *L );
-Matrix uluaGetMatrixIndex( lua_State *L, int index );
-BoundingBox uluaGetBoundingBox( lua_State *L );
-BoundingBox uluaGetBoundingBoxIndex( lua_State *L, int index );
-Ray uluaGetRay( lua_State *L );
-Ray uluaGetRayIndex( lua_State *L, int index );
-NPatchInfo uluaGetNPatchInfo( lua_State *L );
-NPatchInfo uluaGetNPatchInfoIndex( lua_State *L, int index );
+Color uluaGetColor( lua_State *L, int index );
+Vector2 uluaGetVector2( lua_State *L, int index );
+Vector3 uluaGetVector3( lua_State *L, int index );
+Vector4 uluaGetVector4( lua_State *L, int index );
+Rectangle uluaGetRectangle( lua_State *L, int index );
+Quaternion uluaGetQuaternion( lua_State *L, int index );
+Matrix uluaGetMatrix( lua_State *L, int index );
+BoundingBox uluaGetBoundingBox( lua_State *L, int index );
+Ray uluaGetRay( lua_State *L, int index );
+NPatchInfo uluaGetNPatchInfo( lua_State *L, int index );
 Buffer* uluaGetBuffer( lua_State *L, int index );
 Image* uluaGetImage( lua_State *L, int index );
 Texture* uluaGetTexture( lua_State *L, int index );
@@ -73,7 +63,7 @@ Light* uluaGetLight( lua_State *L, int index );
 Material* uluaGetMaterial( lua_State *L, int index );
 Model* uluaGetModel( lua_State *L, int index );
 ModelAnimation* uluaGetModelAnimation( lua_State *L, int index );
-/* Push types. */
+/* Lua push types. */
 void uluaPushColor( lua_State *L, Color color );
 void uluaPushVector2( lua_State *L, Vector2 vector );
 void uluaPushVector3( lua_State *L, Vector3 vector );
@@ -101,6 +91,5 @@ void uluaPushMaterial( lua_State *L, Material material );
 void uluaPushMesh( lua_State *L, Mesh mesh );
 void uluaPushModel( lua_State *L, Model model );
 void uluaPushModelAnimation( lua_State *L, ModelAnimation modelAnimation );
-
-int uluaGetTableLen( lua_State *L );
-int uluaGetTableLenIndex( lua_State *L, int index );
+/* Utils. */
+int uluaGetTableLen( lua_State *L, int index );

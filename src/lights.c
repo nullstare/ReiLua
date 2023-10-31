@@ -20,9 +20,9 @@ Create a light and get shader locations
 */
 int llightsCreateLight( lua_State *L ) {
 	int type = luaL_checkinteger( L, 1 );
-	Vector3 position = uluaGetVector3Index( L, 2 );
-	Vector3 target = uluaGetVector3Index( L, 3 );
-	Color color = uluaGetColorIndex( L, 4 );
+	Vector3 position = uluaGetVector3( L, 2 );
+	Vector3 target = uluaGetVector3( L, 3 );
+	Color color = uluaGetColor( L, 4 );
 	Shader *shader = uluaGetShader( L, 5 );
 
 	uluaPushLight( L, CreateLight( type, position, target, color, *shader ) );
@@ -65,7 +65,7 @@ Set light position
 */
 int llightsSetLightPosition( lua_State *L ) {
 	Light *light = uluaGetLight( L, 1 );
-	Vector3 position = uluaGetVector3Index( L, 2 );
+	Vector3 position = uluaGetVector3( L, 2 );
 
 	light->position = position;
 
@@ -79,7 +79,7 @@ Set light target
 */
 int llightsSetLightTarget( lua_State *L ) {
 	Light *light = uluaGetLight( L, 1 );
-	Vector3 target = uluaGetVector3Index( L, 2 );
+	Vector3 target = uluaGetVector3( L, 2 );
 
 	light->target = target;
 
@@ -93,7 +93,7 @@ Set light color
 */
 int llightsSetLightColor( lua_State *L ) {
 	Light *light = uluaGetLight( L, 1 );
-	Color color = uluaGetColorIndex( L, 2 );
+	Color color = uluaGetColor( L, 2 );
 
 	light->color = color;
 

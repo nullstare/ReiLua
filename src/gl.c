@@ -20,8 +20,8 @@ int lglBlitFramebuffer( lua_State *L ) {
 		lua_pushnil( L );
 		return 1;
 	}
-	Rectangle srcRect = uluaGetRectangleIndex( L, 3 );
-	Rectangle dstRect = uluaGetRectangleIndex( L, 4 );
+	Rectangle srcRect = uluaGetRectangle( L, 3 );
+	Rectangle dstRect = uluaGetRectangle( L, 4 );
 	int mask = luaL_checkinteger( L, 5 );
 	int filter = luaL_checkinteger( L, 6 );
 

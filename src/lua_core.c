@@ -2379,11 +2379,7 @@ bool uluaGetBoolean( lua_State *L, int index ) {
 	return lua_toboolean( L, index );
 }
 
-Color uluaGetColor( lua_State *L ) {
-    return uluaGetColorIndex( L, lua_gettop( L ) );
-}
-
-Color uluaGetColorIndex( lua_State *L, int index ) {
+Color uluaGetColor( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Color color = { 0, 0, 0, 255 };
 
@@ -2431,11 +2427,7 @@ Color uluaGetColorIndex( lua_State *L, int index ) {
     return color;
 }
 
-Vector2 uluaGetVector2( lua_State *L ) {
-    return uluaGetVector2Index( L, lua_gettop( L ) );
-}
-
-Vector2 uluaGetVector2Index( lua_State *L, int index ) {
+Vector2 uluaGetVector2( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Vector2 vector = { 0.0f, 0.0f };
 
@@ -2471,11 +2463,7 @@ Vector2 uluaGetVector2Index( lua_State *L, int index ) {
     return vector;
 }
 
-Vector3 uluaGetVector3( lua_State *L ) {
-    return uluaGetVector3Index( L, lua_gettop( L ) );
-}
-
-Vector3 uluaGetVector3Index( lua_State *L, int index ) {
+Vector3 uluaGetVector3( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Vector3 vector = { 0.0f, 0.0f, 0.0f };
 
@@ -2517,11 +2505,7 @@ Vector3 uluaGetVector3Index( lua_State *L, int index ) {
     return vector;
 }
 
-Vector4 uluaGetVector4( lua_State *L ) {
-   return uluaGetVector4Index( L, lua_gettop( L ) );
-}
-
-Vector4 uluaGetVector4Index( lua_State *L, int index ) {
+Vector4 uluaGetVector4( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Vector4 vector = { 0.0f, 0.0f, 0.0f, 0.0f };
 
@@ -2569,11 +2553,7 @@ Vector4 uluaGetVector4Index( lua_State *L, int index ) {
     return vector;
 }
 
-Rectangle uluaGetRectangle( lua_State *L ) {
-	return uluaGetRectangleIndex( L, lua_gettop( L ) );
-}
-
-Rectangle uluaGetRectangleIndex( lua_State *L, int index ) {
+Rectangle uluaGetRectangle( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Rectangle rect = { 0.0f, 0.0f, 0.0f, 0.0f };
 
@@ -2621,11 +2601,7 @@ Rectangle uluaGetRectangleIndex( lua_State *L, int index ) {
     return rect;
 }
 
-Quaternion uluaGetQuaternion( lua_State *L ) {
-    return uluaGetQuaternionIndex( L, lua_gettop( L ) );
-}
-
-Quaternion uluaGetQuaternionIndex( lua_State *L, int index ) {
+Quaternion uluaGetQuaternion( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Quaternion quaternion = { 0.0f, 0.0f, 0.0f, 0.0f };
 
@@ -2673,11 +2649,7 @@ Quaternion uluaGetQuaternionIndex( lua_State *L, int index ) {
     return quaternion;
 }
 
-Matrix uluaGetMatrix( lua_State *L ) {
-	return uluaGetMatrixIndex( L, lua_gettop( L ) );
-}
-
-Matrix uluaGetMatrixIndex( lua_State *L, int index ) {
+Matrix uluaGetMatrix( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	Matrix matrix = { 0.0f };
 	float m[4][4];
@@ -2709,11 +2681,7 @@ Matrix uluaGetMatrixIndex( lua_State *L, int index ) {
 	return matrix;
 }
 
-BoundingBox uluaGetBoundingBox( lua_State *L ) {
-	return uluaGetBoundingBoxIndex( L, lua_gettop( L ) );
-}
-
-BoundingBox uluaGetBoundingBoxIndex( lua_State *L, int index ) {
+BoundingBox uluaGetBoundingBox( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	BoundingBox box = { .min = { 0.0, 0.0, 0.0 }, .max = { 0.0, 0.0, 0.0 } };
 
@@ -2725,10 +2693,10 @@ BoundingBox uluaGetBoundingBoxIndex( lua_State *L, int index ) {
 			if ( lua_isnumber( L, -2 ) ) {
 				switch ( i ) {
 					case 0:
-						box.min = uluaGetVector3( L );
+						box.min = uluaGetVector3( L, lua_gettop( L ) );
 						break;
 					case 1:
-						box.max = uluaGetVector3( L );
+						box.max = uluaGetVector3( L, lua_gettop( L ) );
 						break;
 					default:
 						break;
@@ -2736,10 +2704,10 @@ BoundingBox uluaGetBoundingBoxIndex( lua_State *L, int index ) {
 			}
 			else if ( lua_isstring( L, -2 ) ) {
 				if ( strcmp( "min", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					box.min = uluaGetVector3( L );
+					box.min = uluaGetVector3( L, lua_gettop( L ) );
 				}
 				else if ( strcmp( "max", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					box.max = uluaGetVector3( L );
+					box.max = uluaGetVector3( L, lua_gettop( L ) );
 				}
 			}
 			i++;
@@ -2750,11 +2718,7 @@ BoundingBox uluaGetBoundingBoxIndex( lua_State *L, int index ) {
 	return box;
 }
 
-Ray uluaGetRay( lua_State *L ) {
-	return uluaGetRayIndex( L, lua_gettop( L ) );
-}
-
-Ray uluaGetRayIndex( lua_State *L, int index ) {
+Ray uluaGetRay( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	Ray ray = { .position = { 0.0, 0.0, 0.0 }, .direction = { 0.0, 0.0, 0.0 } };
 
@@ -2766,10 +2730,10 @@ Ray uluaGetRayIndex( lua_State *L, int index ) {
 			if ( lua_isnumber( L, -2 ) ) {
 				switch ( i ) {
 					case 0:
-						ray.position = uluaGetVector3( L );
+						ray.position = uluaGetVector3( L, lua_gettop( L ) );
 						break;
 					case 1:
-						ray.direction = uluaGetVector3( L );
+						ray.direction = uluaGetVector3( L, lua_gettop( L ) );
 						break;
 					default:
 						break;
@@ -2777,10 +2741,10 @@ Ray uluaGetRayIndex( lua_State *L, int index ) {
 			}
 			else if ( lua_isstring( L, -2 ) ) {
 				if ( strcmp( "position", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					ray.position = uluaGetVector3( L );
+					ray.position = uluaGetVector3( L, lua_gettop( L ) );
 				}
 				else if ( strcmp( "direction", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-					ray.direction = uluaGetVector3( L );
+					ray.direction = uluaGetVector3( L, lua_gettop( L ) );
 				}
 			}
 			i++;
@@ -2791,11 +2755,7 @@ Ray uluaGetRayIndex( lua_State *L, int index ) {
 	return ray;
 }
 
-NPatchInfo uluaGetNPatchInfo( lua_State *L ) {
-	return uluaGetNPatchInfoIndex( L, lua_gettop( L ) );
-}
-
-NPatchInfo uluaGetNPatchInfoIndex( lua_State *L, int index ) {
+NPatchInfo uluaGetNPatchInfo( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	NPatchInfo npatch = { .source = { 0.0, 0.0, 0.0, 0.0 }, .left = 0, .top = 0, .right = 0, .bottom = 0, .layout = NPATCH_NINE_PATCH };
 
@@ -2807,7 +2767,7 @@ NPatchInfo uluaGetNPatchInfoIndex( lua_State *L, int index ) {
 		if ( lua_isnumber( L, -2 ) ) {
 			switch ( i ) {
 				case 0:
-					npatch.source = uluaGetRectangle( L );
+					npatch.source = uluaGetRectangle( L, lua_gettop( L ) );
 					break;
 				case 1:
 					npatch.left = lua_tointeger( L, -1 );
@@ -2830,7 +2790,7 @@ NPatchInfo uluaGetNPatchInfoIndex( lua_State *L, int index ) {
 		}
 		else if ( lua_isstring( L, -2 ) ) {
 			if ( strcmp( "source", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-				npatch.source = uluaGetRectangle( L );
+				npatch.source = uluaGetRectangle( L, lua_gettop( L ) );
 			}
 			else if ( strcmp( "left", (char*)lua_tostring( L, -2 ) ) == 0 ) {
 				npatch.left = lua_tointeger( L, -1 );
@@ -3248,11 +3208,7 @@ void uluaPushModelAnimation( lua_State *L, ModelAnimation modelAnimation ) {
 	luaL_setmetatable( L, "ModelAnimation" );
 }
 
-int uluaGetTableLen( lua_State *L ) {
-	return uluaGetTableLenIndex( L, lua_gettop( L ) );
-}
-
-int uluaGetTableLenIndex( lua_State *L, int index ) {
+int uluaGetTableLen( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	int t = index, i = 0;
     lua_pushnil( L );

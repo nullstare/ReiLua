@@ -122,8 +122,8 @@ Generate image: plain color
 - Success return Image
 */
 int ltexturesGenImageColor( lua_State *L ) {
-	Vector2 size = uluaGetVector2Index( L, 1 );
-	Color color = uluaGetColorIndex( L, 1 );
+	Vector2 size = uluaGetVector2( L, 1 );
+	Color color = uluaGetColor( L, 1 );
 
 	uluaPushImage( L, GenImageColor( size.x, size.y, color ) );
 
@@ -138,9 +138,9 @@ Generate image: vertical gradient
 - Success return Image
 */
 int ltexturesGenImageGradientV( lua_State *L ) {
-	Vector2 size = uluaGetVector2Index( L, 1 );
-	Color top = uluaGetColorIndex( L, 2 );
-	Color bottom = uluaGetColorIndex( L, 3 );
+	Vector2 size = uluaGetVector2( L, 1 );
+	Color top = uluaGetColor( L, 2 );
+	Color bottom = uluaGetColor( L, 3 );
 
 	uluaPushImage( L, GenImageGradientV( (int)size.x, (int)size.y, top, bottom ) );
 
@@ -155,9 +155,9 @@ Generate image: horizontal gradient
 - Success return Image
 */
 int ltexturesGenImageGradientH( lua_State *L ) {
-	Vector2 size = uluaGetVector2Index( L, 1 );
-	Color left = uluaGetColorIndex( L, 2 );
-	Color right = uluaGetColorIndex( L, 3 );
+	Vector2 size = uluaGetVector2( L, 1 );
+	Color left = uluaGetColor( L, 2 );
+	Color right = uluaGetColor( L, 3 );
 
 	uluaPushImage( L, GenImageGradientH( (int)size.x, (int)size.y, left, right ) );
 
@@ -172,10 +172,10 @@ Generate image: radial gradient
 - Success return Image
 */
 int ltexturesGenImageGradientRadial( lua_State *L ) {
-	Vector2 size = uluaGetVector2Index( L, 1 );
+	Vector2 size = uluaGetVector2( L, 1 );
 	float density = luaL_checknumber( L, 2 );
-	Color inner = uluaGetColorIndex( L, 3 );
-	Color outer = uluaGetColorIndex( L, 4 );
+	Color inner = uluaGetColor( L, 3 );
+	Color outer = uluaGetColor( L, 4 );
 
 	uluaPushImage( L, GenImageGradientRadial( (int)size.x, (int)size.y, density, inner, outer ) );
 
@@ -190,10 +190,10 @@ Generate image: checked
 - Success return Image
 */
 int ltexturesGenImageChecked( lua_State *L ) {
-	Vector2 size = uluaGetVector2Index( L, 1 );
-	Vector2 checks = uluaGetVector2Index( L, 2 );
-	Color col1 = uluaGetColorIndex( L, 3 );
-	Color col2 = uluaGetColorIndex( L, 4 );
+	Vector2 size = uluaGetVector2( L, 1 );
+	Vector2 checks = uluaGetVector2( L, 2 );
+	Color col1 = uluaGetColor( L, 3 );
+	Color col2 = uluaGetColor( L, 4 );
 
 	uluaPushImage( L, GenImageChecked( (int)size.x, (int)size.y, (int)checks.x, (int)checks.y, col1, col2 ) );
 
@@ -208,7 +208,7 @@ Generate image: white noise
 - Success return Image
 */
 int ltexturesGenImageWhiteNoise( lua_State *L ) {
-	Vector2 size = uluaGetVector2Index( L, 1 );
+	Vector2 size = uluaGetVector2( L, 1 );
 	float factor = luaL_checknumber( L, 2 );
 
 	uluaPushImage( L, GenImageWhiteNoise( (int)size.x, (int)size.y, factor ) );
@@ -224,8 +224,8 @@ Generate image: perlin noise
 - Success return Image
 */
 int ltexturesGenImagePerlinNoise( lua_State *L ) {
-	Vector2 size = uluaGetVector2Index( L, 1 );
-	Vector2 offset = uluaGetVector2Index( L, 2 );
+	Vector2 size = uluaGetVector2( L, 1 );
+	Vector2 offset = uluaGetVector2( L, 2 );
 	float factor = luaL_checknumber( L, 3 );
 
 	uluaPushImage( L, GenImagePerlinNoise( (int)size.x, (int)size.y, (int)offset.x, (int)offset.y, factor ) );
@@ -241,7 +241,7 @@ Generate image: cellular algorithm. Bigger tileSize means bigger cells
 - Success return Image
 */
 int ltexturesGenImageCellular( lua_State *L ) {
-	Vector2 size = uluaGetVector2Index( L, 1 );
+	Vector2 size = uluaGetVector2( L, 1 );
 	int tileSize = luaL_checkinteger( L, 2 );
 
 	uluaPushImage( L, GenImageCellular( (int)size.x, (int)size.y, tileSize ) );
@@ -257,7 +257,7 @@ Generate image: grayscale image from text data
 - Success return Image
 */
 int ltexturesGenImageText( lua_State *L ) {
-	Vector2 size = uluaGetVector2Index( L, 1 );
+	Vector2 size = uluaGetVector2( L, 1 );
 
 	uluaPushImage( L, GenImageText( (int)size.x, (int)size.y, luaL_checkstring( L, 2 ) ) );
 
@@ -292,7 +292,7 @@ Create an image from another image piece
 */
 int ltexturesImageFromImage( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Rectangle rec = uluaGetRectangleIndex( L, 2 );
+	Rectangle rec = uluaGetRectangle( L, 2 );
 
 	uluaPushImage( L, ImageFromImage( *image, rec ) );
 
@@ -310,7 +310,7 @@ int ltexturesImageText( lua_State *L ) {
 	Font *font = uluaGetFont( L, 1 );
 	float fontSize = lua_tonumber( L, 3 );
 	float spacing = lua_tonumber( L, 4 );
-	Color tint = uluaGetColorIndex( L, 5 );
+	Color tint = uluaGetColor( L, 5 );
 
 	uluaPushImage( L, ImageTextEx( *font, luaL_checkstring( L, 2 ), fontSize, spacing, tint ) );
 
@@ -338,7 +338,7 @@ Convert image to POT (power-of-two)
 */
 int ltexturesImageToPOT( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Color fill = uluaGetColorIndex( L, 2 );
+	Color fill = uluaGetColor( L, 2 );
 
 	ImageToPOT( image, fill );
 
@@ -352,7 +352,7 @@ Crop an image to a defined rectangle
 */
 int ltexturesImageCrop( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Rectangle crop = uluaGetRectangleIndex( L, 2 );
+	Rectangle crop = uluaGetRectangle( L, 2 );
 
 	ImageCrop( image, crop );
 
@@ -380,7 +380,7 @@ Clear alpha channel to desired color
 */
 int ltexturesImageAlphaClear( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Color color = uluaGetColorIndex( L, 2 );
+	Color color = uluaGetColor( L, 2 );
 	float threshold = lua_tonumber( L, 3 );
 
 	ImageAlphaClear( image, color, threshold );
@@ -436,7 +436,7 @@ Resize image (Bicubic scaling algorithm)
 */
 int ltexturesImageResize( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Vector2 size = uluaGetVector2Index( L, 2 );
+	Vector2 size = uluaGetVector2( L, 2 );
 
 	ImageResize( image, (int)size.x, (int)size.y );
 
@@ -450,7 +450,7 @@ Resize image (Nearest-Neighbor scaling algorithm)
 */
 int ltexturesImageResizeNN( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Vector2 size = uluaGetVector2Index( L, 2 );
+	Vector2 size = uluaGetVector2( L, 2 );
 
 	ImageResizeNN( image, (int)size.x, (int)size.y );
 
@@ -464,9 +464,9 @@ Resize canvas and fill with color
 */
 int ltexturesImageResizeCanvas( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Vector2 size = uluaGetVector2Index( L, 2 );
-	Vector2 offset = uluaGetVector2Index( L, 3 );
-	Color fill = uluaGetColorIndex( L, 4 );
+	Vector2 size = uluaGetVector2( L, 2 );
+	Vector2 offset = uluaGetVector2( L, 3 );
+	Color fill = uluaGetColor( L, 4 );
 
 	ImageResizeCanvas( image, (int)size.x, (int)size.y, (int)offset.x, (int)offset.y, fill );
 
@@ -493,7 +493,7 @@ Dither image data to 16bpp or lower (Floyd-Steinberg dithering)
 */
 int ltexturesImageDither( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Color bpp = uluaGetColorIndex( L, 2 );
+	Color bpp = uluaGetColor( L, 2 );
 
 	ImageDither( image, bpp.r, bpp.g, bpp.b, bpp.a );
 
@@ -559,7 +559,7 @@ Modify image color: tint
 */
 int ltexturesImageColorTint( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Color color = uluaGetColorIndex( L, 2 );
+	Color color = uluaGetColor( L, 2 );
 
 	ImageColorTint( image, color );
 
@@ -627,8 +627,8 @@ Modify image color: replace color
 */
 int ltexturesImageColorReplace( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Color color = uluaGetColorIndex( L, 2 );
-	Color replace = uluaGetColorIndex( L, 3 );
+	Color color = uluaGetColor( L, 2 );
+	Color replace = uluaGetColor( L, 3 );
 
 	ImageColorReplace( image, color, replace );
 
@@ -709,7 +709,7 @@ Get image pixel color at (x, y) position
 */
 int ltexturesGetImageColor( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Vector2 pixelPos = uluaGetVector2Index( L, 2 );
+	Vector2 pixelPos = uluaGetVector2( L, 2 );
 
 	uluaPushColor( L, GetImageColor( *image, pixelPos.x, pixelPos.y ) );
 
@@ -727,7 +727,7 @@ Clear image background with given color
 */
 int ltexturesImageClearBackground( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Color color = uluaGetColorIndex( L, 2 );
+	Color color = uluaGetColor( L, 2 );
 
 	ImageClearBackground( image, color );
 
@@ -741,8 +741,8 @@ Draw pixel within an image
 */
 int ltexturesImageDrawPixel( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Vector2 position = uluaGetVector2Index( L, 2 );
-	Color color = uluaGetColorIndex( L, 3 );
+	Vector2 position = uluaGetVector2( L, 2 );
+	Color color = uluaGetColor( L, 3 );
 
 	ImageDrawPixelV( image, position, color );
 
@@ -756,9 +756,9 @@ Draw line within an image
 */
 int ltexturesImageDrawLine( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Vector2 start = uluaGetVector2Index( L, 2 );
-	Vector2 end = uluaGetVector2Index( L, 3 );
-	Color color = uluaGetColorIndex( L, 4 );
+	Vector2 start = uluaGetVector2( L, 2 );
+	Vector2 end = uluaGetVector2( L, 3 );
+	Color color = uluaGetColor( L, 4 );
 
 	ImageDrawLineV( image, start, end, color );
 
@@ -772,9 +772,9 @@ Draw circle within an image
 */
 int ltexturesImageDrawCircle( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Vector2 center = uluaGetVector2Index( L, 2 );
+	Vector2 center = uluaGetVector2( L, 2 );
 	int radius = luaL_checkinteger( L, 3 );
-	Color color = uluaGetColorIndex( L, 4 );
+	Color color = uluaGetColor( L, 4 );
 
 	ImageDrawCircleV( image, center, radius, color );
 
@@ -788,9 +788,9 @@ Draw circle outline within an image
 */
 int ltexturesImageDrawCircleLines( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Vector2 center = uluaGetVector2Index( L, 2 );
+	Vector2 center = uluaGetVector2( L, 2 );
 	int radius = luaL_checkinteger( L, 3 );
-	Color color = uluaGetColorIndex( L, 4 );
+	Color color = uluaGetColor( L, 4 );
 
 	ImageDrawCircleLinesV( image, center, radius, color );
 
@@ -804,8 +804,8 @@ Draw rectangle within an image
 */
 int ltexturesImageDrawRectangle( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Rectangle rec = uluaGetRectangleIndex( L, 2 );
-	Color color = uluaGetColorIndex( L, 3 );
+	Rectangle rec = uluaGetRectangle( L, 2 );
+	Color color = uluaGetColor( L, 3 );
 
 	ImageDrawRectangleRec( image, rec, color );
 
@@ -819,9 +819,9 @@ Draw rectangle lines within an image
 */
 int ltexturesImageDrawRectangleLines( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
-	Rectangle rec = uluaGetRectangleIndex( L, 2 );
+	Rectangle rec = uluaGetRectangle( L, 2 );
 	int thick = luaL_checkinteger( L, 3 );
-	Color color = uluaGetColorIndex( L, 4 );
+	Color color = uluaGetColor( L, 4 );
 
 	ImageDrawRectangleLines( image, rec, thick, color );
 
@@ -836,9 +836,9 @@ Draw a source image within a destination image (Tint applied to source)
 int ltexturesImageDraw( lua_State *L ) {
 	Image *imageDstId = uluaGetImage( L, 1 );
 	Image *imageSrcId = uluaGetImage( L, 2 );
-	Rectangle srcRec = uluaGetRectangleIndex( L, 3 );
-	Rectangle dstRec = uluaGetRectangleIndex( L, 4 );
-	Color tint = uluaGetColorIndex( L, 5 );
+	Rectangle srcRec = uluaGetRectangle( L, 3 );
+	Rectangle dstRec = uluaGetRectangle( L, 4 );
+	Color tint = uluaGetColor( L, 5 );
 
 	ImageDraw( imageDstId, *imageSrcId, srcRec, dstRec, tint );
 
@@ -853,10 +853,10 @@ Draw text (Custom sprite font) within an image (Destination)
 int ltexturesImageDrawTextEx( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
 	Font *font = uluaGetFont( L, 2 );
-	Vector2 position = uluaGetVector2Index( L, 4 );
+	Vector2 position = uluaGetVector2( L, 4 );
 	float fontSize = luaL_checknumber( L, 5 );
 	float spacing = luaL_checknumber( L, 6 );
-	Color tint = uluaGetColorIndex( L, 7 );
+	Color tint = uluaGetColor( L, 7 );
 
 	ImageDrawTextEx( image, *font, luaL_checkstring( L, 3 ), position, fontSize, spacing, tint );
 
@@ -1013,7 +1013,7 @@ Load texture for rendering (framebuffer)
 - Success return RenderTexture
 */
 int ltexturesLoadRenderTexture( lua_State *L ) {
-	Vector2 size = uluaGetVector2Index( L, 1 );
+	Vector2 size = uluaGetVector2( L, 1 );
 
 	uluaPushRenderTexture( L, LoadRenderTexture( (int)size.x, (int)size.y ) );
 
@@ -1118,7 +1118,7 @@ NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 25
 */
 int ltexturesUpdateTexture( lua_State *L ) {
 	Texture *texture = uluaGetTexture( L, 1 );
-	size_t len = uluaGetTableLenIndex( L, 2 );
+	size_t len = uluaGetTableLen( L, 2 );
 
 	unsigned char *pixels = malloc( len * 4 * sizeof( unsigned char ) );
 
@@ -1127,7 +1127,7 @@ int ltexturesUpdateTexture( lua_State *L ) {
 	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-		size_t colLen = uluaGetTableLen( L );
+		size_t colLen = uluaGetTableLen( L, lua_gettop( L ) );
 
 		int t2 = lua_gettop( L );
 		int j = 0;
@@ -1156,8 +1156,8 @@ NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 25
 */
 int ltexturesUpdateTextureRec( lua_State *L ) {
 	Texture *texture = uluaGetTexture( L, 1 );
-	Rectangle rec = uluaGetRectangleIndex( L, 2 );
-	size_t len = uluaGetTableLenIndex( L, 3 );
+	Rectangle rec = uluaGetRectangle( L, 2 );
+	size_t len = uluaGetTableLen( L, 3 );
 
 	unsigned char *pixels = malloc( len * 4 * sizeof( unsigned char ) );
 
@@ -1166,7 +1166,7 @@ int ltexturesUpdateTextureRec( lua_State *L ) {
 	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-		size_t colLen = uluaGetTableLen( L );
+		size_t colLen = uluaGetTableLen( L, lua_gettop( L ) );
 
 		int t2 = lua_gettop( L );
 		int j = 0;
@@ -1200,8 +1200,8 @@ Draw a Texture2D
 */
 int ltexturesDrawTexture( lua_State *L ) {
 	Texture *texture = uluaGetTexture( L, 1 );
-	Vector2 pos = uluaGetVector2Index( L, 2 );
-	Color color = uluaGetColorIndex( L, 3 );
+	Vector2 pos = uluaGetVector2( L, 2 );
+	Color color = uluaGetColor( L, 3 );
 
 	DrawTexture( *texture, pos.x, pos.y, color );
 	return 0;
@@ -1214,9 +1214,9 @@ Draw a part of a texture defined by a rectangle
 */
 int ltexturesDrawTextureRec( lua_State *L ) {
 	Texture *texture = uluaGetTexture( L, 1 );
-	Rectangle srcRect = uluaGetRectangleIndex( L, 2 );
-	Vector2 pos = uluaGetVector2Index( L, 3 );
-	Color tint = uluaGetColorIndex( L, 4 );
+	Rectangle srcRect = uluaGetRectangle( L, 2 );
+	Vector2 pos = uluaGetVector2( L, 3 );
+	Color tint = uluaGetColor( L, 4 );
 
 	DrawTextureRec( *texture, srcRect, pos, tint );
 	return 0;
@@ -1229,11 +1229,11 @@ Draw a part of a texture defined by a rectangle with "pro" parameters
 */
 int ltexturesDrawTexturePro( lua_State *L ) {
 	Texture *texture = uluaGetTexture( L, 1 );
-	Rectangle srcRect = uluaGetRectangleIndex( L, 2 );
-	Rectangle dstRect = uluaGetRectangleIndex( L, 3 );
-	Vector2 origin = uluaGetVector2Index( L, 4 );
+	Rectangle srcRect = uluaGetRectangle( L, 2 );
+	Rectangle dstRect = uluaGetRectangle( L, 3 );
+	Vector2 origin = uluaGetVector2( L, 4 );
 	float rot = luaL_checknumber( L, 5 );
-	Color color = uluaGetColorIndex( L, 6 );
+	Color color = uluaGetColor( L, 6 );
 
 	DrawTexturePro( *texture, srcRect, dstRect, origin, rot, color );
 
@@ -1247,11 +1247,11 @@ Draws a texture (or part of it) that stretches or shrinks nicely
 */
 int ltexturesDrawTextureNPatch( lua_State *L ) {
 	Texture *texture = uluaGetTexture( L, 1 );
-	NPatchInfo nPatchInfo = uluaGetNPatchInfoIndex( L, 2 );
-	Rectangle dest = uluaGetRectangleIndex( L, 3 );
-	Vector2 origin = uluaGetVector2Index( L, 4 );
+	NPatchInfo nPatchInfo = uluaGetNPatchInfo( L, 2 );
+	Rectangle dest = uluaGetRectangle( L, 3 );
+	Vector2 origin = uluaGetVector2( L, 4 );
 	float rotation = luaL_checknumber( L, 5 );
-	Color tint = uluaGetColorIndex( L, 6 );
+	Color tint = uluaGetColor( L, 6 );
 
 	DrawTextureNPatch( *texture, nPatchInfo, dest, origin, rotation, tint );
 
@@ -1448,7 +1448,7 @@ Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 - Success return Color
 */
 int ltexturesFade( lua_State *L ) {
-	Color color = uluaGetColorIndex( L, 1 );
+	Color color = uluaGetColor( L, 1 );
 	float alpha = luaL_checknumber( L, 2 );
 
 	uluaPushColor( L, Fade( color, alpha ) );
@@ -1464,7 +1464,7 @@ Returns hexadecimal value for a Color
 - Success return int
 */
 int ltexturesColorToInt( lua_State *L ) {
-	Color color = uluaGetColorIndex( L, 1 );
+	Color color = uluaGetColor( L, 1 );
 
 	lua_pushinteger( L, ColorToInt( color ) );
 
@@ -1479,7 +1479,7 @@ Returns Color normalized as float [0..1]
 - Success return Vector4
 */
 int ltexturesColorNormalize( lua_State *L ) {
-	Color color = uluaGetColorIndex( L, 1 );
+	Color color = uluaGetColor( L, 1 );
 
 	uluaPushVector4( L, ColorNormalize( color ) );
 
@@ -1494,7 +1494,7 @@ Color from normalized values [0..1]
 - Success return Color
 */
 int ltexturesColorFromNormalized( lua_State *L ) {
-	Vector4 normalized = uluaGetVector4Index( L, 1 );
+	Vector4 normalized = uluaGetVector4( L, 1 );
 
 	uluaPushColor( L, ColorFromNormalized( normalized ) );
 
@@ -1509,7 +1509,7 @@ Returns HSV values for a Color, hue [0..360], saturation/value [0..1]
 - Success return Vector3
 */
 int ltexturesColorToHSV( lua_State *L ) {
-	Color color = uluaGetColorIndex( L, 1 );
+	Color color = uluaGetColor( L, 1 );
 
 	uluaPushVector3( L, ColorToHSV( color ) );
 
@@ -1541,8 +1541,8 @@ Get color multiplied with another color
 - Success return Color
 */
 int ltexturesColorTint( lua_State *L ) {
-	Color color = uluaGetColorIndex( L, 1 );
-	Color tint = uluaGetColorIndex( L, 2 );
+	Color color = uluaGetColor( L, 1 );
+	Color tint = uluaGetColor( L, 2 );
 
 	uluaPushColor( L, ColorTint( color, tint ) );
 
@@ -1557,7 +1557,7 @@ Get color with brightness correction, brightness factor goes from -1.0f to 1.0f
 - Success return Color
 */
 int ltexturesColorBrightness( lua_State *L ) {
-	Color color = uluaGetColorIndex( L, 1 );
+	Color color = uluaGetColor( L, 1 );
 	float factor = luaL_checknumber( L, 2 );
 
 	uluaPushColor( L, ColorBrightness( color, factor ) );
@@ -1573,7 +1573,7 @@ Get color with contrast correction, contrast values between -1.0f and 1.0f
 - Success return Color
 */
 int ltexturesColorContrast( lua_State *L ) {
-	Color color = uluaGetColorIndex( L, 1 );
+	Color color = uluaGetColor( L, 1 );
 	float contrast = luaL_checknumber( L, 2 );
 
 	uluaPushColor( L, ColorContrast( color, contrast ) );
@@ -1589,7 +1589,7 @@ Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 - Success return Color
 */
 int ltexturesColorAlpha( lua_State *L ) {
-	Color color = uluaGetColorIndex( L, 1 );
+	Color color = uluaGetColor( L, 1 );
 	float alpha = luaL_checknumber( L, 2 );
 
 	uluaPushColor( L, ColorAlpha( color, alpha ) );
@@ -1605,9 +1605,9 @@ Returns src alpha-blended into dst color with tint
 - Success return Color
 */
 int ltexturesColorAlphaBlend( lua_State *L ) {
-	Color dst = uluaGetColorIndex( L, 1 );
-	Color src = uluaGetColorIndex( L, 2 );
-	Color tint = uluaGetColorIndex( L, 3 );
+	Color dst = uluaGetColor( L, 1 );
+	Color src = uluaGetColor( L, 2 );
+	Color tint = uluaGetColor( L, 3 );
 
 	uluaPushColor( L, ColorAlphaBlend( dst, src, tint ) );
 
@@ -1638,7 +1638,7 @@ Get pixel color from source texture
 */
 int ltexturesGetPixelColor( lua_State *L ) {
 	Texture *texture = uluaGetTexture( L, 1 );
-	Vector2 pos = uluaGetVector2Index( L, 2 );
+	Vector2 pos = uluaGetVector2( L, 2 );
 	Image srcImage = LoadImageFromTexture( *texture );
 
 	uluaPushColor( L, GetImageColor( srcImage, pos.x, pos.y ) );

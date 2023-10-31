@@ -80,10 +80,10 @@ function RL.draw()
 		RL.DrawModelEx( model, { 0, 0, 0 }, { 1.0, 0.0, 0.0 }, -90.0, { 1.0, 1.0, 1.0 }, RL.WHITE )
 	RL.EndMode3D()
 
-	RL.DrawText( RL.GetFontDefault(),
+	RL.DrawText(
 "Enter: Change animation\
 Space: Play animation\
 Up arrow: Inreace animation speed\
 Down arrow: Decreace animation speed",
-		{ 10, 10 }, 30, 5, RL.WHITE )
+		{ 10, 10 }, 30, RL.WHITE )
 end

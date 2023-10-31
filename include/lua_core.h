@@ -84,6 +84,7 @@ void uluaPushMatrix( lua_State *L, Matrix matrix );
 void uluaPushRay( lua_State *L, Ray ray );
 void uluaPushRayCollision( lua_State *L, RayCollision rayCol );
 void uluaPushBoundingBox( lua_State *L, BoundingBox box );
+void uluaPushGlyphInfo( lua_State *L, GlyphInfo glyphInfo, Image *image );
 void uluaPushBuffer( lua_State *L, Buffer buffer );
 void uluaPushImage( lua_State *L, Image image );
 void uluaPushTexture( lua_State *L, Texture texture );

@@ -12,6 +12,9 @@ KEY CHANGES:
 	- ADDED: Shaders management functions.
 	- ADDED: Compute shader management and Buffer management.
 	- ADDED: More RLGL Initialization functions.
+	- ADDED: GlyphInfo type.
+	- ADDED: DrawTextEx.
+	- CHANGED: DrawText is now DrawTextEx like in Raylib.
 
 DETAILED CHANGES:
 	- CHANGED: GenImageColor now takes Vector2 as size.
@@ -26,6 +29,9 @@ DETAILED CHANGES:
 	- ADDED: UnloadBuffer.
 	- ADDED: GetMaterialDefault returns lightuserdata reference to default material.
 	- REMOVED: Some examples.
+	- ADDED: DrawTextCodepoint and DrawTextCodepoints.
+	- ADDED: GetGlyphIndex, GetGlyphInfo and GetGlyphAtlasRec.
+	- ADDED: SetWindowIcons, SetWindowOpacity and GetWindowHandle.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.5.0		Using Raylib 4.5

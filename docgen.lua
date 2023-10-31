@@ -212,6 +212,8 @@ apiFile:write( "\n> RayCollision = { hit = true, distance = 1.0, point = { 0.0, 
 RayCollision, ray hit information\n\n---\n" )
 apiFile:write( "\n> BoundingBox = { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } } or { min = { 0.0, 0.0, 0.0 }, max = { 1.0, 1.0, 1.0 } }\n\
 BoundingBox\n\n---\n" )
+apiFile:write( "\n> GlyphInfo = { value = int, offsetX = int, offsetY = int, advanceX = int, image = Image }\n\
+GlyphInfo, font characters glyphs info\n\n---\n" )
 apiFile:write( "\n> Wave = Userdata\n\
 Wave, audio wave data\n\n---\n" )
 apiFile:write( "\n> Sound = Userdata\n\

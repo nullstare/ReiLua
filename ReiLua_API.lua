@@ -772,6 +772,16 @@ function  RL.SetWindowPosition( pos ) end
 ---@return any RL.SetWindowSize
 function  RL.SetWindowSize( size ) end
 
+---Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)
+---@param opacity number
+---@return any RL.SetWindowOpacity
+function  RL.SetWindowOpacity( opacity ) end
+
+---Get native window handle. Return as lightuserdata
+---- Success return lightuserdata
+---@return any windowHandle 
+function RL.GetWindowHandle() end
+
 ---Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
 ---@param size table
 ---@return any RL.SetWindowMinSize
@@ -825,6 +835,11 @@ function RL.IsWindowResized() end
 ---@param image any
 ---@return any RL.SetWindowIcon
 function  RL.SetWindowIcon( image ) end
+
+---Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
+---@param images any
+---@return any RL.SetWindowIcons
+function  RL.SetWindowIcons( images ) end
 
 ---Set title for window (Only PLATFORM_DESKTOP)
 ---@param title string
@@ -2790,7 +2805,7 @@ function  RL.GetFontDefault() end
 ---@return any font 
 function RL.LoadFont( fileName ) end
 
----Load font from file with extended parameters. Loading the default character set
+---Load font from file with extended parameters, use NULL for fontChars to load the default character set
 ---- Failure return nil
 ---- Success return Font
 ---@param fileName string
@@ -2825,6 +2840,14 @@ function  RL.UnloadFont( font ) end
 ---@return any RL.DrawFPS
 function  RL.DrawFPS( pos ) end
 
+---Draw text (using default font)
+---@param text string
+---@param position table
+---@param fontSize number
+---@param tint table
+---@return any RL.DrawText
+function  RL.DrawText( text, position, fontSize, tint ) end
+
 ---Draw text using font and additional parameters
 ---@param font any
 ---@param text string
@@ -2832,8 +2855,8 @@ function  RL.DrawFPS( pos ) end
 ---@param fontSize number
 ---@param spacing number
 ---@param tint table
----@return any RL.DrawText
-function  RL.DrawText( font, text, position, fontSize, spacing, tint ) end
+---@return any RL.DrawTextEx
+function  RL.DrawTextEx( font, text, position, fontSize, spacing, tint ) end
 
 ---Draw text using Font and pro parameters (rotation)
 ---@param font any
@@ -2847,7 +2870,26 @@ function  RL.DrawText( font, text, position, fontSize, spacing, tint ) end
 ---@return any RL.DrawTextPro
 function  RL.DrawTextPro( font, text, position, origin, rotation, fontSize, spacing, tint ) end
 
--- Text - Misc
+---Draw one character (codepoint)
+---@param font any
+---@param codepoint integer
+---@param position table
+---@param fontSize number
+---@param tint table
+---@return any RL.DrawTextCodepoint
+function  RL.DrawTextCodepoint( font, codepoint, position, fontSize, tint ) end
+
+---Draw multiple character (codepoint)
+---@param font any
+---@param codepoints any
+---@param position table
+---@param fontSize number
+---@param spacing number
+---@param tint table
+---@return any RL.DrawTextCodepoints
+function  RL.DrawTextCodepoints( font, codepoints, position, fontSize, spacing, tint ) end
+
+-- Text - Font info functions
 
 ---Measure string size for Font
 ---- Success return Vector2
@@ -2857,6 +2899,28 @@ function  RL.DrawTextPro( font, text, position, origin, rotation, fontSize, spac
 ---@param spacing number
 ---@return any size 
 function RL.MeasureText( font, text, fontSize, spacing ) end
+
+---Get glyph index position in font for a codepoint (unicode character), fallback to '?' if not found
+---- Success return int
+---@param font any
+---@param codepoint integer
+---@return any index 
+function RL.GetGlyphIndex( font, codepoint ) end
+
+---Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found.
+---Return Image as lightuserdata
+---- Success return GlyphInfo
+---@param font any
+---@param codepoint integer
+---@return any glyphInfo 
+function RL.GetGlyphInfo( font, codepoint ) end
+
+---Get glyph rectangle in font atlas for a codepoint (unicode character), fallback to '?' if not found
+---- Success return Rectangle
+---@param font any
+---@param codepoint integer
+---@return any rect 
+function RL.GetGlyphAtlasRec( font, codepoint ) end
 
 ---Get font base size (default chars height)
 ---- Success return int
@@ -2876,7 +2940,7 @@ function RL.GetFontGlyphCount( font ) end
 ---@return any glyphPadding 
 function RL.GetFontGlyphPadding( font ) end
 
----Get font texture atlas containing the glyphs. Returns as lightuserdata
+---Get font texture atlas containing the glyphs. Return as lightuserdata
 ---- Success return Texture
 ---@param font any
 ---@return any texture 

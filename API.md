@@ -211,6 +211,12 @@ BoundingBox
 
 ---
 
+> GlyphInfo = { value = int, offsetX = int, offsetY = int, advanceX = int, image = Image }
+
+GlyphInfo, font characters glyphs info
+
+---
+
 > Wave = Userdata
 
 Wave, audio wave data
@@ -1556,6 +1562,20 @@ Set window dimensions
 
 ---
 
+> RL.SetWindowOpacity( float opacity )
+
+Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)
+
+---
+
+> windowHandle = RL.GetWindowHandle()
+
+Get native window handle. Return as lightuserdata
+
+- Success return lightuserdata
+
+---
+
 > RL.SetWindowMinSize( Vector2 size )
 
 Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
@@ -1627,6 +1647,12 @@ Check if window has been resized from last frame
 > RL.SetWindowIcon( Image image )
 
 Set icon for window (Only PLATFORM_DESKTOP)
+
+---
+
+> RL.SetWindowIcons( Image{} images )
+
+Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
 
 ---
 
@@ -3868,7 +3894,7 @@ Load font from file into GPU memory (VRAM)
 
 > font = RL.LoadFontEx( string fileName, int fontSize, int{} fontChars )
 
-Load font from file with extended parameters. Loading the default character set
+Load font from file with extended parameters, use NULL for fontChars to load the default character set
 
 - Failure return nil
 - Success return Font
@@ -3907,7 +3933,13 @@ Draw current FPS
 
 ---
 
-> RL.DrawText( Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
+> RL.DrawText( string text, Vector2 position, float fontSize, Color tint )
+
+Draw text (using default font)
+
+---
+
+> RL.DrawTextEx( Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
 
 Draw text using font and additional parameters
 
@@ -3919,7 +3951,19 @@ Draw text using Font and pro parameters (rotation)
 
 ---
 
-## Text - Misc
+> RL.DrawTextCodepoint( Font font, int codepoint, Vector2 position, float fontSize, Color tint )
+
+Draw one character (codepoint)
+
+---
+
+> RL.DrawTextCodepoints( Font font, int{} codepoints, Vector2 position, float fontSize, float spacing, Color tint )
+
+Draw multiple character (codepoint)
+
+---
+
+## Text - Font info functions
 
 ---
 
@@ -3928,6 +3972,31 @@ Draw text using Font and pro parameters (rotation)
 Measure string size for Font
 
 - Success return Vector2
+
+---
+
+> index = RL.GetGlyphIndex( Font font, int codepoint )
+
+Get glyph index position in font for a codepoint (unicode character), fallback to '?' if not found
+
+- Success return int
+
+---
+
+> glyphInfo = RL.GetGlyphInfo( Font font, int codepoint )
+
+Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found.
+Return Image as lightuserdata
+
+- Success return GlyphInfo
+
+---
+
+> rect = RL.GetGlyphAtlasRec( Font font, int codepoint )
+
+Get glyph rectangle in font atlas for a codepoint (unicode character), fallback to '?' if not found
+
+- Success return Rectangle
 
 ---
 
@@ -3957,7 +4026,7 @@ Get font padding around the glyph characters
 
 > texture = RL.GetFontTexture( Font font )
 
-Get font texture atlas containing the glyphs. Returns as lightuserdata
+Get font texture atlas containing the glyphs. Return as lightuserdata
 
 - Success return Texture
 

@@ -131,7 +131,7 @@ function utillib.toBoolean( v )
 	return false
 end
 
-function utillib.boo2Number( bool )
+function utillib.bool2Number( bool )
 	return bool and 1 or 0
 end
 

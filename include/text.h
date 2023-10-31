@@ -10,9 +10,15 @@ int ltextUnloadFont( lua_State *L );
 /* Drawing. */
 int ltextDrawFPS( lua_State *L );
 int ltextDrawText( lua_State *L );
+int ltextDrawTextEx( lua_State *L );
 int ltextDrawTextPro( lua_State *L );
-/* Misc. */
+int ltextDrawTextCodepoint( lua_State *L );
+int ltextDrawTextCodepoints( lua_State *L );
+/* Font info functions. */
 int ltextMeasureText( lua_State *L );
+int ltextGetGlyphIndex( lua_State *L );
+int ltextGetGlyphInfo( lua_State *L );
+int ltextGetGlyphAtlasRec( lua_State *L );
 int ltextGetFontBaseSize( lua_State *L );
 int ltextGetFontGlyphCount( lua_State *L );
 int ltextGetFontGlyphPadding( lua_State *L );

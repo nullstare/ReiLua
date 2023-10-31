@@ -126,6 +126,32 @@ int lcoreSetWindowSize( lua_State *L ) {
 }
 
 /*
+> RL.SetWindowOpacity( float opacity )
+
+Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)
+*/
+int lcoreSetWindowOpacity( lua_State *L ) {
+	float opacity = luaL_checknumber( L, 1 );
+
+	SetWindowOpacity( opacity );
+
+	return 0;
+}
+
+/*
+> windowHandle = RL.GetWindowHandle()
+
+Get native window handle. Return as lightuserdata
+
+- Success return lightuserdata
+*/
+int lcoreGetWindowHandle( lua_State *L ) {
+	lua_pushlightuserdata( L, GetWindowHandle() );
+
+	return 1;
+}
+
+/*
 > RL.SetWindowMinSize( Vector2 size )
 
 Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
@@ -261,6 +287,30 @@ int lcoreSetWindowIcon( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
 
 	SetWindowIcon( *image );
+
+	return 0;
+}
+
+/*
+> RL.SetWindowIcons( Image{} images )
+
+Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
+*/
+int lcoreSetWindowIcons( lua_State *L ) {
+	int count = uluaGetTableLenIndex( L, 1 );
+	Image images[ count ];
+
+	int t = 1;
+	int i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		images[i] = *uluaGetImage( L, lua_gettop( L ) );
+
+		i++;
+		lua_pop( L, 1 );
+	}
+	SetWindowIcons( images, count );
 
 	return 0;
 }

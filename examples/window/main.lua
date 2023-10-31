@@ -24,5 +24,5 @@ end
 
 function RL.draw()
 	RL.ClearBackground( RL.RAYWHITE )
-    RL.DrawText( RL.GetFontDefault(), text, textPos, 20, 2, textColor )
+    RL.DrawText( text, textPos, 20, textColor )
 end

@@ -1504,6 +1504,8 @@ void luaRegister() {
 	assingGlobalFunction( "SetWindowMonitor", lcoreSetWindowMonitor );
 	assingGlobalFunction( "SetWindowPosition", lcoreSetWindowPosition );
 	assingGlobalFunction( "SetWindowSize", lcoreSetWindowSize );
+	assingGlobalFunction( "SetWindowOpacity", lcoreSetWindowOpacity );
+	assingGlobalFunction( "GetWindowHandle", lcoreGetWindowHandle );
 	assingGlobalFunction( "SetWindowMinSize", lcoreSetWindowMinSize );
 	assingGlobalFunction( "GetMonitorPosition", lcoreGetMonitorPosition );
 	assingGlobalFunction( "GetMonitorSize", lcoreGetMonitorSize );
@@ -1514,6 +1516,7 @@ void luaRegister() {
 	assingGlobalFunction( "ClearWindowState", lcoreClearWindowState );
 	assingGlobalFunction( "IsWindowResized", lcoreIsWindowResized );
 	assingGlobalFunction( "SetWindowIcon", lcoreSetWindowIcon );
+	assingGlobalFunction( "SetWindowIcons", lcoreSetWindowIcons );
 	assingGlobalFunction( "SetWindowTitle", lcoreSetWindowTitle );
 	assingGlobalFunction( "GetMonitorCount", lcoreGetMonitorCount );
 	assingGlobalFunction( "GetCurrentMonitor", lcoreGetCurrentMonitor );
@@ -1936,9 +1939,15 @@ void luaRegister() {
 		/* Drawing. */
 	assingGlobalFunction( "DrawFPS", ltextDrawFPS );
 	assingGlobalFunction( "DrawText", ltextDrawText );
+	assingGlobalFunction( "DrawTextEx", ltextDrawTextEx );
 	assingGlobalFunction( "DrawTextPro", ltextDrawTextPro );
-		/* Misc. */
+	assingGlobalFunction( "DrawTextCodepoint", ltextDrawTextCodepoint );
+	assingGlobalFunction( "DrawTextCodepoints", ltextDrawTextCodepoints );
+		/* Font info functions. */
 	assingGlobalFunction( "MeasureText", ltextMeasureText );
+	assingGlobalFunction( "GetGlyphIndex", ltextGetGlyphIndex );
+	assingGlobalFunction( "GetGlyphInfo", ltextGetGlyphInfo );
+	assingGlobalFunction( "GetGlyphAtlasRec", ltextGetGlyphAtlasRec );
 	assingGlobalFunction( "GetFontBaseSize", ltextGetFontBaseSize );
 	assingGlobalFunction( "GetFontGlyphCount", ltextGetFontGlyphCount );
 	assingGlobalFunction( "GetFontGlyphPadding", ltextGetFontGlyphPadding );
@@ -3127,6 +3136,20 @@ void uluaPushBoundingBox( lua_State *L, BoundingBox box ) {
 	lua_pushnumber( L, box.max.z );
 	lua_rawseti( L, -2, 3 );
 	lua_rawseti( L, -2, 2 );
+}
+
+void uluaPushGlyphInfo( lua_State *L, GlyphInfo glyphInfo, Image *image ) {
+	lua_createtable( L, 4, 0 );
+	lua_pushinteger( L, glyphInfo.value );
+	lua_setfield( L, -2, "value" );
+	lua_pushinteger( L, glyphInfo.offsetX );
+	lua_setfield( L, -2, "offsetX" );
+	lua_pushinteger( L, glyphInfo.offsetY );
+	lua_setfield( L, -2, "offsetY" );
+	lua_pushinteger( L, glyphInfo.advanceX );
+	lua_setfield( L, -2, "advanceX" );
+	lua_pushlightuserdata( L, image );
+	lua_setfield( L, -2, "image" );
 }
 
 void uluaPushBuffer( lua_State *L, Buffer buffer ) {

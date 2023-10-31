@@ -3,12 +3,12 @@ Current {
 
 Backlog {
 	* Text
-		* Codepoints?
+		* Text codepoints management functions (unicode characters)?
+		* Some of the Text strings management functions could be easier to use than the Lua ones.
 	* Audio
 		* AudioStream.
 	* Core.
 		* Compression/Encoding functionality.
-		* SetWindowIcons.
 	* Models
 		* LoadMaterials (Load materials from model file).
 		* LoadMaterialsFromModel (Could then for example edit and set back to model).

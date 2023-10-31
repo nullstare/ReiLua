@@ -928,7 +928,7 @@ Load a vertex buffer attribute
 - Success return int
 */
 int lrlglLoadVertexBuffer( lua_State *L ) {
-	Buffer *buffer = luaL_checkudata( L, 1, "Buffer" );
+	Buffer *buffer = uluaGetBuffer( L, 1 );
 	bool dynamic = uluaGetBoolean( L, 2 );
 
 	lua_pushinteger( L, rlLoadVertexBuffer( buffer->data, buffer->size, dynamic ) );
@@ -944,7 +944,7 @@ Load a new attributes element buffer
 - Success return int
 */
 int lrlglLoadVertexBufferElement( lua_State *L ) {
-	Buffer *buffer = luaL_checkudata( L, 1, "Buffer" );
+	Buffer *buffer = uluaGetBuffer( L, 1 );
 	bool dynamic = uluaGetBoolean( L, 2 );
 
 	lua_pushinteger( L, rlLoadVertexBufferElement( buffer->data, buffer->size, dynamic ) );
@@ -959,7 +959,7 @@ Update GPU buffer with new data
 */
 int lrlglUpdateVertexBuffer( lua_State *L ) {
 	int bufferId = luaL_checkinteger( L, 1 );
-	Buffer *buffer = luaL_checkudata( L, 2, "Buffer" );
+	Buffer *buffer = uluaGetBuffer( L, 2 );
 	int offset = luaL_checkinteger( L, 3 );
 
 	rlUpdateVertexBuffer( bufferId, buffer->data, buffer->size, offset );
@@ -974,7 +974,7 @@ Update vertex buffer elements with new data
 */
 int lrlglUpdateVertexBufferElements( lua_State *L ) {
 	int bufferId = luaL_checkinteger( L, 1 );
-	Buffer *buffer = luaL_checkudata( L, 2, "Buffer" );
+	Buffer *buffer = uluaGetBuffer( L, 2 );
 	int offset = luaL_checkinteger( L, 3 );
 
 	rlUpdateVertexBufferElements( bufferId, buffer->data, buffer->size, offset );
@@ -1083,7 +1083,7 @@ Draw vertex array elements
 int lrlglDrawVertexArrayElements( lua_State *L ) {
 	int offset = luaL_checkinteger( L, 1 );
 	int count = luaL_checkinteger( L, 2 );
-	Buffer *buffer = luaL_checkudata( L, 3, "Buffer" );
+	Buffer *buffer = uluaGetBuffer( L, 3 );
 
 	rlDrawVertexArrayElements( offset, count, buffer->data );
 
@@ -1113,7 +1113,7 @@ Draw vertex array elements instanced
 int lrlglDrawVertexArrayElementsInstanced( lua_State *L ) {
 	int offset = luaL_checkinteger( L, 1 );
 	int count = luaL_checkinteger( L, 2 );
-	Buffer *buffer = luaL_checkudata( L, 3, "Buffer" );
+	Buffer *buffer = uluaGetBuffer( L, 3 );
 	int instances = luaL_checkinteger( L, 4 );
 
 	rlDrawVertexArrayElementsInstanced( offset, count, buffer->data, instances );
@@ -1238,23 +1238,160 @@ int lrlglUnloadFramebuffer( lua_State *L ) {
 */
 
 /*
-> success = RL.rlLoadShaderCode( string vsCode, string fsCode )
+> shaderId = RL.rlLoadShaderCode( string vsCode, string fsCode )
 
 Load shader from code strings
 
-- Failure return nil
 - Success return int
 */
-// int lrlglUnloadFramebuffer( lua_State *L ) {
-// 	if ( !lua_isstring( L, 1 ) || !lua_isstring( L, 2 ) ) {
-// 		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.rlLoadShaderCode( string vsCode, string fsCode )" );
-// 		lua_pushnil( L );
-// 		return 1;
-// 	}
-// 	lua_pushinteger( L, rlLoadShaderCode( luaL_checkstring( L, 1 ), luaL_checkstring( L, 2 ) ) );
+int lrlglLoadShaderCode( lua_State *L ) {
+	lua_pushinteger( L, rlLoadShaderCode( luaL_checkstring( L, 1 ), luaL_checkstring( L, 2 ) ) );
 
-// 	return 1;
-// }
+	return 1;
+}
+
+/*
+> shaderId = RL.rlCompileShader( string shaderCode, int type )
+
+Compile custom shader and return shader id (type: RL_VERTEX_SHADER, RL_FRAGMENT_SHADER, RL_COMPUTE_SHADER)
+
+- Success return int
+*/
+int lrlglCompileShader( lua_State *L ) {
+	int type = luaL_checkinteger( L, 2 );
+
+	lua_pushinteger( L, rlCompileShader( luaL_checkstring( L, 1 ), type ) );
+
+	return 1;
+}
+
+/*
+> shaderProgramId = RL.rlLoadShaderProgram( int vShaderId, int fShaderId )
+
+Load custom shader program
+
+- Success return int
+*/
+int lrlglLoadShaderProgram( lua_State *L ) {
+	unsigned int vShaderId = (unsigned int)luaL_checkinteger( L, 1 );
+	unsigned int fShaderId = (unsigned int)luaL_checkinteger( L, 2 );
+
+	lua_pushinteger( L, rlLoadShaderProgram( vShaderId, fShaderId ) );
+
+	return 1;
+}
+
+/*
+> RL.rlUnloadShaderProgram( int id )
+
+Unload shader program
+*/
+int lrlglUnloadShaderProgram( lua_State *L ) {
+	unsigned int id = (unsigned int)luaL_checkinteger( L, 1 );
+
+	rlUnloadShaderProgram( id );
+
+	return 0;
+}
+
+/*
+> location = RL.rlGetLocationUniform( int shaderId, string uniformName )
+
+Get shader location uniform
+
+- Success return int
+*/
+int lrlglGetLocationUniform( lua_State *L ) {
+	unsigned int shaderId = (unsigned int)luaL_checkinteger( L, 1 );
+
+	lua_pushinteger( L, rlGetLocationUniform( shaderId, luaL_checkstring( L, 2 ) ) );
+
+	return 1;
+}
+
+/*
+> location = RL.rlGetLocationAttrib( int shaderId, string attribName )
+
+Get shader location attribute
+
+- Success return int
+*/
+int lrlglGetLocationAttrib( lua_State *L ) {
+	unsigned int shaderId = (unsigned int)luaL_checkinteger( L, 1 );
+
+	lua_pushinteger( L, rlGetLocationAttrib( shaderId, luaL_checkstring( L, 2 ) ) );
+
+	return 1;
+}
+
+/*
+> RL.rlSetUniform( int locIndex, Buffer value, int uniformType, int count )
+
+Set shader value uniform
+*/
+int lrlglSetUniform( lua_State *L ) {
+	int locIndex = luaL_checkinteger( L, 1 );
+	Buffer *value = uluaGetBuffer( L, 2 );
+	int uniformType = luaL_checkinteger( L, 3 );
+	int count = luaL_checkinteger( L, 4 );
+
+	rlSetUniform( locIndex, value->data, uniformType, count );
+
+	return 0;
+}
+
+/*
+> RL.rlSetUniformMatrix( int locIndex, Matrix mat )
+
+Set shader value matrix
+*/
+int lrlglSetUniformMatrix( lua_State *L ) {
+	int locIndex = luaL_checkinteger( L, 1 );
+	Matrix mat = uluaGetMatrixIndex( L, 2 );
+
+	rlSetUniformMatrix( locIndex, mat );
+
+	return 0;
+}
+
+/*
+> RL.rlSetUniformSampler( int locIndex, int textureId )
+
+Set shader value sampler
+*/
+int lrlglSetUniformSampler( lua_State *L ) {
+	int locIndex = luaL_checkinteger( L, 1 );
+	unsigned int textureId = (unsigned int)luaL_checkinteger( L, 2 );
+
+	rlSetUniformSampler( locIndex, textureId );
+
+	return 0;
+}
+
+/*
+> RL.rlSetShader( int id, int{} locs )
+
+Set shader currently active (id and locations)
+*/
+int lrlglSetShader( lua_State *L ) {
+	unsigned int id = (unsigned int)luaL_checkinteger( L, 1 );
+
+	int t = 2, i = 0;
+    lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+        if ( lua_isnumber( L, -1 ) ) {
+			if ( i < RL_MAX_SHADER_LOCATIONS ) {
+				state->RLGLcurrentShaderLocs[i] = lua_tointeger( L, -1 );
+			}
+        }
+        i++;
+        lua_pop( L, 1 );
+    }
+	rlSetShader( id, state->RLGLcurrentShaderLocs );
+
+	return 0;
+}
 
 /*
 ## RLGL - Matrix state management

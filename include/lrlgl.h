@@ -104,6 +104,17 @@ int lrlglLoadFramebuffer( lua_State *L );
 int lrlglFramebufferAttach( lua_State *L );
 int lrlglFramebufferComplete( lua_State *L );
 int lrlglUnloadFramebuffer( lua_State *L );
+/* Shaders management */
+int lrlglLoadShaderCode( lua_State *L );
+int lrlglCompileShader( lua_State *L );
+int lrlglLoadShaderProgram( lua_State *L );
+int lrlglUnloadShaderProgram( lua_State *L );
+int lrlglGetLocationUniform( lua_State *L );
+int lrlglGetLocationAttrib( lua_State *L );
+int lrlglSetUniform( lua_State *L );
+int lrlglSetUniformMatrix( lua_State *L );
+int lrlglSetUniformSampler( lua_State *L );
+int lrlglSetShader( lua_State *L );
 /* Matrix state management */
 int lrlglGetMatrixModelview( lua_State *L );
 int lrlglGetMatrixProjection( lua_State *L );

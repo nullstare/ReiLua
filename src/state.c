@@ -36,6 +36,12 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 	}
 	state->defaultFont = GetFontDefault();
 	state->defaultMaterial = LoadMaterialDefault();
+	state->RLGLcurrentShaderLocs = malloc( RL_MAX_SHADER_LOCATIONS * sizeof( int ) );
+	int *defaultShaderLocs = rlGetShaderLocsDefault();
+
+	for ( int i = 0; i < RL_MAX_SHADER_LOCATIONS; i++ ) {
+		state->RLGLcurrentShaderLocs[i] = defaultShaderLocs[i];
+	}
 
 	return state->run;
 }
@@ -57,5 +63,6 @@ void stateFree() {
 		CloseWindow();
 	}
 	free( state->exePath );
+	free( state->RLGLcurrentShaderLocs );
 	free( state );
 }

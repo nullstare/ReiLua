@@ -6854,12 +6854,73 @@ Delete framebuffer from GPU
 
 ---
 
-> success = RL.rlLoadShaderCode( string vsCode, string fsCode )
+> shaderId = RL.rlLoadShaderCode( string vsCode, string fsCode )
 
 Load shader from code strings
 
-- Failure return nil
 - Success return int
+
+---
+
+> shaderId = RL.rlCompileShader( string shaderCode, int type )
+
+Compile custom shader and return shader id (type: RL_VERTEX_SHADER, RL_FRAGMENT_SHADER, RL_COMPUTE_SHADER)
+
+- Success return int
+
+---
+
+> shaderProgramId = RL.rlLoadShaderProgram( int vShaderId, int fShaderId )
+
+Load custom shader program
+
+- Success return int
+
+---
+
+> RL.rlUnloadShaderProgram( int id )
+
+Unload shader program
+
+---
+
+> location = RL.rlGetLocationUniform( int shaderId, string uniformName )
+
+Get shader location uniform
+
+- Success return int
+
+---
+
+> location = RL.rlGetLocationAttrib( int shaderId, string attribName )
+
+Get shader location attribute
+
+- Success return int
+
+---
+
+> RL.rlSetUniform( int locIndex, Buffer value, int uniformType, int count )
+
+Set shader value uniform
+
+---
+
+> RL.rlSetUniformMatrix( int locIndex, Matrix mat )
+
+Set shader value matrix
+
+---
+
+> RL.rlSetUniformSampler( int locIndex, int textureId )
+
+Set shader value sampler
+
+---
+
+> RL.rlSetShader( int id, int{} locs )
+
+Set shader currently active (id and locations)
 
 ---
 

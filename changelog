@@ -9,6 +9,7 @@ KEY CHANGES:
 	- ADDED: Userdata objects can be referenced with lightuserdata.
 	- ADDED: GC_UNLOAD build time define for enabling/disabling Lua garbage collection for objects.
 	Can be checked with IsGCUnloadEnabled
+	- ADDED: Shaders management functions.
 
 DETAILED CHANGES:
 	- CHANGED: GenImageColor now takes Vector2 as size.

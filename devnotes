@@ -3,7 +3,6 @@ Current {
 
 Backlog {
 	* rlgl
-		* Shaders management
 		* Compute shader management
 	* Text
 		* Codepoints?
@@ -38,4 +37,6 @@ Needs Testing {
 	* UpdateMesh
 	* LoadModelFromMesh
 	* RLGL - Matrix state management
+	* rlSetUniform
+	* rlSetShader
 }

@@ -553,7 +553,6 @@ int lcoreLoadBuffer( lua_State *L ) {
 	int type = luaL_checkinteger( L, 2 );
 
 	Buffer buffer = { 0 };
-	// Buffer *buffer = lua_newuserdata( L, sizeof( Buffer ) );
 	int len = uluaGetTableLenIndex( L, 1 );
 
 	switch ( type ) {

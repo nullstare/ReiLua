@@ -5496,12 +5496,70 @@ function  RL.rlUnloadFramebuffer( id ) end
 -- RLGL - Shaders management
 
 ---Load shader from code strings
----- Failure return nil
 ---- Success return int
 ---@param vsCode string
 ---@param fsCode string
----@return any success 
+---@return any shaderId 
 function RL.rlLoadShaderCode( vsCode, fsCode ) end
+
+---Compile custom shader and return shader id (type: RL_VERTEX_SHADER, RL_FRAGMENT_SHADER, RL_COMPUTE_SHADER)
+---- Success return int
+---@param shaderCode string
+---@param type integer
+---@return any shaderId 
+function RL.rlCompileShader( shaderCode, type ) end
+
+---Load custom shader program
+---- Success return int
+---@param vShaderId integer
+---@param fShaderId integer
+---@return any shaderProgramId 
+function RL.rlLoadShaderProgram( vShaderId, fShaderId ) end
+
+---Unload shader program
+---@param id integer
+---@return any RL.rlUnloadShaderProgram
+function  RL.rlUnloadShaderProgram( id ) end
+
+---Get shader location uniform
+---- Success return int
+---@param shaderId integer
+---@param uniformName string
+---@return any location 
+function RL.rlGetLocationUniform( shaderId, uniformName ) end
+
+---Get shader location attribute
+---- Success return int
+---@param shaderId integer
+---@param attribName string
+---@return any location 
+function RL.rlGetLocationAttrib( shaderId, attribName ) end
+
+---Set shader value uniform
+---@param locIndex integer
+---@param value any
+---@param uniformType integer
+---@param count integer
+---@return any RL.rlSetUniform
+function  RL.rlSetUniform( locIndex, value, uniformType, count ) end
+
+---Set shader value matrix
+---@param locIndex integer
+---@param mat table
+---@return any RL.rlSetUniformMatrix
+function  RL.rlSetUniformMatrix( locIndex, mat ) end
+
+---Set shader value sampler
+---@param locIndex integer
+---@param textureId integer
+---@return any RL.rlSetUniformSampler
+function  RL.rlSetUniformSampler( locIndex, textureId ) end
+
+---Set shader currently active (id and locations)
+---@param id integer
+---@param locs any
+---@return any RL.rlSetShader
+function  RL.rlSetShader( id, locs ) end
 
 -- RLGL - Matrix state management
 

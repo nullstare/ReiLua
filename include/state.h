@@ -12,6 +12,7 @@ typedef struct {
 	int logLevelInvalid;
 	Font defaultFont;
 	Material defaultMaterial;
+	int *RLGLcurrentShaderLocs;
 	/* Raylib GLFW input callback events. */
 		/* Window events. */
 	GLFWwindowsizefun raylibWindowSizeCallback;

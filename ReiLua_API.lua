@@ -900,7 +900,9 @@ RL.HUEBAR_SELECTOR_OVERFLOW=20
 
 -- Globals - LightType
 
+---Directional light
 RL.LIGHT_DIRECTIONAL=0
+---Point light
 RL.LIGHT_POINT=1
 
 -- Globals - RLGL
@@ -3050,8 +3052,8 @@ function  RL.UnloadRenderTexture( target ) end
 ---@return any RL.UpdateTexture
 function  RL.UpdateTexture( texture, pixels ) end
 
----Update GPU texture rectangle with new data
----NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
+---Update GPU texture rectangle with new data.
+---Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 ---@param texture any
 ---@param rec table
 ---@param pixels any
@@ -3287,7 +3289,7 @@ function RL.LoadFont( fileName ) end
 ---@return any font 
 function RL.LoadFontEx( fileName, fontSize, fontChars ) end
 
----Load font from Image ( XNA style)
+---Load font from Image (XNA style)
 ---- Success return Font
 ---@param image any
 ---@param key table
@@ -3361,6 +3363,32 @@ function  RL.DrawTextCodepoint( font, codepoint, position, fontSize, tint ) end
 ---@param tint table
 ---@return any RL.DrawTextCodepoints
 function  RL.DrawTextCodepoints( font, codepoints, position, fontSize, spacing, tint ) end
+
+---Draw text using font inside rectangle limits. Function from raylib [text] example - Rectangle bounds
+---@param font any
+---@param char any
+---@param rec table
+---@param fontSize number
+---@param spacing number
+---@param wordWrap boolean
+---@param tint table
+---@return any RL.DrawTextBoxed
+function  RL.DrawTextBoxed( font, char, rec, fontSize, spacing, wordWrap, tint ) end
+
+---Draw text using font inside rectangle limits with support for text selection. Function from raylib [text] example - Rectangle bounds
+---@param font any
+---@param text string
+---@param rec table
+---@param fontSize number
+---@param spacing number
+---@param wordWrap boolean
+---@param tint table
+---@param selectStart integer
+---@param selectLength integer
+---@param selectTint table
+---@param selectBackTint table
+---@return any RL.DrawTextBoxedSelectable
+function  RL.DrawTextBoxedSelectable( font, text, rec, fontSize, spacing, wordWrap, tint, selectStart, selectLength, selectTint, selectBackTint ) end
 
 -- Text - Font info functions
 

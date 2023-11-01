@@ -1123,14 +1123,14 @@ int ltexturesUpdateTexture( lua_State *L ) {
 	unsigned char *pixels = malloc( len * 4 * sizeof( unsigned char ) );
 
 	int t = lua_gettop( L );
-	int i = 0;
+	unsigned int i = 0;
 	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
 		size_t colLen = uluaGetTableLen( L, lua_gettop( L ) );
 
 		int t2 = lua_gettop( L );
-		int j = 0;
+		unsigned int j = 0;
 		lua_pushnil( L );
 
 		while ( lua_next( L, t2 ) != 0 ) {
@@ -1151,8 +1151,8 @@ int ltexturesUpdateTexture( lua_State *L ) {
 /*
 > RL.UpdateTextureRec( Texture texture, Rectangle rec, int{} pixels )
 
-Update GPU texture rectangle with new data
-NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
+Update GPU texture rectangle with new data.
+Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 */
 int ltexturesUpdateTextureRec( lua_State *L ) {
 	Texture *texture = uluaGetTexture( L, 1 );
@@ -1162,14 +1162,14 @@ int ltexturesUpdateTextureRec( lua_State *L ) {
 	unsigned char *pixels = malloc( len * 4 * sizeof( unsigned char ) );
 
 	int t = lua_gettop( L );
-	int i = 0;
+	unsigned int i = 0;
 	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
 		size_t colLen = uluaGetTableLen( L, lua_gettop( L ) );
 
 		int t2 = lua_gettop( L );
-		int j = 0;
+		unsigned int j = 0;
 		lua_pushnil( L );
 
 		while ( lua_next( L, t2 ) != 0 ) {

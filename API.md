@@ -2725,9 +2725,13 @@ ColorPicker right hue bar selector overflow
 ## Globals - LightType
 > LIGHT_DIRECTIONAL = 0
 
+Directional light
+
 ---
 
 > LIGHT_POINT = 1
+
+Point light
 
 ---
 
@@ -5618,8 +5622,8 @@ NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 25
 
 > RL.UpdateTextureRec( Texture texture, Rectangle rec, int{} pixels )
 
-Update GPU texture rectangle with new data
-NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
+Update GPU texture rectangle with new data.
+Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 
 ---
 
@@ -5891,7 +5895,7 @@ Load font from file with extended parameters, use NULL for fontChars to load the
 
 > font = RL.LoadFontFromImage( Image image, Color key, int firstChar )
 
-Load font from Image ( XNA style)
+Load font from Image (XNA style)
 
 - Success return Font
 
@@ -5948,6 +5952,18 @@ Draw one character (codepoint)
 > RL.DrawTextCodepoints( Font font, int{} codepoints, Vector2 position, float fontSize, float spacing, Color tint )
 
 Draw multiple character (codepoint)
+
+---
+
+> RL.DrawTextBoxed(Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint )
+
+Draw text using font inside rectangle limits. Function from raylib [text] example - Rectangle bounds
+
+---
+
+> RL.DrawTextBoxedSelectable( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, int selectStart, int selectLength, Color selectTint, Color selectBackTint )
+
+Draw text using font inside rectangle limits with support for text selection. Function from raylib [text] example - Rectangle bounds
 
 ---
 

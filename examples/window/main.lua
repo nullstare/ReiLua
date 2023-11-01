@@ -17,7 +17,7 @@ function RL.process( delta )
 	end
 
 	if RL.IsKeyPressed( RL.KEY_SPACE ) then
-		textColor = RL.BLACK
+		textColor = RL.RED
 		textPos = { 192, 200 }
 	end
 end

@@ -27,15 +27,7 @@ Bugs {
 }
 
 Needs Testing {
-	* UpdateTexture
-	* UpdateTextureRec
-	* LoadSoundFromWave
-	* LoadFont
-	* LoadFontEx
-	* LoadFontFromImage
 	* UpdateMesh
-	* LoadModelFromMesh
-	* RLGL - Matrix state management
 	* rlSetUniform
 	* rlSetShader
 }

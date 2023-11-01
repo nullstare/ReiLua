@@ -14,6 +14,8 @@ int ltextDrawTextEx( lua_State *L );
 int ltextDrawTextPro( lua_State *L );
 int ltextDrawTextCodepoint( lua_State *L );
 int ltextDrawTextCodepoints( lua_State *L );
+int ltextDrawTextBoxed( lua_State *L );
+int ltextDrawTextBoxedSelectable( lua_State *L );
 /* Font info functions. */
 int ltextMeasureText( lua_State *L );
 int ltextGetGlyphIndex( lua_State *L );

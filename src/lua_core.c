@@ -774,8 +774,8 @@ static void defineGlobals() {
 	assignGlobalInt( HUEBAR_SELECTOR_HEIGHT, "HUEBAR_SELECTOR_HEIGHT" ); // ColorPicker right hue bar selector height
 	assignGlobalInt( HUEBAR_SELECTOR_OVERFLOW, "HUEBAR_SELECTOR_OVERFLOW" ); // ColorPicker right hue bar selector overflow
 	/* LightType */
-	assignGlobalInt( LIGHT_DIRECTIONAL, "LIGHT_DIRECTIONAL" );
-	assignGlobalInt( LIGHT_POINT, "LIGHT_POINT" );
+	assignGlobalInt( LIGHT_DIRECTIONAL, "LIGHT_DIRECTIONAL" ); // Directional light
+	assignGlobalInt( LIGHT_POINT, "LIGHT_POINT" ); // Point light
 	/* RLGL Default internal render batch elements limits */
 	assignGlobalInt( RL_DEFAULT_BATCH_BUFFER_ELEMENTS, "RL_DEFAULT_BATCH_BUFFER_ELEMENTS" ); // Default internal render batch elements limits
 	assignGlobalInt( RL_DEFAULT_BATCH_BUFFERS, "RL_DEFAULT_BATCH_BUFFERS" ); // Default number of batch buffers (multi-buffering)
@@ -1945,6 +1945,8 @@ void luaRegister() {
 	assingGlobalFunction( "DrawTextPro", ltextDrawTextPro );
 	assingGlobalFunction( "DrawTextCodepoint", ltextDrawTextCodepoint );
 	assingGlobalFunction( "DrawTextCodepoints", ltextDrawTextCodepoints );
+	assingGlobalFunction( "DrawTextBoxed", ltextDrawTextBoxed );
+	assingGlobalFunction( "DrawTextBoxedSelectable", ltextDrawTextBoxedSelectable );
 		/* Font info functions. */
 	assingGlobalFunction( "MeasureText", ltextMeasureText );
 	assingGlobalFunction( "GetGlyphIndex", ltextGetGlyphIndex );

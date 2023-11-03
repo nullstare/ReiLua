@@ -9,13 +9,12 @@ local TILE_SIZE = 32
 
 local monitor = 0
 local camera = {}
-local groundRenderTexture = -1
-local groundTexture = -1
-local tilesetTex = -1
-local heigthImage = -1
-local mesh = -1
-local material = -1
-local lightmap = -1
+local groundRenderTexture = nil
+local groundTexture = nil
+local tilesetTex = nil
+local heigthImage = nil
+local mesh = nil
+local material = nil
 
 local grassRec = { 6 * TILE_SIZE, 0 * TILE_SIZE, TILE_SIZE, TILE_SIZE }
 local dirtRec = { 4 * TILE_SIZE, 0 * TILE_SIZE, TILE_SIZE, TILE_SIZE }
@@ -77,8 +76,6 @@ function RL.init()
 	RL.EndTextureMode()
 
 	material = RL.LoadMaterialDefault()
-	-- RL.GenTextureMipmaps( groundTexture )
-	-- RL.SetTextureFilter( groundTexture, RL.TEXTURE_FILTER_TRILINEAR )
 	RL.SetMaterialTexture( material, RL.MATERIAL_MAP_ALBEDO, groundTexture )
 
 	matrix = RL.MatrixMultiply( RL.MatrixIdentity(), RL.MatrixTranslate( { -4, 0, -4 } ) )
@@ -101,6 +98,5 @@ function RL.draw()
 
 	camera:beginMode3D()
 		RL.DrawMesh( mesh, material, matrix )
-		-- camera:draw()
 	camera:endMode3D()
 end

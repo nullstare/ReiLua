@@ -3391,25 +3391,49 @@ The key was held down until it repeated
 ## Globals - CBuffer
 > BUFFER_UNSIGNED_CHAR = 0
 
-C type char
+C type unsigned char
 
 ---
 
 > BUFFER_UNSIGNED_SHORT = 1
 
-C type short
+C type unsigned short
 
 ---
 
 > BUFFER_UNSIGNED_INT = 2
 
+C type unsigned int
+
+---
+
+> BUFFER_CHAR = 3
+
+C type char
+
+---
+
+> BUFFER_SHORT = 4
+
+C type short
+
+---
+
+> BUFFER_INT = 5
+
 C type int
 
 ---
 
-> BUFFER_FLOAT = 3
+> BUFFER_FLOAT = 6
 
 C type float
+
+---
+
+> BUFFER_DOUBLE = 7
+
+C type double
 
 ---
 
@@ -3801,20 +3825,6 @@ Get the log level for bad function calls and invalid data formats.
 > RL.OpenURL( string url )
 
 Open URL with default system browser (If available)
-
----
-
-> buffer = RL.LoadBuffer( data{} buffer, int type )
-
-Load Buffer. Type should be one of the Buffer types
-
-- Success return Buffer
-
----
-
-> RL.UnloadBuffer( Buffer buffer )
-
-Unload buffer data
 
 ---
 
@@ -4494,6 +4504,42 @@ Get file modification time (Last write time)
 
 ---
 
+## Core - Compression/Encoding functionality
+
+---
+
+> compData = RL.CompressData( string data )
+
+Compress data (DEFLATE algorithm)
+
+- Success return Buffer
+
+---
+
+> data, dataSize = RL.DecompressData( Buffer compData )
+
+Decompress data (DEFLATE algorithm).
+
+- Success return string, int
+
+---
+
+> encodedData, outputSize = RL.EncodeDataBase64( string data )
+
+Encode data to Base64 string
+
+- Success return string, int
+
+---
+
+> decodedData, outputSize = RL.DecodeDataBase64( string data )
+
+Decode Base64 string data
+
+- Success return string, int
+
+---
+
 ## Core - Camera2D
 
 ---
@@ -4829,6 +4875,48 @@ Get the screen space position for a 2d camera world space position
 Get the world space position for a 2d camera screen space position
 
 - Success return Vector2
+
+---
+
+## Core - Buffer
+
+---
+
+> buffer = RL.LoadBuffer( data{} buffer, int type )
+
+Load Buffer. Type should be one of the Buffer types
+
+- Success return Buffer
+
+---
+
+> RL.UnloadBuffer( Buffer buffer )
+
+Unload buffer data
+
+---
+
+> data = RL.GetBufferData( Buffer buffer )
+
+Get buffer data as table in the format is was stored
+
+- Success return data{}
+
+---
+
+> type = RL.GetBufferType( Buffer buffer )
+
+Get buffer type
+
+- Success return int
+
+---
+
+> size = RL.GetBufferSize( Buffer buffer )
+
+Get buffer size
+
+- Success return int
 
 ---
 

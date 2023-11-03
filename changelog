@@ -35,7 +35,10 @@ DETAILED CHANGES:
 	- ADDED: SetWindowIcons, SetWindowOpacity and GetWindowHandle.
 	- CHANGED: Merged uluaGet*Index functions to uluaGet* functions.
 	- FIXED: LoadFontEx.
-	- ADDED: DrawTextBoxed and DrawTextBoxedSelectable From raylib [text] example - Rectangle bounds
+	- ADDED: DrawTextBoxed and DrawTextBoxedSelectable From raylib [text] example - Rectangle bounds.
+	- ADDED: CompressData, DecompressData, EncodeDataBase64 and DecodeDataBase64.
+	- ADDED: GetBufferType and GetBufferSize.
+	- ADDED: Compress data example.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.5.0		Using Raylib 4.5

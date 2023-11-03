@@ -6,6 +6,10 @@
 #include "textures.h"
 #include "core.h"
 
+void unloadMaterial( Material *material ) {
+	free( material->maps );
+}
+
 // Unload model (but not meshes) from memory (RAM and/or VRAM)
 void UnloadModelKeepMeshes( Model model ) {
     // Unload materials maps
@@ -23,7 +27,7 @@ void UnloadModelKeepMeshes( Model model ) {
     RL_FREE(model.bones);
     RL_FREE(model.bindPose);
 
-    TRACELOG(LOG_INFO, "MODEL: Unloaded model (but not meshes) from RAM and VRAM");
+    TraceLog( LOG_INFO, "MODEL: Unloaded model (but not meshes) from RAM and VRAM" );
 }
 
 void DrawBillboardProNoRatio( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint ) {
@@ -1194,7 +1198,7 @@ int lmodelsUnloadMaterial( lua_State *L ) {
 	Material *material = uluaGetMaterial( L, 1 );
 
 	/* Custom UnloadMaterial since we don't want to free Shaders or Textures. */
-	RL_FREE( material->maps );
+	unloadMaterial( material );
 
 	// UnloadMaterial( *material );
 

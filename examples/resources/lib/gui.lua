@@ -822,6 +822,14 @@ function Container:delete()
 	Gui.delete( self )
 end
 
+function Container:clear()
+	for _, cell in ipairs( self.cells ) do
+		cell:delete()
+	end
+
+	self.cells = {}
+end
+
 function Container:set2Top()
 	Gui.set2Top( self )
 

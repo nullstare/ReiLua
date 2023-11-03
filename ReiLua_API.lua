@@ -1164,14 +1164,22 @@ RL.GLFW_REPEAT=2
 
 -- Globals - CBuffer
 
----C type char
+---C type unsigned char
 RL.BUFFER_UNSIGNED_CHAR=0
----C type short
+---C type unsigned short
 RL.BUFFER_UNSIGNED_SHORT=1
----C type int
+---C type unsigned int
 RL.BUFFER_UNSIGNED_INT=2
+---C type char
+RL.BUFFER_CHAR=3
+---C type short
+RL.BUFFER_SHORT=4
+---C type int
+RL.BUFFER_INT=5
 ---C type float
-RL.BUFFER_FLOAT=3
+RL.BUFFER_FLOAT=6
+---C type double
+RL.BUFFER_DOUBLE=7
 
 -- Globals - Window
 
@@ -1312,7 +1320,7 @@ function RL.IsWindowResized() end
 function  RL.SetWindowIcon( image ) end
 
 ---Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
----@param images any
+---@param images table
 ---@return any RL.SetWindowIcons
 function  RL.SetWindowIcons( images ) end
 
@@ -1427,18 +1435,6 @@ function RL.GetLogLevelInvalid() end
 ---@param url string
 ---@return any RL.OpenURL
 function  RL.OpenURL( url ) end
-
----Load Buffer. Type should be one of the Buffer types
----- Success return Buffer
----@param buffer any
----@param type integer
----@return any buffer 
-function RL.LoadBuffer( buffer, type ) end
-
----Unload buffer data
----@param buffer any
----@return any RL.UnloadBuffer
-function  RL.UnloadBuffer( buffer ) end
 
 ---Check if Lua garbage collection is set to unload object data
 ---- Success return bool
@@ -1587,7 +1583,7 @@ function  RL.SetShaderValueTexture( shader, locIndex, texture ) end
 ---NOTE: Even one value should be in table
 ---@param shader any
 ---@param locIndex integer
----@param values any
+---@param values table
 ---@param uniformType integer
 ---@return any RL.SetShaderValue
 function  RL.SetShaderValue( shader, locIndex, values, uniformType ) end
@@ -1596,7 +1592,7 @@ function  RL.SetShaderValue( shader, locIndex, values, uniformType ) end
 ---NOTE: Even one value should be in table
 ---@param shader any
 ---@param locIndex integer
----@param values any
+---@param values table
 ---@param uniformType integer
 ---@param count integer
 ---@return any RL.SetShaderValueV
@@ -1951,6 +1947,35 @@ function RL.LoadDroppedFiles() end
 ---@return any time 
 function RL.GetFileModTime( fileName ) end
 
+-- Core - Compression/Encoding functionality
+
+---Compress data (DEFLATE algorithm)
+---- Success return Buffer
+---@param data string
+---@return any compData 
+function RL.CompressData( data ) end
+
+---Decompress data (DEFLATE algorithm).
+---- Success return string, int
+---@param compData any
+---@return any data
+---@return any dataSize 
+function RL.DecompressData( compData ) end
+
+---Encode data to Base64 string
+---- Success return string, int
+---@param data string
+---@return any encodedData
+---@return any outputSize 
+function RL.EncodeDataBase64( data ) end
+
+---Decode Base64 string data
+---- Success return string, int
+---@param data string
+---@return any decodedData
+---@return any outputSize 
+function RL.DecodeDataBase64( data ) end
+
 -- Core - Camera2D
 
 ---Return camera2D set to default configuration
@@ -2244,6 +2269,38 @@ function RL.GetWorldToScreen2D( position, camera ) end
 ---@return any position 
 function RL.GetScreenToWorld2D( position, camera ) end
 
+-- Core - Buffer
+
+---Load Buffer. Type should be one of the Buffer types
+---- Success return Buffer
+---@param buffer table
+---@param type integer
+---@return any buffer 
+function RL.LoadBuffer( buffer, type ) end
+
+---Unload buffer data
+---@param buffer any
+---@return any RL.UnloadBuffer
+function  RL.UnloadBuffer( buffer ) end
+
+---Get buffer data as table in the format is was stored
+---- Success return data{}
+---@param buffer any
+---@return any data 
+function RL.GetBufferData( buffer ) end
+
+---Get buffer type
+---- Success return int
+---@param buffer any
+---@return any type 
+function RL.GetBufferType( buffer ) end
+
+---Get buffer size
+---- Success return int
+---@param buffer any
+---@return any size 
+function RL.GetBufferSize( buffer ) end
+
 -- Shapes - Drawing
 
 ---Set texture and rectangle to be used on shapes drawing
@@ -2296,7 +2353,7 @@ function  RL.DrawLineBezierQuad( startPos, endPos, controlPos, thickness, color 
 function  RL.DrawLineBezierCubic( startPos, endPos, startControlPos, endControlPos, thickness, color ) end
 
 ---Draw lines sequence
----@param points any
+---@param points table
 ---@param color table
 ---@return any RL.DrawLineStrip
 function  RL.DrawLineStrip( points, color ) end
@@ -2465,13 +2522,13 @@ function  RL.DrawTriangle( v1, v2, v3, color ) end
 function  RL.DrawTriangleLines( v1, v2, v3, color ) end
 
 ---Draw a triangle fan defined by points (first vertex is the center)
----@param points any
+---@param points table
 ---@param color table
 ---@return any RL.DrawTriangleFan
 function  RL.DrawTriangleFan( points, color ) end
 
 ---Draw a triangle strip defined by points
----@param points any
+---@param points table
 ---@param color table
 ---@return any RL.DrawTriangleStrip
 function  RL.DrawTriangleStrip( points, color ) end
@@ -2557,7 +2614,7 @@ function RL.CheckCollisionPointTriangle( point, p1, p2, p3 ) end
 ---Check if point is within a polygon described by array of vertices
 ---- Success return bool
 ---@param point table
----@param points any
+---@param points table
 ---@return any collision 
 function RL.CheckCollisionPointPoly( point, points ) end
 
@@ -3007,7 +3064,7 @@ function RL.LoadTextureCubemap( image, layout ) end
 
 ---Load Texture from data
 ---- Success return Texture
----@param textureData any
+---@param textureData table
 ---@return any texture 
 function RL.LoadTextureFromData( textureData ) end
 
@@ -3019,7 +3076,7 @@ function RL.LoadRenderTexture( size ) end
 
 ---Load RenderTexture from data (framebuffer)
 ---- Success return RenderTexture
----@param renderTextureData any
+---@param renderTextureData table
 ---@return any renderTexture 
 function RL.LoadRenderTextureFromData( renderTextureData ) end
 
@@ -3048,7 +3105,7 @@ function  RL.UnloadRenderTexture( target ) end
 ---Update GPU texture with new data
 ---NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 ---@param texture any
----@param pixels any
+---@param pixels table
 ---@return any RL.UpdateTexture
 function  RL.UpdateTexture( texture, pixels ) end
 
@@ -3056,7 +3113,7 @@ function  RL.UpdateTexture( texture, pixels ) end
 ---Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 ---@param texture any
 ---@param rec table
----@param pixels any
+---@param pixels table
 ---@return any RL.UpdateTextureRec
 function  RL.UpdateTextureRec( texture, rec, pixels ) end
 
@@ -3285,7 +3342,7 @@ function RL.LoadFont( fileName ) end
 ---- Success return Font
 ---@param fileName string
 ---@param fontSize integer
----@param fontChars any
+---@param fontChars table
 ---@return any font 
 function RL.LoadFontEx( fileName, fontSize, fontChars ) end
 
@@ -3356,7 +3413,7 @@ function  RL.DrawTextCodepoint( font, codepoint, position, fontSize, tint ) end
 
 ---Draw multiple character (codepoint)
 ---@param font any
----@param codepoints any
+---@param codepoints table
 ---@param position table
 ---@param fontSize number
 ---@param spacing number
@@ -3587,9 +3644,9 @@ function  RL.DrawPlane( centerPos, size, color ) end
 
 ---Draw 3D textured quad. (Texture coordinates opengl style 0.0 - 1.0).
 ---@param texture any
----@param vertices any
----@param texCoords any
----@param colors any
+---@param vertices table
+---@param texCoords table
+---@param colors table
 ---@return any RL.DrawQuad3DTexture
 function  RL.DrawQuad3DTexture( texture, vertices, texCoords, colors ) end
 
@@ -3680,7 +3737,7 @@ function RL.GenMeshHeightmap( heightmap, size ) end
 
 ---Generate custom mesh from vertex attribute data and uploads it into a VAO (if supported) and VBO
 ---- Success return Mesh
----@param meshData any
+---@param meshData table
 ---@param dynamic boolean
 ---@return any mesh 
 function RL.GenMeshCustom( meshData, dynamic ) end
@@ -3688,7 +3745,7 @@ function RL.GenMeshCustom( meshData, dynamic ) end
 ---Update mesh vertex data in GPU.
 ---Note! Mainly intented to be used with custom meshes.
 ---@param mesh any
----@param meshData any
+---@param meshData table
 ---@return any RL.UpdateMesh
 function  RL.UpdateMesh( mesh, meshData ) end
 
@@ -3707,7 +3764,7 @@ function  RL.DrawMesh( mesh, material, transform ) end
 ---Draw multiple mesh instances with material and different transforms
 ---@param mesh any
 ---@param material any
----@param transforms any
+---@param transforms table
 ---@param instances integer
 ---@return any RL.DrawMeshInstanced
 function  RL.DrawMeshInstanced( mesh, material, transforms, instances ) end
@@ -3753,7 +3810,7 @@ function RL.LoadMaterialDefault() end
 
 ---Load material from table. See material table definition
 ---- Success return Material
----@param materialData any
+---@param materialData table
 ---@return any material 
 function RL.CreateMaterial( materialData ) end
 
@@ -3797,7 +3854,7 @@ function  RL.SetMaterialShader( material, shader ) end
 
 ---Set material generic parameters (if required)
 ---@param material any
----@param params any
+---@param params table
 ---@return any RL.SetMaterialParams
 function  RL.SetMaterialParams( material, params ) end
 
@@ -6010,7 +6067,7 @@ function  RL.rlSetVertexAttributeDivisor( index, divisor ) end
 
 ---Set vertex attribute default value
 ---@param locIndex integer
----@param value any
+---@param value table
 ---@param attribType integer
 ---@return any RL.rlSetVertexAttributeDefault
 function  RL.rlSetVertexAttributeDefault( locIndex, value, attribType ) end
@@ -6157,7 +6214,7 @@ function  RL.rlSetUniformSampler( locIndex, textureId ) end
 
 ---Set shader currently active (id and locations)
 ---@param id integer
----@param locs any
+---@param locs table
 ---@return any RL.rlSetShader
 function  RL.rlSetShader( id, locs ) end
 

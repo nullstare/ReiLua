@@ -18,14 +18,17 @@ enum BufferType {
 	BUFFER_UNSIGNED_CHAR,
 	BUFFER_UNSIGNED_SHORT,
 	BUFFER_UNSIGNED_INT,
+	BUFFER_CHAR,
+	BUFFER_SHORT,
+	BUFFER_INT,
 	BUFFER_FLOAT,
+	BUFFER_DOUBLE
 };
 
 typedef struct {
+	int type;
 	size_t size;
 	void *data;
-	int x;
-	int y;
 } Buffer;
 
 bool luaInit( int argn, const char **argc );

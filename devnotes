@@ -7,9 +7,8 @@ Backlog {
 		* Some of the Text strings management functions could be easier to use than the Lua ones.
 	* Audio
 		* AudioStream.
-	* Core.
-		* Compression/Encoding functionality.
 	* Models
+		* BoneInfo.
 		* LoadMaterials (Load materials from model file).
 		* LoadMaterialsFromModel (Could then for example edit and set back to model).
 	* rlgl
@@ -27,7 +26,6 @@ Bugs {
 }
 
 Needs Testing {
-	* UpdateMesh
 	* rlSetUniform
 	* rlSetShader
 }

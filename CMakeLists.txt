@@ -10,10 +10,9 @@ option( SHARED "Build using dynamic libraries." off )
 option( LUAJIT "Use LuaJIT." off )
 option( GC_UNLOAD "Lua garbage collector unloads objects. If off, object unloading should be handled manually." on )
 
-if( NOT CMAKE_BUILD_TYPE )
-  	SET( CMAKE_BUILD_TYPE Release CACHE STRING
-      	"Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
-      	FORCE )
+if( NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES )
+    set( CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE )
+    set_property( CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo" )
 endif()
 
 if( GC_UNLOAD )
@@ -38,7 +37,7 @@ else() # Desktop
 	if( SHARED )
 		message( Shared )
 		set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DSHARED" )
-		find_package( raylib 4.5 REQUIRED ) # Requires at least version 4.5
+		# find_package( raylib 4.5 REQUIRED ) # Requires at least version 4.5
 		target_link_libraries( ${PROJECT_NAME} raylib )
 
 		if( LUAJIT )
@@ -54,7 +53,8 @@ else() # Desktop
 			set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DLUAJIT" )
 			target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/libluajit.a )
 		else()
-			target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/liblua.a )
+			# target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/liblua.a )
+			target_link_libraries( ${PROJECT_NAME} lua )
 		endif()
 	endif()
 

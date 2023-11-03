@@ -146,6 +146,13 @@ function utillib.printt( t )
 	print( "}" )
 end
 
+function utillib.colorLerp( a, b, f )
+	return {
+		utillib.round( utillib.lerp( a[1], b[1], f ) ),
+		utillib.round( utillib.lerp( a[2], b[2], f ) ),
+		utillib.round( utillib.lerp( a[3], b[3], f ) ) }
+end
+
 -- Move secuence of elements inside table.
 function utillib.tableMove( t, src, len, dest )
     local copy = table.move( t, src, src + len - 1, 1, {} )

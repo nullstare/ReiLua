@@ -29,6 +29,8 @@ local function getParamType( param )
 	elseif param == "int" then return "integer"
 	elseif param == "string" then return "string"
 	elseif param == "bool" then return "boolean"
+	elseif param == "bool" then return "boolean"
+	elseif param:sub( #param - 1, #param ) == "{}" then return "table"
 	else 
 		return "any"
 	end

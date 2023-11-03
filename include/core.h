@@ -1,5 +1,8 @@
 #pragma once
 
+#include "lua_core.h"
+
+void unloadBuffer( Buffer *buffer );
 /* Window. */
 int lcoreIsWindowReady( lua_State *L );
 int lcoreIsWindowFullscreen( lua_State *L );
@@ -46,8 +49,6 @@ int lcoreSetTraceLogLevel( lua_State *L );
 int lcoreSetLogLevelInvalid( lua_State *L );
 int lcoreGetLogLevelInvalid( lua_State *L );
 int lcoreOpenURL( lua_State *L );
-int lcoreLoadBuffer( lua_State *L );
-int lcoreUnloadBuffer( lua_State *L );
 int lcoreIsGCUnloadEnabled( lua_State *L );
 /* Cursor. */
 int lcoreShowCursor( lua_State *L );
@@ -98,6 +99,11 @@ int lcoreIsPathFile( lua_State *L );
 int lcoreIsFileDropped( lua_State *L );
 int lcoreLoadDroppedFiles( lua_State *L );
 int lcoreGetFileModTime( lua_State *L );
+/* Compression/Encoding functionality. */
+int lcoreCompressData( lua_State *L );
+int lcoreDecompressData( lua_State *L );
+int lcoreEncodeDataBase64( lua_State *L );
+int lcoreDecodeDataBase64( lua_State *L );
 /* Camera2D. */
 int lcoreCreateCamera2D( lua_State *L );
 int lcoreBeginMode2D( lua_State *L );
@@ -189,3 +195,9 @@ int lcoreGetWorldToScreen( lua_State *L );
 int lcoreGetWorldToScreenEx( lua_State *L );
 int lcoreGetWorldToScreen2D( lua_State *L );
 int lcoreGetScreenToWorld2D( lua_State *L );
+/* Buffer. */
+int lcoreLoadBuffer( lua_State *L );
+int lcoreUnloadBuffer( lua_State *L );
+int lcoreGetBufferData( lua_State *L );
+int lcoreGetBufferType( lua_State *L );
+int lcoreGetBufferSize( lua_State *L );

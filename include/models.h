@@ -1,6 +1,7 @@
 #pragma once
 
 /* Internals. */
+void unloadMaterial( Material *material );
 /* Deleted from raylib. Need for freeing models. */
 void UnloadModelKeepMeshes( Model model );
 void DrawBillboardProNoRatio( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint );

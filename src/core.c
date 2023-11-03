@@ -4,6 +4,12 @@
 #include "textures.h"
 #include "lua_core.h"
 
+void unloadBuffer( Buffer *buffer ) {
+	free( buffer->data );
+
+	TraceLog( LOG_INFO, "BUFFER: Unloaded buffer with %u bytes of data", buffer->size );
+}
+
 /*
 ## Core - Window
 */
@@ -587,89 +593,6 @@ Open URL with default system browser (If available)
 */
 int lcoreOpenURL( lua_State *L ) {
 	OpenURL( luaL_checkstring( L, 1 ) );
-
-	return 0;
-}
-
-/*
-> buffer = RL.LoadBuffer( data{} buffer, int type )
-
-Load Buffer. Type should be one of the Buffer types
-
-- Success return Buffer
-*/
-int lcoreLoadBuffer( lua_State *L ) {
-	luaL_checktype( L, 1, LUA_TTABLE );
-	int type = luaL_checkinteger( L, 2 );
-
-	Buffer buffer = { 0 };
-	int len = uluaGetTableLen( L, 1 );
-
-	switch ( type ) {
-		case BUFFER_UNSIGNED_CHAR:
-			buffer.size = len * sizeof( unsigned char );
-			break;
-		case BUFFER_UNSIGNED_SHORT:
-			buffer.size = len * sizeof( unsigned short );
-			break;
-		case BUFFER_UNSIGNED_INT:
-			buffer.size = len * sizeof( unsigned int );
-			break;
-		case BUFFER_FLOAT:
-			buffer.size = len * sizeof( float );
-			break;
-		default:
-			break;
-	}
-	buffer.data = malloc( buffer.size );
-
-	int t = 1;
-	int i = 0;
-	unsigned char *up = buffer.data;
-	unsigned short *sp = buffer.data;
-	unsigned int *ip = buffer.data;
-	float *fp = buffer.data;
-	
-	lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-		switch ( type ) {
-			case BUFFER_UNSIGNED_CHAR:
-				*up = (unsigned char)lua_tointeger( L, -1 );
-				up++;
-				break;
-			case BUFFER_UNSIGNED_SHORT:
-				*sp = (unsigned short)lua_tointeger( L, -1 );
-				up++;
-				break;
-			case BUFFER_UNSIGNED_INT:
-				*ip = (unsigned int)lua_tointeger( L, -1 );
-				up++;
-				break;
-			case BUFFER_FLOAT:
-				*fp = (float)lua_tonumber( L, -1 );
-				fp++;
-				break;
-			default:
-				break;
-		}
-		lua_pop( L, 1 );
-		i++;
-	}
-	uluaPushBuffer( L, buffer );
-
-	return 1;
-}
-
-/*
-> RL.UnloadBuffer( Buffer buffer )
-
-Unload buffer data
-*/
-int lcoreUnloadBuffer( lua_State *L ) {
-	Buffer *buffer = uluaGetBuffer( L, 1 );
-
-	free( buffer->data );
 
 	return 0;
 }
@@ -2008,6 +1931,99 @@ int lcoreGetFileModTime( lua_State *L ) {
 }
 
 /*
+## Core - Compression/Encoding functionality
+*/
+
+/*
+> compData = RL.CompressData( string data )
+
+Compress data (DEFLATE algorithm)
+
+- Success return Buffer
+*/
+int lcoreCompressData( lua_State *L ) {
+	Buffer *inBuffer = uluaGetBuffer( L, 1 );
+	Buffer outBuffer = {
+		.size = 0,
+		.type = inBuffer->type
+	};
+	unsigned char *compData = CompressData( inBuffer->data, inBuffer->size, (int*)&outBuffer.size );
+
+	outBuffer.data = malloc( outBuffer.size );
+	memcpy( outBuffer.data, compData, outBuffer.size );
+	uluaPushBuffer( L, outBuffer );
+
+	free( compData );
+
+	return 1;
+}
+
+/*
+> data, dataSize = RL.DecompressData( Buffer compData )
+
+Decompress data (DEFLATE algorithm).
+
+- Success return string, int
+*/
+int lcoreDecompressData( lua_State *L ) {
+	Buffer *inBuffer = uluaGetBuffer( L, 1 );
+	Buffer outBuffer = {
+		.size = 0,
+		.type = inBuffer->type
+	};
+	unsigned char *data = DecompressData( inBuffer->data, inBuffer->size, (int*)&outBuffer.size );
+
+	outBuffer.data = malloc( outBuffer.size );
+	memcpy( outBuffer.data, data, outBuffer.size );
+	uluaPushBuffer( L, outBuffer );
+
+	free( data );
+
+	return 1;
+}
+
+/*
+> encodedData, outputSize = RL.EncodeDataBase64( string data )
+
+Encode data to Base64 string
+
+- Success return string, int
+*/
+int lcoreEncodeDataBase64( lua_State *L ) {
+	int dataSize = 0;
+	const char *string = luaL_checklstring( L, 1, (size_t*)&dataSize );
+
+	int outputSize = 0;
+	char *compData = EncodeDataBase64( string, dataSize, &outputSize );
+
+	lua_pushstring( L, compData );
+	lua_pushinteger( L, outputSize );
+
+	free( compData );
+
+	return 2;
+}
+
+/*
+> decodedData, outputSize = RL.DecodeDataBase64( string data )
+
+Decode Base64 string data
+
+- Success return string, int
+*/
+int lcoreDecodeDataBase64( lua_State *L ) {
+	int outputSize = 0;
+	unsigned char *decodedData = DecodeDataBase64( luaL_checkstring( L, 1 ), &outputSize );
+
+	lua_pushstring( L, decodedData );
+	lua_pushinteger( L, outputSize );
+
+	free( decodedData );
+
+	return 2;
+}
+
+/*
 ## Core - Camera2D
 */
 
@@ -2693,6 +2709,259 @@ int lcoreGetScreenToWorld2D( lua_State *L ) {
 	Camera2D *camera = uluaGetCamera2D( L, 2 );
 
 	uluaPushVector2( L, GetScreenToWorld2D( position, *camera ) );
+
+	return 1;
+}
+
+/*
+## Core - Buffer
+*/
+
+/*
+> buffer = RL.LoadBuffer( data{} buffer, int type )
+
+Load Buffer. Type should be one of the Buffer types
+
+- Success return Buffer
+*/
+int lcoreLoadBuffer( lua_State *L ) {
+	luaL_checktype( L, 1, LUA_TTABLE );
+	int type = luaL_checkinteger( L, 2 );
+
+	Buffer buffer = {
+		.type = type
+	};
+	int len = uluaGetTableLen( L, 1 );
+
+	switch ( type ) {
+		case BUFFER_UNSIGNED_CHAR:
+			buffer.size = len * sizeof( unsigned char );
+			break;
+		case BUFFER_UNSIGNED_SHORT:
+			buffer.size = len * sizeof( unsigned short );
+			break;
+		case BUFFER_UNSIGNED_INT:
+			buffer.size = len * sizeof( unsigned int );
+			break;
+		case BUFFER_CHAR:
+			buffer.size = len * sizeof( char );
+			break;
+		case BUFFER_SHORT:
+			buffer.size = len * sizeof( short );
+			break;
+		case BUFFER_INT:
+			buffer.size = len * sizeof( int );
+			break;
+		case BUFFER_FLOAT:
+			buffer.size = len * sizeof( float );
+			break;
+		case BUFFER_DOUBLE:
+			buffer.size = len * sizeof( double );
+			break;
+		default:
+			break;
+	}
+	buffer.data = malloc( buffer.size );
+
+	int t = 1;
+	int i = 0;
+	unsigned char *ucp = buffer.data;
+	unsigned short *usp = buffer.data;
+	unsigned int *uip = buffer.data;
+	char *cp = buffer.data;
+	short *sp = buffer.data;
+	int *ip = buffer.data;
+	float *fp = buffer.data;
+	double *dp = buffer.data;
+	
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		switch ( type ) {
+			case BUFFER_UNSIGNED_CHAR:
+				*ucp = (unsigned char)lua_tointeger( L, -1 );
+				ucp++;
+				break;
+			case BUFFER_UNSIGNED_SHORT:
+				*usp = (unsigned short)lua_tointeger( L, -1 );
+				usp++;
+				break;
+			case BUFFER_UNSIGNED_INT:
+				*uip = (unsigned int)lua_tointeger( L, -1 );
+				uip++;
+				break;
+			case BUFFER_CHAR:
+				*cp = (char)lua_tointeger( L, -1 );
+				cp++;
+				break;
+			case BUFFER_SHORT:
+				*sp = (short)lua_tointeger( L, -1 );
+				sp++;
+				break;
+			case BUFFER_INT:
+				*ip = (int)lua_tointeger( L, -1 );
+				ip++;
+				break;
+			case BUFFER_FLOAT:
+				*fp = (float)lua_tonumber( L, -1 );
+				fp++;
+				break;
+			case BUFFER_DOUBLE:
+				*dp = (double)lua_tonumber( L, -1 );
+				dp++;
+				break;
+			default:
+				break;
+		}
+		lua_pop( L, 1 );
+		i++;
+	}
+	uluaPushBuffer( L, buffer );
+
+	return 1;
+}
+
+/*
+> RL.UnloadBuffer( Buffer buffer )
+
+Unload buffer data
+*/
+int lcoreUnloadBuffer( lua_State *L ) {
+	Buffer *buffer = uluaGetBuffer( L, 1 );
+
+	unloadBuffer( buffer );
+
+	return 0;
+}
+
+/*
+> data = RL.GetBufferData( Buffer buffer )
+
+Get buffer data as table in the format is was stored
+
+- Success return data{}
+*/
+int lcoreGetBufferData( lua_State *L ) {
+	Buffer *buffer = uluaGetBuffer( L, 1 );
+
+	if ( buffer->type == BUFFER_UNSIGNED_CHAR ) {
+		unsigned char *p = buffer->data;
+		size_t count = buffer->size / sizeof( unsigned char );
+		lua_createtable( L, count, 0 );
+
+		for ( int i = 0; i < count; i++ ) {
+			lua_pushinteger( L, (unsigned char)*p );
+			lua_rawseti( L, -2, i+1 );
+			p++;
+		}
+	}
+	else if ( buffer->type == BUFFER_UNSIGNED_SHORT ) {
+		unsigned short *p = buffer->data;
+		size_t count = buffer->size / sizeof( unsigned short );
+		lua_createtable( L, count, 0 );
+
+		for ( int i = 0; i < count; i++ ) {
+			lua_pushinteger( L, (unsigned short)*p );
+			lua_rawseti( L, -2, i+1 );
+			p++;
+		}
+	}
+	else if ( buffer->type == BUFFER_UNSIGNED_INT ) {
+		unsigned int *p = buffer->data;
+		size_t count = buffer->size / sizeof( unsigned int );
+		lua_createtable( L, count, 0 );
+
+		for ( int i = 0; i < count; i++ ) {
+			lua_pushinteger( L, (unsigned int)*p );
+			lua_rawseti( L, -2, i+1 );
+			p++;
+		}
+	}
+	else if ( buffer->type == BUFFER_CHAR ) {
+		char *p = buffer->data;
+		size_t count = buffer->size / sizeof( char );
+		lua_createtable( L, count, 0 );
+
+		for ( int i = 0; i < count; i++ ) {
+			lua_pushinteger( L, (char)*p );
+			lua_rawseti( L, -2, i+1 );
+			p++;
+		}
+	}
+	else if ( buffer->type == BUFFER_SHORT ) {
+		short *p = buffer->data;
+		size_t count = buffer->size / sizeof( short );
+		lua_createtable( L, count, 0 );
+
+		for ( int i = 0; i < count; i++ ) {
+			lua_pushinteger( L, (short)*p );
+			lua_rawseti( L, -2, i+1 );
+			p++;
+		}
+	}
+	else if ( buffer->type == BUFFER_INT ) {
+		int *p = buffer->data;
+		size_t count = buffer->size / sizeof( int );
+		lua_createtable( L, count, 0 );
+
+		for ( int i = 0; i < count; i++ ) {
+			lua_pushinteger( L, (int)*p );
+			lua_rawseti( L, -2, i+1 );
+			p++;
+		}
+	}
+	else if ( buffer->type == BUFFER_FLOAT ) {
+		float *p = buffer->data;
+		size_t count = buffer->size / sizeof( float );
+		lua_createtable( L, count, 0 );
+
+		for ( int i = 0; i < count; i++ ) {
+			lua_pushnumber( L, (float)*p );
+			lua_rawseti( L, -2, i+1 );
+			p++;
+		}
+	}
+	else if ( buffer->type == BUFFER_DOUBLE ) {
+		double *p = buffer->data;
+		size_t count = buffer->size / sizeof( double );
+		lua_createtable( L, count, 0 );
+
+		for ( int i = 0; i < count; i++ ) {
+			lua_pushnumber( L, (double)*p );
+			lua_rawseti( L, -2, i+1 );
+			p++;
+		}
+	}
+
+	return 1;
+}
+
+/*
+> type = RL.GetBufferType( Buffer buffer )
+
+Get buffer type
+
+- Success return int
+*/
+int lcoreGetBufferType( lua_State *L ) {
+	Buffer *buffer = uluaGetBuffer( L, 1 );
+
+	lua_pushinteger( L, buffer->type );
+
+	return 1;
+}
+
+/*
+> size = RL.GetBufferSize( Buffer buffer )
+
+Get buffer size
+
+- Success return int
+*/
+int lcoreGetBufferSize( lua_State *L ) {
+	Buffer *buffer = uluaGetBuffer( L, 1 );
+
+	lua_pushinteger( L, buffer->size );
 
 	return 1;
 }

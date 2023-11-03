@@ -20,7 +20,7 @@
 static int gcBuffer( lua_State *L ) {
 	Buffer *buffer = luaL_checkudata( L, 1, "Buffer" );
 
-	free( buffer->data );
+	unloadBuffer( buffer );
 }
 
 static void defineBuffer() {
@@ -219,7 +219,7 @@ static int gcMaterial( lua_State *L ) {
 	Material *material = luaL_checkudata( L, 1, "Material" );
 
 	/* Custom UnloadMaterial since we don't want to free Shaders or Textures. */
-	RL_FREE( material->maps );
+	unloadMaterial( material );
 
 	// UnloadMaterial( *material );
 }
@@ -900,10 +900,14 @@ static void defineGlobals() {
 	assignGlobalInt( GLFW_PRESS, "GLFW_PRESS" ); // The key or mouse button was pressed
 	assignGlobalInt( GLFW_REPEAT, "GLFW_REPEAT" ); // The key was held down until it repeated
 	/* CBuffer Data Types */
-	assignGlobalInt( BUFFER_UNSIGNED_CHAR, "BUFFER_UNSIGNED_CHAR" ); // C type char
-	assignGlobalInt( BUFFER_UNSIGNED_SHORT, "BUFFER_UNSIGNED_SHORT" ); // C type short
-	assignGlobalInt( BUFFER_UNSIGNED_INT, "BUFFER_UNSIGNED_INT" ); // C type int
+	assignGlobalInt( BUFFER_UNSIGNED_CHAR, "BUFFER_UNSIGNED_CHAR" ); // C type unsigned char
+	assignGlobalInt( BUFFER_UNSIGNED_SHORT, "BUFFER_UNSIGNED_SHORT" ); // C type unsigned short
+	assignGlobalInt( BUFFER_UNSIGNED_INT, "BUFFER_UNSIGNED_INT" ); // C type unsigned int
+	assignGlobalInt( BUFFER_CHAR, "BUFFER_CHAR" ); // C type char
+	assignGlobalInt( BUFFER_SHORT, "BUFFER_SHORT" ); // C type short
+	assignGlobalInt( BUFFER_INT, "BUFFER_INT" ); // C type int
 	assignGlobalInt( BUFFER_FLOAT, "BUFFER_FLOAT" ); // C type float
+	assignGlobalInt( BUFFER_DOUBLE, "BUFFER_DOUBLE" ); // C type double
 	/* Window Events. */
 	assignGlobalInt( EVENT_WINDOW_SIZE, "EVENT_WINDOW_SIZE" ); // GLFW event window size changed
 	assignGlobalInt( EVENT_WINDOW_MAXIMIZE, "EVENT_WINDOW_MAXIMIZE" ); // GLFW event window maximize
@@ -1542,8 +1546,6 @@ void luaRegister() {
 	assingGlobalFunction( "SetLogLevelInvalid", lcoreSetLogLevelInvalid );
 	assingGlobalFunction( "GetLogLevelInvalid", lcoreGetLogLevelInvalid );
 	assingGlobalFunction( "OpenURL", lcoreOpenURL );
-	assingGlobalFunction( "LoadBuffer", lcoreLoadBuffer );
-	assingGlobalFunction( "UnloadBuffer", lcoreUnloadBuffer );
 	assingGlobalFunction( "IsGCUnloadEnabled", lcoreIsGCUnloadEnabled );
 		/* Cursor. */
 	assingGlobalFunction( "ShowCursor", lcoreShowCursor );
@@ -1594,6 +1596,11 @@ void luaRegister() {
 	assingGlobalFunction( "IsFileDropped", lcoreIsFileDropped );
 	assingGlobalFunction( "LoadDroppedFiles", lcoreLoadDroppedFiles );
 	assingGlobalFunction( "GetFileModTime", lcoreGetFileModTime );
+		/* Compression/Encoding functionality. */
+	assingGlobalFunction( "CompressData", lcoreCompressData );
+	assingGlobalFunction( "DecompressData", lcoreDecompressData );
+	assingGlobalFunction( "EncodeDataBase64", lcoreEncodeDataBase64 );
+	assingGlobalFunction( "DecodeDataBase64", lcoreDecodeDataBase64 );
 		/* Camera2D. */
 	assingGlobalFunction( "CreateCamera2D", lcoreCreateCamera2D );
 	assingGlobalFunction( "BeginMode2D", lcoreBeginMode2D );
@@ -1685,6 +1692,12 @@ void luaRegister() {
 	assingGlobalFunction( "GetWorldToScreenEx", lcoreGetWorldToScreenEx );
 	assingGlobalFunction( "GetWorldToScreen2D", lcoreGetWorldToScreen2D );
 	assingGlobalFunction( "GetScreenToWorld2D", lcoreGetScreenToWorld2D );
+		/* Buffer. */
+	assingGlobalFunction( "LoadBuffer", lcoreLoadBuffer );
+	assingGlobalFunction( "UnloadBuffer", lcoreUnloadBuffer );
+	assingGlobalFunction( "GetBufferData", lcoreGetBufferData );
+	assingGlobalFunction( "GetBufferType", lcoreGetBufferType );
+	assingGlobalFunction( "GetBufferSize", lcoreGetBufferSize );
 
 	/* Shapes. */
 		/* Drawing. */

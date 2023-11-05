@@ -4,6 +4,20 @@
 #include "textures.h"
 #include "lua_core.h"
 
+static int getBufferElementSize( Buffer *buffer ) {
+	switch ( buffer->type ) {
+		case BUFFER_UNSIGNED_CHAR: return sizeof( unsigned char );
+		case BUFFER_UNSIGNED_SHORT: return sizeof( unsigned short );
+		case BUFFER_UNSIGNED_INT: return sizeof( unsigned int );
+		case BUFFER_CHAR: return sizeof( char );
+		case BUFFER_SHORT: return sizeof( short );
+		case BUFFER_INT: return sizeof( int );
+		case BUFFER_FLOAT: return sizeof( float );
+		case BUFFER_DOUBLE: return sizeof( double );
+		default: 1;
+	}
+}
+
 void unloadBuffer( Buffer *buffer ) {
 	free( buffer->data );
 
@@ -790,29 +804,11 @@ int lcoreLoadShader( lua_State *L ) {
 		lua_pushnil( L );
 		return 1;
 	}
-	char *vsFileName = NULL;
-	char *fsFileName = NULL;
+	/* Will result to NULL if given nil. */
+	const char *vsFileName = lua_tostring( L, 1 );
+	const char *fsFileName = lua_tostring( L, 2 );
 
-	if ( lua_isstring( L, 1 ) ) {
-		if ( FileExists( lua_tostring( L, 1 ) ) ) {
-			vsFileName = malloc( STRING_LEN * sizeof( char ) );
-			strcpy( vsFileName, lua_tostring( L, 1 ) );
-		}
-	}
-	if ( lua_isstring( L, 2 ) ) {
-		if ( FileExists( lua_tostring( L, 2 ) ) ) {
-			fsFileName = malloc( STRING_LEN * sizeof( char ) );
-			strcpy( fsFileName, lua_tostring( L, 2 ) );
-		}
-	}
 	uluaPushShader( L, LoadShader( vsFileName, fsFileName ) );
-
-	if ( vsFileName != NULL ) {
-		free( vsFileName );
-	}
-	if ( fsFileName != NULL ) {
-		free( fsFileName );
-	}
 
 	return 1;
 }
@@ -833,29 +829,11 @@ int lcoreLoadShaderFromMemory( lua_State *L ) {
 		lua_pushnil( L );
 		return 1;
 	}
-	char *vs = NULL;
-	char *fs = NULL;
+	/* Will result to NULL if given nil. */
+	const char *vs = lua_tostring( L, 1 );
+	const char *fs = lua_tostring( L, 2 );
 
-	if ( lua_isstring( L, 1 ) ) {
-		size_t vsLen = uluaGetTableLen( L, 1 ) + 1;
-
-		vs = malloc( vsLen * sizeof( char ) );
-		strcpy( vs, lua_tostring( L, 1 ) );
-	}
-	if ( lua_isstring( L, 2 ) ) {
-		size_t fsLen = uluaGetTableLen( L, 2 ) + 1;
-
-		fs = malloc( fsLen * sizeof( char ) );
-		strcpy( fs, lua_tostring( L, 2 ) );
-	}
 	uluaPushShader( L, LoadShaderFromMemory( vs, fs ) );
-
-	if ( vs != NULL ) {
-		free( vs );
-	}
-	if ( fs != NULL ) {
-		free( fs );
-	}
 
 	return 1;
 }
@@ -1935,7 +1913,7 @@ int lcoreGetFileModTime( lua_State *L ) {
 */
 
 /*
-> compData = RL.CompressData( string data )
+> compData = RL.CompressData( Buffer buffer )
 
 Compress data (DEFLATE algorithm)
 
@@ -1959,11 +1937,11 @@ int lcoreCompressData( lua_State *L ) {
 }
 
 /*
-> data, dataSize = RL.DecompressData( Buffer compData )
+> decompData = RL.DecompressData( Buffer compData )
 
 Decompress data (DEFLATE algorithm).
 
-- Success return string, int
+- Success Buffer 
 */
 int lcoreDecompressData( lua_State *L ) {
 	Buffer *inBuffer = uluaGetBuffer( L, 1 );
@@ -2733,34 +2711,7 @@ int lcoreLoadBuffer( lua_State *L ) {
 	};
 	int len = uluaGetTableLen( L, 1 );
 
-	switch ( type ) {
-		case BUFFER_UNSIGNED_CHAR:
-			buffer.size = len * sizeof( unsigned char );
-			break;
-		case BUFFER_UNSIGNED_SHORT:
-			buffer.size = len * sizeof( unsigned short );
-			break;
-		case BUFFER_UNSIGNED_INT:
-			buffer.size = len * sizeof( unsigned int );
-			break;
-		case BUFFER_CHAR:
-			buffer.size = len * sizeof( char );
-			break;
-		case BUFFER_SHORT:
-			buffer.size = len * sizeof( short );
-			break;
-		case BUFFER_INT:
-			buffer.size = len * sizeof( int );
-			break;
-		case BUFFER_FLOAT:
-			buffer.size = len * sizeof( float );
-			break;
-		case BUFFER_DOUBLE:
-			buffer.size = len * sizeof( double );
-			break;
-		default:
-			break;
-	}
+	buffer.size = len * getBufferElementSize( &buffer );
 	buffer.data = malloc( buffer.size );
 
 	int t = 1;
@@ -2962,6 +2913,60 @@ int lcoreGetBufferSize( lua_State *L ) {
 	Buffer *buffer = uluaGetBuffer( L, 1 );
 
 	lua_pushinteger( L, buffer->size );
+
+	return 1;
+}
+
+/*
+> RL.ExportBuffer( Buffer buffer, string path )
+
+Write buffer data to binary file
+*/
+int lcoreExportBuffer( lua_State *L ) {
+	Buffer *buffer = uluaGetBuffer( L, 1 );
+	const char *path = luaL_checkstring( L, 2 );
+
+	size_t elementSize = getBufferElementSize( buffer );
+	FILE *file;
+	file = fopen( path, "wb" );
+
+	fwrite( buffer->data, elementSize, buffer->size / elementSize, file ) ;
+	fclose( file );
+
+	return 0;
+}
+
+/*
+> buffer = RL.LoadBufferFromFile( string path, type int )
+
+Read buffer data from binary file
+
+- Failure return nil
+- Success return Buffer
+*/
+int lcoreLoadBufferFromFile( lua_State *L ) {
+	int type = luaL_checkinteger( L, 2 );
+	const char *path = luaL_checkstring( L, 1 );
+
+	int fileLen = GetFileLength( path );
+	Buffer buffer = {
+		.type = type,
+		.size = fileLen,
+		.data = malloc( fileLen )
+	};
+	size_t elementSize = getBufferElementSize( &buffer );
+	FILE *file;
+	file = fopen( path, "rb" );
+
+	if ( file == NULL ) {
+		TraceLog( LOG_WARNING, "Invalid file %s\n", path );
+		lua_pushnil( L );
+		return 1;
+	}
+	fread( buffer.data, elementSize, buffer.size / elementSize, file );
+	fclose( file );
+
+	uluaPushBuffer( L, buffer );
 
 	return 1;
 }

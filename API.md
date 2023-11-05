@@ -4508,7 +4508,7 @@ Get file modification time (Last write time)
 
 ---
 
-> compData = RL.CompressData( string data )
+> compData = RL.CompressData( Buffer buffer )
 
 Compress data (DEFLATE algorithm)
 
@@ -4516,11 +4516,11 @@ Compress data (DEFLATE algorithm)
 
 ---
 
-> data, dataSize = RL.DecompressData( Buffer compData )
+> decompData = RL.DecompressData( Buffer compData )
 
 Decompress data (DEFLATE algorithm).
 
-- Success return string, int
+- Success Buffer 
 
 ---
 
@@ -4917,6 +4917,21 @@ Get buffer type
 Get buffer size
 
 - Success return int
+
+---
+
+> RL.ExportBuffer( Buffer buffer, string path )
+
+Write buffer data to binary file
+
+---
+
+> buffer = RL.LoadBufferFromFile( string path, type int )
+
+Read buffer data from binary file
+
+- Failure return nil
+- Success return Buffer
 
 ---
 

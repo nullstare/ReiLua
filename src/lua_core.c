@@ -1698,6 +1698,8 @@ void luaRegister() {
 	assingGlobalFunction( "GetBufferData", lcoreGetBufferData );
 	assingGlobalFunction( "GetBufferType", lcoreGetBufferType );
 	assingGlobalFunction( "GetBufferSize", lcoreGetBufferSize );
+	assingGlobalFunction( "ExportBuffer", lcoreExportBuffer );
+	assingGlobalFunction( "LoadBufferFromFile", lcoreLoadBufferFromFile );
 
 	/* Shapes. */
 		/* Drawing. */

@@ -1951,15 +1951,14 @@ function RL.GetFileModTime( fileName ) end
 
 ---Compress data (DEFLATE algorithm)
 ---- Success return Buffer
----@param data string
+---@param buffer any
 ---@return any compData 
-function RL.CompressData( data ) end
+function RL.CompressData( buffer ) end
 
 ---Decompress data (DEFLATE algorithm).
----- Success return string, int
+---- Success Buffer 
 ---@param compData any
----@return any data
----@return any dataSize 
+---@return any decompData 
 function RL.DecompressData( compData ) end
 
 ---Encode data to Base64 string
@@ -2300,6 +2299,20 @@ function RL.GetBufferType( buffer ) end
 ---@param buffer any
 ---@return any size 
 function RL.GetBufferSize( buffer ) end
+
+---Write buffer data to binary file
+---@param buffer any
+---@param path string
+---@return any RL.ExportBuffer
+function  RL.ExportBuffer( buffer, path ) end
+
+---Read buffer data from binary file
+---- Failure return nil
+---- Success return Buffer
+---@param path string
+---@param int any
+---@return any buffer 
+function RL.LoadBufferFromFile( path, int ) end
 
 -- Shapes - Drawing
 

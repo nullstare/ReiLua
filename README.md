@@ -58,7 +58,7 @@ end
 
 function RL.draw()
 	RL.ClearBackground( RL.RAYWHITE )
-    RL.DrawText( RL.defaultFont, "Congrats! You created your first window!", textPos, 20, 2, textColor )
+    RL.DrawText( RL.GetFontDefault(), "Congrats! You created your first window!", textPos, 20, 2, textColor )
 end
 ```
 

@@ -6058,15 +6058,19 @@ Draw multiple character (codepoint)
 
 ---
 
-> RL.DrawTextBoxed(Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint )
+> mouseCharId = RL.DrawTextBoxed(Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint )
 
-Draw text using font inside rectangle limits. Function from raylib [text] example - Rectangle bounds
+Draw text using font inside rectangle limits. Return character from mouse position. Function from raylib [text] example - Rectangle bounds.
+
+- Success return int
 
 ---
 
-> RL.DrawTextBoxedSelectable( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, int selectStart, int selectLength, Color selectTint, Color selectBackTint )
+> mouseCharId = RL.DrawTextBoxedTinted( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tints, Color backTints )
 
-Draw text using font inside rectangle limits with support for text selection. Function from raylib [text] example - Rectangle bounds
+Draw text using font inside rectangle limits with support for tint and background tint for each character. Return character from mouse position
+
+- Success return int
 
 ---
 

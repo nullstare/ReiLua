@@ -4,10 +4,11 @@
 #include "textures.h"
 #include "lua_core.h"
 
-// DrawTextBoxed and DrawTextBoxedSelectable from raylib [text] example - Rectangle bounds
+// DrawTextBoxed is modified DrawTextBoxedSelectable from raylib [text] example - Rectangle bounds
 
-// Draw text using font inside rectangle limits with support for text selection
-static void DrawTextBoxedSelectable(Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, int selectStart, int selectLength, Color selectTint, Color selectBackTint)
+// Draw text using font inside rectangle limits
+static int DrawTextBoxed( Font font, const char *text, Rectangle rec, float fontSize, float spacing,
+bool wordWrap, Color *tints, int tintCount, Color *backTints, int backTintCount )
 {
     int length = TextLength(text);  // Total length in bytes of the text, scanned by codepoints in loop
 
@@ -23,9 +24,19 @@ static void DrawTextBoxedSelectable(Font font, const char *text, Rectangle rec, 
     int startLine = -1;         // Index where to begin drawing (where a line begins)
     int endLine = -1;           // Index where to stop drawing (where a line ends)
     int lastk = -1;             // Holds last value of the character position
+	Color tint = BLACK;
+	Color backTint = BLANK;
+	Vector2 mousePos = GetMousePosition();
+	int mouseChar = -1;
 
     for (int i = 0, k = 0; i < length; i++, k++)
     {
+		if ( i < tintCount ) {
+			tint = tints[i];
+		}
+		if ( i < backTintCount ) {
+			backTint = backTints[i];
+		}
         // Get next codepoint from byte string and glyph index in font
         int codepointByteCount = 0;
         int codepoint = GetCodepoint(&text[i], &codepointByteCount);
@@ -104,17 +115,26 @@ static void DrawTextBoxedSelectable(Font font, const char *text, Rectangle rec, 
                 if ((textOffsetY + font.baseSize*scaleFactor) > rec.height) break;
 
                 // Draw selection background
-                bool isGlyphSelected = false;
-                if ((selectStart >= 0) && (k >= selectStart) && (k < (selectStart + selectLength)))
-                {
-                    DrawRectangleRec((Rectangle){ rec.x + textOffsetX - 1, rec.y + textOffsetY, glyphWidth, (float)font.baseSize*scaleFactor }, selectBackTint);
-                    isGlyphSelected = true;
-                }
+                // bool isGlyphSelected = false;
+                // if ((selectStart >= 0) && (k >= selectStart) && (k < (selectStart + selectLength)))
+                // {
+                //     DrawRectangleRec((Rectangle){ rec.x + textOffsetX - 1, rec.y + textOffsetY, glyphWidth, (float)font.baseSize*scaleFactor }, selectBackTint);
+                //     isGlyphSelected = true;
+                // }
+
+				if ( CheckCollisionPointRec( mousePos, (Rectangle){ rec.x + textOffsetX - 1, rec.y + textOffsetY, glyphWidth, (float)font.baseSize*scaleFactor } ) ) {
+					mouseChar = i;
+				}
+
+				if ( 0 < backTint.a ) {
+					DrawRectangleRec((Rectangle){ rec.x + textOffsetX - 1, rec.y + textOffsetY, glyphWidth, (float)font.baseSize*scaleFactor }, backTint);
+				}
 
                 // Draw current character glyph
                 if ((codepoint != ' ') && (codepoint != '\t'))
                 {
-                    DrawTextCodepoint(font, codepoint, (Vector2){ rec.x + textOffsetX, rec.y + textOffsetY }, fontSize, isGlyphSelected? selectTint : tint);
+                    // DrawTextCodepoint(font, codepoint, (Vector2){ rec.x + textOffsetX, rec.y + textOffsetY }, fontSize, isGlyphSelected? selectTint : tint);
+                    DrawTextCodepoint( font, codepoint, (Vector2){ rec.x + textOffsetX, rec.y + textOffsetY }, fontSize, tint );
                 }
             }
 
@@ -125,7 +145,7 @@ static void DrawTextBoxedSelectable(Font font, const char *text, Rectangle rec, 
                 startLine = endLine;
                 endLine = -1;
                 glyphWidth = 0;
-                selectStart += lastk - k;
+                // selectStart += lastk - k;
                 k = lastk;
 
                 state = !state;
@@ -134,12 +154,7 @@ static void DrawTextBoxedSelectable(Font font, const char *text, Rectangle rec, 
 
         if ((textOffsetX != 0) || (codepoint != ' ')) textOffsetX += glyphWidth;  // avoid leading spaces
     }
-}
-
-// Draw text using font inside rectangle limits
-static void DrawTextBoxed(Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint)
-{
-    DrawTextBoxedSelectable(font, text, rec, fontSize, spacing, wordWrap, tint, 0, 0, WHITE, WHITE);
+	return mouseChar;
 }
 
 /*
@@ -378,43 +393,67 @@ int ltextDrawTextCodepoints( lua_State *L ) {
 }
 
 /*
-> RL.DrawTextBoxed(Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint )
+> mouseCharId = RL.DrawTextBoxed(Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint )
 
-Draw text using font inside rectangle limits. Function from raylib [text] example - Rectangle bounds
+Draw text using font inside rectangle limits. Return character from mouse position. Function from raylib [text] example - Rectangle bounds.
+
+- Success return int
 */
 int ltextDrawTextBoxed( lua_State *L ) {
 	Font *font = uluaGetFont( L, 1 );
+	const char *text = luaL_checkstring( L, 2 );
 	Rectangle rec = uluaGetRectangle( L, 3 );
 	float fontSize = luaL_checknumber( L, 4 );
 	float spacing = luaL_checknumber( L, 5 );
 	bool wordWrap = uluaGetBoolean( L, 6 );
 	Color tint = uluaGetColor( L, 7 );
 
-	DrawTextBoxedSelectable( *font, luaL_checkstring( L, 2 ), rec, fontSize, spacing, wordWrap, tint, 0, 0, WHITE, WHITE );
+	lua_pushinteger( L, DrawTextBoxed( *font, text, rec, fontSize, spacing, wordWrap, &tint, 1, NULL, 0 ) );
 
-	return 0;
+	return 1;
 }
 
 /*
-> RL.DrawTextBoxedSelectable( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, int selectStart, int selectLength, Color selectTint, Color selectBackTint )
+> mouseCharId = RL.DrawTextBoxedTinted( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tints, Color backTints )
 
-Draw text using font inside rectangle limits with support for text selection. Function from raylib [text] example - Rectangle bounds
+Draw text using font inside rectangle limits with support for tint and background tint for each character. Return character from mouse position
+
+- Success return int
 */
-int ltextDrawTextBoxedSelectable( lua_State *L ) {
+int ltextDrawTextBoxedTinted( lua_State *L ) {
 	Font *font = uluaGetFont( L, 1 );
+	const char *text = luaL_checkstring( L, 2 );
 	Rectangle rec = uluaGetRectangle( L, 3 );
 	float fontSize = luaL_checknumber( L, 4 );
 	float spacing = luaL_checknumber( L, 5 );
 	bool wordWrap = uluaGetBoolean( L, 6 );
-	Color tint = uluaGetColor( L, 7 );
-	int selectStart = luaL_checkinteger( L, 8 );
-	int selectLength = luaL_checkinteger( L, 9 );
-	Color selectTint = uluaGetColor( L, 10 );
-	Color selectBackTint = uluaGetColor( L, 11 );
+	int tintCount = uluaGetTableLen( L, 7 );
+	int backTintCount = uluaGetTableLen( L, 8 );
 
-	DrawTextBoxedSelectable( *font, luaL_checkstring( L, 2 ), rec, fontSize, spacing, wordWrap, tint, selectStart, selectLength, selectTint, selectBackTint );
+	Color tints[ tintCount ];
+	Color backTints[ backTintCount ];
 
-	return 0;
+	/* Tints. */
+	int t = 7, i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		tints[i] = uluaGetColor( L, lua_gettop( L ) );
+		i++;
+		lua_pop( L, 1 );
+	}
+	/* Back tints. */
+	t = 8; i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		backTints[i] = uluaGetColor( L, lua_gettop( L ) );
+		i++;
+		lua_pop( L, 1 );
+	}
+	lua_pushinteger( L, DrawTextBoxed( *font, text, rec, fontSize, spacing, wordWrap, tints, tintCount, backTints, backTintCount ) );
+
+	return 1;
 }
 
 /*

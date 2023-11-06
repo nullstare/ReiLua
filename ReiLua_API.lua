@@ -3434,18 +3434,8 @@ function  RL.DrawTextCodepoint( font, codepoint, position, fontSize, tint ) end
 ---@return any RL.DrawTextCodepoints
 function  RL.DrawTextCodepoints( font, codepoints, position, fontSize, spacing, tint ) end
 
----Draw text using font inside rectangle limits. Function from raylib [text] example - Rectangle bounds
----@param font any
----@param char any
----@param rec table
----@param fontSize number
----@param spacing number
----@param wordWrap boolean
----@param tint table
----@return any RL.DrawTextBoxed
-function  RL.DrawTextBoxed( font, char, rec, fontSize, spacing, wordWrap, tint ) end
-
----Draw text using font inside rectangle limits with support for text selection. Function from raylib [text] example - Rectangle bounds
+---Draw text using font inside rectangle limits. Return character from mouse position. Function from raylib [text] example - Rectangle bounds.
+---- Success return int
 ---@param font any
 ---@param text string
 ---@param rec table
@@ -3453,12 +3443,21 @@ function  RL.DrawTextBoxed( font, char, rec, fontSize, spacing, wordWrap, tint )
 ---@param spacing number
 ---@param wordWrap boolean
 ---@param tint table
----@param selectStart integer
----@param selectLength integer
----@param selectTint table
----@param selectBackTint table
----@return any RL.DrawTextBoxedSelectable
-function  RL.DrawTextBoxedSelectable( font, text, rec, fontSize, spacing, wordWrap, tint, selectStart, selectLength, selectTint, selectBackTint ) end
+---@return any mouseCharId 
+function RL.DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint ) end
+
+---Draw text using font inside rectangle limits with support for tint and background tint for each character. Return character from mouse position
+---- Success return int
+---@param font any
+---@param text string
+---@param rec table
+---@param fontSize number
+---@param spacing number
+---@param wordWrap boolean
+---@param tints table
+---@param backTints table
+---@return any mouseCharId 
+function RL.DrawTextBoxedTinted( font, text, rec, fontSize, spacing, wordWrap, tints, backTints ) end
 
 -- Text - Font info functions
 

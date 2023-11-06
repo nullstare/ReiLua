@@ -1961,7 +1961,7 @@ void luaRegister() {
 	assingGlobalFunction( "DrawTextCodepoint", ltextDrawTextCodepoint );
 	assingGlobalFunction( "DrawTextCodepoints", ltextDrawTextCodepoints );
 	assingGlobalFunction( "DrawTextBoxed", ltextDrawTextBoxed );
-	assingGlobalFunction( "DrawTextBoxedSelectable", ltextDrawTextBoxedSelectable );
+	assingGlobalFunction( "DrawTextBoxedTinted", ltextDrawTextBoxedTinted );
 		/* Font info functions. */
 	assingGlobalFunction( "MeasureText", ltextMeasureText );
 	assingGlobalFunction( "GetGlyphIndex", ltextGetGlyphIndex );

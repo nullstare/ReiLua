@@ -30,14 +30,8 @@ Vector2.meta = {
 	__unm = function( v )
 		return Vector2:new( -v.x, -v.y )
 	end,
-	__len = function( v )
-		local len = 0
-
-		for _, _ in pairs( v ) do
-			len = len + 1
-		end
-
-		return len
+	__len = function( _ )
+		return 2
 	end,
 	__eq = function( v1, v2 )
 		return RL.Vector2Equals( v1, v2 ) == 1

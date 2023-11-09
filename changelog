@@ -50,6 +50,7 @@ DETAILED CHANGES:
 	- ADDED: LoadMaterials.
 	- CHANGED: Organized core functions.
 	- CHANGED: Organized shapes, textures, audio, text, lights and gui functions.
+	- ADDED: More color and rectangle lib functionality.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.5.0		Using Raylib 4.5

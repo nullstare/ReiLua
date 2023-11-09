@@ -30,14 +30,8 @@ Vector3.meta = {
 	__unm = function( v )
 		return Vector3:new( -v.x, -v.y, -v.z )
 	end,
-	__len = function( v )
-		local len = 0
-
-		for _, _ in pairs( v ) do
-			len = len + 1
-		end
-
-		return len
+	__len = function( _ )
+		return 3
 	end,
 	__eq = function( v1, v2 )
 		return RL.Vector3Equals( v1, v2 ) == 1

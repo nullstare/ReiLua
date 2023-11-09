@@ -1,35 +1,40 @@
+-- For luaJit compatibility.
+if table.unpack == nil then
+	table.unpack = unpack
+end
+
 Color = {}
 Color.meta = {
 	__index = Color,
-	__tostring = function( r )
-		return "{"..tostring( r.r )..", "..tostring( r.g )..", "..tostring( r.b )..", "..tostring( r.a ).."}"
+	__tostring = function( c )
+		return "{"..math.floor( c.r )..", "..math.floor( c.g )..", "..math.floor( c.b )..", "..math.floor( c.a ).."}"
 	end,
-	-- __add = function( v1, v2 )
-	-- 	return Vector2:new( v1.x + v2.x, v1.y + v2.y )
-	-- end,
-	-- __sub = function( v1, v2 )
-	-- 	return Vector2:new( v1.x - v2.x, v1.y - v2.y )
-	-- end,
-	-- __mul = function( v1, v2 )
-	-- 	return Vector2:new( v1.x * v2.x, v1.y * v2.y )
-	-- end,
-	-- __div = function( v1, v2 )
-	-- 	return Vector2:new( v1.x / v2.x, v1.y / v2.y )
-	-- end,
-	-- __mod = function( v, value )
-	-- 	return Vector2:new( math.fmod( v.x, value ), math.fmod( v.y, value ) )
-	-- end,
-	-- __pow = function( v, value )
-	-- 	return Vector2:new( v.x ^ value, v.y ^ value )
-	-- end,
-	-- __unm = function( v )
-	-- 	return Vector2:new( -v.x, -v.y )
-	-- end,
-	-- __idiv = function( v, value )
-	-- 	return Vector2:new( v.x // value, v.y // value )
-	-- end,
+	__add = function( c1, c2 )
+		return Color:new( c1.r + c2.r, c1.g + c2.g, c1.b + c2.b, c1.a + c2.a )
+	end,
+	__sub = function( c1, c2 )
+		return Color:new( c1.r - c2.r, c1.g - c2.g, c1.b - c2.b, c1.a - c2.a )
+	end,
+	__mul = function( c1, c2 )
+		return Color:new( c1.r * c2.r, c1.g * c2.g, c1.b * c2.b, c1.a * c2.a )
+	end,
+	__div = function( c1, c2 )
+		return Color:new( c1.r / c2.r, c1.g / c2.g, c1.b / c2.b, c1.a / c2.a )
+	end,
+	__mod = function( c, v )
+		return Color:new( c.r % v, c.g % v, c.b % v, c.a % v )
+	end,
+	__pow = function( c, v )
+		return Color:new( c.r ^ v, c.g ^ v, c.b ^ v, c.a ^ v )
+	end,
+	__idiv = function( c, v )
+		return Color:new( c.r // v, c.g // v, c.b // v, c.a // v )
+	end,
+	__len = function( _ )
+		return 4
+	end,
 	__eq = function( c1, c2 )
-		return c1.r == c2.r and c1.g == c2.g and c1.b == c2.b
+		return c1.r == c2.r and c1.g == c2.g and c1.b == c2.b and c1.a == c2.a
 	end,
 }
 
@@ -80,7 +85,55 @@ function Color:unpack()
 end
 
 function Color:clone()
-	return Color:new( self.r, self.g, self.b, self.a )
+	return Color:new( self )
+end
+
+function Color:scale( scalar )
+	return Color:new( math.floor( self.r * scalar ), math.floor( self.g * scalar ), math.floor( self.b * scalar ), math.floor( self.a * scalar ) )
+end
+
+function Color:fade( alpha )
+	return Color:new( RL.Fade( self, alpha ) )
+end
+
+function Color:toHex()
+	return RL.ColorToInt( self )
+end
+
+function Color:fromHex( hexValue )
+	return Color:new( RL.GetColor( hexValue ) )
+end
+
+function Color:getNormalized()
+	return RL.ColorNormalize( self )
+end
+
+function Color:fromNormalized( normalized )
+	return Color:new( RL.ColorFromNormalized( normalized ) )
+end
+
+function Color:toHSV()
+	return Vector3:new( RL.ColorToHSV( self ) )
+end
+
+function Color:fromHSV( hue, saturation, value )
+	return Color:new( RL.ColorFromHSV( hue, saturation, value ) )
+end
+
+function Color:tint( tint )
+	return Color:new( RL.ColorTint( self, tint ) )
+end
+
+function Color:brightness( factor )
+	return Color:new( RL.ColorBrightness( self, factor ) )
+end
+
+function Color:contrast( contrast )
+	return Color:new( RL.ColorContrast( self, contrast ) )
+end
+
+function Color:alphaBlend( dst, src, tint )
+	return Color:new( RL.ColorAlphaBlend( dst, src, tint ) )
 end
 
 return Color

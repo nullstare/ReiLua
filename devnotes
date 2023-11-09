@@ -15,8 +15,6 @@ Backlog {
 		* More Textures management functions.
 		* Shader buffer storage object management (ssbo).
 
-	* Extend color lib functionality.
-
 	* Examples
 		* Improve Dungeon crawler example by generating custom mesh instead of drawing 3D quads.
 		* Platformer example physics process for true framerate independence.

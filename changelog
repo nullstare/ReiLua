@@ -42,6 +42,11 @@ DETAILED CHANGES:
 	- ADDED: ExportBuffer and LoadBufferFromFile.
 	- REMOVED: DrawTextBoxedSelectable.
 	- ADDED: DrawTextBoxedTinted.
+	- ADDED: GenMeshCubicmap.
+	- CHANGED: Organized model functions.
+	- ADDED: GetModelBoundingBox.
+	- ADDED: DrawModelWires and DrawModelWiresEx.
+	- ADDED: LoadMaterials.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.5.0		Using Raylib 4.5

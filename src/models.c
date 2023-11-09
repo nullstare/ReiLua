@@ -127,7 +127,7 @@ void DrawBillboardRecNoRatio( Camera camera, Texture2D texture, Rectangle source
 }
 
 /*
-## Models - Basic
+## Models - Basic geometric 3D shapes drawing functions
 */
 
 /*
@@ -491,316 +491,309 @@ int lmodelsDrawGrid( lua_State *L ) {
 }
 
 /*
-## Models - Mesh
+## Models - Model management functions
 */
 
 /*
-> mesh = RL.GenMeshPoly( int sides, float radius )
+> model = RL.LoadModel( string fileName )
 
-Generate polygonal mesh
+Load model from files (Meshes and materials)
 
-- Success return Mesh
+- Failure return nil
+- Success return Model
 */
-int lmodelsGenMeshPoly( lua_State *L ) {
-	int sides = luaL_checkinteger( L, 1 );
-	float radius = luaL_checknumber( L, 2 );
+int lmodelsLoadModel( lua_State *L ) {
+	if ( FileExists( luaL_checkstring( L, 1 ) ) ) {
+		uluaPushModel( L, LoadModel( lua_tostring( L, 1 ) ) );
 
-	uluaPushMesh( L, GenMeshPoly( sides, radius ) );
-
-	return 1;
-}
-
-/*
-> mesh = RL.GenMeshPlane( float width, float length, int resX, int resZ )
-
-Generate plane mesh (With subdivisions)
-
-- Success return Mesh
-*/
-int lmodelsGenMeshPlane( lua_State *L ) {
-	float width = luaL_checknumber( L, 1 );
-	float length = luaL_checknumber( L, 2 );
-	int resX = luaL_checkinteger( L, 3 );
-	int resZ = luaL_checkinteger( L, 4 );
-
-	uluaPushMesh( L, GenMeshPlane( width, length, resX, resZ ) );
-
-	return 1;
-}
-
-/*
-> mesh = RL.GenMeshCube( Vector3 size )
-
-Generate cuboid mesh
-
-- Success return Mesh
-*/
-int lmodelsGenMeshCube( lua_State *L ) {
-	Vector3 size = uluaGetVector3( L, 1 );
-
-	uluaPushMesh( L, GenMeshCube( size.x, size.y, size.z ) );
-
-	return 1;
-}
-
-/*
-> mesh = RL.GenMeshSphere( float radius, int rings, int slices )
-
-Generate sphere mesh (Standard sphere)
-
-- Success return Mesh
-*/
-int lmodelsGenMeshSphere( lua_State *L ) {
-	float radius = luaL_checknumber( L, 1 );
-	int rings = luaL_checkinteger( L, 2 );
-	int slices = luaL_checkinteger( L, 3 );
-
-	uluaPushMesh( L, GenMeshSphere( radius, rings, slices ) );
-
-	return 1;
-}
-
-/*
-> mesh = RL.GenMeshCylinder( float radius, float height, int slices )
-
-Generate cylinder mesh
-
-- Success return Mesh
-*/
-int lmodelsGenMeshCylinder( lua_State *L ) {
-	float radius = luaL_checknumber( L, 1 );
-	float height = luaL_checknumber( L, 2 );
-	int slices = luaL_checkinteger( L, 3 );
-
-	uluaPushMesh( L, GenMeshCylinder( radius, height, slices ) );
-
-	return 1;
-}
-
-/*
-> mesh = RL.GenMeshCone( float radius, float height, int slices )
-
-Generate cone/pyramid mesh
-
-- Success return Mesh
-*/
-int lmodelsGenMeshCone( lua_State *L ) {
-	float radius = luaL_checknumber( L, 1 );
-	float height = luaL_checknumber( L, 2 );
-	int slices = luaL_checkinteger( L, 3 );
-
-	uluaPushMesh( L, GenMeshCone( radius, height, slices ) );
-
-	return 1;
-}
-
-/*
-> mesh = RL.GenMeshTorus( float radius, float size, int radSeg, int sides )
-
-Generate torus mesh
-
-- Success return Mesh
-*/
-int lmodelsGenMeshTorus( lua_State *L ) {
-	float radius = luaL_checknumber( L, 1 );
-	float size = luaL_checknumber( L, 2 );
-	int radSeg = luaL_checkinteger( L, 3 );
-	int sides = luaL_checkinteger( L, 4 );
-
-	uluaPushMesh( L, GenMeshTorus( radius, size, radSeg, sides ) );
-
-	return 1;
-}
-
-/*
-> mesh = RL.GenMeshKnot( float radius, float size, int radSeg, int sides )
-
-Generate torus mesh
-
-- Success return Mesh
-*/
-int lmodelsGenMeshKnot( lua_State *L ) {
-	float radius = luaL_checknumber( L, 1 );
-	float size = luaL_checknumber( L, 2 );
-	int radSeg = luaL_checkinteger( L, 3 );
-	int sides = luaL_checkinteger( L, 4 );
-
-	uluaPushMesh( L, GenMeshKnot( radius, size, radSeg, sides ) );
-
-	return 1;
-}
-
-/*
-> mesh = RL.GenMeshHeightmap( Image heightmap, Vector3 size )
-
-Generate heightmap mesh from image data
-
-- Success return Mesh
-*/
-int lmodelsGenMeshHeightmap( lua_State *L ) {
-	Image *heightmap = uluaGetImage( L, 1 );
-	Vector3 size = uluaGetVector3( L, 2 );
-
-	uluaPushMesh( L, GenMeshHeightmap( *heightmap, size ) );
-
-	return 1;
-}
-
-/*
-> mesh = RL.GenMeshCustom( Mesh{} meshData, bool dynamic )
-
-Generate custom mesh from vertex attribute data and uploads it into a VAO (if supported) and VBO
-
-- Success return Mesh
-*/
-int lmodelsGenMeshCustom( lua_State *L ) {
-	luaL_checktype( L, 1, LUA_TTABLE );
-	bool dynamic = uluaGetBoolean( L, 2 );
-
-	Mesh mesh = { 0 };
-
-	int t = 1;
+		return 1;
+	}
+	TraceLog( state->logLevelInvalid, "Invalid file '%s'", lua_tostring( L, 1 ) );
 	lua_pushnil( L );
 
-	while ( lua_next( L, t ) != 0 ) {
-		if ( strcmp( "vertices", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
+	return 1;
+}
 
-			mesh.vertexCount = len;
-			mesh.triangleCount = len / 3;
-			mesh.vertices = (float*)MemAlloc( len * 3 * sizeof(float) );
+/*
+> model = RL.LoadModelFromMesh( Mesh mesh )
 
-			int t2 = lua_gettop( L );
-			int i = 0;
-			lua_pushnil( L );
+Load model from generated mesh (Default material)
 
-			while ( lua_next( L, t2 ) != 0 ) {
-				Vector3 vec = uluaGetVector3( L, lua_gettop( L ) );
+- Success return Model
+*/
+int lmodelsLoadModelFromMesh( lua_State *L ) {
+	Mesh *mesh = uluaGetMesh( L, 1 );
 
-				mesh.vertices[(i*3)+0] = vec.x;
-				mesh.vertices[(i*3)+1] = vec.y;
-				mesh.vertices[(i*3)+2] = vec.z;
-				i++;
-				lua_pop( L, 1 );
-			}
-		}
-		else if ( strcmp( "texcoords", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
-
-			mesh.texcoords = (float*)MemAlloc( len * 2 * sizeof(float) );
-
-			int t2 = lua_gettop( L );
-			int i = 0;
-			lua_pushnil( L );
-
-			while ( lua_next( L, t2 ) != 0 ) {
-				Vector2 vec = uluaGetVector2( L, lua_gettop( L ) );
-
-				mesh.texcoords[(i*2)+0] = vec.x;
-				mesh.texcoords[(i*2)+1] = vec.y;
-				i++;
-				lua_pop( L, 1 );
-			}
-		}
-		else if ( strcmp( "texcoords2", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
-
-			mesh.texcoords2 = (float*)MemAlloc( len * 2 * sizeof(float) );
-
-			int t2 = lua_gettop( L );
-			int i = 0;
-			lua_pushnil( L );
-
-			while ( lua_next( L, t2 ) != 0 ) {
-				Vector2 vec = uluaGetVector2( L, lua_gettop( L ) );
-
-				mesh.texcoords2[(i*2)+0] = vec.x;
-				mesh.texcoords2[(i*2)+1] = vec.y;
-				i++;
-				lua_pop( L, 1 );
-			}
-		}
-		else if ( strcmp( "normals", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
-
-			mesh.normals = (float*)MemAlloc( len * 3 * sizeof(float) );
-
-			int t2 = lua_gettop( L );
-			int i = 0;
-			lua_pushnil( L );
-
-			while ( lua_next( L, t2 ) != 0 ) {
-				Vector3 vec = uluaGetVector3( L, lua_gettop( L ) );
-
-				mesh.normals[(i*3)+0] = vec.x;
-				mesh.normals[(i*3)+1] = vec.y;
-				mesh.normals[(i*3)+2] = vec.z;
-				i++;
-				lua_pop( L, 1 );
-			}
-		}
-		else if ( strcmp( "tangents", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
-
-			mesh.tangents = (float*)MemAlloc( len * 4 * sizeof(float) );
-
-			int t2 = lua_gettop( L );
-			int i = 0;
-			lua_pushnil( L );
-
-			while ( lua_next( L, t2 ) != 0 ) {
-				Vector4 vec = uluaGetVector4( L, lua_gettop( L ) );
-
-				mesh.tangents[(i*4)+0] = vec.x;
-				mesh.tangents[(i*4)+1] = vec.y;
-				mesh.tangents[(i*4)+2] = vec.z;
-				mesh.tangents[(i*4)+3] = vec.w;
-				i++;
-				lua_pop( L, 1 );
-			}
-		}
-		else if ( strcmp( "colors", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
-
-			mesh.colors = (unsigned char*)MemAlloc( len * 4 * sizeof(unsigned char) );
-
-			int t2 = lua_gettop( L );
-			int i = 0;
-			lua_pushnil( L );
-
-			while ( lua_next( L, t2 ) != 0 ) {
-				Color color = uluaGetColor( L, lua_gettop( L ) );
-
-				mesh.colors[(i*4)+0] = color.r;
-				mesh.colors[(i*4)+1] = color.g;
-				mesh.colors[(i*4)+2] = color.b;
-				mesh.colors[(i*4)+3] = color.a;
-				i++;
-				lua_pop( L, 1 );
-			}
-		}
-		else if ( strcmp( "indices", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
-			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
-
-			mesh.indices = (unsigned short*)MemAlloc( len * sizeof(unsigned short) );
-
-			int t2 = lua_gettop( L );
-			int i = 0;
-			lua_pushnil( L );
-
-			while ( lua_next( L, t2 ) != 0 ) {
-				mesh.indices[i] = (unsigned short)lua_tointeger( L, -1 );
-				i++;
-				lua_pop( L, 1 );
-			}
-		}
-		lua_pop( L, 1 );
-	}
-	UploadMesh( &mesh, dynamic );
-	uluaPushMesh( L, mesh );
+	uluaPushModel( L, LoadModelFromMesh( *mesh ) );
 
 	return 1;
 }
+
+/*
+> isReady = RL.IsModelReady( Model model )
+
+Check if a model is ready
+
+- Success return bool
+*/
+int lmodelsIsModelReady( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+
+	lua_pushboolean( L, IsModelReady( *model ) );
+
+	return 1;
+}
+
+/*
+> RL.UnloadModel( Model model )
+
+Unload model (including meshes) from memory (RAM and/or VRAM)
+*/
+int lmodelsUnloadModel( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+
+	UnloadModel( *model );
+
+	return 0;
+}
+
+/*
+> boundingBox = RL.GetModelBoundingBox( Model model )
+
+Compute model bounding box limits (considers all meshes)
+
+- Success return BoundingBox
+*/
+int lmodelsGetModelBoundingBox( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+
+	uluaPushBoundingBox( L, GetModelBoundingBox( *model ) );
+
+	return 1;
+}
+
+/*
+> RL.SetModelMaterial( Model model, Material modelMaterial, Material material )
+
+Copies material to model material. (Model material is the material id in models.)
+*/
+int lmodelsSetModelMaterial( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+	int modelMaterialId = luaL_checkinteger( L, 2 );
+	Material *material = uluaGetMaterial( L, 3 );
+
+	//TODO Could maybe return old shader and textures for storage or get garbage collected?
+
+	/* Copy material data instead of using pointer. Pointer would result in double free error. */
+	model->materials[ modelMaterialId ].shader = material->shader;
+	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_ALBEDO ] = material->maps[ MATERIAL_MAP_ALBEDO ];
+	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_METALNESS ] = material->maps[ MATERIAL_MAP_METALNESS ];
+	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_NORMAL ] = material->maps[ MATERIAL_MAP_NORMAL ];
+	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_ROUGHNESS ] = material->maps[ MATERIAL_MAP_ROUGHNESS ];
+	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_OCCLUSION ] = material->maps[ MATERIAL_MAP_OCCLUSION ];
+	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_EMISSION ] = material->maps[ MATERIAL_MAP_EMISSION ];
+	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_HEIGHT ] = material->maps[ MATERIAL_MAP_HEIGHT ];
+	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_CUBEMAP ] = material->maps[ MATERIAL_MAP_CUBEMAP ];
+	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_IRRADIANCE ] = material->maps[ MATERIAL_MAP_IRRADIANCE ];
+	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_PREFILTER ] = material->maps[ MATERIAL_MAP_PREFILTER ];
+	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_BRDF ] = material->maps[ MATERIAL_MAP_BRDF ];
+
+	for ( int i = 0; i < 4; i++ ) {
+		model->materials[ modelMaterialId ].params[i] = material->params[i];
+	}
+
+	return 0;
+}
+
+/*
+> RL.SetModelMeshMaterial( Model model, int meshId, int materialId )
+
+Set material for a mesh (Mesh and material on this model)
+*/
+int lmodelsSetModelMeshMaterial( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+	int meshId = luaL_checkinteger( L, 2 );
+	int materialId = luaL_checkinteger( L, 3 );
+
+	SetModelMeshMaterial( model, meshId, materialId );
+
+	return 0;
+}
+
+/*
+> RL.SetModelTransform( Model model, Matrix transform )
+
+Set model transform matrix
+*/
+int lmodelsSetModelTransform( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+	Matrix transform = uluaGetMatrix( L, 2 );
+
+	model->transform = transform;
+
+	return 0;
+}
+
+/*
+> transform = RL.GetModelTransform( Model model )
+
+Get model transform matrix
+
+- Success return Matrix
+*/
+int lmodelsGetModelTransform( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+
+	uluaPushMatrix( L, model->transform );
+
+	return 1;
+}
+
+/*
+## Models - Model drawing functions
+*/
+
+/*
+> RL.DrawModel( Model model, Vector3 position, float scale, Color tint )
+
+Draw a model (With texture if set)
+*/
+int lmodelsDrawModel( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+	Vector3 position = uluaGetVector3( L, 2 );
+	float scale = luaL_checknumber( L, 3 );
+	Color tint = uluaGetColor( L, 4 );
+
+	DrawModel( *model, position, scale, tint );
+
+	return 0;
+}
+
+/*
+> RL.DrawModelEx( Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint )
+
+Draw a model with extended parameters
+*/
+int lmodelsDrawModelEx( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+	Vector3 position = uluaGetVector3( L, 2 );
+	Vector3 rotationAxis = uluaGetVector3( L, 3 );
+	float rotationAngle = luaL_checknumber( L, 4 );
+	Vector3 scale = uluaGetVector3( L, 5 );
+	Color tint = uluaGetColor( L, 6 );
+
+	DrawModelEx( *model, position, rotationAxis, rotationAngle, scale, tint );
+
+	return 0;
+}
+
+/*
+> RL.DrawModelWires( Model model, Vector3 position, float scale, Color tint )
+
+Draw a model wires (with texture if set)
+*/
+int lmodelsDrawModelWires( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+	Vector3 position = uluaGetVector3( L, 2 );
+	float scale = luaL_checknumber( L, 3 );
+	Color tint = uluaGetColor( L, 4 );
+
+	DrawModelWires( *model, position, scale, tint );
+
+	return 0;
+}
+
+/*
+> RL.DrawModelWiresEx( Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint )
+
+Draw a model wires (with texture if set) with extended parameters
+*/
+int lmodelsDrawModelWiresEx( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+	Vector3 position = uluaGetVector3( L, 2 );
+	Vector3 rotationAxis = uluaGetVector3( L, 3 );
+	float rotationAngle = luaL_checknumber( L, 4 );
+	Vector3 scale = uluaGetVector3( L, 5 );
+	Color tint = uluaGetColor( L, 6 );
+
+	DrawModelWiresEx( *model, position, rotationAxis, rotationAngle, scale, tint );
+
+	return 0;
+}
+
+/*
+> RL.DrawBoundingBox( BoundingBox box, Color color )
+
+Draw bounding box (wires)
+*/
+int lmodelsDrawBoundingBox( lua_State *L ) {
+	BoundingBox box = uluaGetBoundingBox( L, 1 );
+	Color color = uluaGetColor( L, 2 );
+
+	DrawBoundingBox( box, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawBillboard( Camera3D camera, Texture texture, Vector3 position, float size, Color tint )
+
+Draw a billboard texture
+*/
+int lmodelsDrawBillboard( lua_State *L ) {
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
+	Texture *texture = uluaGetTexture( L, 2 );
+	Vector3 position = uluaGetVector3( L, 3 );
+	float size = luaL_checknumber( L, 4 );
+	Color tint = uluaGetColor( L, 5 );
+
+	DrawBillboard( *camera, *texture, position, size, tint );
+
+	return 0;
+}
+
+/*
+> RL.DrawBillboardRec( Camera3D camera, Texture texture, Rectangle source, Vector3 position, Vector2 size, Color tint )
+
+Draw a billboard texture defined by source
+*/
+int lmodelsDrawBillboardRec( lua_State *L ) {
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
+	Texture *texture = uluaGetTexture( L, 2 );
+	Rectangle source = uluaGetRectangle( L, 3 );
+	Vector3 position = uluaGetVector3( L, 4 );
+	Vector2 size = uluaGetVector2( L, 5 );
+	Color tint = uluaGetColor( L, 6 );
+
+	DrawBillboardRecNoRatio( *camera, *texture, source, position, size, tint );
+
+	return 0;
+}
+
+/*
+> RL.DrawBillboardPro( Camera3D camera, Texture texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint )
+
+Draw a billboard texture defined by source and rotation
+*/
+int lmodelsDrawBillboardPro( lua_State *L ) {
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
+	Texture *texture = uluaGetTexture( L, 2 );
+	Rectangle source = uluaGetRectangle( L, 3 );
+	Vector3 position = uluaGetVector3( L, 4 );
+	Vector3 up = uluaGetVector3( L, 5 );
+	Vector2 size = uluaGetVector2( L, 6 );
+	Vector2 origin = uluaGetVector2( L, 7 );
+	float rotation = luaL_checknumber( L, 8 );
+	Color tint = uluaGetColor( L, 9 );
+
+	DrawBillboardProNoRatio( *camera, *texture, source, position, up, size, origin, rotation, tint );
+
+	return 0;
+}
+
+/*
+## Models - Mesh management functions
+*/
 
 /*
 > RL.UpdateMesh( Mesh mesh, Mesh{} meshData )
@@ -1060,8 +1053,357 @@ int lmodelsGenMeshTangents( lua_State *L ) {
 }
 
 /*
-## Models - Material
+## Models - Mesh generation functions
 */
+
+/*
+> mesh = RL.GenMeshPoly( int sides, float radius )
+
+Generate polygonal mesh
+
+- Success return Mesh
+*/
+int lmodelsGenMeshPoly( lua_State *L ) {
+	int sides = luaL_checkinteger( L, 1 );
+	float radius = luaL_checknumber( L, 2 );
+
+	uluaPushMesh( L, GenMeshPoly( sides, radius ) );
+
+	return 1;
+}
+
+/*
+> mesh = RL.GenMeshPlane( float width, float length, int resX, int resZ )
+
+Generate plane mesh (With subdivisions)
+
+- Success return Mesh
+*/
+int lmodelsGenMeshPlane( lua_State *L ) {
+	float width = luaL_checknumber( L, 1 );
+	float length = luaL_checknumber( L, 2 );
+	int resX = luaL_checkinteger( L, 3 );
+	int resZ = luaL_checkinteger( L, 4 );
+
+	uluaPushMesh( L, GenMeshPlane( width, length, resX, resZ ) );
+
+	return 1;
+}
+
+/*
+> mesh = RL.GenMeshCube( Vector3 size )
+
+Generate cuboid mesh
+
+- Success return Mesh
+*/
+int lmodelsGenMeshCube( lua_State *L ) {
+	Vector3 size = uluaGetVector3( L, 1 );
+
+	uluaPushMesh( L, GenMeshCube( size.x, size.y, size.z ) );
+
+	return 1;
+}
+
+/*
+> mesh = RL.GenMeshSphere( float radius, int rings, int slices )
+
+Generate sphere mesh (Standard sphere)
+
+- Success return Mesh
+*/
+int lmodelsGenMeshSphere( lua_State *L ) {
+	float radius = luaL_checknumber( L, 1 );
+	int rings = luaL_checkinteger( L, 2 );
+	int slices = luaL_checkinteger( L, 3 );
+
+	uluaPushMesh( L, GenMeshSphere( radius, rings, slices ) );
+
+	return 1;
+}
+
+/*
+> mesh = RL.GenMeshCylinder( float radius, float height, int slices )
+
+Generate cylinder mesh
+
+- Success return Mesh
+*/
+int lmodelsGenMeshCylinder( lua_State *L ) {
+	float radius = luaL_checknumber( L, 1 );
+	float height = luaL_checknumber( L, 2 );
+	int slices = luaL_checkinteger( L, 3 );
+
+	uluaPushMesh( L, GenMeshCylinder( radius, height, slices ) );
+
+	return 1;
+}
+
+/*
+> mesh = RL.GenMeshCone( float radius, float height, int slices )
+
+Generate cone/pyramid mesh
+
+- Success return Mesh
+*/
+int lmodelsGenMeshCone( lua_State *L ) {
+	float radius = luaL_checknumber( L, 1 );
+	float height = luaL_checknumber( L, 2 );
+	int slices = luaL_checkinteger( L, 3 );
+
+	uluaPushMesh( L, GenMeshCone( radius, height, slices ) );
+
+	return 1;
+}
+
+/*
+> mesh = RL.GenMeshTorus( float radius, float size, int radSeg, int sides )
+
+Generate torus mesh
+
+- Success return Mesh
+*/
+int lmodelsGenMeshTorus( lua_State *L ) {
+	float radius = luaL_checknumber( L, 1 );
+	float size = luaL_checknumber( L, 2 );
+	int radSeg = luaL_checkinteger( L, 3 );
+	int sides = luaL_checkinteger( L, 4 );
+
+	uluaPushMesh( L, GenMeshTorus( radius, size, radSeg, sides ) );
+
+	return 1;
+}
+
+/*
+> mesh = RL.GenMeshKnot( float radius, float size, int radSeg, int sides )
+
+Generate torus mesh
+
+- Success return Mesh
+*/
+int lmodelsGenMeshKnot( lua_State *L ) {
+	float radius = luaL_checknumber( L, 1 );
+	float size = luaL_checknumber( L, 2 );
+	int radSeg = luaL_checkinteger( L, 3 );
+	int sides = luaL_checkinteger( L, 4 );
+
+	uluaPushMesh( L, GenMeshKnot( radius, size, radSeg, sides ) );
+
+	return 1;
+}
+
+/*
+> mesh = RL.GenMeshHeightmap( Image heightmap, Vector3 size )
+
+Generate heightmap mesh from image data
+
+- Success return Mesh
+*/
+int lmodelsGenMeshHeightmap( lua_State *L ) {
+	Image *heightmap = uluaGetImage( L, 1 );
+	Vector3 size = uluaGetVector3( L, 2 );
+
+	uluaPushMesh( L, GenMeshHeightmap( *heightmap, size ) );
+
+	return 1;
+}
+
+/*
+> mesh = RL.GenMeshCubicmap( Image cubicmap, Vector3 cubeSize )
+
+Generate cubes-based map mesh from image data
+
+- Success return Mesh
+*/
+int lmodelsGenMeshCubicmap( lua_State *L ) {
+	Image *cubicmap = uluaGetImage( L, 1 );
+	Vector3 cubeSize = uluaGetVector3( L, 2 );
+
+	uluaPushMesh( L, GenMeshCubicmap( *cubicmap, cubeSize ) );
+
+	return 1;
+}
+
+/*
+> mesh = RL.GenMeshCustom( Mesh{} meshData, bool dynamic )
+
+Generate custom mesh from vertex attribute data and uploads it into a VAO (if supported) and VBO
+
+- Success return Mesh
+*/
+int lmodelsGenMeshCustom( lua_State *L ) {
+	luaL_checktype( L, 1, LUA_TTABLE );
+	bool dynamic = uluaGetBoolean( L, 2 );
+
+	Mesh mesh = { 0 };
+
+	int t = 1;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		if ( strcmp( "vertices", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
+
+			mesh.vertexCount = len;
+			mesh.triangleCount = len / 3;
+			mesh.vertices = (float*)MemAlloc( len * 3 * sizeof(float) );
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				Vector3 vec = uluaGetVector3( L, lua_gettop( L ) );
+
+				mesh.vertices[(i*3)+0] = vec.x;
+				mesh.vertices[(i*3)+1] = vec.y;
+				mesh.vertices[(i*3)+2] = vec.z;
+				i++;
+				lua_pop( L, 1 );
+			}
+		}
+		else if ( strcmp( "texcoords", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
+
+			mesh.texcoords = (float*)MemAlloc( len * 2 * sizeof(float) );
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				Vector2 vec = uluaGetVector2( L, lua_gettop( L ) );
+
+				mesh.texcoords[(i*2)+0] = vec.x;
+				mesh.texcoords[(i*2)+1] = vec.y;
+				i++;
+				lua_pop( L, 1 );
+			}
+		}
+		else if ( strcmp( "texcoords2", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
+
+			mesh.texcoords2 = (float*)MemAlloc( len * 2 * sizeof(float) );
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				Vector2 vec = uluaGetVector2( L, lua_gettop( L ) );
+
+				mesh.texcoords2[(i*2)+0] = vec.x;
+				mesh.texcoords2[(i*2)+1] = vec.y;
+				i++;
+				lua_pop( L, 1 );
+			}
+		}
+		else if ( strcmp( "normals", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
+
+			mesh.normals = (float*)MemAlloc( len * 3 * sizeof(float) );
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				Vector3 vec = uluaGetVector3( L, lua_gettop( L ) );
+
+				mesh.normals[(i*3)+0] = vec.x;
+				mesh.normals[(i*3)+1] = vec.y;
+				mesh.normals[(i*3)+2] = vec.z;
+				i++;
+				lua_pop( L, 1 );
+			}
+		}
+		else if ( strcmp( "tangents", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
+
+			mesh.tangents = (float*)MemAlloc( len * 4 * sizeof(float) );
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				Vector4 vec = uluaGetVector4( L, lua_gettop( L ) );
+
+				mesh.tangents[(i*4)+0] = vec.x;
+				mesh.tangents[(i*4)+1] = vec.y;
+				mesh.tangents[(i*4)+2] = vec.z;
+				mesh.tangents[(i*4)+3] = vec.w;
+				i++;
+				lua_pop( L, 1 );
+			}
+		}
+		else if ( strcmp( "colors", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
+
+			mesh.colors = (unsigned char*)MemAlloc( len * 4 * sizeof(unsigned char) );
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				Color color = uluaGetColor( L, lua_gettop( L ) );
+
+				mesh.colors[(i*4)+0] = color.r;
+				mesh.colors[(i*4)+1] = color.g;
+				mesh.colors[(i*4)+2] = color.b;
+				mesh.colors[(i*4)+3] = color.a;
+				i++;
+				lua_pop( L, 1 );
+			}
+		}
+		else if ( strcmp( "indices", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
+			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
+
+			mesh.indices = (unsigned short*)MemAlloc( len * sizeof(unsigned short) );
+
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				mesh.indices[i] = (unsigned short)lua_tointeger( L, -1 );
+				i++;
+				lua_pop( L, 1 );
+			}
+		}
+		lua_pop( L, 1 );
+	}
+	UploadMesh( &mesh, dynamic );
+	uluaPushMesh( L, mesh );
+
+	return 1;
+}
+
+/*
+## Models - Material management functions
+*/
+
+/*
+> materials = RL.LoadMaterials( string fileName )
+
+Load materials from model file
+
+- Success return Material{}
+*/
+int lmodelsLoadMaterials( lua_State *L ) {
+	const char *fileName = luaL_checkstring( L, 1 );
+
+	int materialCount = 0;
+	Material *materials = LoadMaterials( fileName, &materialCount );
+	lua_createtable( L, materialCount, 0 );
+
+	for ( int i = 0; i < materialCount; i++ ) {
+		uluaPushMaterial( L, materials[i] );
+		lua_rawseti( L, -2, i + 1 );
+	}
+	return 1;
+}
 
 /*
 > material = RL.GetMaterialDefault()
@@ -1379,241 +1721,7 @@ int lmodelsGetMaterialParams( lua_State *L ) {
 }
 
 /*
-## Models - Model
-*/
-
-/*
-> model = RL.LoadModel( string fileName )
-
-Load model from files (Meshes and materials)
-
-- Failure return nil
-- Success return Model
-*/
-int lmodelsLoadModel( lua_State *L ) {
-	if ( FileExists( luaL_checkstring( L, 1 ) ) ) {
-		uluaPushModel( L, LoadModel( lua_tostring( L, 1 ) ) );
-
-		return 1;
-	}
-	TraceLog( state->logLevelInvalid, "Invalid file '%s'", lua_tostring( L, 1 ) );
-	lua_pushnil( L );
-
-	return 1;
-}
-
-/*
-> model = RL.LoadModelFromMesh( Mesh mesh )
-
-Load model from generated mesh (Default material)
-
-- Success return Model
-*/
-int lmodelsLoadModelFromMesh( lua_State *L ) {
-	Mesh *mesh = uluaGetMesh( L, 1 );
-
-	uluaPushModel( L, LoadModelFromMesh( *mesh ) );
-
-	return 1;
-}
-
-/*
-> isReady = RL.IsModelReady( Model model )
-
-Check if a model is ready
-
-- Success return bool
-*/
-int lmodelsIsModelReady( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
-
-	lua_pushboolean( L, IsModelReady( *model ) );
-
-	return 1;
-}
-
-/*
-> RL.UnloadModel( Model model )
-
-Unload model (including meshes) from memory (RAM and/or VRAM)
-*/
-int lmodelsUnloadModel( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
-
-	UnloadModel( *model );
-
-	return 0;
-}
-
-/*
-> RL.DrawModel( Model model, Vector3 position, float scale, Color tint )
-
-Draw a model (With texture if set)
-*/
-int lmodelsDrawModel( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
-	Vector3 position = uluaGetVector3( L, 2 );
-	float scale = luaL_checknumber( L, 3 );
-	Color tint = uluaGetColor( L, 4 );
-
-	DrawModel( *model, position, scale, tint );
-
-	return 0;
-}
-
-/*
-> RL.DrawModelEx( Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint )
-
-Draw a model with extended parameters
-*/
-int lmodelsDrawModelEx( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
-	Vector3 position = uluaGetVector3( L, 2 );
-	Vector3 rotationAxis = uluaGetVector3( L, 3 );
-	float rotationAngle = luaL_checknumber( L, 4 );
-	Vector3 scale = uluaGetVector3( L, 5 );
-	Color tint = uluaGetColor( L, 6 );
-
-	DrawModelEx( *model, position, rotationAxis, rotationAngle, scale, tint );
-
-	return 0;
-}
-
-/*
-> RL.SetModelMaterial( Model model, Material modelMaterial, Material material )
-
-Copies material to model material. (Model material is the material id in models.)
-*/
-int lmodelsSetModelMaterial( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
-	int modelMaterialId = luaL_checkinteger( L, 2 );
-	Material *material = uluaGetMaterial( L, 3 );
-
-	//TODO Could maybe return old shader and textures for storage or get garbage collected?
-
-	/* Copy material data instead of using pointer. Pointer would result in double free error. */
-	model->materials[ modelMaterialId ].shader = material->shader;
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_ALBEDO ] = material->maps[ MATERIAL_MAP_ALBEDO ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_METALNESS ] = material->maps[ MATERIAL_MAP_METALNESS ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_NORMAL ] = material->maps[ MATERIAL_MAP_NORMAL ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_ROUGHNESS ] = material->maps[ MATERIAL_MAP_ROUGHNESS ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_OCCLUSION ] = material->maps[ MATERIAL_MAP_OCCLUSION ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_EMISSION ] = material->maps[ MATERIAL_MAP_EMISSION ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_HEIGHT ] = material->maps[ MATERIAL_MAP_HEIGHT ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_CUBEMAP ] = material->maps[ MATERIAL_MAP_CUBEMAP ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_IRRADIANCE ] = material->maps[ MATERIAL_MAP_IRRADIANCE ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_PREFILTER ] = material->maps[ MATERIAL_MAP_PREFILTER ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_BRDF ] = material->maps[ MATERIAL_MAP_BRDF ];
-
-	for ( int i = 0; i < 4; i++ ) {
-		model->materials[ modelMaterialId ].params[i] = material->params[i];
-	}
-
-	return 0;
-}
-
-/*
-> RL.SetModelMeshMaterial( Model model, int meshId, int materialId )
-
-Set material for a mesh (Mesh and material on this model)
-*/
-int lmodelsSetModelMeshMaterial( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
-	int meshId = luaL_checkinteger( L, 2 );
-	int materialId = luaL_checkinteger( L, 3 );
-
-	SetModelMeshMaterial( model, meshId, materialId );
-
-	return 0;
-}
-
-/*
-> RL.DrawBillboard( Camera3D camera, Texture texture, Vector3 position, float size, Color tint )
-
-Draw a billboard texture
-*/
-int lmodelsDrawBillboard( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
-	Texture *texture = uluaGetTexture( L, 2 );
-	Vector3 position = uluaGetVector3( L, 3 );
-	float size = luaL_checknumber( L, 4 );
-	Color tint = uluaGetColor( L, 5 );
-
-	DrawBillboard( *camera, *texture, position, size, tint );
-
-	return 0;
-}
-
-/*
-> RL.DrawBillboardRec( Camera3D camera, Texture texture, Rectangle source, Vector3 position, Vector2 size, Color tint )
-
-Draw a billboard texture defined by source
-*/
-int lmodelsDrawBillboardRec( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
-	Texture *texture = uluaGetTexture( L, 2 );
-	Rectangle source = uluaGetRectangle( L, 3 );
-	Vector3 position = uluaGetVector3( L, 4 );
-	Vector2 size = uluaGetVector2( L, 5 );
-	Color tint = uluaGetColor( L, 6 );
-
-	DrawBillboardRecNoRatio( *camera, *texture, source, position, size, tint );
-
-	return 0;
-}
-
-/*
-> RL.DrawBillboardPro( Camera3D camera, Texture texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint )
-
-Draw a billboard texture defined by source and rotation
-*/
-int lmodelsDrawBillboardPro( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
-	Texture *texture = uluaGetTexture( L, 2 );
-	Rectangle source = uluaGetRectangle( L, 3 );
-	Vector3 position = uluaGetVector3( L, 4 );
-	Vector3 up = uluaGetVector3( L, 5 );
-	Vector2 size = uluaGetVector2( L, 6 );
-	Vector2 origin = uluaGetVector2( L, 7 );
-	float rotation = luaL_checknumber( L, 8 );
-	Color tint = uluaGetColor( L, 9 );
-
-	DrawBillboardProNoRatio( *camera, *texture, source, position, up, size, origin, rotation, tint );
-
-	return 0;
-}
-
-/*
-> RL.SetModelTransform( Model model, Matrix transform )
-
-Set model transform matrix
-*/
-int lmodelsSetModelTransform( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
-	Matrix transform = uluaGetMatrix( L, 2 );
-
-	model->transform = transform;
-
-	return 0;
-}
-
-/*
-> transform = RL.GetModelTransform( Model model )
-
-Get model transform matrix
-
-- Success return Matrix
-*/
-int lmodelsGetModelTransform( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
-
-	uluaPushMatrix( L, model->transform );
-
-	return 1;
-}
-
-/*
-## Model - Animations
+## Model - Model animations management functions
 */
 
 /*
@@ -1706,7 +1814,7 @@ int lmodelsGetModelAnimationFrameCount( lua_State *L ) {
 }
 
 /*
-## Model - Collision
+## Model - Collision detection functions
 */
 
 /*

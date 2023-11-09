@@ -1860,7 +1860,7 @@ void luaRegister() {
 	assingGlobalFunction( "GetPixelDataSize", ltexturesGetPixelDataSize );
 
 	/* Models. */
-		/* Basic. */
+		/* Basic geometric 3D shapes drawing functions. */
 	assingGlobalFunction( "DrawLine3D", lmodelsDrawLine3D );
 	assingGlobalFunction( "DrawPoint3D", lmodelsDrawPoint3D );
 	assingGlobalFunction( "DrawCircle3D", lmodelsDrawCircle3D );
@@ -1880,7 +1880,35 @@ void luaRegister() {
 	assingGlobalFunction( "DrawQuad3DTexture", lmodelDrawQuad3DTexture );
 	assingGlobalFunction( "DrawRay", lmodelsDrawRay );
 	assingGlobalFunction( "DrawGrid", lmodelsDrawGrid );
-		/* Mesh. */
+		/* Model management functions. */
+	assingGlobalFunction( "LoadModel", lmodelsLoadModel );
+	assingGlobalFunction( "LoadModelFromMesh", lmodelsLoadModelFromMesh );
+	assingGlobalFunction( "IsModelReady", lmodelsIsModelReady );
+	assingGlobalFunction( "UnloadModel", lmodelsUnloadModel );
+	assingGlobalFunction( "GetModelBoundingBox", lmodelsGetModelBoundingBox );
+	assingGlobalFunction( "SetModelMaterial", lmodelsSetModelMaterial );
+	assingGlobalFunction( "SetModelMeshMaterial", lmodelsSetModelMeshMaterial );
+	assingGlobalFunction( "SetModelTransform", lmodelsSetModelTransform );
+	assingGlobalFunction( "GetModelTransform", lmodelsGetModelTransform );
+		/* Model drawing functions. */
+	assingGlobalFunction( "DrawModel", lmodelsDrawModel );
+	assingGlobalFunction( "DrawModelEx", lmodelsDrawModelEx );
+	assingGlobalFunction( "DrawModelWires", lmodelsDrawModelWires );
+	assingGlobalFunction( "DrawModelWiresEx", lmodelsDrawModelWiresEx );
+	assingGlobalFunction( "DrawBoundingBox", lmodelsDrawBoundingBox );
+	assingGlobalFunction( "DrawBillboard", lmodelsDrawBillboard );
+	assingGlobalFunction( "DrawBillboardRec", lmodelsDrawBillboardRec );
+	assingGlobalFunction( "DrawBillboardPro", lmodelsDrawBillboardPro );
+		/* Mesh management functions. */
+	assingGlobalFunction( "UpdateMesh", lmodelsUpdateMesh );
+	assingGlobalFunction( "UnloadMesh", lmodelsUnloadMesh );
+	assingGlobalFunction( "DrawMesh", lmodelsDrawMesh );
+	assingGlobalFunction( "DrawMeshInstanced", lmodelsDrawMeshInstanced );
+	assingGlobalFunction( "SetMeshColor", lmodelsSetMeshColor );
+	assingGlobalFunction( "ExportMesh", lmodelsExportMesh );
+	assingGlobalFunction( "GetMeshBoundingBox", lmodelsGetMeshBoundingBox );
+	assingGlobalFunction( "GenMeshTangents", lmodelsGenMeshTangents );
+		/* Mesh generation functions. */
 	assingGlobalFunction( "GenMeshPoly", lmodelsGenMeshPoly );
 	assingGlobalFunction( "GenMeshPlane", lmodelsGenMeshPlane );
 	assingGlobalFunction( "GenMeshCube", lmodelsGenMeshCube );
@@ -1891,15 +1919,8 @@ void luaRegister() {
 	assingGlobalFunction( "GenMeshKnot", lmodelsGenMeshKnot );
 	assingGlobalFunction( "GenMeshHeightmap", lmodelsGenMeshHeightmap );
 	assingGlobalFunction( "GenMeshCustom", lmodelsGenMeshCustom );
-	assingGlobalFunction( "UpdateMesh", lmodelsUpdateMesh );
-	assingGlobalFunction( "UnloadMesh", lmodelsUnloadMesh );
-	assingGlobalFunction( "DrawMesh", lmodelsDrawMesh );
-	assingGlobalFunction( "DrawMeshInstanced", lmodelsDrawMeshInstanced );
-	assingGlobalFunction( "SetMeshColor", lmodelsSetMeshColor );
-	assingGlobalFunction( "ExportMesh", lmodelsExportMesh );
-	assingGlobalFunction( "GetMeshBoundingBox", lmodelsGetMeshBoundingBox );
-	assingGlobalFunction( "GenMeshTangents", lmodelsGenMeshTangents );
-		/* Material. */
+		/* Material management functions. */
+	assingGlobalFunction( "LoadMaterials", lmodelsLoadMaterials );
 	assingGlobalFunction( "GetMaterialDefault", lmodelsGetMaterialDefault );
 	assingGlobalFunction( "LoadMaterialDefault", lmodelsLoadMaterialDefault );
 	assingGlobalFunction( "CreateMaterial", lmodelsCreateMaterial );
@@ -1915,27 +1936,13 @@ void luaRegister() {
 	assingGlobalFunction( "GetMaterialValue", lmodelsGetMaterialValue );
 	assingGlobalFunction( "GetMaterialShader", lmodelsGetMaterialShader );
 	assingGlobalFunction( "GetMaterialParams", lmodelsGetMaterialParams );
-		/* Model. */
-	assingGlobalFunction( "LoadModel", lmodelsLoadModel );
-	assingGlobalFunction( "LoadModelFromMesh", lmodelsLoadModelFromMesh );
-	assingGlobalFunction( "IsModelReady", lmodelsIsModelReady );
-	assingGlobalFunction( "UnloadModel", lmodelsUnloadModel );
-	assingGlobalFunction( "DrawModel", lmodelsDrawModel );
-	assingGlobalFunction( "DrawModelEx", lmodelsDrawModelEx );
-	assingGlobalFunction( "SetModelMaterial", lmodelsSetModelMaterial );
-	assingGlobalFunction( "SetModelMeshMaterial", lmodelsSetModelMeshMaterial );
-	assingGlobalFunction( "DrawBillboard", lmodelsDrawBillboard );
-	assingGlobalFunction( "DrawBillboardRec", lmodelsDrawBillboardRec );
-	assingGlobalFunction( "DrawBillboardPro", lmodelsDrawBillboardPro );
-	assingGlobalFunction( "SetModelTransform", lmodelsSetModelTransform );
-	assingGlobalFunction( "GetModelTransform", lmodelsGetModelTransform );
-		/* Animations. */
+		/* Model animations management functions. */
 	assingGlobalFunction( "LoadModelAnimations", lmodelsLoadModelAnimations );
 	assingGlobalFunction( "UpdateModelAnimation", lmodelsUpdateModelAnimation );
 	assingGlobalFunction( "IsModelAnimationValid", lmodelsIsModelAnimationValid );
 	assingGlobalFunction( "GetModelAnimationBoneCount", lmodelsGetModelAnimationBoneCount );
 	assingGlobalFunction( "GetModelAnimationFrameCount", lmodelsGetModelAnimationFrameCount );
-		/* Collision. */
+		/* Collision detection functions. */
 	assingGlobalFunction( "CheckCollisionSpheres", lmodelsCheckCollisionSpheres );
 	assingGlobalFunction( "CheckCollisionBoxes", lmodelsCheckCollisionBoxes );
 	assingGlobalFunction( "CheckCollisionBoxSphere", lmodelsCheckCollisionBoxSphere );

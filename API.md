@@ -6060,7 +6060,7 @@ Draw multiple character (codepoint)
 
 > mouseCharId = RL.DrawTextBoxed(Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint )
 
-Draw text using font inside rectangle limits. Return character from mouse position. Function from raylib [text] example - Rectangle bounds.
+Draw text using font inside rectangle limits. Return character id from mouse position (default -1). Function from raylib [text] example - Rectangle bounds.
 
 - Success return int
 
@@ -6068,7 +6068,7 @@ Draw text using font inside rectangle limits. Return character from mouse positi
 
 > mouseCharId = RL.DrawTextBoxedTinted( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tints, Color backTints )
 
-Draw text using font inside rectangle limits with support for tint and background tint for each character. Return character from mouse position
+Draw text using font inside rectangle limits with support for tint and background tint for each character. Return character id from mouse position (default -1)
 
 - Success return int
 
@@ -6143,7 +6143,7 @@ Get font texture atlas containing the glyphs. Return as lightuserdata
 
 ---
 
-## Models - Basic
+## Models - Basic geometric 3D shapes drawing functions
 
 ---
 
@@ -6261,7 +6261,189 @@ Draw a grid (Centered at ( 0, 0, 0 ))
 
 ---
 
-## Models - Mesh
+## Models - Model management functions
+
+---
+
+> model = RL.LoadModel( string fileName )
+
+Load model from files (Meshes and materials)
+
+- Failure return nil
+- Success return Model
+
+---
+
+> model = RL.LoadModelFromMesh( Mesh mesh )
+
+Load model from generated mesh (Default material)
+
+- Success return Model
+
+---
+
+> isReady = RL.IsModelReady( Model model )
+
+Check if a model is ready
+
+- Success return bool
+
+---
+
+> RL.UnloadModel( Model model )
+
+Unload model (including meshes) from memory (RAM and/or VRAM)
+
+---
+
+> boundingBox = RL.GetModelBoundingBox( Model model )
+
+Compute model bounding box limits (considers all meshes)
+
+- Success return BoundingBox
+
+---
+
+> RL.SetModelMaterial( Model model, Material modelMaterial, Material material )
+
+Copies material to model material. (Model material is the material id in models.)
+
+---
+
+> RL.SetModelMeshMaterial( Model model, int meshId, int materialId )
+
+Set material for a mesh (Mesh and material on this model)
+
+---
+
+> RL.SetModelTransform( Model model, Matrix transform )
+
+Set model transform matrix
+
+---
+
+> transform = RL.GetModelTransform( Model model )
+
+Get model transform matrix
+
+- Success return Matrix
+
+---
+
+## Models - Model drawing functions
+
+---
+
+> RL.DrawModel( Model model, Vector3 position, float scale, Color tint )
+
+Draw a model (With texture if set)
+
+---
+
+> RL.DrawModelEx( Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint )
+
+Draw a model with extended parameters
+
+---
+
+> RL.DrawModelWires( Model model, Vector3 position, float scale, Color tint )
+
+Draw a model wires (with texture if set)
+
+---
+
+> RL.DrawModelWiresEx( Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint )
+
+Draw a model wires (with texture if set) with extended parameters
+
+---
+
+> RL.DrawBoundingBox( BoundingBox box, Color color )
+
+Draw bounding box (wires)
+
+---
+
+> RL.DrawBillboard( Camera3D camera, Texture texture, Vector3 position, float size, Color tint )
+
+Draw a billboard texture
+
+---
+
+> RL.DrawBillboardRec( Camera3D camera, Texture texture, Rectangle source, Vector3 position, Vector2 size, Color tint )
+
+Draw a billboard texture defined by source
+
+---
+
+> RL.DrawBillboardPro( Camera3D camera, Texture texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint )
+
+Draw a billboard texture defined by source and rotation
+
+---
+
+## Models - Mesh management functions
+
+---
+
+> RL.UpdateMesh( Mesh mesh, Mesh{} meshData )
+
+Update mesh vertex data in GPU.
+Note! Mainly intented to be used with custom meshes.
+
+---
+
+> RL.UnloadMesh( Mesh mesh )
+
+Unload mesh data from CPU and GPU
+
+---
+
+> RL.DrawMesh( Mesh mesh, Material material, Matrix transform )
+
+Draw a 3d mesh with material and transform
+
+---
+
+> RL.DrawMeshInstanced( Mesh mesh, Material material, Matrix{} transforms, int instances )
+
+Draw multiple mesh instances with material and different transforms
+
+---
+
+> success = RL.SetMeshColor( Mesh mesh, Color color )
+
+Updades mesh color vertex attribute buffer
+NOTE: Currently only works on custom mesh
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.ExportMesh( Mesh mesh, string fileName )
+
+Export mesh data to file, returns true on success
+
+- Success return bool
+
+---
+
+> boundingBox = RL.GetMeshBoundingBox( Mesh mesh )
+
+Compute mesh bounding box limits
+
+- Success return BoundingBox
+
+---
+
+> RL.GenMeshTangents( Mesh mesh )
+
+Compute mesh tangents
+
+---
+
+## Models - Mesh generation functions
 
 ---
 
@@ -6337,6 +6519,14 @@ Generate heightmap mesh from image data
 
 ---
 
+> mesh = RL.GenMeshCubicmap( Image cubicmap, Vector3 cubeSize )
+
+Generate cubes-based map mesh from image data
+
+- Success return Mesh
+
+---
+
 > mesh = RL.GenMeshCustom( Mesh{} meshData, bool dynamic )
 
 Generate custom mesh from vertex attribute data and uploads it into a VAO (if supported) and VBO
@@ -6345,64 +6535,15 @@ Generate custom mesh from vertex attribute data and uploads it into a VAO (if su
 
 ---
 
-> RL.UpdateMesh( Mesh mesh, Mesh{} meshData )
-
-Update mesh vertex data in GPU.
-Note! Mainly intented to be used with custom meshes.
+## Models - Material management functions
 
 ---
 
-> RL.UnloadMesh( Mesh mesh )
+> materials = RL.LoadMaterials( string fileName )
 
-Unload mesh data from CPU and GPU
+Load materials from model file
 
----
-
-> RL.DrawMesh( Mesh mesh, Material material, Matrix transform )
-
-Draw a 3d mesh with material and transform
-
----
-
-> RL.DrawMeshInstanced( Mesh mesh, Material material, Matrix{} transforms, int instances )
-
-Draw multiple mesh instances with material and different transforms
-
----
-
-> success = RL.SetMeshColor( Mesh mesh, Color color )
-
-Updades mesh color vertex attribute buffer
-NOTE: Currently only works on custom mesh
-
-- Failure return false
-- Success return true
-
----
-
-> success = RL.ExportMesh( Mesh mesh, string fileName )
-
-Export mesh data to file, returns true on success
-
-- Success return bool
-
----
-
-> boundingBox = RL.GetMeshBoundingBox( Mesh mesh )
-
-Compute mesh bounding box limits
-
-- Success return BoundingBox
-
----
-
-> RL.GenMeshTangents( Mesh mesh )
-
-Compute mesh tangents
-
----
-
-## Models - Material
+- Success return Material{}
 
 ---
 
@@ -6514,98 +6655,7 @@ Get material parameters
 
 ---
 
-## Models - Model
-
----
-
-> model = RL.LoadModel( string fileName )
-
-Load model from files (Meshes and materials)
-
-- Failure return nil
-- Success return Model
-
----
-
-> model = RL.LoadModelFromMesh( Mesh mesh )
-
-Load model from generated mesh (Default material)
-
-- Success return Model
-
----
-
-> isReady = RL.IsModelReady( Model model )
-
-Check if a model is ready
-
-- Success return bool
-
----
-
-> RL.UnloadModel( Model model )
-
-Unload model (including meshes) from memory (RAM and/or VRAM)
-
----
-
-> RL.DrawModel( Model model, Vector3 position, float scale, Color tint )
-
-Draw a model (With texture if set)
-
----
-
-> RL.DrawModelEx( Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint )
-
-Draw a model with extended parameters
-
----
-
-> RL.SetModelMaterial( Model model, Material modelMaterial, Material material )
-
-Copies material to model material. (Model material is the material id in models.)
-
----
-
-> RL.SetModelMeshMaterial( Model model, int meshId, int materialId )
-
-Set material for a mesh (Mesh and material on this model)
-
----
-
-> RL.DrawBillboard( Camera3D camera, Texture texture, Vector3 position, float size, Color tint )
-
-Draw a billboard texture
-
----
-
-> RL.DrawBillboardRec( Camera3D camera, Texture texture, Rectangle source, Vector3 position, Vector2 size, Color tint )
-
-Draw a billboard texture defined by source
-
----
-
-> RL.DrawBillboardPro( Camera3D camera, Texture texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint )
-
-Draw a billboard texture defined by source and rotation
-
----
-
-> RL.SetModelTransform( Model model, Matrix transform )
-
-Set model transform matrix
-
----
-
-> transform = RL.GetModelTransform( Model model )
-
-Get model transform matrix
-
-- Success return Matrix
-
----
-
-## Model - Animations
+## Model - Model animations management functions
 
 ---
 
@@ -6648,7 +6698,7 @@ Return modelAnimation frame count
 
 ---
 
-## Model - Collision
+## Model - Collision detection functions
 
 ---
 

@@ -7,7 +7,7 @@ void UnloadModelKeepMeshes( Model model );
 void DrawBillboardProNoRatio( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint );
 void DrawBillboardRecNoRatio( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Color tint );
 
-/* Basic. */
+/* Basic geometric 3D shapes drawing functions. */
 int lmodelsDrawLine3D( lua_State *L );
 int lmodelsDrawPoint3D( lua_State *L );
 int lmodelsDrawCircle3D( lua_State *L );
@@ -27,7 +27,35 @@ int lmodelsDrawPlane( lua_State *L );
 int lmodelDrawQuad3DTexture( lua_State *L );
 int lmodelsDrawRay( lua_State *L );
 int lmodelsDrawGrid( lua_State *L );
-/* Mesh. */
+/* Model management functions. */
+int lmodelsLoadModel( lua_State *L );
+int lmodelsLoadModelFromMesh( lua_State *L );
+int lmodelsIsModelReady( lua_State *L );
+int lmodelsUnloadModel( lua_State *L );
+int lmodelsGetModelBoundingBox( lua_State *L );
+int lmodelsSetModelMaterial( lua_State *L );
+int lmodelsSetModelMeshMaterial( lua_State *L );
+int lmodelsSetModelTransform( lua_State *L );
+int lmodelsGetModelTransform( lua_State *L );
+/* Model drawing functions. */
+int lmodelsDrawModel( lua_State *L );
+int lmodelsDrawModelEx( lua_State *L );
+int lmodelsDrawModelWires( lua_State *L );
+int lmodelsDrawModelWiresEx( lua_State *L );
+int lmodelsDrawBoundingBox( lua_State *L );
+int lmodelsDrawBillboard( lua_State *L );
+int lmodelsDrawBillboardRec( lua_State *L );
+int lmodelsDrawBillboardPro( lua_State *L );
+/* Mesh management functions. */
+int lmodelsUpdateMesh( lua_State *L );
+int lmodelsUnloadMesh( lua_State *L );
+int lmodelsDrawMesh( lua_State *L );
+int lmodelsDrawMeshInstanced( lua_State *L );
+int lmodelsSetMeshColor( lua_State *L );
+int lmodelsExportMesh( lua_State *L );
+int lmodelsGetMeshBoundingBox( lua_State *L );
+int lmodelsGenMeshTangents( lua_State *L );
+/* Mesh generation functions. */
 int lmodelsGenMeshPoly( lua_State *L );
 int lmodelsGenMeshPlane( lua_State *L );
 int lmodelsGenMeshCube( lua_State *L );
@@ -37,16 +65,10 @@ int lmodelsGenMeshCone( lua_State *L );
 int lmodelsGenMeshTorus( lua_State *L );
 int lmodelsGenMeshKnot( lua_State *L );
 int lmodelsGenMeshHeightmap( lua_State *L );
+int lmodelsGenMeshCubicmap( lua_State *L );
 int lmodelsGenMeshCustom( lua_State *L );
-int lmodelsUpdateMesh( lua_State *L );
-int lmodelsUnloadMesh( lua_State *L );
-int lmodelsDrawMesh( lua_State *L );
-int lmodelsDrawMeshInstanced( lua_State *L );
-int lmodelsSetMeshColor( lua_State *L );
-int lmodelsExportMesh( lua_State *L );
-int lmodelsGetMeshBoundingBox( lua_State *L );
-int lmodelsGenMeshTangents( lua_State *L );
-/* Material. */
+/* Material management functions. */
+int lmodelsLoadMaterials( lua_State *L );
 int lmodelsGetMaterialDefault( lua_State *L );
 int lmodelsLoadMaterialDefault( lua_State *L );
 int lmodelsCreateMaterial( lua_State *L );
@@ -62,27 +84,13 @@ int lmodelsGetMaterialColor( lua_State *L );
 int lmodelsGetMaterialValue( lua_State *L );
 int lmodelsGetMaterialShader( lua_State *L );
 int lmodelsGetMaterialParams( lua_State *L );
-/* Model. */
-int lmodelsLoadModel( lua_State *L );
-int lmodelsLoadModelFromMesh( lua_State *L );
-int lmodelsIsModelReady( lua_State *L );
-int lmodelsUnloadModel( lua_State *L );
-int lmodelsDrawModel( lua_State *L );
-int lmodelsDrawModelEx( lua_State *L );
-int lmodelsSetModelMaterial( lua_State *L );
-int lmodelsSetModelMeshMaterial( lua_State *L );
-int lmodelsDrawBillboard( lua_State *L );
-int lmodelsDrawBillboardRec( lua_State *L );
-int lmodelsDrawBillboardPro( lua_State *L );
-int lmodelsSetModelTransform( lua_State *L );
-int lmodelsGetModelTransform( lua_State *L );
-/* Animations. */
+/* Model animations management functions. */
 int lmodelsLoadModelAnimations( lua_State *L );
 int lmodelsUpdateModelAnimation( lua_State *L );
 int lmodelsIsModelAnimationValid( lua_State *L );
 int lmodelsGetModelAnimationBoneCount( lua_State *L );
 int lmodelsGetModelAnimationFrameCount( lua_State *L );
-/* Collision. */
+/* Collision detection functions. */
 int lmodelsCheckCollisionSpheres( lua_State *L );
 int lmodelsCheckCollisionBoxes( lua_State *L );
 int lmodelsCheckCollisionBoxSphere( lua_State *L );

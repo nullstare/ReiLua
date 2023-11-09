@@ -3434,7 +3434,7 @@ function  RL.DrawTextCodepoint( font, codepoint, position, fontSize, tint ) end
 ---@return any RL.DrawTextCodepoints
 function  RL.DrawTextCodepoints( font, codepoints, position, fontSize, spacing, tint ) end
 
----Draw text using font inside rectangle limits. Return character from mouse position. Function from raylib [text] example - Rectangle bounds.
+---Draw text using font inside rectangle limits. Return character id from mouse position (default -1). Function from raylib [text] example - Rectangle bounds.
 ---- Success return int
 ---@param font any
 ---@param text string
@@ -3446,7 +3446,7 @@ function  RL.DrawTextCodepoints( font, codepoints, position, fontSize, spacing, 
 ---@return any mouseCharId 
 function RL.DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint ) end
 
----Draw text using font inside rectangle limits with support for tint and background tint for each character. Return character from mouse position
+---Draw text using font inside rectangle limits with support for tint and background tint for each character. Return character id from mouse position (default -1)
 ---- Success return int
 ---@param font any
 ---@param text string
@@ -3516,7 +3516,7 @@ function RL.GetFontGlyphPadding( font ) end
 ---@return any texture 
 function RL.GetFontTexture( font ) end
 
--- Models - Basic
+-- Models - Basic geometric 3D shapes drawing functions
 
 ---Draw a line in 3D world space
 ---@param startPos table
@@ -3674,7 +3674,197 @@ function  RL.DrawRay( ray, color ) end
 ---@return any RL.DrawGrid
 function  RL.DrawGrid( slices, spacing ) end
 
--- Models - Mesh
+-- Models - Model management functions
+
+---Load model from files (Meshes and materials)
+---- Failure return nil
+---- Success return Model
+---@param fileName string
+---@return any model 
+function RL.LoadModel( fileName ) end
+
+---Load model from generated mesh (Default material)
+---- Success return Model
+---@param mesh any
+---@return any model 
+function RL.LoadModelFromMesh( mesh ) end
+
+---Check if a model is ready
+---- Success return bool
+---@param model any
+---@return any isReady 
+function RL.IsModelReady( model ) end
+
+---Unload model (including meshes) from memory (RAM and/or VRAM)
+---@param model any
+---@return any RL.UnloadModel
+function  RL.UnloadModel( model ) end
+
+---Compute model bounding box limits (considers all meshes)
+---- Success return BoundingBox
+---@param model any
+---@return any boundingBox 
+function RL.GetModelBoundingBox( model ) end
+
+---Copies material to model material. (Model material is the material id in models.)
+---@param model any
+---@param modelMaterial any
+---@param material any
+---@return any RL.SetModelMaterial
+function  RL.SetModelMaterial( model, modelMaterial, material ) end
+
+---Set material for a mesh (Mesh and material on this model)
+---@param model any
+---@param meshId integer
+---@param materialId integer
+---@return any RL.SetModelMeshMaterial
+function  RL.SetModelMeshMaterial( model, meshId, materialId ) end
+
+---Set model transform matrix
+---@param model any
+---@param transform table
+---@return any RL.SetModelTransform
+function  RL.SetModelTransform( model, transform ) end
+
+---Get model transform matrix
+---- Success return Matrix
+---@param model any
+---@return any transform 
+function RL.GetModelTransform( model ) end
+
+-- Models - Model drawing functions
+
+---Draw a model (With texture if set)
+---@param model any
+---@param position table
+---@param scale number
+---@param tint table
+---@return any RL.DrawModel
+function  RL.DrawModel( model, position, scale, tint ) end
+
+---Draw a model with extended parameters
+---@param model any
+---@param position table
+---@param rotationAxis table
+---@param rotationAngle number
+---@param scale table
+---@param tint table
+---@return any RL.DrawModelEx
+function  RL.DrawModelEx( model, position, rotationAxis, rotationAngle, scale, tint ) end
+
+---Draw a model wires (with texture if set)
+---@param model any
+---@param position table
+---@param scale number
+---@param tint table
+---@return any RL.DrawModelWires
+function  RL.DrawModelWires( model, position, scale, tint ) end
+
+---Draw a model wires (with texture if set) with extended parameters
+---@param model any
+---@param position table
+---@param rotationAxis table
+---@param rotationAngle number
+---@param scale table
+---@param tint table
+---@return any RL.DrawModelWiresEx
+function  RL.DrawModelWiresEx( model, position, rotationAxis, rotationAngle, scale, tint ) end
+
+---Draw bounding box (wires)
+---@param box any
+---@param color table
+---@return any RL.DrawBoundingBox
+function  RL.DrawBoundingBox( box, color ) end
+
+---Draw a billboard texture
+---@param camera any
+---@param texture any
+---@param position table
+---@param size number
+---@param tint table
+---@return any RL.DrawBillboard
+function  RL.DrawBillboard( camera, texture, position, size, tint ) end
+
+---Draw a billboard texture defined by source
+---@param camera any
+---@param texture any
+---@param source table
+---@param position table
+---@param size table
+---@param tint table
+---@return any RL.DrawBillboardRec
+function  RL.DrawBillboardRec( camera, texture, source, position, size, tint ) end
+
+---Draw a billboard texture defined by source and rotation
+---@param camera any
+---@param texture any
+---@param source table
+---@param position table
+---@param up table
+---@param size table
+---@param origin table
+---@param rotation number
+---@param tint table
+---@return any RL.DrawBillboardPro
+function  RL.DrawBillboardPro( camera, texture, source, position, up, size, origin, rotation, tint ) end
+
+-- Models - Mesh management functions
+
+---Update mesh vertex data in GPU.
+---Note! Mainly intented to be used with custom meshes.
+---@param mesh any
+---@param meshData table
+---@return any RL.UpdateMesh
+function  RL.UpdateMesh( mesh, meshData ) end
+
+---Unload mesh data from CPU and GPU
+---@param mesh any
+---@return any RL.UnloadMesh
+function  RL.UnloadMesh( mesh ) end
+
+---Draw a 3d mesh with material and transform
+---@param mesh any
+---@param material any
+---@param transform table
+---@return any RL.DrawMesh
+function  RL.DrawMesh( mesh, material, transform ) end
+
+---Draw multiple mesh instances with material and different transforms
+---@param mesh any
+---@param material any
+---@param transforms table
+---@param instances integer
+---@return any RL.DrawMeshInstanced
+function  RL.DrawMeshInstanced( mesh, material, transforms, instances ) end
+
+---Updades mesh color vertex attribute buffer
+---NOTE: Currently only works on custom mesh
+---- Failure return false
+---- Success return true
+---@param mesh any
+---@param color table
+---@return any success 
+function RL.SetMeshColor( mesh, color ) end
+
+---Export mesh data to file, returns true on success
+---- Success return bool
+---@param mesh any
+---@param fileName string
+---@return any success 
+function RL.ExportMesh( mesh, fileName ) end
+
+---Compute mesh bounding box limits
+---- Success return BoundingBox
+---@param mesh any
+---@return any boundingBox 
+function RL.GetMeshBoundingBox( mesh ) end
+
+---Compute mesh tangents
+---@param mesh any
+---@return any RL.GenMeshTangents
+function  RL.GenMeshTangents( mesh ) end
+
+-- Models - Mesh generation functions
 
 ---Generate polygonal mesh
 ---- Success return Mesh
@@ -3747,6 +3937,13 @@ function RL.GenMeshKnot( radius, size, radSeg, sides ) end
 ---@return any mesh 
 function RL.GenMeshHeightmap( heightmap, size ) end
 
+---Generate cubes-based map mesh from image data
+---- Success return Mesh
+---@param cubicmap any
+---@param cubeSize table
+---@return any mesh 
+function RL.GenMeshCubicmap( cubicmap, cubeSize ) end
+
 ---Generate custom mesh from vertex attribute data and uploads it into a VAO (if supported) and VBO
 ---- Success return Mesh
 ---@param meshData table
@@ -3754,61 +3951,13 @@ function RL.GenMeshHeightmap( heightmap, size ) end
 ---@return any mesh 
 function RL.GenMeshCustom( meshData, dynamic ) end
 
----Update mesh vertex data in GPU.
----Note! Mainly intented to be used with custom meshes.
----@param mesh any
----@param meshData table
----@return any RL.UpdateMesh
-function  RL.UpdateMesh( mesh, meshData ) end
+-- Models - Material management functions
 
----Unload mesh data from CPU and GPU
----@param mesh any
----@return any RL.UnloadMesh
-function  RL.UnloadMesh( mesh ) end
-
----Draw a 3d mesh with material and transform
----@param mesh any
----@param material any
----@param transform table
----@return any RL.DrawMesh
-function  RL.DrawMesh( mesh, material, transform ) end
-
----Draw multiple mesh instances with material and different transforms
----@param mesh any
----@param material any
----@param transforms table
----@param instances integer
----@return any RL.DrawMeshInstanced
-function  RL.DrawMeshInstanced( mesh, material, transforms, instances ) end
-
----Updades mesh color vertex attribute buffer
----NOTE: Currently only works on custom mesh
----- Failure return false
----- Success return true
----@param mesh any
----@param color table
----@return any success 
-function RL.SetMeshColor( mesh, color ) end
-
----Export mesh data to file, returns true on success
----- Success return bool
----@param mesh any
+---Load materials from model file
+---- Success return Material{}
 ---@param fileName string
----@return any success 
-function RL.ExportMesh( mesh, fileName ) end
-
----Compute mesh bounding box limits
----- Success return BoundingBox
----@param mesh any
----@return any boundingBox 
-function RL.GetMeshBoundingBox( mesh ) end
-
----Compute mesh tangents
----@param mesh any
----@return any RL.GenMeshTangents
-function  RL.GenMeshTangents( mesh ) end
-
--- Models - Material
+---@return any materials 
+function RL.LoadMaterials( fileName ) end
 
 ---Default material for reference. Return as lightuserdata
 ---- Success return Material
@@ -3903,109 +4052,7 @@ function RL.GetMaterialShader( material ) end
 ---@return any params 
 function RL.GetMaterialParams( material ) end
 
--- Models - Model
-
----Load model from files (Meshes and materials)
----- Failure return nil
----- Success return Model
----@param fileName string
----@return any model 
-function RL.LoadModel( fileName ) end
-
----Load model from generated mesh (Default material)
----- Success return Model
----@param mesh any
----@return any model 
-function RL.LoadModelFromMesh( mesh ) end
-
----Check if a model is ready
----- Success return bool
----@param model any
----@return any isReady 
-function RL.IsModelReady( model ) end
-
----Unload model (including meshes) from memory (RAM and/or VRAM)
----@param model any
----@return any RL.UnloadModel
-function  RL.UnloadModel( model ) end
-
----Draw a model (With texture if set)
----@param model any
----@param position table
----@param scale number
----@param tint table
----@return any RL.DrawModel
-function  RL.DrawModel( model, position, scale, tint ) end
-
----Draw a model with extended parameters
----@param model any
----@param position table
----@param rotationAxis table
----@param rotationAngle number
----@param scale table
----@param tint table
----@return any RL.DrawModelEx
-function  RL.DrawModelEx( model, position, rotationAxis, rotationAngle, scale, tint ) end
-
----Copies material to model material. (Model material is the material id in models.)
----@param model any
----@param modelMaterial any
----@param material any
----@return any RL.SetModelMaterial
-function  RL.SetModelMaterial( model, modelMaterial, material ) end
-
----Set material for a mesh (Mesh and material on this model)
----@param model any
----@param meshId integer
----@param materialId integer
----@return any RL.SetModelMeshMaterial
-function  RL.SetModelMeshMaterial( model, meshId, materialId ) end
-
----Draw a billboard texture
----@param camera any
----@param texture any
----@param position table
----@param size number
----@param tint table
----@return any RL.DrawBillboard
-function  RL.DrawBillboard( camera, texture, position, size, tint ) end
-
----Draw a billboard texture defined by source
----@param camera any
----@param texture any
----@param source table
----@param position table
----@param size table
----@param tint table
----@return any RL.DrawBillboardRec
-function  RL.DrawBillboardRec( camera, texture, source, position, size, tint ) end
-
----Draw a billboard texture defined by source and rotation
----@param camera any
----@param texture any
----@param source table
----@param position table
----@param up table
----@param size table
----@param origin table
----@param rotation number
----@param tint table
----@return any RL.DrawBillboardPro
-function  RL.DrawBillboardPro( camera, texture, source, position, up, size, origin, rotation, tint ) end
-
----Set model transform matrix
----@param model any
----@param transform table
----@return any RL.SetModelTransform
-function  RL.SetModelTransform( model, transform ) end
-
----Get model transform matrix
----- Success return Matrix
----@param model any
----@return any transform 
-function RL.GetModelTransform( model ) end
-
--- Model - Animations
+-- Model - Model animations management functions
 
 ---Load model animations from file
 ---- Failure return nil
@@ -4040,7 +4087,7 @@ function RL.GetModelAnimationBoneCount( animation ) end
 ---@return any frameCount 
 function RL.GetModelAnimationFrameCount( animation ) end
 
--- Model - Collision
+-- Model - Collision detection functions
 
 ---Check collision between two spheres
 ---- Success return bool

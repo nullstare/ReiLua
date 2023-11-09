@@ -4,7 +4,7 @@
 #include "lua_core.h"
 
 /*
-## Audio - Audio device management
+## Audio - Audio device management functions
 */
 
 /*
@@ -21,7 +21,7 @@ int laudioSetMasterVolume( lua_State *L ) {
 }
 
 /*
-## Audio - Wave/Sound Loading
+## Audio - Wave/Sound loading/unloading functions
 */
 
 /*
@@ -166,7 +166,7 @@ int laudioExportWaveAsCode( lua_State *L ) {
 }
 
 /*
-## Audio - Wave/Sound management
+## Audio - Wave/Sound management functions
 */
 
 /*
@@ -325,7 +325,7 @@ int laudioWaveCrop( lua_State *L ) {
 }
 
 /*
-## Audio - Music management
+## Audio - Music management functions
 */
 
 /*

@@ -7,7 +7,7 @@
 #include "raygui.h"
 
 /*
-## Gui - Global
+## Gui - Global gui state control functions
 */
 
 /*
@@ -107,7 +107,7 @@ int lguiGuiGetState( lua_State *L ) {
 }
 
 /*
-## Gui - Font
+## Gui - Font set/get functions
 */
 
 /*
@@ -137,7 +137,7 @@ int lguiGuiGetFont( lua_State *L ) {
 }
 
 /*
-## Gui - Style
+## Gui - Style set/get functions
 */
 
 /*
@@ -172,39 +172,7 @@ int lguiGuiGetStyle( lua_State *L ) {
 }
 
 /*
-> success = RL.GuiLoadStyle( string fileName )
-
-Load style file over global style variable (.rgs)
-
-- Failure return false
-- Success return true
-*/
-int lguiGuiLoadStyle( lua_State *L ) {
-	if ( FileExists( luaL_checkstring( L, 1 ) ) ) {
-		GuiLoadStyle( lua_tostring( L, 1 ) );
-		lua_pushboolean( L, true );
-
-		return 1;
-	}
-	TraceLog( state->logLevelInvalid, "Invalid file '%s'", lua_tostring( L, 1 ) );
-	lua_pushboolean( L, false );
-
-	return 1;
-}
-
-/*
-> RL.GuiLoadStyleDefault()
-
-Load style default over global style
-*/
-int lguiGuiLoadStyleDefault( lua_State *L ) {
-	GuiLoadStyleDefault();
-
-	return 0;
-}
-
-/*
-## Gui - Container
+## Gui - Container/separator controls, useful for controls organization
 */
 
 /*
@@ -280,7 +248,7 @@ int lguiGuiScrollPanel( lua_State *L ) {
 }
 
 /*
-## Gui - Basic
+## Gui - Basic controls set
 */
 
 /*
@@ -606,7 +574,7 @@ int lguiGuiGrid( lua_State *L ) {
 }
 
 /*
-## Gui - Advanced
+## Gui - Advance controls set
 */
 
 /*
@@ -750,7 +718,43 @@ int lguiGuiColorBarHue( lua_State *L ) {
 }
 
 /*
-## Gui - Icons
+## Gui - Styles loading functions
+*/
+
+/*
+> success = RL.GuiLoadStyle( string fileName )
+
+Load style file over global style variable (.rgs)
+
+- Failure return false
+- Success return true
+*/
+int lguiGuiLoadStyle( lua_State *L ) {
+	if ( FileExists( luaL_checkstring( L, 1 ) ) ) {
+		GuiLoadStyle( lua_tostring( L, 1 ) );
+		lua_pushboolean( L, true );
+
+		return 1;
+	}
+	TraceLog( state->logLevelInvalid, "Invalid file '%s'", lua_tostring( L, 1 ) );
+	lua_pushboolean( L, false );
+
+	return 1;
+}
+
+/*
+> RL.GuiLoadStyleDefault()
+
+Load style default over global style
+*/
+int lguiGuiLoadStyleDefault( lua_State *L ) {
+	GuiLoadStyleDefault();
+
+	return 0;
+}
+
+/*
+## Gui - Icons functionality
 */
 
 /*

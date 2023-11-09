@@ -158,7 +158,7 @@ bool wordWrap, Color *tints, int tintCount, Color *backTints, int backTintCount 
 }
 
 /*
-## Text - Loading
+## Text - Font loading/unloading functions
 */
 
 /*
@@ -278,7 +278,7 @@ int ltextUnloadFont( lua_State *L ) {
 }
 
 /*
-## Text - Draw
+## Text - Text drawing functions
 */
 
 /*
@@ -457,7 +457,7 @@ int ltextDrawTextBoxedTinted( lua_State *L ) {
 }
 
 /*
-## Text - Font info functions
+## Text - Text font info functions
 */
 
 /*

@@ -5,7 +5,7 @@
 #include "lua_core.h"
 
 /*
-## Textures - Image Loading
+## Textures - Image loading functions
 */
 
 /*
@@ -111,7 +111,7 @@ int ltexturesExportImageAsCode( lua_State *L ) {
 }
 
 /*
-## Textures - Image Generation
+## Textures - Image generation functions
 */
 
 /*
@@ -265,7 +265,7 @@ int ltexturesGenImageText( lua_State *L ) {
 }
 
 /*
-## Textures - Image Manipulation Functions
+## Textures - Image manipulation functions
 */
 
 /*
@@ -717,7 +717,56 @@ int ltexturesGetImageColor( lua_State *L ) {
 }
 
 /*
-## Textures - Image Drawing
+## Textures - Image configuration functions
+*/
+
+/*
+> size = RL.GetImageSize( Image image )
+
+Get image size
+
+- Success return Vector2
+*/
+int ltexturesGetImageSize( lua_State *L ) {
+	Image *image = uluaGetImage( L, 1 );
+
+	uluaPushVector2( L, (Vector2){ image->width, image->height } );
+
+	return 1;
+}
+
+/*
+> mipmaps = RL.GetImageMipmaps( Image image )
+
+Get image mipmaps. Mipmap levels, 1 by default
+
+- Success return int
+*/
+int ltexturesGetImageMipmaps( lua_State *L ) {
+	Image *image = uluaGetImage( L, 1 );
+
+	lua_pushinteger( L, image->mipmaps );
+
+	return 1;
+}
+
+/*
+> format = RL.GetImageFormat( Image image )
+
+Get image data format (PixelFormat type)
+
+- Success return int
+*/
+int ltexturesGetImageFormat( lua_State *L ) {
+	Image *image = uluaGetImage( L, 1 );
+
+	lua_pushinteger( L, image->format );
+
+	return 1;
+}
+
+/*
+## Textures - Image drawing functions
 */
 
 /*
@@ -864,56 +913,7 @@ int ltexturesImageDrawTextEx( lua_State *L ) {
 }
 
 /*
-## Textures - Image Configuration
-*/
-
-/*
-> size = RL.GetImageSize( Image image )
-
-Get image size
-
-- Success return Vector2
-*/
-int ltexturesGetImageSize( lua_State *L ) {
-	Image *image = uluaGetImage( L, 1 );
-
-	uluaPushVector2( L, (Vector2){ image->width, image->height } );
-
-	return 1;
-}
-
-/*
-> mipmaps = RL.GetImageMipmaps( Image image )
-
-Get image mipmaps. Mipmap levels, 1 by default
-
-- Success return int
-*/
-int ltexturesGetImageMipmaps( lua_State *L ) {
-	Image *image = uluaGetImage( L, 1 );
-
-	lua_pushinteger( L, image->mipmaps );
-
-	return 1;
-}
-
-/*
-> format = RL.GetImageFormat( Image image )
-
-Get image data format (PixelFormat type)
-
-- Success return int
-*/
-int ltexturesGetImageFormat( lua_State *L ) {
-	Image *image = uluaGetImage( L, 1 );
-
-	lua_pushinteger( L, image->format );
-
-	return 1;
-}
-
-/*
-## Textures - Texture Loading
+## Textures - Texture loading functions
 */
 
 /*
@@ -1190,76 +1190,7 @@ int ltexturesUpdateTextureRec( lua_State *L ) {
 }
 
 /*
-## Textures - Texture Drawing
-*/
-
-/*
-> RL.DrawTexture( Texture texture, Vector2 position, Color tint )
-
-Draw a Texture2D
-*/
-int ltexturesDrawTexture( lua_State *L ) {
-	Texture *texture = uluaGetTexture( L, 1 );
-	Vector2 pos = uluaGetVector2( L, 2 );
-	Color color = uluaGetColor( L, 3 );
-
-	DrawTexture( *texture, pos.x, pos.y, color );
-	return 0;
-}
-
-/*
-> RL.DrawTextureRec( Texture texture, Rectangle source, Vector2 position, Color tint )
-
-Draw a part of a texture defined by a rectangle
-*/
-int ltexturesDrawTextureRec( lua_State *L ) {
-	Texture *texture = uluaGetTexture( L, 1 );
-	Rectangle srcRect = uluaGetRectangle( L, 2 );
-	Vector2 pos = uluaGetVector2( L, 3 );
-	Color tint = uluaGetColor( L, 4 );
-
-	DrawTextureRec( *texture, srcRect, pos, tint );
-	return 0;
-}
-
-/*
-> RL.DrawTexturePro( Texture texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint )
-
-Draw a part of a texture defined by a rectangle with "pro" parameters
-*/
-int ltexturesDrawTexturePro( lua_State *L ) {
-	Texture *texture = uluaGetTexture( L, 1 );
-	Rectangle srcRect = uluaGetRectangle( L, 2 );
-	Rectangle dstRect = uluaGetRectangle( L, 3 );
-	Vector2 origin = uluaGetVector2( L, 4 );
-	float rot = luaL_checknumber( L, 5 );
-	Color color = uluaGetColor( L, 6 );
-
-	DrawTexturePro( *texture, srcRect, dstRect, origin, rot, color );
-
-	return 0;
-}
-
-/*
-> RL.DrawTextureNPatch( Texture texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint )
-
-Draws a texture (or part of it) that stretches or shrinks nicely
-*/
-int ltexturesDrawTextureNPatch( lua_State *L ) {
-	Texture *texture = uluaGetTexture( L, 1 );
-	NPatchInfo nPatchInfo = uluaGetNPatchInfo( L, 2 );
-	Rectangle dest = uluaGetRectangle( L, 3 );
-	Vector2 origin = uluaGetVector2( L, 4 );
-	float rotation = luaL_checknumber( L, 5 );
-	Color tint = uluaGetColor( L, 6 );
-
-	DrawTextureNPatch( *texture, nPatchInfo, dest, origin, rotation, tint );
-
-	return 0;
-}
-
-/*
-## Textures - Texture Configuration
+## Textures - Texture configuration functions
 */
 
 /*
@@ -1364,7 +1295,76 @@ int ltexturesGetTextureFormat( lua_State *L ) {
 }
 
 /*
-## Textures - RenderTexture Configuration
+## Textures - Texture drawing functions
+*/
+
+/*
+> RL.DrawTexture( Texture texture, Vector2 position, Color tint )
+
+Draw a Texture2D
+*/
+int ltexturesDrawTexture( lua_State *L ) {
+	Texture *texture = uluaGetTexture( L, 1 );
+	Vector2 pos = uluaGetVector2( L, 2 );
+	Color color = uluaGetColor( L, 3 );
+
+	DrawTexture( *texture, pos.x, pos.y, color );
+	return 0;
+}
+
+/*
+> RL.DrawTextureRec( Texture texture, Rectangle source, Vector2 position, Color tint )
+
+Draw a part of a texture defined by a rectangle
+*/
+int ltexturesDrawTextureRec( lua_State *L ) {
+	Texture *texture = uluaGetTexture( L, 1 );
+	Rectangle srcRect = uluaGetRectangle( L, 2 );
+	Vector2 pos = uluaGetVector2( L, 3 );
+	Color tint = uluaGetColor( L, 4 );
+
+	DrawTextureRec( *texture, srcRect, pos, tint );
+	return 0;
+}
+
+/*
+> RL.DrawTexturePro( Texture texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint )
+
+Draw a part of a texture defined by a rectangle with "pro" parameters
+*/
+int ltexturesDrawTexturePro( lua_State *L ) {
+	Texture *texture = uluaGetTexture( L, 1 );
+	Rectangle srcRect = uluaGetRectangle( L, 2 );
+	Rectangle dstRect = uluaGetRectangle( L, 3 );
+	Vector2 origin = uluaGetVector2( L, 4 );
+	float rot = luaL_checknumber( L, 5 );
+	Color color = uluaGetColor( L, 6 );
+
+	DrawTexturePro( *texture, srcRect, dstRect, origin, rot, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawTextureNPatch( Texture texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint )
+
+Draws a texture (or part of it) that stretches or shrinks nicely
+*/
+int ltexturesDrawTextureNPatch( lua_State *L ) {
+	Texture *texture = uluaGetTexture( L, 1 );
+	NPatchInfo nPatchInfo = uluaGetNPatchInfo( L, 2 );
+	Rectangle dest = uluaGetRectangle( L, 3 );
+	Vector2 origin = uluaGetVector2( L, 4 );
+	float rotation = luaL_checknumber( L, 5 );
+	Color tint = uluaGetColor( L, 6 );
+
+	DrawTextureNPatch( *texture, nPatchInfo, dest, origin, rotation, tint );
+
+	return 0;
+}
+
+/*
+## Textures - RenderTexture configuration functions
 */
 
 /*
@@ -1413,7 +1413,7 @@ int ltexturesGetRenderTextureDepthTexture( lua_State *L ) {
 }
 
 /*
-## Textures - Color/pixel
+## Textures - Color/pixel related functions
 */
 
 /*

@@ -16,6 +16,7 @@ KEY CHANGES:
 	- ADDED: DrawTextEx.
 	- CHANGED: DrawText is now DrawTextEx like in Raylib.
 	- ADDED: Global variable descriptions for API.
+	- CHANGED: Organized functions by putting them in the same order as in Raylib.
 
 DETAILED CHANGES:
 	- CHANGED: GenImageColor now takes Vector2 as size.
@@ -48,6 +49,7 @@ DETAILED CHANGES:
 	- ADDED: DrawModelWires and DrawModelWiresEx.
 	- ADDED: LoadMaterials.
 	- CHANGED: Organized core functions.
+	- CHANGED: Organized shapes, textures, audio, text, lights and gui functions.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.5.0		Using Raylib 4.5

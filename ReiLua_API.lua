@@ -2323,7 +2323,7 @@ function  RL.ExportBuffer( buffer, path ) end
 ---@return any buffer 
 function RL.LoadBufferFromFile( path, int ) end
 
--- Shapes - Drawing
+-- Shapes - Basic shapes drawing functions
 
 ---Set texture and rectangle to be used on shapes drawing
 ---NOTE: It can be useful when using basic shapes and one single font,
@@ -2583,7 +2583,7 @@ function  RL.DrawPolyLines( center, sides, radius, rotation, color ) end
 ---@return any RL.DrawPolyLinesEx
 function  RL.DrawPolyLinesEx( center, sides, radius, rotation, lineThick, color ) end
 
--- Shapes - Collision
+-- Shapes - Basic shapes collision detection functions
 
 ---Check collision between two rectangles
 ---- Success return bool
@@ -2666,7 +2666,7 @@ function RL.CheckCollisionPointLine( point, p1, p2, threshold ) end
 ---@return any rectangle 
 function RL.GetCollisionRec( rec1, rec2 ) end
 
--- Textures - Image Loading
+-- Textures - Image loading functions
 
 ---Load image from file into CPU memory (RAM)
 ---- Success return Image
@@ -2710,7 +2710,7 @@ function RL.ExportImage( image, fileName ) end
 ---@return any success 
 function RL.ExportImageAsCode( image, fileName ) end
 
--- Textures - Image Generation
+-- Textures - Image generation functions
 
 ---Generate image: plain color
 ---- Success return Image
@@ -2782,7 +2782,7 @@ function RL.GenImageCellular( size, tileSize ) end
 ---@return any image 
 function RL.GenImageText( size, text ) end
 
--- Textures - Image Manipulation Functions
+-- Textures - Image manipulation functions
 
 ---Create an image duplicate (useful for transformations)
 ---- Success return Image
@@ -2968,7 +2968,27 @@ function RL.GetImageAlphaBorder( image, threshold ) end
 ---@return any color 
 function RL.GetImageColor( image, pixelPos ) end
 
--- Textures - Image Drawing
+-- Textures - Image configuration functions
+
+---Get image size
+---- Success return Vector2
+---@param image any
+---@return any size 
+function RL.GetImageSize( image ) end
+
+---Get image mipmaps. Mipmap levels, 1 by default
+---- Success return int
+---@param image any
+---@return any mipmaps 
+function RL.GetImageMipmaps( image ) end
+
+---Get image data format (PixelFormat type)
+---- Success return int
+---@param image any
+---@return any format 
+function RL.GetImageFormat( image ) end
+
+-- Textures - Image drawing functions
 
 ---Clear image background with given color
 ---@param dst any
@@ -3042,27 +3062,7 @@ function  RL.ImageDraw( dst, src, srcRec, dstRec, tint ) end
 ---@return any RL.ImageDrawTextEx
 function  RL.ImageDrawTextEx( dst, font, text, position, fontSize, spacing, tint ) end
 
--- Textures - Image Configuration
-
----Get image size
----- Success return Vector2
----@param image any
----@return any size 
-function RL.GetImageSize( image ) end
-
----Get image mipmaps. Mipmap levels, 1 by default
----- Success return int
----@param image any
----@return any mipmaps 
-function RL.GetImageMipmaps( image ) end
-
----Get image data format (PixelFormat type)
----- Success return int
----@param image any
----@return any format 
-function RL.GetImageFormat( image ) end
-
--- Textures - Texture Loading
+-- Textures - Texture loading functions
 
 ---Load texture from file into GPU memory ( VRAM )
 ---- Failure return nil
@@ -3139,44 +3139,7 @@ function  RL.UpdateTexture( texture, pixels ) end
 ---@return any RL.UpdateTextureRec
 function  RL.UpdateTextureRec( texture, rec, pixels ) end
 
--- Textures - Texture Drawing
-
----Draw a Texture2D
----@param texture any
----@param position table
----@param tint table
----@return any RL.DrawTexture
-function  RL.DrawTexture( texture, position, tint ) end
-
----Draw a part of a texture defined by a rectangle
----@param texture any
----@param source table
----@param position table
----@param tint table
----@return any RL.DrawTextureRec
-function  RL.DrawTextureRec( texture, source, position, tint ) end
-
----Draw a part of a texture defined by a rectangle with "pro" parameters
----@param texture any
----@param source table
----@param dest table
----@param origin table
----@param rotation number
----@param tint table
----@return any RL.DrawTexturePro
-function  RL.DrawTexturePro( texture, source, dest, origin, rotation, tint ) end
-
----Draws a texture (or part of it) that stretches or shrinks nicely
----@param texture any
----@param nPatchInfo any
----@param dest table
----@param origin table
----@param rotation number
----@param tint table
----@return any RL.DrawTextureNPatch
-function  RL.DrawTextureNPatch( texture, nPatchInfo, dest, origin, rotation, tint ) end
-
--- Textures - Texture Configuration
+-- Textures - Texture configuration functions
 
 ---Generate GPU mipmaps for a texture
 ---@param texture any
@@ -3219,7 +3182,44 @@ function RL.GetTextureMipmaps( texture ) end
 ---@return any format 
 function RL.GetTextureFormat( texture ) end
 
--- Textures - RenderTexture Configuration
+-- Textures - Texture drawing functions
+
+---Draw a Texture2D
+---@param texture any
+---@param position table
+---@param tint table
+---@return any RL.DrawTexture
+function  RL.DrawTexture( texture, position, tint ) end
+
+---Draw a part of a texture defined by a rectangle
+---@param texture any
+---@param source table
+---@param position table
+---@param tint table
+---@return any RL.DrawTextureRec
+function  RL.DrawTextureRec( texture, source, position, tint ) end
+
+---Draw a part of a texture defined by a rectangle with "pro" parameters
+---@param texture any
+---@param source table
+---@param dest table
+---@param origin table
+---@param rotation number
+---@param tint table
+---@return any RL.DrawTexturePro
+function  RL.DrawTexturePro( texture, source, dest, origin, rotation, tint ) end
+
+---Draws a texture (or part of it) that stretches or shrinks nicely
+---@param texture any
+---@param nPatchInfo any
+---@param dest table
+---@param origin table
+---@param rotation number
+---@param tint table
+---@return any RL.DrawTextureNPatch
+function  RL.DrawTextureNPatch( texture, nPatchInfo, dest, origin, rotation, tint ) end
+
+-- Textures - RenderTexture configuration functions
 
 ---Get OpenGL framebuffer object id
 ---- Success return int
@@ -3239,7 +3239,7 @@ function RL.GetRenderTextureTexture( renderTexture ) end
 ---@return any texture 
 function RL.GetRenderTextureDepthTexture( renderTexture ) end
 
--- Textures - Color/pixel
+-- Textures - Color/pixel related functions
 
 ---Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 ---- Success return Color
@@ -3337,7 +3337,7 @@ function RL.GetPixelColor( texture, position ) end
 ---@return any size 
 function RL.GetPixelDataSize( width, height, format ) end
 
--- Text - Loading
+-- Text - Font loading/unloading functions
 
 ---Get the default Font. Return as lightuserdata
 ---@return any RL.GetFontDefault
@@ -3378,7 +3378,7 @@ function RL.IsFontReady( font ) end
 ---@return any RL.UnloadFont
 function  RL.UnloadFont( font ) end
 
--- Text - Draw
+-- Text - Text drawing functions
 
 ---Draw current FPS
 ---@param pos table
@@ -3459,7 +3459,7 @@ function RL.DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint ) 
 ---@return any mouseCharId 
 function RL.DrawTextBoxedTinted( font, text, rec, fontSize, spacing, wordWrap, tints, backTints ) end
 
--- Text - Font info functions
+-- Text - Text font info functions
 
 ---Measure string size for Font
 ---- Success return Vector2
@@ -4155,14 +4155,14 @@ function RL.GetRayCollisionTriangle( ray, p1, p2, p3 ) end
 ---@return any rayCollision 
 function RL.GetRayCollisionQuad( ray, p1, p2, p3, p4 ) end
 
--- Audio - Audio device management
+-- Audio - Audio device management functions
 
 ---Set master volume (listener)
 ---@param volume number
 ---@return any RL.SetMasterVolume
 function  RL.SetMasterVolume( volume ) end
 
--- Audio - Wave/Sound Loading
+-- Audio - Wave/Sound loading/unloading functions
 
 ---Load sound from file
 ---- Failure return nil
@@ -4220,7 +4220,7 @@ function RL.ExportWave( wave, fileName ) end
 ---@return any success 
 function RL.ExportWaveAsCode( wave, fileName ) end
 
--- Audio - Wave/Sound management
+-- Audio - Wave/Sound management functions
 
 ---Play a sound
 ---@param sound any
@@ -4287,7 +4287,7 @@ function RL.WaveCopy( wave ) end
 ---@return any RL.WaveCrop
 function  RL.WaveCrop( wave, initSample, finalSample ) end
 
--- Audio - Music management
+-- Audio - Music management functions
 
 ---Load music stream from file
 ---- Success return Music
@@ -5175,7 +5175,7 @@ function RL.QuaternionTransform( q, mat ) end
 ---@return any result 
 function RL.QuaternionEquals( q1, q2 ) end
 
--- Gui - Global
+-- Gui - Global gui state control functions
 
 ---Enable gui controls (global state)
 ---@return any RL.GuiEnable
@@ -5213,7 +5213,7 @@ function  RL.GuiSetState( state ) end
 ---@return any state 
 function RL.GuiGetState() end
 
--- Gui - Font
+-- Gui - Font set/get functions
 
 ---Set gui custom font (global state)
 ---@param font any
@@ -5225,7 +5225,7 @@ function  RL.GuiSetFont( font ) end
 ---@return any font 
 function RL.GuiGetFont() end
 
--- Gui - Style
+-- Gui - Style set/get functions
 
 ---Set one style property
 ---@param control integer
@@ -5241,18 +5241,7 @@ function  RL.GuiSetStyle( control, property, value ) end
 ---@return any value 
 function RL.GuiGetStyle( control, property ) end
 
----Load style file over global style variable (.rgs)
----- Failure return false
----- Success return true
----@param fileName string
----@return any success 
-function RL.GuiLoadStyle( fileName ) end
-
----Load style default over global style
----@return any RL.GuiLoadStyleDefault
-function  RL.GuiLoadStyleDefault() end
-
--- Gui - Container
+-- Gui - Container/separator controls, useful for controls organization
 
 ---Window Box control, shows a window that can be closed
 ---- Success return bool
@@ -5289,7 +5278,7 @@ function  RL.GuiPanel( bounds, text ) end
 ---@return any scroll 
 function RL.GuiScrollPanel( bounds, text, content, scroll ) end
 
--- Gui - Basic
+-- Gui - Basic controls set
 
 ---Label control, shows text
 ---@param bounds table
@@ -5460,7 +5449,7 @@ function  RL.GuiDummyRec( bounds, text ) end
 ---@return any cell 
 function RL.GuiGrid( bounds, text, spacing, subdivs ) end
 
--- Gui - Advanced
+-- Gui - Advance controls set
 
 ---List View control, returns selected list item index and scroll index
 ---- Success return int, int
@@ -5539,7 +5528,20 @@ function RL.GuiColorBarAlpha( bounds, text, alpha ) end
 ---@return any hue 
 function RL.GuiColorBarHue( bounds, text, value ) end
 
--- Gui - Icons
+-- Gui - Styles loading functions
+
+---Load style file over global style variable (.rgs)
+---- Failure return false
+---- Success return true
+---@param fileName string
+---@return any success 
+function RL.GuiLoadStyle( fileName ) end
+
+---Load style default over global style
+---@return any RL.GuiLoadStyleDefault
+function  RL.GuiLoadStyleDefault() end
+
+-- Gui - Icons functionality
 
 ---Get text with icon id prepended (if supported)
 ---- Success return string
@@ -5580,7 +5582,7 @@ function  RL.GuiClearIconPixel( iconId, pos ) end
 ---@return any value 
 function RL.GuiCheckIconPixel( iconId, pos ) end
 
--- Lights - Basics
+-- Lights - Light management functions
 
 ---Create a light and get shader locations
 ---- Success return Light

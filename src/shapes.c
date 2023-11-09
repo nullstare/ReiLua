@@ -5,7 +5,7 @@
 #include "textures.h"
 
 /*
-## Shapes - Drawing
+## Shapes - Basic shapes drawing functions
 */
 
 /*
@@ -556,7 +556,7 @@ int lshapesDrawPolyLinesEx( lua_State *L ) {
 }
 
 /*
-## Shapes - Collision
+## Shapes - Basic shapes collision detection functions
 */
 
 /*

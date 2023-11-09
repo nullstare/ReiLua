@@ -1704,7 +1704,7 @@ void luaRegister() {
 	assingGlobalFunction( "LoadBufferFromFile", lcoreLoadBufferFromFile );
 
 	/* Shapes. */
-		/* Drawing. */
+		/* Basic shapes drawing functions. */
 	assingGlobalFunction( "SetShapesTexture", lshapesSetShapesTexture );
 	assingGlobalFunction( "DrawPixel", lshapesDrawPixel );
 	assingGlobalFunction( "DrawLine", lshapesDrawLine );
@@ -1737,7 +1737,7 @@ void luaRegister() {
 	assingGlobalFunction( "DrawPoly", lshapesDrawPoly );
 	assingGlobalFunction( "DrawPolyLines", lshapesDrawPolyLines );
 	assingGlobalFunction( "DrawPolyLinesEx", lshapesDrawPolyLinesEx );
-		/* Collision. */
+		/* Basic shapes collision detection functions. */
 	assingGlobalFunction( "CheckCollisionRecs", lshapesCheckCollisionRecs );
 	assingGlobalFunction( "CheckCollisionCircles", lshapesCheckCollisionCircles );
 	assingGlobalFunction( "CheckCollisionCircleRec", lshapesCheckCollisionCircleRec );
@@ -1750,7 +1750,7 @@ void luaRegister() {
 	assingGlobalFunction( "GetCollisionRec", lshapesGetCollisionRec );
 
 	/* Textures. */
-		/* Image Loading. */
+		/* Image loading functions. */
 	assingGlobalFunction( "LoadImage", ltexturesLoadImage );
 	assingGlobalFunction( "LoadImageFromTexture", ltexturesLoadImageFromTexture );
 	assingGlobalFunction( "LoadImageFromScreen", ltexturesLoadImageFromScreen );
@@ -1758,7 +1758,7 @@ void luaRegister() {
 	assingGlobalFunction( "UnloadImage", ltextureUnloadImage );
 	assingGlobalFunction( "ExportImage", ltexturesExportImage );
 	assingGlobalFunction( "ExportImageAsCode", ltexturesExportImageAsCode );
-		/* Image Generation. */
+		/* Image generation functions. */
 	assingGlobalFunction( "GenImageColor", ltexturesGenImageColor );
 	assingGlobalFunction( "GenImageGradientV", ltexturesGenImageGradientV );
 	assingGlobalFunction( "GenImageGradientH", ltexturesGenImageGradientH );
@@ -1768,7 +1768,7 @@ void luaRegister() {
 	assingGlobalFunction( "GenImagePerlinNoise", ltexturesGenImagePerlinNoise );
 	assingGlobalFunction( "GenImageCellular", ltexturesGenImageCellular );
 	assingGlobalFunction( "GenImageText", ltexturesGenImageText );
-		/* Image Manipulation Functions. */
+		/* Image manipulation functions. */
 	assingGlobalFunction( "ImageCopy", ltexturesImageCopy );
 	assingGlobalFunction( "ImageFromImage", ltexturesImageFromImage );
 	assingGlobalFunction( "ImageText", ltexturesImageText );
@@ -1799,7 +1799,11 @@ void luaRegister() {
 	assingGlobalFunction( "LoadImagePalette", ltexturesLoadImagePalette );
 	assingGlobalFunction( "GetImageAlphaBorder", ltexturesGetImageAlphaBorder );
 	assingGlobalFunction( "GetImageColor", ltexturesGetImageColor );
-		/* Image Drawing. */
+		/* Image configuration functions. */
+	assingGlobalFunction( "GetImageSize", ltexturesGetImageSize );
+	assingGlobalFunction( "GetImageMipmaps", ltexturesGetImageMipmaps );
+	assingGlobalFunction( "GetImageFormat", ltexturesGetImageFormat );
+		/* Image drawing functions. */
 	assingGlobalFunction( "ImageClearBackground", ltexturesImageClearBackground );
 	assingGlobalFunction( "ImageDrawPixel", ltexturesImageDrawPixel );
 	assingGlobalFunction( "ImageDrawLine", ltexturesImageDrawLine );
@@ -1809,11 +1813,7 @@ void luaRegister() {
 	assingGlobalFunction( "ImageDrawRectangleLines", ltexturesImageDrawRectangleLines );
 	assingGlobalFunction( "ImageDraw", ltexturesImageDraw );
 	assingGlobalFunction( "ImageDrawTextEx", ltexturesImageDrawTextEx );
-		/* Image Configuration. */
-	assingGlobalFunction( "GetImageSize", ltexturesGetImageSize );
-	assingGlobalFunction( "GetImageMipmaps", ltexturesGetImageMipmaps );
-	assingGlobalFunction( "GetImageFormat", ltexturesGetImageFormat );
-		/* Texture Loading. */
+		/* Texture loading functions. */
 	assingGlobalFunction( "LoadTexture", ltexturesLoadTexture );
 	assingGlobalFunction( "LoadTextureFromImage", ltexturesLoadTextureFromImage );
 	assingGlobalFunction( "LoadTextureCubemap", ltexturesLoadTextureCubemap );
@@ -1826,12 +1826,7 @@ void luaRegister() {
 	assingGlobalFunction( "UnloadRenderTexture", ltextureUnloadRenderTexture );
 	assingGlobalFunction( "UpdateTexture", ltexturesUpdateTexture );
 	assingGlobalFunction( "UpdateTextureRec", ltexturesUpdateTextureRec );
-		/* Texture Drawing. */
-	assingGlobalFunction( "DrawTexture", ltexturesDrawTexture );
-	assingGlobalFunction( "DrawTextureRec", ltexturesDrawTextureRec );
-	assingGlobalFunction( "DrawTexturePro", ltexturesDrawTexturePro );
-	assingGlobalFunction( "DrawTextureNPatch", ltexturesDrawTextureNPatch );
-		/* Texture Configuration. */
+		/* Texture configuration functions. */
 	assingGlobalFunction( "GenTextureMipmaps", ltexturesGenTextureMipmaps );
 	assingGlobalFunction( "SetTextureFilter", ltexturesSetTextureFilter );
 	assingGlobalFunction( "SetTextureWrap", ltexturesSetTextureWrap );
@@ -1839,11 +1834,16 @@ void luaRegister() {
 	assingGlobalFunction( "GetTextureSize", ltexturesGetTextureSize );
 	assingGlobalFunction( "GetTextureMipmaps", ltexturesGetTextureMipmaps );
 	assingGlobalFunction( "GetTextureFormat", ltexturesGetTextureFormat );
-		/* RenderTexture Configuration. */
+		/* Texture drawing functions. */
+	assingGlobalFunction( "DrawTexture", ltexturesDrawTexture );
+	assingGlobalFunction( "DrawTextureRec", ltexturesDrawTextureRec );
+	assingGlobalFunction( "DrawTexturePro", ltexturesDrawTexturePro );
+	assingGlobalFunction( "DrawTextureNPatch", ltexturesDrawTextureNPatch );
+		/* RenderTexture configuration functions. */
 	assingGlobalFunction( "GetRenderTextureId", ltexturesGetRenderTextureId );
 	assingGlobalFunction( "GetRenderTextureTexture", ltexturesGetRenderTextureTexture );
 	assingGlobalFunction( "GetRenderTextureDepthTexture", ltexturesGetRenderTextureDepthTexture );
-		/* Color/pixel */
+		/* Color/pixel related functions */
 	assingGlobalFunction( "Fade", ltexturesFade );
 	assingGlobalFunction( "ColorToInt", ltexturesColorToInt );
 	assingGlobalFunction( "ColorNormalize", ltexturesColorNormalize );
@@ -1953,14 +1953,14 @@ void luaRegister() {
 	assingGlobalFunction( "GetRayCollisionQuad", lmodelsGetRayCollisionQuad );
 
 	/* Text. */
-		/* Loading. */
+		/* Font loading/unloading functions. */
 	assingGlobalFunction( "GetFontDefault", ltextGetFontDefault );
 	assingGlobalFunction( "LoadFont", ltextLoadFont );
 	assingGlobalFunction( "LoadFontEx", ltextLoadFontEx );
 	assingGlobalFunction( "LoadFontFromImage", ltextLoadFontFromImage );
 	assingGlobalFunction( "IsFontReady", ltextIsFontReady );
 	assingGlobalFunction( "UnloadFont", ltextUnloadFont );
-		/* Drawing. */
+		/* Text drawing functions. */
 	assingGlobalFunction( "DrawFPS", ltextDrawFPS );
 	assingGlobalFunction( "DrawText", ltextDrawText );
 	assingGlobalFunction( "DrawTextEx", ltextDrawTextEx );
@@ -1969,7 +1969,7 @@ void luaRegister() {
 	assingGlobalFunction( "DrawTextCodepoints", ltextDrawTextCodepoints );
 	assingGlobalFunction( "DrawTextBoxed", ltextDrawTextBoxed );
 	assingGlobalFunction( "DrawTextBoxedTinted", ltextDrawTextBoxedTinted );
-		/* Font info functions. */
+		/* Text font info functions. */
 	assingGlobalFunction( "MeasureText", ltextMeasureText );
 	assingGlobalFunction( "GetGlyphIndex", ltextGetGlyphIndex );
 	assingGlobalFunction( "GetGlyphInfo", ltextGetGlyphInfo );
@@ -1980,9 +1980,9 @@ void luaRegister() {
 	assingGlobalFunction( "GetFontTexture", ltextGetFontTexture );
 
 	/* Audio. */
-		/* Audio device management. */
+		/* Audio device management functions. */
 	assingGlobalFunction( "SetMasterVolume", laudioSetMasterVolume );
-		/* Wave/Sound Loading. */
+		/* Wave/Sound loading/unloading functions. */
 	assingGlobalFunction( "LoadSound", laudioLoadSound );
 	assingGlobalFunction( "LoadWave", laudioLoadWave );
 	assingGlobalFunction( "IsWaveReady", laudioIsWaveReady );
@@ -1992,7 +1992,7 @@ void luaRegister() {
 	assingGlobalFunction( "UnloadSound", laudioUnloadSound );
 	assingGlobalFunction( "ExportWave", laudioExportWave );
 	assingGlobalFunction( "ExportWaveAsCode", laudioExportWaveAsCode );
-		/* Wave/Sound management */
+		/* Wave/Sound management functions. */
 	assingGlobalFunction( "PlaySound", laudioPlaySound );
 	assingGlobalFunction( "StopSound", laudioStopSound );
 	assingGlobalFunction( "PauseSound", laudioPauseSound );
@@ -2004,7 +2004,7 @@ void luaRegister() {
 	assingGlobalFunction( "WaveFormat", laudioWaveFormat );
 	assingGlobalFunction( "WaveCopy", laudioWaveCopy );
 	assingGlobalFunction( "WaveCrop", laudioWaveCrop );
-		/* Music management. */
+		/* Music management functions. */
 	assingGlobalFunction( "LoadMusicStream", laudioLoadMusicStream );
 	assingGlobalFunction( "IsMusicReady", laudioIsMusicReady );
 	assingGlobalFunction( "UnloadMusicStream", laudioUnloadMusicStream );
@@ -2155,8 +2155,6 @@ void luaRegister() {
 		/* Style. */
 	assingGlobalFunction( "GuiSetStyle", lguiGuiSetStyle );
 	assingGlobalFunction( "GuiGetStyle", lguiGuiGetStyle );
-	assingGlobalFunction( "GuiLoadStyle", lguiGuiLoadStyle );
-	assingGlobalFunction( "GuiLoadStyleDefault", lguiGuiLoadStyleDefault );
 		/* Container. */
 	assingGlobalFunction( "GuiWindowBox", lguiGuiWindowBox );
 	assingGlobalFunction( "GuiGroupBox", lguiGuiGroupBox );
@@ -2192,6 +2190,9 @@ void luaRegister() {
 	assingGlobalFunction( "GuiColorPanel", lguiGuiColorPanel );
 	assingGlobalFunction( "GuiColorBarAlpha", lguiGuiColorBarAlpha );
 	assingGlobalFunction( "GuiColorBarHue", lguiGuiColorBarHue );
+		/* Styles loading functions */
+	assingGlobalFunction( "GuiLoadStyle", lguiGuiLoadStyle );
+	assingGlobalFunction( "GuiLoadStyleDefault", lguiGuiLoadStyleDefault );
 		/* Icons. */
 	assingGlobalFunction( "GuiIconText", lguiGuiIconText );
 	assingGlobalFunction( "GuiDrawIcon", lguiGuiDrawIcon );
@@ -2201,7 +2202,7 @@ void luaRegister() {
 	assingGlobalFunction( "GuiCheckIconPixel", lguiGuiCheckIconPixel );
 
 	/* Lights */
-		/* Basics. */
+		/* Light management functions. */
 	assingGlobalFunction( "CreateLight", llightsCreateLight );
 	assingGlobalFunction( "UpdateLightValues", llightsUpdateLightValues );
 	assingGlobalFunction( "SetLightType", llightsSetLightType );

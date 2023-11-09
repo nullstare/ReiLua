@@ -12,7 +12,8 @@ Backlog {
 		* LoadMaterials (Load materials from model file).
 		* LoadMaterialsFromModel (Could then for example edit and set back to model).
 	* rlgl
-		* Shader buffer storage object management (ssbo)
+		* More Textures management functions.
+		* Shader buffer storage object management (ssbo).
 
 	* Extend color lib functionality.
 

@@ -1,6 +1,6 @@
 #pragma once
 
-/* Drawing. */
+/* Basic shapes drawing functions. */
 int lshapesSetShapesTexture( lua_State *L );
 int lshapesDrawPixel( lua_State *L );
 int lshapesDrawLine( lua_State *L );
@@ -33,7 +33,7 @@ int lshapesDrawTriangleStrip( lua_State *L );
 int lshapesDrawPoly( lua_State *L );
 int lshapesDrawPolyLines( lua_State *L );
 int lshapesDrawPolyLinesEx( lua_State *L );
-/* Collision. */
+/* Basic shapes collision detection functions. */
 int lshapesCheckCollisionRecs( lua_State *L );
 int lshapesCheckCollisionCircles( lua_State *L );
 int lshapesCheckCollisionCircleRec( lua_State *L );

@@ -8,7 +8,7 @@
 #include "rlights.h"
 
 /*
-## Lights - Basics
+## Lights - Light management functions
 */
 
 /*

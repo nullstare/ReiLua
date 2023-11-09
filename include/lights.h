@@ -1,6 +1,6 @@
 #pragma once
 
-/* Basics. */
+/* Light management functions. */
 int llightsCreateLight( lua_State *L );
 int llightsUpdateLightValues( lua_State *L );
 int llightsSetLightType( lua_State *L );

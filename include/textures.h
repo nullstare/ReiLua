@@ -1,6 +1,6 @@
 #pragma once
 
-/* Image Loading. */
+/* Image loading functions. */
 int ltexturesLoadImage( lua_State *L );
 int ltexturesLoadImageFromTexture( lua_State *L );
 int ltexturesLoadImageFromScreen( lua_State *L );
@@ -8,7 +8,7 @@ int ltextureIsImageReady( lua_State *L );
 int ltextureUnloadImage( lua_State *L );
 int ltexturesExportImage( lua_State *L );
 int ltexturesExportImageAsCode( lua_State *L );
-/* Image Generation. */
+/* Image generation functions. */
 int ltexturesGenImageColor( lua_State *L );
 int ltexturesGenImageGradientV( lua_State *L );
 int ltexturesGenImageGradientH( lua_State *L );
@@ -18,7 +18,7 @@ int ltexturesGenImageWhiteNoise( lua_State *L );
 int ltexturesGenImagePerlinNoise( lua_State *L );
 int ltexturesGenImageCellular( lua_State *L );
 int ltexturesGenImageText( lua_State *L );
-/* Image Manipulation Functions. */
+/* Image manipulation functions. */
 int ltexturesImageCopy( lua_State *L );
 int ltexturesImageFromImage( lua_State *L );
 int ltexturesImageText( lua_State *L );
@@ -49,7 +49,11 @@ int ltexturesLoadImageColors( lua_State *L );
 int ltexturesLoadImagePalette( lua_State *L );
 int ltexturesGetImageAlphaBorder( lua_State *L );
 int ltexturesGetImageColor( lua_State *L );
-/* Image Drawing. */
+/* Image configuration functions. */
+int ltexturesGetImageSize( lua_State *L );
+int ltexturesGetImageMipmaps( lua_State *L );
+int ltexturesGetImageFormat( lua_State *L );
+/* Image drawing functions. */
 int ltexturesImageClearBackground( lua_State *L );
 int ltexturesImageDrawPixel( lua_State *L );
 int ltexturesImageDrawLine( lua_State *L );
@@ -59,11 +63,7 @@ int ltexturesImageDrawRectangle( lua_State *L );
 int ltexturesImageDrawRectangleLines( lua_State *L );
 int ltexturesImageDraw( lua_State *L );
 int ltexturesImageDrawTextEx( lua_State *L );
-/* Image Configuration. */
-int ltexturesGetImageSize( lua_State *L );
-int ltexturesGetImageMipmaps( lua_State *L );
-int ltexturesGetImageFormat( lua_State *L );
-/* Texture Loading. */
+/* Texture loading functions. */
 int ltexturesLoadTexture( lua_State *L );
 int ltexturesLoadTextureFromImage( lua_State *L );
 int ltexturesLoadTextureCubemap( lua_State *L );
@@ -76,12 +76,7 @@ int ltexturesIsRenderTextureReady( lua_State *L );
 int ltextureUnloadRenderTexture( lua_State *L );
 int ltexturesUpdateTexture( lua_State *L );
 int ltexturesUpdateTextureRec( lua_State *L );
-/* Texture Drawing. */
-int ltexturesDrawTexture( lua_State *L );
-int ltexturesDrawTextureRec( lua_State *L );
-int ltexturesDrawTexturePro( lua_State *L );
-int ltexturesDrawTextureNPatch( lua_State *L );
-/* Texture Configuration. */
+/* Texture configuration functions. */
 int ltexturesGenTextureMipmaps( lua_State *L );
 int ltexturesSetTextureFilter( lua_State *L );
 int ltexturesSetTextureWrap( lua_State *L );
@@ -89,11 +84,16 @@ int ltexturesGetTextureId( lua_State *L );
 int ltexturesGetTextureSize( lua_State *L );
 int ltexturesGetTextureMipmaps( lua_State *L );
 int ltexturesGetTextureFormat( lua_State *L );
-/* RenderTexture Configuration. */
+/* Texture drawing functions. */
+int ltexturesDrawTexture( lua_State *L );
+int ltexturesDrawTextureRec( lua_State *L );
+int ltexturesDrawTexturePro( lua_State *L );
+int ltexturesDrawTextureNPatch( lua_State *L );
+/* RenderTexture configuration functions. */
 int ltexturesGetRenderTextureId( lua_State *L );
 int ltexturesGetRenderTextureTexture( lua_State *L );
 int ltexturesGetRenderTextureDepthTexture( lua_State *L );
-/* Color/pixel */
+/* Color/pixel related functions. */
 int ltexturesFade( lua_State *L );
 int ltexturesColorToInt( lua_State *L );
 int ltexturesColorNormalize( lua_State *L );

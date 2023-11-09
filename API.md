@@ -4947,7 +4947,7 @@ Read buffer data from binary file
 
 ---
 
-## Shapes - Drawing
+## Shapes - Basic shapes drawing functions
 
 ---
 
@@ -5145,7 +5145,7 @@ Draw a polygon outline of n sides with extended parameters
 
 ---
 
-## Shapes - Collision
+## Shapes - Basic shapes collision detection functions
 
 ---
 
@@ -5229,7 +5229,7 @@ Get collision rectangle for two rectangles collision
 
 ---
 
-## Textures - Image Loading
+## Textures - Image loading functions
 
 ---
 
@@ -5287,7 +5287,7 @@ Export image as code file defining an array of bytes, returns true on success
 
 ---
 
-## Textures - Image Generation
+## Textures - Image generation functions
 
 ---
 
@@ -5363,7 +5363,7 @@ Generate image: grayscale image from text data
 
 ---
 
-## Textures - Image Manipulation Functions
+## Textures - Image manipulation functions
 
 ---
 
@@ -5561,7 +5561,35 @@ Get image pixel color at (x, y) position
 
 ---
 
-## Textures - Image Drawing
+## Textures - Image configuration functions
+
+---
+
+> size = RL.GetImageSize( Image image )
+
+Get image size
+
+- Success return Vector2
+
+---
+
+> mipmaps = RL.GetImageMipmaps( Image image )
+
+Get image mipmaps. Mipmap levels, 1 by default
+
+- Success return int
+
+---
+
+> format = RL.GetImageFormat( Image image )
+
+Get image data format (PixelFormat type)
+
+- Success return int
+
+---
+
+## Textures - Image drawing functions
 
 ---
 
@@ -5619,35 +5647,7 @@ Draw text (Custom sprite font) within an image (Destination)
 
 ---
 
-## Textures - Image Configuration
-
----
-
-> size = RL.GetImageSize( Image image )
-
-Get image size
-
-- Success return Vector2
-
----
-
-> mipmaps = RL.GetImageMipmaps( Image image )
-
-Get image mipmaps. Mipmap levels, 1 by default
-
-- Success return int
-
----
-
-> format = RL.GetImageFormat( Image image )
-
-Get image data format (PixelFormat type)
-
-- Success return int
-
----
-
-## Textures - Texture Loading
+## Textures - Texture loading functions
 
 ---
 
@@ -5742,35 +5742,7 @@ Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel f
 
 ---
 
-## Textures - Texture Drawing
-
----
-
-> RL.DrawTexture( Texture texture, Vector2 position, Color tint )
-
-Draw a Texture2D
-
----
-
-> RL.DrawTextureRec( Texture texture, Rectangle source, Vector2 position, Color tint )
-
-Draw a part of a texture defined by a rectangle
-
----
-
-> RL.DrawTexturePro( Texture texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint )
-
-Draw a part of a texture defined by a rectangle with "pro" parameters
-
----
-
-> RL.DrawTextureNPatch( Texture texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint )
-
-Draws a texture (or part of it) that stretches or shrinks nicely
-
----
-
-## Textures - Texture Configuration
+## Textures - Texture configuration functions
 
 ---
 
@@ -5824,7 +5796,35 @@ Get texture data format (PixelFormat type)
 
 ---
 
-## Textures - RenderTexture Configuration
+## Textures - Texture drawing functions
+
+---
+
+> RL.DrawTexture( Texture texture, Vector2 position, Color tint )
+
+Draw a Texture2D
+
+---
+
+> RL.DrawTextureRec( Texture texture, Rectangle source, Vector2 position, Color tint )
+
+Draw a part of a texture defined by a rectangle
+
+---
+
+> RL.DrawTexturePro( Texture texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint )
+
+Draw a part of a texture defined by a rectangle with "pro" parameters
+
+---
+
+> RL.DrawTextureNPatch( Texture texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint )
+
+Draws a texture (or part of it) that stretches or shrinks nicely
+
+---
+
+## Textures - RenderTexture configuration functions
 
 ---
 
@@ -5852,7 +5852,7 @@ Get depth buffer attachment texture. Returns as lightuserdata
 
 ---
 
-## Textures - Color/pixel
+## Textures - Color/pixel related functions
 
 ---
 
@@ -5968,7 +5968,7 @@ Get pixel data size in bytes for certain format
 
 ---
 
-## Text - Loading
+## Text - Font loading/unloading functions
 
 ---
 
@@ -6018,7 +6018,7 @@ Unload font from GPU memory (VRAM)
 
 ---
 
-## Text - Draw
+## Text - Text drawing functions
 
 ---
 
@@ -6074,7 +6074,7 @@ Draw text using font inside rectangle limits with support for tint and backgroun
 
 ---
 
-## Text - Font info functions
+## Text - Text font info functions
 
 ---
 
@@ -6766,7 +6766,7 @@ Get collision info between ray and quad
 
 ---
 
-## Audio - Audio device management
+## Audio - Audio device management functions
 
 ---
 
@@ -6776,7 +6776,7 @@ Set master volume (listener)
 
 ---
 
-## Audio - Wave/Sound Loading
+## Audio - Wave/Sound loading/unloading functions
 
 ---
 
@@ -6850,7 +6850,7 @@ Export wave sample data to code (.h), returns true on success
 
 ---
 
-## Audio - Wave/Sound management
+## Audio - Wave/Sound management functions
 
 ---
 
@@ -6924,7 +6924,7 @@ Crop a wave to defined samples range
 
 ---
 
-## Audio - Music management
+## Audio - Music management functions
 
 ---
 
@@ -7957,7 +7957,7 @@ Check whether two given quaternions are almost equal
 
 ---
 
-## Gui - Global
+## Gui - Global gui state control functions
 
 ---
 
@@ -8013,7 +8013,7 @@ Get gui state (global state)
 
 ---
 
-## Gui - Font
+## Gui - Font set/get functions
 
 ---
 
@@ -8031,7 +8031,7 @@ Get gui custom font (global state)
 
 ---
 
-## Gui - Style
+## Gui - Style set/get functions
 
 ---
 
@@ -8049,22 +8049,7 @@ Get one style property
 
 ---
 
-> success = RL.GuiLoadStyle( string fileName )
-
-Load style file over global style variable (.rgs)
-
-- Failure return false
-- Success return true
-
----
-
-> RL.GuiLoadStyleDefault()
-
-Load style default over global style
-
----
-
-## Gui - Container
+## Gui - Container/separator controls, useful for controls organization
 
 ---
 
@@ -8102,7 +8087,7 @@ Scroll Panel control
 
 ---
 
-## Gui - Basic
+## Gui - Basic controls set
 
 ---
 
@@ -8252,7 +8237,7 @@ Grid control, returns mouse cell position
 
 ---
 
-## Gui - Advanced
+## Gui - Advance controls set
 
 ---
 
@@ -8320,7 +8305,26 @@ Color Bar Hue control
 
 ---
 
-## Gui - Icons
+## Gui - Styles loading functions
+
+---
+
+> success = RL.GuiLoadStyle( string fileName )
+
+Load style file over global style variable (.rgs)
+
+- Failure return false
+- Success return true
+
+---
+
+> RL.GuiLoadStyleDefault()
+
+Load style default over global style
+
+---
+
+## Gui - Icons functionality
 
 ---
 
@@ -8364,7 +8368,7 @@ Check icon pixel value
 
 ---
 
-## Lights - Basics
+## Lights - Light management functions
 
 ---
 

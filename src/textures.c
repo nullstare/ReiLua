@@ -1259,30 +1259,6 @@ int ltexturesDrawTextureNPatch( lua_State *L ) {
 }
 
 /*
-> RL.BeginTextureMode( RenderTexture target )
-
-Begin drawing to render texture
-*/
-int ltexturesBeginTextureMode( lua_State *L ) {
-	RenderTexture *renderTexture = uluaGetRenderTexture( L, 1 );
-
-	BeginTextureMode( *renderTexture );
-
-	return 0;
-}
-
-/*
-> RL.EndTextureMode()
-
-Ends drawing to render texture
-*/
-int ltexturesEndTextureMode( lua_State *L ) {
-	EndTextureMode();
-
-	return 0;
-}
-
-/*
 ## Textures - Texture Configuration
 */
 

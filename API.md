@@ -3508,7 +3508,7 @@ GLFW event cursor enter/leave
 ---
 
 
-## Core - Window
+## Core - Window-related functions
 
 ---
 
@@ -3746,7 +3746,299 @@ Get clipboard text content
 
 ---
 
-## Core - Timing
+## Core - Cursor-related functions
+
+---
+
+> RL.ShowCursor()
+
+Shows cursor
+
+---
+
+> RL.HideCursor()
+
+Hides cursor
+
+---
+
+> hidden = RL.IsCursorHidden()
+
+Check if cursor is not visible
+
+- Success return bool
+
+---
+
+> RL.EnableCursor()
+
+Enables cursor (unlock cursor)
+
+---
+
+> RL.DisableCursor()
+
+Disables cursor (lock cursor)
+
+---
+
+> onSreen = RL.IsCursorOnScreen()
+
+Check if cursor is on the screen
+
+- Success return bool
+
+---
+
+## Core - Drawing-related functions
+
+---
+
+> RL.ClearBackground( Color color )
+
+Set background color (framebuffer clear color)
+
+---
+
+> RL.BeginDrawing()
+
+Setup canvas (framebuffer) to start drawing
+
+---
+
+> RL.EndDrawing()
+
+End canvas drawing and swap buffers (double buffering)
+
+---
+
+> RL.BeginMode2D( camera2D camera )
+
+Begin 2D mode with custom camera (2D)
+
+---
+
+> RL.EndMode2D()
+
+Ends 2D mode with custom camera
+
+---
+
+> RL.BeginMode3D( camera3D camera )
+
+Begin 3D mode with custom camera (3D)
+
+---
+
+> RL.EndMode3D()
+
+Ends 3D mode and returns to default 2D orthographic mode
+
+---
+
+> RL.BeginTextureMode( RenderTexture target )
+
+Begin drawing to render texture
+
+---
+
+> RL.EndTextureMode()
+
+Ends drawing to render texture
+
+---
+
+> RL.BeginShaderMode( Shader shader )
+
+Begin custom shader drawing
+
+---
+
+> RL.EndShaderMode()
+
+End custom shader drawing (use default shader)
+
+---
+
+> RL.BeginBlendMode( int mode )
+
+Begin blending mode (BLEND_ALPHA, BLEND_ADDITIVE, BLEND_MULTIPLIED...)
+
+---
+
+> RL.EndBlendMode()
+
+End blending mode (reset to default: BLEND_ALPHA)
+
+---
+
+> RL.BeginScissorMode( Rectangle rectange )
+
+Begin scissor mode (define screen area for following drawing)
+
+---
+
+> RL.EndScissorMode()
+
+End scissor mode
+
+---
+
+## Core - Shader management functions
+
+---
+
+> shader = RL.LoadShader( string vsFileName, string fsFileName )
+
+Load shader from files and bind default locations.
+NOTE: Set nil if no shader
+
+- Failure return nil
+- Success return Shader
+
+---
+
+> shader = RL.LoadShaderFromMemory( string vsCode, string fsCode )
+
+Load shader from code strings and bind default locations
+NOTE: Set nil if no shader
+
+- Failure return nil
+- Success return Shader
+
+---
+
+> isReady = RL.IsShaderReady( Shader shader )
+
+Check if a shader is ready
+
+- Success return bool
+
+---
+
+> location = RL.GetShaderLocation( Shader shader, string uniformName )
+
+Get shader uniform location
+
+- Success return int
+
+---
+
+> location = RL.GetShaderLocationAttrib( Shader shader, string attribName )
+
+Get shader attribute location
+
+- Success return int
+
+---
+
+> RL.SetShaderLocationIndex( Shader shader, int shaderLocationIndex, int location )
+
+Set shader location index
+
+---
+
+> location = RL.GetShaderLocationIndex( Shader shader, int shaderLocationIndex )
+
+Get shader location index
+
+- Success return int
+
+---
+
+> RL.SetShaderValueMatrix( Shader shader, int locIndex, Matrix mat )
+
+Set shader uniform value (matrix 4x4)
+
+---
+
+> RL.SetShaderValueTexture( Shader shader, int locIndex, Texture texture )
+
+Set shader uniform value for texture (sampler2d)
+
+---
+
+> RL.SetShaderValue( Shader shader, int locIndex, number{} values, int uniformType )
+
+Set shader uniform value
+NOTE: Even one value should be in table
+
+---
+
+> RL.SetShaderValueV( Shader shader, int locIndex, number{} values, int uniformType, int count )
+
+Set shader uniform value vector
+NOTE: Even one value should be in table
+
+---
+
+> RL.UnloadShader( Shader shader )
+
+Unload shader from GPU memory (VRAM)
+
+---
+
+## Core - Screen-space-related functions
+
+---
+
+> ray = RL.GetMouseRay( Vector2 mousePosition, Camera3D camera )
+
+Get a ray trace from mouse position
+
+- Success return Ray
+
+---
+
+> matrix = RL.GetCameraMatrix( Camera3D camera )
+
+Get camera transform matrix (view matrix)
+
+- Success return Matrix
+
+---
+
+> matrix = RL.GetCameraMatrix2D( Camera2D camera )
+
+Get camera 2d transform matrix
+
+- Success return Matrix
+
+---
+
+> position = RL.GetWorldToScreen( Vector3 position, Camera3D camera )
+
+Get the screen space position for a 3d world space position
+
+- Success return Vector2
+
+---
+
+> position = RL.GetWorldToScreenEx( Vector3 position, Camera3D camera, Vector2 size )
+
+Get size position for a 3d world space position
+
+- Success return Vector2
+
+---
+
+> position = RL.GetWorldToScreen2D( Vector2 position, Camera2D camera )
+
+Get the screen space position for a 2d camera world space position
+
+- Success return Vector2
+
+---
+
+> position = RL.GetScreenToWorld2D( Vector2 position, Camera2D camera )
+
+Get the world space position for a 2d camera screen space position
+
+- Success return Vector2
+
+---
+
+## Core - Timing-related functions
 
 ---
 
@@ -3836,527 +4128,7 @@ Check if Lua garbage collection is set to unload object data
 
 ---
 
-## Core - Cursor
-
----
-
-> RL.ShowCursor()
-
-Shows cursor
-
----
-
-> RL.HideCursor()
-
-Hides cursor
-
----
-
-> hidden = RL.IsCursorHidden()
-
-Check if cursor is not visible
-
-- Success return bool
-
----
-
-> RL.EnableCursor()
-
-Enables cursor (unlock cursor)
-
----
-
-> RL.DisableCursor()
-
-Disables cursor (lock cursor)
-
----
-
-> onSreen = RL.IsCursorOnScreen()
-
-Check if cursor is on the screen
-
-- Success return bool
-
----
-
-## Core - Drawing
-
----
-
-> RL.ClearBackground( Color color )
-
-Set background color (framebuffer clear color)
-
----
-
-> RL.BeginDrawing()
-
-Setup canvas (framebuffer) to start drawing
-
----
-
-> RL.EndDrawing()
-
-End canvas drawing and swap buffers (double buffering)
-
----
-
-> RL.BeginBlendMode( int mode )
-
-Begin blending mode (BLEND_ALPHA, BLEND_ADDITIVE, BLEND_MULTIPLIED...)
-
----
-
-> RL.EndBlendMode()
-
-End blending mode (reset to default: BLEND_ALPHA)
-
----
-
-> RL.BeginScissorMode( Rectangle rectange )
-
-Begin scissor mode (define screen area for following drawing)
-
----
-
-> RL.EndScissorMode()
-
-End scissor mode
-
----
-
-## Core - Shader
-
----
-
-> shader = RL.LoadShader( string vsFileName, string fsFileName )
-
-Load shader from files and bind default locations.
-NOTE: Set nil if no shader
-
-- Failure return nil
-- Success return Shader
-
----
-
-> shader = RL.LoadShaderFromMemory( string vsCode, string fsCode )
-
-Load shader from code strings and bind default locations
-NOTE: Set nil if no shader
-
-- Failure return nil
-- Success return Shader
-
----
-
-> isReady = RL.IsShaderReady( Shader shader )
-
-Check if a shader is ready
-
-- Success return bool
-
----
-
-> RL.BeginShaderMode( Shader shader )
-
-Begin custom shader drawing
-
----
-
-> RL.EndShaderMode()
-
-End custom shader drawing (use default shader)
-
----
-
-> location = RL.GetShaderLocation( Shader shader, string uniformName )
-
-Get shader uniform location
-
-- Success return int
-
----
-
-> location = RL.GetShaderLocationAttrib( Shader shader, string attribName )
-
-Get shader attribute location
-
-- Success return int
-
----
-
-> RL.SetShaderLocationIndex( Shader shader, int shaderLocationIndex, int location )
-
-Set shader location index
-
----
-
-> location = RL.GetShaderLocationIndex( Shader shader, int shaderLocationIndex )
-
-Get shader location index
-
-- Success return int
-
----
-
-> RL.SetShaderValueMatrix( Shader shader, int locIndex, Matrix mat )
-
-Set shader uniform value (matrix 4x4)
-
----
-
-> RL.SetShaderValueTexture( Shader shader, int locIndex, Texture texture )
-
-Set shader uniform value for texture (sampler2d)
-
----
-
-> RL.SetShaderValue( Shader shader, int locIndex, number{} values, int uniformType )
-
-Set shader uniform value
-NOTE: Even one value should be in table
-
----
-
-> RL.SetShaderValueV( Shader shader, int locIndex, number{} values, int uniformType, int count )
-
-Set shader uniform value vector
-NOTE: Even one value should be in table
-
----
-
-> RL.UnloadShader( Shader shader )
-
-Unload shader from GPU memory (VRAM)
-
----
-
-## Core - Input-related Keyboard
-
----
-
-> pressed = RL.IsKeyPressed( int key )
-
-Detect if a key has been pressed once
-
-- Success return bool
-
----
-
-> pressed = RL.IsKeyDown( int key )
-
-Detect if a key is being pressed
-
-- Success return bool
-
----
-
-> released = RL.IsKeyReleased( int key )
-
-Detect if a key has been released once
-
-- Success return bool
-
----
-
-> released = RL.IsKeyUp( int key )
-
-Check if a key is NOT being pressed
-
-- Success return bool
-
----
-
-> keycode = RL.GetKeyPressed()
-
-Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
-
-- Success return int
-
----
-
-> unicode = RL.GetCharPressed()
-
-Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
-
-- Success return int
-
----
-
-> RL.SetExitKey( int key )
-
-Set a custom key to exit program (default is ESC)
-
----
-
-> keyName = RL.GetKeyName( int key, int scancode )
-
-This function returns the name of the specified printable key, encoded as UTF-8.
-This is typically the character that key would produce without any modifier keys,
-intended for displaying key bindings to the user. For dead keys, it is typically
-the diacritic it would add to a character.
-
-Do not use this function for text input. You will break text input for many
-languages even if it happens to work for yours.
-
-If the key is KEY_UNKNOWN, the scancode is used to identify the key,
-otherwise the scancode is ignored. If you specify a non-printable key,
-or KEY_UNKNOWN and a scancode that maps to a non-printable key,
-this function returns nil but does not emit an error.
-
-- Success return string or nil
-
----
-
-> scancode = RL.GetKeyScancode( int key )
-
-This function returns the platform-specific scancode of the specified key.
-If the key is KEY_UNKNOWN or does not exist on the keyboard this method will return -1.
-
-- Success return int
-
----
-
-## Core - Input-related Gamepad
-
----
-
-> available = RL.IsGamepadAvailable( int gamepad )
-
-Detect if a gamepad is available
-
-- Success return bool
-
----
-
-> pressed = RL.IsGamepadButtonPressed( int gamepad, int button )
-
-Detect if a gamepad button has been pressed once
-
-- Success return bool
-
----
-
-> pressed = RL.IsGamepadButtonDown( int gamepad, int button )
-
-Detect if a gamepad button is being pressed
-
-- Success return bool
-
----
-
-> released = RL.IsGamepadButtonReleased( int gamepad, int button )
-
-Detect if a gamepad button has been released once
-
-- Success return bool
-
----
-
-> count = RL.GetGamepadAxisCount( int gamepad )
-
-Return gamepad axis count for a gamepad
-
-- Success return int
-
----
-
-> value = RL.GetGamepadAxisMovement( int gamepad, int axis )
-
-Return axis movement value for a gamepad axis
-
-- Success return float
-
----
-
-> name = RL.GetGamepadName( int gamepad )
-
-Return gamepad internal name id
-
-- Success return string
-
----
-
-## Core - Input-related Mouse
-
----
-
-> pressed = RL.IsMouseButtonPressed( int button )
-
-Detect if a mouse button has been pressed once
-
-- Success return bool
-
----
-
-> pressed = RL.IsMouseButtonDown( int button )
-
-Detect if a mouse button is being pressed
-
-- Success return bool
-
----
-
-> released = RL.IsMouseButtonReleased( int button )
-
-Detect if a mouse button has been released once
-
-- Success return bool
-
----
-
-> released = RL.IsMouseButtonUp( int button )
-
-Check if a mouse button is NOT being pressed
-
-- Success return bool
-
----
-
-> position = RL.GetMousePosition()
-
-Returns mouse position
-
-- Success return Vector2
-
----
-
-> position = RL.GetMouseDelta()
-
-Get mouse delta between frames
-
-- Success return Vector2
-
----
-
-> RL.SetMousePosition( Vector2 position )
-
-Set mouse position XY
-
----
-
-> RL.SetMouseOffset( Vector2 offset )
-
-Set mouse offset
-
----
-
-> RL.SetMouseScale( Vector2 scale )
-
-Set mouse scaling
-
----
-
-> movement = RL.GetMouseWheelMove()
-
-Returns mouse wheel movement Y
-
-- Success return float
-
----
-
-> RL.SetMouseCursor( int cursor )
-
-Set mouse cursor
-
----
-
-## Core - Input-related Touch
-
----
-
-> position = RL.GetTouchPosition( int index )
-
-Get touch position XY for a touch point index (relative to screen size)
-
-- Success return Vector2
-
----
-
-> id = RL.GetTouchPointId( int index )
-
-Get touch point identifier for given index
-
-- Success return int
-
----
-
-> count = RL.GetTouchPointCount()
-
-Get touch point identifier for given index
-
-- Success return int
-
----
-
-## Core - Input-related Gestures
-
----
-
-> RL.SetGesturesEnabled( unsigned int flags )
-
-Enable a set of gestures using flags
-
----
-
-> detected = RL.IsGestureDetected( int gesture )
-
-Check if a gesture have been detected
-
-- Success return bool
-
----
-
-> gesture = RL.GetGestureDetected()
-
-Get latest detected gesture
-
-- Success return int
-
----
-
-> time = RL.GetGestureHoldDuration()
-
-Get gesture hold time in milliseconds
-
-- Success return float
-
----
-
-> vector = RL.GetGestureDragVector()
-
-Get gesture drag vector
-
-- Success return Vector2
-
----
-
-> angle = RL.GetGestureDragAngle()
-
-Get gesture drag angle
-
-- Success return float
-
----
-
-> vector = RL.GetGesturePinchVector()
-
-Get gesture pinch delta
-
-- Success return Vector2
-
----
-
-> angle = RL.GetGesturePinchAngle()
-
-Get gesture pinch angle
-
-- Success return float
-
----
-
-## Core - File
+## Core - Files management functions
 
 ---
 
@@ -4540,7 +4312,331 @@ Decode Base64 string data
 
 ---
 
-## Core - Camera2D
+## Core - Input-related functions: keyboard
+
+---
+
+> pressed = RL.IsKeyPressed( int key )
+
+Detect if a key has been pressed once
+
+- Success return bool
+
+---
+
+> pressed = RL.IsKeyDown( int key )
+
+Detect if a key is being pressed
+
+- Success return bool
+
+---
+
+> released = RL.IsKeyReleased( int key )
+
+Detect if a key has been released once
+
+- Success return bool
+
+---
+
+> released = RL.IsKeyUp( int key )
+
+Check if a key is NOT being pressed
+
+- Success return bool
+
+---
+
+> keycode = RL.GetKeyPressed()
+
+Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
+
+- Success return int
+
+---
+
+> unicode = RL.GetCharPressed()
+
+Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
+
+- Success return int
+
+---
+
+> RL.SetExitKey( int key )
+
+Set a custom key to exit program (default is ESC)
+
+---
+
+> keyName = RL.GetKeyName( int key, int scancode )
+
+This function returns the name of the specified printable key, encoded as UTF-8.
+This is typically the character that key would produce without any modifier keys,
+intended for displaying key bindings to the user. For dead keys, it is typically
+the diacritic it would add to a character.
+
+Do not use this function for text input. You will break text input for many
+languages even if it happens to work for yours.
+
+If the key is KEY_UNKNOWN, the scancode is used to identify the key,
+otherwise the scancode is ignored. If you specify a non-printable key,
+or KEY_UNKNOWN and a scancode that maps to a non-printable key,
+this function returns nil but does not emit an error.
+
+- Success return string or nil
+
+---
+
+> scancode = RL.GetKeyScancode( int key )
+
+This function returns the platform-specific scancode of the specified key.
+If the key is KEY_UNKNOWN or does not exist on the keyboard this method will return -1.
+
+- Success return int
+
+---
+
+## Core - Input-related functions: gamepads
+
+---
+
+> available = RL.IsGamepadAvailable( int gamepad )
+
+Detect if a gamepad is available
+
+- Success return bool
+
+---
+
+> pressed = RL.IsGamepadButtonPressed( int gamepad, int button )
+
+Detect if a gamepad button has been pressed once
+
+- Success return bool
+
+---
+
+> pressed = RL.IsGamepadButtonDown( int gamepad, int button )
+
+Detect if a gamepad button is being pressed
+
+- Success return bool
+
+---
+
+> released = RL.IsGamepadButtonReleased( int gamepad, int button )
+
+Detect if a gamepad button has been released once
+
+- Success return bool
+
+---
+
+> count = RL.GetGamepadAxisCount( int gamepad )
+
+Return gamepad axis count for a gamepad
+
+- Success return int
+
+---
+
+> value = RL.GetGamepadAxisMovement( int gamepad, int axis )
+
+Return axis movement value for a gamepad axis
+
+- Success return float
+
+---
+
+> name = RL.GetGamepadName( int gamepad )
+
+Return gamepad internal name id
+
+- Success return string
+
+---
+
+## Core - Input-related functions: mouse
+
+---
+
+> pressed = RL.IsMouseButtonPressed( int button )
+
+Detect if a mouse button has been pressed once
+
+- Success return bool
+
+---
+
+> pressed = RL.IsMouseButtonDown( int button )
+
+Detect if a mouse button is being pressed
+
+- Success return bool
+
+---
+
+> released = RL.IsMouseButtonReleased( int button )
+
+Detect if a mouse button has been released once
+
+- Success return bool
+
+---
+
+> released = RL.IsMouseButtonUp( int button )
+
+Check if a mouse button is NOT being pressed
+
+- Success return bool
+
+---
+
+> position = RL.GetMousePosition()
+
+Returns mouse position
+
+- Success return Vector2
+
+---
+
+> position = RL.GetMouseDelta()
+
+Get mouse delta between frames
+
+- Success return Vector2
+
+---
+
+> RL.SetMousePosition( Vector2 position )
+
+Set mouse position XY
+
+---
+
+> RL.SetMouseOffset( Vector2 offset )
+
+Set mouse offset
+
+---
+
+> RL.SetMouseScale( Vector2 scale )
+
+Set mouse scaling
+
+---
+
+> movement = RL.GetMouseWheelMove()
+
+Returns mouse wheel movement Y
+
+- Success return float
+
+---
+
+> RL.SetMouseCursor( int cursor )
+
+Set mouse cursor
+
+---
+
+## Core - Input-related functions: touch
+
+---
+
+> position = RL.GetTouchPosition( int index )
+
+Get touch position XY for a touch point index (relative to screen size)
+
+- Success return Vector2
+
+---
+
+> id = RL.GetTouchPointId( int index )
+
+Get touch point identifier for given index
+
+- Success return int
+
+---
+
+> count = RL.GetTouchPointCount()
+
+Get touch point identifier for given index
+
+- Success return int
+
+---
+
+## Core - Input-related functions: gestures
+
+---
+
+> RL.SetGesturesEnabled( unsigned int flags )
+
+Enable a set of gestures using flags
+
+---
+
+> detected = RL.IsGestureDetected( int gesture )
+
+Check if a gesture have been detected
+
+- Success return bool
+
+---
+
+> gesture = RL.GetGestureDetected()
+
+Get latest detected gesture
+
+- Success return int
+
+---
+
+> time = RL.GetGestureHoldDuration()
+
+Get gesture hold time in milliseconds
+
+- Success return float
+
+---
+
+> vector = RL.GetGestureDragVector()
+
+Get gesture drag vector
+
+- Success return Vector2
+
+---
+
+> angle = RL.GetGestureDragAngle()
+
+Get gesture drag angle
+
+- Success return float
+
+---
+
+> vector = RL.GetGesturePinchVector()
+
+Get gesture pinch delta
+
+- Success return Vector2
+
+---
+
+> angle = RL.GetGesturePinchAngle()
+
+Get gesture pinch angle
+
+- Success return float
+
+---
+
+## Core - Camera2D System functions
 
 ---
 
@@ -4549,18 +4645,6 @@ Decode Base64 string data
 Return camera2D set to default configuration
 
 - Success return Camera2D
-
----
-
-> RL.BeginMode2D( camera2D camera )
-
-Begin 2D mode with custom camera (2D)
-
----
-
-> RL.EndMode2D()
-
-Ends 2D mode with custom camera
 
 ---
 
@@ -4620,7 +4704,7 @@ Get camera2D zoom
 
 ---
 
-## Core - Camera3D
+## Core - Camera3D System functions
 
 ---
 
@@ -4629,18 +4713,6 @@ Get camera2D zoom
 Return camera3D id set to default configuration
 
 - Success return int
-
----
-
-> RL.BeginMode3D( camera3D camera )
-
-Begin 3D mode with custom camera (3D)
-
----
-
-> RL.EndMode3D()
-
-Ends 3D mode and returns to default 2D orthographic mode
 
 ---
 
@@ -4818,67 +4890,7 @@ Update camera movement, movement/rotation values should be provided by user
 
 ---
 
-## Core - Screen-space
-
----
-
-> ray = RL.GetMouseRay( Vector2 mousePosition, Camera3D camera )
-
-Get a ray trace from mouse position
-
-- Success return Ray
-
----
-
-> matrix = RL.GetCameraMatrix( Camera3D camera )
-
-Get camera transform matrix (view matrix)
-
-- Success return Matrix
-
----
-
-> matrix = RL.GetCameraMatrix2D( Camera2D camera )
-
-Get camera 2d transform matrix
-
-- Success return Matrix
-
----
-
-> position = RL.GetWorldToScreen( Vector3 position, Camera3D camera )
-
-Get the screen space position for a 3d world space position
-
-- Success return Vector2
-
----
-
-> position = RL.GetWorldToScreenEx( Vector3 position, Camera3D camera, Vector2 size )
-
-Get size position for a 3d world space position
-
-- Success return Vector2
-
----
-
-> position = RL.GetWorldToScreen2D( Vector2 position, Camera2D camera )
-
-Get the screen space position for a 2d camera world space position
-
-- Success return Vector2
-
----
-
-> position = RL.GetScreenToWorld2D( Vector2 position, Camera2D camera )
-
-Get the world space position for a 2d camera screen space position
-
-- Success return Vector2
-
----
-
-## Core - Buffer
+## Core - Buffer management functions
 
 ---
 
@@ -5755,18 +5767,6 @@ Draw a part of a texture defined by a rectangle with "pro" parameters
 > RL.DrawTextureNPatch( Texture texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint )
 
 Draws a texture (or part of it) that stretches or shrinks nicely
-
----
-
-> RL.BeginTextureMode( RenderTexture target )
-
-Begin drawing to render texture
-
----
-
-> RL.EndTextureMode()
-
-Ends drawing to render texture
 
 ---
 

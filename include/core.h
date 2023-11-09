@@ -3,7 +3,7 @@
 #include "lua_core.h"
 
 void unloadBuffer( Buffer *buffer );
-/* Window. */
+/* Window-related functions. */
 int lcoreIsWindowReady( lua_State *L );
 int lcoreIsWindowFullscreen( lua_State *L );
 int lcoreIsWindowHidden( lua_State *L );
@@ -36,41 +36,33 @@ int lcoreGetMonitorName( lua_State *L );
 int lcoreCloseWindow( lua_State *L );
 int lcoreSetClipboardText( lua_State *L );
 int lcoreGetClipboardText( lua_State *L );
-/* Timing. */
-int lcoreSetTargetFPS( lua_State *L );
-int lcoreGetFPS( lua_State *L );
-int lcoreGetFrameTime( lua_State *L );
-int lcoreGetTime( lua_State *L );
-/* Misc. */
-int lcoreTakeScreenshot( lua_State *L );
-int lcoreSetConfigFlags( lua_State *L );
-int lcoreTraceLog( lua_State *L );
-int lcoreSetTraceLogLevel( lua_State *L );
-int lcoreSetLogLevelInvalid( lua_State *L );
-int lcoreGetLogLevelInvalid( lua_State *L );
-int lcoreOpenURL( lua_State *L );
-int lcoreIsGCUnloadEnabled( lua_State *L );
-/* Cursor. */
+/* Cursor-related functions. */
 int lcoreShowCursor( lua_State *L );
 int lcoreHideCursor( lua_State *L );
 int lcoreIsCursorHidden( lua_State *L );
 int lcoreEnableCursor( lua_State *L );
 int lcoreDisableCursor( lua_State *L );
 int lcoreIsCursorOnScreen( lua_State *L );
-/* Drawing. */
+/* Drawing-related functions. */
 int lcoreClearBackground( lua_State *L );
 int lcoreBeginDrawing( lua_State *L );
 int lcoreEndDrawing( lua_State *L );
+int lcoreBeginMode2D( lua_State *L );
+int lcoreEndMode2D( lua_State *L );
+int lcoreBeginMode3D( lua_State *L );
+int lcoreEndMode3D( lua_State *L );
+int lcoreBeginTextureMode( lua_State *L );
+int lcoreEndTextureMode( lua_State *L );
+int lcoreBeginShaderMode( lua_State *L );
+int lcoreEndShaderMode( lua_State *L );
 int lcoreBeginBlendMode( lua_State *L );
 int lcoreEndBlendMode( lua_State *L );
 int lcoreBeginScissorMode( lua_State *L );
 int lcoreEndScissorMode( lua_State *L );
-/* Shader. */
+/* Shader management functions. */
 int lcoreLoadShader( lua_State *L );
 int lcoreLoadShaderFromMemory( lua_State *L );
 int lcoreIsShaderReady( lua_State *L );
-int lcoreBeginShaderMode( lua_State *L );
-int lcoreEndShaderMode( lua_State *L );
 int lcoreGetShaderLocation( lua_State *L );
 int lcoreGetShaderLocationAttrib( lua_State *L );
 int lcoreSetShaderLocationIndex( lua_State *L );
@@ -80,7 +72,29 @@ int lcoreSetShaderValueTexture( lua_State *L );
 int lcoreSetShaderValue( lua_State *L );
 int lcoreSetShaderValueV( lua_State *L );
 int lcoreUnloadShader( lua_State *L );
-/* File. */
+/* Screen-space-related functions. */
+int lcoreGetMouseRay( lua_State *L );
+int lcoreGetCameraMatrix( lua_State *L );
+int lcoreGetCameraMatrix2D( lua_State *L );
+int lcoreGetWorldToScreen( lua_State *L );
+int lcoreGetWorldToScreenEx( lua_State *L );
+int lcoreGetWorldToScreen2D( lua_State *L );
+int lcoreGetScreenToWorld2D( lua_State *L );
+/* Timing-related functions. */
+int lcoreSetTargetFPS( lua_State *L );
+int lcoreGetFPS( lua_State *L );
+int lcoreGetFrameTime( lua_State *L );
+int lcoreGetTime( lua_State *L );
+/* Misc. functions */
+int lcoreTakeScreenshot( lua_State *L );
+int lcoreSetConfigFlags( lua_State *L );
+int lcoreTraceLog( lua_State *L );
+int lcoreSetTraceLogLevel( lua_State *L );
+int lcoreSetLogLevelInvalid( lua_State *L );
+int lcoreGetLogLevelInvalid( lua_State *L );
+int lcoreOpenURL( lua_State *L );
+int lcoreIsGCUnloadEnabled( lua_State *L );
+/* Files management functions. */
 int lcoreGetBasePath( lua_State *L );
 int lcoreFileExists( lua_State *L );
 int lcoreDirectoryExists( lua_State *L );
@@ -104,10 +118,51 @@ int lcoreCompressData( lua_State *L );
 int lcoreDecompressData( lua_State *L );
 int lcoreEncodeDataBase64( lua_State *L );
 int lcoreDecodeDataBase64( lua_State *L );
-/* Camera2D. */
+/* Input-related functions: keyboard. */
+int lcoreIsKeyPressed( lua_State *L );
+int lcoreIsKeyDown( lua_State *L );
+int lcoreIsKeyReleased( lua_State *L );
+int lcoreIsKeyUp( lua_State *L );
+int lcoreGetKeyPressed( lua_State *L );
+int lcoreGetCharPressed( lua_State *L );
+int lcoreSetExitKey( lua_State *L );
+int lcoreGetKeyName( lua_State *L );
+int lcoreGetKeyScancode( lua_State *L );
+/* Input-related functions: gamepads. */
+int lcoreIsGamepadAvailable( lua_State *L );
+int lcoreIsGamepadButtonPressed( lua_State *L );
+int lcoreIsGamepadButtonDown( lua_State *L );
+int lcoreIsGamepadButtonReleased( lua_State *L );
+int lcoreGetGamepadAxisCount( lua_State *L );
+int lcoreGetGamepadAxisMovement( lua_State *L );
+int lcoreGetGamepadName( lua_State *L );
+/* Input-related functions: mouse. */
+int lcoreIsMouseButtonPressed( lua_State *L );
+int lcoreIsMouseButtonDown( lua_State *L );
+int lcoreIsMouseButtonReleased( lua_State *L );
+int lcoreIsMouseButtonUp( lua_State *L );
+int lcoreGetMousePosition( lua_State *L );
+int lcoreGetMouseDelta( lua_State *L );
+int lcoreSetMousePosition( lua_State *L );
+int lcoreSetMouseOffset( lua_State *L );
+int lcoreSetMouseScale( lua_State *L );
+int lcoreGetMouseWheelMove( lua_State *L );
+int lcoreSetMouseCursor( lua_State *L );
+/* Input-related functions: touch. */
+int lcoreGetTouchPosition( lua_State *L );
+int lcoreGetTouchPointId( lua_State *L );
+int lcoreGetTouchPointCount( lua_State *L );
+/* Input-related functions: gestures. */
+int lcoreSetGesturesEnabled( lua_State *L );
+int lcoreIsGestureDetected( lua_State *L );
+int lcoreGetGestureDetected( lua_State *L );
+int lcoreGetGestureHoldDuration( lua_State *L );
+int lcoreGetGestureDragVector( lua_State *L );
+int lcoreGetGestureDragAngle( lua_State *L );
+int lcoreGetGesturePinchVector( lua_State *L );
+int lcoreGetGesturePinchAngle( lua_State *L );
+/* Camera2D System functions. */
 int lcoreCreateCamera2D( lua_State *L );
-int lcoreBeginMode2D( lua_State *L );
-int lcoreEndMode2D( lua_State *L );
 int lcoreSetCamera2DTarget( lua_State *L );
 int lcoreSetCamera2DOffset( lua_State *L );
 int lcoreSetCamera2DRotation( lua_State *L );
@@ -116,10 +171,8 @@ int lcoreGetCamera2DTarget( lua_State *L );
 int lcoreGetCamera2DOffset( lua_State *L );
 int lcoreGetCamera2DRotation( lua_State *L );
 int lcoreGetCamera2DZoom( lua_State *L );
-/* Camera3D. */
+/* Camera3D System functions. */
 int lcoreCreateCamera3D( lua_State *L );
-int lcoreBeginMode3D( lua_State *L );
-int lcoreEndMode3D( lua_State *L );
 int lcoreSetCamera3DPosition( lua_State *L );
 int lcoreSetCamera3DTarget( lua_State *L );
 int lcoreSetCamera3DUp( lua_State *L );
@@ -144,58 +197,7 @@ int lcoreGetCamera3DViewMatrix( lua_State *L );
 int lcoreGetCamera3DProjectionMatrix( lua_State *L );
 int lcoreUpdateCamera3D( lua_State *L );
 int lcoreUpdateCamera3DPro( lua_State *L );
-/* Input-related Keyboard. */
-int lcoreIsKeyPressed( lua_State *L );
-int lcoreIsKeyDown( lua_State *L );
-int lcoreIsKeyReleased( lua_State *L );
-int lcoreIsKeyUp( lua_State *L );
-int lcoreGetKeyPressed( lua_State *L );
-int lcoreGetCharPressed( lua_State *L );
-int lcoreSetExitKey( lua_State *L );
-int lcoreGetKeyName( lua_State *L );
-int lcoreGetKeyScancode( lua_State *L );
-/* Input-related Gamepad. */
-int lcoreIsGamepadAvailable( lua_State *L );
-int lcoreIsGamepadButtonPressed( lua_State *L );
-int lcoreIsGamepadButtonDown( lua_State *L );
-int lcoreIsGamepadButtonReleased( lua_State *L );
-int lcoreGetGamepadAxisCount( lua_State *L );
-int lcoreGetGamepadAxisMovement( lua_State *L );
-int lcoreGetGamepadName( lua_State *L );
-/* Input-related Mouse. */
-int lcoreIsMouseButtonPressed( lua_State *L );
-int lcoreIsMouseButtonDown( lua_State *L );
-int lcoreIsMouseButtonReleased( lua_State *L );
-int lcoreIsMouseButtonUp( lua_State *L );
-int lcoreGetMousePosition( lua_State *L );
-int lcoreGetMouseDelta( lua_State *L );
-int lcoreSetMousePosition( lua_State *L );
-int lcoreSetMouseOffset( lua_State *L );
-int lcoreSetMouseScale( lua_State *L );
-int lcoreGetMouseWheelMove( lua_State *L );
-int lcoreSetMouseCursor( lua_State *L );
-/* Input-related Touch */
-int lcoreGetTouchPosition( lua_State *L );
-int lcoreGetTouchPointId( lua_State *L );
-int lcoreGetTouchPointCount( lua_State *L );
-/* Input-related Gestures. */
-int lcoreSetGesturesEnabled( lua_State *L );
-int lcoreIsGestureDetected( lua_State *L );
-int lcoreGetGestureDetected( lua_State *L );
-int lcoreGetGestureHoldDuration( lua_State *L );
-int lcoreGetGestureDragVector( lua_State *L );
-int lcoreGetGestureDragAngle( lua_State *L );
-int lcoreGetGesturePinchVector( lua_State *L );
-int lcoreGetGesturePinchAngle( lua_State *L );
-/* Screen-space. */
-int lcoreGetMouseRay( lua_State *L );
-int lcoreGetCameraMatrix( lua_State *L );
-int lcoreGetCameraMatrix2D( lua_State *L );
-int lcoreGetWorldToScreen( lua_State *L );
-int lcoreGetWorldToScreenEx( lua_State *L );
-int lcoreGetWorldToScreen2D( lua_State *L );
-int lcoreGetScreenToWorld2D( lua_State *L );
-/* Buffer. */
+/* Buffer management functions. */
 int lcoreLoadBuffer( lua_State *L );
 int lcoreUnloadBuffer( lua_State *L );
 int lcoreGetBufferData( lua_State *L );

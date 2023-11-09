@@ -1208,7 +1208,7 @@ RL.EVENT_MOUSE_CURSOR_POS=8
 RL.EVENT_MOUSE_SCROLL=9
 ---GLFW event cursor enter/leave
 RL.EVENT_CURSOR_ENTER=10
--- Core - Window
+-- Core - Window-related functions
 
 ---Check if window has been initialized successfully
 ---- Success return bool
@@ -1376,72 +1376,7 @@ function  RL.SetClipboardText( text ) end
 ---@return any text 
 function RL.GetClipboardText() end
 
--- Core - Timing
-
----Set target FPS (maximum)
----@param fps integer
----@return any RL.SetTargetFPS
-function  RL.SetTargetFPS( fps ) end
-
----Get current FPS
----- Success return int
----@return any FPS 
-function RL.GetFPS() end
-
----Get time in seconds for last frame drawn (Delta time)
----- Success return float
----@return any delta 
-function RL.GetFrameTime() end
-
----Get elapsed time in seconds since InitWindow()
----- Success return float
----@return any time 
-function RL.GetTime() end
-
--- Core - Misc
-
----Takes a screenshot of current screen (filename extension defines format)
----@param fileName string
----@return any RL.TakeScreenshot
-function  RL.TakeScreenshot( fileName ) end
-
----Setup init configuration flags (view FLAGS)
----@param flags integer
----@return any RL.SetConfigFlags
-function  RL.SetConfigFlags( flags ) end
-
----Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
----@param logLevel integer
----@param text string
----@return any RL.TraceLog
-function  RL.TraceLog( logLevel, text ) end
-
----Set the current threshold (minimum) log level
----@param logLevel integer
----@return any RL.SetTraceLogLevel
-function  RL.SetTraceLogLevel( logLevel ) end
-
----Set the log level for bad function calls and invalid data formats.
----@param logLevel integer
----@return any RL.SetLogLevelInvalid
-function  RL.SetLogLevelInvalid( logLevel ) end
-
----Get the log level for bad function calls and invalid data formats.
----- Success return int
----@return any logLevel 
-function RL.GetLogLevelInvalid() end
-
----Open URL with default system browser (If available)
----@param url string
----@return any RL.OpenURL
-function  RL.OpenURL( url ) end
-
----Check if Lua garbage collection is set to unload object data
----- Success return bool
----@return any enabled 
-function RL.IsGCUnloadEnabled() end
-
--- Core - Cursor
+-- Core - Cursor-related functions
 
 ---Shows cursor
 ---@return any RL.ShowCursor
@@ -1469,7 +1404,7 @@ function  RL.DisableCursor() end
 ---@return any onSreen 
 function RL.IsCursorOnScreen() end
 
--- Core - Drawing
+-- Core - Drawing-related functions
 
 ---Set background color (framebuffer clear color)
 ---@param color table
@@ -1483,6 +1418,42 @@ function  RL.BeginDrawing() end
 ---End canvas drawing and swap buffers (double buffering)
 ---@return any RL.EndDrawing
 function  RL.EndDrawing() end
+
+---Begin 2D mode with custom camera (2D)
+---@param camera any
+---@return any RL.BeginMode2D
+function  RL.BeginMode2D( camera ) end
+
+---Ends 2D mode with custom camera
+---@return any RL.EndMode2D
+function  RL.EndMode2D() end
+
+---Begin 3D mode with custom camera (3D)
+---@param camera any
+---@return any RL.BeginMode3D
+function  RL.BeginMode3D( camera ) end
+
+---Ends 3D mode and returns to default 2D orthographic mode
+---@return any RL.EndMode3D
+function  RL.EndMode3D() end
+
+---Begin drawing to render texture
+---@param target any
+---@return any RL.BeginTextureMode
+function  RL.BeginTextureMode( target ) end
+
+---Ends drawing to render texture
+---@return any RL.EndTextureMode
+function  RL.EndTextureMode() end
+
+---Begin custom shader drawing
+---@param shader any
+---@return any RL.BeginShaderMode
+function  RL.BeginShaderMode( shader ) end
+
+---End custom shader drawing (use default shader)
+---@return any RL.EndShaderMode
+function  RL.EndShaderMode() end
 
 ---Begin blending mode (BLEND_ALPHA, BLEND_ADDITIVE, BLEND_MULTIPLIED...)
 ---@param mode integer
@@ -1502,7 +1473,7 @@ function  RL.BeginScissorMode( rectange ) end
 ---@return any RL.EndScissorMode
 function  RL.EndScissorMode() end
 
--- Core - Shader
+-- Core - Shader management functions
 
 ---Load shader from files and bind default locations.
 ---NOTE: Set nil if no shader
@@ -1527,15 +1498,6 @@ function RL.LoadShaderFromMemory( vsCode, fsCode ) end
 ---@param shader any
 ---@return any isReady 
 function RL.IsShaderReady( shader ) end
-
----Begin custom shader drawing
----@param shader any
----@return any RL.BeginShaderMode
-function  RL.BeginShaderMode( shader ) end
-
----End custom shader drawing (use default shader)
----@return any RL.EndShaderMode
-function  RL.EndShaderMode() end
 
 ---Get shader uniform location
 ---- Success return int
@@ -1603,242 +1565,122 @@ function  RL.SetShaderValueV( shader, locIndex, values, uniformType, count ) end
 ---@return any RL.UnloadShader
 function  RL.UnloadShader( shader ) end
 
--- Core - Input-related Keyboard
+-- Core - Screen-space-related functions
 
----Detect if a key has been pressed once
----- Success return bool
----@param key integer
----@return any pressed 
-function RL.IsKeyPressed( key ) end
+---Get a ray trace from mouse position
+---- Success return Ray
+---@param mousePosition table
+---@param camera any
+---@return any ray 
+function RL.GetMouseRay( mousePosition, camera ) end
 
----Detect if a key is being pressed
----- Success return bool
----@param key integer
----@return any pressed 
-function RL.IsKeyDown( key ) end
+---Get camera transform matrix (view matrix)
+---- Success return Matrix
+---@param camera any
+---@return any matrix 
+function RL.GetCameraMatrix( camera ) end
 
----Detect if a key has been released once
----- Success return bool
----@param key integer
----@return any released 
-function RL.IsKeyReleased( key ) end
+---Get camera 2d transform matrix
+---- Success return Matrix
+---@param camera any
+---@return any matrix 
+function RL.GetCameraMatrix2D( camera ) end
 
----Check if a key is NOT being pressed
----- Success return bool
----@param key integer
----@return any released 
-function RL.IsKeyUp( key ) end
-
----Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
----- Success return int
----@return any keycode 
-function RL.GetKeyPressed() end
-
----Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
----- Success return int
----@return any unicode 
-function RL.GetCharPressed() end
-
----Set a custom key to exit program (default is ESC)
----@param key integer
----@return any RL.SetExitKey
-function  RL.SetExitKey( key ) end
-
----This function returns the name of the specified printable key, encoded as UTF-8.
----This is typically the character that key would produce without any modifier keys,
----intended for displaying key bindings to the user. For dead keys, it is typically
----the diacritic it would add to a character.
----Do not use this function for text input. You will break text input for many
----languages even if it happens to work for yours.
----If the key is KEY_UNKNOWN, the scancode is used to identify the key,
----otherwise the scancode is ignored. If you specify a non-printable key,
----or KEY_UNKNOWN and a scancode that maps to a non-printable key,
----this function returns nil but does not emit an error.
----- Success return string or nil
----@param key integer
----@param scancode integer
----@return any keyName 
-function RL.GetKeyName( key, scancode ) end
-
----This function returns the platform-specific scancode of the specified key.
----If the key is KEY_UNKNOWN or does not exist on the keyboard this method will return -1.
----- Success return int
----@param key integer
----@return any scancode 
-function RL.GetKeyScancode( key ) end
-
--- Core - Input-related Gamepad
-
----Detect if a gamepad is available
----- Success return bool
----@param gamepad integer
----@return any available 
-function RL.IsGamepadAvailable( gamepad ) end
-
----Detect if a gamepad button has been pressed once
----- Success return bool
----@param gamepad integer
----@param button integer
----@return any pressed 
-function RL.IsGamepadButtonPressed( gamepad, button ) end
-
----Detect if a gamepad button is being pressed
----- Success return bool
----@param gamepad integer
----@param button integer
----@return any pressed 
-function RL.IsGamepadButtonDown( gamepad, button ) end
-
----Detect if a gamepad button has been released once
----- Success return bool
----@param gamepad integer
----@param button integer
----@return any released 
-function RL.IsGamepadButtonReleased( gamepad, button ) end
-
----Return gamepad axis count for a gamepad
----- Success return int
----@param gamepad integer
----@return any count 
-function RL.GetGamepadAxisCount( gamepad ) end
-
----Return axis movement value for a gamepad axis
----- Success return float
----@param gamepad integer
----@param axis integer
----@return any value 
-function RL.GetGamepadAxisMovement( gamepad, axis ) end
-
----Return gamepad internal name id
----- Success return string
----@param gamepad integer
----@return any name 
-function RL.GetGamepadName( gamepad ) end
-
--- Core - Input-related Mouse
-
----Detect if a mouse button has been pressed once
----- Success return bool
----@param button integer
----@return any pressed 
-function RL.IsMouseButtonPressed( button ) end
-
----Detect if a mouse button is being pressed
----- Success return bool
----@param button integer
----@return any pressed 
-function RL.IsMouseButtonDown( button ) end
-
----Detect if a mouse button has been released once
----- Success return bool
----@param button integer
----@return any released 
-function RL.IsMouseButtonReleased( button ) end
-
----Check if a mouse button is NOT being pressed
----- Success return bool
----@param button integer
----@return any released 
-function RL.IsMouseButtonUp( button ) end
-
----Returns mouse position
+---Get the screen space position for a 3d world space position
 ---- Success return Vector2
----@return any position 
-function RL.GetMousePosition() end
-
----Get mouse delta between frames
----- Success return Vector2
----@return any position 
-function RL.GetMouseDelta() end
-
----Set mouse position XY
 ---@param position table
----@return any RL.SetMousePosition
-function  RL.SetMousePosition( position ) end
-
----Set mouse offset
----@param offset table
----@return any RL.SetMouseOffset
-function  RL.SetMouseOffset( offset ) end
-
----Set mouse scaling
----@param scale table
----@return any RL.SetMouseScale
-function  RL.SetMouseScale( scale ) end
-
----Returns mouse wheel movement Y
----- Success return float
----@return any movement 
-function RL.GetMouseWheelMove() end
-
----Set mouse cursor
----@param cursor integer
----@return any RL.SetMouseCursor
-function  RL.SetMouseCursor( cursor ) end
-
--- Core - Input-related Touch
-
----Get touch position XY for a touch point index (relative to screen size)
----- Success return Vector2
----@param index integer
+---@param camera any
 ---@return any position 
-function RL.GetTouchPosition( index ) end
+function RL.GetWorldToScreen( position, camera ) end
 
----Get touch point identifier for given index
+---Get size position for a 3d world space position
+---- Success return Vector2
+---@param position table
+---@param camera any
+---@param size table
+---@return any position 
+function RL.GetWorldToScreenEx( position, camera, size ) end
+
+---Get the screen space position for a 2d camera world space position
+---- Success return Vector2
+---@param position table
+---@param camera any
+---@return any position 
+function RL.GetWorldToScreen2D( position, camera ) end
+
+---Get the world space position for a 2d camera screen space position
+---- Success return Vector2
+---@param position table
+---@param camera any
+---@return any position 
+function RL.GetScreenToWorld2D( position, camera ) end
+
+-- Core - Timing-related functions
+
+---Set target FPS (maximum)
+---@param fps integer
+---@return any RL.SetTargetFPS
+function  RL.SetTargetFPS( fps ) end
+
+---Get current FPS
 ---- Success return int
----@param index integer
----@return any id 
-function RL.GetTouchPointId( index ) end
+---@return any FPS 
+function RL.GetFPS() end
 
----Get touch point identifier for given index
----- Success return int
----@return any count 
-function RL.GetTouchPointCount() end
+---Get time in seconds for last frame drawn (Delta time)
+---- Success return float
+---@return any delta 
+function RL.GetFrameTime() end
 
--- Core - Input-related Gestures
-
----Enable a set of gestures using flags
----@param int any
----@return any RL.SetGesturesEnabled
-function  RL.SetGesturesEnabled( int ) end
-
----Check if a gesture have been detected
----- Success return bool
----@param gesture integer
----@return any detected 
-function RL.IsGestureDetected( gesture ) end
-
----Get latest detected gesture
----- Success return int
----@return any gesture 
-function RL.GetGestureDetected() end
-
----Get gesture hold time in milliseconds
+---Get elapsed time in seconds since InitWindow()
 ---- Success return float
 ---@return any time 
-function RL.GetGestureHoldDuration() end
+function RL.GetTime() end
 
----Get gesture drag vector
----- Success return Vector2
----@return any vector 
-function RL.GetGestureDragVector() end
+-- Core - Misc
 
----Get gesture drag angle
----- Success return float
----@return any angle 
-function RL.GetGestureDragAngle() end
+---Takes a screenshot of current screen (filename extension defines format)
+---@param fileName string
+---@return any RL.TakeScreenshot
+function  RL.TakeScreenshot( fileName ) end
 
----Get gesture pinch delta
----- Success return Vector2
----@return any vector 
-function RL.GetGesturePinchVector() end
+---Setup init configuration flags (view FLAGS)
+---@param flags integer
+---@return any RL.SetConfigFlags
+function  RL.SetConfigFlags( flags ) end
 
----Get gesture pinch angle
----- Success return float
----@return any angle 
-function RL.GetGesturePinchAngle() end
+---Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
+---@param logLevel integer
+---@param text string
+---@return any RL.TraceLog
+function  RL.TraceLog( logLevel, text ) end
 
--- Core - File
+---Set the current threshold (minimum) log level
+---@param logLevel integer
+---@return any RL.SetTraceLogLevel
+function  RL.SetTraceLogLevel( logLevel ) end
+
+---Set the log level for bad function calls and invalid data formats.
+---@param logLevel integer
+---@return any RL.SetLogLevelInvalid
+function  RL.SetLogLevelInvalid( logLevel ) end
+
+---Get the log level for bad function calls and invalid data formats.
+---- Success return int
+---@return any logLevel 
+function RL.GetLogLevelInvalid() end
+
+---Open URL with default system browser (If available)
+---@param url string
+---@return any RL.OpenURL
+function  RL.OpenURL( url ) end
+
+---Check if Lua garbage collection is set to unload object data
+---- Success return bool
+---@return any enabled 
+function RL.IsGCUnloadEnabled() end
+
+-- Core - Files management functions
 
 ---Return game directory (where main.lua is located)
 ---- Success return string
@@ -1975,21 +1817,247 @@ function RL.EncodeDataBase64( data ) end
 ---@return any outputSize 
 function RL.DecodeDataBase64( data ) end
 
--- Core - Camera2D
+-- Core - Input-related functions: keyboard
+
+---Detect if a key has been pressed once
+---- Success return bool
+---@param key integer
+---@return any pressed 
+function RL.IsKeyPressed( key ) end
+
+---Detect if a key is being pressed
+---- Success return bool
+---@param key integer
+---@return any pressed 
+function RL.IsKeyDown( key ) end
+
+---Detect if a key has been released once
+---- Success return bool
+---@param key integer
+---@return any released 
+function RL.IsKeyReleased( key ) end
+
+---Check if a key is NOT being pressed
+---- Success return bool
+---@param key integer
+---@return any released 
+function RL.IsKeyUp( key ) end
+
+---Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
+---- Success return int
+---@return any keycode 
+function RL.GetKeyPressed() end
+
+---Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
+---- Success return int
+---@return any unicode 
+function RL.GetCharPressed() end
+
+---Set a custom key to exit program (default is ESC)
+---@param key integer
+---@return any RL.SetExitKey
+function  RL.SetExitKey( key ) end
+
+---This function returns the name of the specified printable key, encoded as UTF-8.
+---This is typically the character that key would produce without any modifier keys,
+---intended for displaying key bindings to the user. For dead keys, it is typically
+---the diacritic it would add to a character.
+---Do not use this function for text input. You will break text input for many
+---languages even if it happens to work for yours.
+---If the key is KEY_UNKNOWN, the scancode is used to identify the key,
+---otherwise the scancode is ignored. If you specify a non-printable key,
+---or KEY_UNKNOWN and a scancode that maps to a non-printable key,
+---this function returns nil but does not emit an error.
+---- Success return string or nil
+---@param key integer
+---@param scancode integer
+---@return any keyName 
+function RL.GetKeyName( key, scancode ) end
+
+---This function returns the platform-specific scancode of the specified key.
+---If the key is KEY_UNKNOWN or does not exist on the keyboard this method will return -1.
+---- Success return int
+---@param key integer
+---@return any scancode 
+function RL.GetKeyScancode( key ) end
+
+-- Core - Input-related functions: gamepads
+
+---Detect if a gamepad is available
+---- Success return bool
+---@param gamepad integer
+---@return any available 
+function RL.IsGamepadAvailable( gamepad ) end
+
+---Detect if a gamepad button has been pressed once
+---- Success return bool
+---@param gamepad integer
+---@param button integer
+---@return any pressed 
+function RL.IsGamepadButtonPressed( gamepad, button ) end
+
+---Detect if a gamepad button is being pressed
+---- Success return bool
+---@param gamepad integer
+---@param button integer
+---@return any pressed 
+function RL.IsGamepadButtonDown( gamepad, button ) end
+
+---Detect if a gamepad button has been released once
+---- Success return bool
+---@param gamepad integer
+---@param button integer
+---@return any released 
+function RL.IsGamepadButtonReleased( gamepad, button ) end
+
+---Return gamepad axis count for a gamepad
+---- Success return int
+---@param gamepad integer
+---@return any count 
+function RL.GetGamepadAxisCount( gamepad ) end
+
+---Return axis movement value for a gamepad axis
+---- Success return float
+---@param gamepad integer
+---@param axis integer
+---@return any value 
+function RL.GetGamepadAxisMovement( gamepad, axis ) end
+
+---Return gamepad internal name id
+---- Success return string
+---@param gamepad integer
+---@return any name 
+function RL.GetGamepadName( gamepad ) end
+
+-- Core - Input-related functions: mouse
+
+---Detect if a mouse button has been pressed once
+---- Success return bool
+---@param button integer
+---@return any pressed 
+function RL.IsMouseButtonPressed( button ) end
+
+---Detect if a mouse button is being pressed
+---- Success return bool
+---@param button integer
+---@return any pressed 
+function RL.IsMouseButtonDown( button ) end
+
+---Detect if a mouse button has been released once
+---- Success return bool
+---@param button integer
+---@return any released 
+function RL.IsMouseButtonReleased( button ) end
+
+---Check if a mouse button is NOT being pressed
+---- Success return bool
+---@param button integer
+---@return any released 
+function RL.IsMouseButtonUp( button ) end
+
+---Returns mouse position
+---- Success return Vector2
+---@return any position 
+function RL.GetMousePosition() end
+
+---Get mouse delta between frames
+---- Success return Vector2
+---@return any position 
+function RL.GetMouseDelta() end
+
+---Set mouse position XY
+---@param position table
+---@return any RL.SetMousePosition
+function  RL.SetMousePosition( position ) end
+
+---Set mouse offset
+---@param offset table
+---@return any RL.SetMouseOffset
+function  RL.SetMouseOffset( offset ) end
+
+---Set mouse scaling
+---@param scale table
+---@return any RL.SetMouseScale
+function  RL.SetMouseScale( scale ) end
+
+---Returns mouse wheel movement Y
+---- Success return float
+---@return any movement 
+function RL.GetMouseWheelMove() end
+
+---Set mouse cursor
+---@param cursor integer
+---@return any RL.SetMouseCursor
+function  RL.SetMouseCursor( cursor ) end
+
+-- Core - Input-related functions: touch
+
+---Get touch position XY for a touch point index (relative to screen size)
+---- Success return Vector2
+---@param index integer
+---@return any position 
+function RL.GetTouchPosition( index ) end
+
+---Get touch point identifier for given index
+---- Success return int
+---@param index integer
+---@return any id 
+function RL.GetTouchPointId( index ) end
+
+---Get touch point identifier for given index
+---- Success return int
+---@return any count 
+function RL.GetTouchPointCount() end
+
+-- Core - Input-related functions: gestures
+
+---Enable a set of gestures using flags
+---@param int any
+---@return any RL.SetGesturesEnabled
+function  RL.SetGesturesEnabled( int ) end
+
+---Check if a gesture have been detected
+---- Success return bool
+---@param gesture integer
+---@return any detected 
+function RL.IsGestureDetected( gesture ) end
+
+---Get latest detected gesture
+---- Success return int
+---@return any gesture 
+function RL.GetGestureDetected() end
+
+---Get gesture hold time in milliseconds
+---- Success return float
+---@return any time 
+function RL.GetGestureHoldDuration() end
+
+---Get gesture drag vector
+---- Success return Vector2
+---@return any vector 
+function RL.GetGestureDragVector() end
+
+---Get gesture drag angle
+---- Success return float
+---@return any angle 
+function RL.GetGestureDragAngle() end
+
+---Get gesture pinch delta
+---- Success return Vector2
+---@return any vector 
+function RL.GetGesturePinchVector() end
+
+---Get gesture pinch angle
+---- Success return float
+---@return any angle 
+function RL.GetGesturePinchAngle() end
+
+-- Core - Camera2D System functions
 
 ---Return camera2D set to default configuration
 ---- Success return Camera2D
 ---@return any camera2D 
 function RL.CreateCamera2D() end
-
----Begin 2D mode with custom camera (2D)
----@param camera any
----@return any RL.BeginMode2D
-function  RL.BeginMode2D( camera ) end
-
----Ends 2D mode with custom camera
----@return any RL.EndMode2D
-function  RL.EndMode2D() end
 
 ---Set camera target (rotation and zoom origin)
 ---@param camera any
@@ -2039,21 +2107,12 @@ function RL.GetCamera2DRotation( camera ) end
 ---@return any zoom 
 function RL.GetCamera2DZoom( camera ) end
 
--- Core - Camera3D
+-- Core - Camera3D System functions
 
 ---Return camera3D id set to default configuration
 ---- Success return int
 ---@return any camera 
 function RL.CreateCamera3D() end
-
----Begin 3D mode with custom camera (3D)
----@param camera any
----@return any RL.BeginMode3D
-function  RL.BeginMode3D( camera ) end
-
----Ends 3D mode and returns to default 2D orthographic mode
----@return any RL.EndMode3D
-function  RL.EndMode3D() end
 
 ---Set camera position (Remember to call "RL.UpdateCamera3D()" to apply changes)
 ---@param camera any
@@ -2218,57 +2277,7 @@ function  RL.UpdateCamera3D( camera, mode ) end
 ---@return any RL.UpdateCamera3DPro
 function  RL.UpdateCamera3DPro( camera, movement, rotation, zoom ) end
 
--- Core - Screen-space
-
----Get a ray trace from mouse position
----- Success return Ray
----@param mousePosition table
----@param camera any
----@return any ray 
-function RL.GetMouseRay( mousePosition, camera ) end
-
----Get camera transform matrix (view matrix)
----- Success return Matrix
----@param camera any
----@return any matrix 
-function RL.GetCameraMatrix( camera ) end
-
----Get camera 2d transform matrix
----- Success return Matrix
----@param camera any
----@return any matrix 
-function RL.GetCameraMatrix2D( camera ) end
-
----Get the screen space position for a 3d world space position
----- Success return Vector2
----@param position table
----@param camera any
----@return any position 
-function RL.GetWorldToScreen( position, camera ) end
-
----Get size position for a 3d world space position
----- Success return Vector2
----@param position table
----@param camera any
----@param size table
----@return any position 
-function RL.GetWorldToScreenEx( position, camera, size ) end
-
----Get the screen space position for a 2d camera world space position
----- Success return Vector2
----@param position table
----@param camera any
----@return any position 
-function RL.GetWorldToScreen2D( position, camera ) end
-
----Get the world space position for a 2d camera screen space position
----- Success return Vector2
----@param position table
----@param camera any
----@return any position 
-function RL.GetScreenToWorld2D( position, camera ) end
-
--- Core - Buffer
+-- Core - Buffer management functions
 
 ---Load Buffer. Type should be one of the Buffer types
 ---- Success return Buffer
@@ -3166,15 +3175,6 @@ function  RL.DrawTexturePro( texture, source, dest, origin, rotation, tint ) end
 ---@param tint table
 ---@return any RL.DrawTextureNPatch
 function  RL.DrawTextureNPatch( texture, nPatchInfo, dest, origin, rotation, tint ) end
-
----Begin drawing to render texture
----@param target any
----@return any RL.BeginTextureMode
-function  RL.BeginTextureMode( target ) end
-
----Ends drawing to render texture
----@return any RL.EndTextureMode
-function  RL.EndTextureMode() end
 
 -- Textures - Texture Configuration
 

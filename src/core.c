@@ -25,7 +25,7 @@ void unloadBuffer( Buffer *buffer ) {
 }
 
 /*
-## Core - Window
+## Core - Window-related functions
 */
 
 /*
@@ -467,165 +467,7 @@ int lcoreGetClipboardText( lua_State *L ) {
 }
 
 /*
-## Core - Timing
-*/
-
-/*
-> RL.SetTargetFPS( int fps )
-
-Set target FPS (maximum)
-*/
-int lcoreSetTargetFPS( lua_State *L ) {
-	int fps = luaL_checkinteger( L, 1 );
-
-	SetTargetFPS( fps );
-
-	return 0;
-}
-
-/*
-> FPS = RL.GetFPS()
-
-Get current FPS
-
-- Success return int
-*/
-int lcoreGetFPS( lua_State *L ) {
-	lua_pushinteger( L, GetFPS() );
-
-	return 1;
-}
-
-/*
-> delta = RL.GetFrameTime()
-
-Get time in seconds for last frame drawn (Delta time)
-
-- Success return float
-*/
-int lcoreGetFrameTime( lua_State *L ) {
-	lua_pushnumber( L, GetFrameTime() );
-
-	return 1;
-}
-
-/*
-> time = RL.GetTime()
-
-Get elapsed time in seconds since InitWindow()
-
-- Success return float
-*/
-int lcoreGetTime( lua_State *L ) {
-	lua_pushnumber( L, GetTime() );
-
-	return 1;
-}
-
-/*
-## Core - Misc
-*/
-
-/*
-> RL.TakeScreenshot( string fileName )
-
-Takes a screenshot of current screen (filename extension defines format)
-*/
-int lcoreTakeScreenshot( lua_State *L ) {
-	TakeScreenshot( luaL_checkstring( L, 1 ) );
-
-	return 0;
-}
-
-/*
-> RL.SetConfigFlags( int flags )
-
-Setup init configuration flags (view FLAGS)
-*/
-int lcoreSetConfigFlags( lua_State *L ) {
-	unsigned int flag = (unsigned int)luaL_checkinteger( L, 1 );
-
-	SetConfigFlags( flag );
-
-	return 0;
-}
-
-/*
-> RL.TraceLog( int logLevel, string text )
-
-Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
-*/
-int lcoreTraceLog( lua_State *L ) {
-	int logLevel = luaL_checkinteger( L, 1 );
-
-	TraceLog( logLevel, "%s", luaL_checkstring( L, 2 ) );
-
-	return 0;
-}
-
-/*
-> RL.SetTraceLogLevel( int logLevel )
-
-Set the current threshold (minimum) log level
-*/
-int lcoreSetTraceLogLevel( lua_State *L ) {
-	int logLevel = luaL_checkinteger( L, 1 );
-
-	SetTraceLogLevel( logLevel );
-
-	return 0;
-}
-
-/*
-> RL.SetLogLevelInvalid( int logLevel )
-
-Set the log level for bad function calls and invalid data formats.
-*/
-int lcoreSetLogLevelInvalid( lua_State *L ) {
-	state->logLevelInvalid = luaL_checkinteger( L, 1 );
-
-	return 0;
-}
-
-/*
-> logLevel = RL.GetLogLevelInvalid()
-
-Get the log level for bad function calls and invalid data formats.
-
-- Success return int
-*/
-int lcoreGetLogLevelInvalid( lua_State *L ) {
-	lua_pushinteger( L, state->logLevelInvalid );
-
-	return 1;
-}
-
-/*
-> RL.OpenURL( string url )
-
-Open URL with default system browser (If available)
-*/
-int lcoreOpenURL( lua_State *L ) {
-	OpenURL( luaL_checkstring( L, 1 ) );
-
-	return 0;
-}
-
-/*
-> enabled = RL.IsGCUnloadEnabled()
-
-Check if Lua garbage collection is set to unload object data
-
-- Success return bool
-*/
-int lcoreIsGCUnloadEnabled( lua_State *L ) {
-	lua_pushboolean( L, state->gcUnload );
-
-	return 1;
-}
-
-/*
-## Core - Cursor
+## Core - Cursor-related functions
 */
 
 /*
@@ -699,7 +541,7 @@ int lcoreIsCursorOnScreen( lua_State *L ) {
 }
 
 /*
-## Core - Drawing
+## Core - Drawing-related functions
 */
 
 /*
@@ -733,6 +575,102 @@ End canvas drawing and swap buffers (double buffering)
 */
 int lcoreEndDrawing( lua_State *L ) {
 	EndDrawing();
+
+	return 0;
+}
+
+/*
+> RL.BeginMode2D( camera2D camera )
+
+Begin 2D mode with custom camera (2D)
+*/
+int lcoreBeginMode2D( lua_State *L ) {
+	Camera2D *camera = uluaGetCamera2D( L, 1 );
+
+	BeginMode2D( *camera );
+
+	return 0;
+}
+
+/*
+> RL.EndMode2D()
+
+Ends 2D mode with custom camera
+*/
+int lcoreEndMode2D( lua_State *L ) {
+	EndMode2D();
+
+	return 0;
+}
+
+/*
+> RL.BeginMode3D( camera3D camera )
+
+Begin 3D mode with custom camera (3D)
+*/
+int lcoreBeginMode3D( lua_State *L ) {
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
+
+	BeginMode3D( *camera );
+
+	return 0;
+}
+
+/*
+> RL.EndMode3D()
+
+Ends 3D mode and returns to default 2D orthographic mode
+*/
+int lcoreEndMode3D( lua_State *L ) {
+	EndMode3D();
+
+	return 0;
+}
+
+/*
+> RL.BeginTextureMode( RenderTexture target )
+
+Begin drawing to render texture
+*/
+int lcoreBeginTextureMode( lua_State *L ) {
+	RenderTexture *renderTexture = uluaGetRenderTexture( L, 1 );
+
+	BeginTextureMode( *renderTexture );
+
+	return 0;
+}
+
+/*
+> RL.EndTextureMode()
+
+Ends drawing to render texture
+*/
+int lcoreEndTextureMode( lua_State *L ) {
+	EndTextureMode();
+
+	return 0;
+}
+
+/*
+> RL.BeginShaderMode( Shader shader )
+
+Begin custom shader drawing
+*/
+int lcoreBeginShaderMode( lua_State *L ) {
+	Shader *shader = uluaGetShader( L, 1 );
+
+	BeginShaderMode( *shader );
+
+	return 0;
+}
+
+/*
+> RL.EndShaderMode()
+
+End custom shader drawing (use default shader)
+*/
+int lcoreEndShaderMode( lua_State *L ) {
+	EndShaderMode();
 
 	return 0;
 }
@@ -786,7 +724,7 @@ int lcoreEndScissorMode( lua_State *L ) {
 }
 
 /*
-## Core - Shader
+## Core - Shader management functions
 */
 
 /*
@@ -851,30 +789,6 @@ int lcoreIsShaderReady( lua_State *L ) {
 	lua_pushboolean( L, IsShaderReady( *shader ) );
 
 	return 1;
-}
-
-/*
-> RL.BeginShaderMode( Shader shader )
-
-Begin custom shader drawing
-*/
-int lcoreBeginShaderMode( lua_State *L ) {
-	Shader *shader = uluaGetShader( L, 1 );
-
-	BeginShaderMode( *shader );
-
-	return 0;
-}
-
-/*
-> RL.EndShaderMode()
-
-End custom shader drawing (use default shader)
-*/
-int lcoreEndShaderMode( lua_State *L ) {
-	EndShaderMode();
-
-	return 0;
 }
 
 /*
@@ -1067,585 +981,280 @@ int lcoreUnloadShader( lua_State *L ) {
 }
 
 /*
-## Core - Input-related Keyboard
+## Core - Screen-space-related functions
 */
 
 /*
-> pressed = RL.IsKeyPressed( int key )
+> ray = RL.GetMouseRay( Vector2 mousePosition, Camera3D camera )
 
-Detect if a key has been pressed once
+Get a ray trace from mouse position
 
-- Success return bool
+- Success return Ray
 */
-int lcoreIsKeyPressed( lua_State *L ) {
-	int key = luaL_checkinteger( L, 1 );
+int lcoreGetMouseRay( lua_State *L ) {
+	Vector2 mousePosition = uluaGetVector2( L, 1 );
+	Camera3D *camera = uluaGetCamera3D( L, 2 );
 
-	lua_pushboolean( L, IsKeyPressed( key ) );
+	uluaPushRay( L, GetMouseRay( mousePosition, *camera ) );
 
 	return 1;
 }
 
 /*
-> pressed = RL.IsKeyDown( int key )
+> matrix = RL.GetCameraMatrix( Camera3D camera )
 
-Detect if a key is being pressed
+Get camera transform matrix (view matrix)
 
-- Success return bool
+- Success return Matrix
 */
-int lcoreIsKeyDown( lua_State *L ) {
-	int key = luaL_checkinteger( L, 1 );
+int lcoreGetCameraMatrix( lua_State *L ) {
+	Camera3D *camera = uluaGetCamera3D( L, 1 );
 
-	lua_pushboolean( L, IsKeyDown( key ) );
+	uluaPushMatrix( L, GetCameraMatrix( *camera ) );
 
 	return 1;
 }
 
 /*
-> released = RL.IsKeyReleased( int key )
+> matrix = RL.GetCameraMatrix2D( Camera2D camera )
 
-Detect if a key has been released once
+Get camera 2d transform matrix
 
-- Success return bool
+- Success return Matrix
 */
-int lcoreIsKeyReleased( lua_State *L ) {
-	int key = luaL_checkinteger( L, 1 );
+int lcoreGetCameraMatrix2D( lua_State *L ) {
+	Camera2D *camera = uluaGetCamera2D( L, 1 );
 
-	lua_pushboolean( L, IsKeyReleased( key ) );
+	uluaPushMatrix( L, GetCameraMatrix2D( *camera ) );
 
 	return 1;
 }
 
 /*
-> released = RL.IsKeyUp( int key )
+> position = RL.GetWorldToScreen( Vector3 position, Camera3D camera )
 
-Check if a key is NOT being pressed
-
-- Success return bool
-*/
-int lcoreIsKeyUp( lua_State *L ) {
-	int key = luaL_checkinteger( L, 1 );
-
-	lua_pushboolean( L, IsKeyUp( key ) );
-
-	return 1;
-}
-
-/*
-> keycode = RL.GetKeyPressed()
-
-Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
-
-- Success return int
-*/
-int lcoreGetKeyPressed( lua_State *L ) {
-	lua_pushinteger( L, GetKeyPressed() );
-
-	return 1;
-}
-
-/*
-> unicode = RL.GetCharPressed()
-
-Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
-
-- Success return int
-*/
-int lcoreGetCharPressed( lua_State *L ) {
-	lua_pushinteger( L, GetCharPressed() );
-
-	return 1;
-}
-
-/*
-> RL.SetExitKey( int key )
-
-Set a custom key to exit program (default is ESC)
-*/
-int lcoreSetExitKey( lua_State *L ) {
-	int key = luaL_checkinteger( L, 1 );
-
-	SetExitKey( key );
-
-	return 0;
-}
-
-/*
-> keyName = RL.GetKeyName( int key, int scancode )
-
-This function returns the name of the specified printable key, encoded as UTF-8.
-This is typically the character that key would produce without any modifier keys,
-intended for displaying key bindings to the user. For dead keys, it is typically
-the diacritic it would add to a character.
-
-Do not use this function for text input. You will break text input for many
-languages even if it happens to work for yours.
-
-If the key is KEY_UNKNOWN, the scancode is used to identify the key,
-otherwise the scancode is ignored. If you specify a non-printable key,
-or KEY_UNKNOWN and a scancode that maps to a non-printable key,
-this function returns nil but does not emit an error.
-
-- Success return string or nil
-*/
-int lcoreGetKeyName( lua_State *L ) {
-	int key = luaL_checkinteger( L, 1 );
-	int scancode = luaL_checkinteger( L, 2 );
-
-	const char *keyName = glfwGetKeyName( key, scancode );
-
-	if ( keyName != NULL ) {
-		lua_pushstring( L, keyName );
-	}
-	else {
-		lua_pushnil( L );
-	}
-
-	return 1;
-}
-
-/*
-> scancode = RL.GetKeyScancode( int key )
-
-This function returns the platform-specific scancode of the specified key.
-If the key is KEY_UNKNOWN or does not exist on the keyboard this method will return -1.
-
-- Success return int
-*/
-int lcoreGetKeyScancode( lua_State *L ) {
-	int key = luaL_checkinteger( L, 1 );
-
-	lua_pushinteger( L, glfwGetKeyScancode( key ) );
-
-	return 1;
-}
-
-/*
-## Core - Input-related Gamepad
-*/
-
-/*
-> available = RL.IsGamepadAvailable( int gamepad )
-
-Detect if a gamepad is available
-
-- Success return bool
-*/
-int lcoreIsGamepadAvailable( lua_State *L ) {
-	int gamepad = luaL_checkinteger( L, 1 );
-
-	lua_pushboolean( L, IsGamepadAvailable( gamepad ) );
-
-	return 1;
-}
-
-/*
-> pressed = RL.IsGamepadButtonPressed( int gamepad, int button )
-
-Detect if a gamepad button has been pressed once
-
-- Success return bool
-*/
-int lcoreIsGamepadButtonPressed( lua_State *L ) {
-	int gamepad = luaL_checkinteger( L, 1 );
-	int button = luaL_checkinteger( L, 2 );
-
-	lua_pushboolean( L, IsGamepadButtonPressed( gamepad, button ) );
-
-	return 1;
-}
-
-/*
-> pressed = RL.IsGamepadButtonDown( int gamepad, int button )
-
-Detect if a gamepad button is being pressed
-
-- Success return bool
-*/
-int lcoreIsGamepadButtonDown( lua_State *L ) {
-	int gamepad = luaL_checkinteger( L, 1 );
-	int button = luaL_checkinteger( L, 2 );
-
-	lua_pushboolean( L, IsGamepadButtonDown( gamepad, button ) );
-
-	return 1;
-}
-
-/*
-> released = RL.IsGamepadButtonReleased( int gamepad, int button )
-
-Detect if a gamepad button has been released once
-
-- Success return bool
-*/
-int lcoreIsGamepadButtonReleased( lua_State *L ) {
-	int gamepad = luaL_checkinteger( L, 1 );
-	int button = luaL_checkinteger( L, 2 );
-
-	lua_pushboolean( L, IsGamepadButtonReleased( gamepad, button ) );
-
-	return 1;
-}
-
-/*
-> count = RL.GetGamepadAxisCount( int gamepad )
-
-Return gamepad axis count for a gamepad
-
-- Success return int
-*/
-int lcoreGetGamepadAxisCount( lua_State *L ) {
-	int gamepad = luaL_checkinteger( L, 1 );
-
-	lua_pushinteger( L, GetGamepadAxisCount( gamepad ) );
-
-	return 1;
-}
-
-/*
-> value = RL.GetGamepadAxisMovement( int gamepad, int axis )
-
-Return axis movement value for a gamepad axis
-
-- Success return float
-*/
-int lcoreGetGamepadAxisMovement( lua_State *L ) {
-	int gamepad = luaL_checkinteger( L, 1 );
-	int axis = luaL_checkinteger( L, 2 );
-
-	lua_pushnumber( L, GetGamepadAxisMovement( gamepad, axis ) );
-
-	return 1;
-}
-
-/*
-> name = RL.GetGamepadName( int gamepad )
-
-Return gamepad internal name id
-
-- Success return string
-*/
-int lcoreGetGamepadName( lua_State *L ) {
-	int gamepad = luaL_checkinteger( L, 1 );
-
-	lua_pushstring( L, GetGamepadName( gamepad ) );
-
-	return 1;
-}
-
-/*
-## Core - Input-related Mouse
-*/
-
-/*
-> pressed = RL.IsMouseButtonPressed( int button )
-
-Detect if a mouse button has been pressed once
-
-- Success return bool
-*/
-int lcoreIsMouseButtonPressed( lua_State *L ) {
-	int button = luaL_checkinteger( L, 1 );
-
-	lua_pushboolean( L, IsMouseButtonPressed( button ) );
-
-	return 1;
-}
-
-/*
-> pressed = RL.IsMouseButtonDown( int button )
-
-Detect if a mouse button is being pressed
-
-- Success return bool
-*/
-int lcoreIsMouseButtonDown( lua_State *L ) {
-	int button = luaL_checkinteger( L, 1 );
-
-	lua_pushboolean( L, IsMouseButtonDown( button ) );
-
-	return 1;
-}
-
-/*
-> released = RL.IsMouseButtonReleased( int button )
-
-Detect if a mouse button has been released once
-
-- Success return bool
-*/
-int lcoreIsMouseButtonReleased( lua_State *L ) {
-	int button = luaL_checkinteger( L, 1 );
-
-	lua_pushboolean( L, IsMouseButtonReleased( button ) );
-
-	return 1;
-}
-
-/*
-> released = RL.IsMouseButtonUp( int button )
-
-Check if a mouse button is NOT being pressed
-
-- Success return bool
-*/
-int lcoreIsMouseButtonUp( lua_State *L ) {
-	int button = luaL_checkinteger( L, 1 );
-
-	lua_pushboolean( L, IsMouseButtonUp( button ) );
-
-	return 1;
-}
-
-/*
-> position = RL.GetMousePosition()
-
-Returns mouse position
+Get the screen space position for a 3d world space position
 
 - Success return Vector2
 */
-int lcoreGetMousePosition( lua_State *L ) {
-	uluaPushVector2( L, GetMousePosition() );
+int lcoreGetWorldToScreen( lua_State *L ) {
+	Vector3 position = uluaGetVector3( L, 1 );
+	Camera3D *camera = uluaGetCamera3D( L, 2 );
+
+	uluaPushVector2( L, GetWorldToScreen( position, *camera ) );
 
 	return 1;
 }
 
 /*
-> position = RL.GetMouseDelta()
+> position = RL.GetWorldToScreenEx( Vector3 position, Camera3D camera, Vector2 size )
 
-Get mouse delta between frames
+Get size position for a 3d world space position
 
 - Success return Vector2
 */
-int lcoreGetMouseDelta( lua_State *L ) {
-	uluaPushVector2( L, GetMouseDelta() );
+int lcoreGetWorldToScreenEx( lua_State *L ) {
+	Vector3 position = uluaGetVector3( L, 1 );
+	Camera3D *camera = uluaGetCamera3D( L, 2 );
+	Vector2 size = uluaGetVector2( L, 3 );
+
+	uluaPushVector2( L, GetWorldToScreenEx( position, *camera, size.x, size.y ) );
 
 	return 1;
 }
 
 /*
-> RL.SetMousePosition( Vector2 position )
+> position = RL.GetWorldToScreen2D( Vector2 position, Camera2D camera )
 
-Set mouse position XY
+Get the screen space position for a 2d camera world space position
+
+- Success return Vector2
 */
-int lcoreSetMousePosition( lua_State *L ) {
-	Vector2 pos = uluaGetVector2( L, 1 );
+int lcoreGetWorldToScreen2D( lua_State *L ) {
+	Vector2 position = uluaGetVector2( L, 1 );
+	Camera2D *camera = uluaGetCamera2D( L, 2 );
 
-	SetMousePosition( pos.x, pos.y );
+	uluaPushVector2( L, GetWorldToScreen2D( position, *camera ) );
+
+	return 1;
+}
+
+/*
+> position = RL.GetScreenToWorld2D( Vector2 position, Camera2D camera )
+
+Get the world space position for a 2d camera screen space position
+
+- Success return Vector2
+*/
+int lcoreGetScreenToWorld2D( lua_State *L ) {
+	Vector2 position = uluaGetVector2( L, 1 );
+	Camera2D *camera = uluaGetCamera2D( L, 2 );
+
+	uluaPushVector2( L, GetScreenToWorld2D( position, *camera ) );
+
+	return 1;
+}
+
+/*
+## Core - Timing-related functions
+*/
+
+/*
+> RL.SetTargetFPS( int fps )
+
+Set target FPS (maximum)
+*/
+int lcoreSetTargetFPS( lua_State *L ) {
+	int fps = luaL_checkinteger( L, 1 );
+
+	SetTargetFPS( fps );
 
 	return 0;
 }
 
 /*
-> RL.SetMouseOffset( Vector2 offset )
+> FPS = RL.GetFPS()
 
-Set mouse offset
+Get current FPS
+
+- Success return int
 */
-int lcoreSetMouseOffset( lua_State *L ) {
-	Vector2 offset = uluaGetVector2( L, 1 );
+int lcoreGetFPS( lua_State *L ) {
+	lua_pushinteger( L, GetFPS() );
 
-	SetMouseOffset( offset.x, offset.y );
-
-	return 0;
+	return 1;
 }
 
 /*
-> RL.SetMouseScale( Vector2 scale )
+> delta = RL.GetFrameTime()
 
-Set mouse scaling
-*/
-int lcoreSetMouseScale( lua_State *L ) {
-	Vector2 scale = uluaGetVector2( L, 1 );
-
-	SetMouseScale( scale.x, scale.y );
-
-	return 0;
-}
-
-/*
-> movement = RL.GetMouseWheelMove()
-
-Returns mouse wheel movement Y
+Get time in seconds for last frame drawn (Delta time)
 
 - Success return float
 */
-int lcoreGetMouseWheelMove( lua_State *L ) {
-	lua_pushnumber( L, GetMouseWheelMove() );
+int lcoreGetFrameTime( lua_State *L ) {
+	lua_pushnumber( L, GetFrameTime() );
 
 	return 1;
 }
 
 /*
-> RL.SetMouseCursor( int cursor )
+> time = RL.GetTime()
 
-Set mouse cursor
+Get elapsed time in seconds since InitWindow()
+
+- Success return float
 */
-int lcoreSetMouseCursor( lua_State *L ) {
-	int cursor = luaL_checkinteger( L, 1 );
+int lcoreGetTime( lua_State *L ) {
+	lua_pushnumber( L, GetTime() );
 
-	SetMouseCursor( cursor );
+	return 1;
+}
+
+/*
+## Core - Misc
+*/
+
+/*
+> RL.TakeScreenshot( string fileName )
+
+Takes a screenshot of current screen (filename extension defines format)
+*/
+int lcoreTakeScreenshot( lua_State *L ) {
+	TakeScreenshot( luaL_checkstring( L, 1 ) );
 
 	return 0;
 }
 
 /*
-## Core - Input-related Touch
+> RL.SetConfigFlags( int flags )
+
+Setup init configuration flags (view FLAGS)
 */
+int lcoreSetConfigFlags( lua_State *L ) {
+	unsigned int flag = (unsigned int)luaL_checkinteger( L, 1 );
 
-/*
-> position = RL.GetTouchPosition( int index )
-
-Get touch position XY for a touch point index (relative to screen size)
-
-- Success return Vector2
-*/
-int lcoreGetTouchPosition( lua_State *L ) {
-	int index = luaL_checkinteger( L, 1 );
-
-	uluaPushVector2( L, GetTouchPosition( index ) );
-
-	return 1;
-}
-
-/*
-> id = RL.GetTouchPointId( int index )
-
-Get touch point identifier for given index
-
-- Success return int
-*/
-int lcoreGetTouchPointId( lua_State *L ) {
-	int index = luaL_checkinteger( L, 1 );
-
-	lua_pushinteger( L, GetTouchPointId( index ) );
-
-	return 1;
-}
-
-/*
-> count = RL.GetTouchPointCount()
-
-Get touch point identifier for given index
-
-- Success return int
-*/
-int lcoreGetTouchPointCount( lua_State *L ) {
-	lua_pushinteger( L, GetTouchPointCount() );
-
-	return 1;
-}
-
-/*
-## Core - Input-related Gestures
-*/
-
-/*
-> RL.SetGesturesEnabled( unsigned int flags )
-
-Enable a set of gestures using flags
-*/
-int lcoreSetGesturesEnabled( lua_State *L ) {
-	unsigned int flags = (unsigned int)luaL_checkinteger( L, 1 );
-
-	SetGesturesEnabled( flags );
+	SetConfigFlags( flag );
 
 	return 0;
 }
 
 /*
-> detected = RL.IsGestureDetected( int gesture )
+> RL.TraceLog( int logLevel, string text )
 
-Check if a gesture have been detected
+Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
+*/
+int lcoreTraceLog( lua_State *L ) {
+	int logLevel = luaL_checkinteger( L, 1 );
+
+	TraceLog( logLevel, "%s", luaL_checkstring( L, 2 ) );
+
+	return 0;
+}
+
+/*
+> RL.SetTraceLogLevel( int logLevel )
+
+Set the current threshold (minimum) log level
+*/
+int lcoreSetTraceLogLevel( lua_State *L ) {
+	int logLevel = luaL_checkinteger( L, 1 );
+
+	SetTraceLogLevel( logLevel );
+
+	return 0;
+}
+
+/*
+> RL.SetLogLevelInvalid( int logLevel )
+
+Set the log level for bad function calls and invalid data formats.
+*/
+int lcoreSetLogLevelInvalid( lua_State *L ) {
+	state->logLevelInvalid = luaL_checkinteger( L, 1 );
+
+	return 0;
+}
+
+/*
+> logLevel = RL.GetLogLevelInvalid()
+
+Get the log level for bad function calls and invalid data formats.
+
+- Success return int
+*/
+int lcoreGetLogLevelInvalid( lua_State *L ) {
+	lua_pushinteger( L, state->logLevelInvalid );
+
+	return 1;
+}
+
+/*
+> RL.OpenURL( string url )
+
+Open URL with default system browser (If available)
+*/
+int lcoreOpenURL( lua_State *L ) {
+	OpenURL( luaL_checkstring( L, 1 ) );
+
+	return 0;
+}
+
+/*
+> enabled = RL.IsGCUnloadEnabled()
+
+Check if Lua garbage collection is set to unload object data
 
 - Success return bool
 */
-int lcoreIsGestureDetected( lua_State *L ) {
-	int gesture = luaL_checkinteger( L, 1 );
-
-	lua_pushboolean( L, IsGestureDetected( gesture ) );
+int lcoreIsGCUnloadEnabled( lua_State *L ) {
+	lua_pushboolean( L, state->gcUnload );
 
 	return 1;
 }
 
 /*
-> gesture = RL.GetGestureDetected()
-
-Get latest detected gesture
-
-- Success return int
-*/
-int lcoreGetGestureDetected( lua_State *L ) {
-	lua_pushinteger( L, GetGestureDetected() );
-
-	return 1;
-}
-
-/*
-> time = RL.GetGestureHoldDuration()
-
-Get gesture hold time in milliseconds
-
-- Success return float
-*/
-int lcoreGetGestureHoldDuration( lua_State *L ) {
-	lua_pushnumber( L, GetGestureHoldDuration() );
-
-	return 1;
-}
-
-/*
-> vector = RL.GetGestureDragVector()
-
-Get gesture drag vector
-
-- Success return Vector2
-*/
-int lcoreGetGestureDragVector( lua_State *L ) {
-	uluaPushVector2( L, GetGestureDragVector() );
-
-	return 1;
-}
-
-/*
-> angle = RL.GetGestureDragAngle()
-
-Get gesture drag angle
-
-- Success return float
-*/
-int lcoreGetGestureDragAngle( lua_State *L ) {
-	lua_pushnumber( L, GetGestureDragAngle() );
-
-	return 1;
-}
-
-/*
-> vector = RL.GetGesturePinchVector()
-
-Get gesture pinch delta
-
-- Success return Vector2
-*/
-int lcoreGetGesturePinchVector( lua_State *L ) {
-	uluaPushVector2( L, GetGesturePinchVector() );
-
-	return 1;
-}
-
-/*
-> angle = RL.GetGesturePinchAngle()
-
-Get gesture pinch angle
-
-- Success return float
-*/
-int lcoreGetGesturePinchAngle( lua_State *L ) {
-	lua_pushnumber( L, GetGesturePinchAngle() );
-
-	return 1;
-}
-
-/*
-## Core - File
+## Core - Files management functions
 */
 
 /*
@@ -2002,7 +1611,585 @@ int lcoreDecodeDataBase64( lua_State *L ) {
 }
 
 /*
-## Core - Camera2D
+## Core - Input-related functions: keyboard
+*/
+
+/*
+> pressed = RL.IsKeyPressed( int key )
+
+Detect if a key has been pressed once
+
+- Success return bool
+*/
+int lcoreIsKeyPressed( lua_State *L ) {
+	int key = luaL_checkinteger( L, 1 );
+
+	lua_pushboolean( L, IsKeyPressed( key ) );
+
+	return 1;
+}
+
+/*
+> pressed = RL.IsKeyDown( int key )
+
+Detect if a key is being pressed
+
+- Success return bool
+*/
+int lcoreIsKeyDown( lua_State *L ) {
+	int key = luaL_checkinteger( L, 1 );
+
+	lua_pushboolean( L, IsKeyDown( key ) );
+
+	return 1;
+}
+
+/*
+> released = RL.IsKeyReleased( int key )
+
+Detect if a key has been released once
+
+- Success return bool
+*/
+int lcoreIsKeyReleased( lua_State *L ) {
+	int key = luaL_checkinteger( L, 1 );
+
+	lua_pushboolean( L, IsKeyReleased( key ) );
+
+	return 1;
+}
+
+/*
+> released = RL.IsKeyUp( int key )
+
+Check if a key is NOT being pressed
+
+- Success return bool
+*/
+int lcoreIsKeyUp( lua_State *L ) {
+	int key = luaL_checkinteger( L, 1 );
+
+	lua_pushboolean( L, IsKeyUp( key ) );
+
+	return 1;
+}
+
+/*
+> keycode = RL.GetKeyPressed()
+
+Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
+
+- Success return int
+*/
+int lcoreGetKeyPressed( lua_State *L ) {
+	lua_pushinteger( L, GetKeyPressed() );
+
+	return 1;
+}
+
+/*
+> unicode = RL.GetCharPressed()
+
+Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
+
+- Success return int
+*/
+int lcoreGetCharPressed( lua_State *L ) {
+	lua_pushinteger( L, GetCharPressed() );
+
+	return 1;
+}
+
+/*
+> RL.SetExitKey( int key )
+
+Set a custom key to exit program (default is ESC)
+*/
+int lcoreSetExitKey( lua_State *L ) {
+	int key = luaL_checkinteger( L, 1 );
+
+	SetExitKey( key );
+
+	return 0;
+}
+
+/*
+> keyName = RL.GetKeyName( int key, int scancode )
+
+This function returns the name of the specified printable key, encoded as UTF-8.
+This is typically the character that key would produce without any modifier keys,
+intended for displaying key bindings to the user. For dead keys, it is typically
+the diacritic it would add to a character.
+
+Do not use this function for text input. You will break text input for many
+languages even if it happens to work for yours.
+
+If the key is KEY_UNKNOWN, the scancode is used to identify the key,
+otherwise the scancode is ignored. If you specify a non-printable key,
+or KEY_UNKNOWN and a scancode that maps to a non-printable key,
+this function returns nil but does not emit an error.
+
+- Success return string or nil
+*/
+int lcoreGetKeyName( lua_State *L ) {
+	int key = luaL_checkinteger( L, 1 );
+	int scancode = luaL_checkinteger( L, 2 );
+
+	const char *keyName = glfwGetKeyName( key, scancode );
+
+	if ( keyName != NULL ) {
+		lua_pushstring( L, keyName );
+	}
+	else {
+		lua_pushnil( L );
+	}
+
+	return 1;
+}
+
+/*
+> scancode = RL.GetKeyScancode( int key )
+
+This function returns the platform-specific scancode of the specified key.
+If the key is KEY_UNKNOWN or does not exist on the keyboard this method will return -1.
+
+- Success return int
+*/
+int lcoreGetKeyScancode( lua_State *L ) {
+	int key = luaL_checkinteger( L, 1 );
+
+	lua_pushinteger( L, glfwGetKeyScancode( key ) );
+
+	return 1;
+}
+
+/*
+## Core - Input-related functions: gamepads
+*/
+
+/*
+> available = RL.IsGamepadAvailable( int gamepad )
+
+Detect if a gamepad is available
+
+- Success return bool
+*/
+int lcoreIsGamepadAvailable( lua_State *L ) {
+	int gamepad = luaL_checkinteger( L, 1 );
+
+	lua_pushboolean( L, IsGamepadAvailable( gamepad ) );
+
+	return 1;
+}
+
+/*
+> pressed = RL.IsGamepadButtonPressed( int gamepad, int button )
+
+Detect if a gamepad button has been pressed once
+
+- Success return bool
+*/
+int lcoreIsGamepadButtonPressed( lua_State *L ) {
+	int gamepad = luaL_checkinteger( L, 1 );
+	int button = luaL_checkinteger( L, 2 );
+
+	lua_pushboolean( L, IsGamepadButtonPressed( gamepad, button ) );
+
+	return 1;
+}
+
+/*
+> pressed = RL.IsGamepadButtonDown( int gamepad, int button )
+
+Detect if a gamepad button is being pressed
+
+- Success return bool
+*/
+int lcoreIsGamepadButtonDown( lua_State *L ) {
+	int gamepad = luaL_checkinteger( L, 1 );
+	int button = luaL_checkinteger( L, 2 );
+
+	lua_pushboolean( L, IsGamepadButtonDown( gamepad, button ) );
+
+	return 1;
+}
+
+/*
+> released = RL.IsGamepadButtonReleased( int gamepad, int button )
+
+Detect if a gamepad button has been released once
+
+- Success return bool
+*/
+int lcoreIsGamepadButtonReleased( lua_State *L ) {
+	int gamepad = luaL_checkinteger( L, 1 );
+	int button = luaL_checkinteger( L, 2 );
+
+	lua_pushboolean( L, IsGamepadButtonReleased( gamepad, button ) );
+
+	return 1;
+}
+
+/*
+> count = RL.GetGamepadAxisCount( int gamepad )
+
+Return gamepad axis count for a gamepad
+
+- Success return int
+*/
+int lcoreGetGamepadAxisCount( lua_State *L ) {
+	int gamepad = luaL_checkinteger( L, 1 );
+
+	lua_pushinteger( L, GetGamepadAxisCount( gamepad ) );
+
+	return 1;
+}
+
+/*
+> value = RL.GetGamepadAxisMovement( int gamepad, int axis )
+
+Return axis movement value for a gamepad axis
+
+- Success return float
+*/
+int lcoreGetGamepadAxisMovement( lua_State *L ) {
+	int gamepad = luaL_checkinteger( L, 1 );
+	int axis = luaL_checkinteger( L, 2 );
+
+	lua_pushnumber( L, GetGamepadAxisMovement( gamepad, axis ) );
+
+	return 1;
+}
+
+/*
+> name = RL.GetGamepadName( int gamepad )
+
+Return gamepad internal name id
+
+- Success return string
+*/
+int lcoreGetGamepadName( lua_State *L ) {
+	int gamepad = luaL_checkinteger( L, 1 );
+
+	lua_pushstring( L, GetGamepadName( gamepad ) );
+
+	return 1;
+}
+
+/*
+## Core - Input-related functions: mouse
+*/
+
+/*
+> pressed = RL.IsMouseButtonPressed( int button )
+
+Detect if a mouse button has been pressed once
+
+- Success return bool
+*/
+int lcoreIsMouseButtonPressed( lua_State *L ) {
+	int button = luaL_checkinteger( L, 1 );
+
+	lua_pushboolean( L, IsMouseButtonPressed( button ) );
+
+	return 1;
+}
+
+/*
+> pressed = RL.IsMouseButtonDown( int button )
+
+Detect if a mouse button is being pressed
+
+- Success return bool
+*/
+int lcoreIsMouseButtonDown( lua_State *L ) {
+	int button = luaL_checkinteger( L, 1 );
+
+	lua_pushboolean( L, IsMouseButtonDown( button ) );
+
+	return 1;
+}
+
+/*
+> released = RL.IsMouseButtonReleased( int button )
+
+Detect if a mouse button has been released once
+
+- Success return bool
+*/
+int lcoreIsMouseButtonReleased( lua_State *L ) {
+	int button = luaL_checkinteger( L, 1 );
+
+	lua_pushboolean( L, IsMouseButtonReleased( button ) );
+
+	return 1;
+}
+
+/*
+> released = RL.IsMouseButtonUp( int button )
+
+Check if a mouse button is NOT being pressed
+
+- Success return bool
+*/
+int lcoreIsMouseButtonUp( lua_State *L ) {
+	int button = luaL_checkinteger( L, 1 );
+
+	lua_pushboolean( L, IsMouseButtonUp( button ) );
+
+	return 1;
+}
+
+/*
+> position = RL.GetMousePosition()
+
+Returns mouse position
+
+- Success return Vector2
+*/
+int lcoreGetMousePosition( lua_State *L ) {
+	uluaPushVector2( L, GetMousePosition() );
+
+	return 1;
+}
+
+/*
+> position = RL.GetMouseDelta()
+
+Get mouse delta between frames
+
+- Success return Vector2
+*/
+int lcoreGetMouseDelta( lua_State *L ) {
+	uluaPushVector2( L, GetMouseDelta() );
+
+	return 1;
+}
+
+/*
+> RL.SetMousePosition( Vector2 position )
+
+Set mouse position XY
+*/
+int lcoreSetMousePosition( lua_State *L ) {
+	Vector2 pos = uluaGetVector2( L, 1 );
+
+	SetMousePosition( pos.x, pos.y );
+
+	return 0;
+}
+
+/*
+> RL.SetMouseOffset( Vector2 offset )
+
+Set mouse offset
+*/
+int lcoreSetMouseOffset( lua_State *L ) {
+	Vector2 offset = uluaGetVector2( L, 1 );
+
+	SetMouseOffset( offset.x, offset.y );
+
+	return 0;
+}
+
+/*
+> RL.SetMouseScale( Vector2 scale )
+
+Set mouse scaling
+*/
+int lcoreSetMouseScale( lua_State *L ) {
+	Vector2 scale = uluaGetVector2( L, 1 );
+
+	SetMouseScale( scale.x, scale.y );
+
+	return 0;
+}
+
+/*
+> movement = RL.GetMouseWheelMove()
+
+Returns mouse wheel movement Y
+
+- Success return float
+*/
+int lcoreGetMouseWheelMove( lua_State *L ) {
+	lua_pushnumber( L, GetMouseWheelMove() );
+
+	return 1;
+}
+
+/*
+> RL.SetMouseCursor( int cursor )
+
+Set mouse cursor
+*/
+int lcoreSetMouseCursor( lua_State *L ) {
+	int cursor = luaL_checkinteger( L, 1 );
+
+	SetMouseCursor( cursor );
+
+	return 0;
+}
+
+/*
+## Core - Input-related functions: touch
+*/
+
+/*
+> position = RL.GetTouchPosition( int index )
+
+Get touch position XY for a touch point index (relative to screen size)
+
+- Success return Vector2
+*/
+int lcoreGetTouchPosition( lua_State *L ) {
+	int index = luaL_checkinteger( L, 1 );
+
+	uluaPushVector2( L, GetTouchPosition( index ) );
+
+	return 1;
+}
+
+/*
+> id = RL.GetTouchPointId( int index )
+
+Get touch point identifier for given index
+
+- Success return int
+*/
+int lcoreGetTouchPointId( lua_State *L ) {
+	int index = luaL_checkinteger( L, 1 );
+
+	lua_pushinteger( L, GetTouchPointId( index ) );
+
+	return 1;
+}
+
+/*
+> count = RL.GetTouchPointCount()
+
+Get touch point identifier for given index
+
+- Success return int
+*/
+int lcoreGetTouchPointCount( lua_State *L ) {
+	lua_pushinteger( L, GetTouchPointCount() );
+
+	return 1;
+}
+
+/*
+## Core - Input-related functions: gestures
+*/
+
+/*
+> RL.SetGesturesEnabled( unsigned int flags )
+
+Enable a set of gestures using flags
+*/
+int lcoreSetGesturesEnabled( lua_State *L ) {
+	unsigned int flags = (unsigned int)luaL_checkinteger( L, 1 );
+
+	SetGesturesEnabled( flags );
+
+	return 0;
+}
+
+/*
+> detected = RL.IsGestureDetected( int gesture )
+
+Check if a gesture have been detected
+
+- Success return bool
+*/
+int lcoreIsGestureDetected( lua_State *L ) {
+	int gesture = luaL_checkinteger( L, 1 );
+
+	lua_pushboolean( L, IsGestureDetected( gesture ) );
+
+	return 1;
+}
+
+/*
+> gesture = RL.GetGestureDetected()
+
+Get latest detected gesture
+
+- Success return int
+*/
+int lcoreGetGestureDetected( lua_State *L ) {
+	lua_pushinteger( L, GetGestureDetected() );
+
+	return 1;
+}
+
+/*
+> time = RL.GetGestureHoldDuration()
+
+Get gesture hold time in milliseconds
+
+- Success return float
+*/
+int lcoreGetGestureHoldDuration( lua_State *L ) {
+	lua_pushnumber( L, GetGestureHoldDuration() );
+
+	return 1;
+}
+
+/*
+> vector = RL.GetGestureDragVector()
+
+Get gesture drag vector
+
+- Success return Vector2
+*/
+int lcoreGetGestureDragVector( lua_State *L ) {
+	uluaPushVector2( L, GetGestureDragVector() );
+
+	return 1;
+}
+
+/*
+> angle = RL.GetGestureDragAngle()
+
+Get gesture drag angle
+
+- Success return float
+*/
+int lcoreGetGestureDragAngle( lua_State *L ) {
+	lua_pushnumber( L, GetGestureDragAngle() );
+
+	return 1;
+}
+
+/*
+> vector = RL.GetGesturePinchVector()
+
+Get gesture pinch delta
+
+- Success return Vector2
+*/
+int lcoreGetGesturePinchVector( lua_State *L ) {
+	uluaPushVector2( L, GetGesturePinchVector() );
+
+	return 1;
+}
+
+/*
+> angle = RL.GetGesturePinchAngle()
+
+Get gesture pinch angle
+
+- Success return float
+*/
+int lcoreGetGesturePinchAngle( lua_State *L ) {
+	lua_pushnumber( L, GetGesturePinchAngle() );
+
+	return 1;
+}
+
+/*
+## Core - Camera2D System functions
 */
 
 /*
@@ -2023,30 +2210,6 @@ int lcoreCreateCamera2D( lua_State *L ) {
 	uluaPushCamera2D( L, camera );
 
 	return 1;
-}
-
-/*
-> RL.BeginMode2D( camera2D camera )
-
-Begin 2D mode with custom camera (2D)
-*/
-int lcoreBeginMode2D( lua_State *L ) {
-	Camera2D *camera = uluaGetCamera2D( L, 1 );
-
-	BeginMode2D( *camera );
-
-	return 0;
-}
-
-/*
-> RL.EndMode2D()
-
-Ends 2D mode with custom camera
-*/
-int lcoreEndMode2D( lua_State *L ) {
-	EndMode2D();
-
-	return 0;
 }
 
 /*
@@ -2163,7 +2326,7 @@ int lcoreGetCamera2DZoom( lua_State *L ) {
 }
 
 /*
-## Core - Camera3D
+## Core - Camera3D System functions
 */
 
 /*
@@ -2185,30 +2348,6 @@ int lcoreCreateCamera3D( lua_State *L ) {
 	uluaPushCamera3D( L, camera );
 
 	return 1;
-}
-
-/*
-> RL.BeginMode3D( camera3D camera )
-
-Begin 3D mode with custom camera (3D)
-*/
-int lcoreBeginMode3D( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
-
-	BeginMode3D( *camera );
-
-	return 0;
-}
-
-/*
-> RL.EndMode3D()
-
-Ends 3D mode and returns to default 2D orthographic mode
-*/
-int lcoreEndMode3D( lua_State *L ) {
-	EndMode3D();
-
-	return 0;
 }
 
 /*
@@ -2577,122 +2716,7 @@ int lcoreUpdateCamera3DPro( lua_State *L ) {
 }
 
 /*
-## Core - Screen-space
-*/
-
-/*
-> ray = RL.GetMouseRay( Vector2 mousePosition, Camera3D camera )
-
-Get a ray trace from mouse position
-
-- Success return Ray
-*/
-int lcoreGetMouseRay( lua_State *L ) {
-	Vector2 mousePosition = uluaGetVector2( L, 1 );
-	Camera3D *camera = uluaGetCamera3D( L, 2 );
-
-	uluaPushRay( L, GetMouseRay( mousePosition, *camera ) );
-
-	return 1;
-}
-
-/*
-> matrix = RL.GetCameraMatrix( Camera3D camera )
-
-Get camera transform matrix (view matrix)
-
-- Success return Matrix
-*/
-int lcoreGetCameraMatrix( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
-
-	uluaPushMatrix( L, GetCameraMatrix( *camera ) );
-
-	return 1;
-}
-
-/*
-> matrix = RL.GetCameraMatrix2D( Camera2D camera )
-
-Get camera 2d transform matrix
-
-- Success return Matrix
-*/
-int lcoreGetCameraMatrix2D( lua_State *L ) {
-	Camera2D *camera = uluaGetCamera2D( L, 1 );
-
-	uluaPushMatrix( L, GetCameraMatrix2D( *camera ) );
-
-	return 1;
-}
-
-/*
-> position = RL.GetWorldToScreen( Vector3 position, Camera3D camera )
-
-Get the screen space position for a 3d world space position
-
-- Success return Vector2
-*/
-int lcoreGetWorldToScreen( lua_State *L ) {
-	Vector3 position = uluaGetVector3( L, 1 );
-	Camera3D *camera = uluaGetCamera3D( L, 2 );
-
-	uluaPushVector2( L, GetWorldToScreen( position, *camera ) );
-
-	return 1;
-}
-
-/*
-> position = RL.GetWorldToScreenEx( Vector3 position, Camera3D camera, Vector2 size )
-
-Get size position for a 3d world space position
-
-- Success return Vector2
-*/
-int lcoreGetWorldToScreenEx( lua_State *L ) {
-	Vector3 position = uluaGetVector3( L, 1 );
-	Camera3D *camera = uluaGetCamera3D( L, 2 );
-	Vector2 size = uluaGetVector2( L, 3 );
-
-	uluaPushVector2( L, GetWorldToScreenEx( position, *camera, size.x, size.y ) );
-
-	return 1;
-}
-
-/*
-> position = RL.GetWorldToScreen2D( Vector2 position, Camera2D camera )
-
-Get the screen space position for a 2d camera world space position
-
-- Success return Vector2
-*/
-int lcoreGetWorldToScreen2D( lua_State *L ) {
-	Vector2 position = uluaGetVector2( L, 1 );
-	Camera2D *camera = uluaGetCamera2D( L, 2 );
-
-	uluaPushVector2( L, GetWorldToScreen2D( position, *camera ) );
-
-	return 1;
-}
-
-/*
-> position = RL.GetScreenToWorld2D( Vector2 position, Camera2D camera )
-
-Get the world space position for a 2d camera screen space position
-
-- Success return Vector2
-*/
-int lcoreGetScreenToWorld2D( lua_State *L ) {
-	Vector2 position = uluaGetVector2( L, 1 );
-	Camera2D *camera = uluaGetCamera2D( L, 2 );
-
-	uluaPushVector2( L, GetScreenToWorld2D( position, *camera ) );
-
-	return 1;
-}
-
-/*
-## Core - Buffer
+## Core - Buffer management functions
 */
 
 /*

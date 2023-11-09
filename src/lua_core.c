@@ -1500,7 +1500,7 @@ void luaRegister() {
 	lua_getglobal( L, "RL" );
 
 	/* Core. */
-		/* Window. */
+		/* Window-related functions. */
 	assingGlobalFunction( "IsWindowReady", lcoreIsWindowReady );
 	assingGlobalFunction( "IsWindowFullscreen", lcoreIsWindowFullscreen );
 	assingGlobalFunction( "IsWindowHidden", lcoreIsWindowHidden );
@@ -1533,41 +1533,33 @@ void luaRegister() {
 	assingGlobalFunction( "CloseWindow", lcoreCloseWindow );
 	assingGlobalFunction( "SetClipboardText", lcoreSetClipboardText );
 	assingGlobalFunction( "GetClipboardText", lcoreGetClipboardText );
-		/* Timing. */
-	assingGlobalFunction( "SetTargetFPS", lcoreSetTargetFPS );
-	assingGlobalFunction( "GetFPS", lcoreGetFPS );
-	assingGlobalFunction( "GetFrameTime", lcoreGetFrameTime );
-	assingGlobalFunction( "GetTime", lcoreGetTime );
-		/* Misc. */
-	assingGlobalFunction( "TakeScreenshot", lcoreTakeScreenshot );
-	assingGlobalFunction( "SetConfigFlags", lcoreSetConfigFlags );
-	assingGlobalFunction( "TraceLog", lcoreTraceLog );
-	assingGlobalFunction( "SetTraceLogLevel", lcoreSetTraceLogLevel );
-	assingGlobalFunction( "SetLogLevelInvalid", lcoreSetLogLevelInvalid );
-	assingGlobalFunction( "GetLogLevelInvalid", lcoreGetLogLevelInvalid );
-	assingGlobalFunction( "OpenURL", lcoreOpenURL );
-	assingGlobalFunction( "IsGCUnloadEnabled", lcoreIsGCUnloadEnabled );
-		/* Cursor. */
+		/* Cursor-related functions. */
 	assingGlobalFunction( "ShowCursor", lcoreShowCursor );
 	assingGlobalFunction( "HideCursor", lcoreHideCursor );
 	assingGlobalFunction( "IsCursorHidden", lcoreIsCursorHidden );
 	assingGlobalFunction( "EnableCursor", lcoreEnableCursor );
 	assingGlobalFunction( "DisableCursor", lcoreDisableCursor );
 	assingGlobalFunction( "IsCursorOnScreen", lcoreIsCursorOnScreen );
-		/* Drawing. */
+		/* Drawing-related functions. */
 	assingGlobalFunction( "ClearBackground", lcoreClearBackground );
 	assingGlobalFunction( "BeginDrawing", lcoreBeginDrawing );
 	assingGlobalFunction( "EndDrawing", lcoreEndDrawing );
+	assingGlobalFunction( "BeginMode2D", lcoreBeginMode2D );
+	assingGlobalFunction( "EndMode2D", lcoreEndMode2D );
+	assingGlobalFunction( "BeginMode3D", lcoreBeginMode3D );
+	assingGlobalFunction( "EndMode3D", lcoreEndMode3D );
+	assingGlobalFunction( "BeginTextureMode", lcoreBeginTextureMode );
+	assingGlobalFunction( "EndTextureMode", lcoreEndTextureMode );
+	assingGlobalFunction( "BeginShaderMode", lcoreBeginShaderMode );
+	assingGlobalFunction( "EndShaderMode", lcoreEndShaderMode );
 	assingGlobalFunction( "BeginBlendMode", lcoreBeginBlendMode );
 	assingGlobalFunction( "EndBlendMode", lcoreEndBlendMode );
 	assingGlobalFunction( "BeginScissorMode", lcoreBeginScissorMode );
 	assingGlobalFunction( "EndScissorMode", lcoreEndScissorMode );
-		/* Shader. */
+		/* Shader management functions. */
 	assingGlobalFunction( "LoadShader", lcoreLoadShader );
 	assingGlobalFunction( "LoadShaderFromMemory", lcoreLoadShaderFromMemory );
 	assingGlobalFunction( "IsShaderReady", lcoreIsShaderReady );
-	assingGlobalFunction( "BeginShaderMode", lcoreBeginShaderMode );
-	assingGlobalFunction( "EndShaderMode", lcoreEndShaderMode );
 	assingGlobalFunction( "GetShaderLocation", lcoreGetShaderLocation );
 	assingGlobalFunction( "GetShaderLocationAttrib", lcoreGetShaderLocationAttrib );
 	assingGlobalFunction( "SetShaderLocationIndex", lcoreSetShaderLocationIndex );
@@ -1577,7 +1569,29 @@ void luaRegister() {
 	assingGlobalFunction( "SetShaderValue", lcoreSetShaderValue );
 	assingGlobalFunction( "SetShaderValueV", lcoreSetShaderValueV );
 	assingGlobalFunction( "UnloadShader", lcoreUnloadShader );
-		/* File. */
+		/* Screen-space-related functions. */
+	assingGlobalFunction( "GetMouseRay", lcoreGetMouseRay );
+	assingGlobalFunction( "GetCameraMatrix", lcoreGetCameraMatrix );
+	assingGlobalFunction( "GetCameraMatrix2D", lcoreGetCameraMatrix2D );
+	assingGlobalFunction( "GetWorldToScreen", lcoreGetWorldToScreen );
+	assingGlobalFunction( "GetWorldToScreenEx", lcoreGetWorldToScreenEx );
+	assingGlobalFunction( "GetWorldToScreen2D", lcoreGetWorldToScreen2D );
+	assingGlobalFunction( "GetScreenToWorld2D", lcoreGetScreenToWorld2D );
+		/* Timing-related functions. */
+	assingGlobalFunction( "SetTargetFPS", lcoreSetTargetFPS );
+	assingGlobalFunction( "GetFPS", lcoreGetFPS );
+	assingGlobalFunction( "GetFrameTime", lcoreGetFrameTime );
+	assingGlobalFunction( "GetTime", lcoreGetTime );
+		/* Misc. functions. */
+	assingGlobalFunction( "TakeScreenshot", lcoreTakeScreenshot );
+	assingGlobalFunction( "SetConfigFlags", lcoreSetConfigFlags );
+	assingGlobalFunction( "TraceLog", lcoreTraceLog );
+	assingGlobalFunction( "SetTraceLogLevel", lcoreSetTraceLogLevel );
+	assingGlobalFunction( "SetLogLevelInvalid", lcoreSetLogLevelInvalid );
+	assingGlobalFunction( "GetLogLevelInvalid", lcoreGetLogLevelInvalid );
+	assingGlobalFunction( "OpenURL", lcoreOpenURL );
+	assingGlobalFunction( "IsGCUnloadEnabled", lcoreIsGCUnloadEnabled );
+		/* Files management functions. */
 	assingGlobalFunction( "GetBasePath", lcoreGetBasePath );
 	assingGlobalFunction( "FileExists", lcoreFileExists );
 	assingGlobalFunction( "DirectoryExists", lcoreDirectoryExists );
@@ -1601,10 +1615,51 @@ void luaRegister() {
 	assingGlobalFunction( "DecompressData", lcoreDecompressData );
 	assingGlobalFunction( "EncodeDataBase64", lcoreEncodeDataBase64 );
 	assingGlobalFunction( "DecodeDataBase64", lcoreDecodeDataBase64 );
-		/* Camera2D. */
+		/* Input-related functions: keyboard. */
+	assingGlobalFunction( "IsKeyPressed", lcoreIsKeyPressed );
+	assingGlobalFunction( "IsKeyDown", lcoreIsKeyDown );
+	assingGlobalFunction( "IsKeyReleased", lcoreIsKeyReleased );
+	assingGlobalFunction( "IsKeyUp", lcoreIsKeyUp );
+	assingGlobalFunction( "GetKeyPressed", lcoreGetKeyPressed );
+	assingGlobalFunction( "GetCharPressed", lcoreGetCharPressed );
+	assingGlobalFunction( "SetExitKey", lcoreSetExitKey );
+	assingGlobalFunction( "GetKeyName", lcoreGetKeyName );
+	assingGlobalFunction( "GetKeyScancode", lcoreGetKeyScancode );
+		/* Input-related functions: gamepads. */
+	assingGlobalFunction( "IsGamepadAvailable", lcoreIsGamepadAvailable );
+	assingGlobalFunction( "IsGamepadButtonPressed", lcoreIsGamepadButtonPressed );
+	assingGlobalFunction( "IsGamepadButtonDown", lcoreIsGamepadButtonDown );
+	assingGlobalFunction( "IsGamepadButtonReleased", lcoreIsGamepadButtonReleased );
+	assingGlobalFunction( "GetGamepadAxisCount", lcoreGetGamepadAxisCount );
+	assingGlobalFunction( "GetGamepadAxisMovement", lcoreGetGamepadAxisMovement );
+	assingGlobalFunction( "GetGamepadName", lcoreGetGamepadName );
+		/* Input-related functions: mouse. */
+	assingGlobalFunction( "IsMouseButtonPressed", lcoreIsMouseButtonPressed );
+	assingGlobalFunction( "IsMouseButtonDown", lcoreIsMouseButtonDown );
+	assingGlobalFunction( "IsMouseButtonReleased", lcoreIsMouseButtonReleased );
+	assingGlobalFunction( "IsMouseButtonUp", lcoreIsMouseButtonUp );
+	assingGlobalFunction( "GetMousePosition", lcoreGetMousePosition );
+	assingGlobalFunction( "GetMouseDelta", lcoreGetMouseDelta );
+	assingGlobalFunction( "SetMousePosition", lcoreSetMousePosition );
+	assingGlobalFunction( "SetMouseOffset", lcoreSetMouseOffset );
+	assingGlobalFunction( "SetMouseScale", lcoreSetMouseScale );
+	assingGlobalFunction( "GetMouseWheelMove", lcoreGetMouseWheelMove );
+	assingGlobalFunction( "SetMouseCursor", lcoreSetMouseCursor );
+		/* Input-related functions: touch */
+	assingGlobalFunction( "GetTouchPosition", lcoreGetTouchPosition );
+	assingGlobalFunction( "GetTouchPointId", lcoreGetTouchPointId );
+	assingGlobalFunction( "GetTouchPointCount", lcoreGetTouchPointCount );
+		/* Input-related functions: gestures. */
+	assingGlobalFunction( "SetGesturesEnabled", lcoreSetGesturesEnabled );
+	assingGlobalFunction( "IsGestureDetected", lcoreIsGestureDetected );
+	assingGlobalFunction( "GetGestureDetected", lcoreGetGestureDetected );
+	assingGlobalFunction( "GetGestureHoldDuration", lcoreGetGestureHoldDuration );
+	assingGlobalFunction( "GetGestureDragVector", lcoreGetGestureDragVector );
+	assingGlobalFunction( "GetGestureDragAngle", lcoreGetGestureDragAngle );
+	assingGlobalFunction( "GetGesturePinchVector", lcoreGetGesturePinchVector );
+	assingGlobalFunction( "GetGesturePinchAngle", lcoreGetGesturePinchAngle );
+		/* Camera2D System functions. */
 	assingGlobalFunction( "CreateCamera2D", lcoreCreateCamera2D );
-	assingGlobalFunction( "BeginMode2D", lcoreBeginMode2D );
-	assingGlobalFunction( "EndMode2D", lcoreEndMode2D );
 	assingGlobalFunction( "SetCamera2DTarget", lcoreSetCamera2DTarget );
 	assingGlobalFunction( "SetCamera2DOffset", lcoreSetCamera2DOffset );
 	assingGlobalFunction( "SetCamera2DRotation", lcoreSetCamera2DRotation );
@@ -1613,10 +1668,8 @@ void luaRegister() {
 	assingGlobalFunction( "GetCamera2DOffset", lcoreGetCamera2DOffset );
 	assingGlobalFunction( "GetCamera2DRotation", lcoreGetCamera2DRotation );
 	assingGlobalFunction( "GetCamera2DZoom", lcoreGetCamera2DZoom );
-		/* Camera3D. */
+		/* Camera3D System functions. */
 	assingGlobalFunction( "CreateCamera3D", lcoreCreateCamera3D );
-	assingGlobalFunction( "BeginMode3D", lcoreBeginMode3D );
-	assingGlobalFunction( "EndMode3D", lcoreEndMode3D );
 	assingGlobalFunction( "SetCamera3DPosition", lcoreSetCamera3DPosition );
 	assingGlobalFunction( "SetCamera3DTarget", lcoreSetCamera3DTarget );
 	assingGlobalFunction( "SetCamera3DUp", lcoreSetCamera3DUp );
@@ -1641,58 +1694,7 @@ void luaRegister() {
 	assingGlobalFunction( "GetCamera3DProjectionMatrix", lcoreGetCamera3DProjectionMatrix );
 	assingGlobalFunction( "UpdateCamera3D", lcoreUpdateCamera3D );
 	assingGlobalFunction( "UpdateCamera3DPro", lcoreUpdateCamera3DPro );
-		/* Input-related Keyboard. */
-	assingGlobalFunction( "IsKeyPressed", lcoreIsKeyPressed );
-	assingGlobalFunction( "IsKeyDown", lcoreIsKeyDown );
-	assingGlobalFunction( "IsKeyReleased", lcoreIsKeyReleased );
-	assingGlobalFunction( "IsKeyUp", lcoreIsKeyUp );
-	assingGlobalFunction( "GetKeyPressed", lcoreGetKeyPressed );
-	assingGlobalFunction( "GetCharPressed", lcoreGetCharPressed );
-	assingGlobalFunction( "SetExitKey", lcoreSetExitKey );
-	assingGlobalFunction( "GetKeyName", lcoreGetKeyName );
-	assingGlobalFunction( "GetKeyScancode", lcoreGetKeyScancode );
-		/* Input-related Gamepad. */
-	assingGlobalFunction( "IsGamepadAvailable", lcoreIsGamepadAvailable );
-	assingGlobalFunction( "IsGamepadButtonPressed", lcoreIsGamepadButtonPressed );
-	assingGlobalFunction( "IsGamepadButtonDown", lcoreIsGamepadButtonDown );
-	assingGlobalFunction( "IsGamepadButtonReleased", lcoreIsGamepadButtonReleased );
-	assingGlobalFunction( "GetGamepadAxisCount", lcoreGetGamepadAxisCount );
-	assingGlobalFunction( "GetGamepadAxisMovement", lcoreGetGamepadAxisMovement );
-	assingGlobalFunction( "GetGamepadName", lcoreGetGamepadName );
-		/* Input-related Mouse. */
-	assingGlobalFunction( "IsMouseButtonPressed", lcoreIsMouseButtonPressed );
-	assingGlobalFunction( "IsMouseButtonDown", lcoreIsMouseButtonDown );
-	assingGlobalFunction( "IsMouseButtonReleased", lcoreIsMouseButtonReleased );
-	assingGlobalFunction( "IsMouseButtonUp", lcoreIsMouseButtonUp );
-	assingGlobalFunction( "GetMousePosition", lcoreGetMousePosition );
-	assingGlobalFunction( "GetMouseDelta", lcoreGetMouseDelta );
-	assingGlobalFunction( "SetMousePosition", lcoreSetMousePosition );
-	assingGlobalFunction( "SetMouseOffset", lcoreSetMouseOffset );
-	assingGlobalFunction( "SetMouseScale", lcoreSetMouseScale );
-	assingGlobalFunction( "GetMouseWheelMove", lcoreGetMouseWheelMove );
-	assingGlobalFunction( "SetMouseCursor", lcoreSetMouseCursor );
-		/* Input-related Touch */
-	assingGlobalFunction( "GetTouchPosition", lcoreGetTouchPosition );
-	assingGlobalFunction( "GetTouchPointId", lcoreGetTouchPointId );
-	assingGlobalFunction( "GetTouchPointCount", lcoreGetTouchPointCount );
-		/* Input-related Gestures. */
-	assingGlobalFunction( "SetGesturesEnabled", lcoreSetGesturesEnabled );
-	assingGlobalFunction( "IsGestureDetected", lcoreIsGestureDetected );
-	assingGlobalFunction( "GetGestureDetected", lcoreGetGestureDetected );
-	assingGlobalFunction( "GetGestureHoldDuration", lcoreGetGestureHoldDuration );
-	assingGlobalFunction( "GetGestureDragVector", lcoreGetGestureDragVector );
-	assingGlobalFunction( "GetGestureDragAngle", lcoreGetGestureDragAngle );
-	assingGlobalFunction( "GetGesturePinchVector", lcoreGetGesturePinchVector );
-	assingGlobalFunction( "GetGesturePinchAngle", lcoreGetGesturePinchAngle );
-		/* Screen-space. */
-	assingGlobalFunction( "GetMouseRay", lcoreGetMouseRay );
-	assingGlobalFunction( "GetCameraMatrix", lcoreGetCameraMatrix );
-	assingGlobalFunction( "GetCameraMatrix2D", lcoreGetCameraMatrix2D );
-	assingGlobalFunction( "GetWorldToScreen", lcoreGetWorldToScreen );
-	assingGlobalFunction( "GetWorldToScreenEx", lcoreGetWorldToScreenEx );
-	assingGlobalFunction( "GetWorldToScreen2D", lcoreGetWorldToScreen2D );
-	assingGlobalFunction( "GetScreenToWorld2D", lcoreGetScreenToWorld2D );
-		/* Buffer. */
+		/* Buffer management functions. */
 	assingGlobalFunction( "LoadBuffer", lcoreLoadBuffer );
 	assingGlobalFunction( "UnloadBuffer", lcoreUnloadBuffer );
 	assingGlobalFunction( "GetBufferData", lcoreGetBufferData );
@@ -1829,8 +1831,6 @@ void luaRegister() {
 	assingGlobalFunction( "DrawTextureRec", ltexturesDrawTextureRec );
 	assingGlobalFunction( "DrawTexturePro", ltexturesDrawTexturePro );
 	assingGlobalFunction( "DrawTextureNPatch", ltexturesDrawTextureNPatch );
-	assingGlobalFunction( "BeginTextureMode", ltexturesBeginTextureMode );
-	assingGlobalFunction( "EndTextureMode", ltexturesEndTextureMode );
 		/* Texture Configuration. */
 	assingGlobalFunction( "GenTextureMipmaps", ltexturesGenTextureMipmaps );
 	assingGlobalFunction( "SetTextureFilter", ltexturesSetTextureFilter );

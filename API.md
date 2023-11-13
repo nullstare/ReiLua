@@ -7710,7 +7710,7 @@ Get z-rotation matrix (angle in radians)
 
 ---
 
-> result = RL.MatrixRotateXYZ( Vector3 angle )
+> result = RL.MatrixRotateXYZ( Vector3 angles )
 
 Get xyz-rotation matrix (angles in radians)
 
@@ -7718,7 +7718,7 @@ Get xyz-rotation matrix (angles in radians)
 
 ---
 
-> result = RL.MatrixRotateZYX( Vector3 angle )
+> result = RL.MatrixRotateZYX( Vector3 angles )
 
 Get zyx-rotation matrix (angles in radians)
 

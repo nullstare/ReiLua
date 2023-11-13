@@ -4958,15 +4958,15 @@ function RL.MatrixRotateZ( angle ) end
 
 ---Get xyz-rotation matrix (angles in radians)
 ---- Success return Matrix
----@param angle table
+---@param angles table
 ---@return any result 
-function RL.MatrixRotateXYZ( angle ) end
+function RL.MatrixRotateXYZ( angles ) end
 
 ---Get zyx-rotation matrix (angles in radians)
 ---- Success return Matrix
----@param angle table
+---@param angles table
 ---@return any result 
-function RL.MatrixRotateZYX( angle ) end
+function RL.MatrixRotateZYX( angles ) end
 
 ---Get scaling matrix
 ---- Success return Matrix

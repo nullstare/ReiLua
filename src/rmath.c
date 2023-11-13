@@ -1308,7 +1308,7 @@ int lmathMatrixRotateZ( lua_State *L ) {
 }
 
 /*
-> result = RL.MatrixRotateXYZ( Vector3 angle )
+> result = RL.MatrixRotateXYZ( Vector3 angles )
 
 Get xyz-rotation matrix (angles in radians)
 
@@ -1323,7 +1323,7 @@ int lmathMatrixRotateXYZ( lua_State *L ) {
 }
 
 /*
-> result = RL.MatrixRotateZYX( Vector3 angle )
+> result = RL.MatrixRotateZYX( Vector3 angles )
 
 Get zyx-rotation matrix (angles in radians)
 

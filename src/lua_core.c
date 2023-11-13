@@ -2693,6 +2693,19 @@ Matrix uluaGetMatrix( lua_State *L, int index ) {
 				if ( lua_isnumber( L, -1 ) ) {
 					m[i][j] = lua_tonumber( L, -1 );
 				}
+				/* Look for one depth further if Matrix given as class. */
+				else if ( lua_istable( L, -1 ) ) {
+					int t3 = lua_gettop( L ), k = 0;
+					lua_pushnil( L );
+
+					while ( lua_next( L, t3 ) != 0 ) {
+						if ( lua_isnumber( L, -1 ) ) {
+							m[j][k] = lua_tonumber( L, -1 );
+						}
+					k++;
+					lua_pop( L, 1 );
+					}
+				}
 				j++;
 				lua_pop( L, 1 );
 			}

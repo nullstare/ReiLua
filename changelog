@@ -17,6 +17,7 @@ KEY CHANGES:
 	- CHANGED: DrawText is now DrawTextEx like in Raylib.
 	- ADDED: Global variable descriptions for API.
 	- CHANGED: Organized functions by putting them in the same order as in Raylib.
+	- ADDED: Matrix library.
 
 DETAILED CHANGES:
 	- CHANGED: GenImageColor now takes Vector2 as size.

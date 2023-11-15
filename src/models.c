@@ -1471,7 +1471,6 @@ int lmodelsCreateMaterial( lua_State *L ) {
 									if ( strcmp( "texture", (char*)lua_tostring( L, -2 ) ) == 0 ) {
 										Texture *texture = uluaGetTexture( L, lua_gettop( L ) );
 										material.maps[map].texture = *texture;
-										printf( "Material Create material.maps[map].texture.id = %d\n", material.maps[map].texture.id );
 									}
 									else if ( strcmp( "color", (char*)lua_tostring( L, -2 ) ) == 0 ) {
 										material.maps[map].color = uluaGetColor( L, lua_gettop( L ) );

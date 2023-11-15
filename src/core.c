@@ -1254,6 +1254,17 @@ int lcoreIsGCUnloadEnabled( lua_State *L ) {
 }
 
 /*
+> RL.SetGCUnload( bool enabled )
+
+Set Lua garbage collection to unload object data
+*/
+int lcoreSetGCUnload( lua_State *L ) {
+	state->gcUnload = uluaGetBoolean( L, 1 );
+
+	return 0;
+}
+
+/*
 ## Core - Files management functions
 */
 

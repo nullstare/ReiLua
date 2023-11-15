@@ -8,15 +8,10 @@ set( CMAKE_C_STANDARD 99 ) # Requires C99 standard
 
 option( SHARED "Build using dynamic libraries." off )
 option( LUAJIT "Use LuaJIT." off )
-option( GC_UNLOAD "Lua garbage collector unloads objects. If off, object unloading should be handled manually." on )
 
 if( NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES )
     set( CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE )
     set_property( CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo" )
-endif()
-
-if( GC_UNLOAD )
-	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DGC_UNLOAD" )
 endif()
 
 file( GLOB SOURCES src/*.c )

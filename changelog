@@ -18,6 +18,7 @@ KEY CHANGES:
 	- ADDED: Global variable descriptions for API.
 	- CHANGED: Organized functions by putting them in the same order as in Raylib.
 	- ADDED: Matrix library.
+	- Removed: GC_UNLOAD build time define and replaced with flag to change it at runtime.
 
 DETAILED CHANGES:
 	- CHANGED: GenImageColor now takes Vector2 as size.

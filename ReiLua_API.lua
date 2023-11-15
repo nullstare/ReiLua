@@ -1680,6 +1680,11 @@ function  RL.OpenURL( url ) end
 ---@return any enabled 
 function RL.IsGCUnloadEnabled() end
 
+---Set Lua garbage collection to unload object data
+---@param enabled boolean
+---@return any RL.SetGCUnload
+function  RL.SetGCUnload( enabled ) end
+
 -- Core - Files management functions
 
 ---Return game directory (where main.lua is located)

@@ -17,12 +17,7 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 	state->resolution = (Vector2){ 800, 600 };
 	state->luaState = NULL;
 	state->logLevelInvalid = LOG_ERROR;
-
-#ifdef GC_UNLOAD
 	state->gcUnload = true;
-#else
-	state->gcUnload = false;
-#endif
 
     InitWindow( state->resolution.x, state->resolution.y, "ReiLua" );
 

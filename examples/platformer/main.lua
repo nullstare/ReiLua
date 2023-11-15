@@ -294,5 +294,4 @@ function RL.draw()
 	RL.EndTextureMode()
 
 	RL.DrawTexturePro( RL.GetRenderTextureTexture( framebuffer ), { 0, 0, res.x, -res.y }, { 0, 0, winSize.x, winSize.y }, { 0, 0 }, 0.0, RL.WHITE )
-	-- RL.glBlitFramebuffer( framebuffer, -1, res, winSize, RL.GL_COLOR_BUFFER_BIT, RL.GL_NEAREST )
 end

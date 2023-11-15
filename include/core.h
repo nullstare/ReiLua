@@ -94,6 +94,7 @@ int lcoreSetLogLevelInvalid( lua_State *L );
 int lcoreGetLogLevelInvalid( lua_State *L );
 int lcoreOpenURL( lua_State *L );
 int lcoreIsGCUnloadEnabled( lua_State *L );
+int lcoreSetGCUnload( lua_State *L );
 /* Files management functions. */
 int lcoreGetBasePath( lua_State *L );
 int lcoreFileExists( lua_State *L );

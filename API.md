@@ -4128,6 +4128,12 @@ Check if Lua garbage collection is set to unload object data
 
 ---
 
+> RL.SetGCUnload( bool enabled )
+
+Set Lua garbage collection to unload object data
+
+---
+
 ## Core - Files management functions
 
 ---

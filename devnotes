@@ -8,15 +8,12 @@ Backlog {
 	* Audio
 		* AudioStream.
 	* Models
+		* More Model management functions. Get mesh and material etc.
 		* BoneInfo.
-		* LoadMaterials (Load materials from model file).
 		* LoadMaterialsFromModel (Could then for example edit and set back to model).
 	* rlgl
 		* More Textures management functions.
 		* Shader buffer storage object management (ssbo).
-
-	* Matrix class.
-	* Quaternion class.
 
 	* Examples
 		* Improve Dungeon crawler example by generating custom mesh instead of drawing 3D quads.

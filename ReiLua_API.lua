@@ -3712,11 +3712,13 @@ function  RL.UnloadModel( model ) end
 function RL.GetModelBoundingBox( model ) end
 
 ---Copies material to model material. (Model material is the material id in models.)
+---- Failure return false
+---- Success return true
 ---@param model any
----@param modelMaterial any
+---@param modelMaterialId integer
 ---@param material any
----@return any RL.SetModelMaterial
-function  RL.SetModelMaterial( model, modelMaterial, material ) end
+---@return any success 
+function RL.SetModelMaterial( model, modelMaterialId, material ) end
 
 ---Set material for a mesh (Mesh and material on this model)
 ---@param model any

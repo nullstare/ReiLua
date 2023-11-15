@@ -3,6 +3,8 @@ if table.unpack == nil then
 	table.unpack = unpack
 end
 
+local Vector3 = require( "vector3" )
+
 Color = {}
 Color.meta = {
 	__index = Color,

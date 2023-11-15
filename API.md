@@ -41,6 +41,10 @@ This function will be called on program close. Cleanup could be done here.
 
 ---
 
+## Object unloading
+
+Some objects allocate memory that needs to be freed when object is no longer needed. By default objects like Textures are unloaded by the Lua garbage collector. It is generatty however recommended to handle this manually in more complex projects. You can change the behavior with SetGCUnload.
+
 ## Arguments
 
 Arguments are stored in 'RL.arg' array.
@@ -69,7 +73,7 @@ Vector4, 4 components
 
 ---
 
-> Quaternion = { 1.0, 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0, w = 1.0 }
+> Quaternion = { 0.0, 0.0, 0.0, 1.0 } or { x = 0.0, y = 0.0, z = 0.0, w = 1.0 }
 
 Quaternion, 4 components (Vector4 alias)
 
@@ -6310,9 +6314,12 @@ Compute model bounding box limits (considers all meshes)
 
 ---
 
-> RL.SetModelMaterial( Model model, Material modelMaterial, Material material )
+> success = RL.SetModelMaterial( Model model, int modelMaterialId, Material material )
 
 Copies material to model material. (Model material is the material id in models.)
+
+- Failure return false
+- Success return true
 
 ---
 

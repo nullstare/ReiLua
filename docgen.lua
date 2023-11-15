@@ -122,6 +122,11 @@ luaApiFile:write(
 luaApiFile:write(
 "---"..FUNC_DESC.exit.."\nfunction RL.exit() end\n" )
 
+-- Object unloading.
+
+apiFile:write( "\n## Object unloading\n" )
+apiFile:write( "\nSome objects allocate memory that needs to be freed when object is no longer needed. By default objects like Textures are unloaded by the Lua garbage collector. It is generatty however recommended to handle this manually in more complex projects. You can change the behavior with SetGCUnload.\n" )
+
 -- Arguments.
 
 apiFile:write( "\n## Arguments\n" )
@@ -138,7 +143,7 @@ apiFile:write( "\n> Vector3 = { 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0 }
 Vector3, 3 components\n\n---\n" )
 apiFile:write( "\n> Vector4 = { 1.0, 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0, w = 1.0 }\n\
 Vector4, 4 components\n\n---\n" )
-apiFile:write( "\n> Quaternion = { 1.0, 1.0, 1.0, 1.0 } or { x = 1.0, y = 1.0, z = 1.0, w = 1.0 }\n\
+apiFile:write( "\n> Quaternion = { 0.0, 0.0, 0.0, 1.0 } or { x = 0.0, y = 0.0, z = 0.0, w = 1.0 }\n\
 Quaternion, 4 components (Vector4 alias)\n\n---\n" )
 apiFile:write( "\n> Matrix = { { 1.0, 0.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0, 0.0 }, { 0.0, 0.0, 1.0, 0.0 }, { 0.0, 0.0, 0.0, 1.0 } }\n\
 Matrix, 4x4 components, column major, OpenGL style, right-handed. Identity matrix example\n\n---\n" )

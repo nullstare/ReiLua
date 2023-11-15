@@ -573,9 +573,12 @@ int lmodelsGetModelBoundingBox( lua_State *L ) {
 }
 
 /*
-> RL.SetModelMaterial( Model model, Material modelMaterial, Material material )
+> success = RL.SetModelMaterial( Model model, int modelMaterialId, Material material )
 
 Copies material to model material. (Model material is the material id in models.)
+
+- Failure return false
+- Success return true
 */
 int lmodelsSetModelMaterial( lua_State *L ) {
 	Model *model = uluaGetModel( L, 1 );
@@ -584,25 +587,31 @@ int lmodelsSetModelMaterial( lua_State *L ) {
 
 	//TODO Could maybe return old shader and textures for storage or get garbage collected?
 
-	/* Copy material data instead of using pointer. Pointer would result in double free error. */
-	model->materials[ modelMaterialId ].shader = material->shader;
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_ALBEDO ] = material->maps[ MATERIAL_MAP_ALBEDO ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_METALNESS ] = material->maps[ MATERIAL_MAP_METALNESS ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_NORMAL ] = material->maps[ MATERIAL_MAP_NORMAL ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_ROUGHNESS ] = material->maps[ MATERIAL_MAP_ROUGHNESS ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_OCCLUSION ] = material->maps[ MATERIAL_MAP_OCCLUSION ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_EMISSION ] = material->maps[ MATERIAL_MAP_EMISSION ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_HEIGHT ] = material->maps[ MATERIAL_MAP_HEIGHT ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_CUBEMAP ] = material->maps[ MATERIAL_MAP_CUBEMAP ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_IRRADIANCE ] = material->maps[ MATERIAL_MAP_IRRADIANCE ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_PREFILTER ] = material->maps[ MATERIAL_MAP_PREFILTER ];
-	model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_BRDF ] = material->maps[ MATERIAL_MAP_BRDF ];
+	if ( 0 <= modelMaterialId && modelMaterialId < model->materialCount ) {
+		/* Copy material data instead of using pointer. Pointer would result in double free error. */
+		model->materials[ modelMaterialId ].shader = material->shader;
+		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_ALBEDO ] = material->maps[ MATERIAL_MAP_ALBEDO ];
+		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_METALNESS ] = material->maps[ MATERIAL_MAP_METALNESS ];
+		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_NORMAL ] = material->maps[ MATERIAL_MAP_NORMAL ];
+		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_ROUGHNESS ] = material->maps[ MATERIAL_MAP_ROUGHNESS ];
+		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_OCCLUSION ] = material->maps[ MATERIAL_MAP_OCCLUSION ];
+		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_EMISSION ] = material->maps[ MATERIAL_MAP_EMISSION ];
+		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_HEIGHT ] = material->maps[ MATERIAL_MAP_HEIGHT ];
+		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_CUBEMAP ] = material->maps[ MATERIAL_MAP_CUBEMAP ];
+		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_IRRADIANCE ] = material->maps[ MATERIAL_MAP_IRRADIANCE ];
+		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_PREFILTER ] = material->maps[ MATERIAL_MAP_PREFILTER ];
+		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_BRDF ] = material->maps[ MATERIAL_MAP_BRDF ];
 
-	for ( int i = 0; i < 4; i++ ) {
-		model->materials[ modelMaterialId ].params[i] = material->params[i];
+		for ( int i = 0; i < 4; i++ ) {
+			model->materials[ modelMaterialId ].params[i] = material->params[i];
+		}
+		lua_pushboolean( L, true );
 	}
-
-	return 0;
+	else {
+		TraceLog( LOG_WARNING, "SetModelMaterial modelMaterialId %d out of bounds", modelMaterialId );
+		lua_pushboolean( L, false );
+	}
+	return 1;
 }
 
 /*

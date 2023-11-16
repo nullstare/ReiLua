@@ -208,6 +208,10 @@ CC= gcc
 # to
 CC= emcc
 
+CFLAGS= -Wall -O2 $(MYCFLAGS) -fno-stack-protector -fno-common -march=native
+# to
+CFLAGS= -Wall -O2 $(MYCFLAGS) -fno-stack-protector -fno-common
+
 AR= ar rc
 # to
 AR= emar

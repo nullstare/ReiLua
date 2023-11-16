@@ -4,6 +4,9 @@ Cam3D = require( "camera3d" )
 
 local PLANE_SIZE = 8
 
+local GLSL_VERSION = "330" -- PLATFORM_DESKTOP
+-- local GLSL_VERSION = "100" -- PLATFORM_RPI, PLATFORM_ANDROID, PLATFORM_WEB
+
 local monitor = 0
 local camera = {}
 local tileTexture = nil
@@ -52,10 +55,8 @@ function RL.init()
 	lightmap = RL.LoadTexture( RL.GetBasePath().."../resources/images/lightmap.png" )
 	RL.SetTextureFilter( lightmap, RL.TEXTURE_FILTER_TRILINEAR )
 
-	shader = RL.LoadShader( RL.GetBasePath().."../resources/shaders/glsl330/lightmap.vs",
-						    RL.GetBasePath().."../resources/shaders/glsl330/lightmap.fs" )
-
-	print( "shader", shader )
+	shader = RL.LoadShader( RL.GetBasePath().."../resources/shaders/glsl"..GLSL_VERSION.."/lightmap.vs",
+						    RL.GetBasePath().."../resources/shaders/glsl"..GLSL_VERSION.."/lightmap.fs" )
 
 	local materialData = {
 		shader = shader,
@@ -79,7 +80,6 @@ function RL.init()
 		},
 	}
 	material = RL.CreateMaterial( materialData )
-
 	matrix = RL.MatrixMultiply( RL.MatrixIdentity(), RL.MatrixTranslate( { -4, 0, -4 } ) )
 end
 

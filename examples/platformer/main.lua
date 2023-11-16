@@ -2,6 +2,7 @@ package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
 Util = require( "utillib" )
 Vec2 = require( "vector2" )
+Rect = require( "rectangle" )
 
 local TILE_SIZE = 16
 local PLAYER_MAXSPEED = 1.5
@@ -21,27 +22,26 @@ local tilemap = {
 	size = Vec2:new( res.x / TILE_SIZE, res.y / TILE_SIZE ),
 	tiles = {},
 	tileRects = {
-		{ 224, 112, TILE_SIZE, TILE_SIZE },
-		{ 224, 48, TILE_SIZE, TILE_SIZE },
-		{ 208, 48, TILE_SIZE, TILE_SIZE },
-		{ 240, 48, TILE_SIZE, TILE_SIZE },
-		{ 256, 96, TILE_SIZE, TILE_SIZE },
-		{ 256, 112, TILE_SIZE, TILE_SIZE },
+		Rect:new( 224, 112, TILE_SIZE, TILE_SIZE ),
+		Rect:new( 224, 48, TILE_SIZE, TILE_SIZE ),
+		Rect:new( 208, 48, TILE_SIZE, TILE_SIZE ),
+		Rect:new( 240, 48, TILE_SIZE, TILE_SIZE ),
+		Rect:new( 256, 96, TILE_SIZE, TILE_SIZE ),
+		Rect:new( 256, 112, TILE_SIZE, TILE_SIZE ),
 	},
 }
-
 local player = {
 	vel = Vec2:new( 0, 0 ),
 	pos = Vec2:new( 32, 32 ), -- Center bottom.
-	colRect = { 0, 0, 12, 14 },
+	colRect = Rect:new( 0, 0, 12, 14 ),
 	onFloor = false,
 	frames = {
-		{ 6, 14, 20, 18 },
-		{ 39, 13, 20, 19 },
-		{ 70, 14, 20, 18 },
-		{ 6, 45, 20, 18 },
-		{ 38, 45, 20, 18 },
-		{ 70, 45, 20, 18 },
+		Rect:new( 6, 14, 20, 18 ),
+		Rect:new( 39, 13, 20, 19 ),
+		Rect:new( 70, 14, 20, 18 ),
+		Rect:new( 6, 45, 20, 18 ),
+		Rect:new( 38, 45, 20, 18 ),
+		Rect:new( 70, 45, 20, 18 ),
 	},
 	walkAnimFrames = { 2, 3, 4, 3 },
 	curFrame = 1,
@@ -103,33 +103,33 @@ end
 
 local function tileCollision( entity )
 	local vPos = entity.pos + entity.vel -- Future pos with current vel.
-	local vRect = Util.tableClone( entity.colRect )
+	local vRect = entity.colRect:clone()
 	local tinyGap = 0.001 -- Tiny gap between collisionRect and tile to prevent getting stuck on all seams.
 
 	-- Move test rect to predicted position.
-	vRect[1] = vPos.x - vRect[3] / 2
+	vRect.x = vPos.x - vRect.width / 2
 
 	-- Tile range where collision box is affecting.
-	local tileRect = {
-		math.floor( vRect[1] / TILE_SIZE ),
-		math.floor( vRect[2] / TILE_SIZE ),
-		math.floor( ( vRect[1] + vRect[3] ) / TILE_SIZE ),
-		math.floor( ( vRect[2] + vRect[4] ) / TILE_SIZE ),
-	}
+	local tileRect = Rect:new(
+		math.floor( vRect.x / TILE_SIZE ),
+		math.floor( vRect.y / TILE_SIZE ),
+		math.floor( ( vRect.x + vRect.width ) / TILE_SIZE ),
+		math.floor( ( vRect.y + vRect.height ) / TILE_SIZE )
+	)
 
-	for y = tileRect[2], tileRect[4] do
+	for y = tileRect.y, tileRect.height do
 		if 0 < entity.vel.x then
-			if isTileWall( Vec2:new( tileRect[3], y ) ) then
+			if isTileWall( Vec2:new( tileRect.width, y ) ) then
 				-- Use new_x to push out of tile.
-				local new_x = tileRect[3] * TILE_SIZE - ( entity.colRect[1] + entity.colRect[3] )
+				local new_x = tileRect.width * TILE_SIZE - ( entity.colRect.x + entity.colRect.width )
 
 				entity.vel.x = new_x - tinyGap
 
 				break
 			end
 		elseif entity.vel.x < 0 then
-			if isTileWall( Vec2:new( tileRect[1], y ) ) then
-				local new_x = ( tileRect[1] * TILE_SIZE + TILE_SIZE ) - entity.colRect[1]
+			if isTileWall( Vec2:new( tileRect.x, y ) ) then
+				local new_x = ( tileRect.x * TILE_SIZE + TILE_SIZE ) - entity.colRect.x
 				entity.vel.x = new_x + tinyGap
 
 				break
@@ -138,20 +138,20 @@ local function tileCollision( entity )
 	end
 
 	-- Calculate new tileRect for y.
-	vRect[1] = entity.colRect[1] -- Reset to non predicted one.
-	vRect[2] = vPos.y - vRect[4]
+	vRect.x = entity.colRect.x -- Reset to non predicted one.
+	vRect.y = vPos.y - vRect.height
 
-	tileRect = {
-		math.floor( vRect[1] / TILE_SIZE ),
-		math.floor( vRect[2] / TILE_SIZE ),
-		math.floor( ( vRect[1] + vRect[3] ) / TILE_SIZE ),
-		math.floor( ( vRect[2] + vRect[4] ) / TILE_SIZE ),
-	}
+	tileRect:set(
+		math.floor( vRect.x / TILE_SIZE ),
+		math.floor( vRect.y / TILE_SIZE ),
+		math.floor( ( vRect.x + vRect.width ) / TILE_SIZE ),
+		math.floor( ( vRect.y + vRect.height ) / TILE_SIZE )
+	)
 
-	for x = tileRect[1], tileRect[3] do
+	for x = tileRect.x, tileRect.width do
 		if 0 < entity.vel.y then
-			if isTileWall( Vec2:new( x, tileRect[4] ) ) then
-				local new_y = tileRect[4] * TILE_SIZE - ( entity.colRect[2] + entity.colRect[4] )
+			if isTileWall( Vec2:new( x, tileRect.height ) ) then
+				local new_y = tileRect.height * TILE_SIZE - ( entity.colRect.y + entity.colRect.height )
 				-- math.max prevents bounce when hitting right on the corner.
 				entity.vel.y = math.max( new_y - tinyGap, 0 )
 				player.onFloor = true
@@ -159,8 +159,8 @@ local function tileCollision( entity )
 				break
 			end
 		elseif entity.vel.y < 0 then
-			if isTileWall( Vec2:new( x, tileRect[2] ) ) then
-				local new_y = ( tileRect[2] * TILE_SIZE + TILE_SIZE ) - entity.colRect[2]
+			if isTileWall( Vec2:new( x, tileRect.y ) ) then
+				local new_y = ( tileRect.y * TILE_SIZE + TILE_SIZE ) - entity.colRect.y
 				entity.vel.y = new_y + tinyGap
 
 				break
@@ -216,8 +216,8 @@ local function playerMovement( delta )
 
 	tileCollision( player )
 	player.pos = player.pos + player.vel
-	player.colRect[1] = player.pos.x - player.colRect[3] / 2
-	player.colRect[2] = player.pos.y - player.colRect[4]
+	player.colRect.x = player.pos.x - player.colRect.width / 2
+	player.colRect.y = player.pos.y - player.colRect.height
 end
 
 function RL.process( delta )
@@ -270,16 +270,16 @@ local function drawPlayer()
 
 	-- Draw rect.
 
-	local src = Util.tableClone( player.frames[ player.curFrame ] )
-	local dst = {
-		player.pos.x - src[3] / 2,
-		player.pos.y - src[4],
-		src[3],
-		src[4],
-	}
+	local src = player.frames[ player.curFrame ]:clone()
+	local dst = Rect:new(
+		player.pos.x - src.width / 2,
+		player.pos.y - src.height,
+		src.width,
+		src.height
+	)
 
 	if player.facing < 0 then
-		src[3] = -src[3]
+		src.width = -src.width
 	end
 
 	RL.DrawTexturePro( tex, src, dst, { 0, 0 }, 0.0, RL.WHITE )
@@ -293,5 +293,12 @@ function RL.draw()
 		drawPlayer()
 	RL.EndTextureMode()
 
-	RL.DrawTexturePro( RL.GetRenderTextureTexture( framebuffer ), { 0, 0, res.x, -res.y }, { 0, 0, winSize.x, winSize.y }, { 0, 0 }, 0.0, RL.WHITE )
+	RL.DrawTexturePro(
+		RL.GetRenderTextureTexture( framebuffer ),
+		{ 0, 0, res.x, -res.y },
+		{ 0, 0, winSize.x, winSize.y },
+		{ 0, 0 },
+		0.0,
+		RL.WHITE
+	)
 end

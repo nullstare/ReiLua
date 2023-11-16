@@ -1,16 +1,21 @@
+package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
+
+Vec2 = require( "vector2" )
+Rect = require( "rectangle" )
+
 -- Defines
-local RESOLUTION = { 128, 128 }
+local RESOLUTION = Vec2:new( 128, 128 )
 local TILE_SIZE = 8
-local LEVEL_SIZE = RESOLUTION[1] / TILE_SIZE
-local STATE = { TITLE = 0, GAME = 1, OVER = 2 } -- Enum wannabe.
+local LEVEL_SIZE = RESOLUTION.x / TILE_SIZE
+local STATE = { TITLE = 0, GAME = 1, OVER = 2 } -- Enum.
 
 -- Resources
 local framebuffer = nil
 local monitor = 0
-local monitorPos = RL.GetMonitorPosition( monitor )
-local monitorSize = RL.GetMonitorSize( monitor )
+local monitorPos = Vec2:new( RL.GetMonitorPosition( monitor ) )
+local monitorSize = Vec2:new( RL.GetMonitorSize( monitor ) )
 local winScale = 6
-local winSize = { RESOLUTION[1] * winScale, RESOLUTION[2] * winScale }
+local winSize = Vec2:new( RESOLUTION.x * winScale, RESOLUTION.y * winScale )
 local gameState = STATE.GAME
 local grassTexture = -1
 local snakeTexture = -1
@@ -22,38 +27,39 @@ local applePos = {}
 
 local function setSnake()
 	snake = {
-		heading = { 1, 0 },
-		control = { 1, 0 },
-		headPos = { LEVEL_SIZE / 2, LEVEL_SIZE / 2 },
-		segments = {},
+		heading = Vec2:new( 1, 0 ),
+		control = Vec2:new( 1, 0 ),
+		headPos = Vec2:new( LEVEL_SIZE / 2, LEVEL_SIZE / 2 ),
+		segments = {}, -- { pos Vec2, heading Vec2 }
 		grow = 2,
 	}
-end
-
-local function vector2IsEqual( v1, v2 )
-	return v1[1] == v2[1] and v1[2] == v2[2]
 end
 
 local function addSegment()
 	-- If first segment, grow from head and otherwise from tail. New segments are inserted firts.
 	if #snake.segments == 0 then
-		table.insert( snake.segments, 1, { pos = snake.headPos, heading = snake.heading } )
+		table.insert( snake.segments, 1, {
+			pos = snake.headPos:clone(),
+			heading = snake.heading:clone()
+		} )
 	else
-		table.insert( snake.segments, 1, { pos = snake.segments[ #snake.segments ].pos,
-										heading = snake.segments[ #snake.segments ].heading } )
+		table.insert( snake.segments, 1, {
+			pos = snake.segments[ #snake.segments ].pos:clone(),
+			heading = snake.segments[ #snake.segments ].heading:clone()
+		} )
 	end
 end
 
 local function setApplePos()
-	applePos = { math.random( 0, LEVEL_SIZE - 1 ), math.random( 0, LEVEL_SIZE - 1 ) }
+	applePos = Vec2:new( math.random( 0, LEVEL_SIZE - 1 ), math.random( 0, LEVEL_SIZE - 1 ) )
 	local search = true
 
 	while search do
 		search = false
-		applePos = { math.random( 0, LEVEL_SIZE - 1 ), math.random( 0, LEVEL_SIZE - 1 ) }
+		applePos = Vec2:new( math.random( 0, LEVEL_SIZE - 1 ), math.random( 0, LEVEL_SIZE - 1 ) )
 
 		for _, seg in ipairs( snake.segments ) do
-			search = vector2IsEqual( applePos, seg.pos )
+			search = applePos == seg.pos
 
 			if search then
 				break
@@ -68,7 +74,7 @@ function RL.init()
 	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 	RL.SetWindowSize( winSize )
-	RL.SetWindowPosition( { monitorPos[1] + monitorSize[1] / 2 - winSize[1] / 2, monitorPos[2] + monitorSize[2] / 2 - winSize[2] / 2 } )
+	RL.SetWindowPosition( { monitorPos.x + monitorSize.x / 2 - winSize.x / 2, monitorPos.y + monitorSize.y / 2 - winSize.y / 2 } )
 	RL.SetWindowTitle( "Snake" )
 	RL.SetWindowIcon( RL.LoadImage( RL.GetBasePath().."../resources/images/apple.png" ) )
 
@@ -92,30 +98,30 @@ local function moveSnake()
 	-- Move body.
 	for i, seg in ipairs( snake.segments ) do
 		if i < #snake.segments then
-			seg.pos = snake.segments[ i+1 ].pos
-			seg.heading = snake.segments[ i+1 ].heading
+			seg.pos = snake.segments[ i+1 ].pos:clone()
+			seg.heading = snake.segments[ i+1 ].heading:clone()
 		else
-			seg.pos = snake.headPos
-			seg.heading = snake.heading
+			seg.pos = snake.headPos:clone()
+			seg.heading = snake.heading:clone()
 		end
 	end
 	-- Move head.
-	snake.heading = { snake.control[1], snake.control[2] }
-	snake.headPos = { snake.headPos[1] + snake.heading[1], snake.headPos[2] + snake.heading[2] }
+	snake.heading = Vec2:new( snake.control.x, snake.control.y )
+	snake.headPos = Vec2:new( snake.headPos.x + snake.heading.x, snake.headPos.y + snake.heading.y )
 
 	-- Check appple eating.
-	if vector2IsEqual( snake.headPos, applePos ) then
+	if snake.headPos == applePos then
 		snake.grow = snake.grow + 1
 		setApplePos()
 	end
 	-- Check if hit to body.
 	for _, seg in ipairs( snake.segments ) do
-		if vector2IsEqual( snake.headPos, seg.pos ) then
+		if snake.headPos == seg.pos then
 			gameState = STATE.OVER
 		end
 	end
 	-- Check if outside or level.
-	if snake.headPos[1] < 0 or LEVEL_SIZE <= snake.headPos[1] or snake.headPos[2] < 0 or LEVEL_SIZE <= snake.headPos[2] then
+	if snake.headPos.x < 0 or LEVEL_SIZE <= snake.headPos.x or snake.headPos.y < 0 or LEVEL_SIZE <= snake.headPos.y then
 		gameState = STATE.OVER
 	end
 
@@ -125,14 +131,14 @@ end
 function RL.process( delta )
 	if gameState == STATE.GAME then -- Run game.
 		-- Controls.
-		if RL.IsKeyPressed( RL.KEY_RIGHT ) and 0 <= snake.heading[1] then
-			snake.control = { 1, 0 }
-		elseif RL.IsKeyPressed( RL.KEY_LEFT ) and snake.heading[1] <= 0 then
-			snake.control = { -1, 0 }
-		elseif RL.IsKeyPressed( RL.KEY_DOWN ) and 0 <= snake.heading[2] then
-			snake.control = { 0, 1 }
-		elseif RL.IsKeyPressed( RL.KEY_UP ) and snake.heading[2] <= 0 then
-			snake.control = { 0, -1 }
+		if RL.IsKeyPressed( RL.KEY_RIGHT ) and 0 <= snake.heading.x then
+			snake.control = Vec2:new( 1, 0 )
+		elseif RL.IsKeyPressed( RL.KEY_LEFT ) and snake.heading.x <= 0 then
+			snake.control = Vec2:new( -1, 0 )
+		elseif RL.IsKeyPressed( RL.KEY_DOWN ) and 0 <= snake.heading.y then
+			snake.control = Vec2:new( 0, 1 )
+		elseif RL.IsKeyPressed( RL.KEY_UP ) and snake.heading.y <= 0 then
+			snake.control = Vec2:new( 0, -1 )
 		end
 
 		moveTimer = moveTimer - gameSpeed * delta
@@ -160,46 +166,61 @@ end
 --[[ Check if next segment is on left side. There are more mathematically elegant solution to this, but there is
 only four possibilities so we can just check them all. ]]--
 local function onLeft( this, nextSeg )
-	return ( vector2IsEqual( this, { 0, -1 } ) and vector2IsEqual( nextSeg, { -1, 0 } ) )
-		or ( vector2IsEqual( this, { -1, 0 } ) and vector2IsEqual( nextSeg, { 0, 1 } ) )
-		or ( vector2IsEqual( this, { 0, 1 } ) and vector2IsEqual( nextSeg, { 1, 0 } ) )
-		or ( vector2IsEqual( this, { 1, 0 } ) and vector2IsEqual( nextSeg, { 0, -1 } ) )
+	return ( this == Vec2:new( 0, -1 ) and nextSeg == Vec2:new( -1, 0 ) )
+		or ( this == Vec2:new( -1, 0 ) and nextSeg == Vec2:new( 0, 1 ) )
+		or ( this == Vec2:new( 0, 1 ) and nextSeg == Vec2:new( 1, 0 ) )
+		or ( this == Vec2:new( 1, 0 ) and nextSeg == Vec2:new( 0, -1 ) )
 end
 
 local function drawSnake()
 	for i, seg in ipairs( snake.segments ) do
 		local angle = math.deg( RL.Vector2Angle( { 0, 0 }, seg.heading ) )
-		local source = { 16, 0, 8, 8 }
+		local source = Rect:new( 16, 0, 8, 8 )
 
 		if i == 1 then -- Tail segment. Yes tail is actually the 'first' segment.
-			source[1] = 8
+			source.x = 8
 
 			if 1 < #snake.segments then
 				angle = math.deg( RL.Vector2Angle( { 0, 0 }, snake.segments[ 2 ].heading ) )
 			end
-		elseif i < #snake.segments and not vector2IsEqual( seg.heading, snake.segments[ i+1 ].heading ) then -- Turned middle segments.
-			source[1] = 0
+		elseif i < #snake.segments and seg.heading ~= snake.segments[ i+1 ].heading then -- Turned middle segments.
+			source.x = 0
 			-- Mirror turned segment to other way.
 			if onLeft( seg.heading, snake.segments[ i+1 ].heading ) then
-				source[4] = -8
+				source.height = -8
 			end
-		elseif i == #snake.segments and not vector2IsEqual( seg.heading, snake.heading ) then -- Turned segment before head.
-			source[1] = 0
+		elseif i == #snake.segments and seg.heading ~= snake.heading then -- Turned segment before head.
+			source.x = 0
 
 			if onLeft( seg.heading, snake.heading ) then
-				source[4] = -8
+				source.height = -8
 			end
 		end
 		-- Notice that we set the origin to center { 4, 4 } that acts as pivot point. We also have to adjust our dest position by 4.
-		RL.DrawTexturePro( snakeTexture, source, { seg.pos[1] * TILE_SIZE + 4, seg.pos[2] * TILE_SIZE + 4, 8, 8 }, { 4, 4 }, angle, RL.WHITE )
+		RL.DrawTexturePro(
+			snakeTexture,
+			source,
+			{ seg.pos.x * TILE_SIZE + 4, seg.pos.y * TILE_SIZE + 4, 8, 8 },
+			{ 4, 4 },
+			angle,
+			RL.WHITE
+		)
 	end
 	-- Let's draw the head last to keep it on top.
 	local angle = math.deg( RL.Vector2Angle( { 0, 0 }, snake.heading ) )
-	RL.DrawTexturePro( snakeTexture, { 24, 0, 8, 8 }, { snake.headPos[1] * TILE_SIZE + 4, snake.headPos[2] * TILE_SIZE + 4, 8, 8 }, { 4, 4 }, angle, RL.WHITE )
+	RL.DrawTexturePro(
+		snakeTexture,
+		{ 24, 0, 8, 8 },
+		{ snake.headPos.x * TILE_SIZE + 4,
+		snake.headPos.y * TILE_SIZE + 4, 8, 8 },
+		{ 4, 4 },
+		angle,
+		RL.WHITE
+	)
 end
 
 local function drawApple()
-	RL.DrawTexture( appleTexture, { applePos[1] * TILE_SIZE, applePos[2] * TILE_SIZE }, RL.WHITE )
+	RL.DrawTexture( appleTexture, { applePos.x * TILE_SIZE, applePos.y * TILE_SIZE }, RL.WHITE )
 end
 
 function RL.draw()
@@ -218,5 +239,12 @@ function RL.draw()
 	RL.EndTextureMode()
 
 	-- Draw framebuffer to window.
-	RL.DrawTexturePro( RL.GetRenderTextureTexture( framebuffer ), { 0, 0, RESOLUTION[1], -RESOLUTION[2] }, { 0, 0, winSize[1], winSize[2] }, { 0, 0 }, 0.0, RL.WHITE )
+	RL.DrawTexturePro(
+		RL.GetRenderTextureTexture( framebuffer ),
+		{ 0, 0, RESOLUTION.x, -RESOLUTION.y },
+		{ 0, 0, winSize.x, winSize.y },
+		{ 0, 0 },
+		0.0,
+		RL.WHITE
+	)
 end

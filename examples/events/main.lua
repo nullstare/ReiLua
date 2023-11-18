@@ -31,6 +31,8 @@ local function getEventType( event )
 		return "Mouse Scroll"
 	elseif event.type == RL.EVENT_CURSOR_ENTER then
 		return "Cursor Enter"
+	elseif event.type == RL.EVENT_JOYSTICK then
+		return "Joystick"
 	end
 
 	return "Unknown"
@@ -90,6 +92,13 @@ function RL.event( event )
 	elseif event.type == RL.EVENT_CURSOR_ENTER then
 		text = text.."enter: "..event.enter
 		cursorIn = event.enter
+	elseif event.type == RL.EVENT_JOYSTICK then
+		text = text.."jid: "..event.jid.." event: "..event.event
+		if event.event == RL.GLFW_CONNECTED then
+			text = text.."\nConnected"
+		elseif event.event == RL.GLFW_DISCONNECTED then
+			text = text.."\nDisconnected"
+		end
 	end
 end
 

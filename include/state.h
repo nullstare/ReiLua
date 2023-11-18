@@ -27,6 +27,7 @@ typedef struct {
 	GLFWcursorposfun raylibMouseCursorPosCallback;
 	GLFWscrollfun raylibMouseScrollCallback;
 	GLFWcursorenterfun raylibCursorEnterCallback;
+	GLFWjoystickfun raylibJoystickCallback;
 } State;
 
 extern State *state;

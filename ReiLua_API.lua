@@ -1161,6 +1161,10 @@ RL.GLFW_RELEASE=0
 RL.GLFW_PRESS=1
 ---The key was held down until it repeated
 RL.GLFW_REPEAT=2
+---Joystick connected
+RL.GLFW_CONNECTED=262145
+---Joystick disconnected
+RL.GLFW_DISCONNECTED=262146
 
 -- Globals - CBuffer
 
@@ -1208,6 +1212,8 @@ RL.EVENT_MOUSE_CURSOR_POS=8
 RL.EVENT_MOUSE_SCROLL=9
 ---GLFW event cursor enter/leave
 RL.EVENT_CURSOR_ENTER=10
+---GLFW event joystick
+RL.EVENT_JOYSTICK=11
 -- Core - Window-related functions
 
 ---Check if window has been initialized successfully

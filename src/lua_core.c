@@ -885,6 +885,8 @@ static void defineGlobals() {
 	assignGlobalInt( GLFW_RELEASE, "GLFW_RELEASE" ); // The key or mouse button was released
 	assignGlobalInt( GLFW_PRESS, "GLFW_PRESS" ); // The key or mouse button was pressed
 	assignGlobalInt( GLFW_REPEAT, "GLFW_REPEAT" ); // The key was held down until it repeated
+	assignGlobalInt( GLFW_CONNECTED, "GLFW_CONNECTED" ); // Joystick connected
+	assignGlobalInt( GLFW_DISCONNECTED, "GLFW_DISCONNECTED" ); // Joystick disconnected
 	/* CBuffer Data Types */
 	assignGlobalInt( BUFFER_UNSIGNED_CHAR, "BUFFER_UNSIGNED_CHAR" ); // C type unsigned char
 	assignGlobalInt( BUFFER_UNSIGNED_SHORT, "BUFFER_UNSIGNED_SHORT" ); // C type unsigned short
@@ -907,6 +909,7 @@ static void defineGlobals() {
 	assignGlobalInt( EVENT_MOUSE_CURSOR_POS, "EVENT_MOUSE_CURSOR_POS" ); // GLFW event cursor position
 	assignGlobalInt( EVENT_MOUSE_SCROLL, "EVENT_MOUSE_SCROLL" ); // GLFW event mouse scroll
 	assignGlobalInt( EVENT_CURSOR_ENTER, "EVENT_CURSOR_ENTER" ); // GLFW event cursor enter/leave
+	assignGlobalInt( EVENT_JOYSTICK, "EVENT_JOYSTICK" ); // GLFW event joystick
 /*DOC_END*/
 
 	lua_pop( L, -1 );
@@ -1286,6 +1289,37 @@ static void cursorEnterInputEvent( GLFWwindow* window, int enter ) {
 	lua_pop( L, -1 );
 }
 
+static void joystickInputEvent( int jid, int event ) {
+	/* Pass through to raylib callback. */
+	if ( state->raylibJoystickCallback != NULL ) {
+		state->raylibJoystickCallback( jid, event );
+	}
+
+	lua_State *L = state->luaState;
+
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop( L );
+
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "event" );
+
+    if ( lua_isfunction( L, -1 ) ) {
+		lua_createtable( L, 3, 0 );
+		lua_pushinteger( L, EVENT_JOYSTICK );
+		lua_setfield( L, -2, "type" );
+		lua_pushinteger( L, jid );
+		lua_setfield( L, -2, "jid" );
+		lua_pushinteger( L, event );
+		lua_setfield( L, -2, "event" );
+
+        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+        }
+    }
+	lua_pop( L, -1 );
+}
+
 bool luaInit( int argn, const char **argc ) {
 	state->luaState = luaL_newstate();
 	lua_State *L = state->luaState;
@@ -1399,6 +1433,7 @@ bool luaCallMain() {
 	state->raylibMouseCursorPosCallback = glfwSetCursorPosCallback( GetWindowHandle(), mouseCursorPosInputEvent );
 	state->raylibMouseScrollCallback = glfwSetScrollCallback( GetWindowHandle(), mouseScrollInputEvent );
 	state->raylibCursorEnterCallback = glfwSetCursorEnterCallback( GetWindowHandle(), cursorEnterInputEvent );
+	state->raylibJoystickCallback = glfwSetJoystickCallback( joystickInputEvent );
 
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "init" );

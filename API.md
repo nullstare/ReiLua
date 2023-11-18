@@ -49,7 +49,7 @@ Some objects allocate memory that needs to be freed when object is no longer nee
 
 Arguments are stored in 'RL.arg' array.
 
-## Types
+## Structures
 
 Raylib structs in Lua
 
@@ -330,6 +330,12 @@ Content of event table received by RL.event.
 > { type RL.EVENT_CURSOR_ENTER, int enter }
 
  Cursor Enter Callback, cursor enters client area.
+
+---
+
+> { type RL.EVENT_JOYSTICK, int jid, int event }
+
+ .
 
 ---
 
@@ -3391,6 +3397,18 @@ The key was held down until it repeated
 
 ---
 
+> GLFW_CONNECTED = 262145
+
+Joystick connected
+
+---
+
+> GLFW_DISCONNECTED = 262146
+
+Joystick disconnected
+
+---
+
 
 ## Globals - CBuffer
 > BUFFER_UNSIGNED_CHAR = 0
@@ -3508,6 +3526,12 @@ GLFW event mouse scroll
 > EVENT_CURSOR_ENTER = 10
 
 GLFW event cursor enter/leave
+
+---
+
+> EVENT_JOYSTICK = 11
+
+GLFW event joystick
 
 ---
 

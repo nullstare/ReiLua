@@ -132,9 +132,9 @@ apiFile:write( "\nSome objects allocate memory that needs to be freed when objec
 apiFile:write( "\n## Arguments\n" )
 apiFile:write( "\nArguments are stored in 'RL.arg' array.\n" )
 
--- Types.
+-- Structures.
 
-apiFile:write( "\n## Types\n\
+apiFile:write( "\n## Structures\n\
 Raylib structs in Lua\n\n---\n" )
 
 apiFile:write( "\n> Vector2 = { 1.0, 1.0 } or { x = 1.0, y = 1.0 }\n\
@@ -251,6 +251,7 @@ apiFile:write( "\n> { type RL.EVENT_MOUSE_BUTTON, int button, int action, int mo
 apiFile:write( "\n> { type RL.EVENT_MOUSE_CURSOR_POS, number x, number y }\n\n Cursor Position Callback, runs on mouse move.\n\n---\n" )
 apiFile:write( "\n> { type RL.EVENT_MOUSE_SCROLL, number xoffset, number yoffset }\n\n Srolling Callback, runs on mouse wheel.\n\n---\n" )
 apiFile:write( "\n> { type RL.EVENT_CURSOR_ENTER, int enter }\n\n Cursor Enter Callback, cursor enters client area.\n\n---\n" )
+apiFile:write( "\n> { type RL.EVENT_JOYSTICK, int jid, int event }\n\n .\n\n---\n" )
 
 if separate then
 	apiFile:close()

@@ -166,4 +166,8 @@ function utillib.tableMove( t, src, len, dest )
     table.move( copy, 1, len, dest, t )
 end
 
+function utillib.randomFloat( min, max )
+	return min + math.random() * ( max - min );
+end
+
 return utillib

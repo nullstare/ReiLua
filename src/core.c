@@ -2733,7 +2733,7 @@ int lcoreUpdateCamera3DPro( lua_State *L ) {
 /*
 > buffer = RL.LoadBuffer( data{} buffer, int type )
 
-Load Buffer. Type should be one of the Buffer types
+Load Buffer. Type should be one of the Buffer types. Empty buffer will set data to NULL.
 
 - Success return Buffer
 */
@@ -2746,6 +2746,13 @@ int lcoreLoadBuffer( lua_State *L ) {
 	};
 	int len = uluaGetTableLen( L, 1 );
 
+	if ( len == 0 ) {
+		buffer.size = 0;
+		buffer.data = NULL;
+
+		uluaPushBuffer( L, buffer );
+		return 1;
+	}
 	buffer.size = len * getBufferElementSize( &buffer );
 	buffer.data = malloc( buffer.size );
 

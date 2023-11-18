@@ -4930,7 +4930,7 @@ Update camera movement, movement/rotation values should be provided by user
 
 > buffer = RL.LoadBuffer( data{} buffer, int type )
 
-Load Buffer. Type should be one of the Buffer types
+Load Buffer. Type should be one of the Buffer types. Empty buffer will set data to NULL.
 
 - Success return Buffer
 
@@ -9119,7 +9119,7 @@ Draw vertex array elements instanced
 
 ---
 
-> id = RL.rlLoadTexture( Vector2 size, int format, int mipmapCount )
+> id = RL.rlLoadTexture( Buffer data, Vector2 size, int format, int mipmapCount )
 
 Load texture in GPU
 
@@ -9135,9 +9135,63 @@ Load depth texture/renderbuffer (to be attached to fbo)
 
 ---
 
+> id = RL.rlLoadTextureCubemap( Buffer data, int size, int format )
+
+Load texture cubemap
+
+- Success return int
+
+---
+
+> RL.rlUpdateTexture( int id, Vector2 offset, Vector2 size, int format, Buffer data )
+
+Update GPU texture with new data
+
+---
+
+> glInternalFormat, glFormat, glType = RL.rlGetGlTextureFormats( int format )
+
+Get OpenGL internal formats
+
+- Success return int, int, int
+
+---
+
+> name = RL.rlGetPixelFormatName( int format )
+
+Get name string for pixel format
+
+- Success return string
+
+---
+
 > RL.rlUnloadTexture( int id )
 
 Unload texture from GPU memory
+
+---
+
+> mipmapCount = RL.rlGenTextureMipmaps( int id, Vector2 size, int format )
+
+Generate mipmap data for selected texture
+
+- Success return int
+
+---
+
+> data = RL.rlReadTexturePixels( int id, Vector2 size, int format )
+
+Read texture pixel data
+
+- Success return Buffer
+
+---
+
+> data = RL.rlReadScreenPixels( Vector2 size )
+
+Read screen pixel data (color buffer)
+
+- Success return Buffer
 
 ---
 
@@ -9262,6 +9316,58 @@ Load compute shader program
 > RL.rlComputeShaderDispatch( int groupX, int groupY, int groupZ )
 
 Dispatch compute shader (equivalent to *draw* for graphics pipeline)
+
+---
+
+## RLGL - Shader buffer storage object management (ssbo)
+
+---
+
+> buffer = RL.rlLoadShaderBuffer( int size, Buffer data, int usageHint )
+
+Load shader storage buffer object (SSBO)
+
+- Success return int
+
+---
+
+> RL.rlUnloadShaderBuffer( int ssboId )
+
+Unload shader storage buffer object (SSBO)
+
+---
+
+> RL.rlUpdateShaderBuffer( int id, Buffer data, int offset )
+
+Update SSBO buffer data
+
+---
+
+> RL.rlBindShaderBuffer( int id, int index )
+
+Bind SSBO buffer
+
+---
+
+> data = RL.rlReadShaderBuffer( int id, int count, int offset )
+
+Read SSBO buffer data (GPU->CPU)
+
+- Success return Buffer
+
+---
+
+> RL.rlCopyShaderBuffer( int destId, int srcId, int destOffset, int srcOffset, int count )
+
+Copy SSBO data between buffers
+
+---
+
+> size = RL.rlGetShaderBufferSize( int id )
+
+Get SSBO buffer size
+
+- Success return int
 
 ---
 

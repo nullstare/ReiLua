@@ -119,8 +119,6 @@ luaApiFile:write(
 "---"..FUNC_DESC.log.."\n---@param logLevel integer\n---@param message string\nfunction RL.log( logLevel, message ) end\n" )
 luaApiFile:write(
 "---"..FUNC_DESC.exit.."\nfunction RL.exit() end\n" )
-luaApiFile:write(
-"---"..FUNC_DESC.exit.."\nfunction RL.exit() end\n" )
 
 -- Object unloading.
 

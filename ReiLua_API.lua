@@ -20,8 +20,6 @@ function RL.event( event ) end
 function RL.log( logLevel, message ) end
 ---This function will be called on program close. Cleanup could be done here.
 function RL.exit() end
----This function will be called on program close. Cleanup could be done here.
-function RL.exit() end
 
 -- Globals - ConfigFlags
 
@@ -2290,7 +2288,7 @@ function  RL.UpdateCamera3DPro( camera, movement, rotation, zoom ) end
 
 -- Core - Buffer management functions
 
----Load Buffer. Type should be one of the Buffer types
+---Load Buffer. Type should be one of the Buffer types. Empty buffer will set data to NULL.
 ---- Success return Buffer
 ---@param buffer table
 ---@param type integer
@@ -6178,11 +6176,12 @@ function  RL.rlDrawVertexArrayElementsInstanced( offset, count, buffer, instance
 
 ---Load texture in GPU
 ---- Success return int
+---@param data any
 ---@param size table
 ---@param format integer
 ---@param mipmapCount integer
 ---@return any id 
-function RL.rlLoadTexture( size, format, mipmapCount ) end
+function RL.rlLoadTexture( data, size, format, mipmapCount ) end
 
 ---Load depth texture/renderbuffer (to be attached to fbo)
 ---- Success return int
@@ -6191,10 +6190,63 @@ function RL.rlLoadTexture( size, format, mipmapCount ) end
 ---@return any id 
 function RL.rlLoadTextureDepth( size, useRenderBuffer ) end
 
+---Load texture cubemap
+---- Success return int
+---@param data any
+---@param size integer
+---@param format integer
+---@return any id 
+function RL.rlLoadTextureCubemap( data, size, format ) end
+
+---Update GPU texture with new data
+---@param id integer
+---@param offset table
+---@param size table
+---@param format integer
+---@param data any
+---@return any RL.rlUpdateTexture
+function  RL.rlUpdateTexture( id, offset, size, format, data ) end
+
+---Get OpenGL internal formats
+---- Success return int, int, int
+---@param format integer
+---@return any glInternalFormat
+---@return any glFormat
+---@return any glType 
+function RL.rlGetGlTextureFormats( format ) end
+
+---Get name string for pixel format
+---- Success return string
+---@param format integer
+---@return any name 
+function RL.rlGetPixelFormatName( format ) end
+
 ---Unload texture from GPU memory
 ---@param id integer
 ---@return any RL.rlUnloadTexture
 function  RL.rlUnloadTexture( id ) end
+
+---Generate mipmap data for selected texture
+---- Success return int
+---@param id integer
+---@param size table
+---@param format integer
+---@return any mipmapCount 
+function RL.rlGenTextureMipmaps( id, size, format ) end
+
+---Read texture pixel data
+---- Success return Buffer
+---@param id integer
+---@param size table
+---@param format integer
+---@return any data 
+function RL.rlReadTexturePixels( id, size, format ) end
+
+---Read screen pixel data (color buffer)
+---- Success return Buffer
+---@param size table
+---@return any data 
+function RL.rlReadScreenPixels( size ) end
 
 -- RLGL - Framebuffer management (fbo)
 
@@ -6306,6 +6358,57 @@ function RL.rlLoadComputeShaderProgram( shaderId ) end
 ---@param groupZ integer
 ---@return any RL.rlComputeShaderDispatch
 function  RL.rlComputeShaderDispatch( groupX, groupY, groupZ ) end
+
+-- RLGL - Shader buffer storage object management (ssbo)
+
+---Load shader storage buffer object (SSBO)
+---- Success return int
+---@param size integer
+---@param data any
+---@param usageHint integer
+---@return any buffer 
+function RL.rlLoadShaderBuffer( size, data, usageHint ) end
+
+---Unload shader storage buffer object (SSBO)
+---@param ssboId integer
+---@return any RL.rlUnloadShaderBuffer
+function  RL.rlUnloadShaderBuffer( ssboId ) end
+
+---Update SSBO buffer data
+---@param id integer
+---@param data any
+---@param offset integer
+---@return any RL.rlUpdateShaderBuffer
+function  RL.rlUpdateShaderBuffer( id, data, offset ) end
+
+---Bind SSBO buffer
+---@param id integer
+---@param index integer
+---@return any RL.rlBindShaderBuffer
+function  RL.rlBindShaderBuffer( id, index ) end
+
+---Read SSBO buffer data (GPU->CPU)
+---- Success return Buffer
+---@param id integer
+---@param count integer
+---@param offset integer
+---@return any data 
+function RL.rlReadShaderBuffer( id, count, offset ) end
+
+---Copy SSBO data between buffers
+---@param destId integer
+---@param srcId integer
+---@param destOffset integer
+---@param srcOffset integer
+---@param count integer
+---@return any RL.rlCopyShaderBuffer
+function  RL.rlCopyShaderBuffer( destId, srcId, destOffset, srcOffset, count ) end
+
+---Get SSBO buffer size
+---- Success return int
+---@param id integer
+---@return any size 
+function RL.rlGetShaderBufferSize( id ) end
 
 -- RLGL - Buffer management
 

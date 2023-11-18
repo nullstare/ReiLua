@@ -20,6 +20,8 @@ KEY CHANGES:
 	- ADDED: Matrix library.
 	- Removed: GC_UNLOAD build time define and replaced with flag to change it at runtime.
 	- ADDED: Quaternion library.
+	- ADDED: Shader buffer storage object management (ssbo).
+	- ADDED: Rest of rlgl texture management functions.
 
 DETAILED CHANGES:
 	- CHANGED: GenImageColor now takes Vector2 as size.
@@ -54,6 +56,7 @@ DETAILED CHANGES:
 	- CHANGED: Organized core functions.
 	- CHANGED: Organized shapes, textures, audio, text, lights and gui functions.
 	- ADDED: More color and rectangle lib functionality.
+	- CHANGED: rlLoadTexture to take Buffer data.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.5.0		Using Raylib 4.5

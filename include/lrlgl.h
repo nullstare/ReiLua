@@ -105,7 +105,14 @@ int lrlglDrawVertexArrayElementsInstanced( lua_State *L );
 /* Textures management */
 int lrlglLoadTexture( lua_State *L );
 int lrlglLoadTextureDepth( lua_State *L );
+int lrlglLoadTextureCubemap( lua_State *L );
+int lrlglUpdateTexture( lua_State *L );
+int lrlglGetGlTextureFormats( lua_State *L );
+int lrlglGetPixelFormatName( lua_State *L );
 int lrlglUnloadTexture( lua_State *L );
+int lrlglGenTextureMipmaps( lua_State *L );
+int lrlglReadTexturePixels( lua_State *L );
+int lrlglReadScreenPixels( lua_State *L );
 /* Framebuffer management (fbo) */
 int lrlglLoadFramebuffer( lua_State *L );
 int lrlglFramebufferAttach( lua_State *L );
@@ -125,6 +132,14 @@ int lrlglSetShader( lua_State *L );
 /* Compute shader management */
 int lrlglLoadComputeShaderProgram( lua_State *L );
 int lrlglComputeShaderDispatch( lua_State *L );
+/* Shader buffer storage object management (ssbo) */
+int lrlglLoadShaderBuffer( lua_State *L );
+int lrlglUnloadShaderBuffer( lua_State *L );
+int lrlglUpdateShaderBuffer( lua_State *L );
+int lrlglBindShaderBuffer( lua_State *L );
+int lrlglReadShaderBuffer( lua_State *L );
+int lrlglCopyShaderBuffer( lua_State *L );
+int lrlglGetShaderBufferSize( lua_State *L );
 /* Buffer management */
 int lrlglBindImageTexture( lua_State *L );
 /* Matrix state management */

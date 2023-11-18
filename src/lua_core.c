@@ -2344,7 +2344,14 @@ void luaRegister() {
 		/* Textures management. */
 	assingGlobalFunction( "rlLoadTexture", lrlglLoadTexture );
 	assingGlobalFunction( "rlLoadTextureDepth", lrlglLoadTextureDepth );
+	assingGlobalFunction( "rlLoadTextureCubemap", lrlglLoadTextureCubemap );
+	assingGlobalFunction( "rlUpdateTexture", lrlglUpdateTexture );
+	assingGlobalFunction( "rlGetGlTextureFormats", lrlglGetGlTextureFormats );
+	assingGlobalFunction( "rlGetPixelFormatName", lrlglGetPixelFormatName );
 	assingGlobalFunction( "rlUnloadTexture", lrlglUnloadTexture );
+	assingGlobalFunction( "rlGenTextureMipmaps", lrlglGenTextureMipmaps );
+	assingGlobalFunction( "rlReadTexturePixels", lrlglReadTexturePixels );
+	assingGlobalFunction( "rlReadScreenPixels", lrlglReadScreenPixels );
 		/* Framebuffer management (fbo). */
 	assingGlobalFunction( "rlLoadFramebuffer", lrlglLoadFramebuffer );
 	assingGlobalFunction( "rlFramebufferAttach", lrlglFramebufferAttach );
@@ -2364,6 +2371,14 @@ void luaRegister() {
 		/* Compute shader management */
 	assingGlobalFunction( "rlLoadComputeShaderProgram", lrlglLoadComputeShaderProgram );
 	assingGlobalFunction( "rlComputeShaderDispatch", lrlglComputeShaderDispatch );
+		/* Shader buffer storage object management (ssbo) */
+	assingGlobalFunction( "rlLoadShaderBuffer", lrlglLoadShaderBuffer );
+	assingGlobalFunction( "rlUnloadShaderBuffer", lrlglUnloadShaderBuffer );
+	assingGlobalFunction( "rlUpdateShaderBuffer", lrlglUpdateShaderBuffer );
+	assingGlobalFunction( "rlBindShaderBuffer", lrlglBindShaderBuffer );
+	assingGlobalFunction( "rlReadShaderBuffer", lrlglReadShaderBuffer );
+	assingGlobalFunction( "rlCopyShaderBuffer", lrlglCopyShaderBuffer );
+	assingGlobalFunction( "rlGetShaderBufferSize", lrlglGetShaderBufferSize );
 		/* Buffer management */
 	assingGlobalFunction( "rlBindImageTexture", lrlglBindImageTexture );
 		/* Matrix state management. */
@@ -3175,6 +3190,9 @@ void uluaPushGlyphInfo( lua_State *L, GlyphInfo glyphInfo, Image *image ) {
 }
 
 void uluaPushBuffer( lua_State *L, Buffer buffer ) {
+	if ( buffer.size == 0 ) {
+		buffer.data = NULL;
+	}
 	Buffer *bufferP = lua_newuserdata( L, sizeof( Buffer ) );
 	*bufferP = buffer;
 	luaL_setmetatable( L, "Buffer" );

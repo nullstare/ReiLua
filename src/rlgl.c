@@ -1224,18 +1224,19 @@ int lrlglDrawVertexArrayElementsInstanced( lua_State *L ) {
 */
 
 /*
-> id = RL.rlLoadTexture( Vector2 size, int format, int mipmapCount )
+> id = RL.rlLoadTexture( Buffer data, Vector2 size, int format, int mipmapCount )
 
 Load texture in GPU
 
 - Success return int
 */
 int lrlglLoadTexture( lua_State *L ) {
-	Vector2 size = uluaGetVector2( L, 1 );
-	int format = luaL_checkinteger( L, 2 );
-	int mipmapCount = luaL_checkinteger( L, 3 );
+	Buffer *data = uluaGetBuffer( L, 1 );
+	Vector2 size = uluaGetVector2( L, 2 );
+	int format = luaL_checkinteger( L, 3 );
+	int mipmapCount = luaL_checkinteger( L, 4 );
 
-	lua_pushinteger( L, rlLoadTexture( NULL, size.x, size.y, format, mipmapCount ) );
+	lua_pushinteger( L, rlLoadTexture( data->data, size.x, size.y, format, mipmapCount ) );
 
 	return 1;
 }
@@ -1257,14 +1258,151 @@ int lrlglLoadTextureDepth( lua_State *L ) {
 }
 
 /*
+> id = RL.rlLoadTextureCubemap( Buffer data, int size, int format )
+
+Load texture cubemap
+
+- Success return int
+*/
+int lrlglLoadTextureCubemap( lua_State *L ) {
+	Buffer *data = uluaGetBuffer( L, 1 );
+	int size = luaL_checkinteger( L, 2 );
+	int format = luaL_checkinteger( L, 3 );
+
+	lua_pushinteger( L, rlLoadTextureCubemap( data->data, size, format ) );
+
+	return 1;
+}
+
+/*
+> RL.rlUpdateTexture( int id, Vector2 offset, Vector2 size, int format, Buffer data )
+
+Update GPU texture with new data
+*/
+int lrlglUpdateTexture( lua_State *L ) {
+	unsigned int id = (unsigned int)luaL_checkinteger( L, 1 );
+	Vector2 offset = uluaGetVector2( L, 2 );
+	Vector2 size = uluaGetVector2( L, 3 );
+	int format = luaL_checkinteger( L, 4 );
+	Buffer *data = uluaGetBuffer( L, 5 );
+
+	rlUpdateTexture( id, (int)offset.x, (int)offset.y, (int)size.x, (int)size.y, format, data->data );
+
+	return 1;
+}
+
+/*
+> glInternalFormat, glFormat, glType = RL.rlGetGlTextureFormats( int format )
+
+Get OpenGL internal formats
+
+- Success return int, int, int
+*/
+int lrlglGetGlTextureFormats( lua_State *L ) {
+	int format = luaL_checkinteger( L, 1 );
+
+	unsigned int glInternalFormat, glFormat, glType;
+	rlGetGlTextureFormats( format, &glInternalFormat, &glFormat, &glType );
+
+	lua_pushinteger( L, glInternalFormat );
+	lua_pushinteger( L, glFormat );
+	lua_pushinteger( L, glType );
+
+	return 3;
+}
+
+/*
+> name = RL.rlGetPixelFormatName( int format )
+
+Get name string for pixel format
+
+- Success return string
+*/
+int lrlglGetPixelFormatName( lua_State *L ) {
+	int format = luaL_checkinteger( L, 1 );
+
+	lua_pushstring( L, rlGetPixelFormatName( format ) );
+
+	return 1;
+}
+
+/*
 > RL.rlUnloadTexture( int id )
 
 Unload texture from GPU memory
 */
 int lrlglUnloadTexture( lua_State *L ) {
-	rlUnloadTexture( luaL_checkinteger( L, 1 ) );
+	rlUnloadTexture( (unsigned int)luaL_checkinteger( L, 1 ) );
 
 	return 0;
+}
+
+/*
+> mipmapCount = RL.rlGenTextureMipmaps( int id, Vector2 size, int format )
+
+Generate mipmap data for selected texture
+
+- Success return int
+*/
+int lrlglGenTextureMipmaps( lua_State *L ) {
+	unsigned int id = (unsigned int)luaL_checkinteger( L, 1 );
+	Vector2 size = uluaGetVector2( L, 2 );
+	int format = luaL_checkinteger( L, 3 );
+
+	int mipmaps = 0;
+	rlGenTextureMipmaps( id, (int)size.x, (int)size.y, format, &mipmaps );
+	
+	lua_pushinteger( L, mipmaps );
+
+	return 1;
+}
+
+/*
+> data = RL.rlReadTexturePixels( int id, Vector2 size, int format )
+
+Read texture pixel data
+
+- Success return Buffer
+*/
+int lrlglReadTexturePixels( lua_State *L ) {
+	unsigned int id = (unsigned int)luaL_checkinteger( L, 1 );
+	Vector2 size = uluaGetVector2( L, 2 );
+	int format = luaL_checkinteger( L, 3 );
+
+	size_t dataSize = GetPixelDataSize( size.x, size.y, format );
+	Buffer data = {
+		.type = BUFFER_UNSIGNED_CHAR,
+		.size = dataSize,
+		.data = malloc( dataSize )
+	};
+	data.data = rlReadTexturePixels( id, (int)size.x, (int)size.y, format );
+	
+	uluaPushBuffer( L, data );
+
+	return 1;
+}
+
+/*
+> data = RL.rlReadScreenPixels( Vector2 size )
+
+Read screen pixel data (color buffer)
+
+- Success return Buffer
+*/
+int lrlglReadScreenPixels( lua_State *L ) {
+	Vector2 size = uluaGetVector2( L, 1 );
+
+	size_t dataSize = (int)size.x * (int)size.y * 4 * sizeof(unsigned char);
+	Buffer data = {
+		.type = BUFFER_UNSIGNED_CHAR,
+		.size = dataSize,
+		.data = malloc( dataSize )
+	};
+	data.data = rlReadScreenPixels( (int)size.x, (int)size.y );
+	
+	uluaPushBuffer( L, data );
+
+	return 1;
 }
 
 /*
@@ -1523,6 +1661,124 @@ int lrlglComputeShaderDispatch( lua_State *L ) {
 	rlComputeShaderDispatch( groupX, groupY, groupZ );
 
 	return 0;
+}
+
+/*
+## RLGL - Shader buffer storage object management (ssbo)
+*/
+
+/*
+> buffer = RL.rlLoadShaderBuffer( int size, Buffer data, int usageHint )
+
+Load shader storage buffer object (SSBO)
+
+- Success return int
+*/
+int lrlglLoadShaderBuffer( lua_State *L ) {
+	unsigned int size = (unsigned int)luaL_checkinteger( L, 1 );
+	Buffer *data = uluaGetBuffer( L, 2 );
+	int usageHint = luaL_checkinteger( L, 3 );
+
+	lua_pushinteger( L, rlLoadShaderBuffer( size, data->data, usageHint ) );
+
+	return 1;
+}
+
+/*
+> RL.rlUnloadShaderBuffer( int ssboId )
+
+Unload shader storage buffer object (SSBO)
+*/
+int lrlglUnloadShaderBuffer( lua_State *L ) {
+	unsigned int ssboId = (unsigned int)luaL_checkinteger( L, 1 );
+
+	rlUnloadShaderBuffer( ssboId );
+
+	return 0;
+}
+
+/*
+> RL.rlUpdateShaderBuffer( int id, Buffer data, int offset )
+
+Update SSBO buffer data
+*/
+int lrlglUpdateShaderBuffer( lua_State *L ) {
+	unsigned int id = (unsigned int)luaL_checkinteger( L, 1 );
+	Buffer *data = uluaGetBuffer( L, 2 );
+	unsigned int offset = (unsigned int)luaL_checkinteger( L, 3 );
+
+	rlUpdateShaderBuffer( id, data->data, data->size, offset );
+
+	return 0;
+}
+
+/*
+> RL.rlBindShaderBuffer( int id, int index )
+
+Bind SSBO buffer
+*/
+int lrlglBindShaderBuffer( lua_State *L ) {
+	unsigned int id = (unsigned int)luaL_checkinteger( L, 1 );
+	unsigned int index = (unsigned int)luaL_checkinteger( L, 2 );
+
+	rlBindShaderBuffer( id, index );
+
+	return 0;
+}
+
+/*
+> data = RL.rlReadShaderBuffer( int id, int count, int offset )
+
+Read SSBO buffer data (GPU->CPU)
+
+- Success return Buffer
+*/
+int lrlglReadShaderBuffer( lua_State *L ) {
+	unsigned int id = (unsigned int)luaL_checkinteger( L, 1 );
+	unsigned int count = (unsigned int)luaL_checkinteger( L, 2 );
+	unsigned int offset = (unsigned int)luaL_checkinteger( L, 3 );
+
+	Buffer dest = {
+		.type = BUFFER_UNSIGNED_CHAR,
+		.size = count,
+		.data = malloc( count * sizeof( unsigned char ) )
+	};
+	rlReadShaderBuffer( id, &dest.data, count, offset );
+	uluaPushBuffer( L, dest );
+
+	return 1;
+}
+
+/*
+> RL.rlCopyShaderBuffer( int destId, int srcId, int destOffset, int srcOffset, int count )
+
+Copy SSBO data between buffers
+*/
+int lrlglCopyShaderBuffer( lua_State *L ) {
+	unsigned int destId = (unsigned int)luaL_checkinteger( L, 1 );
+	unsigned int srcId = (unsigned int)luaL_checkinteger( L, 2 );
+	unsigned int destOffset = (unsigned int)luaL_checkinteger( L, 3 );
+	unsigned int srcOffset = (unsigned int)luaL_checkinteger( L, 4 );
+	unsigned int count = (unsigned int)luaL_checkinteger( L, 5 );
+
+	rlCopyShaderBuffer( destId, srcId, destOffset, srcOffset, count );
+
+	return 0;
+}
+
+/*
+> size = RL.rlGetShaderBufferSize( int id )
+
+Get SSBO buffer size
+
+- Success return int
+*/
+int lrlglGetShaderBufferSize( lua_State *L ) {
+	unsigned int id = (unsigned int)luaL_checkinteger( L, 1 );
+
+	lua_pushinteger( L, rlGetShaderBufferSize( id ) );
+
+	return 1;
 }
 
 /*

@@ -1,4 +1,5 @@
 Current {
+	* Review image functions if sould use Buffer instead of color arrays.
 }
 
 Backlog {
@@ -11,13 +12,11 @@ Backlog {
 		* More Model management functions. Get mesh and material etc.
 		* BoneInfo.
 		* LoadMaterialsFromModel (Could then for example edit and set back to model).
-	* rlgl
-		* More Textures management functions.
-		* Shader buffer storage object management (ssbo).
 
 	* Examples
 		* Improve Dungeon crawler example by generating custom mesh instead of drawing 3D quads.
 		* Platformer example physics process for true framerate independence.
+	* Android support
 }
 
 Bugs {
@@ -27,4 +26,8 @@ Bugs {
 Needs Testing {
 	* rlSetUniform
 	* rlSetShader
+	* rlReadShaderBuffer
+	* rlUpdateTexture
+	* rlReadTexturePixels
+	* rlReadScreenPixels
 }

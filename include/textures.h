@@ -2,6 +2,9 @@
 
 /* Image loading functions. */
 int ltexturesLoadImage( lua_State *L );
+int ltexturesLoadImageRaw( lua_State *L );
+int ltexturesLoadImageAnim( lua_State *L );
+int ltexturesLoadImageFromMemory( lua_State *L );
 int ltexturesLoadImageFromTexture( lua_State *L );
 int ltexturesLoadImageFromScreen( lua_State *L );
 int ltextureIsImageReady( lua_State *L );

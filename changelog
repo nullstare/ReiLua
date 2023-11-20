@@ -57,6 +57,7 @@ DETAILED CHANGES:
 	- CHANGED: Organized shapes, textures, audio, text, lights and gui functions.
 	- ADDED: More color and rectangle lib functionality.
 	- CHANGED: rlLoadTexture to take Buffer data.
+	- ADDED: LoadImageRaw, LoadImageAnim and LoadImageFromMemory.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.5.0		Using Raylib 4.5

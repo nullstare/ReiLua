@@ -1774,6 +1774,9 @@ void luaRegister() {
 	/* Textures. */
 		/* Image loading functions. */
 	assingGlobalFunction( "LoadImage", ltexturesLoadImage );
+	assingGlobalFunction( "LoadImageRaw", ltexturesLoadImageRaw );
+	assingGlobalFunction( "LoadImageAnim", ltexturesLoadImageAnim );
+	assingGlobalFunction( "LoadImageFromMemory", ltexturesLoadImageFromMemory );
 	assingGlobalFunction( "LoadImageFromTexture", ltexturesLoadImageFromTexture );
 	assingGlobalFunction( "LoadImageFromScreen", ltexturesLoadImageFromScreen );
 	assingGlobalFunction( "IsImageReady", ltextureIsImageReady );

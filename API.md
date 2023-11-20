@@ -5271,6 +5271,33 @@ Get collision rectangle for two rectangles collision
 
 Load image from file into CPU memory (RAM)
 
+- Failure return nil
+- Success return Image
+
+---
+
+> image = RL.LoadImageRaw( string fileName, Vector2 size, int format, int headerSize )
+
+Load image from RAW file data
+
+- Failure return nil
+- Success return Image
+
+---
+
+> image, frameCount = RL.LoadImageAnim( string fileName )
+
+Load image sequence from file (frames appended to image.data). All frames are returned in RGBA format
+
+- Failure return nil
+- Success return Image, int
+
+---
+
+> image, frameCount = RL.LoadImageFromMemory( string fileType, Buffer data )
+
+Load image from memory buffer, fileType refers to extension: i.e. '.png'
+
 - Success return Image
 
 ---

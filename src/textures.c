@@ -13,6 +13,7 @@
 
 Load image from file into CPU memory (RAM)
 
+- Failure return nil
 - Success return Image
 */
 int ltexturesLoadImage( lua_State *L ) {
@@ -23,6 +24,71 @@ int ltexturesLoadImage( lua_State *L ) {
 	}
 	TraceLog( state->logLevelInvalid, "Invalid file '%s'", lua_tostring( L, 1 ) );
 	lua_pushnil( L );
+
+	return 1;
+}
+
+/*
+> image = RL.LoadImageRaw( string fileName, Vector2 size, int format, int headerSize )
+
+Load image from RAW file data
+
+- Failure return nil
+- Success return Image
+*/
+int ltexturesLoadImageRaw( lua_State *L ) {
+	const char *fileName = luaL_checkstring( L, 1 );
+	Vector2 size = uluaGetVector2( L, 2 );
+	int format = luaL_checkinteger( L, 3 );
+	int headerSize = luaL_checkinteger( L, 4 );
+
+	if ( FileExists( fileName ) ) {
+		uluaPushImage( L, LoadImageRaw( fileName, (int)size.x, (int)size.y, format, headerSize ) );
+
+		return 1;
+	}
+	TraceLog( state->logLevelInvalid, "Invalid file '%s'", fileName );
+	lua_pushnil( L );
+
+	return 1;
+}
+
+/*
+> image, frameCount = RL.LoadImageAnim( string fileName )
+
+Load image sequence from file (frames appended to image.data). All frames are returned in RGBA format
+
+- Failure return nil
+- Success return Image, int
+*/
+int ltexturesLoadImageAnim( lua_State *L ) {
+	const char *fileName = luaL_checkstring( L, 1 );
+
+	if ( FileExists( fileName ) ) {
+		int frameCount = 0;
+		uluaPushImage( L, LoadImageAnim( fileName, &frameCount ) );
+		lua_pushinteger( L, frameCount );
+
+		return 2;
+	}
+	TraceLog( state->logLevelInvalid, "Invalid file '%s'", fileName );
+	lua_pushnil( L );
+
+	return 1;
+}
+
+/*
+> image, frameCount = RL.LoadImageFromMemory( string fileType, Buffer data )
+
+Load image from memory buffer, fileType refers to extension: i.e. '.png'
+
+- Success return Image
+*/
+int ltexturesLoadImageFromMemory( lua_State *L ) {
+	const char *fileType = luaL_checkstring( L, 1 );
+	Buffer *data = uluaGetBuffer( L, 2 );
+
+	uluaPushImage( L, LoadImageFromMemory( fileType, data->data, data->size ) );
 
 	return 1;
 }

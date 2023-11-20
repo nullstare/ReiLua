@@ -2678,10 +2678,37 @@ function RL.GetCollisionRec( rec1, rec2 ) end
 -- Textures - Image loading functions
 
 ---Load image from file into CPU memory (RAM)
+---- Failure return nil
 ---- Success return Image
 ---@param fileName string
 ---@return any image 
 function RL.LoadImage( fileName ) end
+
+---Load image from RAW file data
+---- Failure return nil
+---- Success return Image
+---@param fileName string
+---@param size table
+---@param format integer
+---@param headerSize integer
+---@return any image 
+function RL.LoadImageRaw( fileName, size, format, headerSize ) end
+
+---Load image sequence from file (frames appended to image.data). All frames are returned in RGBA format
+---- Failure return nil
+---- Success return Image, int
+---@param fileName string
+---@return any image
+---@return any frameCount 
+function RL.LoadImageAnim( fileName ) end
+
+---Load image from memory buffer, fileType refers to extension: i.e. '.png'
+---- Success return Image
+---@param fileType string
+---@param data any
+---@return any image
+---@return any frameCount 
+function RL.LoadImageFromMemory( fileType, data ) end
 
 ---Load image from GPU texture data
 ---- Success return Image

@@ -1695,7 +1695,7 @@ function RL.GetRandomValue( min, max ) end
 ---@param min integer
 ---@param max integer
 ---@return any sequence 
-function RL.GetRandomValue( count, min, max ) end
+function RL.LoadRandomSequence( count, min, max ) end
 
 -- Core - Misc
 
@@ -2639,6 +2639,139 @@ function  RL.DrawPolyLines( center, sides, radius, rotation, color ) end
 ---@param color table
 ---@return any RL.DrawPolyLinesEx
 function  RL.DrawPolyLinesEx( center, sides, radius, rotation, lineThick, color ) end
+
+-- Shapes - Splines drawing functions
+
+---Draw spline: Linear, minimum 2 points
+---@param points table
+---@param thick number
+---@param color table
+---@return any RL.DrawSplineLinear
+function  RL.DrawSplineLinear( points, thick, color ) end
+
+---Draw spline: B-Spline, minimum 4 points
+---@param points table
+---@param thick number
+---@param color table
+---@return any RL.DrawSplineBasis
+function  RL.DrawSplineBasis( points, thick, color ) end
+
+---Draw spline: Catmull-Rom, minimum 4 points
+---@param points table
+---@param thick number
+---@param color table
+---@return any RL.DrawSplineCatmullRom
+function  RL.DrawSplineCatmullRom( points, thick, color ) end
+
+---Draw spline: Quadratic Bezier, minimum 3 points (1 control point): [p1, c2, p3, c4...]
+---@param points table
+---@param thick number
+---@param color table
+---@return any RL.DrawSplineBezierQuadratic
+function  RL.DrawSplineBezierQuadratic( points, thick, color ) end
+
+---Draw spline: Cubic Bezier, minimum 4 points (2 control points): [p1, c2, c3, p4, c5, c6...]
+---@param points table
+---@param thick number
+---@param color table
+---@return any RL.DrawSplineBezierCubic
+function  RL.DrawSplineBezierCubic( points, thick, color ) end
+
+---Draw spline segment: Linear, 2 points
+---@param p1 table
+---@param p2 table
+---@param thick number
+---@param color table
+---@return any RL.DrawSplineSegmentLinear
+function  RL.DrawSplineSegmentLinear( p1, p2, thick, color ) end
+
+---Draw spline segment: B-Spline, 4 points
+---@param p1 table
+---@param p2 table
+---@param p3 table
+---@param p4 table
+---@param thick number
+---@param color table
+---@return any RL.DrawSplineSegmentBasis
+function  RL.DrawSplineSegmentBasis( p1, p2, p3, p4, thick, color ) end
+
+---Draw spline segment: Catmull-Rom, 4 points
+---@param p1 table
+---@param p2 table
+---@param p3 table
+---@param p4 table
+---@param thick number
+---@param color table
+---@return any RL.DrawSplineSegmentCatmullRom
+function  RL.DrawSplineSegmentCatmullRom( p1, p2, p3, p4, thick, color ) end
+
+---Draw spline segment: Quadratic Bezier, 2 points, 1 control point
+---@param p1 table
+---@param c2 table
+---@param p3 table
+---@param thick number
+---@param color table
+---@return any RL.DrawSplineSegmentBezierQuadratic
+function  RL.DrawSplineSegmentBezierQuadratic( p1, c2, p3, thick, color ) end
+
+---Draw spline segment: Cubic Bezier, 2 points, 2 control points
+---@param p1 table
+---@param c2 table
+---@param c3 table
+---@param p4 table
+---@param thick number
+---@param color table
+---@return any RL.DrawSplineSegmentBezierCubic
+function  RL.DrawSplineSegmentBezierCubic( p1, c2, c3, p4, thick, color ) end
+
+-- Shapes - Spline segment point evaluation functions, for a given t [0.0f .. 1.0f]
+
+---Get (evaluate) spline point: Linear
+---- Success return Vector2
+---@param startPos table
+---@param endPos table
+---@param t number
+---@return any point 
+function RL.GetSplinePointLinear( startPos, endPos, t ) end
+
+---Get (evaluate) spline point: B-Spline
+---- Success return Vector2
+---@param p1 table
+---@param p2 table
+---@param p3 table
+---@param p4 table
+---@param t number
+---@return any point 
+function RL.GetSplinePointBasis( p1, p2, p3, p4, t ) end
+
+---Get (evaluate) spline point: Catmull-Rom
+---- Success return Vector2
+---@param p1 table
+---@param p2 table
+---@param p3 table
+---@param p4 table
+---@param t number
+---@return any point 
+function RL.GetSplinePointCatmullRom( p1, p2, p3, p4, t ) end
+
+---Get (evaluate) spline point: Quadratic Bezier
+---- Success return Vector2
+---@param p1 table
+---@param c2 table
+---@param p3 table
+---@param t number
+---@return any point 
+function RL.GetSplinePointBezierQuad( p1, c2, p3, t ) end
+
+---Get (evaluate) spline point: Cubic Bezier
+---- Success return Vector2
+---@param p1 table
+---@param c2 table
+---@param c3 table
+---@param p4 table
+---@param t number
+---@return any point 
+function RL.GetSplinePointBezierCubic( p1, c2, c3, p4, t ) end
 
 -- Shapes - Basic shapes collision detection functions
 

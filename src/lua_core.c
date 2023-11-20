@@ -1771,6 +1771,23 @@ void luaRegister() {
 	assingGlobalFunction( "DrawPoly", lshapesDrawPoly );
 	assingGlobalFunction( "DrawPolyLines", lshapesDrawPolyLines );
 	assingGlobalFunction( "DrawPolyLinesEx", lshapesDrawPolyLinesEx );
+		/* Splines drawing functions. */
+	assingGlobalFunction( "DrawSplineLinear", lshapesDrawSplineLinear );
+	assingGlobalFunction( "DrawSplineBasis", lshapesDrawSplineBasis );
+	assingGlobalFunction( "DrawSplineCatmullRom", lshapesDrawSplineCatmullRom );
+	assingGlobalFunction( "DrawSplineBezierQuadratic", lshapesDrawSplineBezierQuadratic );
+	assingGlobalFunction( "DrawSplineBezierCubic", lshapesDrawSplineBezierCubic );
+	assingGlobalFunction( "DrawSplineSegmentLinear", lshapesDrawSplineSegmentLinear );
+	assingGlobalFunction( "DrawSplineSegmentBasis", lshapesDrawSplineSegmentBasis );
+	assingGlobalFunction( "DrawSplineSegmentCatmullRom", lshapesDrawSplineSegmentCatmullRom );
+	assingGlobalFunction( "DrawSplineSegmentBezierQuadratic", lshapesDrawSplineSegmentBezierQuadratic );
+	assingGlobalFunction( "DrawSplineSegmentBezierCubic", lshapesDrawSplineSegmentBezierCubic );
+		/* Basic Spline segment point evaluation functions, for a given t [0.0f .. 1.0f]. */
+	assingGlobalFunction( "GetSplinePointLinear", lshapesGetSplinePointLinear );
+	assingGlobalFunction( "GetSplinePointBasis", lshapesGetSplinePointBasis );
+	assingGlobalFunction( "GetSplinePointCatmullRom", lshapesGetSplinePointCatmullRom );
+	assingGlobalFunction( "GetSplinePointBezierQuad", lshapesGetSplinePointBezierQuad );
+	assingGlobalFunction( "GetSplinePointBezierCubic", lshapesGetSplinePointBezierCubic );
 		/* Basic shapes collision detection functions. */
 	assingGlobalFunction( "CheckCollisionRecs", lshapesCheckCollisionRecs );
 	assingGlobalFunction( "CheckCollisionCircles", lshapesCheckCollisionCircles );

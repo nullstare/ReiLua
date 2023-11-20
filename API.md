@@ -4168,7 +4168,7 @@ Get a random value between min and max (both included)
 
 ---
 
-> sequence = RL.GetRandomValue( int count, int min, int max )
+> sequence = RL.LoadRandomSequence( int count, int min, int max )
 
 Load random values sequence, no values repeated
 
@@ -5256,6 +5256,114 @@ Draw a polygon outline of n sides
 > RL.DrawPolyLinesEx( Vector2 center, int sides, float radius, float rotation, float lineThick, Color color )
 
 Draw a polygon outline of n sides with extended parameters
+
+---
+
+## Shapes - Splines drawing functions
+
+---
+
+> RL.DrawSplineLinear( Vector2{} points, float thick, Color color )
+
+Draw spline: Linear, minimum 2 points
+
+---
+
+> RL.DrawSplineBasis( Vector2{} points, float thick, Color color )
+
+Draw spline: B-Spline, minimum 4 points
+
+---
+
+> RL.DrawSplineCatmullRom( Vector2{} points, float thick, Color color )
+
+Draw spline: Catmull-Rom, minimum 4 points
+
+---
+
+> RL.DrawSplineBezierQuadratic( Vector2{} points, float thick, Color color )
+
+Draw spline: Quadratic Bezier, minimum 3 points (1 control point): [p1, c2, p3, c4...]
+
+---
+
+> RL.DrawSplineBezierCubic( Vector2{} points, float thick, Color color )
+
+Draw spline: Cubic Bezier, minimum 4 points (2 control points): [p1, c2, c3, p4, c5, c6...]
+
+---
+
+> RL.DrawSplineSegmentLinear( Vector2 p1, Vector2 p2, float thick, Color color )
+
+Draw spline segment: Linear, 2 points
+
+---
+
+> RL.DrawSplineSegmentBasis( Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float thick, Color color )
+
+Draw spline segment: B-Spline, 4 points
+
+---
+
+> RL.DrawSplineSegmentCatmullRom( Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float thick, Color color )
+
+Draw spline segment: Catmull-Rom, 4 points
+
+---
+
+> RL.DrawSplineSegmentBezierQuadratic( Vector2 p1, Vector2 c2, Vector2 p3, float thick, Color color )
+
+Draw spline segment: Quadratic Bezier, 2 points, 1 control point
+
+---
+
+> RL.DrawSplineSegmentBezierCubic( Vector2 p1, Vector2 c2, Vector2 c3, Vector2 p4, float thick, Color color )
+
+Draw spline segment: Cubic Bezier, 2 points, 2 control points
+
+---
+
+## Shapes - Spline segment point evaluation functions, for a given t [0.0f .. 1.0f]
+
+---
+
+> point = RL.GetSplinePointLinear( Vector2 startPos, Vector2 endPos, float t )
+
+Get (evaluate) spline point: Linear
+
+- Success return Vector2
+
+---
+
+> point = RL.GetSplinePointBasis( Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t )
+
+Get (evaluate) spline point: B-Spline
+
+- Success return Vector2
+
+---
+
+> point = RL.GetSplinePointCatmullRom( Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t )
+
+Get (evaluate) spline point: Catmull-Rom
+
+- Success return Vector2
+
+---
+
+> point = RL.GetSplinePointBezierQuad( Vector2 p1, Vector2 c2, Vector2 p3, float t )
+
+Get (evaluate) spline point: Quadratic Bezier
+
+- Success return Vector2
+
+---
+
+> point = RL.GetSplinePointBezierCubic( Vector2 p1, Vector2 c2, Vector2 c3, Vector2 p4, float t )
+
+Get (evaluate) spline point: Cubic Bezier
+
+- Success return Vector2
 
 ---
 

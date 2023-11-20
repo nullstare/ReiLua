@@ -1278,7 +1278,7 @@ int lcoreGetRandomValue( lua_State *L ) {
 }
 
 /*
-> sequence = RL.GetRandomValue( int count, int min, int max )
+> sequence = RL.LoadRandomSequence( int count, int min, int max )
 
 Load random values sequence, no values repeated
 

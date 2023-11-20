@@ -31,6 +31,23 @@ int lshapesDrawTriangleStrip( lua_State *L );
 int lshapesDrawPoly( lua_State *L );
 int lshapesDrawPolyLines( lua_State *L );
 int lshapesDrawPolyLinesEx( lua_State *L );
+/* Splines drawing functions. */
+int lshapesDrawSplineLinear( lua_State *L );
+int lshapesDrawSplineBasis( lua_State *L );
+int lshapesDrawSplineCatmullRom( lua_State *L );
+int lshapesDrawSplineBezierQuadratic( lua_State *L );
+int lshapesDrawSplineBezierCubic( lua_State *L );
+int lshapesDrawSplineSegmentLinear( lua_State *L );
+int lshapesDrawSplineSegmentBasis( lua_State *L );
+int lshapesDrawSplineSegmentCatmullRom( lua_State *L );
+int lshapesDrawSplineSegmentBezierQuadratic( lua_State *L );
+int lshapesDrawSplineSegmentBezierCubic( lua_State *L );
+/* Basic Spline segment point evaluation functions, for a given t [0.0f .. 1.0f]. */
+int lshapesGetSplinePointLinear( lua_State *L );
+int lshapesGetSplinePointBasis( lua_State *L );
+int lshapesGetSplinePointCatmullRom( lua_State *L );
+int lshapesGetSplinePointBezierQuad( lua_State *L );
+int lshapesGetSplinePointBezierCubic( lua_State *L );
 /* Basic shapes collision detection functions. */
 int lshapesCheckCollisionRecs( lua_State *L );
 int lshapesCheckCollisionCircles( lua_State *L );

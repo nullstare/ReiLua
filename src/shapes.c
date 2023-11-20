@@ -4,6 +4,17 @@
 #include "lua_core.h"
 #include "textures.h"
 
+static inline void getVector2Array( lua_State *L, int index, Vector2 points[] ) {
+	int t = index, i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		points[i] = uluaGetVector2( L, lua_gettop( L ) );
+		i++;
+		lua_pop( L, 1 );
+	}
+}
+
 /*
 ## Shapes - Basic shapes drawing functions
 */
@@ -518,6 +529,278 @@ int lshapesDrawPolyLinesEx( lua_State *L ) {
 	DrawPolyLinesEx( center, sides, radius, rotation, lineThick, color );
 
 	return 0;
+}
+
+/*
+## Shapes - Splines drawing functions
+*/
+
+/*
+> RL.DrawSplineLinear( Vector2{} points, float thick, Color color )
+
+Draw spline: Linear, minimum 2 points
+*/
+int lshapesDrawSplineLinear( lua_State *L ) {
+	int pointCount = uluaGetTableLen( L, 1 );
+	Vector2 points[ pointCount ];
+	float thick = luaL_checknumber( L, 2 );
+	Color color = uluaGetColor( L, 3 );
+
+	getVector2Array( L, 1, points );
+	DrawSplineLinear( points, pointCount, thick, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawSplineBasis( Vector2{} points, float thick, Color color )
+
+Draw spline: B-Spline, minimum 4 points
+*/
+int lshapesDrawSplineBasis( lua_State *L ) {
+	int pointCount = uluaGetTableLen( L, 1 );
+	Vector2 points[ pointCount ];
+	float thick = luaL_checknumber( L, 2 );
+	Color color = uluaGetColor( L, 3 );
+
+	getVector2Array( L, 1, points );
+	DrawSplineBasis( points, pointCount, thick, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawSplineCatmullRom( Vector2{} points, float thick, Color color )
+
+Draw spline: Catmull-Rom, minimum 4 points
+*/
+int lshapesDrawSplineCatmullRom( lua_State *L ) {
+	int pointCount = uluaGetTableLen( L, 1 );
+	Vector2 points[ pointCount ];
+	float thick = luaL_checknumber( L, 2 );
+	Color color = uluaGetColor( L, 3 );
+
+	getVector2Array( L, 1, points );
+	DrawSplineCatmullRom( points, pointCount, thick, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawSplineBezierQuadratic( Vector2{} points, float thick, Color color )
+
+Draw spline: Quadratic Bezier, minimum 3 points (1 control point): [p1, c2, p3, c4...]
+*/
+int lshapesDrawSplineBezierQuadratic( lua_State *L ) {
+	int pointCount = uluaGetTableLen( L, 1 );
+	Vector2 points[ pointCount ];
+	float thick = luaL_checknumber( L, 2 );
+	Color color = uluaGetColor( L, 3 );
+
+	getVector2Array( L, 1, points );
+	DrawSplineBezierQuadratic( points, pointCount, thick, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawSplineBezierCubic( Vector2{} points, float thick, Color color )
+
+Draw spline: Cubic Bezier, minimum 4 points (2 control points): [p1, c2, c3, p4, c5, c6...]
+*/
+int lshapesDrawSplineBezierCubic( lua_State *L ) {
+	int pointCount = uluaGetTableLen( L, 1 );
+	Vector2 points[ pointCount ];
+	float thick = luaL_checknumber( L, 2 );
+	Color color = uluaGetColor( L, 3 );
+
+	getVector2Array( L, 1, points );
+	DrawSplineBezierCubic( points, pointCount, thick, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawSplineSegmentLinear( Vector2 p1, Vector2 p2, float thick, Color color )
+
+Draw spline segment: Linear, 2 points
+*/
+int lshapesDrawSplineSegmentLinear( lua_State *L ) {
+	Vector2 p1 = uluaGetVector2( L, 1 );
+	Vector2 p2 = uluaGetVector2( L, 2 );
+	float thick = luaL_checknumber( L, 3 );
+	Color color = uluaGetColor( L, 4 );
+
+	DrawSplineSegmentLinear( p1, p2, thick, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawSplineSegmentBasis( Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float thick, Color color )
+
+Draw spline segment: B-Spline, 4 points
+*/
+int lshapesDrawSplineSegmentBasis( lua_State *L ) {
+	Vector2 p1 = uluaGetVector2( L, 1 );
+	Vector2 p2 = uluaGetVector2( L, 2 );
+	Vector2 p3 = uluaGetVector2( L, 3 );
+	Vector2 p4 = uluaGetVector2( L, 4 );
+	float thick = luaL_checknumber( L, 5 );
+	Color color = uluaGetColor( L, 6 );
+
+	DrawSplineSegmentBasis( p1, p2, p3, p4, thick, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawSplineSegmentCatmullRom( Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float thick, Color color )
+
+Draw spline segment: Catmull-Rom, 4 points
+*/
+int lshapesDrawSplineSegmentCatmullRom( lua_State *L ) {
+	Vector2 p1 = uluaGetVector2( L, 1 );
+	Vector2 p2 = uluaGetVector2( L, 2 );
+	Vector2 p3 = uluaGetVector2( L, 3 );
+	Vector2 p4 = uluaGetVector2( L, 4 );
+	float thick = luaL_checknumber( L, 5 );
+	Color color = uluaGetColor( L, 6 );
+
+	DrawSplineSegmentCatmullRom( p1, p2, p3, p4, thick, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawSplineSegmentBezierQuadratic( Vector2 p1, Vector2 c2, Vector2 p3, float thick, Color color )
+
+Draw spline segment: Quadratic Bezier, 2 points, 1 control point
+*/
+int lshapesDrawSplineSegmentBezierQuadratic( lua_State *L ) {
+	Vector2 p1 = uluaGetVector2( L, 1 );
+	Vector2 c2 = uluaGetVector2( L, 2 );
+	Vector2 p3 = uluaGetVector2( L, 3 );
+	float thick = luaL_checknumber( L, 4 );
+	Color color = uluaGetColor( L, 5 );
+
+	DrawSplineSegmentBezierQuadratic( p1, c2, p3, thick, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawSplineSegmentBezierCubic( Vector2 p1, Vector2 c2, Vector2 c3, Vector2 p4, float thick, Color color )
+
+Draw spline segment: Cubic Bezier, 2 points, 2 control points
+*/
+int lshapesDrawSplineSegmentBezierCubic( lua_State *L ) {
+	Vector2 p1 = uluaGetVector2( L, 1 );
+	Vector2 c2 = uluaGetVector2( L, 2 );
+	Vector2 c3 = uluaGetVector2( L, 3 );
+	Vector2 p4 = uluaGetVector2( L, 4 );
+	float thick = luaL_checknumber( L, 5 );
+	Color color = uluaGetColor( L, 6 );
+
+	DrawSplineSegmentBezierCubic( p1, c2, c3, p4, thick, color );
+
+	return 0;
+}
+
+/*
+## Shapes - Spline segment point evaluation functions, for a given t [0.0f .. 1.0f]
+*/
+
+/*
+> point = RL.GetSplinePointLinear( Vector2 startPos, Vector2 endPos, float t )
+
+Get (evaluate) spline point: Linear
+
+- Success return Vector2
+*/
+int lshapesGetSplinePointLinear( lua_State *L ) {
+	Vector2 p1 = uluaGetVector2( L, 1 );
+	Vector2 p2 = uluaGetVector2( L, 2 );
+	float t = luaL_checknumber( L, 3 );
+
+	uluaPushVector2( L, GetSplinePointLinear( p1, p2, t ) );
+
+	return 1;
+}
+
+/*
+> point = RL.GetSplinePointBasis( Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t )
+
+Get (evaluate) spline point: B-Spline
+
+- Success return Vector2
+*/
+int lshapesGetSplinePointBasis( lua_State *L ) {
+	Vector2 p1 = uluaGetVector2( L, 1 );
+	Vector2 p2 = uluaGetVector2( L, 2 );
+	Vector2 p3 = uluaGetVector2( L, 3 );
+	Vector2 p4 = uluaGetVector2( L, 4 );
+	float t = luaL_checknumber( L, 5 );
+
+	uluaPushVector2( L, GetSplinePointBasis( p1, p2, p3, p4, t ) );
+
+	return 1;
+}
+
+/*
+> point = RL.GetSplinePointCatmullRom( Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t )
+
+Get (evaluate) spline point: Catmull-Rom
+
+- Success return Vector2
+*/
+int lshapesGetSplinePointCatmullRom( lua_State *L ) {
+	Vector2 p1 = uluaGetVector2( L, 1 );
+	Vector2 p2 = uluaGetVector2( L, 2 );
+	Vector2 p3 = uluaGetVector2( L, 3 );
+	Vector2 p4 = uluaGetVector2( L, 4 );
+	float t = luaL_checknumber( L, 5 );
+
+	uluaPushVector2( L, GetSplinePointCatmullRom( p1, p2, p3, p4, t ) );
+
+	return 1;
+}
+
+/*
+> point = RL.GetSplinePointBezierQuad( Vector2 p1, Vector2 c2, Vector2 p3, float t )
+
+Get (evaluate) spline point: Quadratic Bezier
+
+- Success return Vector2
+*/
+int lshapesGetSplinePointBezierQuad( lua_State *L ) {
+	Vector2 p1 = uluaGetVector2( L, 1 );
+	Vector2 c2 = uluaGetVector2( L, 2 );
+	Vector2 p3 = uluaGetVector2( L, 3 );
+	float t = luaL_checknumber( L, 4 );
+
+	uluaPushVector2( L, GetSplinePointBezierQuad( p1, c2, p3, t ) );
+
+	return 1;
+}
+
+/*
+> point = RL.GetSplinePointBezierCubic( Vector2 p1, Vector2 c2, Vector2 c3, Vector2 p4, float t )
+
+Get (evaluate) spline point: Cubic Bezier
+
+- Success return Vector2
+*/
+int lshapesGetSplinePointBezierCubic( lua_State *L ) {
+	Vector2 p1 = uluaGetVector2( L, 1 );
+	Vector2 c2 = uluaGetVector2( L, 2 );
+	Vector2 c3 = uluaGetVector2( L, 3 );
+	Vector2 p4 = uluaGetVector2( L, 4 );
+	float t = luaL_checknumber( L, 5 );
+
+	uluaPushVector2( L, GetSplinePointBezierCubic( p1, c2, c3, p4, t ) );
+
+	return 1;
 }
 
 /*

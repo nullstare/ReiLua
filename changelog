@@ -7,6 +7,7 @@ KEY CHANGES:
 	- ADDED: More audio device management functions.
 	- ADDED: Random values generation functions.
 	- ADDED: More Window-related functions.
+	- ADDED: Spline functions.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.

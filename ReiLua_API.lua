@@ -537,27 +537,27 @@ RL.PIXELFORMAT_UNCOMPRESSED_R32G32B32=9
 ---32*4 bpp (4 channels - float)
 RL.PIXELFORMAT_UNCOMPRESSED_R32G32B32A32=10
 ---4 bpp (no alpha)
-RL.PIXELFORMAT_COMPRESSED_DXT1_RGB=11
+RL.PIXELFORMAT_COMPRESSED_DXT1_RGB=14
 ---4 bpp (1 bit alpha)
-RL.PIXELFORMAT_COMPRESSED_DXT1_RGBA=12
+RL.PIXELFORMAT_COMPRESSED_DXT1_RGBA=15
 ---8 bpp
-RL.PIXELFORMAT_COMPRESSED_DXT3_RGBA=13
+RL.PIXELFORMAT_COMPRESSED_DXT3_RGBA=16
 ---8 bpp
-RL.PIXELFORMAT_COMPRESSED_DXT5_RGBA=14
+RL.PIXELFORMAT_COMPRESSED_DXT5_RGBA=17
 ---4 bpp
-RL.PIXELFORMAT_COMPRESSED_ETC1_RGB=15
+RL.PIXELFORMAT_COMPRESSED_ETC1_RGB=18
 ---4 bpp
-RL.PIXELFORMAT_COMPRESSED_ETC2_RGB=16
+RL.PIXELFORMAT_COMPRESSED_ETC2_RGB=19
 ---8 bpp
-RL.PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA=17
+RL.PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA=20
 ---4 bpp
-RL.PIXELFORMAT_COMPRESSED_PVRT_RGB=18
+RL.PIXELFORMAT_COMPRESSED_PVRT_RGB=21
 ---4 bpp
-RL.PIXELFORMAT_COMPRESSED_PVRT_RGBA=19
+RL.PIXELFORMAT_COMPRESSED_PVRT_RGBA=22
 ---8 bpp
-RL.PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA=20
+RL.PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA=23
 ---2 bpp
-RL.PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA=21
+RL.PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA=24
 
 -- Globals - TextureFilters
 
@@ -1214,6 +1214,10 @@ RL.EVENT_CURSOR_ENTER=10
 RL.EVENT_JOYSTICK=11
 -- Core - Window-related functions
 
+---Close window and unload OpenGL context and free all resources
+---@return any RL.CloseWindow
+function  RL.CloseWindow() end
+
 ---Check if window has been initialized successfully
 ---- Success return bool
 ---@return any state 
@@ -1244,15 +1248,82 @@ function RL.IsWindowMaximized() end
 ---@return any state 
 function RL.IsWindowFocused() end
 
----Set monitor for the current window (fullscreen mode)
----@param monitor integer
----@return any RL.SetWindowMonitor
-function  RL.SetWindowMonitor( monitor ) end
+---Check if window has been resized from last frame
+---- Success return bool
+---@return any resized 
+function RL.IsWindowResized() end
+
+---Check if one specific window flag is enabled (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
+---- Success return bool
+---@param flag integer
+---@return any state 
+function RL.IsWindowState( flag ) end
+
+---Set window configuration state using flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
+---@param flag integer
+---@return any RL.SetWindowState
+function  RL.SetWindowState( flag ) end
+
+---Clear window configuration state flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
+---- Success return bool
+---@param flag integer
+---@return any resized 
+function RL.ClearWindowState( flag ) end
+
+---Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
+---@return any RL.ToggleFullscreen
+function  RL.ToggleFullscreen() end
+
+---Toggle window state: borderless windowed (only PLATFORM_DESKTOP)
+---@return any RL.ToggleBorderlessWindowed
+function  RL.ToggleBorderlessWindowed() end
+
+---Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
+---@return any RL.MaximizeWindow
+function  RL.MaximizeWindow() end
+
+---Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
+---@return any RL.MinimizeWindow
+function  RL.MinimizeWindow() end
+
+---Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
+---@return any RL.RestoreWindow
+function  RL.RestoreWindow() end
+
+---Set icon for window (Only PLATFORM_DESKTOP)
+---@param image any
+---@return any RL.SetWindowIcon
+function  RL.SetWindowIcon( image ) end
+
+---Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
+---@param images table
+---@return any RL.SetWindowIcons
+function  RL.SetWindowIcons( images ) end
+
+---Set title for window (only PLATFORM_DESKTOP and PLATFORM_WEB)
+---@param title string
+---@return any RL.SetWindowTitle
+function  RL.SetWindowTitle( title ) end
 
 ---Set window position on screen
 ---@param pos table
 ---@return any RL.SetWindowPosition
 function  RL.SetWindowPosition( pos ) end
+
+---Set monitor for the current window
+---@param monitor integer
+---@return any RL.SetWindowMonitor
+function  RL.SetWindowMonitor( monitor ) end
+
+---Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
+---@param size table
+---@return any RL.SetWindowMinSize
+function  RL.SetWindowMinSize( size ) end
+
+---Set window maximum dimensions (for FLAG_WINDOW_RESIZABLE)
+---@param size table
+---@return any RL.SetWindowMaxSize
+function  RL.SetWindowMaxSize( size ) end
 
 ---Set window dimensions
 ---@param size table
@@ -1264,15 +1335,34 @@ function  RL.SetWindowSize( size ) end
 ---@return any RL.SetWindowOpacity
 function  RL.SetWindowOpacity( opacity ) end
 
+---Set window focused (only PLATFORM_DESKTOP)
+---@return any RL.SetWindowFocused
+function  RL.SetWindowFocused() end
+
 ---Get native window handle. Return as lightuserdata
 ---- Success return lightuserdata
 ---@return any windowHandle 
 function RL.GetWindowHandle() end
 
----Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
----@param size table
----@return any RL.SetWindowMinSize
-function  RL.SetWindowMinSize( size ) end
+---Get screen size
+---- Success return Vector2
+---@return any size 
+function RL.GetScreenSize() end
+
+---Get render size
+---- Success return Vector2
+---@return any size 
+function RL.GetRenderSize() end
+
+---Get number of connected monitors
+---- Success return int
+---@return any count 
+function RL.GetMonitorCount() end
+
+---Get current connected monitor
+---- Success return int
+---@return any monitor 
+function RL.GetCurrentMonitor() end
 
 ---Get specified monitor position
 ---- Success return Vector2
@@ -1286,63 +1376,6 @@ function RL.GetMonitorPosition( monitor ) end
 ---@return any size 
 function RL.GetMonitorSize( monitor ) end
 
----Get window position on monitor
----- Success return Vector2
----@return any position 
-function RL.GetWindowPosition() end
-
----Get screen size
----- Success return Vector2
----@return any size 
-function RL.GetScreenSize() end
-
----Set window configuration state using flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
----@param flag integer
----@return any RL.SetWindowState
-function  RL.SetWindowState( flag ) end
-
----Check if one specific window flag is enabled (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
----- Success return bool
----@param flag integer
----@return any state 
-function RL.IsWindowState( flag ) end
-
----Clear window configuration state flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
----- Success return bool
----@param flag integer
----@return any resized 
-function RL.ClearWindowState( flag ) end
-
----Check if window has been resized from last frame
----- Success return bool
----@return any resized 
-function RL.IsWindowResized() end
-
----Set icon for window (Only PLATFORM_DESKTOP)
----@param image any
----@return any RL.SetWindowIcon
-function  RL.SetWindowIcon( image ) end
-
----Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
----@param images table
----@return any RL.SetWindowIcons
-function  RL.SetWindowIcons( images ) end
-
----Set title for window (Only PLATFORM_DESKTOP)
----@param title string
----@return any RL.SetWindowTitle
-function  RL.SetWindowTitle( title ) end
-
----Get number of connected monitors
----- Success return int
----@return any count 
-function RL.GetMonitorCount() end
-
----Get current connected monitor
----- Success return int
----@return any monitor 
-function RL.GetCurrentMonitor() end
-
 ---Get specified monitor physical size in millimetres
 ---- Success return Vector2
 ---@param monitor integer
@@ -1355,20 +1388,21 @@ function RL.GetMonitorPhysicalSize( monitor ) end
 ---@return any refreshRate 
 function RL.GetMonitorRefreshRate( monitor ) end
 
+---Get window position on monitor
+---- Success return Vector2
+---@return any position 
+function RL.GetWindowPosition() end
+
 ---Get window scale DPI factor
 ---- Success return Vector2
 ---@return any dpi 
 function RL.GetWindowScaleDPI() end
 
----Get the human-readable, UTF-8 encoded name of the monitor
+---Get the human-readable, UTF-8 encoded name of the specified monitor
 ---- Success return string
 ---@param monitor integer
 ---@return any name 
 function RL.GetMonitorName( monitor ) end
-
----Close window and unload OpenGL context and free all resources
----@return any RL.CloseWindow
-function  RL.CloseWindow() end
 
 ---Set clipboard text content
 ---@param text string
@@ -1641,6 +1675,28 @@ function RL.GetFrameTime() end
 ---@return any time 
 function RL.GetTime() end
 
+-- Core - Random values generation functions
+
+---Set the seed for the random number generator
+---@param seed integer
+---@return any RL.SetRandomSeed
+function  RL.SetRandomSeed( seed ) end
+
+---Get a random value between min and max (both included)
+---- Success return int
+---@param min integer
+---@param max integer
+---@return any time 
+function RL.GetRandomValue( min, max ) end
+
+---Load random values sequence, no values repeated
+---- Success return int{}
+---@param count integer
+---@param min integer
+---@param max integer
+---@return any sequence 
+function RL.GetRandomValue( count, min, max ) end
+
 -- Core - Misc
 
 ---Takes a screenshot of current screen (filename extension defines format)
@@ -1674,7 +1730,7 @@ function  RL.SetLogLevelInvalid( logLevel ) end
 ---@return any logLevel 
 function RL.GetLogLevelInvalid() end
 
----Open URL with default system browser (If available)
+---Open URL with default system browser (if available)
 ---@param url string
 ---@return any RL.OpenURL
 function  RL.OpenURL( url ) end
@@ -1755,6 +1811,11 @@ function RL.GetPrevDirectoryPath( dirPath ) end
 ---- Success return string
 ---@return any directory 
 function RL.GetWorkingDirectory() end
+
+---Get the directory of the running application (uses static string)
+---- Success return string
+---@return any directory 
+function RL.GetApplicationDirectory() end
 
 ---Load directory filepaths
 ---- Success return string{}
@@ -1898,6 +1959,12 @@ function RL.GetKeyScancode( key ) end
 ---@return any available 
 function RL.IsGamepadAvailable( gamepad ) end
 
+---Return gamepad internal name id
+---- Success return string
+---@param gamepad integer
+---@return any name 
+function RL.GetGamepadName( gamepad ) end
+
 ---Detect if a gamepad button has been pressed once
 ---- Success return bool
 ---@param gamepad integer
@@ -1932,11 +1999,11 @@ function RL.GetGamepadAxisCount( gamepad ) end
 ---@return any value 
 function RL.GetGamepadAxisMovement( gamepad, axis ) end
 
----Return gamepad internal name id
----- Success return string
----@param gamepad integer
----@return any name 
-function RL.GetGamepadName( gamepad ) end
+---Set internal gamepad mappings (SDL_GameControllerDB)
+---- Success return int
+---@param mappings string
+---@return any result 
+function RL.SetGamepadMappings( mappings ) end
 
 -- Core - Input-related functions: mouse
 
@@ -2356,6 +2423,12 @@ function  RL.DrawPixel( pos, color ) end
 ---@return any RL.DrawLine
 function  RL.DrawLine( startPos, endPos, thickness, color ) end
 
+---Draw lines sequence
+---@param points table
+---@param color table
+---@return any RL.DrawLineStrip
+function  RL.DrawLineStrip( points, color ) end
+
 ---Draw a line using cubic-bezier curves in-out
 ---@param startPos table
 ---@param endPos table
@@ -2363,31 +2436,6 @@ function  RL.DrawLine( startPos, endPos, thickness, color ) end
 ---@param color table
 ---@return any RL.DrawLineBezier
 function  RL.DrawLineBezier( startPos, endPos, thickness, color ) end
-
----Draw line using quadratic bezier curves with a control point
----@param startPos table
----@param endPos table
----@param controlPos table
----@param thickness number
----@param color table
----@return any RL.DrawLineBezierQuad
-function  RL.DrawLineBezierQuad( startPos, endPos, controlPos, thickness, color ) end
-
----Draw line using quadratic bezier curves with a control point
----@param startPos table
----@param endPos table
----@param startControlPos table
----@param endControlPos table
----@param thickness number
----@param color table
----@return any RL.DrawLineBezierCubic
-function  RL.DrawLineBezierCubic( startPos, endPos, startControlPos, endControlPos, thickness, color ) end
-
----Draw lines sequence
----@param points table
----@param color table
----@return any RL.DrawLineStrip
-function  RL.DrawLineStrip( points, color ) end
 
 ---Draw a color-filled circle
 ---@param center table
@@ -2694,6 +2742,13 @@ function RL.LoadImage( fileName ) end
 ---@return any image 
 function RL.LoadImageRaw( fileName, size, format, headerSize ) end
 
+---Load image from SVG file data or string with specified size
+---- Success return Image
+---@param fileNameOrString string
+---@param size table
+---@return any image 
+function RL.LoadImageSvg( fileNameOrString, size ) end
+
 ---Load image sequence from file (frames appended to image.data). All frames are returned in RGBA format
 ---- Failure return nil
 ---- Success return Image, int
@@ -2739,6 +2794,13 @@ function  RL.UnloadImage( image ) end
 ---@return any success 
 function RL.ExportImage( image, fileName ) end
 
+---Export image to memory buffer
+---- Success return Buffer
+---@param image any
+---@param fileType string
+---@return any buffer 
+function RL.ExportImageToMemory( image, fileType ) end
+
 ---Export image as code file defining an array of bytes, returns true on success
 ---- Success return bool
 ---@param image any
@@ -2755,21 +2817,14 @@ function RL.ExportImageAsCode( image, fileName ) end
 ---@return any image 
 function RL.GenImageColor( size, color ) end
 
----Generate image: vertical gradient
+---Generate image: linear gradient, direction in degrees [0..360], 0=Vertical gradient
 ---- Success return Image
 ---@param size table
----@param top table
----@param bottom table
+---@param direction integer
+---@param a table
+---@param b table
 ---@return any image 
-function RL.GenImageGradientV( size, top, bottom ) end
-
----Generate image: horizontal gradient
----- Success return Image
----@param size table
----@param left table
----@param right table
----@return any image 
-function RL.GenImageGradientH( size, left, right ) end
+function RL.GenImageGradientLinear( size, direction, a, b ) end
 
 ---Generate image: radial gradient
 ---- Success return Image
@@ -2779,6 +2834,15 @@ function RL.GenImageGradientH( size, left, right ) end
 ---@param outer table
 ---@return any image 
 function RL.GenImageGradientRadial( size, density, inner, outer ) end
+
+---Generate image: square gradient
+---- Success return Image
+---@param size table
+---@param density number
+---@param inner table
+---@param outer table
+---@return any image 
+function RL.GenImageGradientSquare( size, density, inner, outer ) end
 
 ---Generate image: checked
 ---- Success return Image
@@ -2931,6 +2995,12 @@ function  RL.ImageFlipVertical( image ) end
 ---@param image any
 ---@return any RL.ImageFlipHorizontal
 function  RL.ImageFlipHorizontal( image ) end
+
+---Rotate image by input angle in degrees (-359 to 359)
+---@param image any
+---@param degrees integer
+---@return any RL.ImageRotate
+function  RL.ImageRotate( image, degrees ) end
 
 ---Rotate image clockwise 90deg
 ---@param image any
@@ -3386,14 +3456,14 @@ function  RL.GetFontDefault() end
 ---@return any font 
 function RL.LoadFont( fileName ) end
 
----Load font from file with extended parameters, use NULL for fontChars to load the default character set
+---Load font from file with extended parameters, use NULL for codepoints to load the default character set
 ---- Failure return nil
 ---- Success return Font
 ---@param fileName string
 ---@param fontSize integer
----@param fontChars table
+---@param codepoints table
 ---@return any font 
-function RL.LoadFontEx( fileName, fontSize, fontChars ) end
+function RL.LoadFontEx( fileName, fontSize, codepoints ) end
 
 ---Load font from Image (XNA style)
 ---- Success return Font
@@ -3496,6 +3566,11 @@ function RL.DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint ) 
 function RL.DrawTextBoxedTinted( font, text, rec, fontSize, spacing, wordWrap, tints, backTints ) end
 
 -- Text - Text font info functions
+
+---Set vertical line spacing when drawing with line-breaks
+---@param spacing integer
+---@return any size 
+function RL.SetTextLineSpacing( spacing ) end
 
 ---Measure string size for Font
 ---- Success return Vector2
@@ -4195,10 +4270,28 @@ function RL.GetRayCollisionQuad( ray, p1, p2, p3, p4 ) end
 
 -- Audio - Audio device management functions
 
+---Initialize audio device and context
+---@return any RL.InitAudioDevice
+function  RL.InitAudioDevice() end
+
+---Close the audio device and context
+---@return any RL.CloseAudioDevice
+function  RL.CloseAudioDevice() end
+
+---Check if audio device has been initialized successfully
+---- Success return bool
+---@return any isReady 
+function RL.IsAudioDeviceReady() end
+
 ---Set master volume (listener)
 ---@param volume number
 ---@return any RL.SetMasterVolume
 function  RL.SetMasterVolume( volume ) end
+
+---Get master volume (listener)
+---- Success return float
+---@return any isReady 
+function RL.GetMasterVolume() end
 
 -- Audio - Wave/Sound loading/unloading functions
 
@@ -4228,6 +4321,12 @@ function RL.IsWaveReady( wave ) end
 ---@return any sound 
 function RL.LoadSoundFromWave( wave ) end
 
+---Create a new sound that shares the same sample data as the source sound, does not own the sound data
+---- Success return Sound
+---@param source any
+---@return any sound 
+function RL.LoadSoundAlias( source ) end
+
 ---Checks if a sound is ready
 ---- Success return bool
 ---@param sound any
@@ -4243,6 +4342,11 @@ function  RL.UnloadWave( wave ) end
 ---@param sound any
 ---@return any RL.UnloadSound
 function  RL.UnloadSound( sound ) end
+
+---Unload a sound alias (does not deallocate sample data)
+---@param alias any
+---@return any RL.UnloadSoundAlias
+function  RL.UnloadSoundAlias( alias ) end
 
 ---Export wave data to file, returns true on success
 ---- Success return bool

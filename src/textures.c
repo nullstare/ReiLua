@@ -54,6 +54,22 @@ int ltexturesLoadImageRaw( lua_State *L ) {
 }
 
 /*
+> image = RL.LoadImageSvg( string fileNameOrString, Vector2 size )
+
+Load image from SVG file data or string with specified size
+
+- Success return Image
+*/
+int ltexturesLoadImageSvg( lua_State *L ) {
+	const char *fileNameOrString = luaL_checkstring( L, 1 );
+	Vector2 size = uluaGetVector2( L, 2 );
+
+	uluaPushImage( L, LoadImageSvg( fileNameOrString, (int)size.x, (int)size.y ) );
+
+	return 1;
+}
+
+/*
 > image, frameCount = RL.LoadImageAnim( string fileName )
 
 Load image sequence from file (frames appended to image.data). All frames are returned in RGBA format
@@ -163,6 +179,27 @@ int ltexturesExportImage( lua_State *L ) {
 }
 
 /*
+> buffer = RL.ExportImageToMemory( Image image, string fileType )
+
+Export image to memory buffer
+
+- Success return Buffer
+*/
+int ltexturesExportImageToMemory( lua_State *L ) {
+	Image *image = uluaGetImage( L, 1 );
+	const char *fileType = luaL_checkstring( L, 2 );
+
+	Buffer buffer = {
+		.type = BUFFER_UNSIGNED_CHAR
+	};
+	buffer.data = ExportImageToMemory( *image, fileType, (int*)&buffer.size );
+
+	uluaPushBuffer( L, buffer );
+
+	return 1;
+}
+
+/*
 > success = RL.ExportImageAsCode( Image image, string fileName )
 
 Export image as code file defining an array of bytes, returns true on success
@@ -197,35 +234,19 @@ int ltexturesGenImageColor( lua_State *L ) {
 }
 
 /*
-> image = RL.GenImageGradientV( Vector2 size, Color top, Color bottom )
+> image = RL.GenImageGradientLinear( Vector2 size, int direction, Color a, Color b )
 
-Generate image: vertical gradient
-
-- Success return Image
-*/
-int ltexturesGenImageGradientV( lua_State *L ) {
-	Vector2 size = uluaGetVector2( L, 1 );
-	Color top = uluaGetColor( L, 2 );
-	Color bottom = uluaGetColor( L, 3 );
-
-	uluaPushImage( L, GenImageGradientV( (int)size.x, (int)size.y, top, bottom ) );
-
-	return 1;
-}
-
-/*
-> image = RL.GenImageGradientH( Vector2 size, Color left, Color right )
-
-Generate image: horizontal gradient
+Generate image: linear gradient, direction in degrees [0..360], 0=Vertical gradient
 
 - Success return Image
 */
-int ltexturesGenImageGradientH( lua_State *L ) {
+int ltexturesGenImageGradientLinear( lua_State *L ) {
 	Vector2 size = uluaGetVector2( L, 1 );
-	Color left = uluaGetColor( L, 2 );
-	Color right = uluaGetColor( L, 3 );
+	int direction = luaL_checkinteger( L, 2 );
+	Color start = uluaGetColor( L, 3 );
+	Color end = uluaGetColor( L, 4 );
 
-	uluaPushImage( L, GenImageGradientH( (int)size.x, (int)size.y, left, right ) );
+	uluaPushImage( L, GenImageGradientLinear( (int)size.x, (int)size.y, direction, start, end ) );
 
 	return 1;
 }
@@ -244,6 +265,24 @@ int ltexturesGenImageGradientRadial( lua_State *L ) {
 	Color outer = uluaGetColor( L, 4 );
 
 	uluaPushImage( L, GenImageGradientRadial( (int)size.x, (int)size.y, density, inner, outer ) );
+
+	return 1;
+}
+
+/*
+> image = RL.GenImageGradientSquare( Vector2 size, float density, Color inner, Color outer )
+
+Generate image: square gradient
+
+- Success return Image
+*/
+int ltexturesGenImageGradientSquare( lua_State *L ) {
+	Vector2 size = uluaGetVector2( L, 1 );
+	float density = luaL_checknumber( L, 2 );
+	Color inner = uluaGetColor( L, 3 );
+	Color outer = uluaGetColor( L, 4 );
+
+	uluaPushImage( L, GenImageGradientSquare( (int)size.x, (int)size.y, density, inner, outer ) );
 
 	return 1;
 }
@@ -588,6 +627,20 @@ int ltexturesImageFlipHorizontal( lua_State *L ) {
 	Image *image = uluaGetImage( L, 1 );
 
 	ImageFlipHorizontal( image );
+
+	return 0;
+}
+
+/*
+> RL.ImageRotate( Image image, int degrees )
+
+Rotate image by input angle in degrees (-359 to 359)
+*/
+int ltexturesImageRotate( lua_State *L ) {
+	Image *image = uluaGetImage( L, 1 );
+	int degrees = luaL_checkinteger( L, 2 );
+
+	ImageRotate( image, degrees );
 
 	return 0;
 }

@@ -1,4 +1,24 @@
 ------------------------------------------------------------------------
+Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Raygui 4.0
+------------------------------------------------------------------------
+KEY CHANGES:
+	- CHANGE: Switch to Raylib 5.0 and Raygui 4.0.
+	- CHANGE: Audio device no longer initialize automatically in case some other device is used.
+	- ADDED: More audio device management functions.
+	- ADDED: Random values generation functions.
+	- ADDED: More Window-related functions.
+
+DETAILED CHANGES:
+	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.
+	- REMOVED: GenImageGradientV, GenImageGradientH.
+	- ADDED: GenImageGradientLinear and GenImageGradientSquare.
+	- ADDED: LoadImageSvg and ExportImageToMemory.
+	- ADDED: ImageRotate.
+	- ADDED: SetTextLineSpacing.
+	- ADDED: LoadSoundAlias and UnloadSoundAlias.
+	- ADDED: GetApplicationDirectory.
+
+------------------------------------------------------------------------
 Release:	ReiLua version 0.6.0		Using Raylib 4.5
 ------------------------------------------------------------------------
 KEY CHANGES:

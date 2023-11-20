@@ -3,14 +3,18 @@
 #define STRING_LEN 1024
 
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 6
+#define VERSION_MINOR 7
 #define VERSION_PATCH 0
-#define VERSION_DEV 0
+#define VERSION_DEV 1
 
-#include "glad.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
+
+#include "glad.h"
+#include "glfw3.h"
+#include "glfw3native.h"
 
 #ifdef SHARED
 	#include <raylib.h>
@@ -28,9 +32,6 @@
 	#include "rcamera.h"
 #endif
 
-#include "glfw3.h"
-#include "glfw3native.h"
-#include <stdint.h>
 
 #ifdef LUAJIT
 	#ifdef SHARED

@@ -193,9 +193,9 @@ int ltextLoadFont( lua_State *L ) {
 }
 
 /*
-> font = RL.LoadFontEx( string fileName, int fontSize, int{} fontChars )
+> font = RL.LoadFontEx( string fileName, int fontSize, int{} codepoints )
 
-Load font from file with extended parameters, use NULL for fontChars to load the default character set
+Load font from file with extended parameters, use NULL for codepoints to load the default character set
 
 - Failure return nil
 - Success return Font
@@ -205,20 +205,20 @@ int ltextLoadFontEx( lua_State *L ) {
 
 	if ( FileExists( luaL_checkstring( L, 1 ) ) ) {
 		if ( lua_istable( L, 3 ) ) {
-			int glyphCount = uluaGetTableLen( L, 3 );
-			int fontChars[ glyphCount ];
+			int codepointCount = uluaGetTableLen( L, 3 );
+			int codepoints[ codepointCount ];
 
 			int t = 3;
 			int i = 0;
 			lua_pushnil( L );
 
 			while ( lua_next( L, t ) != 0 ) {
-				fontChars[i] = lua_tointeger( L, -1 );
+				codepoints[i] = lua_tointeger( L, -1 );
 
 				i++;
 				lua_pop( L, 1 );
 			}
-			uluaPushFont( L, LoadFontEx( lua_tostring( L, 1 ), fontSize, fontChars, glyphCount ) );
+			uluaPushFont( L, LoadFontEx( lua_tostring( L, 1 ), fontSize, codepoints, codepointCount ) );
 
 			return 1;
 		}
@@ -374,8 +374,8 @@ int ltextDrawTextCodepoints( lua_State *L ) {
 	float spacing = luaL_checknumber( L, 5 );
 	Color tint = uluaGetColor( L, 6 );
 
-	int count = uluaGetTableLen( L, 2 );
-	int codepoints[ count ];
+	int codepointCount = uluaGetTableLen( L, 2 );
+	int codepoints[ codepointCount ];
 
 	int t = 2;
 	int i = 0;
@@ -387,7 +387,7 @@ int ltextDrawTextCodepoints( lua_State *L ) {
 		i++;
 		lua_pop( L, 1 );
 	}
-	DrawTextCodepoints( *font, codepoints, count, position, fontSize, spacing, tint );
+	DrawTextCodepoints( *font, codepoints, codepointCount, position, fontSize, spacing, tint );
 
 	return 0;
 }
@@ -459,6 +459,17 @@ int ltextDrawTextBoxedTinted( lua_State *L ) {
 /*
 ## Text - Text font info functions
 */
+
+/*
+> size = RL.SetTextLineSpacing( int spacing )
+
+Set vertical line spacing when drawing with line-breaks
+*/
+int ltextSetTextLineSpacing( lua_State *L ) {
+	int spacing = luaL_checkinteger( L, 1 );
+
+	SetTextLineSpacing( spacing );
+}
 
 /*
 > size = RL.MeasureText( Font font, string text, float fontSize, float spacing )

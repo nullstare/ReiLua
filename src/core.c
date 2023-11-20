@@ -29,6 +29,17 @@ void unloadBuffer( Buffer *buffer ) {
 */
 
 /*
+> RL.CloseWindow()
+
+Close window and unload OpenGL context and free all resources
+*/
+int lcoreCloseWindow( lua_State *L ) {
+	state->run = false;
+
+	return 0;
+}
+
+/*
 > state = RL.IsWindowReady()
 
 Check if window has been initialized successfully
@@ -107,152 +118,16 @@ int lcoreIsWindowFocused( lua_State *L ) {
 }
 
 /*
-> RL.SetWindowMonitor( int monitor )
+> resized = RL.IsWindowResized()
 
-Set monitor for the current window (fullscreen mode)
+Check if window has been resized from last frame
+
+- Success return bool
 */
-int lcoreSetWindowMonitor( lua_State *L ) {
-	int monitor = luaL_checkinteger( L, 1 );
-
-	SetWindowMonitor( monitor );
-
-	return 0;
-}
-
-/*
-> RL.SetWindowPosition( Vector2 pos )
-
-Set window position on screen
-*/
-int lcoreSetWindowPosition( lua_State *L ) {
-	Vector2 pos = uluaGetVector2( L, 1 );
-
-	SetWindowPosition( pos.x, pos.y );
-
-	return 0;
-}
-
-/*
-> RL.SetWindowSize( Vector2 size )
-
-Set window dimensions
-*/
-int lcoreSetWindowSize( lua_State *L ) {
-	Vector2 size = uluaGetVector2( L, 1 );
-
-	SetWindowSize( (int)size.x, (int)size.y );
-
-	return 0;
-}
-
-/*
-> RL.SetWindowOpacity( float opacity )
-
-Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)
-*/
-int lcoreSetWindowOpacity( lua_State *L ) {
-	float opacity = luaL_checknumber( L, 1 );
-
-	SetWindowOpacity( opacity );
-
-	return 0;
-}
-
-/*
-> windowHandle = RL.GetWindowHandle()
-
-Get native window handle. Return as lightuserdata
-
-- Success return lightuserdata
-*/
-int lcoreGetWindowHandle( lua_State *L ) {
-	lua_pushlightuserdata( L, GetWindowHandle() );
+int lcoreIsWindowResized( lua_State *L ) {
+	lua_pushboolean( L, IsWindowResized() );
 
 	return 1;
-}
-
-/*
-> RL.SetWindowMinSize( Vector2 size )
-
-Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
-*/
-int lcoreSetWindowMinSize( lua_State *L ) {
-	Vector2 size = uluaGetVector2( L, 1 );
-
-	SetWindowMinSize( (int)size.x, (int)size.y );
-
-	return 0;
-}
-
-/*
-> position = RL.GetMonitorPosition( int monitor )
-
-Get specified monitor position
-
-- Success return Vector2
-*/
-int lcoreGetMonitorPosition( lua_State *L ) {
-	int monitor = luaL_checkinteger( L, 1 );
-
-	uluaPushVector2( L, GetMonitorPosition( monitor ) );
-
-	return 1;
-}
-
-/*
-> size = RL.GetMonitorSize( int monitor )
-
-Get specified monitor size
-
-- Success return Vector2
-*/
-int lcoreGetMonitorSize( lua_State *L ) {
-	int monitor = luaL_checkinteger( L, 1 );
-
-	Vector2 size = (Vector2){ GetMonitorWidth( monitor ), GetMonitorHeight( monitor ) };
-	uluaPushVector2( L, size );
-
-	return 1;
-}
-
-/*
-> position = RL.GetWindowPosition()
-
-Get window position on monitor
-
-- Success return Vector2
-*/
-int lcoreGetWindowPosition( lua_State *L ) {
-	uluaPushVector2( L, GetWindowPosition() );
-
-	return 1;
-}
-
-/*
-> size = RL.GetScreenSize()
-
-Get screen size
-
-- Success return Vector2
-*/
-int lcoreGetScreenSize( lua_State *L ) {
-	Vector2 size = (Vector2){ GetScreenWidth(), GetScreenHeight() };
-	uluaPushVector2( L, size );
-
-	return 1;
-}
-
-/*
-> RL.SetWindowState( int flag )
-
-Set window configuration state using flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
-*/
-int lcoreSetWindowState( lua_State *L ) {
-	unsigned int flag = (unsigned int)luaL_checkinteger( L, 1 );
-
-	SetWindowState( flag );
-
-	return 0;
 }
 
 /*
@@ -271,6 +146,19 @@ int lcoreIsWindowState( lua_State *L ) {
 }
 
 /*
+> RL.SetWindowState( int flag )
+
+Set window configuration state using flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
+*/
+int lcoreSetWindowState( lua_State *L ) {
+	unsigned int flag = (unsigned int)luaL_checkinteger( L, 1 );
+
+	SetWindowState( flag );
+
+	return 0;
+}
+
+/*
 > resized = RL.ClearWindowState( int flag )
 
 Clear window configuration state flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
@@ -286,16 +174,58 @@ int lcoreClearWindowState( lua_State *L ) {
 }
 
 /*
-> resized = RL.IsWindowResized()
+> RL.ToggleFullscreen()
 
-Check if window has been resized from last frame
-
-- Success return bool
+Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
 */
-int lcoreIsWindowResized( lua_State *L ) {
-	lua_pushboolean( L, IsWindowResized() );
+int lcoreToggleFullscreen( lua_State *L ) {
+	ToggleFullscreen();
 
-	return 1;
+	return 0;
+}
+
+/*
+> RL.ToggleBorderlessWindowed()
+
+Toggle window state: borderless windowed (only PLATFORM_DESKTOP)
+*/
+int lcoreToggleBorderlessWindowed( lua_State *L ) {
+	ToggleBorderlessWindowed();
+
+	return 0;
+}
+
+/*
+> RL.MaximizeWindow()
+
+Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
+*/
+int lcoreMaximizeWindow( lua_State *L ) {
+	MaximizeWindow();
+
+	return 0;
+}
+
+/*
+> RL.MinimizeWindow()
+
+Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
+*/
+int lcoreMinimizeWindow( lua_State *L ) {
+	MinimizeWindow();
+
+	return 0;
+}
+
+/*
+> RL.RestoreWindow()
+
+Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
+*/
+int lcoreRestoreWindow( lua_State *L ) {
+	RestoreWindow();
+
+	return 0;
 }
 
 /*
@@ -338,12 +268,142 @@ int lcoreSetWindowIcons( lua_State *L ) {
 /*
 > RL.SetWindowTitle( string title )
 
-Set title for window (Only PLATFORM_DESKTOP)
+Set title for window (only PLATFORM_DESKTOP and PLATFORM_WEB)
 */
 int lcoreSetWindowTitle( lua_State *L ) {
 	SetWindowTitle( luaL_checkstring( L, 1 ) );
 
 	return 0;
+}
+
+/*
+> RL.SetWindowPosition( Vector2 pos )
+
+Set window position on screen
+*/
+int lcoreSetWindowPosition( lua_State *L ) {
+	Vector2 pos = uluaGetVector2( L, 1 );
+
+	SetWindowPosition( pos.x, pos.y );
+
+	return 0;
+}
+
+/*
+> RL.SetWindowMonitor( int monitor )
+
+Set monitor for the current window
+*/
+int lcoreSetWindowMonitor( lua_State *L ) {
+	int monitor = luaL_checkinteger( L, 1 );
+
+	SetWindowMonitor( monitor );
+
+	return 0;
+}
+
+/*
+> RL.SetWindowMinSize( Vector2 size )
+
+Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
+*/
+int lcoreSetWindowMinSize( lua_State *L ) {
+	Vector2 size = uluaGetVector2( L, 1 );
+
+	SetWindowMinSize( (int)size.x, (int)size.y );
+
+	return 0;
+}
+
+/*
+> RL.SetWindowMaxSize( Vector2 size )
+
+Set window maximum dimensions (for FLAG_WINDOW_RESIZABLE)
+*/
+int lcoreSetWindowMaxSize( lua_State *L ) {
+	Vector2 size = uluaGetVector2( L, 1 );
+
+	SetWindowMaxSize( (int)size.x, (int)size.y );
+
+	return 0;
+}
+
+/*
+> RL.SetWindowSize( Vector2 size )
+
+Set window dimensions
+*/
+int lcoreSetWindowSize( lua_State *L ) {
+	Vector2 size = uluaGetVector2( L, 1 );
+
+	SetWindowSize( (int)size.x, (int)size.y );
+
+	return 0;
+}
+
+/*
+> RL.SetWindowOpacity( float opacity )
+
+Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)
+*/
+int lcoreSetWindowOpacity( lua_State *L ) {
+	float opacity = luaL_checknumber( L, 1 );
+
+	SetWindowOpacity( opacity );
+
+	return 0;
+}
+
+/*
+> RL.SetWindowFocused()
+
+Set window focused (only PLATFORM_DESKTOP)
+*/
+int lcoreSetWindowFocused( lua_State *L ) {
+	SetWindowFocused();
+
+	return 0;
+}
+
+/*
+> windowHandle = RL.GetWindowHandle()
+
+Get native window handle. Return as lightuserdata
+
+- Success return lightuserdata
+*/
+int lcoreGetWindowHandle( lua_State *L ) {
+	lua_pushlightuserdata( L, GetWindowHandle() );
+
+	return 1;
+}
+
+/*
+> size = RL.GetScreenSize()
+
+Get screen size
+
+- Success return Vector2
+*/
+int lcoreGetScreenSize( lua_State *L ) {
+	Vector2 size = (Vector2){ GetScreenWidth(), GetScreenHeight() };
+	uluaPushVector2( L, size );
+
+	return 1;
+}
+
+/*
+> size = RL.GetRenderSize()
+
+Get render size
+
+- Success return Vector2
+*/
+int lcoreGetRenderSize( lua_State *L ) {
+	Vector2 size = (Vector2){ GetRenderWidth(), GetRenderHeight() };
+	uluaPushVector2( L, size );
+
+	return 1;
 }
 
 /*
@@ -368,6 +428,37 @@ Get current connected monitor
 */
 int lcoreGetCurrentMonitor( lua_State *L ) {
 	lua_pushinteger( L, GetCurrentMonitor() );
+
+	return 1;
+}
+
+/*
+> position = RL.GetMonitorPosition( int monitor )
+
+Get specified monitor position
+
+- Success return Vector2
+*/
+int lcoreGetMonitorPosition( lua_State *L ) {
+	int monitor = luaL_checkinteger( L, 1 );
+
+	uluaPushVector2( L, GetMonitorPosition( monitor ) );
+
+	return 1;
+}
+
+/*
+> size = RL.GetMonitorSize( int monitor )
+
+Get specified monitor size
+
+- Success return Vector2
+*/
+int lcoreGetMonitorSize( lua_State *L ) {
+	int monitor = luaL_checkinteger( L, 1 );
+
+	Vector2 size = (Vector2){ GetMonitorWidth( monitor ), GetMonitorHeight( monitor ) };
+	uluaPushVector2( L, size );
 
 	return 1;
 }
@@ -404,6 +495,19 @@ int lcoreGetMonitorRefreshRate( lua_State *L ) {
 }
 
 /*
+> position = RL.GetWindowPosition()
+
+Get window position on monitor
+
+- Success return Vector2
+*/
+int lcoreGetWindowPosition( lua_State *L ) {
+	uluaPushVector2( L, GetWindowPosition() );
+
+	return 1;
+}
+
+/*
 > dpi = RL.GetWindowScaleDPI()
 
 Get window scale DPI factor
@@ -419,7 +523,7 @@ int lcoreGetWindowScaleDPI( lua_State *L ) {
 /*
 > name = RL.GetMonitorName( int monitor )
 
-Get the human-readable, UTF-8 encoded name of the monitor
+Get the human-readable, UTF-8 encoded name of the specified monitor
 
 - Success return string
 */
@@ -429,17 +533,6 @@ int lcoreGetMonitorName( lua_State *L ) {
 	lua_pushstring( L, GetMonitorName( monitor ) );
 
 	return 1;
-}
-
-/*
-> RL.CloseWindow()
-
-Close window and unload OpenGL context and free all resources
-*/
-int lcoreCloseWindow( lua_State *L ) {
-	state->run = false;
-
-	return 0;
 }
 
 /*
@@ -1152,6 +1245,63 @@ int lcoreGetTime( lua_State *L ) {
 }
 
 /*
+## Core - Random values generation functions
+*/
+
+/*
+> RL.SetRandomSeed( int seed )
+
+Set the seed for the random number generator
+*/
+int lcoreSetRandomSeed( lua_State *L ) {
+	unsigned int seed = (unsigned int)luaL_checkinteger( L, 1 );
+
+	SetRandomSeed( seed );
+
+	return 0;
+}
+
+/*
+> time = RL.GetRandomValue( int min, int max )
+
+Get a random value between min and max (both included)
+
+- Success return int
+*/
+int lcoreGetRandomValue( lua_State *L ) {
+	int min = luaL_checkinteger( L, 1 );
+	int max = luaL_checkinteger( L, 2 );
+
+	lua_pushinteger( L, GetRandomValue( min, max ) );
+
+	return 1;
+}
+
+/*
+> sequence = RL.GetRandomValue( int count, int min, int max )
+
+Load random values sequence, no values repeated
+
+- Success return int{}
+*/
+int lcoreLoadRandomSequence( lua_State *L ) {
+	unsigned int count = luaL_checkinteger( L, 1 );
+	int min = luaL_checkinteger( L, 1 );
+	int max = luaL_checkinteger( L, 2 );
+
+	int *sequence = LoadRandomSequence( count, min, max );
+	lua_createtable( L, count, 0 );
+
+	for ( int i = 0; i < count; i++ ) {
+		lua_pushinteger( L, sequence[i] );
+    	lua_rawseti( L, -2, i + 1 );
+	}
+	UnloadRandomSequence( sequence );
+
+	return 1;
+}
+
+/*
 ## Core - Misc
 */
 
@@ -1232,7 +1382,7 @@ int lcoreGetLogLevelInvalid( lua_State *L ) {
 /*
 > RL.OpenURL( string url )
 
-Open URL with default system browser (If available)
+Open URL with default system browser (if available)
 */
 int lcoreOpenURL( lua_State *L ) {
 	OpenURL( luaL_checkstring( L, 1 ) );
@@ -1407,6 +1557,19 @@ Get current working directory (Uses static string)
 */
 int lcoreGetWorkingDirectory( lua_State *L ) {
 	lua_pushstring( L, GetWorkingDirectory() );
+
+	return 1;
+}
+
+/*
+> directory = RL.GetApplicationDirectory()
+
+Get the directory of the running application (uses static string)
+
+- Success return string
+*/
+int lcoreGetApplicationDirectory( lua_State *L ) {
+	lua_pushstring( L, GetApplicationDirectory() );
 
 	return 1;
 }
@@ -1794,6 +1957,21 @@ int lcoreIsGamepadAvailable( lua_State *L ) {
 }
 
 /*
+> name = RL.GetGamepadName( int gamepad )
+
+Return gamepad internal name id
+
+- Success return string
+*/
+int lcoreGetGamepadName( lua_State *L ) {
+	int gamepad = luaL_checkinteger( L, 1 );
+
+	lua_pushstring( L, GetGamepadName( gamepad ) );
+
+	return 1;
+}
+
+/*
 > pressed = RL.IsGamepadButtonPressed( int gamepad, int button )
 
 Detect if a gamepad button has been pressed once
@@ -1873,16 +2051,16 @@ int lcoreGetGamepadAxisMovement( lua_State *L ) {
 }
 
 /*
-> name = RL.GetGamepadName( int gamepad )
+> result = RL.SetGamepadMappings( string mappings )
 
-Return gamepad internal name id
+Set internal gamepad mappings (SDL_GameControllerDB)
 
-- Success return string
+- Success return int
 */
-int lcoreGetGamepadName( lua_State *L ) {
-	int gamepad = luaL_checkinteger( L, 1 );
+int lcoreSetGamepadMappings( lua_State *L ) {
+	const char *mappings = luaL_checkstring( L, 1 );
 
-	lua_pushstring( L, GetGamepadName( gamepad ) );
+	lua_pushnumber( L, SetGamepadMappings( mappings ) );
 
 	return 1;
 }

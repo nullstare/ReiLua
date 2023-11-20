@@ -1522,36 +1522,44 @@ void luaRegister() {
 
 	/* Core. */
 		/* Window-related functions. */
+	assingGlobalFunction( "CloseWindow", lcoreCloseWindow );
 	assingGlobalFunction( "IsWindowReady", lcoreIsWindowReady );
 	assingGlobalFunction( "IsWindowFullscreen", lcoreIsWindowFullscreen );
 	assingGlobalFunction( "IsWindowHidden", lcoreIsWindowHidden );
 	assingGlobalFunction( "IsWindowMinimized", lcoreIsWindowMinimized );
 	assingGlobalFunction( "IsWindowMaximized", lcoreIsWindowMaximized );
 	assingGlobalFunction( "IsWindowFocused", lcoreIsWindowFocused );
-	assingGlobalFunction( "SetWindowMonitor", lcoreSetWindowMonitor );
-	assingGlobalFunction( "SetWindowPosition", lcoreSetWindowPosition );
-	assingGlobalFunction( "SetWindowSize", lcoreSetWindowSize );
-	assingGlobalFunction( "SetWindowOpacity", lcoreSetWindowOpacity );
-	assingGlobalFunction( "GetWindowHandle", lcoreGetWindowHandle );
-	assingGlobalFunction( "SetWindowMinSize", lcoreSetWindowMinSize );
-	assingGlobalFunction( "GetMonitorPosition", lcoreGetMonitorPosition );
-	assingGlobalFunction( "GetMonitorSize", lcoreGetMonitorSize );
-	assingGlobalFunction( "GetWindowPosition", lcoreGetWindowPosition );
-	assingGlobalFunction( "GetScreenSize", lcoreGetScreenSize );
-	assingGlobalFunction( "SetWindowState", lcoreSetWindowState );
-	assingGlobalFunction( "IsWindowState", lcoreIsWindowState );
-	assingGlobalFunction( "ClearWindowState", lcoreClearWindowState );
 	assingGlobalFunction( "IsWindowResized", lcoreIsWindowResized );
+	assingGlobalFunction( "IsWindowState", lcoreIsWindowState );
+	assingGlobalFunction( "SetWindowState", lcoreSetWindowState );
+	assingGlobalFunction( "ClearWindowState", lcoreClearWindowState );
+	assingGlobalFunction( "ToggleFullscreen", lcoreToggleFullscreen );
+	assingGlobalFunction( "ToggleBorderlessWindowed", lcoreToggleBorderlessWindowed );
+	assingGlobalFunction( "MaximizeWindow", lcoreMaximizeWindow );
+	assingGlobalFunction( "MinimizeWindow", lcoreMinimizeWindow );
+	assingGlobalFunction( "RestoreWindow", lcoreRestoreWindow );
 	assingGlobalFunction( "SetWindowIcon", lcoreSetWindowIcon );
 	assingGlobalFunction( "SetWindowIcons", lcoreSetWindowIcons );
 	assingGlobalFunction( "SetWindowTitle", lcoreSetWindowTitle );
+	assingGlobalFunction( "SetWindowPosition", lcoreSetWindowPosition );
+	assingGlobalFunction( "SetWindowMonitor", lcoreSetWindowMonitor );
+	assingGlobalFunction( "SetWindowMinSize", lcoreSetWindowMinSize );
+	assingGlobalFunction( "SetWindowMaxSize", lcoreSetWindowMaxSize );
+	assingGlobalFunction( "SetWindowSize", lcoreSetWindowSize );
+	assingGlobalFunction( "SetWindowOpacity", lcoreSetWindowOpacity );
+	assingGlobalFunction( "SetWindowFocused", lcoreSetWindowFocused );
+	assingGlobalFunction( "GetWindowHandle", lcoreGetWindowHandle );
+	assingGlobalFunction( "GetScreenSize", lcoreGetScreenSize );
+	assingGlobalFunction( "GetRenderSize", lcoreGetRenderSize );
 	assingGlobalFunction( "GetMonitorCount", lcoreGetMonitorCount );
 	assingGlobalFunction( "GetCurrentMonitor", lcoreGetCurrentMonitor );
+	assingGlobalFunction( "GetMonitorPosition", lcoreGetMonitorPosition );
+	assingGlobalFunction( "GetMonitorSize", lcoreGetMonitorSize );
 	assingGlobalFunction( "GetMonitorPhysicalSize", lcoreGetMonitorPhysicalSize );
 	assingGlobalFunction( "GetMonitorRefreshRate", lcoreGetMonitorRefreshRate );
+	assingGlobalFunction( "GetWindowPosition", lcoreGetWindowPosition );
 	assingGlobalFunction( "GetWindowScaleDPI", lcoreGetWindowScaleDPI );
 	assingGlobalFunction( "GetMonitorName", lcoreGetMonitorName );
-	assingGlobalFunction( "CloseWindow", lcoreCloseWindow );
 	assingGlobalFunction( "SetClipboardText", lcoreSetClipboardText );
 	assingGlobalFunction( "GetClipboardText", lcoreGetClipboardText );
 		/* Cursor-related functions. */
@@ -1603,6 +1611,10 @@ void luaRegister() {
 	assingGlobalFunction( "GetFPS", lcoreGetFPS );
 	assingGlobalFunction( "GetFrameTime", lcoreGetFrameTime );
 	assingGlobalFunction( "GetTime", lcoreGetTime );
+		/* Random values generation functions. */
+	assingGlobalFunction( "SetRandomSeed", lcoreSetRandomSeed );
+	assingGlobalFunction( "GetRandomValue", lcoreGetRandomValue );
+	assingGlobalFunction( "LoadRandomSequence", lcoreLoadRandomSequence );
 		/* Misc. functions. */
 	assingGlobalFunction( "TakeScreenshot", lcoreTakeScreenshot );
 	assingGlobalFunction( "SetConfigFlags", lcoreSetConfigFlags );
@@ -1625,6 +1637,7 @@ void luaRegister() {
 	assingGlobalFunction( "GetDirectoryPath", lcoreGetDirectoryPath );
 	assingGlobalFunction( "GetPrevDirectoryPath", lcoreGetPrevDirectoryPath );
 	assingGlobalFunction( "GetWorkingDirectory", lcoreGetWorkingDirectory );
+	assingGlobalFunction( "GetApplicationDirectory", lcoreGetApplicationDirectory );
 	assingGlobalFunction( "LoadDirectoryFiles", lcoreLoadDirectoryFiles );
 	assingGlobalFunction( "LoadDirectoryFilesEx", lcoreLoadDirectoryFilesEx );
 	assingGlobalFunction( "ChangeDirectory", lcoreChangeDirectory );
@@ -1649,12 +1662,13 @@ void luaRegister() {
 	assingGlobalFunction( "GetKeyScancode", lcoreGetKeyScancode );
 		/* Input-related functions: gamepads. */
 	assingGlobalFunction( "IsGamepadAvailable", lcoreIsGamepadAvailable );
+	assingGlobalFunction( "GetGamepadName", lcoreGetGamepadName );
 	assingGlobalFunction( "IsGamepadButtonPressed", lcoreIsGamepadButtonPressed );
 	assingGlobalFunction( "IsGamepadButtonDown", lcoreIsGamepadButtonDown );
 	assingGlobalFunction( "IsGamepadButtonReleased", lcoreIsGamepadButtonReleased );
 	assingGlobalFunction( "GetGamepadAxisCount", lcoreGetGamepadAxisCount );
 	assingGlobalFunction( "GetGamepadAxisMovement", lcoreGetGamepadAxisMovement );
-	assingGlobalFunction( "GetGamepadName", lcoreGetGamepadName );
+	assingGlobalFunction( "SetGamepadMappings", lcoreSetGamepadMappings );
 		/* Input-related functions: mouse. */
 	assingGlobalFunction( "IsMouseButtonPressed", lcoreIsMouseButtonPressed );
 	assingGlobalFunction( "IsMouseButtonDown", lcoreIsMouseButtonDown );
@@ -1731,8 +1745,6 @@ void luaRegister() {
 	assingGlobalFunction( "DrawPixel", lshapesDrawPixel );
 	assingGlobalFunction( "DrawLine", lshapesDrawLine );
 	assingGlobalFunction( "DrawLineBezier", lshapesDrawLineBezier );
-	assingGlobalFunction( "DrawLineBezierQuad", lshapesDrawLineBezierQuad );
-	assingGlobalFunction( "DrawLineBezierCubic", lshapesDrawLineBezierCubic );
 	assingGlobalFunction( "DrawLineStrip", lshapesDrawLineStrip );
 	assingGlobalFunction( "DrawCircle", lshapesDrawCircle );
 	assingGlobalFunction( "DrawCircleSector", lshapesDrawCircleSector );
@@ -1775,6 +1787,7 @@ void luaRegister() {
 		/* Image loading functions. */
 	assingGlobalFunction( "LoadImage", ltexturesLoadImage );
 	assingGlobalFunction( "LoadImageRaw", ltexturesLoadImageRaw );
+	assingGlobalFunction( "LoadImageSvg", ltexturesLoadImageSvg );
 	assingGlobalFunction( "LoadImageAnim", ltexturesLoadImageAnim );
 	assingGlobalFunction( "LoadImageFromMemory", ltexturesLoadImageFromMemory );
 	assingGlobalFunction( "LoadImageFromTexture", ltexturesLoadImageFromTexture );
@@ -1782,12 +1795,13 @@ void luaRegister() {
 	assingGlobalFunction( "IsImageReady", ltextureIsImageReady );
 	assingGlobalFunction( "UnloadImage", ltextureUnloadImage );
 	assingGlobalFunction( "ExportImage", ltexturesExportImage );
+	assingGlobalFunction( "ExportImageToMemory", ltexturesExportImageToMemory );
 	assingGlobalFunction( "ExportImageAsCode", ltexturesExportImageAsCode );
 		/* Image generation functions. */
 	assingGlobalFunction( "GenImageColor", ltexturesGenImageColor );
-	assingGlobalFunction( "GenImageGradientV", ltexturesGenImageGradientV );
-	assingGlobalFunction( "GenImageGradientH", ltexturesGenImageGradientH );
+	assingGlobalFunction( "GenImageGradientLinear", ltexturesGenImageGradientLinear );
 	assingGlobalFunction( "GenImageGradientRadial", ltexturesGenImageGradientRadial );
+	assingGlobalFunction( "GenImageGradientSquare", ltexturesGenImageGradientSquare );
 	assingGlobalFunction( "GenImageChecked", ltexturesGenImageChecked );
 	assingGlobalFunction( "GenImageWhiteNoise", ltexturesGenImageWhiteNoise );
 	assingGlobalFunction( "GenImagePerlinNoise", ltexturesGenImagePerlinNoise );
@@ -1812,6 +1826,7 @@ void luaRegister() {
 	assingGlobalFunction( "ImageDither", ltexturesImageDither );
 	assingGlobalFunction( "ImageFlipVertical", ltexturesImageFlipVertical );
 	assingGlobalFunction( "ImageFlipHorizontal", ltexturesImageFlipHorizontal );
+	assingGlobalFunction( "ImageRotate", ltexturesImageRotate );
 	assingGlobalFunction( "ImageRotateCW", ltexturesImageRotateCW );
 	assingGlobalFunction( "ImageRotateCCW", ltexturesImageRotateCCW );
 	assingGlobalFunction( "ImageColorTint", ltexturesImageColorTint );
@@ -1995,6 +2010,7 @@ void luaRegister() {
 	assingGlobalFunction( "DrawTextBoxed", ltextDrawTextBoxed );
 	assingGlobalFunction( "DrawTextBoxedTinted", ltextDrawTextBoxedTinted );
 		/* Text font info functions. */
+	assingGlobalFunction( "SetTextLineSpacing", ltextSetTextLineSpacing );
 	assingGlobalFunction( "MeasureText", ltextMeasureText );
 	assingGlobalFunction( "GetGlyphIndex", ltextGetGlyphIndex );
 	assingGlobalFunction( "GetGlyphInfo", ltextGetGlyphInfo );
@@ -2006,15 +2022,21 @@ void luaRegister() {
 
 	/* Audio. */
 		/* Audio device management functions. */
+	assingGlobalFunction( "InitAudioDevice", laudioInitAudioDevice );
+	assingGlobalFunction( "CloseAudioDevice", laudioCloseAudioDevice );
+	assingGlobalFunction( "IsAudioDeviceReady", laudioIsAudioDeviceReady );
 	assingGlobalFunction( "SetMasterVolume", laudioSetMasterVolume );
+	assingGlobalFunction( "GetMasterVolume", laudioGetMasterVolume );
 		/* Wave/Sound loading/unloading functions. */
 	assingGlobalFunction( "LoadSound", laudioLoadSound );
 	assingGlobalFunction( "LoadWave", laudioLoadWave );
 	assingGlobalFunction( "IsWaveReady", laudioIsWaveReady );
 	assingGlobalFunction( "LoadSoundFromWave", laudioLoadSoundFromWave );
+	assingGlobalFunction( "LoadSoundAlias", laudioLoadSoundAlias );
 	assingGlobalFunction( "IsSoundReady", laudioIsSoundReady );
 	assingGlobalFunction( "UnloadWave", laudioUnloadWave );
 	assingGlobalFunction( "UnloadSound", laudioUnloadSound );
+	assingGlobalFunction( "UnloadSoundAlias", laudioUnloadSoundAlias );
 	assingGlobalFunction( "ExportWave", laudioExportWave );
 	assingGlobalFunction( "ExportWaveAsCode", laudioExportWaveAsCode );
 		/* Wave/Sound management functions. */

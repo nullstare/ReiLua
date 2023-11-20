@@ -17,6 +17,7 @@ int ltextDrawTextCodepoints( lua_State *L );
 int ltextDrawTextBoxed( lua_State *L );
 int ltextDrawTextBoxedTinted( lua_State *L );
 /* Text font info functions. */
+int ltextSetTextLineSpacing( lua_State *L );
 int ltextMeasureText( lua_State *L );
 int ltextGetGlyphIndex( lua_State *L );
 int ltextGetGlyphInfo( lua_State *L );

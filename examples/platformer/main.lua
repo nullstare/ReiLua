@@ -94,7 +94,8 @@ function RL.init()
 end
 
 local function isTileWall( pos )
-	if RL.CheckCollisionPointRec( { pos.x, pos.y }, { 0, 0, tilemap.size.x - 1, tilemap.size.y - 1 } ) then
+	-- if RL.CheckCollisionPointRec( { pos.x, pos.y }, { 0, 0, tilemap.size.x - 1, tilemap.size.y - 1 } ) then
+	if RL.CheckCollisionPointRec( { pos.x, pos.y }, { 0, 0, tilemap.size.x, tilemap.size.y } ) then
 		return 0 < tilemap.tiles[ pos.x + 1 ][ pos.y + 1 ]
 	else
 		return false

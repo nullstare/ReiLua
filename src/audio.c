@@ -8,6 +8,41 @@
 */
 
 /*
+> RL.InitAudioDevice()
+
+Initialize audio device and context
+*/
+int laudioInitAudioDevice( lua_State *L ) {
+	InitAudioDevice();
+
+	return 0;
+}
+
+/*
+> RL.CloseAudioDevice()
+
+Close the audio device and context
+*/
+int laudioCloseAudioDevice( lua_State *L ) {
+	CloseAudioDevice();
+
+	return 0;
+}
+
+/*
+> isReady = RL.IsAudioDeviceReady()
+
+Check if audio device has been initialized successfully
+
+- Success return bool
+*/
+int laudioIsAudioDeviceReady( lua_State *L ) {
+	lua_pushboolean( L, IsAudioDeviceReady() );
+
+	return 1;
+}
+
+/*
 > RL.SetMasterVolume( float volume )
 
 Set master volume (listener)
@@ -18,6 +53,19 @@ int laudioSetMasterVolume( lua_State *L ) {
 	SetMasterVolume( volume );
 
 	return 0;
+}
+
+/*
+> isReady = RL.GetMasterVolume()
+
+Get master volume (listener)
+
+- Success return float
+*/
+int laudioGetMasterVolume( lua_State *L ) {
+	lua_pushnumber( L, GetMasterVolume() );
+
+	return 1;
 }
 
 /*
@@ -95,6 +143,21 @@ int laudioLoadSoundFromWave( lua_State *L ) {
 }
 
 /*
+> sound = RL.LoadSoundAlias( Sound source )
+
+Create a new sound that shares the same sample data as the source sound, does not own the sound data
+
+- Success return Sound
+*/
+int laudioLoadSoundAlias( lua_State *L ) {
+	Sound *source = uluaGetSound( L, 1 );
+
+	uluaPushSound( L, LoadSoundAlias( *source ) );
+
+	return 1;
+}
+
+/*
 > isReady = RL.IsSoundReady( Sound sound )
 
 Checks if a sound is ready
@@ -131,6 +194,19 @@ int laudioUnloadSound( lua_State *L ) {
 	Sound *sound = uluaGetSound( L, 1 );
 
 	UnloadSound( *sound );
+
+	return 0;
+}
+
+/*
+> RL.UnloadSoundAlias( Sound alias )
+
+Unload a sound alias (does not deallocate sample data)
+*/
+int laudioUnloadSoundAlias( lua_State *L ) {
+	Sound *alias = uluaGetSound( L, 1 );
+
+	UnloadSoundAlias( *alias );
 
 	return 0;
 }

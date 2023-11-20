@@ -5,8 +5,6 @@ int lshapesSetShapesTexture( lua_State *L );
 int lshapesDrawPixel( lua_State *L );
 int lshapesDrawLine( lua_State *L );
 int lshapesDrawLineBezier( lua_State *L );
-int lshapesDrawLineBezierQuad( lua_State *L );
-int lshapesDrawLineBezierCubic( lua_State *L );
 int lshapesDrawLineStrip( lua_State *L );
 int lshapesDrawCircle( lua_State *L );
 int lshapesDrawCircleSector( lua_State *L );

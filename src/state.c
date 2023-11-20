@@ -26,7 +26,6 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 		state->run = false;
 	}
 	if ( state->run ) {
-		InitAudioDevice();
 		state->run = luaInit( argn, argc );
 	}
 	state->defaultFont = GetFontDefault();

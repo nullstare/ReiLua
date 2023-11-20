@@ -1803,67 +1803,67 @@ Shader attribute type: vec4 (4 float)
 
 ---
 
-> PIXELFORMAT_COMPRESSED_DXT1_RGB = 11
+> PIXELFORMAT_COMPRESSED_DXT1_RGB = 14
 
 4 bpp (no alpha)
 
 ---
 
-> PIXELFORMAT_COMPRESSED_DXT1_RGBA = 12
+> PIXELFORMAT_COMPRESSED_DXT1_RGBA = 15
 
 4 bpp (1 bit alpha)
 
 ---
 
-> PIXELFORMAT_COMPRESSED_DXT3_RGBA = 13
+> PIXELFORMAT_COMPRESSED_DXT3_RGBA = 16
 
 8 bpp
 
 ---
 
-> PIXELFORMAT_COMPRESSED_DXT5_RGBA = 14
+> PIXELFORMAT_COMPRESSED_DXT5_RGBA = 17
 
 8 bpp
 
 ---
 
-> PIXELFORMAT_COMPRESSED_ETC1_RGB = 15
+> PIXELFORMAT_COMPRESSED_ETC1_RGB = 18
 
 4 bpp
 
 ---
 
-> PIXELFORMAT_COMPRESSED_ETC2_RGB = 16
+> PIXELFORMAT_COMPRESSED_ETC2_RGB = 19
 
 4 bpp
 
 ---
 
-> PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA = 17
+> PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA = 20
 
 8 bpp
 
 ---
 
-> PIXELFORMAT_COMPRESSED_PVRT_RGB = 18
+> PIXELFORMAT_COMPRESSED_PVRT_RGB = 21
 
 4 bpp
 
 ---
 
-> PIXELFORMAT_COMPRESSED_PVRT_RGBA = 19
+> PIXELFORMAT_COMPRESSED_PVRT_RGBA = 22
 
 4 bpp
 
 ---
 
-> PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA = 20
+> PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA = 23
 
 8 bpp
 
 ---
 
-> PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA = 21
+> PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA = 24
 
 2 bpp
 
@@ -3540,6 +3540,12 @@ GLFW event joystick
 
 ---
 
+> RL.CloseWindow()
+
+Close window and unload OpenGL context and free all resources
+
+---
+
 > state = RL.IsWindowReady()
 
 Check if window has been initialized successfully
@@ -3588,79 +3594,11 @@ Check if window is currently focused (only PLATFORM_DESKTOP)
 
 ---
 
-> RL.SetWindowMonitor( int monitor )
+> resized = RL.IsWindowResized()
 
-Set monitor for the current window (fullscreen mode)
+Check if window has been resized from last frame
 
----
-
-> RL.SetWindowPosition( Vector2 pos )
-
-Set window position on screen
-
----
-
-> RL.SetWindowSize( Vector2 size )
-
-Set window dimensions
-
----
-
-> RL.SetWindowOpacity( float opacity )
-
-Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)
-
----
-
-> windowHandle = RL.GetWindowHandle()
-
-Get native window handle. Return as lightuserdata
-
-- Success return lightuserdata
-
----
-
-> RL.SetWindowMinSize( Vector2 size )
-
-Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
-
----
-
-> position = RL.GetMonitorPosition( int monitor )
-
-Get specified monitor position
-
-- Success return Vector2
-
----
-
-> size = RL.GetMonitorSize( int monitor )
-
-Get specified monitor size
-
-- Success return Vector2
-
----
-
-> position = RL.GetWindowPosition()
-
-Get window position on monitor
-
-- Success return Vector2
-
----
-
-> size = RL.GetScreenSize()
-
-Get screen size
-
-- Success return Vector2
-
----
-
-> RL.SetWindowState( int flag )
-
-Set window configuration state using flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
+- Success return bool
 
 ---
 
@@ -3672,6 +3610,12 @@ Check if one specific window flag is enabled (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_
 
 ---
 
+> RL.SetWindowState( int flag )
+
+Set window configuration state using flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
+
+---
+
 > resized = RL.ClearWindowState( int flag )
 
 Clear window configuration state flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
@@ -3680,11 +3624,33 @@ Clear window configuration state flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZA
 
 ---
 
-> resized = RL.IsWindowResized()
+> RL.ToggleFullscreen()
 
-Check if window has been resized from last frame
+Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
 
-- Success return bool
+---
+
+> RL.ToggleBorderlessWindowed()
+
+Toggle window state: borderless windowed (only PLATFORM_DESKTOP)
+
+---
+
+> RL.MaximizeWindow()
+
+Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
+
+---
+
+> RL.MinimizeWindow()
+
+Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
+
+---
+
+> RL.RestoreWindow()
+
+Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
 
 ---
 
@@ -3702,7 +3668,73 @@ Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
 
 > RL.SetWindowTitle( string title )
 
-Set title for window (Only PLATFORM_DESKTOP)
+Set title for window (only PLATFORM_DESKTOP and PLATFORM_WEB)
+
+---
+
+> RL.SetWindowPosition( Vector2 pos )
+
+Set window position on screen
+
+---
+
+> RL.SetWindowMonitor( int monitor )
+
+Set monitor for the current window
+
+---
+
+> RL.SetWindowMinSize( Vector2 size )
+
+Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
+
+---
+
+> RL.SetWindowMaxSize( Vector2 size )
+
+Set window maximum dimensions (for FLAG_WINDOW_RESIZABLE)
+
+---
+
+> RL.SetWindowSize( Vector2 size )
+
+Set window dimensions
+
+---
+
+> RL.SetWindowOpacity( float opacity )
+
+Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)
+
+---
+
+> RL.SetWindowFocused()
+
+Set window focused (only PLATFORM_DESKTOP)
+
+---
+
+> windowHandle = RL.GetWindowHandle()
+
+Get native window handle. Return as lightuserdata
+
+- Success return lightuserdata
+
+---
+
+> size = RL.GetScreenSize()
+
+Get screen size
+
+- Success return Vector2
+
+---
+
+> size = RL.GetRenderSize()
+
+Get render size
+
+- Success return Vector2
 
 ---
 
@@ -3722,6 +3754,22 @@ Get current connected monitor
 
 ---
 
+> position = RL.GetMonitorPosition( int monitor )
+
+Get specified monitor position
+
+- Success return Vector2
+
+---
+
+> size = RL.GetMonitorSize( int monitor )
+
+Get specified monitor size
+
+- Success return Vector2
+
+---
+
 > size = RL.GetMonitorPhysicalSize( int monitor )
 
 Get specified monitor physical size in millimetres
@@ -3738,6 +3786,14 @@ Get specified monitor refresh rate
 
 ---
 
+> position = RL.GetWindowPosition()
+
+Get window position on monitor
+
+- Success return Vector2
+
+---
+
 > dpi = RL.GetWindowScaleDPI()
 
 Get window scale DPI factor
@@ -3748,15 +3804,9 @@ Get window scale DPI factor
 
 > name = RL.GetMonitorName( int monitor )
 
-Get the human-readable, UTF-8 encoded name of the monitor
+Get the human-readable, UTF-8 encoded name of the specified monitor
 
 - Success return string
-
----
-
-> RL.CloseWindow()
-
-Close window and unload OpenGL context and free all resources
 
 ---
 
@@ -4100,6 +4150,32 @@ Get elapsed time in seconds since InitWindow()
 
 ---
 
+## Core - Random values generation functions
+
+---
+
+> RL.SetRandomSeed( int seed )
+
+Set the seed for the random number generator
+
+---
+
+> time = RL.GetRandomValue( int min, int max )
+
+Get a random value between min and max (both included)
+
+- Success return int
+
+---
+
+> sequence = RL.GetRandomValue( int count, int min, int max )
+
+Load random values sequence, no values repeated
+
+- Success return int{}
+
+---
+
 ## Core - Misc
 
 ---
@@ -4144,7 +4220,7 @@ Get the log level for bad function calls and invalid data formats.
 
 > RL.OpenURL( string url )
 
-Open URL with default system browser (If available)
+Open URL with default system browser (if available)
 
 ---
 
@@ -4249,6 +4325,14 @@ Get previous directory path for a given path (Uses static string)
 > directory = RL.GetWorkingDirectory()
 
 Get current working directory (Uses static string)
+
+- Success return string
+
+---
+
+> directory = RL.GetApplicationDirectory()
+
+Get the directory of the running application (uses static string)
 
 - Success return string
 
@@ -4444,6 +4528,14 @@ Detect if a gamepad is available
 
 ---
 
+> name = RL.GetGamepadName( int gamepad )
+
+Return gamepad internal name id
+
+- Success return string
+
+---
+
 > pressed = RL.IsGamepadButtonPressed( int gamepad, int button )
 
 Detect if a gamepad button has been pressed once
@@ -4484,11 +4576,11 @@ Return axis movement value for a gamepad axis
 
 ---
 
-> name = RL.GetGamepadName( int gamepad )
+> result = RL.SetGamepadMappings( string mappings )
 
-Return gamepad internal name id
+Set internal gamepad mappings (SDL_GameControllerDB)
 
-- Success return string
+- Success return int
 
 ---
 
@@ -5005,27 +5097,15 @@ Draw a line defining thickness
 
 ---
 
-> RL.DrawLineBezier( Vector2 startPos, Vector2 endPos, float thickness, Color color )
-
-Draw a line using cubic-bezier curves in-out
-
----
-
-> RL.DrawLineBezierQuad( Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thickness, Color color )
-
-Draw line using quadratic bezier curves with a control point
-
----
-
-> RL.DrawLineBezierCubic( Vector2 startPos, Vector2 endPos, Vector2 startControlPos, Vector2 endControlPos, float thickness, Color color )
-
-Draw line using quadratic bezier curves with a control point
-
----
-
 > RL.DrawLineStrip( Vector2{} points, Color color )
 
 Draw lines sequence
+
+---
+
+> RL.DrawLineBezier( Vector2 startPos, Vector2 endPos, float thickness, Color color )
+
+Draw a line using cubic-bezier curves in-out
 
 ---
 
@@ -5285,6 +5365,14 @@ Load image from RAW file data
 
 ---
 
+> image = RL.LoadImageSvg( string fileNameOrString, Vector2 size )
+
+Load image from SVG file data or string with specified size
+
+- Success return Image
+
+---
+
 > image, frameCount = RL.LoadImageAnim( string fileName )
 
 Load image sequence from file (frames appended to image.data). All frames are returned in RGBA format
@@ -5340,6 +5428,14 @@ Export image data to file, returns true on success
 
 ---
 
+> buffer = RL.ExportImageToMemory( Image image, string fileType )
+
+Export image to memory buffer
+
+- Success return Buffer
+
+---
+
 > success = RL.ExportImageAsCode( Image image, string fileName )
 
 Export image as code file defining an array of bytes, returns true on success
@@ -5360,17 +5456,9 @@ Generate image: plain color
 
 ---
 
-> image = RL.GenImageGradientV( Vector2 size, Color top, Color bottom )
+> image = RL.GenImageGradientLinear( Vector2 size, int direction, Color a, Color b )
 
-Generate image: vertical gradient
-
-- Success return Image
-
----
-
-> image = RL.GenImageGradientH( Vector2 size, Color left, Color right )
-
-Generate image: horizontal gradient
+Generate image: linear gradient, direction in degrees [0..360], 0=Vertical gradient
 
 - Success return Image
 
@@ -5379,6 +5467,14 @@ Generate image: horizontal gradient
 > image = RL.GenImageGradientRadial( Vector2 size, float density, Color inner, Color outer )
 
 Generate image: radial gradient
+
+- Success return Image
+
+---
+
+> image = RL.GenImageGradientSquare( Vector2 size, float density, Color inner, Color outer )
+
+Generate image: square gradient
 
 - Success return Image
 
@@ -5539,6 +5635,12 @@ Flip image vertically
 > RL.ImageFlipHorizontal( Image image )
 
 Flip image horizontally
+
+---
+
+> RL.ImageRotate( Image image, int degrees )
+
+Rotate image by input angle in degrees (-359 to 359)
 
 ---
 
@@ -6048,9 +6150,9 @@ Load font from file into GPU memory (VRAM)
 
 ---
 
-> font = RL.LoadFontEx( string fileName, int fontSize, int{} fontChars )
+> font = RL.LoadFontEx( string fileName, int fontSize, int{} codepoints )
 
-Load font from file with extended parameters, use NULL for fontChars to load the default character set
+Load font from file with extended parameters, use NULL for codepoints to load the default character set
 
 - Failure return nil
 - Success return Font
@@ -6136,6 +6238,12 @@ Draw text using font inside rectangle limits with support for tint and backgroun
 ---
 
 ## Text - Text font info functions
+
+---
+
+> size = RL.SetTextLineSpacing( int spacing )
+
+Set vertical line spacing when drawing with line-breaks
 
 ---
 
@@ -6834,9 +6942,37 @@ Get collision info between ray and quad
 
 ---
 
+> RL.InitAudioDevice()
+
+Initialize audio device and context
+
+---
+
+> RL.CloseAudioDevice()
+
+Close the audio device and context
+
+---
+
+> isReady = RL.IsAudioDeviceReady()
+
+Check if audio device has been initialized successfully
+
+- Success return bool
+
+---
+
 > RL.SetMasterVolume( float volume )
 
 Set master volume (listener)
+
+---
+
+> isReady = RL.GetMasterVolume()
+
+Get master volume (listener)
+
+- Success return float
 
 ---
 
@@ -6878,6 +7014,14 @@ Load sound from wave data
 
 ---
 
+> sound = RL.LoadSoundAlias( Sound source )
+
+Create a new sound that shares the same sample data as the source sound, does not own the sound data
+
+- Success return Sound
+
+---
+
 > isReady = RL.IsSoundReady( Sound sound )
 
 Checks if a sound is ready
@@ -6895,6 +7039,12 @@ Unload wave data
 > RL.UnloadSound( Sound sound )
 
 Unload sound
+
+---
+
+> RL.UnloadSoundAlias( Sound alias )
+
+Unload a sound alias (does not deallocate sample data)
 
 ---
 

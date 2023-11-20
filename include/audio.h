@@ -1,15 +1,21 @@
 #pragma once
 
 /* Audio device management functions. */
+int laudioInitAudioDevice( lua_State *L );
+int laudioCloseAudioDevice( lua_State *L );
+int laudioIsAudioDeviceReady( lua_State *L );
 int laudioSetMasterVolume( lua_State *L );
+int laudioGetMasterVolume( lua_State *L );
 /* Wave/Sound loading/unloading functions. */
 int laudioLoadSound( lua_State *L );
 int laudioLoadWave( lua_State *L );
 int laudioIsWaveReady( lua_State *L );
 int laudioLoadSoundFromWave( lua_State *L );
+int laudioLoadSoundAlias( lua_State *L );
 int laudioIsSoundReady( lua_State *L );
 int laudioUnloadWave( lua_State *L );
 int laudioUnloadSound( lua_State *L );
+int laudioUnloadSoundAlias( lua_State *L );
 int laudioExportWave( lua_State *L );
 int laudioExportWaveAsCode( lua_State *L );
 /* Wave/Sound management functions. */

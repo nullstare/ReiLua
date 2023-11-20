@@ -55,57 +55,6 @@ int lshapesDrawLine( lua_State *L ) {
 }
 
 /*
-> RL.DrawLineBezier( Vector2 startPos, Vector2 endPos, float thickness, Color color )
-
-Draw a line using cubic-bezier curves in-out
-*/
-int lshapesDrawLineBezier( lua_State *L ) {
-	Vector2 startPos = uluaGetVector2( L, 1 );
-	Vector2 endPos = uluaGetVector2( L, 2 );
-	float thickness = luaL_checknumber( L, 3 );
-	Color color = uluaGetColor( L, 4 );
-
-	DrawLineBezier( startPos, endPos, thickness, color );
-
-	return 0;
-}
-
-/*
-> RL.DrawLineBezierQuad( Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thickness, Color color )
-
-Draw line using quadratic bezier curves with a control point
-*/
-int lshapesDrawLineBezierQuad( lua_State *L ) {
-	Vector2 startPos = uluaGetVector2( L, 1 );
-	Vector2 endPos = uluaGetVector2( L, 2 );
-	Vector2 controlPos = uluaGetVector2( L, 3 );
-	float thickness = luaL_checknumber( L, 4 );
-	Color color = uluaGetColor( L, 5 );
-
-	DrawLineBezierQuad( startPos, endPos, controlPos, thickness, color );
-
-	return 0;
-}
-
-/*
-> RL.DrawLineBezierCubic( Vector2 startPos, Vector2 endPos, Vector2 startControlPos, Vector2 endControlPos, float thickness, Color color )
-
-Draw line using quadratic bezier curves with a control point
-*/
-int lshapesDrawLineBezierCubic( lua_State *L ) {
-	Vector2 startPos = uluaGetVector2( L, 1 );
-	Vector2 endPos = uluaGetVector2( L, 2 );
-	Vector2 startControlPos = uluaGetVector2( L, 3 );
-	Vector2 endControlPos = uluaGetVector2( L, 4 );
-	float thickness = luaL_checknumber( L, 5 );
-	Color color = uluaGetColor( L, 6 );
-
-	DrawLineBezierCubic( startPos, endPos, startControlPos, endControlPos, thickness, color );
-
-	return 0;
-}
-
-/*
 > RL.DrawLineStrip( Vector2{} points, Color color )
 
 Draw lines sequence
@@ -126,6 +75,22 @@ int lshapesDrawLineStrip( lua_State *L ) {
 		lua_pop( L, 1 );
 	}
 	DrawLineStrip( points, pointsCount, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawLineBezier( Vector2 startPos, Vector2 endPos, float thickness, Color color )
+
+Draw a line using cubic-bezier curves in-out
+*/
+int lshapesDrawLineBezier( lua_State *L ) {
+	Vector2 startPos = uluaGetVector2( L, 1 );
+	Vector2 endPos = uluaGetVector2( L, 2 );
+	float thickness = luaL_checknumber( L, 3 );
+	Color color = uluaGetColor( L, 4 );
+
+	DrawLineBezier( startPos, endPos, thickness, color );
 
 	return 0;
 }

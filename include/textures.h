@@ -3,6 +3,7 @@
 /* Image loading functions. */
 int ltexturesLoadImage( lua_State *L );
 int ltexturesLoadImageRaw( lua_State *L );
+int ltexturesLoadImageSvg( lua_State *L );
 int ltexturesLoadImageAnim( lua_State *L );
 int ltexturesLoadImageFromMemory( lua_State *L );
 int ltexturesLoadImageFromTexture( lua_State *L );
@@ -10,12 +11,13 @@ int ltexturesLoadImageFromScreen( lua_State *L );
 int ltextureIsImageReady( lua_State *L );
 int ltextureUnloadImage( lua_State *L );
 int ltexturesExportImage( lua_State *L );
+int ltexturesExportImageToMemory( lua_State *L );
 int ltexturesExportImageAsCode( lua_State *L );
 /* Image generation functions. */
 int ltexturesGenImageColor( lua_State *L );
-int ltexturesGenImageGradientV( lua_State *L );
-int ltexturesGenImageGradientH( lua_State *L );
+int ltexturesGenImageGradientLinear( lua_State *L );
 int ltexturesGenImageGradientRadial( lua_State *L );
+int ltexturesGenImageGradientSquare( lua_State *L );
 int ltexturesGenImageChecked( lua_State *L );
 int ltexturesGenImageWhiteNoise( lua_State *L );
 int ltexturesGenImagePerlinNoise( lua_State *L );
@@ -40,6 +42,7 @@ int ltexturesImageMipmaps( lua_State *L );
 int ltexturesImageDither( lua_State *L );
 int ltexturesImageFlipVertical( lua_State *L );
 int ltexturesImageFlipHorizontal( lua_State *L );
+int ltexturesImageRotate( lua_State *L );
 int ltexturesImageRotateCW( lua_State *L );
 int ltexturesImageRotateCCW( lua_State *L );
 int ltexturesImageColorTint( lua_State *L );

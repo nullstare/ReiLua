@@ -1,9 +1,9 @@
 -- Wrapper for raygui that should make using it a bit more convenient.
 
-Util = require( "utillib" )
-Rect = require( "rectangle" )
-Vec2 = require( "vector2" )
-Color = require( "color" )
+local Util = require( "utillib" )
+local Rect = require( "rectangle" )
+local Vec2 = require( "vector2" )
+local Color = require( "color" )
 
 ---@param text string
 ---@return integer count, table rowItemCounts
@@ -54,6 +54,7 @@ local Raygui = {
 	focused = 0,
 	dragging = nil,
 	grabPos = Vec2:new(),
+	scrolling = false,
 }
 
 function Raygui.process()
@@ -110,7 +111,11 @@ function Raygui.drag( element )
 end
 
 function Raygui.draw()
-	RL.GuiLock()
+	if not Raygui.scrolling then
+		RL.GuiLock()
+	elseif RL.IsMouseButtonReleased( RL.MOUSE_BUTTON_LEFT ) then
+		Raygui.scrolling = false
+	end
 
     for i, element in ipairs( Raygui.elements ) do
         if i == Raygui.focused then
@@ -137,6 +142,16 @@ function Raygui.set2Back( element )
 	for i, curElement in ipairs( Raygui.elements ) do
 		if element == curElement then
 			Util.tableMove( Raygui.elements, i, 1, 1 )
+
+			return
+		end
+	end
+end
+
+function Raygui.remove( element )
+	for i, curElement in ipairs( Raygui.elements ) do
+		if element == curElement then
+			table.remove( Raygui.elements, i )
 
 			return
 		end
@@ -189,7 +204,9 @@ function WindowBox:process()
 end
 
 function WindowBox:draw()
-	if RL.GuiWindowBox( self.bounds, self.text ) and self.callback ~= nil then
+	local result = RL.GuiWindowBox( self.bounds, self.text )
+
+	if result == 1 and self.callback ~= nil then
         self.callback( self )
     end
 end
@@ -304,6 +321,52 @@ function Panel:setPosition( pos )
 	self.bounds.y = pos.y
 end
 
+-- GuiTabBar.
+
+--- Tab Bar control, returns TAB to be closed or -1
+GuiTabBar = {}
+GuiTabBar.__index = GuiTabBar
+
+function GuiTabBar:new( bounds, text, active, callback, closeCallback )
+    local object = setmetatable( {}, GuiTabBar )
+
+    object.bounds = bounds:clone()
+    object.text = text
+    object.active = active
+
+	object.visible = true
+	object.callback = callback
+	object.closeCallback = closeCallback
+
+	table.insert( Raygui.elements, object )
+
+	return object
+end
+
+function GuiTabBar:process()
+    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+end
+
+function GuiTabBar:draw()
+	local oldActive = self.active
+	local result = -1
+
+	result, self.active = RL.GuiTabBar( self.bounds, self.text, self.active )
+
+	if self.active ~= oldActive and self.callback ~= nil then
+		self.callback( self )
+	end
+
+	if 0 <= result and self.closeCallback ~= nil then
+		self.closeCallback( self, result )
+	end
+end
+
+function GuiTabBar:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+end
+
 -- ScrollPanel.
 
 --- Scroll Panel control
@@ -336,14 +399,17 @@ end
 
 function ScrollPanel:draw()
 	local oldScroll = self.scroll:clone()
-
-	local view, scroll = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll )
+	local _, scroll, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
 
 	self.view = Rect:new( view )
 	self.scroll = Vec2:new( scroll )
 
-	if self.scroll ~= oldScroll and self.callback ~= nil then
-		self.callback( self )
+	if self.scroll ~= oldScroll then
+		Raygui.scrolling = true
+
+		if self.callback ~= nil then
+			self.callback( self )
+		end
 	end
 end
 
@@ -401,7 +467,6 @@ function Button:new( bounds, text, callback )
     object.text = text
     object.callback = callback
 
-    object.clicked = false
 	object.visible = true
 
 	table.insert( Raygui.elements, object )
@@ -414,9 +479,9 @@ function Button:process()
 end
 
 function Button:draw()
-    self.clicked = RL.GuiButton( self.bounds, self.text )
+    local result = RL.GuiButton( self.bounds, self.text )
 
-    if self.clicked and self.callback ~= nil then
+    if result == 1 and self.callback ~= nil then
         self.callback( self )
     end
 end
@@ -439,7 +504,6 @@ function LabelButton:new( bounds, text, callback )
     object.text = text
     object.callback = callback
 
-    object.clicked = false
 	object.visible = true
 
 	table.insert( Raygui.elements, object )
@@ -452,9 +516,9 @@ function LabelButton:process()
 end
 
 function LabelButton:draw()
-    self.clicked = RL.GuiLabelButton( self.bounds, self.text )
+    local result = RL.GuiLabelButton( self.bounds, self.text )
 
-    if self.clicked and self.callback ~= nil then
+    if result == 1 and self.callback ~= nil then
         self.callback( self )
     end
 end
@@ -492,7 +556,7 @@ end
 function Toggle:draw()
     local oldActive = self.active
 
-    self.active = RL.GuiToggle( self.bounds, self.text, self.active )
+    _, self.active = RL.GuiToggle( self.bounds, self.text, self.active )
 
     if self.active ~= oldActive and self.callback ~= nil then
         self.callback( self )
@@ -573,15 +637,11 @@ end
 function ToggleGroup:draw()
     local oldActive = self.active
 
-    self.active = RL.GuiToggleGroup( self.bounds, self.text, self.active )
+    _, self.active = RL.GuiToggleGroup( self.bounds, self.text, self.active )
 
     if self.active ~= oldActive and self.callback ~= nil then
         self.callback( self )
     end
-
-	-- for _, rect in ipairs( self.focusBounds ) do
-	-- 	RL.DrawRectangleLines( rect, RL.RED )
-	-- end
 end
 
 function ToggleGroup:setPosition( pos )
@@ -658,7 +718,7 @@ end
 function CheckBox:draw()
     local oldChecked = self.checked
 
-    self.checked = RL.GuiCheckBox( self.bounds, self.text, self.checked )
+    _, self.checked = RL.GuiCheckBox( self.bounds, self.text, self.checked )
 
     if self.checked ~= oldChecked and self.callback ~= nil then
         self.callback( self )
@@ -702,7 +762,7 @@ end
 function ComboBox:draw()
     local oldActive = self.active
 
-    self.active = RL.GuiComboBox( self.bounds, self.text, self.active )
+    _, self.active = RL.GuiComboBox( self.bounds, self.text, self.active )
 
     if self.active ~= oldActive and self.callback ~= nil then
         self.callback( self )
@@ -768,11 +828,11 @@ function DropdownBox:process()
 end
 
 function DropdownBox:draw()
-	local pressed = false
+	local result = 0
 
-    pressed, self.active = RL.GuiDropdownBox( self.bounds, self.text, self.active, self.editMode )
+    result, self.active = RL.GuiDropdownBox( self.bounds, self.text, self.active, self.editMode )
 
-    if pressed then
+    if result == 1 then
 		self.editMode = not self.editMode
 
 		if not self.editMode and self.callback ~= nil then
@@ -815,12 +875,12 @@ function Spinner:process()
 end
 
 function Spinner:draw()
-	local pressed = false
+	local result = 0
 	local oldValue = self.value
 
-    pressed, self.value = RL.GuiSpinner( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
+    result, self.value = RL.GuiSpinner( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
 
-    if pressed then
+    if result == 1 then
 		self.editMode = not self.editMode
     end
 
@@ -863,12 +923,12 @@ function ValueBox:process()
 end
 
 function ValueBox:draw()
-	local pressed = false
+	local result = 0
 	local oldValue = self.value
 
-    pressed, self.value = RL.GuiValueBox( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
+    result, self.value = RL.GuiValueBox( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
 
-    if pressed then
+    if result == 1 then
 		self.editMode = not self.editMode
     end
 
@@ -910,19 +970,19 @@ function TextBox:process()
 end
 
 function TextBox:draw()
-	local pressed = false
+	local result = 0
 
 	if self.scissorMode then
 		RL.BeginScissorMode( self.bounds )
 	end
 
-    pressed, self.text = RL.GuiTextBox( self.bounds, self.text, self.textSize, self.editMode )
+    result, self.text = RL.GuiTextBox( self.bounds, self.text, self.textSize, self.editMode )
 
 	if self.scissorMode then
 		RL.EndScissorMode()
 	end
 
-    if pressed then
+    if result == 1 then
 		self.editMode = not self.editMode
 
 		if not self.editMode and self.callback ~= nil then
@@ -932,51 +992,6 @@ function TextBox:draw()
 end
 
 function TextBox:setPosition( pos )
-	self.bounds.x = pos.x
-	self.bounds.y = pos.y
-end
-
--- TextBoxMulti.
-
--- Text Box control with multiple lines
-TextBoxMulti = {}
-TextBoxMulti.__index = TextBoxMulti
-
-function TextBoxMulti:new( bounds, text, textSize, editMode, callback )
-    local object = setmetatable( {}, TextBoxMulti )
-
-    object.bounds = bounds:clone()
-    object.text = text
-    object.textSize = textSize
-    object.editMode = editMode
-    object.callback = callback
-
-	object.visible = true
-
-	table.insert( Raygui.elements, object )
-
-	return object
-end
-
-function TextBoxMulti:process()
-	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
-end
-
-function TextBoxMulti:draw()
-	local pressed = false
-
-    pressed, self.text = RL.GuiTextBoxMulti( self.bounds, self.text, self.textSize, self.editMode )
-
-    if pressed then
-		self.editMode = not self.editMode
-
-		if not self.editMode and self.callback ~= nil then
-			self.callback( self )
-		end
-    end
-end
-
-function TextBoxMulti:setPosition( pos )
 	self.bounds.x = pos.x
 	self.bounds.y = pos.y
 end
@@ -1012,10 +1027,14 @@ end
 function Slider:draw()
 	local oldValue = self.value
 
-    self.value = RL.GuiSlider( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
+    _, self.value = RL.GuiSlider( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
 
     if self.value ~= oldValue then
-		self.callback( self )
+		Raygui.scrolling = true
+
+		if self.callback ~= nil then
+			self.callback( self )
+		end
     end
 end
 
@@ -1055,10 +1074,14 @@ end
 function SliderBar:draw()
 	local oldValue = self.value
 
-    self.value = RL.GuiSliderBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
+    _, self.value = RL.GuiSliderBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
 
     if self.value ~= oldValue then
-		self.callback( self )
+		Raygui.scrolling = true
+
+		if self.callback ~= nil then
+			self.callback( self )
+		end
     end
 end
 
@@ -1098,7 +1121,7 @@ end
 function ProgressBar:draw()
 	local oldValue = self.value
 
-    self.value = RL.GuiProgressBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
+	_, self.value = RL.GuiProgressBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
 
     if self.value ~= oldValue then
 		self.callback( self )
@@ -1189,7 +1212,7 @@ function Grid:new( bounds, text, spacing, subdivs, callback )
     object.subdivs = subdivs
 	object.callback = callback
 
-	object.cell = Vec2:new()
+	object.mouseCell = Vec2:new()
 	object.visible = true
 
 	table.insert( Raygui.elements, object )
@@ -1202,11 +1225,13 @@ function Grid:process()
 end
 
 function Grid:draw()
-	local oldCell = self.cell:clone()
+	local oldCell = self.mouseCell:clone()
+	local mouseCell = {}
 
-	self.cell = Vec2:new( RL.GuiGrid( self.bounds, self.text, self.spacing, self.subdivs ) )
+	_, mouseCell = RL.GuiGrid( self.bounds, self.text, self.spacing, self.subdivs, self.mouseCell )
+	self.mouseCell = Vec2:new( mouseCell )
 
-	if oldCell ~= self.cell and self.callback ~= nil then
+	if oldCell ~= self.mouseCell and self.callback ~= nil then
 		self.callback( self )
 	end
 end
@@ -1251,9 +1276,13 @@ end
 
 function ListView:draw()
 	local oldActive = self.active
+	local oldScrollIndex = self.scrollIndex
 
-	self.active, self.scrollIndex = RL.GuiListView( self.bounds, self.text, self.scrollIndex, self.active )
+	_, self.scrollIndex, self.active = RL.GuiListView( self.bounds, self.text, self.scrollIndex, self.active )
 
+	if self.scrollIndex ~= oldScrollIndex then
+		Raygui.scrolling = true
+	end
 	if oldActive ~= self.active and self.callback ~= nil then
 		self.callback( self )
 	end
@@ -1270,14 +1299,14 @@ end
 ListViewEx = {}
 ListViewEx.__index = ListViewEx
 
-function ListViewEx:new( bounds, text, focus, scrollIndex, active, callback )
+function ListViewEx:new( bounds, text, scrollIndex, active, focus, callback )
     local object = setmetatable( {}, ListViewEx )
 
     object.bounds = bounds:clone()
     object.text = text
-    object.focus = focus
     object.scrollIndex = scrollIndex
     object.active = active
+    object.focus = focus
 	object.callback = callback
 	object.visible = true
 
@@ -1296,9 +1325,13 @@ end
 
 function ListViewEx:draw()
 	local oldActive = self.active
+	local oldScrollIndex = self.scrollIndex
 
-	self.active, self.scrollIndex, self.focus = RL.GuiListViewEx( self.bounds, self.text, self.focus, self.scrollIndex, self.active )
+	_, self.scrollIndex, self.active, self.focus = RL.GuiListViewEx( self.bounds, self.text, self.scrollIndex, self.active, self.focus )
 
+	if self.scrollIndex ~= oldScrollIndex then
+		Raygui.scrolling = true
+	end
 	if oldActive ~= self.active and self.callback ~= nil then
 		self.callback( self )
 	end
@@ -1421,24 +1454,41 @@ function ColorPicker:new( bounds, text, color, callback )
 	object.callback = callback
 
 	object.visible = true
+	object.focusBounds = Rect:new()
 
+	object:updateFocusBounds()
 	table.insert( Raygui.elements, object )
 
 	return object
 end
 
 function ColorPicker:process()
-	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.focusBounds )
+end
+
+function ColorPicker:updateFocusBounds()
+	local boundsHue = Rect:new(
+		self.bounds.x + self.bounds.width + RL.GuiGetStyle( RL.COLORPICKER, RL.HUEBAR_PADDING ),
+		self.bounds.y,
+		RL.GuiGetStyle( RL.COLORPICKER, RL.HUEBAR_WIDTH ),
+		self.bounds.height
+	)
+
+	self.focusBounds = self.bounds:fit( boundsHue )
 end
 
 function ColorPicker:draw()
 	local oldColor = self.color:clone()
-	local color = RL.GuiColorPicker( self.bounds, self.text, self.color )
+	local _, color = RL.GuiColorPicker( self.bounds, self.text, self.color )
 
 	self.color = Color:new( color )
 
-	if oldColor ~= self.color and self.callback ~= nil then
-		self.callback( self )
+	if self.color ~= oldColor then
+		Raygui.scrolling = true
+
+		if self.callback ~= nil then
+			self.callback( self )
+		end
 	end
 end
 
@@ -1474,7 +1524,7 @@ end
 
 function ColorPanel:draw()
 	local oldColor = self.color:clone()
-	local color = RL.GuiColorPanel( self.bounds, self.text, self.color )
+	local _, color = RL.GuiColorPanel( self.bounds, self.text, self.color )
 
 	self.color = Color:new( color )
 
@@ -1515,10 +1565,14 @@ end
 
 function ColorBarAlpha:draw()
 	local oldAlpha = self.alpha
-	self.alpha = RL.GuiColorBarAlpha( self.bounds, self.text, self.alpha )
+	_, self.alpha = RL.GuiColorBarAlpha( self.bounds, self.text, self.alpha )
 
-	if self.alpha ~= oldAlpha and self.callback ~= nil then
-		self.callback( self )
+	if self.alpha ~= oldAlpha then
+		Raygui.scrolling = true
+
+		if self.callback ~= nil then
+			self.callback( self )
+		end
 	end
 end
 
@@ -1554,10 +1608,14 @@ end
 
 function ColorBarHue:draw()
 	local oldValue = self.value
-	self.value = RL.GuiColorBarHue( self.bounds, self.text, self.value )
+	_, self.value = RL.GuiColorBarHue( self.bounds, self.text, self.value )
 
-	if self.value ~= oldValue and self.callback ~= nil then
-		self.callback( self )
+	if self.value ~= oldValue then
+		Raygui.scrolling = true
+
+		if self.callback ~= nil then
+			self.callback( self )
+		end
 	end
 end
 
@@ -1572,6 +1630,7 @@ Raygui.WindowBox = WindowBox
 Raygui.GroupBox = GroupBox
 Raygui.Line = Line
 Raygui.Panel = Panel
+Raygui.GuiTabBar = GuiTabBar
 Raygui.ScrollPanel = ScrollPanel
 
 Raygui.Label = Label
@@ -1585,7 +1644,6 @@ Raygui.DropdownBox = DropdownBox
 Raygui.Spinner = Spinner
 Raygui.ValueBox = ValueBox
 Raygui.TextBox = TextBox
-Raygui.TextBoxMulti = TextBoxMulti
 Raygui.Slider = Slider
 Raygui.SliderBar = SliderBar
 Raygui.ProgressBar = ProgressBar

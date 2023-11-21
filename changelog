@@ -8,6 +8,7 @@ KEY CHANGES:
 	- ADDED: Random values generation functions.
 	- ADDED: More Window-related functions.
 	- ADDED: Spline functions.
+	- CHANGE: Raygui to version 4.0. Gui libs also updated.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.

@@ -27,7 +27,7 @@ Quaternion.meta = {
 	__unm = function( q )
 		return Quaternion:new( RL.QuaternionInvert( q ) )
 	end,
-	__len = function( _ )
+	__len = function()
 		return 4
 	end,
 	__eq = function( q1, q2 )

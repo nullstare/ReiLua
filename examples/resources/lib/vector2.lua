@@ -30,7 +30,7 @@ Vector2.meta = {
 	__unm = function( v )
 		return Vector2:new( -v.x, -v.y )
 	end,
-	__len = function( _ )
+	__len = function()
 		return 2
 	end,
 	__eq = function( v1, v2 )

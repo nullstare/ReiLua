@@ -264,7 +264,7 @@ function Text:draw()
 		return
 	end
 
-	RL.DrawText( self.font, self.text, { self._parent.bounds.x + self.bounds.x, self._parent.bounds.y + self.bounds.y }, self.fontSize, self.spacing, self.color )
+	RL.DrawTextEx( self.font, self.text, { self._parent.bounds.x + self.bounds.x, self._parent.bounds.y + self.bounds.y }, self.fontSize, self.spacing, self.color )
 end
 
 -- Texture.

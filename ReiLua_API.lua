@@ -753,11 +753,23 @@ RL.STATE_FOCUSED=1
 RL.STATE_PRESSED=2
 RL.STATE_DISABLED=3
 
--- Globals - GuiTextAlignment
+-- Globals - GuiControlTextAlignment
 
 RL.TEXT_ALIGN_LEFT=0
 RL.TEXT_ALIGN_CENTER=1
 RL.TEXT_ALIGN_RIGHT=2
+
+-- Globals - GuiControlTextAlignmentVertical
+
+RL.TEXT_ALIGN_TOP=0
+RL.TEXT_ALIGN_MIDDLE=1
+RL.TEXT_ALIGN_BOTTOM=2
+
+-- Globals - GuiControlTextWrapMode
+
+RL.TEXT_WRAP_NONE=0
+RL.TEXT_WRAP_CHAR=1
+RL.TEXT_WRAP_WORD=2
 
 -- Globals - GuiControl
 
@@ -800,7 +812,6 @@ RL.TEXT_COLOR_DISABLED=11
 RL.BORDER_WIDTH=12
 RL.TEXT_PADDING=13
 RL.TEXT_ALIGNMENT=14
-RL.RESERVED=15
 
 -- Globals - GuiDefaultProperty
 
@@ -812,6 +823,12 @@ RL.TEXT_SPACING=17
 RL.LINE_COLOR=18
 ---Background color
 RL.BACKGROUND_COLOR=19
+---Text spacing between lines
+RL.TEXT_LINE_SPACING=20
+---Text vertical alignment inside text bounds (after border and padding)
+RL.TEXT_ALIGNMENT_VERTICAL=21
+---Text wrap-mode inside text bounds
+RL.TEXT_WRAP_MODE=22
 
 -- Globals - GuiToggleProperty
 
@@ -859,12 +876,10 @@ RL.ARROW_PADDING=16
 ---DropdownBox items separation
 RL.DROPDOWN_ITEMS_SPACING=17
 
--- Globals - GuiTextBoxProperty
+-- Globals - TextBox/TextBoxMulti/ValueBox/Spinner
 
----TextBox/TextBoxMulti/ValueBox/Spinner inner text padding
-RL.TEXT_INNER_PADDING=16
----TextBoxMulti lines separation
-RL.TEXT_LINES_SPACING=17
+---TextBox in read-only mode: 0-text editable, 1-text no-editable
+RL.TEXT_READONLY=16
 
 -- Globals - GuiSpinnerProperty
 
@@ -5475,8 +5490,8 @@ function RL.GuiIsLocked() end
 
 ---Set gui controls alpha (global state), alpha goes from 0.0f to 1.0f
 ---@param alpha number
----@return any RL.GuiFade
-function  RL.GuiFade( alpha ) end
+---@return any RL.GuiSetAlpha
+function  RL.GuiSetAlpha( alpha ) end
 
 ---Set gui state (global state)
 ---@param state integer
@@ -5516,297 +5531,10 @@ function  RL.GuiSetStyle( control, property, value ) end
 ---@return any value 
 function RL.GuiGetStyle( control, property ) end
 
--- Gui - Container/separator controls, useful for controls organization
-
----Window Box control, shows a window that can be closed
----- Success return bool
----@param bounds table
----@param title string
----@return any state 
-function RL.GuiWindowBox( bounds, title ) end
-
----Group Box control with text name
----@param bounds table
----@param text string
----@return any RL.GuiGroupBox
-function  RL.GuiGroupBox( bounds, text ) end
-
----Line separator control, could contain text
----@param bounds table
----@param text string
----@return any RL.GuiLine
-function  RL.GuiLine( bounds, text ) end
-
----Panel control, useful to group controls
----@param bounds table
----@param text string
----@return any RL.GuiPanel
-function  RL.GuiPanel( bounds, text ) end
-
----Scroll Panel control
----- Success return Rectangle, Vector2
----@param bounds table
----@param text string
----@param content table
----@param scroll table
----@return any view
----@return any scroll 
-function RL.GuiScrollPanel( bounds, text, content, scroll ) end
-
--- Gui - Basic controls set
-
----Label control, shows text
----@param bounds table
----@param text string
----@return any RL.GuiLabel
-function  RL.GuiLabel( bounds, text ) end
-
----Button control, returns true when clicked
----- Success return boolean
----@param bounds table
----@param text string
----@return any clicked 
-function RL.GuiButton( bounds, text ) end
-
----Label button control, show true when clicked
----- Success return boolean
----@param bounds table
----@param text string
----@return any clicked 
-function RL.GuiLabelButton( bounds, text ) end
-
----Toggle Button control, returns true when active
----- Success return boolean
----@param bounds table
----@param text string
----@param active boolean
----@return any active 
-function RL.GuiToggle( bounds, text, active ) end
-
----Toggle Group control, returns active toggle index
----- Success return int
----@param bounds table
----@param text string
----@param active integer
----@return any index 
-function RL.GuiToggleGroup( bounds, text, active ) end
-
----Check Box control, returns true when active
----- Success return boolean
----@param bounds table
----@param text string
----@param checked boolean
----@return any active 
-function RL.GuiCheckBox( bounds, text, checked ) end
-
----Combo Box control, returns selected item index
----- Success return int
----@param bounds table
----@param text string
----@param active integer
----@return any active 
-function RL.GuiComboBox( bounds, text, active ) end
-
----Text Box control, updates input text
----- Success return boolean, string
----@param bounds table
----@param text string
----@param textSize integer
----@param editMode boolean
----@return any pressed
----@return any text 
-function RL.GuiTextBox( bounds, text, textSize, editMode ) end
-
----Text Box control with multiple lines
----- Success return boolean, string
----@param bounds table
----@param text string
----@param textSize integer
----@param editMode boolean
----@return any pressed
----@return any text 
-function RL.GuiTextBoxMulti( bounds, text, textSize, editMode ) end
-
----Spinner control, returns selected value
----- Success return boolean, int
----@param bounds table
----@param text string
----@param value integer
----@param minValue integer
----@param maxValue integer
----@param editMode boolean
----@return any pressed
----@return any value 
-function RL.GuiSpinner( bounds, text, value, minValue, maxValue, editMode ) end
-
----Value Box control, updates input text with numbers
----- Success return boolean, int
----@param bounds table
----@param text string
----@param value integer
----@param minValue integer
----@param maxValue integer
----@param editMode boolean
----@return any pressed
----@return any value 
-function RL.GuiValueBox( bounds, text, value, minValue, maxValue, editMode ) end
-
----Slider control, returns selected value
----- Success return float
----@param bounds table
----@param textLeft string
----@param textRight string
----@param value number
----@param minValue number
----@param maxValue number
----@return any value 
-function RL.GuiSlider( bounds, textLeft, textRight, value, minValue, maxValue ) end
-
----Slider Bar control, returns selected value
----- Success return float
----@param bounds table
----@param textLeft string
----@param textRight string
----@param value number
----@param minValue number
----@param maxValue number
----@return any value 
-function RL.GuiSliderBar( bounds, textLeft, textRight, value, minValue, maxValue ) end
-
----Progress Bar control, shows current progress value
----- Success return float
----@param bounds table
----@param textLeft string
----@param textRight string
----@param value number
----@param minValue number
----@param maxValue number
----@return any value 
-function RL.GuiProgressBar( bounds, textLeft, textRight, value, minValue, maxValue ) end
-
----Scroll Bar control
----- Success return int
----@param bounds table
----@param value integer
----@param minValue integer
----@param maxValue integer
----@return any value 
-function RL.GuiScrollBar( bounds, value, minValue, maxValue ) end
-
----Dropdown Box control, returns selected item
----- Success return bool, int
----@param bounds table
----@param text string
----@param active integer
----@param editMode boolean
----@return any pressed
----@return any item 
-function RL.GuiDropdownBox( bounds, text, active, editMode ) end
-
----Status Bar control, shows info text
----@param bounds table
----@param text string
----@return any RL.GuiStatusBar
-function  RL.GuiStatusBar( bounds, text ) end
-
----Dummy control for placeholders
----@param bounds table
----@param text string
----@return any RL.GuiDummyRec
-function  RL.GuiDummyRec( bounds, text ) end
-
----Grid control, returns mouse cell position
----- Success return Vector2
----@param bounds table
----@param text string
----@param spacing number
----@param subdivs integer
----@return any cell 
-function RL.GuiGrid( bounds, text, spacing, subdivs ) end
-
--- Gui - Advance controls set
-
----List View control, returns selected list item index and scroll index
----- Success return int, int
----@param bounds table
----@param text string
----@param scrollIndex integer
----@param active integer
----@return any itemIndex
----@return any scrollIndex 
-function RL.GuiListView( bounds, text, scrollIndex, active ) end
-
----List View with extended parameters, returns selected list item index, scroll index and focus
----- Success return int, int, int
----@param bounds table
----@param text string
----@param focus integer
----@param scrollIndex integer
----@param active integer
----@return any itemIndex
----@return any scrollIndex
----@return any focus 
-function RL.GuiListViewEx( bounds, text, focus, scrollIndex, active ) end
-
----Message Box control, displays a message, returns button index (0 is x button)
----- Success return int
----@param bounds table
----@param title string
----@param message string
----@param buttons string
----@return any buttonIndex 
-function RL.GuiMessageBox( bounds, title, message, buttons ) end
-
----Text Input Box control, ask for text, supports secret
----- Success return int, string, int
----@param bounds table
----@param title string
----@param message string
----@param buttons string
----@param text string
----@param textMaxSize integer
----@param secretViewActive integer
----@return any buttonIndex
----@return any text
----@return any secretViewActive 
-function RL.GuiTextInputBox( bounds, title, message, buttons, text, textMaxSize, secretViewActive ) end
-
----Color Picker control (multiple color controls)
----- Success return Color
----@param bounds table
----@param text string
----@param color table
----@return any color 
-function RL.GuiColorPicker( bounds, text, color ) end
-
----Color Panel control
----- Success return Color
----@param bounds table
----@param text string
----@param color table
----@return any color 
-function RL.GuiColorPanel( bounds, text, color ) end
-
----Color Bar Alpha control
----- Success return float
----@param bounds table
----@param text string
----@param alpha number
----@return any alpha 
-function RL.GuiColorBarAlpha( bounds, text, alpha ) end
-
----Color Bar Hue control
----- Success return float
----@param bounds table
----@param text string
----@param value number
----@return any hue 
-function RL.GuiColorBarHue( bounds, text, value ) end
-
 -- Gui - Styles loading functions
 
 ---Load style file over global style variable (.rgs)
----- Failure return false
+---- Failure return nil
 ---- Success return true
 ---@param fileName string
 ---@return any success 
@@ -5815,6 +5543,21 @@ function RL.GuiLoadStyle( fileName ) end
 ---Load style default over global style
 ---@return any RL.GuiLoadStyleDefault
 function  RL.GuiLoadStyleDefault() end
+
+-- Gui - Tooltips management functions
+
+---Enable gui tooltips (global state)
+---@return any RL.GuiEnableTooltip
+function  RL.GuiEnableTooltip() end
+
+---Disable gui tooltips (global state)
+---@return any RL.GuiDisableTooltip
+function  RL.GuiDisableTooltip() end
+
+---Set tooltip string
+---@param tooltip string
+---@return any RL.GuiSetTooltip
+function  RL.GuiSetTooltip( tooltip ) end
 
 -- Gui - Icons functionality
 
@@ -5825,6 +5568,24 @@ function  RL.GuiLoadStyleDefault() end
 ---@return any text 
 function RL.GuiIconText( iconId, text ) end
 
+---Set icon scale (1 by default)
+---@param scale integer
+---@return any RL.GuiSetIconScale
+function  RL.GuiSetIconScale( scale ) end
+
+---Get raygui icons data pointer
+---- Success return int
+---@return any icons 
+function RL.GuiGetIcons() end
+
+---Load raygui icons file (.rgi) into internal icons data
+---- Failure return nil
+---- Success return strings{}
+---@param fileName string
+---@param loadIconsName boolean
+---@return any iconNames 
+function RL.GuiLoadIcons( fileName, loadIconsName ) end
+
 ---Draw icon
 ---@param iconId integer
 ---@param pos table
@@ -5833,29 +5594,332 @@ function RL.GuiIconText( iconId, text ) end
 ---@return any RL.GuiDrawIcon
 function  RL.GuiDrawIcon( iconId, pos, pixelSize, color ) end
 
----Set icon scale (1 by default)
----@param scale integer
----@return any RL.GuiSetIconScale
-function  RL.GuiSetIconScale( scale ) end
+-- Gui - Container/separator controls, useful for controls organization
 
----Set icon pixel value
----@param iconId integer
----@param pos table
----@return any RL.GuiSetIconPixel
-function  RL.GuiSetIconPixel( iconId, pos ) end
+---Window Box control, shows a window that can be closed
+---- Success return int
+---@param bounds table
+---@param title string
+---@return any result 
+function RL.GuiWindowBox( bounds, title ) end
 
----Clear icon pixel value
----@param iconId integer
----@param pos table
----@return any RL.GuiClearIconPixel
-function  RL.GuiClearIconPixel( iconId, pos ) end
+---Group Box control with text name
+---- Success return int
+---@param bounds table
+---@param text string
+---@return any result 
+function RL.GuiGroupBox( bounds, text ) end
 
----Check icon pixel value
+---Line separator control, could contain text
+---- Success return int
+---@param bounds table
+---@param text string
+---@return any result 
+function RL.GuiLine( bounds, text ) end
+
+---Panel control, useful to group controls
+---- Success return int
+---@param bounds table
+---@param text string
+---@return any result 
+function RL.GuiPanel( bounds, text ) end
+
+---Tab Bar control, returns TAB to be closed or -1
+---- Success return int, int
+---@param bounds table
+---@param text string
+---@param active integer
+---@return any result
+---@return any active 
+function RL.GuiTabBar( bounds, text, active ) end
+
+---Scroll Panel control
+---- Success return int, Vector2, Rectangle
+---@param bounds table
+---@param text string
+---@param content table
+---@param scroll table
+---@param view table
+---@return any result
+---@return any scroll
+---@return any view 
+function RL.GuiScrollPanel( bounds, text, content, scroll, view ) end
+
+-- Gui - Basic controls set
+
+---Label control, shows text
+---- Success return int
+---@param bounds table
+---@param text string
+---@return any result 
+function RL.GuiLabel( bounds, text ) end
+
+---Button control, returns true when clicked
+---- Success return int
+---@param bounds table
+---@param text string
+---@return any result 
+function RL.GuiButton( bounds, text ) end
+
+---Label button control, show true when clicked
+---- Success return int
+---@param bounds table
+---@param text string
+---@return any result 
+function RL.GuiLabelButton( bounds, text ) end
+
+---Toggle Button control, returns true when active
+---- Success return int, bool
+---@param bounds table
+---@param text string
+---@param active boolean
+---@return any result
+---@return any active 
+function RL.GuiToggle( bounds, text, active ) end
+
+---Toggle Group control, returns active toggle index
+---- Success return int, int
+---@param bounds table
+---@param text string
+---@param active integer
+---@return any result
+---@return any active 
+function RL.GuiToggleGroup( bounds, text, active ) end
+
+---Toggle Slider control, returns true when clicked
+---- Success return int, int
+---@param bounds table
+---@param text string
+---@param active integer
+---@return any result
+---@return any active 
+function RL.GuiToggleSlider( bounds, text, active ) end
+
+---Check Box control, returns true when active
 ---- Success return bool
----@param iconId integer
----@param pos table
+---@param bounds table
+---@param text string
+---@param checked boolean
+---@return any result
+---@return any checked 
+function RL.GuiCheckBox( bounds, text, checked ) end
+
+---Combo Box control, returns selected item index
+---- Success return int, int
+---@param bounds table
+---@param text string
+---@param active integer
+---@return any result
+---@return any active 
+function RL.GuiComboBox( bounds, text, active ) end
+
+---Dropdown Box control, returns selected item
+---- Success return int, int
+---@param bounds table
+---@param text string
+---@param active integer
+---@param editMode boolean
+---@return any result
+---@return any active 
+function RL.GuiDropdownBox( bounds, text, active, editMode ) end
+
+---Spinner control, returns selected value
+---- Success return int, int
+---@param bounds table
+---@param text string
+---@param value integer
+---@param minValue integer
+---@param maxValue integer
+---@param editMode boolean
+---@return any result
 ---@return any value 
-function RL.GuiCheckIconPixel( iconId, pos ) end
+function RL.GuiSpinner( bounds, text, value, minValue, maxValue, editMode ) end
+
+---Value Box control, updates input text with numbers
+---- Success return int, int
+---@param bounds table
+---@param text string
+---@param value integer
+---@param minValue integer
+---@param maxValue integer
+---@param editMode boolean
+---@return any result
+---@return any value 
+function RL.GuiValueBox( bounds, text, value, minValue, maxValue, editMode ) end
+
+---Text Box control, updates input text
+---- Success return int, string
+---@param bounds table
+---@param text string
+---@param textSize integer
+---@param editMode boolean
+---@return any result
+---@return any text 
+function RL.GuiTextBox( bounds, text, textSize, editMode ) end
+
+---Slider control, returns selected value
+---- Success return int, float
+---@param bounds table
+---@param textLeft string
+---@param textRight string
+---@param value number
+---@param minValue number
+---@param maxValue number
+---@return any result
+---@return any value 
+function RL.GuiSlider( bounds, textLeft, textRight, value, minValue, maxValue ) end
+
+---Slider Bar control, returns selected value
+---- Success return int, float
+---@param bounds table
+---@param textLeft string
+---@param textRight string
+---@param value number
+---@param minValue number
+---@param maxValue number
+---@return any result
+---@return any value 
+function RL.GuiSliderBar( bounds, textLeft, textRight, value, minValue, maxValue ) end
+
+---Progress Bar control, shows current progress value
+---- Success return int, float
+---@param bounds table
+---@param textLeft string
+---@param textRight string
+---@param value number
+---@param minValue number
+---@param maxValue number
+---@return any result
+---@return any value 
+function RL.GuiProgressBar( bounds, textLeft, textRight, value, minValue, maxValue ) end
+
+---Status Bar control, shows info text
+---- Success return int
+---@param bounds table
+---@param text string
+---@return any result 
+function RL.GuiStatusBar( bounds, text ) end
+
+---Dummy control for placeholders
+---- Success return int
+---@param bounds table
+---@param text string
+---@return any result 
+function RL.GuiDummyRec( bounds, text ) end
+
+---Grid control, returns mouse cell position
+---- Success return int, Vector2
+---@param bounds table
+---@param text string
+---@param spacing number
+---@param subdivs integer
+---@param mouseCell table
+---@return any result
+---@return any mouseCell 
+function RL.GuiGrid( bounds, text, spacing, subdivs, mouseCell ) end
+
+-- Gui - Advance controls set
+
+---List View control, returns selected list item index
+---- Success return int, int, int
+---@param bounds table
+---@param text string
+---@param scrollIndex integer
+---@param active integer
+---@return any result
+---@return any scrollIndex
+---@return any active 
+function RL.GuiListView( bounds, text, scrollIndex, active ) end
+
+---List View with extended parameters
+---- Success return int, int, int, int
+---@param bounds table
+---@param text string
+---@param scrollIndex integer
+---@param active integer
+---@param focus integer
+---@return any result
+---@return any scrollIndex
+---@return any active
+---@return any focus 
+function RL.GuiListViewEx( bounds, text, scrollIndex, active, focus ) end
+
+---Message Box control, displays a message
+---- Success return int
+---@param bounds table
+---@param title string
+---@param message string
+---@param buttons string
+---@return any result 
+function RL.GuiMessageBox( bounds, title, message, buttons ) end
+
+---Text Input Box control, ask for text, supports secret
+---- Success return int, string, bool
+---@param bounds table
+---@param title string
+---@param message string
+---@param buttons string
+---@param text string
+---@param textMaxSize integer
+---@param secretViewActive boolean
+---@return any result
+---@return any text
+---@return any secretViewActive 
+function RL.GuiTextInputBox( bounds, title, message, buttons, text, textMaxSize, secretViewActive ) end
+
+---Color Picker control (multiple color controls)
+---- Success return int, Color
+---@param bounds table
+---@param text string
+---@param color table
+---@return any result
+---@return any color 
+function RL.GuiColorPicker( bounds, text, color ) end
+
+---Color Panel control
+---- Success return int, Color
+---@param bounds table
+---@param text string
+---@param color table
+---@return any result
+---@return any color 
+function RL.GuiColorPanel( bounds, text, color ) end
+
+---Color Bar Alpha control
+---- Success return int, float
+---@param bounds table
+---@param text string
+---@param alpha number
+---@return any result
+---@return any alpha 
+function RL.GuiColorBarAlpha( bounds, text, alpha ) end
+
+---Color Bar Hue control
+---- Success return int, float
+---@param bounds table
+---@param text string
+---@param value number
+---@return any result
+---@return any value 
+function RL.GuiColorBarHue( bounds, text, value ) end
+
+---Color Picker control that avoids conversion to RGB on each call (multiple color controls)
+---- Success return int, Vector3
+---@param bounds table
+---@param text string
+---@param colorHsv table
+---@return any result
+---@return any colorHsv 
+function RL.GuiColorPickerHSV( bounds, text, colorHsv ) end
+
+---Color Panel control that returns HSV color value, used by GuiColorPickerHSV()
+---- Success return int, Vector3
+---@param bounds table
+---@param text string
+---@param colorHsv table
+---@return any result
+---@return any colorHsv 
+function RL.GuiColorPanelHSV( bounds, text, colorHsv ) end
 
 -- Lights - Light management functions
 

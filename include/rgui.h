@@ -1,47 +1,60 @@
 #pragma once
 
-/* Global. */
+/* Global gui state control functions. */
 int lguiGuiEnable( lua_State *L );
 int lguiGuiDisable( lua_State *L );
 int lguiGuiLock( lua_State *L );
 int lguiGuiUnlock( lua_State *L );
 int lguiGuiIsLocked( lua_State *L );
-int lguiGuiFade( lua_State *L );
+int lguiGuiSetAlpha( lua_State *L );
 int lguiGuiSetState( lua_State *L );
 int lguiGuiGetState( lua_State *L );
-/* Font. */
+/* Font set/get functions. */
 int lguiGuiSetFont( lua_State *L );
 int lguiGuiGetFont( lua_State *L );
-/* Style */
+/* Style set/get functions. */
 int lguiGuiSetStyle( lua_State *L );
 int lguiGuiGetStyle( lua_State *L );
-/* Container. */
+/* Styles loading functions. */
+int lguiGuiLoadStyle( lua_State *L );
+int lguiGuiLoadStyleDefault( lua_State *L );
+/* Tooltips management functions. */
+int lguiGuiEnableTooltip( lua_State *L );
+int lguiGuiDisableTooltip( lua_State *L );
+int lguiGuiSetTooltip( lua_State *L );
+/* Icons functionality. */
+int lguiGuiIconText( lua_State *L );
+int lguiGuiSetIconScale( lua_State *L );
+int lguiGuiGetIcons( lua_State *L );
+int lguiGuiLoadIcons( lua_State *L );
+int lguiGuiDrawIcon( lua_State *L );
+/* Container/separator controls, useful for controls organization. */
 int lguiGuiWindowBox( lua_State *L );
 int lguiGuiGroupBox( lua_State *L );
 int lguiGuiLine( lua_State *L );
 int lguiGuiPanel( lua_State *L );
+int lguiGuiTabBar( lua_State *L );
 int lguiGuiScrollPanel( lua_State *L );
-/* Basic. */
+/* Basic controls set. */
 int lguiGuiLabel( lua_State *L );
 int lguiGuiButton( lua_State *L );
 int lguiGuiLabelButton( lua_State *L );
 int lguiGuiToggle( lua_State *L );
 int lguiGuiToggleGroup( lua_State *L );
+int lguiGuiToggleSlider( lua_State *L );
 int lguiGuiCheckBox( lua_State *L );
 int lguiGuiComboBox( lua_State *L );
-int lguiGuiTextBox( lua_State *L );
-int lguiGuiTextBoxMulti( lua_State *L );
+int lguiGuiDropdownBox( lua_State *L );
 int lguiGuiSpinner( lua_State *L );
 int lguiGuiValueBox( lua_State *L );
+int lguiGuiTextBox( lua_State *L );
 int lguiGuiSlider( lua_State *L );
 int lguiGuiSliderBar( lua_State *L );
 int lguiGuiProgressBar( lua_State *L );
-int lguiGuiScrollBar( lua_State *L );
-int lguiGuiDropdownBox( lua_State *L );
 int lguiGuiStatusBar( lua_State *L );
 int lguiGuiDummyRec( lua_State *L );
 int lguiGuiGrid( lua_State *L );
-/* Advanced. */
+/* Advance controls set. */
 int lguiGuiListView( lua_State *L );
 int lguiGuiListViewEx( lua_State *L );
 int lguiGuiMessageBox( lua_State *L );
@@ -50,13 +63,5 @@ int lguiGuiColorPicker( lua_State *L );
 int lguiGuiColorPanel( lua_State *L );
 int lguiGuiColorBarAlpha( lua_State *L );
 int lguiGuiColorBarHue( lua_State *L );
-/* Styles loading functions */
-int lguiGuiLoadStyle( lua_State *L );
-int lguiGuiLoadStyleDefault( lua_State *L );
-/* Icons. */
-int lguiGuiIconText( lua_State *L );
-int lguiGuiDrawIcon( lua_State *L );
-int lguiGuiSetIconScale( lua_State *L );
-int lguiGuiSetIconPixel( lua_State *L );
-int lguiGuiClearIconPixel( lua_State *L );
-int lguiGuiCheckIconPixel( lua_State *L );
+int lguiGuiColorPickerHSV( lua_State *L );
+int lguiGuiColorPanelHSV( lua_State *L );

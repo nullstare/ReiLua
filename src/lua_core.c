@@ -677,10 +677,18 @@ static void defineGlobals() {
 	assignGlobalInt( STATE_FOCUSED, "STATE_FOCUSED" );
 	assignGlobalInt( STATE_PRESSED, "STATE_PRESSED" );
 	assignGlobalInt( STATE_DISABLED, "STATE_DISABLED" );
-	/* GuiTextAlignment */
+	/* GuiControlTextAlignment */
 	assignGlobalInt( TEXT_ALIGN_LEFT, "TEXT_ALIGN_LEFT" );
 	assignGlobalInt( TEXT_ALIGN_CENTER, "TEXT_ALIGN_CENTER" );
 	assignGlobalInt( TEXT_ALIGN_RIGHT, "TEXT_ALIGN_RIGHT" );
+	/* GuiControlTextAlignmentVertical */
+	assignGlobalInt( TEXT_ALIGN_TOP, "TEXT_ALIGN_TOP" );
+	assignGlobalInt( TEXT_ALIGN_MIDDLE, "TEXT_ALIGN_MIDDLE" );
+	assignGlobalInt( TEXT_ALIGN_BOTTOM, "TEXT_ALIGN_BOTTOM" );
+	/* GuiControlTextWrapMode */
+	assignGlobalInt( TEXT_WRAP_NONE, "TEXT_WRAP_NONE" );
+	assignGlobalInt( TEXT_WRAP_CHAR, "TEXT_WRAP_CHAR" );
+	assignGlobalInt( TEXT_WRAP_WORD, "TEXT_WRAP_WORD" );
 	/* GuiControl */
 	assignGlobalInt( DEFAULT, "DEFAULT" );
 	assignGlobalInt( LABEL, "LABEL" ); // Used also for: LABELBUTTON
@@ -714,12 +722,14 @@ static void defineGlobals() {
 	assignGlobalInt( BORDER_WIDTH, "BORDER_WIDTH" );
 	assignGlobalInt( TEXT_PADDING, "TEXT_PADDING" );
 	assignGlobalInt( TEXT_ALIGNMENT, "TEXT_ALIGNMENT" );
-	assignGlobalInt( RESERVED, "RESERVED" );
 	/* GuiDefaultProperty */
 	assignGlobalInt( TEXT_SIZE, "TEXT_SIZE" ); // Text size (glyphs max height)
 	assignGlobalInt( TEXT_SPACING, "TEXT_SPACING" ); // Text spacing between glyphs
 	assignGlobalInt( LINE_COLOR, "LINE_COLOR" ); // Line control color
 	assignGlobalInt( BACKGROUND_COLOR, "BACKGROUND_COLOR" ); // Background color
+	assignGlobalInt( TEXT_LINE_SPACING, "TEXT_LINE_SPACING" ); // Text spacing between lines
+	assignGlobalInt( TEXT_ALIGNMENT_VERTICAL, "TEXT_ALIGNMENT_VERTICAL" ); // Text vertical alignment inside text bounds (after border and padding)
+	assignGlobalInt( TEXT_WRAP_MODE, "TEXT_WRAP_MODE" ); // Text wrap-mode inside text bounds
 	/* GuiToggleProperty */
 	assignGlobalInt( GROUP_PADDING, "GROUP_PADDING" ); // ToggleGroup separation between toggles
 	/* GuiSliderProperty */
@@ -742,9 +752,8 @@ static void defineGlobals() {
 	/* GuiDropdownBoxProperty */
 	assignGlobalInt( ARROW_PADDING, "ARROW_PADDING" ); // DropdownBox arrow separation from border and items
 	assignGlobalInt( DROPDOWN_ITEMS_SPACING, "DROPDOWN_ITEMS_SPACING" ); // DropdownBox items separation
-	/* GuiTextBoxProperty */
-	assignGlobalInt( TEXT_INNER_PADDING, "TEXT_INNER_PADDING" ); // TextBox/TextBoxMulti/ValueBox/Spinner inner text padding
-	assignGlobalInt( TEXT_LINES_SPACING, "TEXT_LINES_SPACING" ); // TextBoxMulti lines separation
+	/* TextBox/TextBoxMulti/ValueBox/Spinner */
+	assignGlobalInt( TEXT_READONLY, "TEXT_READONLY" ); // TextBox in read-only mode: 0-text editable, 1-text no-editable
 	/* GuiSpinnerProperty */
 	assignGlobalInt( SPIN_BUTTON_WIDTH, "SPIN_BUTTON_WIDTH" ); // Spinner left/right buttons width
 	assignGlobalInt( SPIN_BUTTON_SPACING, "SPIN_BUTTON_SPACING" ); // Spinner buttons separation
@@ -2204,48 +2213,61 @@ void luaRegister() {
 	assingGlobalFunction( "QuaternionEquals", lmathQuaternionEquals );
 
 	/* Gui. */
-		/* Global. */
+		/* Global gui state control functions. */
 	assingGlobalFunction( "GuiEnable", lguiGuiEnable );
 	assingGlobalFunction( "GuiDisable", lguiGuiDisable );
 	assingGlobalFunction( "GuiLock", lguiGuiLock );
 	assingGlobalFunction( "GuiUnlock", lguiGuiUnlock );
 	assingGlobalFunction( "GuiIsLocked", lguiGuiIsLocked );
-	assingGlobalFunction( "GuiFade", lguiGuiFade );
+	assingGlobalFunction( "GuiSetAlpha", lguiGuiSetAlpha );
 	assingGlobalFunction( "GuiSetState", lguiGuiSetState );
 	assingGlobalFunction( "GuiGetState", lguiGuiGetState );
-		/* Font. */
+		/* Font set/get functions. */
 	assingGlobalFunction( "GuiSetFont", lguiGuiSetFont );
 	assingGlobalFunction( "GuiGetFont", lguiGuiGetFont );
-		/* Style. */
+		/* Style set/get functions. */
 	assingGlobalFunction( "GuiSetStyle", lguiGuiSetStyle );
 	assingGlobalFunction( "GuiGetStyle", lguiGuiGetStyle );
-		/* Container. */
+		/* Styles loading functions */
+	assingGlobalFunction( "GuiLoadStyle", lguiGuiLoadStyle );
+	assingGlobalFunction( "GuiLoadStyleDefault", lguiGuiLoadStyleDefault );
+		/* Tooltips management functions. */
+	assingGlobalFunction( "GuiEnableTooltip", lguiGuiEnableTooltip );
+	assingGlobalFunction( "GuiDisableTooltip", lguiGuiDisableTooltip );
+	assingGlobalFunction( "GuiSetTooltip", lguiGuiSetTooltip );
+		/* Icons functionality. */
+	assingGlobalFunction( "GuiIconText", lguiGuiIconText );
+	assingGlobalFunction( "GuiSetIconScale", lguiGuiSetIconScale );
+	assingGlobalFunction( "GuiGetIcons", lguiGuiGetIcons );
+	assingGlobalFunction( "GuiLoadIcons", lguiGuiLoadIcons );
+	assingGlobalFunction( "GuiDrawIcon", lguiGuiDrawIcon );
+		/* Container/separator controls, useful for controls organization. */
 	assingGlobalFunction( "GuiWindowBox", lguiGuiWindowBox );
 	assingGlobalFunction( "GuiGroupBox", lguiGuiGroupBox );
 	assingGlobalFunction( "GuiLine", lguiGuiLine );
 	assingGlobalFunction( "GuiPanel", lguiGuiPanel );
+	assingGlobalFunction( "GuiTabBar", lguiGuiTabBar );
 	assingGlobalFunction( "GuiScrollPanel", lguiGuiScrollPanel );
-		/* Basic. */
+		/* Basic controls set. */
 	assingGlobalFunction( "GuiLabel", lguiGuiLabel );
 	assingGlobalFunction( "GuiButton", lguiGuiButton );
 	assingGlobalFunction( "GuiLabelButton", lguiGuiLabelButton );
 	assingGlobalFunction( "GuiToggle", lguiGuiToggle );
 	assingGlobalFunction( "GuiToggleGroup", lguiGuiToggleGroup );
+	assingGlobalFunction( "GuiToggleSlider", lguiGuiToggleSlider );
 	assingGlobalFunction( "GuiCheckBox", lguiGuiCheckBox );
 	assingGlobalFunction( "GuiComboBox", lguiGuiComboBox );
-	assingGlobalFunction( "GuiTextBox", lguiGuiTextBox );
-	assingGlobalFunction( "GuiTextBoxMulti", lguiGuiTextBoxMulti );
+	assingGlobalFunction( "GuiDropdownBox", lguiGuiDropdownBox );
 	assingGlobalFunction( "GuiSpinner", lguiGuiSpinner );
 	assingGlobalFunction( "GuiValueBox", lguiGuiValueBox );
+	assingGlobalFunction( "GuiTextBox", lguiGuiTextBox );
 	assingGlobalFunction( "GuiSlider", lguiGuiSlider );
 	assingGlobalFunction( "GuiSliderBar", lguiGuiSliderBar );
 	assingGlobalFunction( "GuiProgressBar", lguiGuiProgressBar );
-	assingGlobalFunction( "GuiScrollBar", lguiGuiScrollBar );
-	assingGlobalFunction( "GuiDropdownBox", lguiGuiDropdownBox );
 	assingGlobalFunction( "GuiStatusBar", lguiGuiStatusBar );
 	assingGlobalFunction( "GuiDummyRec", lguiGuiDummyRec );
 	assingGlobalFunction( "GuiGrid", lguiGuiGrid );
-		/* Advanced. */
+		/* Advance controls set. */
 	assingGlobalFunction( "GuiListView", lguiGuiListView );
 	assingGlobalFunction( "GuiListViewEx", lguiGuiListViewEx );
 	assingGlobalFunction( "GuiMessageBox", lguiGuiMessageBox );
@@ -2254,16 +2276,8 @@ void luaRegister() {
 	assingGlobalFunction( "GuiColorPanel", lguiGuiColorPanel );
 	assingGlobalFunction( "GuiColorBarAlpha", lguiGuiColorBarAlpha );
 	assingGlobalFunction( "GuiColorBarHue", lguiGuiColorBarHue );
-		/* Styles loading functions */
-	assingGlobalFunction( "GuiLoadStyle", lguiGuiLoadStyle );
-	assingGlobalFunction( "GuiLoadStyleDefault", lguiGuiLoadStyleDefault );
-		/* Icons. */
-	assingGlobalFunction( "GuiIconText", lguiGuiIconText );
-	assingGlobalFunction( "GuiDrawIcon", lguiGuiDrawIcon );
-	assingGlobalFunction( "GuiSetIconScale", lguiGuiSetIconScale );
-	assingGlobalFunction( "GuiSetIconPixel", lguiGuiSetIconPixel );
-	assingGlobalFunction( "GuiClearIconPixel", lguiGuiClearIconPixel );
-	assingGlobalFunction( "GuiCheckIconPixel", lguiGuiCheckIconPixel );
+	assingGlobalFunction( "GuiColorPickerHSV", lguiGuiColorPickerHSV );
+	assingGlobalFunction( "GuiColorPanelHSV", lguiGuiColorPanelHSV );
 
 	/* Lights */
 		/* Light management functions. */

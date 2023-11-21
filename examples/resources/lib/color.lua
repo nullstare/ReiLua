@@ -32,11 +32,14 @@ Color.meta = {
 	__idiv = function( c, v )
 		return Color:new( c.r // v, c.g // v, c.b // v, c.a // v )
 	end,
-	__len = function( _ )
+	__len = function()
 		return 4
 	end,
 	__eq = function( c1, c2 )
-		return c1.r == c2.r and c1.g == c2.g and c1.b == c2.b and c1.a == c2.a
+		return math.floor( c1.r ) == math.floor( c2.r )
+		and math.floor( c1.g ) == math.floor( c2.g )
+		and math.floor( c1.b ) == math.floor( c2.b )
+		and math.floor( c1.a ) == math.floor( c2.a )
 	end,
 }
 
@@ -65,7 +68,7 @@ function Color:set( r, g, b, a )
 	if type( r ) == "table" then
 		r, g, b, a = table.unpack( r )
 	elseif type( r ) == "nil" then
-		r, g, b, a = 0, 0, 0, 0
+		r, g, b, a = 0, 0, 0, 255
 	end
 
 	if a == nil then
@@ -87,7 +90,7 @@ function Color:unpack()
 end
 
 function Color:clone()
-	return Color:new( self )
+	return Color:new( self.r, self.g, self.b, self.a )
 end
 
 function Color:scale( scalar )

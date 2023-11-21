@@ -8,7 +8,26 @@ Raygui = require( "raygui" )
 
 local grid = {}
 local windowbox = {}
-local winOpen = true
+local tabBar = {}
+
+local function closeTab( self, id )
+	local splits = Util.split( tabBar.text, ";" )
+	local newText = ""
+
+	if #splits == 1 then
+		Raygui.remove( tabBar )
+	end
+	table.remove( splits, id + 1 )
+
+	for i, tab in ipairs( splits ) do
+		newText = newText..tab
+
+		if i < #splits then
+			newText = newText..";"
+		end
+	end
+	self.text = newText
+end
 
 function RL.init()
 	local monitor = 0
@@ -82,13 +101,6 @@ function RL.init()
 		false,
 		function( self ) print( "Set text "..self.text ) end
 	)
-	local textboxmulti = Raygui.TextBoxMulti:new(
-		Rect:new( 32, 400, 256, 64 ),
-		"Buggy?",
-		32,
-		false,
-		function( self ) print( "Set text "..self.text ) end
-	)
 	local slider = Raygui.Slider:new(
 		Rect:new( 50, 500, 256, 32 ),
 		"min",
@@ -152,6 +164,14 @@ function RL.init()
 		-- Grab callback.
 		function( self ) Raygui.set2Top( self ) end
 	)
+	tabBar = Raygui.GuiTabBar:new(
+		Rect:new( 700, 520, 700, 32 ),
+		"Cat;Dog;Horse;Cow",
+		0,
+		-- function( self ) Raygui.set2Top( self ) end
+		nil,
+		closeTab
+	)
 	local scrollpanel = Raygui.ScrollPanel:new(
 		Rect:new( 800, 64, 256, 256 ),
 		"ScrollPanel",
@@ -164,14 +184,14 @@ function RL.init()
 	)
 	local listview = Raygui.ListView:new(
 		Rect:new( 1100, 64, 128, 80 ),
-		"Cat\nDog\nHorse\nCow\nPig\nEagle\nLion",
+		"Cat;Dog;Horse;Cow;Pig;Eagle;Lion",
 		0,
 		0,
 		function( self ) print( self:getItem( self.active ) ) end
 	)
 	local listviewex = Raygui.ListViewEx:new(
 		Rect:new( 1300, 64, 128, 80 ),
-		"Cat\nDog\nHorse\nCow\nPig\nEagle\nLion",
+		"Cat;Dog;Horse;Cow;Pig;Eagle;Lion",
 		0,
 		0,
 		0,
@@ -181,7 +201,7 @@ function RL.init()
 		Rect:new( 1100, 150, 300, 128 ),
 		"Title",
 		"Message",
-		"Cancel\nOk",
+		"Cancel;Ok",
 		function( self )
 			if 0 < self.buttonIndex then
 				print( "You pressed "..self:getItem( self.buttonIndex ) )
@@ -200,10 +220,10 @@ function RL.init()
 		Rect:new( 1100, 300, 300, 128 ),
 		"Title",
 		"Message",
-		"Cancel\nOk",
+		"Cancel;Ok",
 		"Text",
 		8,
-		0,
+		false,
 		function( self )
 			if 0 < self.buttonIndex then
 				print( "You pressed "..self:getItem( self.buttonIndex ) )
@@ -249,11 +269,11 @@ end
 function RL.draw()
 	RL.ClearBackground( { 50, 20, 75 } )
 
-	if 0 <= grid.cell.x then
+	if 0 <= grid.mouseCell.x then
 		RL.DrawRectangleLines(
 			{
-				grid.bounds.x + grid.cell.x * 32,
-				grid.bounds.y + grid.cell.y * 32,
+				grid.bounds.x + grid.mouseCell.x * 32,
+				grid.bounds.y + grid.mouseCell.y * 32,
 				32,
 				32
 			},

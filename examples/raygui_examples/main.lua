@@ -32,13 +32,11 @@ function RL.init()
 end
 
 function RL.process( delta )
-	-- Gui:process()
 	Raygui:process()
 end
 
 function RL.draw()
 	RL.ClearBackground( RL.DARKBLUE )
 
-	-- Gui:draw()
 	Raygui:draw()
 end

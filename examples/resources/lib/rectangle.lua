@@ -3,6 +3,8 @@ if table.unpack == nil then
 	table.unpack = unpack
 end
 
+local Vector2 = require( "vector2" )
+
 Rectangle = {}
 
 Rectangle.meta = {
@@ -34,7 +36,7 @@ Rectangle.meta = {
 	__idiv = function( r, v )
 		return Rectangle:new( r.x // v, r.y // v, r.width // v, r.height // v )
 	end,
-	__len = function( _ )
+	__len = function()
 		return 4
 	end,
 	__eq = function( r1, r2 )
@@ -106,6 +108,17 @@ end
 
 function Rectangle:area()
 	return self.width * self.height
+end
+
+function Rectangle:fit( rec )
+	local pos = Vector2:new( math.min( self.x, rec.x ), math.min( self.y, rec.y ) )
+
+	return Rectangle:new(
+		pos.x,
+		pos.y,
+		math.max( self.x + self.width - pos.x, rec.x + rec.width - pos.x ),
+		math.max( self.y + self.height - pos.y, rec.y + rec.height - pos.y )
+	)
 end
 
 function Rectangle:checkCollisionRec( rec )

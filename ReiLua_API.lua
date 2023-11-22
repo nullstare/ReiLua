@@ -75,8 +75,6 @@ RL.LOG_NONE=7
 
 -- Globals - KeyboardKey
 
----Key: Unknown
-RL.GLFW_KEY_UNKNOWN=nil
 ---Key: NULL, used for no key pressed
 RL.KEY_NULL=0
 ---Key: '
@@ -1166,19 +1164,6 @@ RL.GL_STENCIL_BUFFER_BIT=1024
 RL.GL_NEAREST=9728
 RL.GL_LINEAR=9729
 
--- Globals - GLFW
-
----The key or mouse button was released
-RL.GLFW_RELEASE=0
----The key or mouse button was pressed
-RL.GLFW_PRESS=1
----The key was held down until it repeated
-RL.GLFW_REPEAT=2
----Joystick connected
-RL.GLFW_CONNECTED=262145
----Joystick disconnected
-RL.GLFW_DISCONNECTED=262146
-
 -- Globals - CBuffer
 
 ---C type unsigned char
@@ -1197,36 +1182,6 @@ RL.BUFFER_INT=5
 RL.BUFFER_FLOAT=6
 ---C type double
 RL.BUFFER_DOUBLE=7
-
--- Globals - Window
-
----GLFW event window size changed
-RL.EVENT_WINDOW_SIZE=0
----GLFW event window maximize
-RL.EVENT_WINDOW_MAXIMIZE=1
----GLFW event window iconify
-RL.EVENT_WINDOW_ICONYFY=2
----GLFW event window focus
-RL.EVENT_WINDOW_FOCUS=3
----GLFW event window drop
-RL.EVENT_WINDOW_DROP=4
-
--- Globals - Input
-
----GLFW event keyboard key
-RL.EVENT_KEY=5
----GLFW event Unicode character
-RL.EVENT_CHAR=6
----GLFW event mouse button
-RL.EVENT_MOUSE_BUTTON=7
----GLFW event cursor position
-RL.EVENT_MOUSE_CURSOR_POS=8
----GLFW event mouse scroll
-RL.EVENT_MOUSE_SCROLL=9
----GLFW event cursor enter/leave
-RL.EVENT_CURSOR_ENTER=10
----GLFW event joystick
-RL.EVENT_JOYSTICK=11
 -- Core - Window-related functions
 
 ---Close window and unload OpenGL context and free all resources
@@ -1942,29 +1897,6 @@ function RL.GetCharPressed() end
 ---@param key integer
 ---@return any RL.SetExitKey
 function  RL.SetExitKey( key ) end
-
----This function returns the name of the specified printable key, encoded as UTF-8.
----This is typically the character that key would produce without any modifier keys,
----intended for displaying key bindings to the user. For dead keys, it is typically
----the diacritic it would add to a character.
----Do not use this function for text input. You will break text input for many
----languages even if it happens to work for yours.
----If the key is KEY_UNKNOWN, the scancode is used to identify the key,
----otherwise the scancode is ignored. If you specify a non-printable key,
----or KEY_UNKNOWN and a scancode that maps to a non-printable key,
----this function returns nil but does not emit an error.
----- Success return string or nil
----@param key integer
----@param scancode integer
----@return any keyName 
-function RL.GetKeyName( key, scancode ) end
-
----This function returns the platform-specific scancode of the specified key.
----If the key is KEY_UNKNOWN or does not exist on the keyboard this method will return -1.
----- Success return int
----@param key integer
----@return any scancode 
-function RL.GetKeyScancode( key ) end
 
 -- Core - Input-related functions: gamepads
 
@@ -4799,16 +4731,17 @@ function RL.Vector2Distance( v1, v2 ) end
 ---@return any result 
 function RL.Vector2DistanceSqr( v1, v2 ) end
 
----Calculate angle from two vectors
+---Calculate angle between two vectors
+---NOTE: Angle is calculated from origin point (0, 0)
 ---- Success return float
 ---@param v1 table
 ---@param v2 table
 ---@return any result 
 function RL.Vector2Angle( v1, v2 ) end
 
----Calculate angle defined by a two vectors line.
----NOTE: Parameters need to be normalized.
----Current implementation should be aligned with glm::angle.
+---Calculate angle defined by a two vectors line
+---NOTE: Parameters need to be normalized
+---Current implementation should be aligned with glm::angle
 ---- Success return float
 ---@param a table
 ---@param b table

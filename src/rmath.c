@@ -293,7 +293,8 @@ int lmathVector2DistanceSqr( lua_State *L ) {
 /*
 > result = RL.Vector2Angle( Vector2 v1, Vector2 v2 )
 
-Calculate angle from two vectors
+Calculate angle between two vectors
+NOTE: Angle is calculated from origin point (0, 0)
 
 - Success return float
 */
@@ -309,9 +310,9 @@ int lmathVector2Angle( lua_State *L ) {
 /*
 > result = RL.Vector2LineAngle( Vector2 a, Vector2 b )
 
-Calculate angle defined by a two vectors line.
-NOTE: Parameters need to be normalized.
-Current implementation should be aligned with glm::angle.
+Calculate angle defined by a two vectors line
+NOTE: Parameters need to be normalized
+Current implementation should be aligned with glm::angle
 
 - Success return float
 */

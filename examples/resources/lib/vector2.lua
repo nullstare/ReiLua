@@ -126,6 +126,14 @@ function Vector2:angle( v2 )
 	return RL.Vector2Angle( self, v2 )
 end
 
+function Vector2:lineAngle( v2 )
+	return RL.Vector2LineAngle( self, v2 )
+end
+
+function Vector2:atan()
+	return math.atan( self.x, self.y )
+end
+
 function Vector2:scale( scale )
 	return Vector2:new( RL.Vector2Scale( self, scale ) )
 end

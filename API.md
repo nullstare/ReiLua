@@ -482,13 +482,6 @@ Disable logging
 
 
 ## Globals - KeyboardKey
-
-GLFW_KEY_UNKNOWN = nil
-
-Key: Unknown
-
----
-
 > KEY_NULL = 0
 
 Key: NULL, used for no key pressed
@@ -3414,38 +3407,6 @@ Framebuffer texture attachment type: renderbuffer
 ---
 
 
-## Globals - GLFW
-> GLFW_RELEASE = 0
-
-The key or mouse button was released
-
----
-
-> GLFW_PRESS = 1
-
-The key or mouse button was pressed
-
----
-
-> GLFW_REPEAT = 2
-
-The key was held down until it repeated
-
----
-
-> GLFW_CONNECTED = 262145
-
-Joystick connected
-
----
-
-> GLFW_DISCONNECTED = 262146
-
-Joystick disconnected
-
----
-
-
 ## Globals - CBuffer
 > BUFFER_UNSIGNED_CHAR = 0
 
@@ -3492,82 +3453,6 @@ C type float
 > BUFFER_DOUBLE = 7
 
 C type double
-
----
-
-
-## Globals - Window
-> EVENT_WINDOW_SIZE = 0
-
-GLFW event window size changed
-
----
-
-> EVENT_WINDOW_MAXIMIZE = 1
-
-GLFW event window maximize
-
----
-
-> EVENT_WINDOW_ICONYFY = 2
-
-GLFW event window iconify
-
----
-
-> EVENT_WINDOW_FOCUS = 3
-
-GLFW event window focus
-
----
-
-> EVENT_WINDOW_DROP = 4
-
-GLFW event window drop
-
----
-
-
-## Globals - Input
-> EVENT_KEY = 5
-
-GLFW event keyboard key
-
----
-
-> EVENT_CHAR = 6
-
-GLFW event Unicode character
-
----
-
-> EVENT_MOUSE_BUTTON = 7
-
-GLFW event mouse button
-
----
-
-> EVENT_MOUSE_CURSOR_POS = 8
-
-GLFW event cursor position
-
----
-
-> EVENT_MOUSE_SCROLL = 9
-
-GLFW event mouse scroll
-
----
-
-> EVENT_CURSOR_ENTER = 10
-
-GLFW event cursor enter/leave
-
----
-
-> EVENT_JOYSTICK = 11
-
-GLFW event joystick
 
 ---
 
@@ -4521,34 +4406,6 @@ Get char pressed (unicode), call it multiple times for chars queued, returns 0 w
 > RL.SetExitKey( int key )
 
 Set a custom key to exit program (default is ESC)
-
----
-
-> keyName = RL.GetKeyName( int key, int scancode )
-
-This function returns the name of the specified printable key, encoded as UTF-8.
-This is typically the character that key would produce without any modifier keys,
-intended for displaying key bindings to the user. For dead keys, it is typically
-the diacritic it would add to a character.
-
-Do not use this function for text input. You will break text input for many
-languages even if it happens to work for yours.
-
-If the key is KEY_UNKNOWN, the scancode is used to identify the key,
-otherwise the scancode is ignored. If you specify a non-printable key,
-or KEY_UNKNOWN and a scancode that maps to a non-printable key,
-this function returns nil but does not emit an error.
-
-- Success return string or nil
-
----
-
-> scancode = RL.GetKeyScancode( int key )
-
-This function returns the platform-specific scancode of the specified key.
-If the key is KEY_UNKNOWN or does not exist on the keyboard this method will return -1.
-
-- Success return int
 
 ---
 
@@ -7546,7 +7403,8 @@ Calculate square distance between two vectors
 
 > result = RL.Vector2Angle( Vector2 v1, Vector2 v2 )
 
-Calculate angle from two vectors
+Calculate angle between two vectors
+NOTE: Angle is calculated from origin point (0, 0)
 
 - Success return float
 
@@ -7554,9 +7412,9 @@ Calculate angle from two vectors
 
 > result = RL.Vector2LineAngle( Vector2 a, Vector2 b )
 
-Calculate angle defined by a two vectors line.
-NOTE: Parameters need to be normalized.
-Current implementation should be aligned with glm::angle.
+Calculate angle defined by a two vectors line
+NOTE: Parameters need to be normalized
+Current implementation should be aligned with glm::angle
 
 - Success return float
 

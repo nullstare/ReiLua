@@ -1,20 +1,5 @@
 #pragma once
 
-enum EventType {
-	EVENT_WINDOW_SIZE,
-	EVENT_WINDOW_MAXIMIZE,
-	EVENT_WINDOW_ICONYFY,
-	EVENT_WINDOW_FOCUS,
-	EVENT_WINDOW_DROP,
-	EVENT_KEY,
-	EVENT_CHAR,
-	EVENT_MOUSE_BUTTON,
-	EVENT_MOUSE_CURSOR_POS,
-	EVENT_MOUSE_SCROLL,
-	EVENT_CURSOR_ENTER,
-	EVENT_JOYSTICK
-};
-
 enum BufferType {
 	BUFFER_UNSIGNED_CHAR,
 	BUFFER_UNSIGNED_SHORT,
@@ -31,6 +16,13 @@ typedef struct {
 	size_t size;
 	void *data;
 } Buffer;
+
+/* Global assing functions. */
+void assignGlobalInt( int value, const char *name );
+void assignGlobalFloat( float value, const char *name );
+void assignGlobalDouble( double value, const char *name );
+void assignGlobalColor( Color color, const char *name );
+void assingGlobalFunction( const char *name, int ( *functionPtr )( lua_State* ) );
 
 bool luaInit( int argn, const char **argc );
 int luaTraceback( lua_State *L );

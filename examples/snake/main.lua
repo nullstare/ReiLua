@@ -1,5 +1,6 @@
 package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
+Util = require( "utillib" )
 Vec2 = require( "vector2" )
 Rect = require( "rectangle" )
 
@@ -174,14 +175,14 @@ end
 
 local function drawSnake()
 	for i, seg in ipairs( snake.segments ) do
-		local angle = math.deg( RL.Vector2Angle( { 0, 0 }, seg.heading ) )
+		local angle = -seg.heading:atan() + RL.PI / 2
 		local source = Rect:new( 16, 0, 8, 8 )
 
 		if i == 1 then -- Tail segment. Yes tail is actually the 'first' segment.
 			source.x = 8
 
 			if 1 < #snake.segments then
-				angle = math.deg( RL.Vector2Angle( { 0, 0 }, snake.segments[ 2 ].heading ) )
+				angle = -snake.segments[ 2 ].heading:atan() + RL.PI / 2
 			end
 		elseif i < #snake.segments and seg.heading ~= snake.segments[ i+1 ].heading then -- Turned middle segments.
 			source.x = 0
@@ -196,25 +197,27 @@ local function drawSnake()
 				source.height = -8
 			end
 		end
+
 		-- Notice that we set the origin to center { 4, 4 } that acts as pivot point. We also have to adjust our dest position by 4.
 		RL.DrawTexturePro(
 			snakeTexture,
 			source,
 			{ seg.pos.x * TILE_SIZE + 4, seg.pos.y * TILE_SIZE + 4, 8, 8 },
 			{ 4, 4 },
-			angle,
+			angle * RL.RAD2DEG,
 			RL.WHITE
 		)
 	end
 	-- Let's draw the head last to keep it on top.
-	local angle = math.deg( RL.Vector2Angle( { 0, 0 }, snake.heading ) )
+	-- local angle = -math.atan2( snake.heading.x, snake.heading.y ) + RL.PI / 2
+	local angle = -snake.heading:atan() + RL.PI / 2
 	RL.DrawTexturePro(
 		snakeTexture,
 		{ 24, 0, 8, 8 },
 		{ snake.headPos.x * TILE_SIZE + 4,
 		snake.headPos.y * TILE_SIZE + 4, 8, 8 },
 		{ 4, 4 },
-		angle,
+		angle * RL.RAD2DEG,
 		RL.WHITE
 	)
 end

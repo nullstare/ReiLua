@@ -2,8 +2,10 @@ Current {
 }
 
 Backlog {
-	* SDL_Desktop platform option. Might have to move events to platform specific file since events are not
-	the same in different platforms.
+	* Platform specific API documentation.
+	* Platform desktop SDL.
+		* Thread safe Lua RL.event calling.
+		* Haptic functions.
 	* Text
 		* Text codepoints management functions (unicode characters)? Could be usefull for luajit.
 		* Some of the Text strings management functions could be easier to use than the Lua ones.

@@ -9,27 +9,27 @@ function RL.init()
 end
 
 local function getEventType( event )
-	if event.type == RL.EVENT_WINDOW_SIZE then
+	if event.type == RL.GLFW_WINDOW_SIZE_EVENT then
 		return "Window Size"
-	elseif event.type == RL.EVENT_WINDOW_MAXIMIZE then
+	elseif event.type == RL.GLFW_WINDOW_MAXIMIZE_EVENT then
 		return "Window Maximized"
-	elseif event.type == RL.EVENT_WINDOW_ICONYFY then
+	elseif event.type == RL.GLFW_WINDOW_ICONYFY_EVENT then
 		return "Window Iconyfy"
-	elseif event.type == RL.EVENT_WINDOW_FOCUS then
+	elseif event.type == RL.GLFW_WINDOW_FOCUS_EVENT then
 		return "Window Focus"
-	elseif event.type == RL.EVENT_WINDOW_DROP then
+	elseif event.type == RL.GLFW_WINDOW_DROP_EVENT then
 		return "Window Drop"
-	elseif event.type == RL.EVENT_KEY then
+	elseif event.type == RL.GLFW_KEY_EVENT then
 		return "Key"
-	elseif event.type == RL.EVENT_CHAR then
+	elseif event.type == RL.GLFW_CHAR_EVENT then
 		return "Char"
-	elseif event.type == RL.EVENT_MOUSE_BUTTON then
+	elseif event.type == RL.GLFW_MOUSE_BUTTON_EVENT then
 		return "Mouse Button"
-	elseif event.type == RL.EVENT_MOUSE_CURSOR_POS then
+	elseif event.type == RL.GLFW_MOUSE_CURSOR_POS_EVENT then
 		return "Mouse Cursor Position"
-	elseif event.type == RL.EVENT_MOUSE_SCROLL then
+	elseif event.type == RL.GLFW_MOUSE_SCROLL_EVENT then
 		return "Mouse Scroll"
-	elseif event.type == RL.EVENT_CURSOR_ENTER then
+	elseif event.type == RL.GLFW_CURSOR_ENTER_EVENT then
 		return "Cursor Enter"
 	elseif event.type == RL.EVENT_JOYSTICK then
 		return "Joystick"
@@ -63,33 +63,33 @@ end
 function RL.event( event )
 	text = "Event: "..getEventType( event ).."\n"
 
-	if event.type == RL.EVENT_WINDOW_SIZE then
+	if event.type == RL.GLFW_WINDOW_SIZE_EVENT then
 		text = text.."width: "..event.width.." height: "..event.height
-	elseif event.type == RL.EVENT_WINDOW_MAXIMIZE then
+	elseif event.type == RL.GLFW_WINDOW_MAXIMIZE_EVENT then
 		text = text.."maximized: "..event.maximized
-	elseif event.type == RL.EVENT_WINDOW_ICONYFY then
+	elseif event.type == RL.GLFW_WINDOW_ICONYFY_EVENT then
 		text = text.."iconified: "..event.iconified
-	elseif event.type == RL.EVENT_WINDOW_FOCUS then
+	elseif event.type == RL.GLFW_WINDOW_FOCUS_EVENT then
 		text = text.."focused: "..event.focused
-	elseif event.type == RL.EVENT_WINDOW_DROP then
+	elseif event.type == RL.GLFW_WINDOW_DROP_EVENT then
 		text = text.."count: "..event.count.."\n"
 		for _, path in ipairs( event.paths ) do
 			text = text..path.."\n"
 		end
-	elseif event.type == RL.EVENT_KEY then
+	elseif event.type == RL.GLFW_KEY_EVENT then
 		text = text.."key: "..event.key.." scancode: "..event.scancode.." action: "..getAction( event.action ).." mods: "..event.mods
 		text = text .."\nkeyName: "..keyName( event.key )
-	elseif event.type == RL.EVENT_CHAR then
+	elseif event.type == RL.GLFW_CHAR_EVENT then
 		text = text.."key: "..event.key
 		-- text = text .."\nchar: "..string.char( event.key )
 		text = text .."\nchar: "..utf8.char( event.key )
-	elseif event.type == RL.EVENT_MOUSE_BUTTON then
+	elseif event.type == RL.GLFW_MOUSE_BUTTON_EVENT then
 		text = text.."button: "..event.button.." action: "..getAction( event.action ).." mods: "..event.mods
-	elseif event.type == RL.EVENT_MOUSE_CURSOR_POS then
+	elseif event.type == RL.GLFW_MOUSE_CURSOR_POS_EVENT then
 		text = text.."x: "..event.x.." y: "..event.y
-	elseif event.type == RL.EVENT_MOUSE_SCROLL then
+	elseif event.type == RL.GLFW_MOUSE_SCROLL_EVENT then
 		text = text.."xoffset: "..event.xoffset.." yoffset: "..event.yoffset
-	elseif event.type == RL.EVENT_CURSOR_ENTER then
+	elseif event.type == RL.GLFW_CURSOR_ENTER_EVENT then
 		text = text.."enter: "..event.enter
 		cursorIn = event.enter
 	elseif event.type == RL.EVENT_JOYSTICK then
@@ -99,6 +99,8 @@ function RL.event( event )
 		elseif event.event == RL.GLFW_DISCONNECTED then
 			text = text.."\nDisconnected"
 		end
+	elseif event.type == RL.SDL_KEYBOARD_EVENT then
+		text = text.."state: "..event.state
 	end
 end
 

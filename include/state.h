@@ -13,7 +13,9 @@ typedef struct {
 	Font defaultFont;
 	Material defaultMaterial;
 	int *RLGLcurrentShaderLocs;
-	/* Raylib GLFW input callback events. */
+	/* Events. */
+	/* GLFW events. */
+#ifdef PLATFORM_DESKTOP
 		/* Window events. */
 	GLFWwindowsizefun raylibWindowSizeCallback;
 	GLFWwindowmaximizefun raylibWindowMaximizeCallback;
@@ -28,6 +30,9 @@ typedef struct {
 	GLFWscrollfun raylibMouseScrollCallback;
 	GLFWcursorenterfun raylibCursorEnterCallback;
 	GLFWjoystickfun raylibJoystickCallback;
+// #elif PLATFORM_DESKTOP_SDL
+
+#endif
 } State;
 
 extern State *state;

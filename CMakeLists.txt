@@ -1,3 +1,7 @@
+set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake )
+include( CMakeDependentOption )
+include( EnumOption )
+
 cmake_minimum_required( VERSION 3.9 )
 project( ReiLua )
 
@@ -9,6 +13,8 @@ set( CMAKE_C_STANDARD 99 ) # Requires C99 standard
 option( SHARED "Build using dynamic libraries." off )
 option( LUAJIT "Use LuaJIT." off )
 
+enum_option( PLATFORM "Desktop;Desktop_SDL" "Platform to build for." )
+
 if( NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES )
     set( CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE )
     set_property( CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo" )
@@ -18,6 +24,12 @@ file( GLOB SOURCES src/*.c )
 
 include_directories( include )
 add_executable( ${PROJECT_NAME} ${SOURCES} )
+
+if( PLATFORM STREQUAL "Desktop" )
+	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DPLATFORM_DESKTOP" )
+elseif( PLATFORM STREQUAL "Desktop_SDL" )
+	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DPLATFORM_DESKTOP_SDL" )
+endif()
 
 if( EMSCRIPTEN ) # Web
 	target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/web/libraylib.a )
@@ -32,7 +44,7 @@ else() # Desktop
 	if( SHARED )
 		message( Shared )
 		set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DSHARED" )
-		# find_package( raylib 4.5 REQUIRED ) # Requires at least version 4.5
+		# find_package( raylib 5.0 REQUIRED ) # Requires at least version 5.0
 		target_link_libraries( ${PROJECT_NAME} raylib )
 
 		if( LUAJIT )
@@ -48,13 +60,19 @@ else() # Desktop
 			set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DLUAJIT" )
 			target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/libluajit.a )
 		else()
-			# target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/liblua.a )
-			target_link_libraries( ${PROJECT_NAME} lua )
+			target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/liblua.a )
 		endif()
 	endif()
 
 	if( UNIX )
 		set( CMAKE_C_COMPILER "gcc" )
+
+		if ( PLATFORM MATCHES "Desktop_SDL" )
+			include( FindPkgConfig )
+			pkg_search_module( SDL2 REQUIRED sdl2 )
+			include_directories( ${SDL2_INCLUDE_DIRS} )
+			target_link_libraries( ${PROJECT_NAME} ${SDL2_LIBRARIES} )
+		endif()
 
 		if( DRM ) # Mainly for Raspberry Pi
 			# target_link_libraries( ${PROJECT_NAME} GLESv2 EGL drm gbm rt bcm_host m dl pthread )
@@ -70,6 +88,12 @@ else() # Desktop
 		target_link_libraries( ${PROJECT_NAME} "-framework Cocoa" )
 		target_link_libraries( ${PROJECT_NAME} "-framework OpenGL" )
 	elseif( WIN32 )
+		if ( PLATFORM MATCHES "Desktop_SDL" )
+			find_package( SDL2 REQUIRED )
+			include_directories( ${SDL2_INCLUDE_DIRS} )
+			target_link_libraries( ${PROJECT_NAME} ${SDL2MAIN_LIBRARIES} )
+			target_link_libraries( ${PROJECT_NAME} ${SDL2_LIBRARIES} )
+		endif()
 		# Remove this to get console.
 		set( CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-mwindows" )
 		target_link_libraries( ${PROJECT_NAME} mingw32 opengl32 gdi32 winmm )

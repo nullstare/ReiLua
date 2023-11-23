@@ -175,14 +175,14 @@ end
 
 local function drawSnake()
 	for i, seg in ipairs( snake.segments ) do
-		local angle = -seg.heading:atan() + RL.PI / 2
+		local angle = seg.heading:atan2()
 		local source = Rect:new( 16, 0, 8, 8 )
 
 		if i == 1 then -- Tail segment. Yes tail is actually the 'first' segment.
 			source.x = 8
 
 			if 1 < #snake.segments then
-				angle = -snake.segments[ 2 ].heading:atan() + RL.PI / 2
+				angle = snake.segments[ 2 ].heading:atan2()
 			end
 		elseif i < #snake.segments and seg.heading ~= snake.segments[ i+1 ].heading then -- Turned middle segments.
 			source.x = 0
@@ -209,8 +209,7 @@ local function drawSnake()
 		)
 	end
 	-- Let's draw the head last to keep it on top.
-	-- local angle = -math.atan2( snake.heading.x, snake.heading.y ) + RL.PI / 2
-	local angle = -snake.heading:atan() + RL.PI / 2
+	local angle = snake.heading:atan2()
 	RL.DrawTexturePro(
 		snakeTexture,
 		{ 24, 0, 8, 8 },

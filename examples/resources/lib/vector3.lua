@@ -3,6 +3,8 @@ if table.unpack == nil then
 	table.unpack = unpack
 end
 
+local Vector2 = require( "vector2" )
+
 Vector3 = {}
 Vector3.meta = {
 	__index = Vector3,
@@ -76,6 +78,18 @@ end
 
 function Vector3:clone()
 	return Vector3:new( self.x, self.y, self.z )
+end
+
+function Vector3:getVectorXY()
+	return Vector2:new( self.x, self.y )
+end
+
+function Vector3:getVectorXZ()
+	return Vector2:new( self.x, self.z )
+end
+
+function Vector3:getVectorZY()
+	return Vector2:new( self.z, self.y )
 end
 
 function Vector3:abs()

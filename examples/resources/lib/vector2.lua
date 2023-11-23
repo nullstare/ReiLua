@@ -130,8 +130,8 @@ function Vector2:lineAngle( v2 )
 	return RL.Vector2LineAngle( self, v2 )
 end
 
-function Vector2:atan()
-	return math.atan( self.x, self.y )
+function Vector2:atan2()
+	return math.atan( self.y, self.x )
 end
 
 function Vector2:scale( scale )

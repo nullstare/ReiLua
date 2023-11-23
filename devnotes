@@ -2,6 +2,8 @@ Current {
 }
 
 Backlog {
+	* Review events. Seems to be a lot of work for very little benefit if any.
+	Might just increase traffic between Lua and C needlessly.
 	* Platform specific API documentation.
 	* Platform desktop SDL.
 		* Thread safe Lua RL.event calling.

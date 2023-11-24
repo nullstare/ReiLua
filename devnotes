@@ -3,8 +3,6 @@ Current {
 
 Backlog {
 	* Platform specific API documentation.
-	* Raylibgui.
-		* Fix textbox focus.
 	* Platform desktop SDL.
 		* Text input not working on gui. Could this be Raylib issue?
 		* Haptic functions.

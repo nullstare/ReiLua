@@ -101,6 +101,13 @@ function RL.init()
 		false,
 		function( self ) print( "Set text "..self.text ) end
 	)
+	local textbox2 = Raygui.TextBox:new(
+		Rect:new( 32, 380, 256, 32 ),
+		"Name",
+		32,
+		false,
+		function( self ) print( "Set text "..self.text ) end
+	)
 	local slider = Raygui.Slider:new(
 		Rect:new( 50, 500, 256, 32 ),
 		"min",
@@ -255,14 +262,6 @@ function RL.init()
 end
 
 function RL.process( delta )
-	if RL.IsKeyPressed( RL.KEY_R ) then
-		Raygui.set2Top( windowbox )
-	end
-
-	if RL.IsKeyPressed( RL.KEY_F ) then
-		Raygui.set2Back( windowbox )
-	end
-
 	Raygui.process()
 end
 

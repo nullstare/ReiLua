@@ -55,6 +55,7 @@ local Raygui = {
 	dragging = nil,
 	grabPos = Vec2:new(),
 	scrolling = false,
+	textEdit = false,
 }
 
 function Raygui.process()
@@ -111,7 +112,7 @@ function Raygui.drag( element )
 end
 
 function Raygui.draw()
-	if not Raygui.scrolling then
+	if not Raygui.scrolling and not Raygui.textEdit then
 		RL.GuiLock()
 	elseif RL.IsMouseButtonReleased( RL.MOUSE_BUTTON_LEFT ) then
 		Raygui.scrolling = false
@@ -156,6 +157,21 @@ function Raygui.remove( element )
 			return
 		end
 	end
+end
+
+function Raygui.editMode( editMode )
+	if not editMode then
+		for _, element in ipairs( Raygui.elements ) do
+			if element.editMode then
+				element.editMode = false
+	
+				if element.callback ~= nil then
+					element.callback( element )
+				end
+			end
+		end
+	end
+	Raygui.textEdit = not editMode
 end
 
 --[[
@@ -881,6 +897,7 @@ function Spinner:draw()
     result, self.value = RL.GuiSpinner( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
 
     if result == 1 then
+		Raygui.editMode( self.editMode )
 		self.editMode = not self.editMode
     end
 
@@ -929,6 +946,7 @@ function ValueBox:draw()
     result, self.value = RL.GuiValueBox( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
 
     if result == 1 then
+		Raygui.editMode( self.editMode )
 		self.editMode = not self.editMode
     end
 
@@ -983,6 +1001,7 @@ function TextBox:draw()
 	end
 
     if result == 1 then
+		Raygui.editMode( self.editMode )
 		self.editMode = not self.editMode
 
 		if not self.editMode and self.callback ~= nil then

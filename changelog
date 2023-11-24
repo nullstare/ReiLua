@@ -24,6 +24,7 @@ DETAILED CHANGES:
 	- ADDED: LoadSoundAlias and UnloadSoundAlias.
 	- ADDED: GetApplicationDirectory.
 	- FIXED: Snake example after Vector2Angle change.
+	- FIXED: Raygui edit mode selection.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.6.0		Using Raylib 4.5

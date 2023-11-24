@@ -1,8 +1,12 @@
 #pragma once
 
-// #include "SDL.h"
+// #define SDL_EVENT_QUEUE_LEN 128
 
-enum EventType {
-	SDL_WINDOW_EVENT,
-	SDL_KEYBOARD_EVENT
-};
+#include "SDL.h"
+
+// typedef struct {
+// 	int SDL_eventQueueLen;
+// 	SDL_Event **SDL_eventQueue;
+// } SDL_State;
+
+// extern SDL_State *SDL_state;

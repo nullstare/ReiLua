@@ -32,6 +32,8 @@ function RL.init()
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 	RL.SetWindowSize( winSize )
 	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
+
+	RL.GuiSetStyle( RL.LISTVIEW, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT )
 end
 
 function RL.draw()
@@ -74,8 +76,8 @@ function RL.draw()
 	if result == 1 then
 		dropdownActive = not dropdownActive
 	end
-
-	_, listView.scroll, listView.item = RL.GuiListView( { 200, 400, 200, 200 }, "Cat;Elefant;Squirrel", listView.scroll, listView.item )
+	
+	_, listView.scroll, listView.item = RL.GuiListView( { 200, 400, 200, 200 }, "Cat\nElefant\nSquirrel", listView.scroll, listView.item )
 
 	result = RL.GuiMessageBox( { 420, 400, 200, 100 }, "Message", "Are you sure about this?", "Yes;No" )
 	if 0 <= result then

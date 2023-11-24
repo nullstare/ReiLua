@@ -6,6 +6,8 @@ function RL.init()
 	RL.SetWindowTitle( "Events" )
 	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
+
+	RL.SetTextLineSpacing( 24 )
 end
 
 local function getEventType( event )
@@ -33,6 +35,8 @@ local function getEventType( event )
 		return "Cursor Enter"
 	elseif event.type == RL.EVENT_JOYSTICK then
 		return "Joystick"
+	elseif event.type == RL.SDL_KEYBOARD_EVENT then
+		return "SDL_KEYBOARD_EVENT"
 	end
 
 	return "Unknown"
@@ -99,9 +103,29 @@ function RL.event( event )
 		elseif event.event == RL.GLFW_DISCONNECTED then
 			text = text.."\nDisconnected"
 		end
-	elseif event.type == RL.SDL_KEYBOARD_EVENT then
-		text = text.."state: "..event.state
 	end
+
+	-- Some SDL events.
+
+	-- text = event.type.."\n\n"
+
+	-- if event.type == RL.SDL_KEYDOWN or event.type == RL.SDL_KEYUP then
+	-- 	text = text.."state: "..event.state.." repeat: "..event.repeating
+	-- elseif event.type == RL.SDL_WINDOWEVENT then
+	-- 	text = text.."event: "..event.event.." "..event.data1.." "..event.data2
+	-- elseif event.type == RL.SDL_MOUSEMOTION then
+	-- 	text = text.."Pos: "..event.x..", "..event.y
+	-- elseif event.type == RL.SDL_MOUSEBUTTONDOWN or event.type == RL.SDL_MOUSEBUTTONUP then
+	-- 	text = text.."button "..event.button.." Pos: "..event.x..", "..event.y
+	-- elseif event.type == RL.SDL_MOUSEWHEEL then
+	-- 	text = text.."which "..event.which.." Scroll: "..event.x..", "..event.y
+	-- -- elseif event.type == RL.SDL_CONTROLLERAXISMOTION then
+	-- elseif event.type == RL.SDL_JOYAXISMOTION then
+	-- 	text = text.."which "..event.which.." Axis: "..event.axis.." Value: "..event.value
+	-- -- elseif event.type == RL.SDL_CONTROLLERBUTTONDOWN or event.type == RL.SDL_CONTROLLERBUTTONUP then
+	-- elseif event.type == RL.SDL_JOYBUTTONDOWN or event.type == RL.SDL_JOYBUTTONUP then
+	-- 	text = text.."which "..event.which.." Button: "..event.button.." State: "..event.state
+	-- end
 end
 
 function RL.draw()

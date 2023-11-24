@@ -3,7 +3,7 @@
 #include "core.h"
 #include "platforms/core_desktop.h"
 
-static void definePlatformGlobals() {
+static void platformDefineGlobals() {
 	lua_State *L = state->luaState;
 
 	lua_getglobal( L, "RL" );
@@ -463,7 +463,7 @@ static void joystickInputEvent( int jid, int event ) {
 	lua_pop( L, -1 );
 }
 
-void platformRegisterEvents() {
+static void platformRegisterEvents() {
 	/* Window events. */
 	state->raylibWindowSizeCallback = glfwSetWindowSizeCallback( GetWindowHandle(), windowSizeEvent );
 #if !defined( PLATFORM_WEB )

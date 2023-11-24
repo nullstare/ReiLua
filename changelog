@@ -12,6 +12,7 @@ KEY CHANGES:
 	- ADDED: Support for platforms.
 	- ADDED: Platform desktop SDL.
 	- CHANGE: Renamed event enums. Events are now platform specific.
+	- ADDED: SDL Events.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.

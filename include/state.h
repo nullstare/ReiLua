@@ -1,6 +1,8 @@
 #pragma once
 
-#define ALLOC_PAGE_SIZE 256
+#ifdef PLATFORM_DESKTOP_SDL
+	#define PLATFORM_SDL_EVENT_QUEUE_LEN 128
+#endif
 
 typedef struct {
 	char *exePath;
@@ -14,7 +16,6 @@ typedef struct {
 	Material defaultMaterial;
 	int *RLGLcurrentShaderLocs;
 	/* Events. */
-	/* GLFW events. */
 #ifdef PLATFORM_DESKTOP
 		/* Window events. */
 	GLFWwindowsizefun raylibWindowSizeCallback;
@@ -30,8 +31,9 @@ typedef struct {
 	GLFWscrollfun raylibMouseScrollCallback;
 	GLFWcursorenterfun raylibCursorEnterCallback;
 	GLFWjoystickfun raylibJoystickCallback;
-// #elif PLATFORM_DESKTOP_SDL
-
+#elif PLATFORM_DESKTOP_SDL
+	int SDL_eventQueueLen;
+	SDL_Event *SDL_eventQueue;
 #endif
 } State;
 

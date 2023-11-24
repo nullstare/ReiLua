@@ -2,11 +2,11 @@ Current {
 }
 
 Backlog {
-	* Review events. Seems to be a lot of work for very little benefit if any.
-	Might just increase traffic between Lua and C needlessly.
 	* Platform specific API documentation.
+	* Raylibgui.
+		* Fix textbox focus.
 	* Platform desktop SDL.
-		* Thread safe Lua RL.event calling.
+		* Text input not working on gui. Could this be Raylib issue?
 		* Haptic functions.
 	* Text
 		* Text codepoints management functions (unicode characters)? Could be usefull for luajit.

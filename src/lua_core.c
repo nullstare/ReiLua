@@ -983,7 +983,7 @@ bool luaInit( int argn, const char **argc ) {
 	defineModelAnimation();
 	/* Define globals. */
 	defineGlobals();
-	definePlatformGlobals();
+	platformDefineGlobals();
 
 	/* Register functions. */
 	luaRegister();
@@ -1078,6 +1078,9 @@ bool luaCallMain() {
 }
 
 void luaCallProcess() {
+#ifdef PLATFORM_DESKTOP_SDL
+	platformSendEvents();
+#endif
     lua_State *L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
@@ -1115,7 +1118,6 @@ void luaCallDraw() {
 			state->run = false;
  	    	return;
         }
-
 		EndDrawing();
     }
 	lua_pop( L, -1 );

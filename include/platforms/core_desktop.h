@@ -1,5 +1,8 @@
 #pragma once
 
+#include "glfw3.h"
+#include "glfw3native.h"
+
 enum EventType {
 	GLFW_WINDOW_SIZE_EVENT,
 	GLFW_WINDOW_MAXIMIZE_EVENT,

@@ -64,7 +64,6 @@ int main( int argn, const char **argc ) {
 	else {
 		printVersion();
 		stateInit( argn, argc, exePath );
-		// luaRegister();
 		state->run = luaCallMain();
 
 		while ( state->run ) {

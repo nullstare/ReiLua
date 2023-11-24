@@ -36,6 +36,10 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 	for ( int i = 0; i < RL_MAX_SHADER_LOCATIONS; i++ ) {
 		state->RLGLcurrentShaderLocs[i] = defaultShaderLocs[i];
 	}
+#ifdef PLATFORM_DESKTOP_SDL
+	state->SDL_eventQueue = malloc( PLATFORM_SDL_EVENT_QUEUE_LEN * sizeof( SDL_Event ) );
+	state->SDL_eventQueueLen = 0;
+#endif
 
 	return state->run;
 }
@@ -56,6 +60,9 @@ void stateFree() {
 	if ( state->hasWindow ) {
 		CloseWindow();
 	}
+#ifdef PLATFORM_DESKTOP_SDL
+	free( state->SDL_eventQueue );
+#endif
 	free( state->exePath );
 	free( state->RLGLcurrentShaderLocs );
 	free( state );

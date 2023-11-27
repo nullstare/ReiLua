@@ -64,6 +64,9 @@ local function keyName( key )
 	return "Unknown"
 end
 
+local mousePos = { 0, 0 }
+local cursorMode = 1
+
 function RL.event( event )
 	text = "Event: "..getEventType( event ).."\n"
 
@@ -125,6 +128,25 @@ function RL.event( event )
 	-- -- elseif event.type == RL.SDL_CONTROLLERBUTTONDOWN or event.type == RL.SDL_CONTROLLERBUTTONUP then
 	-- elseif event.type == RL.SDL_JOYBUTTONDOWN or event.type == RL.SDL_JOYBUTTONUP then
 	-- 	text = text.."which "..event.which.." Button: "..event.button.." State: "..event.state
+	-- end
+
+	-- Experimental GLFW pen tablet events.
+
+	-- if event.type == RL.GLFW_MOUSE_CURSOR_POS_EVENT then
+	-- 	mousePos = { event.x, event.y }
+	-- elseif event.type == RL.GLFW_PEN_TABLET_DATA_EVENT then
+	-- 	text = "x: "..event.x.." y: "..event.y.." pressure: "..event.pressure
+	-- 	text = text.."\nMouse Pos: "..mousePos[1]..", "..mousePos[2]
+		
+	-- 	if cursorMode == 1 then
+	-- 		text = text.."\nMode: Pen"
+	-- 	elseif cursorMode == 2 then
+	-- 		text = text.."\nMode: Eraser"
+	-- 	end
+	-- elseif event.type == RL.GLFW_PEN_TABLET_CURSOR_EVENT then
+	-- 	cursorMode = event.identifier
+	-- elseif event.type == RL.GLFW_PEN_TABLET_PROXIMITY_EVENT then
+	-- 	print( event.state )
 	-- end
 end
 

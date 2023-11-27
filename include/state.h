@@ -31,6 +31,10 @@ typedef struct {
 	GLFWscrollfun raylibMouseScrollCallback;
 	GLFWcursorenterfun raylibCursorEnterCallback;
 	GLFWjoystickfun raylibJoystickCallback;
+	/* NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445 */
+	GLFWpentabletdatafun glfwtabletDataCallback;
+	GLFWpentabletcursorfun glfwtabletCursorCallback;
+	GLFWpentabletproximityfun glfwtabletProximityCallback;
 #elif PLATFORM_DESKTOP_SDL
 	int SDL_eventQueueLen;
 	SDL_Event *SDL_eventQueue;

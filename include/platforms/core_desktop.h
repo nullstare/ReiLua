@@ -1,7 +1,7 @@
 #pragma once
 
-#include "glfw3.h"
-#include "glfw3native.h"
+#include "GLFW/glfw3.h"
+#include "GLFW/glfw3native.h"
 
 enum EventType {
 	GLFW_WINDOW_SIZE_EVENT,
@@ -15,5 +15,9 @@ enum EventType {
 	GLFW_MOUSE_CURSOR_POS_EVENT,
 	GLFW_MOUSE_SCROLL_EVENT,
 	GLFW_CURSOR_ENTER_EVENT,
-	GLFW_JOYSTICK_EVENT
+	GLFW_JOYSTICK_EVENT,
+	/* NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445 */
+	GLFW_PEN_TABLET_DATA_EVENT,
+	GLFW_PEN_TABLET_CURSOR_EVENT,
+	GLFW_PEN_TABLET_PROXIMITY_EVENT
 };

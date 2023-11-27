@@ -30,6 +30,10 @@ static void platformDefineGlobals() {
 	assignGlobalInt( GLFW_MOUSE_SCROLL_EVENT, "GLFW_MOUSE_SCROLL_EVENT" ); // GLFW event mouse scroll
 	assignGlobalInt( GLFW_CURSOR_ENTER_EVENT, "GLFW_CURSOR_ENTER_EVENT" ); // GLFW event cursor enter/leave
 	assignGlobalInt( GLFW_JOYSTICK_EVENT, "GLFW_JOYSTICK_EVENT" ); // GLFW event joystick
+	/* Pen Tablet Events. NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445. */
+	// assignGlobalInt( GLFW_PEN_TABLET_DATA_EVENT, "GLFW_PEN_TABLET_DATA_EVENT" ); // GLFW event pen tablet data
+	// assignGlobalInt( GLFW_PEN_TABLET_CURSOR_EVENT, "GLFW_PEN_TABLET_CURSOR_EVENT" ); // GLFW event pen tablet cursor
+	// assignGlobalInt( GLFW_PEN_TABLET_PROXIMITY_EVENT, "GLFW_PEN_TABLET_PROXIMITY_EVENT" ); // GLFW event pen tablet proximity
 
 	lua_pop( L, -1 );
 }
@@ -463,6 +467,93 @@ static void joystickInputEvent( int jid, int event ) {
 	lua_pop( L, -1 );
 }
 
+// /* NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445 */
+// static void penTabletDataEvent( double x, double y, double z, double pressure, double pitch, double yaw, double roll ) {
+// 	lua_State *L = state->luaState;
+
+// 	lua_pushcfunction( L, luaTraceback );
+// 	int tracebackidx = lua_gettop( L );
+
+// 	lua_getglobal( L, "RL" );
+// 	lua_getfield( L, -1, "event" );
+
+//     if ( lua_isfunction( L, -1 ) ) {
+// 		lua_createtable( L, 8, 0 );
+// 		lua_pushinteger( L, GLFW_PEN_TABLET_DATA_EVENT );
+// 		lua_setfield( L, -2, "type" );
+// 		lua_pushnumber( L, x );
+// 		lua_setfield( L, -2, "x" );
+// 		lua_pushnumber( L, y );
+// 		lua_setfield( L, -2, "y" );
+// 		lua_pushnumber( L, z );
+// 		lua_setfield( L, -2, "z" );
+// 		lua_pushnumber( L, pressure );
+// 		lua_setfield( L, -2, "pressure" );
+// 		lua_pushnumber( L, pitch );
+// 		lua_setfield( L, -2, "pitch" );
+// 		lua_pushnumber( L, yaw );
+// 		lua_setfield( L, -2, "yaw" );
+// 		lua_pushnumber( L, roll );
+// 		lua_setfield( L, -2, "roll" );
+
+//         if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+// 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+// 			state->run = false;
+//         }
+//     }
+// 	lua_pop( L, -1 );
+// }
+
+// /* NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445 */
+// static void penTabletCursorEvent( unsigned int identifier ) {
+// 	lua_State *L = state->luaState;
+
+// 	lua_pushcfunction( L, luaTraceback );
+// 	int tracebackidx = lua_gettop( L );
+
+// 	lua_getglobal( L, "RL" );
+// 	lua_getfield( L, -1, "event" );
+
+//     if ( lua_isfunction( L, -1 ) ) {
+// 		lua_createtable( L, 2, 0 );
+// 		lua_pushinteger( L, GLFW_PEN_TABLET_CURSOR_EVENT );
+// 		lua_setfield( L, -2, "type" );
+// 		lua_pushinteger( L, identifier );
+// 		lua_setfield( L, -2, "identifier" );
+
+//         if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+// 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+// 			state->run = false;
+//         }
+//     }
+// 	lua_pop( L, -1 );
+// }
+
+// /* NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445 */
+// static void penTabletProximityEvent( int proxState ) {
+// 	lua_State *L = state->luaState;
+
+// 	lua_pushcfunction( L, luaTraceback );
+// 	int tracebackidx = lua_gettop( L );
+
+// 	lua_getglobal( L, "RL" );
+// 	lua_getfield( L, -1, "event" );
+
+//     if ( lua_isfunction( L, -1 ) ) {
+// 		lua_createtable( L, 2, 0 );
+// 		lua_pushinteger( L, GLFW_PEN_TABLET_PROXIMITY_EVENT );
+// 		lua_setfield( L, -2, "type" );
+// 		lua_pushinteger( L, proxState );
+// 		lua_setfield( L, -2, "state" );
+
+//         if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+// 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+// 			state->run = false;
+//         }
+//     }
+// 	lua_pop( L, -1 );
+// }
+
 static void platformRegisterEvents() {
 	/* Window events. */
 	state->raylibWindowSizeCallback = glfwSetWindowSizeCallback( GetWindowHandle(), windowSizeEvent );
@@ -481,4 +572,8 @@ static void platformRegisterEvents() {
 	state->raylibMouseScrollCallback = glfwSetScrollCallback( GetWindowHandle(), mouseScrollInputEvent );
 	state->raylibCursorEnterCallback = glfwSetCursorEnterCallback( GetWindowHandle(), cursorEnterInputEvent );
 	state->raylibJoystickCallback = glfwSetJoystickCallback( joystickInputEvent );
+	/* NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445 */
+	// state->glfwtabletDataCallback = glfwSetPenTabletDataCallback( penTabletDataEvent );
+	// state->glfwtabletCursorCallback = glfwSetPenTabletCursorCallback( penTabletCursorEvent );
+	// state->glfwtabletProximityCallback = glfwSetPenTabletProximityCallback( penTabletProximityEvent );
 }

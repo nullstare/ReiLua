@@ -15,8 +15,8 @@
 #include "glad.h"
 
 #ifdef PLATFORM_DESKTOP
-	#include "glfw3.h"
-	#include "glfw3native.h"
+	#include "GLFW/glfw3.h"
+	#include "GLFW/glfw3native.h"
 #elif PLATFORM_DESKTOP_SDL
 	#include <SDL.h>
 #endif

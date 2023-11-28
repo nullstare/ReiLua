@@ -17,13 +17,13 @@ typedef struct {
 	int *RLGLcurrentShaderLocs;
 	/* Events. */
 #ifdef PLATFORM_DESKTOP
-		/* Window events. */
+	/* Window events. */
 	GLFWwindowsizefun raylibWindowSizeCallback;
 	GLFWwindowmaximizefun raylibWindowMaximizeCallback;
 	GLFWwindowiconifyfun raylibWindowIconifyCallback;
 	GLFWwindowfocusfun raylibWindowFocusCallback;
 	GLFWdropfun raylibWindowDropCallback;
-		/* Input events. */
+	/* Input events. */
 	GLFWkeyfun raylibKeyCallback;
 	GLFWcharfun raylibCharCallback;
 	GLFWmousebuttonfun raylibMouseButtonCallback;

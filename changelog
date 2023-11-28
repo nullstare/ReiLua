@@ -14,6 +14,7 @@ KEY CHANGES:
 	- CHANGE: Renamed event enums. Events are now platform specific.
 	- ADDED: SDL Events.
 	- ADDED: Experimental GLFW Pen Touch events. Needs glfw PR https://github.com/glfw/glfw/pull/1445.
+	- ADDED: Platform specific API documentation generation.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.
@@ -27,6 +28,8 @@ DETAILED CHANGES:
 	- FIXED: Snake example after Vector2Angle change.
 	- FIXED: Raygui edit mode selection.
 	- CHANGE: Moved glfw headers to GLFW folder.
+	- CHANGE: Term globals changed to defines in documentation.
+	- CHANGE: Event documentation is now described in c files.
 	
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.6.0		Using Raylib 4.5

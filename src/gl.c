@@ -12,7 +12,7 @@
 > RL.glBlitFramebuffer( RenderTexture srcTex, RenderTexture dstTex, Rectangle srcRect, Rectangle dstRect, int mask, int filter )
 
 Copy a block of pixels from one framebuffer object to another.
-Use -1 RenderTexture for window framebuffer.
+Use -1 RenderTexture for window framebuffer
 */
 int lglBlitFramebuffer( lua_State *L ) {
 	if ( !( lua_isuserdata( L, 1 ) || lua_isnil( L, 1 ) ) || !( lua_isuserdata( L, 2 ) || lua_isnil( L, 2 ) ) ) {

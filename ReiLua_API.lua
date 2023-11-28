@@ -21,7 +21,7 @@ function RL.log( logLevel, message ) end
 ---This function will be called on program close. Cleanup could be done here.
 function RL.exit() end
 
--- Globals - ConfigFlags
+-- Defines - System/Window config flags
 
 ---Set to try enabling V-Sync on GPU
 RL.FLAG_VSYNC_HINT=64
@@ -54,7 +54,7 @@ RL.FLAG_MSAA_4X_HINT=32
 ---Set to try enabling interlaced video format (for V3D)
 RL.FLAG_INTERLACED_HINT=65536
 
--- Globals - TraceLogLevel
+-- Defines - Trace log level
 
 ---Display all logs
 RL.LOG_ALL=0
@@ -73,7 +73,7 @@ RL.LOG_FATAL=6
 ---Disable logging
 RL.LOG_NONE=7
 
--- Globals - KeyboardKey
+-- Defines - Keyboard keys (US keyboard layout)
 
 ---Key: NULL, used for no key pressed
 RL.KEY_NULL=0
@@ -296,7 +296,7 @@ RL.KEY_VOLUME_UP=24
 ---Key: Android volume down button
 RL.KEY_VOLUME_DOWN=25
 
--- Globals - MouseButtons
+-- Defines - Mouse buttons
 
 ---Mouse button left
 RL.MOUSE_BUTTON_LEFT=0
@@ -313,7 +313,7 @@ RL.MOUSE_BUTTON_FORWARD=5
 ---Mouse button back (advanced mouse device)
 RL.MOUSE_BUTTON_BACK=6
 
--- Globals - MouseCursor
+-- Defines - Mouse cursor
 
 ---Default pointer shape
 RL.MOUSE_CURSOR_DEFAULT=0
@@ -338,7 +338,7 @@ RL.MOUSE_CURSOR_RESIZE_ALL=9
 ---The operation-not-allowed shape
 RL.MOUSE_CURSOR_NOT_ALLOWED=10
 
--- Globals - GamepadButtons
+-- Defines - Gamepad buttons
 
 ---Unknown button, just for error checking
 RL.GAMEPAD_BUTTON_UNKNOWN=0
@@ -377,7 +377,7 @@ RL.GAMEPAD_BUTTON_LEFT_THUMB=16
 ---Gamepad joystick pressed button right
 RL.GAMEPAD_BUTTON_RIGHT_THUMB=17
 
--- Globals - GamepadAxis
+-- Defines - Gamepad axis
 
 ---Gamepad left stick X axis
 RL.GAMEPAD_AXIS_LEFT_X=0
@@ -392,7 +392,7 @@ RL.GAMEPAD_AXIS_LEFT_TRIGGER=4
 ---Gamepad back trigger right, pressure level: [1..-1]
 RL.GAMEPAD_AXIS_RIGHT_TRIGGER=5
 
--- Globals - MapTypes
+-- Defines - Material map index
 
 ---Albedo material (same as: MATERIAL_MAP_DIFFUSE)
 RL.MATERIAL_MAP_ALBEDO=0
@@ -421,7 +421,7 @@ RL.MATERIAL_MAP_DIFFUSE=0
 ---Specular material (same as: MATERIAL_MAP_METALNESS)
 RL.MATERIAL_MAP_SPECULAR=1
 
--- Globals - ShaderLocationIndex
+-- Defines - Shader location index
 
 ---Shader location: vertex attribute: position
 RL.SHADER_LOC_VERTEX_POSITION=0
@@ -480,7 +480,7 @@ RL.SHADER_LOC_MAP_DIFFUSE=15
 ---Shader location: sampler2d texture: specular (same as: SHADER_LOC_MAP_METALNESS)
 RL.SHADER_LOC_MAP_SPECULAR=16
 
--- Globals - ShaderUniformDataType
+-- Defines - Shader uniform data type
 
 ---Shader uniform type: float
 RL.SHADER_UNIFORM_FLOAT=0
@@ -501,7 +501,7 @@ RL.SHADER_UNIFORM_IVEC4=7
 ---Shader uniform type: sampler2d
 RL.SHADER_UNIFORM_SAMPLER2D=8
 
--- Globals - ShaderAttributeDataTypes
+-- Defines - Shader attribute data types
 
 ---Shader attribute type: float
 RL.SHADER_ATTRIB_FLOAT=0
@@ -512,7 +512,7 @@ RL.SHADER_ATTRIB_VEC3=2
 ---Shader attribute type: vec4 (4 float)
 RL.SHADER_ATTRIB_VEC4=3
 
--- Globals - PixelFormats
+-- Defines - Pixel formats
 
 ---8 bit per pixel (no alpha)
 RL.PIXELFORMAT_UNCOMPRESSED_GRAYSCALE=1
@@ -557,7 +557,7 @@ RL.PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA=23
 ---2 bpp
 RL.PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA=24
 
--- Globals - TextureFilters
+-- Defines - Texture parameters: filter mode
 
 ---No filter, just pixel approximation
 RL.TEXTURE_FILTER_POINT=0
@@ -572,7 +572,7 @@ RL.TEXTURE_FILTER_ANISOTROPIC_8X=4
 ---Anisotropic filtering 16x
 RL.TEXTURE_FILTER_ANISOTROPIC_16X=5
 
--- Globals - TextureWrap
+-- Defines - Texture parameters: wrap mode
 
 ---Repeats texture in tiled mode
 RL.TEXTURE_WRAP_REPEAT=0
@@ -583,7 +583,7 @@ RL.TEXTURE_WRAP_MIRROR_REPEAT=2
 ---Mirrors and clamps to border the texture in tiled mode
 RL.TEXTURE_WRAP_MIRROR_CLAMP=3
 
--- Globals - CubemapLayout
+-- Defines - Cubemap layouts
 
 ---Automatically detect layout type
 RL.CUBEMAP_LAYOUT_AUTO_DETECT=0
@@ -598,7 +598,7 @@ RL.CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE=4
 ---Layout is defined by a panorama image (equirrectangular map)
 RL.CUBEMAP_LAYOUT_PANORAMA=5
 
--- Globals - FontType
+-- Defines - Font type, defines generation method
 
 ---Default font generation, anti-aliased
 RL.FONT_DEFAULT=0
@@ -607,7 +607,7 @@ RL.FONT_BITMAP=1
 ---SDF font generation, requires external shader
 RL.FONT_SDF=2
 
--- Globals - BlendModes
+-- Defines - Color blending modes (pre-defined)
 
 ---Blend textures considering alpha (default)
 RL.BLEND_ALPHA=0
@@ -626,7 +626,7 @@ RL.BLEND_CUSTOM=6
 ---Blend textures using custom rgb/alpha separate src/dst factors (use rlSetBlendFactorsSeparate())
 RL.BLEND_CUSTOM_SEPARATE=7
 
--- Globals - Gesture
+-- Defines - Gesture
 
 ---No gesture
 RL.GESTURE_NONE=0
@@ -651,7 +651,7 @@ RL.GESTURE_PINCH_IN=256
 ---Pinch out gesture
 RL.GESTURE_PINCH_OUT=512
 
--- Globals - CameraMode
+-- Defines - Camera system modes
 
 ---Custom camera
 RL.CAMERA_CUSTOM=0
@@ -664,14 +664,14 @@ RL.CAMERA_FIRST_PERSON=3
 ---Third person camera
 RL.CAMERA_THIRD_PERSON=4
 
--- Globals - CameraProjections
+-- Defines - Camera projection
 
 ---Perspective projection
 RL.CAMERA_PERSPECTIVE=0
 ---Orthographic projection
 RL.CAMERA_ORTHOGRAPHIC=1
 
--- Globals - N-patchLayout
+-- Defines - N-patch layout
 
 ---Npatch layout: 3x3 tiles
 RL.NPATCH_NINE_PATCH=0
@@ -680,7 +680,7 @@ RL.NPATCH_THREE_PATCH_VERTICAL=1
 ---Npatch layout: 3x1 tiles
 RL.NPATCH_THREE_PATCH_HORIZONTAL=2
 
--- Globals - Colors
+-- Defines - Colors
 
 ---Light Gray
 RL.LIGHTGRAY={200,200,200,255}
@@ -735,7 +735,7 @@ RL.MAGENTA={255,0,255,255}
 ---My own White (raylib logo)
 RL.RAYWHITE={245,245,245,255}
 
--- Globals - Math
+-- Defines - Math
 
 ---Pi
 RL.PI=3.1415927410126
@@ -744,32 +744,32 @@ RL.DEG2RAD=0.017453292384744
 ---Radians to degrees
 RL.RAD2DEG=57.295776367188
 
--- Globals - GuiControlState
+-- Defines - Gui control state
 
 RL.STATE_NORMAL=0
 RL.STATE_FOCUSED=1
 RL.STATE_PRESSED=2
 RL.STATE_DISABLED=3
 
--- Globals - GuiControlTextAlignment
+-- Defines - Gui control text alignment
 
 RL.TEXT_ALIGN_LEFT=0
 RL.TEXT_ALIGN_CENTER=1
 RL.TEXT_ALIGN_RIGHT=2
 
--- Globals - GuiControlTextAlignmentVertical
+-- Defines - Gui control text alignment vertical
 
 RL.TEXT_ALIGN_TOP=0
 RL.TEXT_ALIGN_MIDDLE=1
 RL.TEXT_ALIGN_BOTTOM=2
 
--- Globals - GuiControlTextWrapMode
+-- Defines - Gui control text wrap mode
 
 RL.TEXT_WRAP_NONE=0
 RL.TEXT_WRAP_CHAR=1
 RL.TEXT_WRAP_WORD=2
 
--- Globals - GuiControl
+-- Defines - Gui controls
 
 RL.DEFAULT=0
 ---Used also for: LABELBUTTON
@@ -793,7 +793,7 @@ RL.COLORPICKER=13
 RL.SCROLLBAR=14
 RL.STATUSBAR=15
 
--- Globals - GuiControlProperty
+-- Defines - Gui base properties for every control
 
 RL.BORDER_COLOR_NORMAL=0
 RL.BASE_COLOR_NORMAL=1
@@ -811,7 +811,7 @@ RL.BORDER_WIDTH=12
 RL.TEXT_PADDING=13
 RL.TEXT_ALIGNMENT=14
 
--- Globals - GuiDefaultProperty
+-- Defines - Gui extended properties depend on control
 
 ---Text size (glyphs max height)
 RL.TEXT_SIZE=16
@@ -828,24 +828,24 @@ RL.TEXT_ALIGNMENT_VERTICAL=21
 ---Text wrap-mode inside text bounds
 RL.TEXT_WRAP_MODE=22
 
--- Globals - GuiToggleProperty
+-- Defines - Gui Toggle/ToggleGroup
 
 ---ToggleGroup separation between toggles
 RL.GROUP_PADDING=16
 
--- Globals - GuiSliderProperty
+-- Defines - Gui Slider/SliderBar
 
 ---Slider size of internal bar
 RL.SLIDER_WIDTH=16
 ---Slider/SliderBar internal bar padding
 RL.SLIDER_PADDING=17
 
--- Globals - GuiProgressBarProperty
+-- Defines - Gui ProgressBar
 
 ---ProgressBar internal padding
 RL.PROGRESS_PADDING=16
 
--- Globals - GuiScrollBarProperty
+-- Defines - Gui ScrollBar
 
 RL.ARROWS_SIZE=16
 RL.ARROWS_VISIBLE=17
@@ -855,38 +855,38 @@ RL.SCROLL_SLIDER_SIZE=19
 RL.SCROLL_PADDING=20
 RL.SCROLL_SPEED=21
 
--- Globals - GuiCheckBoxProperty
+-- Defines - Gui CheckBox
 
 ---CheckBox internal check padding
 RL.CHECK_PADDING=16
 
--- Globals - GuiComboBoxProperty
+-- Defines - Gui ComboBox
 
 ---ComboBox right button width
 RL.COMBO_BUTTON_WIDTH=16
 ---ComboBox button separation
 RL.COMBO_BUTTON_SPACING=17
 
--- Globals - GuiDropdownBoxProperty
+-- Defines - Gui DropdownBox
 
 ---DropdownBox arrow separation from border and items
 RL.ARROW_PADDING=16
 ---DropdownBox items separation
 RL.DROPDOWN_ITEMS_SPACING=17
 
--- Globals - TextBox/TextBoxMulti/ValueBox/Spinner
+-- Defines - Gui TextBox/TextBoxMulti/ValueBox/Spinner
 
 ---TextBox in read-only mode: 0-text editable, 1-text no-editable
 RL.TEXT_READONLY=16
 
--- Globals - GuiSpinnerProperty
+-- Defines - Gui Spinner
 
 ---Spinner left/right buttons width
 RL.SPIN_BUTTON_WIDTH=16
 ---Spinner buttons separation
 RL.SPIN_BUTTON_SPACING=17
 
--- Globals - GuiListViewProperty
+-- Defines - Gui ListView
 
 ---ListView items height
 RL.LIST_ITEMS_HEIGHT=16
@@ -897,7 +897,7 @@ RL.SCROLLBAR_WIDTH=18
 ---ListView scrollbar side (0-left, 1-right)
 RL.SCROLLBAR_SIDE=19
 
--- Globals - GuiColorPickerProperty
+-- Defines - Gui ColorPicker
 
 RL.COLOR_SELECTOR_SIZE=16
 ---ColorPicker right hue bar width
@@ -909,14 +909,14 @@ RL.HUEBAR_SELECTOR_HEIGHT=19
 ---ColorPicker right hue bar selector overflow
 RL.HUEBAR_SELECTOR_OVERFLOW=20
 
--- Globals - LightType
+-- Defines - Light type
 
 ---Directional light
 RL.LIGHT_DIRECTIONAL=0
 ---Point light
 RL.LIGHT_POINT=1
 
--- Globals - RLGL
+-- Defines - RLGL Default internal render batch elements limits
 
 ---Default internal render batch elements limits
 RL.RL_DEFAULT_BATCH_BUFFER_ELEMENTS=8192
@@ -927,24 +927,24 @@ RL.RL_DEFAULT_BATCH_DRAWCALLS=256
 ---Maximum number of textures units that can be activated on batch drawing (SetShaderValueTexture())
 RL.RL_DEFAULT_BATCH_MAX_TEXTURE_UNITS=4
 
--- Globals - RLGL
+-- Defines - RLGL Internal Matrix stack
 
 ---Maximum size of internal Matrix stack
 RL.RL_MAX_MATRIX_STACK_SIZE=32
 
--- Globals - RLGL
+-- Defines - RLGL Shader limits
 
 ---Maximum number of shader locations supported
 RL.RL_MAX_SHADER_LOCATIONS=32
 
--- Globals - RLGL
+-- Defines - RLGL Projection matrix culling
 
 ---Default projection matrix near cull distance
 RL.RL_CULL_DISTANCE_NEAR=0.01
 ---Default projection matrix far cull distance
 RL.RL_CULL_DISTANCE_FAR=1000.0
 
--- Globals - RLGL
+-- Defines - RLGL Texture parameters
 
 ---GL_TEXTURE_WRAP_S
 RL.RL_TEXTURE_WRAP_S=10242
@@ -979,7 +979,7 @@ RL.RL_TEXTURE_WRAP_MIRROR_REPEAT=33648
 ---GL_MIRROR_CLAMP_EXT
 RL.RL_TEXTURE_WRAP_MIRROR_CLAMP=34626
 
--- Globals - RLGL
+-- Defines - RLGL Matrix modes (equivalent to OpenGL)
 
 ---GL_MODELVIEW
 RL.RL_MODELVIEW=5888
@@ -988,7 +988,7 @@ RL.RL_PROJECTION=5889
 ---GL_TEXTURE
 RL.RL_TEXTURE=5890
 
--- Globals - RLGL
+-- Defines - RLGL Primitive assembly draw modes
 
 ---GL_LINES
 RL.RL_LINES=1
@@ -997,14 +997,14 @@ RL.RL_TRIANGLES=4
 ---GL_QUADS
 RL.RL_QUADS=7
 
--- Globals - RLGL
+-- Defines - RLGL GL equivalent data types
 
 ---GL_UNSIGNED_BYTE
 RL.RL_UNSIGNED_BYTE=5121
 ---GL_FLOAT
 RL.RL_FLOAT=5126
 
--- Globals - RLGL
+-- Defines - RLGL GL buffer usage hint
 
 ---GL_STREAM_DRAW
 RL.RL_STREAM_DRAW=35040
@@ -1025,7 +1025,7 @@ RL.RL_DYNAMIC_READ=35049
 ---GL_DYNAMIC_COPY
 RL.RL_DYNAMIC_COPY=35050
 
--- Globals - RLGL
+-- Defines - RLGL Shader type
 
 ---GL_FRAGMENT_SHADER
 RL.RL_FRAGMENT_SHADER=35632
@@ -1034,7 +1034,7 @@ RL.RL_VERTEX_SHADER=35633
 ---GL_COMPUTE_SHADER
 RL.RL_COMPUTE_SHADER=37305
 
--- Globals - RLGL
+-- Defines - RLGL GlVersion
 
 ---GL_ZERO
 RL.RL_ZERO=0
@@ -1067,7 +1067,7 @@ RL.RL_CONSTANT_ALPHA=32771
 ---GL_ONE_MINUS_CONSTANT_ALPHA
 RL.RL_ONE_MINUS_CONSTANT_ALPHA=32772
 
--- Globals - RLGL
+-- Defines - RLGL GL blending functions/equations
 
 ---GL_FUNC_ADD
 RL.RL_FUNC_ADD=32774
@@ -1096,7 +1096,7 @@ RL.RL_BLEND_SRC_ALPHA=32971
 ---GL_BLEND_COLOR
 RL.RL_BLEND_COLOR=32773
 
--- Globals - RLGL
+-- Defines - RLGL GlVersion
 
 ---OpenGL 1.1
 RL.RL_OPENGL_11=1
@@ -1109,7 +1109,7 @@ RL.RL_OPENGL_43=4
 ---OpenGL ES 2.0 (GLSL 100)
 RL.RL_OPENGL_ES_20=5
 
--- Globals - RLGL
+-- Defines - RLGL Framebuffer attachment type
 
 ---Framebuffer attachment type: color 0
 RL.RL_ATTACHMENT_COLOR_CHANNEL0=0
@@ -1132,7 +1132,7 @@ RL.RL_ATTACHMENT_DEPTH=100
 ---Framebuffer attachment type: stencil
 RL.RL_ATTACHMENT_STENCIL=200
 
--- Globals - RLGL
+-- Defines - RLGL Framebuffer texture attachment type
 
 ---Framebuffer texture attachment type: cubemap, +X side
 RL.RL_ATTACHMENT_CUBEMAP_POSITIVE_X=0
@@ -1151,12 +1151,12 @@ RL.RL_ATTACHMENT_TEXTURE2D=100
 ---Framebuffer texture attachment type: renderbuffer
 RL.RL_ATTACHMENT_RENDERBUFFER=200
 
--- Globals - RLGL
+-- Defines - RLGL CullMode
 
 RL.RL_CULL_FACE_FRONT=0
 RL.RL_CULL_FACE_BACK=1
 
--- Globals - OpenGL
+-- Defines - OpenGL
 
 RL.GL_COLOR_BUFFER_BIT=16384
 RL.GL_DEPTH_BUFFER_BIT=256
@@ -1164,7 +1164,7 @@ RL.GL_STENCIL_BUFFER_BIT=1024
 RL.GL_NEAREST=9728
 RL.GL_LINEAR=9729
 
--- Globals - CBuffer
+-- Defines - CBuffer Data types
 
 ---C type unsigned char
 RL.BUFFER_UNSIGNED_CHAR=0
@@ -1182,6 +1182,63 @@ RL.BUFFER_INT=5
 RL.BUFFER_FLOAT=6
 ---C type double
 RL.BUFFER_DOUBLE=7
+
+-- Defines - Keyboard keys (US keyboard layout)
+
+---Key: Unknown
+RL.GLFW_KEY_UNKNOWN=-1
+
+-- Defines - GLFW API tokens.
+
+---The key or mouse button was released
+RL.GLFW_RELEASE=0
+---The key or mouse button was pressed
+RL.GLFW_PRESS=1
+---The key was held down until it repeated
+RL.GLFW_REPEAT=2
+---Joystick connected
+RL.GLFW_CONNECTED=262145
+---Joystick disconnected
+RL.GLFW_DISCONNECTED=262146
+
+-- Defines - GLFW Window Events.
+
+---GLFW event window size changed
+RL.GLFW_WINDOW_SIZE_EVENT=0
+---GLFW event window maximize
+RL.GLFW_WINDOW_MAXIMIZE_EVENT=1
+---GLFW event window iconify
+RL.GLFW_WINDOW_ICONYFY_EVENT=2
+---GLFW event window focus
+RL.GLFW_WINDOW_FOCUS_EVENT=3
+---GLFW event window drop
+RL.GLFW_WINDOW_DROP_EVENT=4
+
+-- Defines - GLFW Input Events.
+
+---GLFW event keyboard key
+RL.GLFW_KEY_EVENT=5
+---GLFW event Unicode character
+RL.GLFW_CHAR_EVENT=6
+---GLFW event mouse button
+RL.GLFW_MOUSE_BUTTON_EVENT=7
+---GLFW event cursor position
+RL.GLFW_MOUSE_CURSOR_POS_EVENT=8
+---GLFW event mouse scroll
+RL.GLFW_MOUSE_SCROLL_EVENT=9
+---GLFW event cursor enter/leave
+RL.GLFW_CURSOR_ENTER_EVENT=10
+---GLFW event joystick
+RL.GLFW_JOYSTICK_EVENT=11
+
+-- Defines - GLFW Pen Tablet Events. NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445.
+
+---// GLFW event pen tablet data
+RL.assignGlobalInt=nil
+---// GLFW event pen tablet cursor
+RL.assignGlobalInt=nil
+---// GLFW event pen tablet proximity
+RL.assignGlobalInt=nil
 -- Core - Window-related functions
 
 ---Close window and unload OpenGL context and free all resources
@@ -6735,7 +6792,7 @@ function  RL.rlSetMatrixViewOffsetStereo( right, left ) end
 -- OpenGL - Framebuffer management
 
 ---Copy a block of pixels from one framebuffer object to another.
----Use -1 RenderTexture for window framebuffer.
+---Use -1 RenderTexture for window framebuffer
 ---@param srcTex any
 ---@param dstTex any
 ---@param srcRect table
@@ -6987,4 +7044,24 @@ function RL.EaseElasticOut( t, b, c, d ) end
 ---@param d number
 ---@return any value 
 function RL.EaseElasticInOut( t, b, c, d ) end
+
+-- GLFW Core - Input-related functions: keyboard
+
+---This function returns the name of the specified printable key, encoded as UTF-8.
+---If the key is KEY_UNKNOWN, the scancode is used to identify the key,
+---otherwise the scancode is ignored. If you specify a non-printable key,
+---or KEY_UNKNOWN and a scancode that maps to a non-printable key,
+---this function returns nil but does not emit an error.
+---- Success return string or nil
+---@param key integer
+---@param scancode integer
+---@return any keyName 
+function RL.GetKeyName( key, scancode ) end
+
+---This function returns the platform-specific scancode of the specified key.
+---If the key is KEY_UNKNOWN or does not exist on the keyboard this method will return -1.
+---- Success return int
+---@param key integer
+---@return any scancode 
+function RL.GetKeyScancode( key ) end
 

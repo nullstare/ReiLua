@@ -257,89 +257,7 @@ Data buffer for C primitive types. Type should be one of the Buffer types.
 
 ---
 
-## Events
-
-Content of event table received by RL.event.
-
-### Window events
-
----
-> { type: RL.EVENT_WINDOW_SIZE, int width, int height }
-
- WindowSize Callback, runs when window is resized.
-
----
-
-> { type RL.EVENT_WINDOW_MAXIMIZE, int maximized }
-
- Window Maximize Callback, runs when window is maximized.
-
----
-
-> { type RL.EVENT_WINDOW_ICONYFY, int iconified }
-
- WindowIconify Callback, runs when window is minimized/restored.
-
----
-
-> { type RL.EVENT_WINDOW_FOCUS, int focused }
-
- WindowFocus Callback, runs when window get/lose focus.
-
----
-
-> { type RL.EVENT_WINDOW_DROP, int count, string{} paths }
-
- Window Drop Callback, runs when drop files into window.
-
----
-
-### Input events
-
----
-> { type: RL.EVENT_KEY, int key, int scancode, int action, int mods }
-
- Keyboard Callback, runs on key pressed.
-
----
-
-> { type RL.EVENT_CHAR, int key }
-
- Char Key Callback, runs on key pressed (get char value).
-
----
-
-> { type RL.EVENT_MOUSE_BUTTON, int button, int action, int mods }
-
- Mouse Button Callback, runs on mouse button pressed.
-
----
-
-> { type RL.EVENT_MOUSE_CURSOR_POS, number x, number y }
-
- Cursor Position Callback, runs on mouse move.
-
----
-
-> { type RL.EVENT_MOUSE_SCROLL, number xoffset, number yoffset }
-
- Srolling Callback, runs on mouse wheel.
-
----
-
-> { type RL.EVENT_CURSOR_ENTER, int enter }
-
- Cursor Enter Callback, cursor enters client area.
-
----
-
-> { type RL.EVENT_JOYSTICK, int jid, int event }
-
- .
-
----
-
-## Globals - ConfigFlags
+## Defines - System/Window config flags
 > FLAG_VSYNC_HINT = 64
 
 Set to try enabling V-Sync on GPU
@@ -431,7 +349,7 @@ Set to try enabling interlaced video format (for V3D)
 ---
 
 
-## Globals - TraceLogLevel
+## Defines - Trace log level
 > LOG_ALL = 0
 
 Display all logs
@@ -481,7 +399,7 @@ Disable logging
 ---
 
 
-## Globals - KeyboardKey
+## Defines - Keyboard keys (US keyboard layout)
 > KEY_NULL = 0
 
 Key: NULL, used for no key pressed
@@ -1143,7 +1061,7 @@ Key: Android volume down button
 ---
 
 
-## Globals - MouseButtons
+## Defines - Mouse buttons
 > MOUSE_BUTTON_LEFT = 0
 
 Mouse button left
@@ -1187,7 +1105,7 @@ Mouse button back (advanced mouse device)
 ---
 
 
-## Globals - MouseCursor
+## Defines - Mouse cursor
 > MOUSE_CURSOR_DEFAULT = 0
 
 Default pointer shape
@@ -1255,7 +1173,7 @@ The operation-not-allowed shape
 ---
 
 
-## Globals - GamepadButtons
+## Defines - Gamepad buttons
 > GAMEPAD_BUTTON_UNKNOWN = 0
 
 Unknown button, just for error checking
@@ -1365,7 +1283,7 @@ Gamepad joystick pressed button right
 ---
 
 
-## Globals - GamepadAxis
+## Defines - Gamepad axis
 > GAMEPAD_AXIS_LEFT_X = 0
 
 Gamepad left stick X axis
@@ -1403,7 +1321,7 @@ Gamepad back trigger right, pressure level: [1..-1]
 ---
 
 
-## Globals - MapTypes
+## Defines - Material map index
 > MATERIAL_MAP_ALBEDO = 0
 
 Albedo material (same as: MATERIAL_MAP_DIFFUSE)
@@ -1483,7 +1401,7 @@ Specular material (same as: MATERIAL_MAP_METALNESS)
 ---
 
 
-## Globals - ShaderLocationIndex
+## Defines - Shader location index
 > SHADER_LOC_VERTEX_POSITION = 0
 
 Shader location: vertex attribute: position
@@ -1653,7 +1571,7 @@ Shader location: sampler2d texture: specular (same as: SHADER_LOC_MAP_METALNESS)
 ---
 
 
-## Globals - ShaderUniformDataType
+## Defines - Shader uniform data type
 > SHADER_UNIFORM_FLOAT = 0
 
 Shader uniform type: float
@@ -1709,7 +1627,7 @@ Shader uniform type: sampler2d
 ---
 
 
-## Globals - ShaderAttributeDataTypes
+## Defines - Shader attribute data types
 > SHADER_ATTRIB_FLOAT = 0
 
 Shader attribute type: float
@@ -1735,7 +1653,7 @@ Shader attribute type: vec4 (4 float)
 ---
 
 
-## Globals - PixelFormats
+## Defines - Pixel formats
 > PIXELFORMAT_UNCOMPRESSED_GRAYSCALE = 1
 
 8 bit per pixel (no alpha)
@@ -1863,7 +1781,7 @@ Shader attribute type: vec4 (4 float)
 ---
 
 
-## Globals - TextureFilters
+## Defines - Texture parameters: filter mode
 > TEXTURE_FILTER_POINT = 0
 
 No filter, just pixel approximation
@@ -1901,7 +1819,7 @@ Anisotropic filtering 16x
 ---
 
 
-## Globals - TextureWrap
+## Defines - Texture parameters: wrap mode
 > TEXTURE_WRAP_REPEAT = 0
 
 Repeats texture in tiled mode
@@ -1927,7 +1845,7 @@ Mirrors and clamps to border the texture in tiled mode
 ---
 
 
-## Globals - CubemapLayout
+## Defines - Cubemap layouts
 > CUBEMAP_LAYOUT_AUTO_DETECT = 0
 
 Automatically detect layout type
@@ -1965,7 +1883,7 @@ Layout is defined by a panorama image (equirrectangular map)
 ---
 
 
-## Globals - FontType
+## Defines - Font type, defines generation method
 > FONT_DEFAULT = 0
 
 Default font generation, anti-aliased
@@ -1985,7 +1903,7 @@ SDF font generation, requires external shader
 ---
 
 
-## Globals - BlendModes
+## Defines - Color blending modes (pre-defined)
 > BLEND_ALPHA = 0
 
 Blend textures considering alpha (default)
@@ -2035,7 +1953,7 @@ Blend textures using custom rgb/alpha separate src/dst factors (use rlSetBlendFa
 ---
 
 
-## Globals - Gesture
+## Defines - Gesture
 > GESTURE_NONE = 0
 
 No gesture
@@ -2103,7 +2021,7 @@ Pinch out gesture
 ---
 
 
-## Globals - CameraMode
+## Defines - Camera system modes
 > CAMERA_CUSTOM = 0
 
 Custom camera
@@ -2135,7 +2053,7 @@ Third person camera
 ---
 
 
-## Globals - CameraProjections
+## Defines - Camera projection
 > CAMERA_PERSPECTIVE = 0
 
 Perspective projection
@@ -2149,7 +2067,7 @@ Orthographic projection
 ---
 
 
-## Globals - N-patchLayout
+## Defines - N-patch layout
 > NPATCH_NINE_PATCH = 0
 
 Npatch layout: 3x3 tiles
@@ -2169,7 +2087,7 @@ Npatch layout: 3x1 tiles
 ---
 
 
-## Globals - Colors
+## Defines - Colors
 LIGHTGRAY = { 200, 200, 200, 255 }
 
 Light Gray
@@ -2327,7 +2245,7 @@ My own White (raylib logo)
 ---
 
 
-## Globals - Math
+## Defines - Math
 > PI = 3.1415927410126
 
 Pi
@@ -2347,7 +2265,7 @@ Radians to degrees
 ---
 
 
-## Globals - GuiControlState
+## Defines - Gui control state
 > STATE_NORMAL = 0
 
 ---
@@ -2365,7 +2283,7 @@ Radians to degrees
 ---
 
 
-## Globals - GuiControlTextAlignment
+## Defines - Gui control text alignment
 > TEXT_ALIGN_LEFT = 0
 
 ---
@@ -2379,7 +2297,7 @@ Radians to degrees
 ---
 
 
-## Globals - GuiControlTextAlignmentVertical
+## Defines - Gui control text alignment vertical
 > TEXT_ALIGN_TOP = 0
 
 ---
@@ -2393,7 +2311,7 @@ Radians to degrees
 ---
 
 
-## Globals - GuiControlTextWrapMode
+## Defines - Gui control text wrap mode
 > TEXT_WRAP_NONE = 0
 
 ---
@@ -2407,7 +2325,7 @@ Radians to degrees
 ---
 
 
-## Globals - GuiControl
+## Defines - Gui controls
 > DEFAULT = 0
 
 ---
@@ -2483,7 +2401,7 @@ Uses: BUTTON, VALUEBOX
 ---
 
 
-## Globals - GuiControlProperty
+## Defines - Gui base properties for every control
 > BORDER_COLOR_NORMAL = 0
 
 ---
@@ -2545,7 +2463,7 @@ Uses: BUTTON, VALUEBOX
 ---
 
 
-## Globals - GuiDefaultProperty
+## Defines - Gui extended properties depend on control
 > TEXT_SIZE = 16
 
 Text size (glyphs max height)
@@ -2589,7 +2507,7 @@ Text wrap-mode inside text bounds
 ---
 
 
-## Globals - GuiToggleProperty
+## Defines - Gui Toggle/ToggleGroup
 > GROUP_PADDING = 16
 
 ToggleGroup separation between toggles
@@ -2597,7 +2515,7 @@ ToggleGroup separation between toggles
 ---
 
 
-## Globals - GuiSliderProperty
+## Defines - Gui Slider/SliderBar
 > SLIDER_WIDTH = 16
 
 Slider size of internal bar
@@ -2611,7 +2529,7 @@ Slider/SliderBar internal bar padding
 ---
 
 
-## Globals - GuiProgressBarProperty
+## Defines - Gui ProgressBar
 > PROGRESS_PADDING = 16
 
 ProgressBar internal padding
@@ -2619,7 +2537,7 @@ ProgressBar internal padding
 ---
 
 
-## Globals - GuiScrollBarProperty
+## Defines - Gui ScrollBar
 > ARROWS_SIZE = 16
 
 ---
@@ -2647,7 +2565,7 @@ ProgressBar internal padding
 ---
 
 
-## Globals - GuiCheckBoxProperty
+## Defines - Gui CheckBox
 > CHECK_PADDING = 16
 
 CheckBox internal check padding
@@ -2655,7 +2573,7 @@ CheckBox internal check padding
 ---
 
 
-## Globals - GuiComboBoxProperty
+## Defines - Gui ComboBox
 > COMBO_BUTTON_WIDTH = 16
 
 ComboBox right button width
@@ -2669,7 +2587,7 @@ ComboBox button separation
 ---
 
 
-## Globals - GuiDropdownBoxProperty
+## Defines - Gui DropdownBox
 > ARROW_PADDING = 16
 
 DropdownBox arrow separation from border and items
@@ -2683,7 +2601,7 @@ DropdownBox items separation
 ---
 
 
-## Globals - TextBox/TextBoxMulti/ValueBox/Spinner
+## Defines - Gui TextBox/TextBoxMulti/ValueBox/Spinner
 > TEXT_READONLY = 16
 
 TextBox in read-only mode: 0-text editable, 1-text no-editable
@@ -2691,7 +2609,7 @@ TextBox in read-only mode: 0-text editable, 1-text no-editable
 ---
 
 
-## Globals - GuiSpinnerProperty
+## Defines - Gui Spinner
 > SPIN_BUTTON_WIDTH = 16
 
 Spinner left/right buttons width
@@ -2705,7 +2623,7 @@ Spinner buttons separation
 ---
 
 
-## Globals - GuiListViewProperty
+## Defines - Gui ListView
 > LIST_ITEMS_HEIGHT = 16
 
 ListView items height
@@ -2731,7 +2649,7 @@ ListView scrollbar side (0-left, 1-right)
 ---
 
 
-## Globals - GuiColorPickerProperty
+## Defines - Gui ColorPicker
 > COLOR_SELECTOR_SIZE = 16
 
 ---
@@ -2761,7 +2679,7 @@ ColorPicker right hue bar selector overflow
 ---
 
 
-## Globals - LightType
+## Defines - Light type
 > LIGHT_DIRECTIONAL = 0
 
 Directional light
@@ -2775,7 +2693,7 @@ Point light
 ---
 
 
-## Globals - RLGL
+## Defines - RLGL Default internal render batch elements limits
 > RL_DEFAULT_BATCH_BUFFER_ELEMENTS = 8192
 
 Default internal render batch elements limits
@@ -2801,7 +2719,7 @@ Maximum number of textures units that can be activated on batch drawing (SetShad
 ---
 
 
-## Globals - RLGL
+## Defines - RLGL Internal Matrix stack
 > RL_MAX_MATRIX_STACK_SIZE = 32
 
 Maximum size of internal Matrix stack
@@ -2809,7 +2727,7 @@ Maximum size of internal Matrix stack
 ---
 
 
-## Globals - RLGL
+## Defines - RLGL Shader limits
 > RL_MAX_SHADER_LOCATIONS = 32
 
 Maximum number of shader locations supported
@@ -2817,7 +2735,7 @@ Maximum number of shader locations supported
 ---
 
 
-## Globals - RLGL
+## Defines - RLGL Projection matrix culling
 > RL_CULL_DISTANCE_NEAR = 0.01
 
 Default projection matrix near cull distance
@@ -2831,7 +2749,7 @@ Default projection matrix far cull distance
 ---
 
 
-## Globals - RLGL
+## Defines - RLGL Texture parameters
 > RL_TEXTURE_WRAP_S = 10242
 
 GL_TEXTURE_WRAP_S
@@ -2929,7 +2847,7 @@ GL_MIRROR_CLAMP_EXT
 ---
 
 
-## Globals - RLGL
+## Defines - RLGL Matrix modes (equivalent to OpenGL)
 > RL_MODELVIEW = 5888
 
 GL_MODELVIEW
@@ -2949,7 +2867,7 @@ GL_TEXTURE
 ---
 
 
-## Globals - RLGL
+## Defines - RLGL Primitive assembly draw modes
 > RL_LINES = 1
 
 GL_LINES
@@ -2969,7 +2887,7 @@ GL_QUADS
 ---
 
 
-## Globals - RLGL
+## Defines - RLGL GL equivalent data types
 > RL_UNSIGNED_BYTE = 5121
 
 GL_UNSIGNED_BYTE
@@ -2983,7 +2901,7 @@ GL_FLOAT
 ---
 
 
-## Globals - RLGL
+## Defines - RLGL GL buffer usage hint
 > RL_STREAM_DRAW = 35040
 
 GL_STREAM_DRAW
@@ -3039,7 +2957,7 @@ GL_DYNAMIC_COPY
 ---
 
 
-## Globals - RLGL
+## Defines - RLGL Shader type
 > RL_FRAGMENT_SHADER = 35632
 
 GL_FRAGMENT_SHADER
@@ -3059,7 +2977,7 @@ GL_COMPUTE_SHADER
 ---
 
 
-## Globals - RLGL
+## Defines - RLGL GlVersion
 > RL_ZERO = 0
 
 GL_ZERO
@@ -3151,7 +3069,7 @@ GL_ONE_MINUS_CONSTANT_ALPHA
 ---
 
 
-## Globals - RLGL
+## Defines - RLGL GL blending functions/equations
 > RL_FUNC_ADD = 32774
 
 GL_FUNC_ADD
@@ -3231,7 +3149,7 @@ GL_BLEND_COLOR
 ---
 
 
-## Globals - RLGL
+## Defines - RLGL GlVersion
 > RL_OPENGL_11 = 1
 
 OpenGL 1.1
@@ -3263,7 +3181,7 @@ OpenGL ES 2.0 (GLSL 100)
 ---
 
 
-## Globals - RLGL
+## Defines - RLGL Framebuffer attachment type
 > RL_ATTACHMENT_COLOR_CHANNEL0 = 0
 
 Framebuffer attachment type: color 0
@@ -3325,7 +3243,7 @@ Framebuffer attachment type: stencil
 ---
 
 
-## Globals - RLGL
+## Defines - RLGL Framebuffer texture attachment type
 > RL_ATTACHMENT_CUBEMAP_POSITIVE_X = 0
 
 Framebuffer texture attachment type: cubemap, +X side
@@ -3375,7 +3293,7 @@ Framebuffer texture attachment type: renderbuffer
 ---
 
 
-## Globals - RLGL
+## Defines - RLGL CullMode
 > RL_CULL_FACE_FRONT = 0
 
 ---
@@ -3385,7 +3303,7 @@ Framebuffer texture attachment type: renderbuffer
 ---
 
 
-## Globals - OpenGL
+## Defines - OpenGL
 > GL_COLOR_BUFFER_BIT = 16384
 
 ---
@@ -3407,7 +3325,7 @@ Framebuffer texture attachment type: renderbuffer
 ---
 
 
-## Globals - CBuffer
+## Defines - CBuffer Data types
 > BUFFER_UNSIGNED_CHAR = 0
 
 C type unsigned char
@@ -3453,6 +3371,145 @@ C type float
 > BUFFER_DOUBLE = 7
 
 C type double
+
+---
+
+
+## Defines - Keyboard keys (US keyboard layout)
+> GLFW_KEY_UNKNOWN = -1
+
+Key: Unknown
+
+---
+
+
+## Defines - GLFW API tokens.
+> GLFW_RELEASE = 0
+
+The key or mouse button was released
+
+---
+
+> GLFW_PRESS = 1
+
+The key or mouse button was pressed
+
+---
+
+> GLFW_REPEAT = 2
+
+The key was held down until it repeated
+
+---
+
+> GLFW_CONNECTED = 262145
+
+Joystick connected
+
+---
+
+> GLFW_DISCONNECTED = 262146
+
+Joystick disconnected
+
+---
+
+
+## Defines - GLFW Window Events.
+> GLFW_WINDOW_SIZE_EVENT = 0
+
+GLFW event window size changed
+
+---
+
+> GLFW_WINDOW_MAXIMIZE_EVENT = 1
+
+GLFW event window maximize
+
+---
+
+> GLFW_WINDOW_ICONYFY_EVENT = 2
+
+GLFW event window iconify
+
+---
+
+> GLFW_WINDOW_FOCUS_EVENT = 3
+
+GLFW event window focus
+
+---
+
+> GLFW_WINDOW_DROP_EVENT = 4
+
+GLFW event window drop
+
+---
+
+
+## Defines - GLFW Input Events.
+> GLFW_KEY_EVENT = 5
+
+GLFW event keyboard key
+
+---
+
+> GLFW_CHAR_EVENT = 6
+
+GLFW event Unicode character
+
+---
+
+> GLFW_MOUSE_BUTTON_EVENT = 7
+
+GLFW event mouse button
+
+---
+
+> GLFW_MOUSE_CURSOR_POS_EVENT = 8
+
+GLFW event cursor position
+
+---
+
+> GLFW_MOUSE_SCROLL_EVENT = 9
+
+GLFW event mouse scroll
+
+---
+
+> GLFW_CURSOR_ENTER_EVENT = 10
+
+GLFW event cursor enter/leave
+
+---
+
+> GLFW_JOYSTICK_EVENT = 11
+
+GLFW event joystick
+
+---
+
+
+## Defines - GLFW Pen Tablet Events. NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445.
+
+assignGlobalInt = nil
+
+// GLFW event pen tablet data
+
+---
+
+
+assignGlobalInt = nil
+
+// GLFW event pen tablet cursor
+
+---
+
+
+assignGlobalInt = nil
+
+// GLFW event pen tablet proximity
 
 ---
 
@@ -9682,7 +9739,7 @@ Set eyes view offsets matrices for stereo rendering
 > RL.glBlitFramebuffer( RenderTexture srcTex, RenderTexture dstTex, Rectangle srcRect, Rectangle dstRect, int mask, int filter )
 
 Copy a block of pixels from one framebuffer object to another.
-Use -1 RenderTexture for window framebuffer.
+Use -1 RenderTexture for window framebuffer
 
 ---
 
@@ -9919,5 +9976,131 @@ Ease elastic out
 Ease elastic in out
 
 - Success return float
+
+---
+
+## GLFW Core - Input-related functions: keyboard
+
+---
+
+> keyName = RL.GetKeyName( int key, int scancode )
+
+This function returns the name of the specified printable key, encoded as UTF-8.
+If the key is KEY_UNKNOWN, the scancode is used to identify the key,
+otherwise the scancode is ignored. If you specify a non-printable key,
+or KEY_UNKNOWN and a scancode that maps to a non-printable key,
+this function returns nil but does not emit an error.
+
+- Success return string or nil
+
+---
+
+> scancode = RL.GetKeyScancode( int key )
+
+This function returns the platform-specific scancode of the specified key.
+If the key is KEY_UNKNOWN or does not exist on the keyboard this method will return -1.
+
+- Success return int
+
+---
+
+## Window events
+
+---
+
+> GLFWwindowsizeEvent = { int type, int width, int height }
+
+Called when the window is resized. Type GLFW_WINDOW_SIZE_EVENT
+
+---
+
+> GLFWwindowmaximizeEvent = { int type, int maximized }
+
+Called when the window is maximized or restored. Type GLFW_WINDOW_MAXIMIZE_EVENT
+
+---
+
+> GLFWwindowiconifyEvent = { int type, int iconified }
+
+Called when the window is iconified or restored. Type GLFW_WINDOW_ICONYFY_EVENT
+
+---
+
+> GLFWwindowfocusEvent = { int type, int focused }
+
+Called when the window gains or loses input focus. Type GLFW_WINDOW_FOCUS_EVENT
+
+---
+
+> GLFWdropEvent = { int type, int count, string{} paths }
+
+Called when files are dropped to the window. Type GLFW_WINDOW_DROP_EVENT
+
+---
+
+## Input events
+
+---
+
+> GLFWkeyEvent = { int type, int key, int scancode, int action, int mods }
+
+Called when a physical key is pressed or released or when it repeats. Type GLFW_KEY_EVENT
+
+---
+
+> GLFWcharEvent = { int type, int key }
+
+Unicode code points for key events that would have led to regular text input and generally behaves as a standard text field on that platform. Type GLFW_CHAR_EVENT
+
+---
+
+> GLFWmousebuttonEvent = { int type, int button, int action, int mods }
+
+Called when a mouse button is pressed or released. Type GLFW_MOUSE_BUTTON_EVENT
+
+---
+
+> GLFWcursorposEvent = { int type, float x, float y }
+
+Called when the cursor moves over the window. Type GLFW_MOUSE_CURSOR_POS_EVENT
+
+---
+
+> GLFWscrollEvent = { int type, float xoffset, float yoffset }
+
+Called when the user scrolls, whether with a mouse wheel or touchpad gesture. Type GLFW_MOUSE_SCROLL_EVENT
+
+---
+
+> GLFWcursorenterEvent = { int type, int enter }
+
+Called when the cursor enters or leaves the content area of a window. Type GLFW_CURSOR_ENTER_EVENT
+
+---
+
+> GLFWjoystickEvent = { int type, int jid, int event }
+
+Called when a joystick is connected or disconnected. Type GLFW_JOYSTICK_EVENT
+
+---
+
+> GLFWpentabletdataEvent = { int type, float x, float y, float z, float pressure, float pitch, float yaw, float roll }
+
+Called when the pen tablet data is updated. Type GLFW_PEN_TABLET_DATA_EVENT
+NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
+
+---
+
+> GLFWpentabletcursorEvent = { int type, int identifier }
+
+Called when the pen tablet cursor has changed. Type GLFW_PEN_TABLET_CURSOR_EVENT
+NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
+
+---
+
+> GLFWpentabletproximityEvent = { int type, int proxState }
+
+Called when the pen tablet proximity has changed. Type GLFW_PEN_TABLET_PROXIMITY_EVENT
+NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
 
 ---

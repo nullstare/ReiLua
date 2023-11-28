@@ -325,9 +325,9 @@ static void defineGlobals() {
 	lua_setglobal( L, "RL" );
 	lua_getglobal( L, "RL" );
 
-/* Note! Docgen relyes on this line format. Splits info based on spaces. */
-/*DOC_START*/
-	/* ConfigFlags */
+/* Note! Docgen relyes on this line format. */
+/*DOC_DEFINES_START*/
+	/* System/Window config flags */
 	assignGlobalInt( FLAG_VSYNC_HINT, "FLAG_VSYNC_HINT" ); // Set to try enabling V-Sync on GPU
 	assignGlobalInt( FLAG_FULLSCREEN_MODE, "FLAG_FULLSCREEN_MODE" ); // Set to run program in fullscreen
 	assignGlobalInt( FLAG_WINDOW_RESIZABLE, "FLAG_WINDOW_RESIZABLE" ); // Set to allow resizable window
@@ -343,7 +343,7 @@ static void defineGlobals() {
 	assignGlobalInt( FLAG_WINDOW_MOUSE_PASSTHROUGH, "FLAG_WINDOW_MOUSE_PASSTHROUGH" ); // Set to support mouse passthrough, only supported when FLAG_WINDOW_UNDECORATED
 	assignGlobalInt( FLAG_MSAA_4X_HINT, "FLAG_MSAA_4X_HINT" ); // Set to try enabling MSAA 4X
 	assignGlobalInt( FLAG_INTERLACED_HINT, "FLAG_INTERLACED_HINT" ); // Set to try enabling interlaced video format (for V3D)
-	/* TraceLogLevel */
+	/* Trace log level */
 	assignGlobalInt( LOG_ALL, "LOG_ALL" ); // Display all logs
 	assignGlobalInt( LOG_TRACE, "LOG_TRACE" ); // Trace logging, intended for internal use only
 	assignGlobalInt( LOG_DEBUG, "LOG_DEBUG" ); // Debug logging, used for internal debugging, it should be disabled on release builds
@@ -352,7 +352,7 @@ static void defineGlobals() {
 	assignGlobalInt( LOG_ERROR, "LOG_ERROR" ); // Error logging, used on unrecoverable failures
 	assignGlobalInt( LOG_FATAL, "LOG_FATAL" ); // Fatal logging, used to abort program: exit(EXIT_FAILURE)
 	assignGlobalInt( LOG_NONE, "LOG_NONE" ); // Disable logging
-	/* KeyboardKey */
+	/* Keyboard keys (US keyboard layout) */
 	assignGlobalInt( KEY_NULL, "KEY_NULL" ); // Key: NULL, used for no key pressed
 	assignGlobalInt( KEY_APOSTROPHE, "KEY_APOSTROPHE" ); // Key: '
 	assignGlobalInt( KEY_COMMA, "KEY_COMMA" ); // Key: ,
@@ -463,7 +463,7 @@ static void defineGlobals() {
 	assignGlobalInt( KEY_MENU, "KEY_MENU" ); // Key: Android menu button
 	assignGlobalInt( KEY_VOLUME_UP, "KEY_VOLUME_UP" ); // Key: Android volume up button
 	assignGlobalInt( KEY_VOLUME_DOWN, "KEY_VOLUME_DOWN" ); // Key: Android volume down button
-	/* MouseButtons */
+	/* Mouse buttons */
 	assignGlobalInt( MOUSE_BUTTON_LEFT, "MOUSE_BUTTON_LEFT" ); // Mouse button left
 	assignGlobalInt( MOUSE_BUTTON_RIGHT, "MOUSE_BUTTON_RIGHT" ); // Mouse button right
 	assignGlobalInt( MOUSE_BUTTON_MIDDLE, "MOUSE_BUTTON_MIDDLE" ); // Mouse button middle (pressed wheel)
@@ -471,7 +471,7 @@ static void defineGlobals() {
 	assignGlobalInt( MOUSE_BUTTON_EXTRA, "MOUSE_BUTTON_EXTRA" ); // Mouse button extra (advanced mouse device)
 	assignGlobalInt( MOUSE_BUTTON_FORWARD, "MOUSE_BUTTON_FORWARD" ); // Mouse button forward (advanced mouse device)
 	assignGlobalInt( MOUSE_BUTTON_BACK, "MOUSE_BUTTON_BACK" ); // Mouse button back (advanced mouse device)
-	/* MouseCursor */
+	/* Mouse cursor */
 	assignGlobalInt( MOUSE_CURSOR_DEFAULT, "MOUSE_CURSOR_DEFAULT" ); // Default pointer shape
 	assignGlobalInt( MOUSE_CURSOR_ARROW, "MOUSE_CURSOR_ARROW" ); // Arrow shape
 	assignGlobalInt( MOUSE_CURSOR_IBEAM, "MOUSE_CURSOR_IBEAM" ); // Text writing cursor shape
@@ -483,7 +483,7 @@ static void defineGlobals() {
 	assignGlobalInt( MOUSE_CURSOR_RESIZE_NESW, "MOUSE_CURSOR_RESIZE_NESW" ); // The top-right to bottom-left diagonal resize/move arrow shape
 	assignGlobalInt( MOUSE_CURSOR_RESIZE_ALL, "MOUSE_CURSOR_RESIZE_ALL" ); // The omnidirectional resize/move cursor shape
 	assignGlobalInt( MOUSE_CURSOR_NOT_ALLOWED, "MOUSE_CURSOR_NOT_ALLOWED" ); // The operation-not-allowed shape
-	/* GamepadButtons */
+	/* Gamepad buttons */
 	assignGlobalInt( GAMEPAD_BUTTON_UNKNOWN, "GAMEPAD_BUTTON_UNKNOWN" ); // Unknown button, just for error checking
 	assignGlobalInt( GAMEPAD_BUTTON_LEFT_FACE_UP, "GAMEPAD_BUTTON_LEFT_FACE_UP" ); // Gamepad left DPAD up button
 	assignGlobalInt( GAMEPAD_BUTTON_LEFT_FACE_RIGHT, "GAMEPAD_BUTTON_LEFT_FACE_RIGHT" ); // Gamepad left DPAD right button
@@ -502,14 +502,14 @@ static void defineGlobals() {
 	assignGlobalInt( GAMEPAD_BUTTON_MIDDLE_RIGHT, "GAMEPAD_BUTTON_MIDDLE_RIGHT" ); // Gamepad center buttons, right one (i.e. PS3: Start)
 	assignGlobalInt( GAMEPAD_BUTTON_LEFT_THUMB, "GAMEPAD_BUTTON_LEFT_THUMB" ); // Gamepad joystick pressed button left
 	assignGlobalInt( GAMEPAD_BUTTON_RIGHT_THUMB, "GAMEPAD_BUTTON_RIGHT_THUMB" ); // Gamepad joystick pressed button right
-	/* GamepadAxis */
+	/* Gamepad axis */
 	assignGlobalInt( GAMEPAD_AXIS_LEFT_X, "GAMEPAD_AXIS_LEFT_X" ); // Gamepad left stick X axis
 	assignGlobalInt( GAMEPAD_AXIS_LEFT_Y, "GAMEPAD_AXIS_LEFT_Y" ); // Gamepad left stick Y axis
 	assignGlobalInt( GAMEPAD_AXIS_RIGHT_X, "GAMEPAD_AXIS_RIGHT_X" ); // Gamepad right stick X axis
 	assignGlobalInt( GAMEPAD_AXIS_RIGHT_Y, "GAMEPAD_AXIS_RIGHT_Y" ); // Gamepad right stick Y axis
 	assignGlobalInt( GAMEPAD_AXIS_LEFT_TRIGGER, "GAMEPAD_AXIS_LEFT_TRIGGER" ); // Gamepad back trigger left, pressure level: [1..-1]
 	assignGlobalInt( GAMEPAD_AXIS_RIGHT_TRIGGER, "GAMEPAD_AXIS_RIGHT_TRIGGER" ); // Gamepad back trigger right, pressure level: [1..-1]
-	/* MapTypes */
+	/* Material map index */
 	assignGlobalInt( MATERIAL_MAP_ALBEDO, "MATERIAL_MAP_ALBEDO" ); // Albedo material (same as: MATERIAL_MAP_DIFFUSE)
 	assignGlobalInt( MATERIAL_MAP_METALNESS, "MATERIAL_MAP_METALNESS" ); // Metalness material (same as: MATERIAL_MAP_SPECULAR)
 	assignGlobalInt( MATERIAL_MAP_NORMAL, "MATERIAL_MAP_NORMAL" ); // Normal material
@@ -523,7 +523,7 @@ static void defineGlobals() {
 	assignGlobalInt( MATERIAL_MAP_BRDF, "MATERIAL_MAP_BRDF" ); // Brdf material
 	assignGlobalInt( MATERIAL_MAP_DIFFUSE, "MATERIAL_MAP_DIFFUSE" ); // Diffuce material (same as: MATERIAL_MAP_ALBEDO)
 	assignGlobalInt( MATERIAL_MAP_SPECULAR, "MATERIAL_MAP_SPECULAR" ); // Specular material (same as: MATERIAL_MAP_METALNESS)
-	/* ShaderLocationIndex */
+	/* Shader location index */
 	assignGlobalInt( SHADER_LOC_VERTEX_POSITION, "SHADER_LOC_VERTEX_POSITION" ); // Shader location: vertex attribute: position
 	assignGlobalInt( SHADER_LOC_VERTEX_TEXCOORD01, "SHADER_LOC_VERTEX_TEXCOORD01" ); // Shader location: vertex attribute: texcoord01
 	assignGlobalInt( SHADER_LOC_VERTEX_TEXCOORD02, "SHADER_LOC_VERTEX_TEXCOORD02" ); // Shader location: vertex attribute: texcoord02
@@ -552,7 +552,7 @@ static void defineGlobals() {
 	assignGlobalInt( SHADER_LOC_MAP_BRDF, "SHADER_LOC_MAP_BRDF" ); // Shader location: sampler2d texture: brdf
 	assignGlobalInt( SHADER_LOC_MAP_DIFFUSE, "SHADER_LOC_MAP_DIFFUSE" ); // Shader location: sampler2d texture: diffuce (same as: SHADER_LOC_MAP_ALBEDO)
 	assignGlobalInt( SHADER_LOC_MAP_SPECULAR, "SHADER_LOC_MAP_SPECULAR" ); // Shader location: sampler2d texture: specular (same as: SHADER_LOC_MAP_METALNESS)
-	/* ShaderUniformDataType */
+	/* Shader uniform data type */
 	assignGlobalInt( SHADER_UNIFORM_FLOAT, "SHADER_UNIFORM_FLOAT" ); // Shader uniform type: float
 	assignGlobalInt( SHADER_UNIFORM_VEC2, "SHADER_UNIFORM_VEC2" ); // Shader uniform type: vec2 (2 float)
 	assignGlobalInt( SHADER_UNIFORM_VEC3, "SHADER_UNIFORM_VEC3" ); // Shader uniform type: vec3 (3 float)
@@ -562,12 +562,12 @@ static void defineGlobals() {
 	assignGlobalInt( SHADER_UNIFORM_IVEC3, "SHADER_UNIFORM_IVEC3" ); // Shader uniform type: ivec3 (3 int)
 	assignGlobalInt( SHADER_UNIFORM_IVEC4, "SHADER_UNIFORM_IVEC4" ); // Shader uniform type: ivec4 (4 int)
 	assignGlobalInt( SHADER_UNIFORM_SAMPLER2D, "SHADER_UNIFORM_SAMPLER2D" ); // Shader uniform type: sampler2d
-	/* ShaderAttributeDataTypes */
+	/* Shader attribute data types */
 	assignGlobalInt( SHADER_ATTRIB_FLOAT, "SHADER_ATTRIB_FLOAT" ); // Shader attribute type: float
 	assignGlobalInt( SHADER_ATTRIB_VEC2, "SHADER_ATTRIB_VEC2" ); // Shader attribute type: vec2 (2 float)
 	assignGlobalInt( SHADER_ATTRIB_VEC3, "SHADER_ATTRIB_VEC3" ); // Shader attribute type: vec3 (3 float)
 	assignGlobalInt( SHADER_ATTRIB_VEC4, "SHADER_ATTRIB_VEC4" ); // Shader attribute type: vec4 (4 float)
-	/* PixelFormats */
+	/* Pixel formats */
 	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_GRAYSCALE, "PIXELFORMAT_UNCOMPRESSED_GRAYSCALE" ); // 8 bit per pixel (no alpha)
 	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA, "PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA" ); // 8*2 bpp (2 channels)
 	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_R5G6B5, "PIXELFORMAT_UNCOMPRESSED_R5G6B5" ); // 16 bpp
@@ -589,30 +589,30 @@ static void defineGlobals() {
 	assignGlobalInt( PIXELFORMAT_COMPRESSED_PVRT_RGBA, "PIXELFORMAT_COMPRESSED_PVRT_RGBA" ); // 4 bpp
 	assignGlobalInt( PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA, "PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA" ); // 8 bpp
 	assignGlobalInt( PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA, "PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA" ); // 2 bpp
-	/* TextureFilters */
+	/* Texture parameters: filter mode */
 	assignGlobalInt( TEXTURE_FILTER_POINT, "TEXTURE_FILTER_POINT" ); // No filter, just pixel approximation
 	assignGlobalInt( TEXTURE_FILTER_BILINEAR, "TEXTURE_FILTER_BILINEAR" ); // Linear filtering
 	assignGlobalInt( TEXTURE_FILTER_TRILINEAR, "TEXTURE_FILTER_TRILINEAR" ); // Trilinear filtering (linear with mipmaps)
 	assignGlobalInt( TEXTURE_FILTER_ANISOTROPIC_4X, "TEXTURE_FILTER_ANISOTROPIC_4X" ); // Anisotropic filtering 4x
 	assignGlobalInt( TEXTURE_FILTER_ANISOTROPIC_8X, "TEXTURE_FILTER_ANISOTROPIC_8X" ); // Anisotropic filtering 8x
 	assignGlobalInt( TEXTURE_FILTER_ANISOTROPIC_16X, "TEXTURE_FILTER_ANISOTROPIC_16X" ); // Anisotropic filtering 16x
-	/* TextureWrap */
+	/* Texture parameters: wrap mode */
 	assignGlobalInt( TEXTURE_WRAP_REPEAT, "TEXTURE_WRAP_REPEAT" ); // Repeats texture in tiled mode
 	assignGlobalInt( TEXTURE_WRAP_CLAMP, "TEXTURE_WRAP_CLAMP" ); // Clamps texture to edge pixel in tiled mode
 	assignGlobalInt( TEXTURE_WRAP_MIRROR_REPEAT, "TEXTURE_WRAP_MIRROR_REPEAT" ); // Mirrors and repeats the texture in tiled mode
 	assignGlobalInt( TEXTURE_WRAP_MIRROR_CLAMP, "TEXTURE_WRAP_MIRROR_CLAMP" ); // Mirrors and clamps to border the texture in tiled mode
-	/* CubemapLayout */
+	/* Cubemap layouts */
 	assignGlobalInt( CUBEMAP_LAYOUT_AUTO_DETECT, "CUBEMAP_LAYOUT_AUTO_DETECT" ); // Automatically detect layout type
 	assignGlobalInt( CUBEMAP_LAYOUT_LINE_VERTICAL, "CUBEMAP_LAYOUT_LINE_VERTICAL" ); // Layout is defined by a vertical line with faces
 	assignGlobalInt( CUBEMAP_LAYOUT_LINE_HORIZONTAL, "CUBEMAP_LAYOUT_LINE_HORIZONTAL" ); // Layout is defined by a horizontal line with faces
 	assignGlobalInt( CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR, "CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR" ); // Layout is defined by a 3x4 cross with cubemap faces
 	assignGlobalInt( CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE, "CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE" ); // Layout is defined by a 4x3 cross with cubemap faces
 	assignGlobalInt( CUBEMAP_LAYOUT_PANORAMA, "CUBEMAP_LAYOUT_PANORAMA" ); // Layout is defined by a panorama image (equirrectangular map)
-	/* FontType */
+	/* Font type, defines generation method */
 	assignGlobalInt( FONT_DEFAULT, "FONT_DEFAULT" ); // Default font generation, anti-aliased
 	assignGlobalInt( FONT_BITMAP, "FONT_BITMAP" ); // Bitmap font generation, no anti-aliasing
 	assignGlobalInt( FONT_SDF, "FONT_SDF" ); // SDF font generation, requires external shader
-	/* BlendModes */
+	/* Color blending modes (pre-defined) */
 	assignGlobalInt( BLEND_ALPHA, "BLEND_ALPHA" ); // Blend textures considering alpha (default)
 	assignGlobalInt( BLEND_ADDITIVE, "BLEND_ADDITIVE" ); // Blend textures adding colors
 	assignGlobalInt( BLEND_MULTIPLIED, "BLEND_MULTIPLIED" ); // Blend textures multiplying colors
@@ -633,16 +633,16 @@ static void defineGlobals() {
 	assignGlobalInt( GESTURE_SWIPE_DOWN, "GESTURE_SWIPE_DOWN" ); // Swipe down gesture
 	assignGlobalInt( GESTURE_PINCH_IN, "GESTURE_PINCH_IN" ); // Pinch in gesture
 	assignGlobalInt( GESTURE_PINCH_OUT, "GESTURE_PINCH_OUT" ); // Pinch out gesture
-	/* CameraMode */
+	/* Camera system modes */
 	assignGlobalInt( CAMERA_CUSTOM, "CAMERA_CUSTOM" ); // Custom camera
 	assignGlobalInt( CAMERA_FREE, "CAMERA_FREE" ); // Free camera
 	assignGlobalInt( CAMERA_ORBITAL, "CAMERA_ORBITAL" ); // Orbital camera
 	assignGlobalInt( CAMERA_FIRST_PERSON, "CAMERA_FIRST_PERSON" ); // First person camera
 	assignGlobalInt( CAMERA_THIRD_PERSON, "CAMERA_THIRD_PERSON" ); // Third person camera
-	/* CameraProjections */
+	/* Camera projection */
 	assignGlobalInt( CAMERA_PERSPECTIVE, "CAMERA_PERSPECTIVE" ); // Perspective projection
 	assignGlobalInt( CAMERA_ORTHOGRAPHIC, "CAMERA_ORTHOGRAPHIC" ); // Orthographic projection
-	/* N-patchLayout */
+	/* N-patch layout */
 	assignGlobalInt( NPATCH_NINE_PATCH, "NPATCH_NINE_PATCH" ); // Npatch layout: 3x3 tiles
 	assignGlobalInt( NPATCH_THREE_PATCH_VERTICAL, "NPATCH_THREE_PATCH_VERTICAL" ); // Npatch layout: 1x3 tiles
 	assignGlobalInt( NPATCH_THREE_PATCH_HORIZONTAL, "NPATCH_THREE_PATCH_HORIZONTAL" ); // Npatch layout: 3x1 tiles
@@ -677,24 +677,24 @@ static void defineGlobals() {
 	assignGlobalFloat( PI, "PI" ); // Pi
 	assignGlobalFloat( DEG2RAD, "DEG2RAD" ); // Degrees to radians
 	assignGlobalFloat( RAD2DEG, "RAD2DEG" ); // Radians to degrees
-	/* GuiControlState */
+	/* Gui control state */
 	assignGlobalInt( STATE_NORMAL, "STATE_NORMAL" );
 	assignGlobalInt( STATE_FOCUSED, "STATE_FOCUSED" );
 	assignGlobalInt( STATE_PRESSED, "STATE_PRESSED" );
 	assignGlobalInt( STATE_DISABLED, "STATE_DISABLED" );
-	/* GuiControlTextAlignment */
+	/* Gui control text alignment */
 	assignGlobalInt( TEXT_ALIGN_LEFT, "TEXT_ALIGN_LEFT" );
 	assignGlobalInt( TEXT_ALIGN_CENTER, "TEXT_ALIGN_CENTER" );
 	assignGlobalInt( TEXT_ALIGN_RIGHT, "TEXT_ALIGN_RIGHT" );
-	/* GuiControlTextAlignmentVertical */
+	/* Gui control text alignment vertical */
 	assignGlobalInt( TEXT_ALIGN_TOP, "TEXT_ALIGN_TOP" );
 	assignGlobalInt( TEXT_ALIGN_MIDDLE, "TEXT_ALIGN_MIDDLE" );
 	assignGlobalInt( TEXT_ALIGN_BOTTOM, "TEXT_ALIGN_BOTTOM" );
-	/* GuiControlTextWrapMode */
+	/* Gui control text wrap mode */
 	assignGlobalInt( TEXT_WRAP_NONE, "TEXT_WRAP_NONE" );
 	assignGlobalInt( TEXT_WRAP_CHAR, "TEXT_WRAP_CHAR" );
 	assignGlobalInt( TEXT_WRAP_WORD, "TEXT_WRAP_WORD" );
-	/* GuiControl */
+	/* Gui controls */
 	assignGlobalInt( DEFAULT, "DEFAULT" );
 	assignGlobalInt( LABEL, "LABEL" ); // Used also for: LABELBUTTON
 	assignGlobalInt( BUTTON, "BUTTON" );
@@ -711,7 +711,7 @@ static void defineGlobals() {
 	assignGlobalInt( COLORPICKER, "COLORPICKER" );
 	assignGlobalInt( SCROLLBAR, "SCROLLBAR" );
 	assignGlobalInt( STATUSBAR, "STATUSBAR" );
-	/* GuiControlProperty */
+	/* Gui base properties for every control */
 	assignGlobalInt( BORDER_COLOR_NORMAL, "BORDER_COLOR_NORMAL" );
 	assignGlobalInt( BASE_COLOR_NORMAL, "BASE_COLOR_NORMAL" );
 	assignGlobalInt( TEXT_COLOR_NORMAL, "TEXT_COLOR_NORMAL" );
@@ -727,7 +727,7 @@ static void defineGlobals() {
 	assignGlobalInt( BORDER_WIDTH, "BORDER_WIDTH" );
 	assignGlobalInt( TEXT_PADDING, "TEXT_PADDING" );
 	assignGlobalInt( TEXT_ALIGNMENT, "TEXT_ALIGNMENT" );
-	/* GuiDefaultProperty */
+	/* Gui extended properties depend on control */
 	assignGlobalInt( TEXT_SIZE, "TEXT_SIZE" ); // Text size (glyphs max height)
 	assignGlobalInt( TEXT_SPACING, "TEXT_SPACING" ); // Text spacing between glyphs
 	assignGlobalInt( LINE_COLOR, "LINE_COLOR" ); // Line control color
@@ -735,45 +735,45 @@ static void defineGlobals() {
 	assignGlobalInt( TEXT_LINE_SPACING, "TEXT_LINE_SPACING" ); // Text spacing between lines
 	assignGlobalInt( TEXT_ALIGNMENT_VERTICAL, "TEXT_ALIGNMENT_VERTICAL" ); // Text vertical alignment inside text bounds (after border and padding)
 	assignGlobalInt( TEXT_WRAP_MODE, "TEXT_WRAP_MODE" ); // Text wrap-mode inside text bounds
-	/* GuiToggleProperty */
+	/* Gui Toggle/ToggleGroup */
 	assignGlobalInt( GROUP_PADDING, "GROUP_PADDING" ); // ToggleGroup separation between toggles
-	/* GuiSliderProperty */
+	/* Gui Slider/SliderBar */
 	assignGlobalInt( SLIDER_WIDTH, "SLIDER_WIDTH" ); // Slider size of internal bar
 	assignGlobalInt( SLIDER_PADDING, "SLIDER_PADDING" ); // Slider/SliderBar internal bar padding
-	/* GuiProgressBarProperty */
+	/* Gui ProgressBar */
 	assignGlobalInt( PROGRESS_PADDING, "PROGRESS_PADDING" ); // ProgressBar internal padding
-	/* GuiScrollBarProperty */
+	/* Gui ScrollBar */
 	assignGlobalInt( ARROWS_SIZE, "ARROWS_SIZE" );
 	assignGlobalInt( ARROWS_VISIBLE, "ARROWS_VISIBLE" );
 	assignGlobalInt( SCROLL_SLIDER_PADDING, "SCROLL_SLIDER_PADDING" ); // (SLIDERBAR, SLIDER_PADDING)
 	assignGlobalInt( SCROLL_SLIDER_SIZE, "SCROLL_SLIDER_SIZE" );
 	assignGlobalInt( SCROLL_PADDING, "SCROLL_PADDING" );
 	assignGlobalInt( SCROLL_SPEED, "SCROLL_SPEED" );
-	/* GuiCheckBoxProperty */
+	/* Gui CheckBox */
 	assignGlobalInt( CHECK_PADDING, "CHECK_PADDING" ); // CheckBox internal check padding
-	/* GuiComboBoxProperty */
+	/* Gui ComboBox */
 	assignGlobalInt( COMBO_BUTTON_WIDTH, "COMBO_BUTTON_WIDTH" ); // ComboBox right button width
 	assignGlobalInt( COMBO_BUTTON_SPACING, "COMBO_BUTTON_SPACING" ); // ComboBox button separation
-	/* GuiDropdownBoxProperty */
+	/* Gui DropdownBox */
 	assignGlobalInt( ARROW_PADDING, "ARROW_PADDING" ); // DropdownBox arrow separation from border and items
 	assignGlobalInt( DROPDOWN_ITEMS_SPACING, "DROPDOWN_ITEMS_SPACING" ); // DropdownBox items separation
-	/* TextBox/TextBoxMulti/ValueBox/Spinner */
+	/* Gui TextBox/TextBoxMulti/ValueBox/Spinner */
 	assignGlobalInt( TEXT_READONLY, "TEXT_READONLY" ); // TextBox in read-only mode: 0-text editable, 1-text no-editable
-	/* GuiSpinnerProperty */
+	/* Gui Spinner */
 	assignGlobalInt( SPIN_BUTTON_WIDTH, "SPIN_BUTTON_WIDTH" ); // Spinner left/right buttons width
 	assignGlobalInt( SPIN_BUTTON_SPACING, "SPIN_BUTTON_SPACING" ); // Spinner buttons separation
-	/* GuiListViewProperty */
+	/* Gui ListView */
 	assignGlobalInt( LIST_ITEMS_HEIGHT, "LIST_ITEMS_HEIGHT" ); // ListView items height
 	assignGlobalInt( LIST_ITEMS_SPACING, "LIST_ITEMS_SPACING" ); // ListView items separation
 	assignGlobalInt( SCROLLBAR_WIDTH, "SCROLLBAR_WIDTH" ); // ListView scrollbar size (usually width)
 	assignGlobalInt( SCROLLBAR_SIDE, "SCROLLBAR_SIDE" ); // ListView scrollbar side (0-left, 1-right)
-	/* GuiColorPickerProperty */
+	/* Gui ColorPicker */
 	assignGlobalInt( COLOR_SELECTOR_SIZE, "COLOR_SELECTOR_SIZE" );
 	assignGlobalInt( HUEBAR_WIDTH, "HUEBAR_WIDTH" ); // ColorPicker right hue bar width
 	assignGlobalInt( HUEBAR_PADDING, "HUEBAR_PADDING" ); // ColorPicker right hue bar separation from panel
 	assignGlobalInt( HUEBAR_SELECTOR_HEIGHT, "HUEBAR_SELECTOR_HEIGHT" ); // ColorPicker right hue bar selector height
 	assignGlobalInt( HUEBAR_SELECTOR_OVERFLOW, "HUEBAR_SELECTOR_OVERFLOW" ); // ColorPicker right hue bar selector overflow
-	/* LightType */
+	/* Light type */
 	assignGlobalInt( LIGHT_DIRECTIONAL, "LIGHT_DIRECTIONAL" ); // Directional light
 	assignGlobalInt( LIGHT_POINT, "LIGHT_POINT" ); // Point light
 	/* RLGL Default internal render batch elements limits */
@@ -895,7 +895,7 @@ static void defineGlobals() {
 	assignGlobalInt( GL_STENCIL_BUFFER_BIT, "GL_STENCIL_BUFFER_BIT" );
 	assignGlobalInt( GL_NEAREST, "GL_NEAREST" );
 	assignGlobalInt( GL_LINEAR, "GL_LINEAR" );
-	/* CBuffer Data Types */
+	/* CBuffer Data types */
 	assignGlobalInt( BUFFER_UNSIGNED_CHAR, "BUFFER_UNSIGNED_CHAR" ); // C type unsigned char
 	assignGlobalInt( BUFFER_UNSIGNED_SHORT, "BUFFER_UNSIGNED_SHORT" ); // C type unsigned short
 	assignGlobalInt( BUFFER_UNSIGNED_INT, "BUFFER_UNSIGNED_INT" ); // C type unsigned int
@@ -904,8 +904,7 @@ static void defineGlobals() {
 	assignGlobalInt( BUFFER_INT, "BUFFER_INT" ); // C type int
 	assignGlobalInt( BUFFER_FLOAT, "BUFFER_FLOAT" ); // C type float
 	assignGlobalInt( BUFFER_DOUBLE, "BUFFER_DOUBLE" ); // C type double
-/*DOC_END*/
-
+/*DOC_DEFINES_END*/
 	lua_pop( L, -1 );
 }
 

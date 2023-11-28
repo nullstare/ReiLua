@@ -7,18 +7,18 @@ static void platformDefineGlobals() {
 	lua_State *L = state->luaState;
 
 	lua_getglobal( L, "RL" );
-
-		/* KeyboardEvents */
+/*DOC_DEFINES_START*/
+	/* Keyboard events */
 	assignGlobalInt( SDL_KEYDOWN, "SDL_KEYDOWN" ); // Key pressed
 	assignGlobalInt( SDL_KEYUP, "SDL_KEYUP" ); // Key released
-		/* WindowEvents */
+	/* Window events */
 	assignGlobalInt( SDL_WINDOWEVENT, "SDL_WINDOWEVENT" ); // Window state change
-		/* MouseEvents */
+	/* Mouse events */
 	assignGlobalInt( SDL_MOUSEMOTION, "SDL_MOUSEMOTION" ); // Mouse moved
 	assignGlobalInt( SDL_MOUSEBUTTONDOWN, "SDL_MOUSEBUTTONDOWN" ); // Mouse button pressed
 	assignGlobalInt( SDL_MOUSEBUTTONUP, "SDL_MOUSEBUTTONUP" ); // Mouse button released
 	assignGlobalInt( SDL_MOUSEWHEEL, "SDL_MOUSEWHEEL" ); // Mouse wheel motion
-		/* JoystickEvents */
+	/* Joystick events */
 	assignGlobalInt( SDL_JOYAXISMOTION, "SDL_JOYAXISMOTION" ); // Joystick axis motion
 	assignGlobalInt( SDL_JOYBALLMOTION, "SDL_JOYBALLMOTION" ); // Joystick trackball motion
 	assignGlobalInt( SDL_JOYHATMOTION, "SDL_JOYHATMOTION" );
@@ -26,22 +26,22 @@ static void platformDefineGlobals() {
 	assignGlobalInt( SDL_JOYBUTTONUP, "SDL_JOYBUTTONUP" ); // Joystick button released
 	assignGlobalInt( SDL_JOYDEVICEADDED, "SDL_JOYDEVICEADDED" ); // Joystick connected
 	assignGlobalInt( SDL_JOYDEVICEREMOVED, "SDL_JOYDEVICEREMOVED" ); // Joystick disconnected
-		/* ControllerEvents */
+	/* Controller events */
 	assignGlobalInt( SDL_CONTROLLERAXISMOTION, "SDL_CONTROLLERAXISMOTION" ); // Controller axis motion
 	assignGlobalInt( SDL_CONTROLLERBUTTONDOWN, "SDL_CONTROLLERBUTTONDOWN" ); // Controller button pressed
 	assignGlobalInt( SDL_CONTROLLERBUTTONUP, "SDL_CONTROLLERBUTTONUP" ); // Controller button released
 	assignGlobalInt( SDL_CONTROLLERDEVICEADDED, "SDL_CONTROLLERDEVICEADDED" ); // Controller connected
 	assignGlobalInt( SDL_CONTROLLERDEVICEREMOVED, "SDL_CONTROLLERDEVICEREMOVED" ); // Controller disconnected
 	assignGlobalInt( SDL_CONTROLLERDEVICEREMAPPED, "SDL_CONTROLLERDEVICEREMAPPED" ); // Controller mapping updated
-		/* TouchEvents */
+	/* Touch events */
 	assignGlobalInt( SDL_FINGERDOWN, "SDL_FINGERDOWN" ); // User has touched input device
 	assignGlobalInt( SDL_FINGERUP, "SDL_FINGERUP" ); // User stopped touching input device
 	assignGlobalInt( SDL_FINGERMOTION, "SDL_FINGERMOTION" ); // User is dragging finger on input device
-		/* GestureEvents */
+	/* Gesture events */
 	assignGlobalInt( SDL_DOLLARGESTURE, "SDL_DOLLARGESTURE" );
 	assignGlobalInt( SDL_DOLLARRECORD, "SDL_DOLLARRECORD" );
 	assignGlobalInt( SDL_MULTIGESTURE, "SDL_MULTIGESTURE" );
-		/* WindowEventIDs */
+	/* Window states */
 	assignGlobalInt( SDL_WINDOWEVENT_SHOWN, "SDL_WINDOWEVENT_SHOWN" );
 	assignGlobalInt( SDL_WINDOWEVENT_HIDDEN, "SDL_WINDOWEVENT_HIDDEN" );
 	assignGlobalInt( SDL_WINDOWEVENT_EXPOSED, "SDL_WINDOWEVENT_EXPOSED" );
@@ -58,10 +58,10 @@ static void platformDefineGlobals() {
 	assignGlobalInt( SDL_WINDOWEVENT_CLOSE, "SDL_WINDOWEVENT_CLOSE" );
 	assignGlobalInt( SDL_WINDOWEVENT_TAKE_FOCUS, "SDL_WINDOWEVENT_TAKE_FOCUS" );
 	assignGlobalInt( SDL_WINDOWEVENT_HIT_TEST, "SDL_WINDOWEVENT_HIT_TEST" );
-		/* KeyboardAndMouseState */
+	/* Keyboard and mouse states */
 	assignGlobalInt( SDL_RELEASED, "SDL_RELEASED" );
 	assignGlobalInt( SDL_PRESSED, "SDL_PRESSED" );
-		/* JoystickHatMotion */
+	/* Joystick hat motion */
 	assignGlobalInt( SDL_HAT_LEFTUP, "SDL_HAT_LEFTUP" );
 	assignGlobalInt( SDL_HAT_UP, "SDL_HAT_UP" );
 	assignGlobalInt( SDL_HAT_RIGHTUP, "SDL_HAT_RIGHTUP" );
@@ -71,14 +71,14 @@ static void platformDefineGlobals() {
 	assignGlobalInt( SDL_HAT_LEFTDOWN, "SDL_HAT_LEFTDOWN" );
 	assignGlobalInt( SDL_HAT_DOWN, "SDL_HAT_DOWN" );
 	assignGlobalInt( SDL_HAT_RIGHTDOWN, "SDL_HAT_RIGHTDOWN" );
-
+/*DOC_DEFINES_END*/
 	lua_pop( L, -1 );
 }
 
 /* Functions. */
 
 /*
-## Core - Input-related functions: keyboard.
+## SDL Core - Input-related functions: keyboard.
 */
 
 /*
@@ -124,6 +124,10 @@ static void luaPlatformRegister() {
 
 /* Events. */
 
+/*
+## SDL Events
+*/
+
 /* This function is not thread safe so we don't use Lua inside it directly. It only adds events to another queue. */
 static int SDLEventFilter( void *userdata, SDL_Event *event ) {
 	/* SDL_EVENT_POLL_SENTINEL = 0x7F00, /**< Signals the end of an event poll cycle */
@@ -163,6 +167,11 @@ static void platformSendEvents() {
 		SDL_Event event = state->SDL_eventQueue[i];
 
 		switch ( event.type ) {
+/*
+> SDL_KeyboardEvent = { int type, int timestamp, int state, int repeat, int scancode, int sym, int mod }
+
+Event occurs whenever a user presses or releases a button on a keyboard. Type SDL_KEYUP or SDL_KEYDOWN
+*/
 			case SDL_KEYUP:
 			case SDL_KEYDOWN:
 			{
@@ -184,6 +193,11 @@ static void platformSendEvents() {
 				call = true;
 			}
 			break;
+/*
+> SDL_WindowEvent = { int type, int timestamp, int event, int data1, int data2 }
+
+Event occurs when an event of type SDL_WINDOWEVENT is reported. Type SDL_WINDOWEVENT
+*/
 			case SDL_WINDOWEVENT:
 			{
 				lua_createtable( L, 5, 0 );
@@ -200,6 +214,11 @@ static void platformSendEvents() {
 				call = true;
 			}
 			break;
+/*
+> SDL_MouseMotionEvent = { int type, int timestamp, int which, int state, int x, int y, int xrel, int yrel }
+
+Event occurs whenever a user moves the mouse within the application window or when SDL_WarpMouseInWindow() is called. Type SDL_MOUSEMOTION
+*/
 			case SDL_MOUSEMOTION:
 			{
 				lua_createtable( L, 8, 0 );
@@ -222,6 +241,11 @@ static void platformSendEvents() {
 				call = true;
 			}
 			break;
+/*
+> SDL_MouseButtonEvent = { int type, int timestamp, int which, int button, int state, int x, int y }
+
+Event occurs whenever a user presses or releases a button on a mouse. Type SDL_MOUSEBUTTONDOWN or SDL_MOUSEBUTTONUP
+*/
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:
 			{
@@ -243,6 +267,11 @@ static void platformSendEvents() {
 				call = true;
 			}
 			break;
+/*
+> SDL_MouseWheelEvent = { int type, int timestamp, int which, int x, int y }
+
+Event occurs whenever a user moves the mouse wheel. Type SDL_MOUSEWHEEL
+*/
 			case SDL_MOUSEWHEEL:
 			{
 				lua_createtable( L, 5, 0 );
@@ -259,6 +288,11 @@ static void platformSendEvents() {
 				call = true;
 			}
 			break;
+/*
+> SDL_JoyAxisEvent = { int type, int timestamp, int which, int axis, int value }
+
+Event occurs whenever a user moves an axis on the joystick. Type SDL_JOYAXISMOTION
+*/
 			case SDL_JOYAXISMOTION:
 			{
 				lua_createtable( L, 5, 0 );
@@ -275,6 +309,11 @@ static void platformSendEvents() {
 				call = true;
 			}
 			break;
+/*
+> SDL_JoyBallEvent = { int type, int timestamp, int which, int ball, int xrel, int yrel }
+
+Event occurs when a user moves a trackball on the joystick. Type SDL_JOYBALLMOTION
+*/
 			case SDL_JOYBALLMOTION:
 			{
 				lua_createtable( L, 6, 0 );
@@ -293,6 +332,11 @@ static void platformSendEvents() {
 				call = true;
 			}
 			break;
+/*
+> SDL_JoyHatEvent = { int type, int timestamp, int which, int hat, int value }
+
+Event occurs whenever a user moves a hat on the joystick. Type SDL_JOYHATMOTION
+*/
 			case SDL_JOYHATMOTION:
 			{
 				lua_createtable( L, 5, 0 );
@@ -309,6 +353,11 @@ static void platformSendEvents() {
 				call = true;
 			}
 			break;
+/*
+> SDL_JoyButtonEvent = { int type, int timestamp, int which, int button, int state }
+
+Event occurs whenever a user presses or releases a button on a joystick. Type SDL_JOYBUTTONDOWN or SDL_JOYBUTTONUP
+*/
 			case SDL_JOYBUTTONDOWN:
 			case SDL_JOYBUTTONUP:
 			{
@@ -326,6 +375,11 @@ static void platformSendEvents() {
 				call = true;
 			}
 			break;
+/*
+> SDL_JoyDeviceEvent = { int type, int timestamp, int which }
+
+Event occurs whenever a user connects or disconnects a joystick. Type SDL_JOYDEVICEADDED or SDL_JOYDEVICEREMOVED
+*/
 			case SDL_JOYDEVICEADDED:
 			case SDL_JOYDEVICEREMOVED:
 			{
@@ -339,6 +393,11 @@ static void platformSendEvents() {
 				call = true;
 			}
 			break;
+/*
+> SDL_ControllerAxisEvent = { int type, int timestamp, int which, int axis, int value }
+
+Event occurs whenever a user moves an axis on the controller. Type SDL_CONTROLLERAXISMOTION
+*/
 			case SDL_CONTROLLERAXISMOTION:
 			{
 				lua_createtable( L, 5, 0 );
@@ -355,6 +414,11 @@ static void platformSendEvents() {
 				call = true;
 			}
 			break;
+/*
+> SDL_ControllerButtonEvent = { int type, int timestamp, int which, int button, int state }
+
+Event occurs whenever a user presses or releases a button on a controller. Type SDL_CONTROLLERBUTTONDOWN or SDL_CONTROLLERBUTTONUP
+*/
 			case SDL_CONTROLLERBUTTONDOWN:
 			case SDL_CONTROLLERBUTTONUP:
 			{
@@ -372,6 +436,11 @@ static void platformSendEvents() {
 				call = true;
 			}
 			break;
+/*
+> SDL_ControllerDeviceEvent = { int type, int timestamp, int which }
+
+Event occurs whenever a user connects, disconnects or remaps a controller. Type SDL_CONTROLLERDEVICEADDED, SDL_CONTROLLERDEVICEREMOVED or SDL_CONTROLLERDEVICEREMAPPED
+*/
 			case SDL_CONTROLLERDEVICEADDED:
 			case SDL_CONTROLLERDEVICEREMOVED:
 			case SDL_CONTROLLERDEVICEREMAPPED:
@@ -386,6 +455,11 @@ static void platformSendEvents() {
 				call = true;
 			}
 			break;
+/*
+> SDL_TouchFingerEvent = { int type, int timestamp, int touchId, int fingerId, float x, float y, float dx, float dy, float pressure }
+
+Event occurs when an event of type SDL_FINGERMOTION, SDL_FINGERDOWN, or SDL_FINGERUP is reported. Type SDL_FINGERMOTION, SDL_FINGERDOWN or SDL_FINGERUP
+*/
 			case SDL_FINGERMOTION:
 			case SDL_FINGERDOWN:
 			case SDL_FINGERUP:
@@ -412,6 +486,11 @@ static void platformSendEvents() {
 				call = true;
 			}
 			break;
+/*
+> SDL_MultiGestureEvent = { int type, int timestamp, int touchId, float dTheta, float dDist, float x, float y, int numFingers }
+
+Event occurs when type SDL_MULTIGESTURE is reported. Type SDL_MULTIGESTURE
+*/
 			case SDL_MULTIGESTURE:
 			{
 				lua_createtable( L, 8, 0 );
@@ -434,6 +513,11 @@ static void platformSendEvents() {
 				call = true;
 			}
 			break;
+/*
+> SDL_DollarGestureEvent = { int type, int timestamp, int touchId, int gestureId, int numFingers, float error, float x, float y }
+
+Event occurs an event of type SDL_DOLLARGESTURE or SDL_DOLLARRECORD is reported. Type SDL_DOLLARGESTURE or SDL_DOLLARRECORD
+*/
 			case SDL_DOLLARGESTURE:
 			case SDL_DOLLARRECORD:
 			{

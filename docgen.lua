@@ -1,6 +1,10 @@
---Create api.md and ReiLua_API.lua files from c sources.
+--[[
+	Create api.md and ReiLua_API.lua files from c sources.
 
--- Export each module as separate .md file.
+	To generate API for other platforms you need to change sourceFiles.
+]]--
+
+-- Export each module as separate .md file. Does not affect on ReiLua_API.lua file.
 local separate = false
 
 if arg ~= nil and arg[1] ~= nil and arg[1] == "-s" then
@@ -232,100 +236,96 @@ ModelAnimation\n\n---\n" )
 apiFile:write( "\n> Buffer = Buffer userdata\n\
 Data buffer for C primitive types. Type should be one of the Buffer types.\n\n---\n" )
 
--- Events.
-
-apiFile:write( "\n## Events\n" )
-apiFile:write( "\nContent of event table received by RL.event.\n" )
-apiFile:write( "\n### Window events\n" )
-apiFile:write( "\n---\n> { type: RL.EVENT_WINDOW_SIZE, int width, int height }\n\n WindowSize Callback, runs when window is resized.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_WINDOW_MAXIMIZE, int maximized }\n\n Window Maximize Callback, runs when window is maximized.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_WINDOW_ICONYFY, int iconified }\n\n WindowIconify Callback, runs when window is minimized/restored.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_WINDOW_FOCUS, int focused }\n\n WindowFocus Callback, runs when window get/lose focus.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_WINDOW_DROP, int count, string{} paths }\n\n Window Drop Callback, runs when drop files into window.\n\n---\n" )
-apiFile:write( "\n### Input events\n" )
-apiFile:write( "\n---\n> { type: RL.EVENT_KEY, int key, int scancode, int action, int mods }\n\n Keyboard Callback, runs on key pressed.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_CHAR, int key }\n\n Char Key Callback, runs on key pressed (get char value).\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_MOUSE_BUTTON, int button, int action, int mods }\n\n Mouse Button Callback, runs on mouse button pressed.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_MOUSE_CURSOR_POS, number x, number y }\n\n Cursor Position Callback, runs on mouse move.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_MOUSE_SCROLL, number xoffset, number yoffset }\n\n Srolling Callback, runs on mouse wheel.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_CURSOR_ENTER, int enter }\n\n Cursor Enter Callback, cursor enters client area.\n\n---\n" )
-apiFile:write( "\n> { type RL.EVENT_JOYSTICK, int jid, int event }\n\n .\n\n---\n" )
-
 if separate then
 	apiFile:close()
 end
 
--- Globals.
+-- Defines.
 
-local srcFile = io.open( "../src/lua_core.c", "r" )
-local writing = false
-local globalVariableCount = 0
-
-repeat
-	line = srcFile:read( "*l" )
-	local lineSplit = split( line, " " )
-
-	if line == "/*DOC_END*/" then
-		writing = false
-		break
-	end
-
-	if writing then
-		if lineSplit[1] == "\t/*" then
-			apiFile:write( "\n## Globals - "..lineSplit[2].."\n" )
-			luaApiFile:write( "\n-- Globals - "..lineSplit[2].."\n\n" )
-		else
-			-- Remove comma from the end.
-			local globalName = lineSplit[2]:sub( 1, -2 )
-			local value = RL[ globalName ]
-			local comment = lineSplit[6] -- First split after //
-
-			if comment ~= nil then
-				local i = 7
-
-				while lineSplit[i] ~= nil do
-					comment = comment.." "..lineSplit[i]
-					i = i + 1
-				end
-				luaApiFile:write( "---"..comment.."\n" )
-			end
-			
-			globalVariableCount = globalVariableCount + 1
-
-			if value == nil then
-				apiFile:write( "\n"..globalName.." = nil\n\n" )
-				luaApiFile:write( "RL."..globalName.."=nil\n" )
-			elseif type( value ) == "table" then
-				-- All tables are colors.
-				apiFile:write( globalName.." = { "
-					..math.tointeger( value[1] )..", "..math.tointeger( value[2] )..", "
-					..math.tointeger( value[3] )..", "..math.tointeger( value[4] ).." }\n\n" )
-				luaApiFile:write( "RL."..globalName.."={"
-					..math.tointeger( value[1] )..","..math.tointeger( value[2] )..","
-					..math.tointeger( value[3] )..","..math.tointeger( value[4] ).."}\n" )
-			else
-				apiFile:write( "> "..globalName.." = "..value.."\n\n" )
-				luaApiFile:write( "RL."..globalName.."="..value.."\n" )
-			end
-
-			if comment ~= nil then
-				apiFile:write( comment.."\n\n" )
-			end
-
-			apiFile:write( "---\n\n" )
-		end
-	end
-
-	if line == "/*DOC_START*/" then
-		writing = true
-	end
-until line == nil
-
-srcFile:close()
-
--- Functions.
-
+local definesCount = 0
 local sourceFiles = {
+	"lua_core",
+	"platforms/core_desktop",
+	-- "platforms/core_desktop_sdl",
+}
+
+for _, src in ipairs( sourceFiles ) do
+	local srcFile = io.open( "../src/"..src..".c", "r" )
+	local writing = false
+
+	if separate then
+		local splits = split( src, "/" )
+
+		apiFile = io.open( "../"..splits[ #splits ]..".md", "w" )
+	end
+	
+	repeat
+		local line = srcFile:read( "*l" )
+		local lineSplit = split( line, " " )
+	
+		if line == "/*DOC_DEFINES_END*/" then
+			writing = false
+			break
+		end
+	
+		if writing then
+			if lineSplit[1] == "\t/*" then
+				local gategorySplit = split( line, "*" )
+				apiFile:write( "\n## Defines - "..gategorySplit[2]:sub( 2, #gategorySplit[2] - 1 ).."\n" )
+				luaApiFile:write( "\n-- Defines - "..gategorySplit[2]:sub( 2, #gategorySplit[2] - 1 ).."\n\n" )
+			else
+				-- Remove comma from the end.
+				local defineName = lineSplit[2]:sub( 1, -2 )
+				local value = RL[ defineName ]
+				local comment = lineSplit[6] -- First split after //
+	
+				if comment ~= nil then
+					local i = 7
+	
+					while lineSplit[i] ~= nil do
+						comment = comment.." "..lineSplit[i]
+						i = i + 1
+					end
+					luaApiFile:write( "---"..comment.."\n" )
+				end
+				
+				definesCount = definesCount + 1
+	
+				if value == nil then
+					apiFile:write( "\n"..defineName.." = nil\n\n" )
+					luaApiFile:write( "RL."..defineName.."=nil\n" )
+				elseif type( value ) == "table" then
+					-- All tables are colors.
+					apiFile:write( defineName.." = { "
+						..math.tointeger( value[1] )..", "..math.tointeger( value[2] )..", "
+						..math.tointeger( value[3] )..", "..math.tointeger( value[4] ).." }\n\n" )
+					luaApiFile:write( "RL."..defineName.."={"
+						..math.tointeger( value[1] )..","..math.tointeger( value[2] )..","
+						..math.tointeger( value[3] )..","..math.tointeger( value[4] ).."}\n" )
+				else
+					apiFile:write( "> "..defineName.." = "..value.."\n\n" )
+					luaApiFile:write( "RL."..defineName.."="..value.."\n" )
+				end
+	
+				if comment ~= nil then
+					apiFile:write( comment.."\n\n" )
+				end
+	
+				apiFile:write( "---\n\n" )
+			end
+		end
+	
+		if line == "/*DOC_DEFINES_START*/" then
+			writing = true
+		end
+	until line == nil
+
+	srcFile:close()
+end
+
+-- Functions and events.
+
+sourceFiles = {
 	"core",
 	"shapes",
 	"textures",
@@ -338,18 +338,24 @@ local sourceFiles = {
 	"rlgl",
 	"gl",
 	"easings",
+	"platforms/core_desktop",
+	-- "platforms/core_desktop_sdl",
 }
 
 local functionCount = 0
 
 for _, src in ipairs( sourceFiles ) do
-	srcFile = io.open( "../src/"..src..".c", "r" )
+	local srcFile = io.open( "../src/"..src..".c", "r" )
 	local line = ""
 	local funcStr = ""
 	local p = false
+	local event = false
 
 	if separate then
-		apiFile = io.open( src..".md", "w" )
+		local splits = split( src, "/" )
+
+		apiFile = io.open( "../"..splits[ #splits ]..".md", "a" )
+		-- apiFile = io.open( "../"..src..".md", "w" )
 	end
 
 	repeat
@@ -358,20 +364,33 @@ for _, src in ipairs( sourceFiles ) do
 		if line == "*/" then
 			p = false
 			apiFile:write( "\n---\n" )
-			luaApiFile:write( funcStr.."\n" )
-			funcStr = ""
+
+			if not event then
+				luaApiFile:write( funcStr.."\n" )
+				funcStr = ""
+			end
+		-- There should be not function definition after events.
+		elseif line == "/* Events. */" then
+			event = true
 		end
 
 		if p then
 			apiFile:write( line.."\n" )
 
 			if line:sub( 1, 2 ) == "##" then
-				luaApiFile:write( "-- "..line:sub( 4 ).."\n" )
+				if not event then
+					luaApiFile:write( "-- "..line:sub( 4 ).."\n" )
+				end
 			elseif line:sub( 1, 1 ) == ">" then
-				funcStr =  parseFunction( line )
-				functionCount = functionCount + 1
+				-- Do not parse events. Only visible in API.md
+				if not event then
+					funcStr = parseFunction( line )
+					functionCount = functionCount + 1
+				end
 			elseif line:sub( 1, 1 ) ~= "" then
-				luaApiFile:write( "---"..line.."\n" )
+				if not event then
+					luaApiFile:write( "---"..line.."\n" )
+				end
 			end
 		end
 
@@ -392,4 +411,4 @@ if not separate then
 	apiFile:close()
 end
 
-print( "Parsed:\n"..globalVariableCount.." Global variables\n"..functionCount.." Functions" )
+print( "Parsed:\n"..definesCount.." Defines\n"..functionCount.." Functions" )

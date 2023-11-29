@@ -17,6 +17,8 @@ Backlog {
 		* More Model management functions. Get mesh and material etc.
 		* BoneInfo.
 		* LoadMaterialsFromModel (Could then for example edit and set back to model).
+	* Core
+		* Automation events functionality.
 
 	* Examples
 		* Improve Dungeon crawler example by generating custom mesh instead of drawing 3D quads.

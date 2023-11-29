@@ -2943,6 +2943,41 @@ int lcoreLoadBuffer( lua_State *L ) {
 }
 
 /*
+> buffer = RL.LoadBufferFromFile( string path, type int )
+
+Read buffer data from binary file
+
+- Failure return nil
+- Success return Buffer
+*/
+int lcoreLoadBufferFromFile( lua_State *L ) {
+	int type = luaL_checkinteger( L, 2 );
+	const char *path = luaL_checkstring( L, 1 );
+
+	int fileLen = GetFileLength( path );
+	Buffer buffer = {
+		.type = type,
+		.size = fileLen,
+		.data = malloc( fileLen )
+	};
+	size_t elementSize = getBufferElementSize( &buffer );
+	FILE *file;
+	file = fopen( path, "rb" );
+
+	if ( file == NULL ) {
+		TraceLog( LOG_WARNING, "Invalid file %s\n", path );
+		lua_pushnil( L );
+		return 1;
+	}
+	fread( buffer.data, elementSize, buffer.size / elementSize, file );
+	fclose( file );
+
+	uluaPushBuffer( L, buffer );
+
+	return 1;
+}
+
+/*
 > RL.UnloadBuffer( Buffer buffer )
 
 Unload buffer data
@@ -3107,36 +3142,17 @@ int lcoreExportBuffer( lua_State *L ) {
 }
 
 /*
-> buffer = RL.LoadBufferFromFile( string path, type int )
+> success = RL.ExportBufferAsCode( Buffer buffer, string fileName )
 
-Read buffer data from binary file
+Export buffer data to code (.h), returns true on success
 
-- Failure return nil
-- Success return Buffer
+- Success return bool
 */
-int lcoreLoadBufferFromFile( lua_State *L ) {
-	int type = luaL_checkinteger( L, 2 );
-	const char *path = luaL_checkstring( L, 1 );
+int lcoreExportBufferAsCode( lua_State *L ) {
+	Buffer *buffer = uluaGetBuffer( L, 1 );
+	const char *fileName = luaL_checkstring( L, 2 );
 
-	int fileLen = GetFileLength( path );
-	Buffer buffer = {
-		.type = type,
-		.size = fileLen,
-		.data = malloc( fileLen )
-	};
-	size_t elementSize = getBufferElementSize( &buffer );
-	FILE *file;
-	file = fopen( path, "rb" );
-
-	if ( file == NULL ) {
-		TraceLog( LOG_WARNING, "Invalid file %s\n", path );
-		lua_pushnil( L );
-		return 1;
-	}
-	fread( buffer.data, elementSize, buffer.size / elementSize, file );
-	fclose( file );
-
-	uluaPushBuffer( L, buffer );
+	lua_pushboolean( L, ExportDataAsCode( buffer->data, buffer->size, fileName ) );
 
 	return 1;
 }

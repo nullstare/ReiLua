@@ -4978,6 +4978,15 @@ Load Buffer. Type should be one of the Buffer types. Empty buffer will set data 
 
 ---
 
+> buffer = RL.LoadBufferFromFile( string path, type int )
+
+Read buffer data from binary file
+
+- Failure return nil
+- Success return Buffer
+
+---
+
 > RL.UnloadBuffer( Buffer buffer )
 
 Unload buffer data
@@ -5014,12 +5023,11 @@ Write buffer data to binary file
 
 ---
 
-> buffer = RL.LoadBufferFromFile( string path, type int )
+> success = RL.ExportBufferAsCode( Buffer buffer, string fileName )
 
-Read buffer data from binary file
+Export buffer data to code (.h), returns true on success
 
-- Failure return nil
-- Success return Buffer
+- Success return bool
 
 ---
 

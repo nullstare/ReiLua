@@ -30,7 +30,8 @@ DETAILED CHANGES:
 	- CHANGE: Moved glfw headers to GLFW folder.
 	- CHANGE: Term globals changed to defines in documentation.
 	- CHANGE: Event documentation is now described in c files.
-	
+	- ADDED: ExportBufferAsCode.
+
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.6.0		Using Raylib 4.5
 ------------------------------------------------------------------------

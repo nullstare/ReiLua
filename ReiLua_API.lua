@@ -2366,6 +2366,14 @@ function  RL.UpdateCamera3DPro( camera, movement, rotation, zoom ) end
 ---@return any buffer 
 function RL.LoadBuffer( buffer, type ) end
 
+---Read buffer data from binary file
+---- Failure return nil
+---- Success return Buffer
+---@param path string
+---@param int any
+---@return any buffer 
+function RL.LoadBufferFromFile( path, int ) end
+
 ---Unload buffer data
 ---@param buffer any
 ---@return any RL.UnloadBuffer
@@ -2395,13 +2403,12 @@ function RL.GetBufferSize( buffer ) end
 ---@return any RL.ExportBuffer
 function  RL.ExportBuffer( buffer, path ) end
 
----Read buffer data from binary file
----- Failure return nil
----- Success return Buffer
----@param path string
----@param int any
----@return any buffer 
-function RL.LoadBufferFromFile( path, int ) end
+---Export buffer data to code (.h), returns true on success
+---- Success return bool
+---@param buffer any
+---@param fileName string
+---@return any success 
+function RL.ExportBufferAsCode( buffer, fileName ) end
 
 -- Shapes - Basic shapes drawing functions
 

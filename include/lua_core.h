@@ -31,6 +31,8 @@ void luaCallProcess();
 void luaCallDraw();
 void luaCallExit();
 void luaRegister();
+void platformDefineGlobals();
+void luaPlatformRegister();
 /* Lua get types. */
 bool uluaGetBoolean( lua_State *L, int index );
 Color uluaGetColor( lua_State *L, int index );

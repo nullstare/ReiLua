@@ -3,7 +3,7 @@
 #include "core.h"
 #include "platforms/core_desktop.h"
 
-static void platformDefineGlobals() {
+void platformDefineGlobals() {
 	lua_State *L = state->luaState;
 
 	lua_getglobal( L, "RL" );
@@ -85,17 +85,6 @@ int lcoreGetKeyScancode( lua_State *L ) {
 	lua_pushinteger( L, glfwGetKeyScancode( key ) );
 
 	return 1;
-}
-
-static void luaPlatformRegister() {
-	lua_State *L = state->luaState;
-	lua_getglobal( L, "RL" );
-
-	/* Input-related functions: keyboard. */
-	assingGlobalFunction( "GetKeyName", lcoreGetKeyName );
-	assingGlobalFunction( "GetKeyScancode", lcoreGetKeyScancode );
-
-	lua_pop( L, -1 );
 }
 
 /* Events. */
@@ -648,4 +637,17 @@ static void platformRegisterEvents() {
 	// state->glfwtabletDataCallback = glfwSetPenTabletDataCallback( penTabletDataEvent );
 	// state->glfwtabletCursorCallback = glfwSetPenTabletCursorCallback( penTabletCursorEvent );
 	// state->glfwtabletProximityCallback = glfwSetPenTabletProximityCallback( penTabletProximityEvent );
+}
+
+void luaPlatformRegister() {
+	lua_State *L = state->luaState;
+	lua_getglobal( L, "RL" );
+
+	/* Input-related functions: keyboard. */
+	assingGlobalFunction( "GetKeyName", lcoreGetKeyName );
+	assingGlobalFunction( "GetKeyScancode", lcoreGetKeyScancode );
+
+	lua_pop( L, -1 );
+
+	platformRegisterEvents();
 }

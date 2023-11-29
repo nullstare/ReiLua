@@ -3,7 +3,7 @@
 #include "core.h"
 #include "platforms/core_desktop_sdl.h"
 
-static void platformDefineGlobals() {
+void platformDefineGlobals() {
 	lua_State *L = state->luaState;
 
 	lua_getglobal( L, "RL" );
@@ -109,17 +109,6 @@ int lcoreGetScancodeFromKey( lua_State *L ) {
 	lua_pushinteger( L, SDL_GetScancodeFromKey( key ) );
 
 	return 1;
-}
-
-static void luaPlatformRegister() {
-	lua_State *L = state->luaState;
-	lua_getglobal( L, "RL" );
-
-	/* Input-related functions: keyboard. */
-	assingGlobalFunction( "GetKeyName", lcoreGetKeyName );
-	assingGlobalFunction( "GetScancodeFromKey", lcoreGetScancodeFromKey );
-
-	lua_pop( L, -1 );
 }
 
 /* Events. */
@@ -554,4 +543,17 @@ Event occurs an event of type SDL_DOLLARGESTURE or SDL_DOLLARRECORD is reported.
 		lua_pop( L, -1 );
 	}
 	state->SDL_eventQueueLen = 0;
+}
+
+void luaPlatformRegister() {
+	lua_State *L = state->luaState;
+	lua_getglobal( L, "RL" );
+
+	/* Input-related functions: keyboard. */
+	assingGlobalFunction( "GetKeyName", lcoreGetKeyName );
+	assingGlobalFunction( "GetScancodeFromKey", lcoreGetScancodeFromKey );
+
+	lua_pop( L, -1 );
+
+	platformRegisterEvents()
 }

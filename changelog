@@ -15,6 +15,7 @@ KEY CHANGES:
 	- ADDED: SDL Events.
 	- ADDED: Experimental GLFW Pen Touch events. Needs glfw PR https://github.com/glfw/glfw/pull/1445.
 	- ADDED: Platform specific API documentation generation.
+	- ADDED: Platform web.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.

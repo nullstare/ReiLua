@@ -14,8 +14,8 @@ static int getBufferElementSize( Buffer *buffer ) {
 		case BUFFER_INT: return sizeof( int );
 		case BUFFER_FLOAT: return sizeof( float );
 		case BUFFER_DOUBLE: return sizeof( double );
-		default: 1;
 	}
+	return 1;
 }
 
 void unloadBuffer( Buffer *buffer ) {

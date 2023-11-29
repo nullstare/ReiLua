@@ -18,6 +18,8 @@
 	#include "platforms/core_desktop.c"
 #elif PLATFORM_DESKTOP_SDL
 	#include "platforms/core_desktop_sdl.c"
+#elif PLATFORM_WEB
+	#include "platforms/core_web.c"
 #endif
 
 /* Define types. */
@@ -28,6 +30,7 @@ static int gcBuffer( lua_State *L ) {
 		Buffer *buffer = luaL_checkudata( L, 1, "Buffer" );
 		unloadBuffer( buffer );
 	}
+	return 0;
 }
 
 static void defineBuffer() {
@@ -46,6 +49,7 @@ static int gcImage( lua_State *L ) {
 		Image *image = luaL_checkudata( L, 1, "Image" );
 		UnloadImage( *image );
 	}
+	return 0;
 }
 
 static void defineImage() {
@@ -64,6 +68,7 @@ static int gcTexture( lua_State *L ) {
 		Texture *texture = luaL_checkudata( L, 1, "Texture" );
 		UnloadTexture( *texture );
 	}
+	return 0;
 }
 
 static void defineTexture() {
@@ -83,6 +88,7 @@ static int gcRenderTexture( lua_State *L ) {
 		RenderTexture *renderTexture = luaL_checkudata( L, 1, "RenderTexture" );
 		UnloadRenderTexture( *renderTexture );
 	}
+	return 0;
 }
 
 static void defineRenderTexture() {
@@ -119,6 +125,7 @@ static int gcShader( lua_State *L ) {
 		Shader *shader = luaL_checkudata( L, 1, "Shader" );
 		UnloadShader( *shader );
 	}
+	return 0;
 }
 
 static void defineShader() {
@@ -137,6 +144,7 @@ static int gcFont( lua_State *L ) {
 		Font *font = luaL_checkudata( L, 1, "Font" );
 		UnloadFont( *font );
 	}
+	return 0;
 }
 
 static void defineFont() {
@@ -155,6 +163,7 @@ static int gcWave( lua_State *L ) {
 		Wave *wave = luaL_checkudata( L, 1, "Wave" );
 		UnloadWave( *wave );
 	}
+	return 0;
 }
 
 static void defineWave() {
@@ -173,6 +182,7 @@ static int gcSound( lua_State *L ) {
 		Sound *sound = luaL_checkudata( L, 1, "Sound" );
 		UnloadSound( *sound );
 	}
+	return 0;
 }
 
 static void defineSound() {
@@ -191,6 +201,7 @@ static int gcMusic( lua_State *L ) {
 		Music *music = luaL_checkudata( L, 1, "Music" );
 		UnloadMusicStream( *music );
 	}
+	return 0;
 }
 
 static void defineMusic() {
@@ -219,6 +230,7 @@ static int gcMaterial( lua_State *L ) {
 		/* Custom UnloadMaterial since we don't want to free Shaders or Textures. */
 		unloadMaterial( material );
 	}
+	return 0;
 }
 
 static void defineMaterial() {
@@ -237,6 +249,7 @@ static int gcMesh( lua_State *L ) {
 		Mesh *mesh = luaL_checkudata( L, 1, "Mesh" );
 		UnloadMesh( *mesh );
 	}
+	return 0;
 }
 
 static void defineMesh() {
@@ -256,6 +269,7 @@ static int gcModel( lua_State *L ) {
 		UnloadModel( *model );
 		// UnloadModelKeepMeshes( *model );
 	}
+	return 0;
 }
 
 static void defineModel() {
@@ -274,6 +288,7 @@ static int gcModelAnimation( lua_State *L ) {
 		ModelAnimation *modelAnimation = luaL_checkudata( L, 1, "ModelAnimation" );
 		UnloadModelAnimation( *modelAnimation );
 	}
+	return 0;
 }
 
 static void defineModelAnimation() {
@@ -1030,11 +1045,11 @@ bool luaCallMain() {
 	char path[ STRING_LEN ] = { '\0' };
 
 /* If web, set path to resources folder. */
-#ifdef EMSCRIPTEN
-	snprintf( path, STRING_LEN, "resources/main.lua" );
+#ifdef PLATFORM_WEB
+	snprintf( path, STRING_LEN, "main.lua" );
 	/* Alternatively look for main. Could be precompiled binary file. */
 	if ( !FileExists( path ) ) {
-		snprintf( path, STRING_LEN, "resources/main" );
+		snprintf( path, STRING_LEN, "main" );
 	}
 #else
 	snprintf( path, STRING_LEN, "%smain.lua", state->exePath );
@@ -1054,8 +1069,6 @@ bool luaCallMain() {
 
 	/* Apply custom callback here. */
 	SetTraceLogCallback( logCustom );
-
-	platformRegisterEvents();
 
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "init" );
@@ -1077,6 +1090,7 @@ bool luaCallMain() {
 }
 
 void luaCallProcess() {
+	
 #ifdef PLATFORM_DESKTOP_SDL
 	platformSendEvents();
 #endif

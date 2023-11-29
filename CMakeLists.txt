@@ -13,7 +13,7 @@ set( CMAKE_C_STANDARD 99 ) # Requires C99 standard
 option( SHARED "Build using dynamic libraries." off )
 option( LUAJIT "Use LuaJIT." off )
 
-enum_option( PLATFORM "Desktop;Desktop_SDL" "Platform to build for." )
+enum_option( PLATFORM "Desktop;Desktop_SDL;Web" "Platform to build for." )
 
 if( NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES )
     set( CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE )
@@ -29,16 +29,19 @@ if( PLATFORM STREQUAL "Desktop" )
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DPLATFORM_DESKTOP" )
 elseif( PLATFORM STREQUAL "Desktop_SDL" )
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DPLATFORM_DESKTOP_SDL" )
+elseif( PLATFORM STREQUAL "Web" )
+	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DPLATFORM_WEB" )
 endif()
 
-if( EMSCRIPTEN ) # Web
+if( PLATFORM STREQUAL "Web" )
 	target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/web/libraylib.a )
 	target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/web/liblua.a )
 
 	# Try "-s USE_PTHREADS" if not getting pixel perfect rendering.
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY" )
+	# set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY -s FORCE_FILESYSTEM=1" )
   	set( CMAKE_EXECUTABLE_SUFFIX ".html" ) # This line is used to set your executable to build with the emscripten html template so that you can directly open it.
-	set( resources_dir "resources" )
+	set( resources_dir "resources@/" ) # Sets resources as root for the virtual file system.
 	set_target_properties( ${PROJECT_NAME} PROPERTIES LINK_FLAGS "--preload-file ${resources_dir}" )
 else() # Desktop
 	if( SHARED )

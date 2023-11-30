@@ -1036,6 +1036,19 @@ int ltexturesImageDrawTextEx( lua_State *L ) {
 */
 
 /*
+> texture = RL.GetTextureDefault()
+
+Get default texture. Return as lightuserdata
+
+- Success return Texture
+*/
+int ltexturesGetTextureDefault( lua_State *L ) {
+	lua_pushlightuserdata( L, &state->defaultTexture );
+
+	return 1;
+}
+
+/*
 > texture = RL.LoadTexture( string fileName )
 
 Load texture from file into GPU memory ( VRAM )

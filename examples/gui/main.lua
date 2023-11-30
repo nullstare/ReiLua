@@ -51,7 +51,7 @@ function RL.draw()
 	if windowOpen and RL.GuiWindowBox( { 300, 16, 200, 320 }, "Window" ) == 1 then
 		windowOpen = false
 	end
-
+	
 	RL.GuiPanel( { 60, 260, 100, 100 }, "Panel" )
 
 	_, toggled = RL.GuiToggle( { 200, 260, 64, 32 }, "Toggle", toggled )

@@ -3314,6 +3314,11 @@ function  RL.ImageDrawTextEx( dst, font, text, position, fontSize, spacing, tint
 
 -- Textures - Texture loading functions
 
+---Get default texture. Return as lightuserdata
+---- Success return Texture
+---@return any texture 
+function RL.GetTextureDefault() end
+
 ---Load texture from file into GPU memory ( VRAM )
 ---- Failure return nil
 ---- Success return Texture
@@ -3590,8 +3595,9 @@ function RL.GetPixelDataSize( width, height, format ) end
 -- Text - Font loading/unloading functions
 
 ---Get the default Font. Return as lightuserdata
----@return any RL.GetFontDefault
-function  RL.GetFontDefault() end
+---- Success return Font
+---@return any font 
+function RL.GetFontDefault() end
 
 ---Load font from file into GPU memory (VRAM)
 ---- Failure return nil

@@ -16,6 +16,7 @@ KEY CHANGES:
 	- ADDED: Experimental GLFW Pen Touch events. Needs glfw PR https://github.com/glfw/glfw/pull/1445.
 	- ADDED: Platform specific API documentation generation.
 	- ADDED: Platform web.
+	- ADDED: Raygui textures with SetShapesTexture.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.
@@ -32,6 +33,7 @@ DETAILED CHANGES:
 	- CHANGE: Term globals changed to defines in documentation.
 	- CHANGE: Event documentation is now described in c files.
 	- ADDED: ExportBufferAsCode.
+	- ADDED: GetTextureDefault.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.6.0		Using Raylib 4.5

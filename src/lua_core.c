@@ -1090,7 +1090,7 @@ bool luaCallMain() {
 }
 
 void luaCallProcess() {
-	
+
 #ifdef PLATFORM_DESKTOP_SDL
 	platformSendEvents();
 #endif
@@ -1508,6 +1508,7 @@ void luaRegister() {
 	assingGlobalFunction( "ImageDraw", ltexturesImageDraw );
 	assingGlobalFunction( "ImageDrawTextEx", ltexturesImageDrawTextEx );
 		/* Texture loading functions. */
+	assingGlobalFunction( "GetTextureDefault", ltexturesGetTextureDefault );
 	assingGlobalFunction( "LoadTexture", ltexturesLoadTexture );
 	assingGlobalFunction( "LoadTextureFromImage", ltexturesLoadTextureFromImage );
 	assingGlobalFunction( "LoadTextureCubemap", ltexturesLoadTextureCubemap );

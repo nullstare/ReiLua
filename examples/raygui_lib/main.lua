@@ -9,6 +9,8 @@ Raygui = require( "raygui" )
 local grid = {}
 local windowbox = {}
 local tabBar = {}
+local texture = RL.LoadTexture( RL.GetBasePath().."../resources/images/gradient.png" )
+local textureRect = Rect:new( 0, 0, RL.GetTextureSize( texture )[1], RL.GetTextureSize( texture )[2] )
 
 local function closeTab( self, id )
 	local splits = Util.split( tabBar.text, ";" )
@@ -44,6 +46,10 @@ function RL.init()
 	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_SPACING, 4 )
 	RL.GuiSetStyle( RL.SPINNER, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_RIGHT )
 
+	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) )
+	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.ORANGE ) )
+	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( RL.GREEN ) )
+
 	local label = Raygui.Label:new(
 		Rect:new( 16, 16, 64, 32 ),
 		"Cat"
@@ -57,12 +63,17 @@ function RL.init()
 	local button = Raygui.Button:new(
 		Rect:new( 245, 188, 64, 32 ),
 		"Dog",
-		function() toggleGroup:setText( "Dog;Cat\nEagle" ) end
+		function() toggleGroup:setText( "Dog;Cat\nEagle" ) end,
+		texture,
+		textureRect
 	)
 	local checkbox = Raygui.CheckBox:new(
 		Rect:new( 64, 128, 20, 20 ),
 		"Dog",
-		false
+		false,
+		nil,
+		texture,
+		textureRect
 	)
 	local combobox = Raygui.ComboBox:new(
 		Rect:new( 64, 256, 128, 32 ),
@@ -115,7 +126,9 @@ function RL.init()
 		0,
 		0,
 		100,
-		function( self ) print( "Changed value "..self.value ) end
+		function( self ) print( "Changed value "..self.value ) end,
+		texture,
+		textureRect
 	)
 	local sliderbar = Raygui.SliderBar:new(
 		Rect:new( 50, 550, 256, 32 ),
@@ -125,6 +138,7 @@ function RL.init()
 		0,
 		100,
 		function( self ) print( "Changed value "..self.value ) end
+
 	)
 	local progressbar = Raygui.ProgressBar:new(
 		Rect:new( 50, 600, 256, 32 ),
@@ -155,7 +169,10 @@ function RL.init()
 		-- Close callback.
 		function( self ) self.visible = false end,
 		-- Grab callback.
-		function( self ) Raygui.set2Top( self ) end
+		function( self ) Raygui.set2Top( self ) end,
+		nil,
+		texture,
+		textureRect
 	)
 	local groupbox = Raygui.GroupBox:new(
 		Rect:new( 400, 700, 256, 256 ),
@@ -177,7 +194,9 @@ function RL.init()
 		0,
 		-- function( self ) Raygui.set2Top( self ) end
 		nil,
-		closeTab
+		closeTab,
+		texture,
+		textureRect
 	)
 	local scrollpanel = Raygui.ScrollPanel:new(
 		Rect:new( 800, 64, 256, 256 ),
@@ -194,7 +213,9 @@ function RL.init()
 		"Cat;Dog;Horse;Cow;Pig;Eagle;Lion",
 		0,
 		0,
-		function( self ) print( self:getItem( self.active ) ) end
+		function( self ) print( self:getItem( self.active ) ) end,
+		texture,
+		textureRect
 	)
 	local listviewex = Raygui.ListViewEx:new(
 		Rect:new( 1300, 64, 128, 80 ),
@@ -202,7 +223,9 @@ function RL.init()
 		0,
 		0,
 		0,
-		function( self ) print( self:getItem( self.active ) ) end
+		function( self ) print( self:getItem( self.active ) ) end,
+		texture,
+		textureRect
 	)
 	local messagebox = Raygui.MessageBox:new(
 		Rect:new( 1100, 150, 300, 128 ),

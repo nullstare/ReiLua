@@ -14,6 +14,7 @@ typedef struct {
 	int logLevelInvalid;
 	Font defaultFont;
 	Material defaultMaterial;
+	Texture defaultTexture;
 	int *RLGLcurrentShaderLocs;
 	/* Events. */
 #ifdef PLATFORM_DESKTOP

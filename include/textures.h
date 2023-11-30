@@ -70,6 +70,7 @@ int ltexturesImageDrawRectangleLines( lua_State *L );
 int ltexturesImageDraw( lua_State *L );
 int ltexturesImageDrawTextEx( lua_State *L );
 /* Texture loading functions. */
+int ltexturesGetTextureDefault( lua_State *L );
 int ltexturesLoadTexture( lua_State *L );
 int ltexturesLoadTextureFromImage( lua_State *L );
 int ltexturesLoadTextureCubemap( lua_State *L );

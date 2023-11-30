@@ -162,9 +162,11 @@ bool wordWrap, Color *tints, int tintCount, Color *backTints, int backTintCount 
 */
 
 /*
-> RL.GetFontDefault()
+> font = RL.GetFontDefault()
 
 Get the default Font. Return as lightuserdata
+
+- Success return Font
 */
 int ltextGetFontDefault( lua_State *L ) {
 	lua_pushlightuserdata( L, &state->defaultFont );

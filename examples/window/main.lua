@@ -25,4 +25,6 @@ end
 function RL.draw()
 	RL.ClearBackground( RL.RAYWHITE )
     RL.DrawText( text, textPos, 20, textColor )
+
+	RL.DrawCircle( { 300, 300 }, 180, RL.BLACK )
 end

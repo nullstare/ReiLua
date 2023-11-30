@@ -56,6 +56,8 @@ local Raygui = {
 	grabPos = Vec2:new(),
 	scrolling = false,
 	textEdit = false,
+	defaultTexture = RL.GetTextureDefault(), 
+	defaultRect = Rect:new( 0, 0, 1, 1 )
 }
 
 function Raygui.process()
@@ -180,25 +182,10 @@ end
 
 -- WindowBox.
 
---- Window Box control, shows a window that can be closed
----@class WindowBox
----@field bounds table Rect
----@field text string
----@field callback function|nil
----@field grabCallback function|nil
----@field dragCallback function|nil
----@field visible boolean
----@field draggable boolean
 WindowBox = {}
 WindowBox.__index = WindowBox
 
----@param bounds table Rect
----@param text string
----@param callback function|nil
----@param grabCallback function|nil
----@param dragCallback function|nil
----@return table object
-function WindowBox:new( bounds, text, callback, grabCallback, dragCallback )
+function WindowBox:new( bounds, text, callback, grabCallback, dragCallback, texture, textureRect )
     local object = setmetatable( {}, WindowBox )
 
     object.bounds = bounds:clone()
@@ -206,6 +193,8 @@ function WindowBox:new( bounds, text, callback, grabCallback, dragCallback )
 	object.callback = callback
 	object.grabCallback = grabCallback
 	object.dragCallback = dragCallback
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.visible = true
 	object.draggable = true
@@ -220,7 +209,15 @@ function WindowBox:process()
 end
 
 function WindowBox:draw()
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
+
 	local result = RL.GuiWindowBox( self.bounds, self.text )
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
 
 	if result == 1 and self.callback ~= nil then
         self.callback( self )
@@ -234,22 +231,15 @@ end
 
 -- GroupBox.
 
---- Group Box control with text name
----@class GroupBox
----@field bounds table Rect
----@field text string
----@field visible boolean
 GroupBox = {}
 GroupBox.__index = GroupBox
 
----@param bounds table Rect
----@param text string
 function GroupBox:new( bounds, text )
     local object = setmetatable( {}, GroupBox )
 
     object.bounds = bounds:clone()
     object.text = text
-
+	
 	object.visible = true
 
 	table.insert( Raygui.elements, object )
@@ -308,16 +298,18 @@ end
 Panel = {}
 Panel.__index = Panel
 
-function Panel:new( bounds, text, grabCallback, dragCallback )
+function Panel:new( bounds, text, grabCallback, dragCallback, texture, textureRect )
     local object = setmetatable( {}, Panel )
 
     object.bounds = bounds:clone()
     object.text = text
-
-	object.visible = true
-	object.draggable = true
 	object.grabCallback = grabCallback
 	object.dragCallback = dragCallback
+	object.texture = texture
+	object.textureRect = textureRect
+	
+	object.visible = true
+	object.draggable = true
 
 	table.insert( Raygui.elements, object )
 
@@ -329,7 +321,15 @@ function Panel:process()
 end
 
 function Panel:draw()
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
+
 	RL.GuiPanel( self.bounds, self.text )
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
 end
 
 function Panel:setPosition( pos )
@@ -343,12 +343,14 @@ end
 GuiTabBar = {}
 GuiTabBar.__index = GuiTabBar
 
-function GuiTabBar:new( bounds, text, active, callback, closeCallback )
+function GuiTabBar:new( bounds, text, active, callback, closeCallback, texture, textureRect )
     local object = setmetatable( {}, GuiTabBar )
 
     object.bounds = bounds:clone()
     object.text = text
     object.active = active
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.visible = true
 	object.callback = callback
@@ -367,7 +369,15 @@ function GuiTabBar:draw()
 	local oldActive = self.active
 	local result = -1
 
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
+
 	result, self.active = RL.GuiTabBar( self.bounds, self.text, self.active )
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
 
 	if self.active ~= oldActive and self.callback ~= nil then
 		self.callback( self )
@@ -389,7 +399,7 @@ end
 ScrollPanel = {}
 ScrollPanel.__index = ScrollPanel
 
-function ScrollPanel:new( bounds, text, content, scroll, callback, grabCallback, dragCallback )
+function ScrollPanel:new( bounds, text, content, scroll, callback, grabCallback, dragCallback, texture, textureRect )
     local object = setmetatable( {}, ScrollPanel )
 
     object.bounds = bounds:clone()
@@ -400,6 +410,8 @@ function ScrollPanel:new( bounds, text, content, scroll, callback, grabCallback,
     object.callback = callback
 	object.grabCallback = grabCallback
 	object.dragCallback = dragCallback
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.visible = true
 	object.draggable = true
@@ -415,7 +427,16 @@ end
 
 function ScrollPanel:draw()
 	local oldScroll = self.scroll:clone()
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
+
 	local _, scroll, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
 
 	self.view = Rect:new( view )
 	self.scroll = Vec2:new( scroll )
@@ -476,12 +497,14 @@ end
 Button = {}
 Button.__index = Button
 
-function Button:new( bounds, text, callback )
+function Button:new( bounds, text, callback, texture, textureRect )
     local object = setmetatable( {}, Button )
 
     object.bounds = bounds:clone()
     object.text = text
     object.callback = callback
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.visible = true
 
@@ -495,7 +518,15 @@ function Button:process()
 end
 
 function Button:draw()
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
+
     local result = RL.GuiButton( self.bounds, self.text )
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
 
     if result == 1 and self.callback ~= nil then
         self.callback( self )
@@ -550,13 +581,15 @@ end
 Toggle = {}
 Toggle.__index = Toggle
 
-function Toggle:new( bounds, text, active, callback )
-    local object = setmetatable( {}, Toggle )
+function Toggle:new( bounds, text, active, callback, texture, textureRect )
+	local object = setmetatable( {}, Toggle )
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.active = active
-    object.callback = callback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.active = active
+	object.callback = callback
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.visible = true
 
@@ -572,7 +605,15 @@ end
 function Toggle:draw()
     local oldActive = self.active
 
-    _, self.active = RL.GuiToggle( self.bounds, self.text, self.active )
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
+
+	_, self.active = RL.GuiToggle( self.bounds, self.text, self.active )
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
 
     if self.active ~= oldActive and self.callback ~= nil then
         self.callback( self )
@@ -590,13 +631,15 @@ end
 ToggleGroup = {}
 ToggleGroup.__index = ToggleGroup
 
-function ToggleGroup:new( bounds, text, active, callback )
+function ToggleGroup:new( bounds, text, active, callback, texture, textureRect )
     local object = setmetatable( {}, ToggleGroup )
 
     object.bounds = bounds:clone()
     object.text = text
     object.active = active
     object.callback = callback
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.visible = true
 	object.focusBounds = {}
@@ -653,8 +696,15 @@ end
 function ToggleGroup:draw()
     local oldActive = self.active
 
-    _, self.active = RL.GuiToggleGroup( self.bounds, self.text, self.active )
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
 
+	_, self.active = RL.GuiToggleGroup( self.bounds, self.text, self.active )
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
     if self.active ~= oldActive and self.callback ~= nil then
         self.callback( self )
     end
@@ -673,13 +723,15 @@ end
 CheckBox = {}
 CheckBox.__index = CheckBox
 
-function CheckBox:new( bounds, text, checked, callback )
+function CheckBox:new( bounds, text, checked, callback, texture, textureRect )
     local object = setmetatable( {}, CheckBox )
 
     object.bounds = bounds:clone()
     object.text = text
     object.checked = checked
     object.callback = callback
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.visible = true
     object.focusBounds = bounds:clone()
@@ -734,12 +786,18 @@ end
 function CheckBox:draw()
     local oldChecked = self.checked
 
-    _, self.checked = RL.GuiCheckBox( self.bounds, self.text, self.checked )
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
 
+	_, self.checked = RL.GuiCheckBox( self.bounds, self.text, self.checked )
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
     if self.checked ~= oldChecked and self.callback ~= nil then
         self.callback( self )
     end
-
     -- RL.DrawRectangleLines( self.focusBounds, RL.RED )
 end
 
@@ -756,13 +814,15 @@ end
 ComboBox = {}
 ComboBox.__index = ComboBox
 
-function ComboBox:new( bounds, text, active, callback )
+function ComboBox:new( bounds, text, active, callback, texture, textureRect )
     local object = setmetatable( {}, ComboBox )
 
     object.bounds = bounds:clone()
     object.text = text
     object.active = active
     object.callback = callback
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.visible = true
 
@@ -778,8 +838,15 @@ end
 function ComboBox:draw()
     local oldActive = self.active
 
-    _, self.active = RL.GuiComboBox( self.bounds, self.text, self.active )
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
 
+	_, self.active = RL.GuiComboBox( self.bounds, self.text, self.active )
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
     if self.active ~= oldActive and self.callback ~= nil then
         self.callback( self )
     end
@@ -796,7 +863,7 @@ end
 DropdownBox = {}
 DropdownBox.__index = DropdownBox
 
-function DropdownBox:new( bounds, text, active, editMode, callback )
+function DropdownBox:new( bounds, text, active, editMode, callback, texture, textureRect )
     local object = setmetatable( {}, DropdownBox )
 
     object.bounds = bounds:clone()
@@ -804,6 +871,8 @@ function DropdownBox:new( bounds, text, active, editMode, callback )
     object.active = active
     object.editMode = editMode
     object.callback = callback
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.visible = true
 	object.editModeBounds = bounds:clone()
@@ -846,8 +915,15 @@ end
 function DropdownBox:draw()
 	local result = 0
 
-    result, self.active = RL.GuiDropdownBox( self.bounds, self.text, self.active, self.editMode )
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
 
+	result, self.active = RL.GuiDropdownBox( self.bounds, self.text, self.active, self.editMode )
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
     if result == 1 then
 		self.editMode = not self.editMode
 
@@ -868,7 +944,7 @@ end
 Spinner = {}
 Spinner.__index = Spinner
 
-function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callback )
+function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callback, texture, textureRect )
     local object = setmetatable( {}, Spinner )
 
     object.bounds = bounds:clone()
@@ -878,6 +954,8 @@ function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callbac
     object.maxValue = maxValue
     object.editMode = editMode
     object.callback = callback
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.visible = true
 
@@ -894,13 +972,19 @@ function Spinner:draw()
 	local result = 0
 	local oldValue = self.value
 
-    result, self.value = RL.GuiSpinner( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
 
+	result, self.value = RL.GuiSpinner( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
     if result == 1 then
 		Raygui.editMode( self.editMode )
 		self.editMode = not self.editMode
     end
-
 	if self.value ~= oldValue and self.callback ~= nil then
 		self.callback( self )
 	end
@@ -917,7 +1001,7 @@ end
 ValueBox = {}
 ValueBox.__index = ValueBox
 
-function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callback )
+function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callback, texture, textureRect )
     local object = setmetatable( {}, ValueBox )
 
     object.bounds = bounds:clone()
@@ -927,6 +1011,8 @@ function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callba
     object.maxValue = maxValue
     object.editMode = editMode
     object.callback = callback
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.visible = true
 
@@ -943,13 +1029,19 @@ function ValueBox:draw()
 	local result = 0
 	local oldValue = self.value
 
-    result, self.value = RL.GuiValueBox( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
 
+	result, self.value = RL.GuiValueBox( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
     if result == 1 then
 		Raygui.editMode( self.editMode )
 		self.editMode = not self.editMode
     end
-
 	if self.value ~= oldValue and self.callback ~= nil then
 		self.callback( self )
 	end
@@ -966,7 +1058,7 @@ end
 TextBox = {}
 TextBox.__index = TextBox
 
-function TextBox:new( bounds, text, textSize, editMode, callback )
+function TextBox:new( bounds, text, textSize, editMode, callback, texture, textureRect )
     local object = setmetatable( {}, TextBox )
 
     object.bounds = bounds:clone()
@@ -974,6 +1066,8 @@ function TextBox:new( bounds, text, textSize, editMode, callback )
     object.textSize = textSize
     object.editMode = editMode
     object.callback = callback
+	object.texture = texture
+	object.textureRect = textureRect
 	-- Option for preventing text to be drawn outside bounds.
 	object.scissorMode = false
 	object.visible = true
@@ -993,13 +1087,18 @@ function TextBox:draw()
 	if self.scissorMode then
 		RL.BeginScissorMode( self.bounds )
 	end
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
 
-    result, self.text = RL.GuiTextBox( self.bounds, self.text, self.textSize, self.editMode )
+	result, self.text = RL.GuiTextBox( self.bounds, self.text, self.textSize, self.editMode )
 
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
 	if self.scissorMode then
 		RL.EndScissorMode()
 	end
-
     if result == 1 then
 		Raygui.editMode( self.editMode )
 		self.editMode = not self.editMode
@@ -1021,7 +1120,7 @@ end
 Slider = {}
 Slider.__index = Slider
 
-function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, callback )
+function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, texture, textureRect )
     local object = setmetatable( {}, Slider )
 
     object.bounds = bounds:clone()
@@ -1031,6 +1130,8 @@ function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, cal
     object.minValue = minValue
     object.maxValue = maxValue
     object.callback = callback
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.visible = true
 
@@ -1046,8 +1147,15 @@ end
 function Slider:draw()
 	local oldValue = self.value
 
-    _, self.value = RL.GuiSlider( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
 
+	_, self.value = RL.GuiSlider( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
     if self.value ~= oldValue then
 		Raygui.scrolling = true
 
@@ -1068,7 +1176,7 @@ end
 SliderBar = {}
 SliderBar.__index = SliderBar
 
-function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback )
+function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, texture, textureRect )
     local object = setmetatable( {}, SliderBar )
 
     object.bounds = bounds:clone()
@@ -1078,6 +1186,8 @@ function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, 
     object.minValue = minValue
     object.maxValue = maxValue
     object.callback = callback
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.visible = true
 
@@ -1093,8 +1203,15 @@ end
 function SliderBar:draw()
 	local oldValue = self.value
 
-    _, self.value = RL.GuiSliderBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
 
+	_, self.value = RL.GuiSliderBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
     if self.value ~= oldValue then
 		Raygui.scrolling = true
 
@@ -1115,7 +1232,7 @@ end
 ProgressBar = {}
 ProgressBar.__index = ProgressBar
 
-function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback )
+function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, texture, textureRect )
     local object = setmetatable( {}, ProgressBar )
 
     object.bounds = bounds:clone()
@@ -1125,6 +1242,8 @@ function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue
     object.minValue = minValue
     object.maxValue = maxValue
     object.callback = callback
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.visible = true
 
@@ -1140,8 +1259,15 @@ end
 function ProgressBar:draw()
 	local oldValue = self.value
 
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
+
 	_, self.value = RL.GuiProgressBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
 
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
     if self.value ~= oldValue then
 		self.callback( self )
     end
@@ -1158,11 +1284,13 @@ end
 StatusBar = {}
 StatusBar.__index = StatusBar
 
-function StatusBar:new( bounds, text )
+function StatusBar:new( bounds, text, texture, textureRect )
     local object = setmetatable( {}, StatusBar )
 
     object.bounds = bounds:clone()
     object.text = text
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.visible = true
 
@@ -1176,7 +1304,15 @@ function StatusBar:process()
 end
 
 function StatusBar:draw()
-    RL.GuiStatusBar( self.bounds, self.text )
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
+
+	RL.GuiStatusBar( self.bounds, self.text )
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
 end
 
 function StatusBar:setPosition( pos )
@@ -1190,11 +1326,13 @@ end
 DummyRec = {}
 DummyRec.__index = DummyRec
 
-function DummyRec:new( bounds, text )
+function DummyRec:new( bounds, text, texture, textureRect )
     local object = setmetatable( {}, DummyRec )
 
     object.bounds = bounds:clone()
     object.text = text
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.visible = true
 
@@ -1208,7 +1346,15 @@ function DummyRec:process()
 end
 
 function DummyRec:draw()
-    RL.GuiDummyRec( self.bounds, self.text )
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
+
+	RL.GuiDummyRec( self.bounds, self.text )
+
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
 end
 
 function DummyRec:setPosition( pos )
@@ -1270,7 +1416,7 @@ end
 ListView = {}
 ListView.__index = ListView
 
-function ListView:new( bounds, text, scrollIndex, active, callback )
+function ListView:new( bounds, text, scrollIndex, active, callback, texture, textureRect )
     local object = setmetatable( {}, ListView )
 
     object.bounds = bounds:clone()
@@ -1278,6 +1424,9 @@ function ListView:new( bounds, text, scrollIndex, active, callback )
     object.scrollIndex = scrollIndex
     object.active = active
 	object.callback = callback
+	object.texture = texture
+	object.textureRect = textureRect
+
 	object.visible = true
 
 	table.insert( Raygui.elements, object )
@@ -1297,8 +1446,15 @@ function ListView:draw()
 	local oldActive = self.active
 	local oldScrollIndex = self.scrollIndex
 
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
+
 	_, self.scrollIndex, self.active = RL.GuiListView( self.bounds, self.text, self.scrollIndex, self.active )
 
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
 	if self.scrollIndex ~= oldScrollIndex then
 		Raygui.scrolling = true
 	end
@@ -1318,7 +1474,7 @@ end
 ListViewEx = {}
 ListViewEx.__index = ListViewEx
 
-function ListViewEx:new( bounds, text, scrollIndex, active, focus, callback )
+function ListViewEx:new( bounds, text, scrollIndex, active, focus, callback, texture, textureRect )
     local object = setmetatable( {}, ListViewEx )
 
     object.bounds = bounds:clone()
@@ -1327,6 +1483,9 @@ function ListViewEx:new( bounds, text, scrollIndex, active, focus, callback )
     object.active = active
     object.focus = focus
 	object.callback = callback
+	object.texture = texture
+	object.textureRect = textureRect
+
 	object.visible = true
 
 	table.insert( Raygui.elements, object )
@@ -1346,8 +1505,15 @@ function ListViewEx:draw()
 	local oldActive = self.active
 	local oldScrollIndex = self.scrollIndex
 
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
+
 	_, self.scrollIndex, self.active, self.focus = RL.GuiListViewEx( self.bounds, self.text, self.scrollIndex, self.active, self.focus )
 
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
 	if self.scrollIndex ~= oldScrollIndex then
 		Raygui.scrolling = true
 	end
@@ -1367,7 +1533,7 @@ end
 MessageBox = {}
 MessageBox.__index = MessageBox
 
-function MessageBox:new( bounds, title, message, buttons, callback, grabCallback, dragCallback )
+function MessageBox:new( bounds, title, message, buttons, callback, grabCallback, dragCallback, texture, textureRect )
     local object = setmetatable( {}, MessageBox )
 
     object.bounds = bounds:clone()
@@ -1377,6 +1543,8 @@ function MessageBox:new( bounds, title, message, buttons, callback, grabCallback
 	object.callback = callback
 	object.grabCallback = grabCallback
 	object.dragCallback = dragCallback
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.buttonIndex = -1
 	object.visible = true
@@ -1396,8 +1564,15 @@ function MessageBox:process()
 end
 
 function MessageBox:draw()
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
+
 	self.buttonIndex = RL.GuiMessageBox( self.bounds, self.title, self.message, self.buttons )
 
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
 	if 0 <= self.buttonIndex and self.callback ~= nil then
 		self.callback( self )
 	end
@@ -1414,7 +1589,7 @@ end
 TextInputBox = {}
 TextInputBox.__index = TextInputBox
 
-function TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callback, grabCallback, dragCallback )
+function TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callback, grabCallback, dragCallback, texture, textureRect )
     local object = setmetatable( {}, TextInputBox )
 
     object.bounds = bounds:clone()
@@ -1427,6 +1602,8 @@ function TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, s
 	object.callback = callback
 	object.grabCallback = grabCallback
 	object.dragCallback = dragCallback
+	object.texture = texture
+	object.textureRect = textureRect
 
 	object.buttonIndex = -1
 	object.visible = true
@@ -1446,8 +1623,15 @@ function TextInputBox:process()
 end
 
 function TextInputBox:draw()
+	if self.texture ~= nil then
+		RL.SetShapesTexture( self.texture, self.textureRect )
+	end
+
 	self.buttonIndex, self.text, self.secretViewActive = RL.GuiTextInputBox( self.bounds, self.title, self.message, self.buttons, self.text, self.textMaxSize, self.secretViewActive )
 
+	if self.texture ~= nil then
+		RL.SetShapesTexture( Raygui.defaultTexture, Raygui.defaultRect )
+	end
 	if 0 <= self.buttonIndex and self.callback ~= nil then
 		self.callback( self )
 	end

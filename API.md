@@ -5880,6 +5880,14 @@ Draw text (Custom sprite font) within an image (Destination)
 
 ---
 
+> texture = RL.GetTextureDefault()
+
+Get default texture. Return as lightuserdata
+
+- Success return Texture
+
+---
+
 > texture = RL.LoadTexture( string fileName )
 
 Load texture from file into GPU memory ( VRAM )
@@ -6201,9 +6209,11 @@ Get pixel data size in bytes for certain format
 
 ---
 
-> RL.GetFontDefault()
+> font = RL.GetFontDefault()
 
 Get the default Font. Return as lightuserdata
+
+- Success return Font
 
 ---
 

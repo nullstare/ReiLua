@@ -18,6 +18,7 @@ KEY CHANGES:
 	- ADDED: Platform web.
 	- ADDED: Raygui textures with SetShapesTexture.
 	- CHANGE: Raygui wrapper library is now object based. Possible to have multiple separated gui systems.
+	- ADDED: Raygui wrapper library disabled and styles for each element.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.

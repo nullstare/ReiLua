@@ -27,7 +27,7 @@ function Calculator:new( pos )
 
 	object.handle:add( Gui.texture:new( {
 		bounds = object.handle.bounds:clone(),
-		texture = bgrTexture,
+		texture = BgrTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
 		color = Color:new( RL.LIGHTGRAY ),
@@ -35,7 +35,7 @@ function Calculator:new( pos )
 
 	object.handle:add( Gui.texture:new( {
 		bounds = object.handle.bounds:clone(),
-		texture = borderTexture,
+		texture = BorderTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
 		color = Color:new( RL.LIGHTGRAY ),
@@ -57,7 +57,7 @@ function Calculator:new( pos )
 
 	object.closeButton:add( Gui.texture:new( {
 		bounds = object.closeButton.bounds:clone(),
-		texture = cancelTexture,
+		texture = CancelTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
 	} ) )
@@ -70,7 +70,7 @@ function Calculator:new( pos )
 
 	object.panel:add( Gui.texture:new( {
 		bounds = object.panel.bounds:clone(),
-		texture = bgrTexture,
+		texture = BgrTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
 		color = Color:new( RL.GRAY ),
@@ -78,7 +78,7 @@ function Calculator:new( pos )
 
 	object.panel:add( Gui.texture:new( {
 		bounds = object.panel.bounds:clone(),
-		texture = borderTexture,
+		texture = BorderTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
 		color = Color:new( RL.LIGHTGRAY ),

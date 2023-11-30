@@ -27,7 +27,7 @@ function FileExplorer:new( pos )
 
 	object.handle:add( Gui.texture:new( {
 		bounds = object.handle.bounds:clone(),
-		texture = bgrTexture,
+		texture = BgrTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
 		color = Color:new( RL.LIGHTGRAY ),
@@ -35,7 +35,7 @@ function FileExplorer:new( pos )
 
 	object.handle:add( Gui.texture:new( {
 		bounds = object.handle.bounds:clone(),
-		texture = borderTexture,
+		texture = BorderTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
 		color = Color:new( RL.LIGHTGRAY ),
@@ -57,7 +57,7 @@ function FileExplorer:new( pos )
 
 	object.closeButton:add( Gui.texture:new( {
 		bounds = object.closeButton.bounds:clone(),
-		texture = cancelTexture,
+		texture = CancelTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
 	} ) )
@@ -70,7 +70,7 @@ function FileExplorer:new( pos )
 
 	object.panel:add( Gui.texture:new( {
 		bounds = object.panel.bounds:clone(),
-		texture = bgrTexture,
+		texture = BgrTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
 		color = Color:new( RL.GRAY ),
@@ -78,7 +78,7 @@ function FileExplorer:new( pos )
 
 	object.panel:add( Gui.texture:new( {
 		bounds = object.panel.bounds:clone(),
-		texture = borderTexture,
+		texture = BorderTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
 		color = Color:new( RL.LIGHTGRAY ),
@@ -110,7 +110,7 @@ function FileExplorer:new( pos )
 
 	object.backButton:add( Gui.texture:new( {
 		bounds = Rect:new( 0, 0, object.HANDLE_HIGHT, object.HANDLE_HIGHT ),
-		texture = backTexture,
+		texture = BackTexture,
 		HAling = Gui.ALING.CENTER,
 		color = Color:new( RL.BLACK )
 	} ) )
@@ -153,8 +153,8 @@ function FileExplorer:new( pos )
 	object.path = RL.GetBasePath()
 
 	-- Take last '/' away.
-	if util.utf8Sub( object.path, utf8.len( object.path ), utf8.len( object.path ) ) == "/" then
-		object.path = util.utf8Sub( object.path, 1, utf8.len( object.path ) - 1 )
+	if Util.utf8Sub( object.path, utf8.len( object.path ), utf8.len( object.path ) ) == "/" then
+		object.path = Util.utf8Sub( object.path, 1, utf8.len( object.path ) - 1 )
 	end
 	object.file = ""
 
@@ -228,11 +228,11 @@ function FileExplorer:updateFiles()
 	table.sort( folders, function( a, b ) return a < b end )
 
 	for _, folder in ipairs( folders ) do
-		self:addFileToList( folder, folderTexture, { 150, 120, 80 }, function() self:changeDir( folder ) end )
+		self:addFileToList( folder, FolderTexture, { 150, 120, 80 }, function() self:changeDir( folder ) end )
 	end
 
 	for _, file in ipairs( files ) do
-		self:addFileToList( file, filesTexture, RL.WHITE, function() self:fileSelect( file ) end )
+		self:addFileToList( file, FilesTexture, RL.WHITE, function() self:fileSelect( file ) end )
 	end
 end
 

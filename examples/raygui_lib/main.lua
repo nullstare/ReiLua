@@ -47,10 +47,13 @@ function RL.init()
 	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_SIZE, 20 )
 	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_SPACING, 4 )
 	RL.GuiSetStyle( RL.SPINNER, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_RIGHT )
+	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT )
 
-	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) )
-	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.ORANGE ) )
-	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( RL.GREEN ) )
+	-- RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) )
+	-- RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.ORANGE ) )
+	-- RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( RL.GREEN ) )
+
+	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_LINE_SPACING, 20 )
 
 	local label = Gui:Label(
 		Rect:new( 16, 16, 64, 32 ),
@@ -65,17 +68,26 @@ function RL.init()
 	local button = Gui:Button(
 		Rect:new( 245, 188, 64, 32 ),
 		"Dog",
-		function() toggleGroup:setText( "Dog;Cat\nEagle" ) end,
-		texture,
-		textureRect
+		function() toggleGroup:setText( "Dog;Cat\nEagle" ) end
 	)
+	button.styles = {
+		{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
+		{ RL.DEFAULT, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.ORANGE ) },
+		{ RL.DEFAULT, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( RL.GREEN ) },
+	}
+	button.texture = texture
+	button.textureRect = textureRect
 	local checkbox = Gui:CheckBox(
-		Rect:new( 64, 128, 20, 20 ),
-		"Dog",
+		Rect:new( 116, 128, 20, 20 ),
+		"Visible",
+		toggleGroup.visible,
+		function( self ) toggleGroup.visible = self.checked end
+	)
+	local toggle = Gui:Toggle(
+		Rect:new( 32, 160, 100, 32 ),
+		"Toggle",
 		false,
-		nil,
-		texture,
-		textureRect
+		nil
 	)
 	local combobox = Gui:ComboBox(
 		Rect:new( 64, 256, 128, 32 ),
@@ -128,10 +140,10 @@ function RL.init()
 		0,
 		0,
 		100,
-		function( self ) print( "Changed value "..self.value ) end,
-		texture,
-		textureRect
+		function( self ) print( "Changed value "..self.value ) end
 	)
+	slider.texture = texture
+	slider.textureRect = textureRect
 	local sliderbar = Gui:SliderBar(
 		Rect:new( 50, 550, 256, 32 ),
 		"min",
@@ -171,10 +183,13 @@ function RL.init()
 		function( self ) self.visible = false end,
 		-- Grab callback.
 		function( self ) Gui:set2Top( self ) end,
-		nil,
-		texture,
-		textureRect
+		nil
 	)
+	windowbox.styles = {
+		{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
+	}
+	windowbox.texture = texture
+	windowbox.textureRect = textureRect
 	local groupbox = Gui:GroupBox(
 		Rect:new( 400, 700, 256, 256 ),
 		"GroupBox"
@@ -189,15 +204,17 @@ function RL.init()
 		-- Grab callback.
 		function( self ) Gui:set2Top( self ) end
 	)
+	panel.styles = {
+		{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.MAGENTA ) },
+		{ RL.DEFAULT, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_CENTER },
+		{ RL.DEFAULT, RL.BACKGROUND_COLOR, RL.ColorToInt( RL.DARKBLUE ) },
+	}
 	tabBar = Gui:GuiTabBar(
 		Rect:new( 700, 520, 700, 32 ),
 		"Cat;Dog;Horse;Cow",
 		0,
-		-- function( self ) Gui:set2Top( self ) end
 		nil,
-		closeTab,
-		texture,
-		textureRect
+		closeTab
 	)
 	local scrollpanel = Gui:ScrollPanel(
 		Rect:new( 800, 64, 256, 256 ),
@@ -222,23 +239,26 @@ function RL.init()
 		0,
 		0,
 		0,
-		function( self ) print( self:getItem( self.active ) ) end,
-		texture,
-		textureRect
+		function( self ) print( self:getItem( self.active ) ) end
 	)
+	listviewex.styles = {
+		{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
+		{ RL.DEFAULT, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.ORANGE ) },
+		{ RL.DEFAULT, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( RL.GREEN ) },
+	}
+	listviewex.texture = texture
+	listviewex.textureRect = textureRect
 	local messagebox = Gui:MessageBox(
 		Rect:new( 1100, 150, 300, 128 ),
 		"Title",
-		"Message",
-		"Cancel;Ok",
+		"Should we disable\nwindow box?",
+		"No;Yes",
 		function( self )
 			if 0 < self.buttonIndex then
-				print( "You pressed "..self:getItem( self.buttonIndex ) )
-
 				if self.buttonIndex == 1 then
-					Gui:set2Back( windowbox )
+					windowbox.disabled = false
 				elseif self.buttonIndex == 2 then
-					Gui:set2Top( windowbox )
+					windowbox.disabled = true
 				end
 			end
 		end,

@@ -52,8 +52,8 @@ end
 local WindowBox = {}
 WindowBox.__index = WindowBox
 
-function WindowBox:new( bounds, text, callback, grabCallback, dragCallback, texture, textureRect )
-    local object = setmetatable( {}, self )
+function WindowBox:new( bounds, text, callback, grabCallback, dragCallback )
+	local object = setmetatable( {}, self )
 	object._parent = nil
 
     object.bounds = bounds:clone()
@@ -61,10 +61,9 @@ function WindowBox:new( bounds, text, callback, grabCallback, dragCallback, text
 	object.callback = callback
 	object.grabCallback = grabCallback
 	object.dragCallback = dragCallback
-	object.texture = texture
-	object.textureRect = textureRect
-
+	
 	object.visible = true
+	object.disabled = false
 	object.draggable = true
 
 	return object
@@ -75,15 +74,7 @@ function WindowBox:process()
 end
 
 function WindowBox:draw()
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	local result = RL.GuiWindowBox( self.bounds, self.text )
-
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
 
 	if result == 1 and self.callback ~= nil then
         self.callback( self )
@@ -108,6 +99,7 @@ function GroupBox:new( bounds, text )
     object.text = text
 	
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -139,6 +131,7 @@ function Line:new( bounds, text )
     object.text = text
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -162,7 +155,7 @@ end
 local Panel = {}
 Panel.__index = Panel
 
-function Panel:new( bounds, text, grabCallback, dragCallback, texture, textureRect )
+function Panel:new( bounds, text, grabCallback, dragCallback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -170,10 +163,9 @@ function Panel:new( bounds, text, grabCallback, dragCallback, texture, textureRe
     object.text = text
 	object.grabCallback = grabCallback
 	object.dragCallback = dragCallback
-	object.texture = texture
-	object.textureRect = textureRect
 	
 	object.visible = true
+	object.disabled = false
 	object.draggable = true
 
 	return object
@@ -184,15 +176,7 @@ function Panel:process()
 end
 
 function Panel:draw()
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	RL.GuiPanel( self.bounds, self.text )
-
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
 end
 
 function Panel:setPosition( pos )
@@ -206,17 +190,16 @@ end
 local GuiTabBar = {}
 GuiTabBar.__index = GuiTabBar
 
-function GuiTabBar:new( bounds, text, active, callback, closeCallback, texture, textureRect )
+function GuiTabBar:new( bounds, text, active, callback, closeCallback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
     object.bounds = bounds:clone()
     object.text = text
     object.active = active
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
 	object.callback = callback
 	object.closeCallback = closeCallback
 
@@ -231,15 +214,8 @@ function GuiTabBar:draw()
 	local oldActive = self.active
 	local result = -1
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	result, self.active = RL.GuiTabBar( self.bounds, self.text, self.active )
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
 	if self.active ~= oldActive and self.callback ~= nil then
 		self.callback( self )
 	end
@@ -259,7 +235,7 @@ end
 local ScrollPanel = {}
 ScrollPanel.__index = ScrollPanel
 
-function ScrollPanel:new( bounds, text, content, scroll, callback, grabCallback, dragCallback, texture, textureRect )
+function ScrollPanel:new( bounds, text, content, scroll, callback, grabCallback, dragCallback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -271,10 +247,9 @@ function ScrollPanel:new( bounds, text, content, scroll, callback, grabCallback,
     object.callback = callback
 	object.grabCallback = grabCallback
 	object.dragCallback = dragCallback
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
 	object.draggable = true
 
 	return object
@@ -287,15 +262,7 @@ end
 function ScrollPanel:draw()
 	local oldScroll = self.scroll:clone()
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	local _, scroll, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
-
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
 
 	self.view = Rect:new( view )
 	self.scroll = Vec2:new( scroll )
@@ -332,6 +299,7 @@ function Label:new( bounds, text )
     object.text = text
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -355,17 +323,16 @@ end
 local Button = {}
 Button.__index = Button
 
-function Button:new( bounds, text, callback, texture, textureRect )
+function Button:new( bounds, text, callback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
     object.bounds = bounds:clone()
     object.text = text
     object.callback = callback
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -375,15 +342,7 @@ function Button:process()
 end
 
 function Button:draw()
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
     local result = RL.GuiButton( self.bounds, self.text )
-
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
 
     if result == 1 and self.callback ~= nil then
         self.callback( self )
@@ -410,6 +369,7 @@ function LabelButton:new( bounds, text, callback )
     object.callback = callback
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -437,7 +397,7 @@ end
 local Toggle = {}
 Toggle.__index = Toggle
 
-function Toggle:new( bounds, text, active, callback, texture, textureRect )
+function Toggle:new( bounds, text, active, callback )
 	local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -445,10 +405,9 @@ function Toggle:new( bounds, text, active, callback, texture, textureRect )
 	object.text = text
 	object.active = active
 	object.callback = callback
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -460,15 +419,8 @@ end
 function Toggle:draw()
     local oldActive = self.active
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	_, self.active = RL.GuiToggle( self.bounds, self.text, self.active )
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
     if self.active ~= oldActive and self.callback ~= nil then
         self.callback( self )
     end
@@ -485,7 +437,7 @@ end
 local ToggleGroup = {}
 ToggleGroup.__index = ToggleGroup
 
-function ToggleGroup:new( bounds, text, active, callback, texture, textureRect )
+function ToggleGroup:new( bounds, text, active, callback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -493,10 +445,9 @@ function ToggleGroup:new( bounds, text, active, callback, texture, textureRect )
     object.text = text
     object.active = active
     object.callback = callback
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
 	object.focusBounds = {}
     object:updateFocusBounds()
 
@@ -549,15 +500,8 @@ end
 function ToggleGroup:draw()
     local oldActive = self.active
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	_, self.active = RL.GuiToggleGroup( self.bounds, self.text, self.active )
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
     if self.active ~= oldActive and self.callback ~= nil then
         self.callback( self )
     end
@@ -576,7 +520,7 @@ end
 local CheckBox = {}
 CheckBox.__index = CheckBox
 
-function CheckBox:new( bounds, text, checked, callback, texture, textureRect )
+function CheckBox:new( bounds, text, checked, callback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -584,10 +528,9 @@ function CheckBox:new( bounds, text, checked, callback, texture, textureRect )
     object.text = text
     object.checked = checked
     object.callback = callback
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
     object.focusBounds = bounds:clone()
     object:updateFocusBounds()
 
@@ -638,15 +581,8 @@ end
 function CheckBox:draw()
     local oldChecked = self.checked
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	_, self.checked = RL.GuiCheckBox( self.bounds, self.text, self.checked )
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
     if self.checked ~= oldChecked and self.callback ~= nil then
         self.callback( self )
     end
@@ -666,7 +602,7 @@ end
 local ComboBox = {}
 ComboBox.__index = ComboBox
 
-function ComboBox:new( bounds, text, active, callback, texture, textureRect )
+function ComboBox:new( bounds, text, active, callback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -674,10 +610,9 @@ function ComboBox:new( bounds, text, active, callback, texture, textureRect )
     object.text = text
     object.active = active
     object.callback = callback
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -689,15 +624,8 @@ end
 function ComboBox:draw()
     local oldActive = self.active
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	_, self.active = RL.GuiComboBox( self.bounds, self.text, self.active )
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
     if self.active ~= oldActive and self.callback ~= nil then
         self.callback( self )
     end
@@ -714,7 +642,7 @@ end
 local DropdownBox = {}
 DropdownBox.__index = DropdownBox
 
-function DropdownBox:new( bounds, text, active, editMode, callback, texture, textureRect )
+function DropdownBox:new( bounds, text, active, editMode, callback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -723,10 +651,9 @@ function DropdownBox:new( bounds, text, active, editMode, callback, texture, tex
     object.active = active
     object.editMode = editMode
     object.callback = callback
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
 	object.editModeBounds = bounds:clone()
 	object:updateFocusBounds()
 
@@ -765,15 +692,8 @@ end
 function DropdownBox:draw()
 	local result = 0
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	result, self.active = RL.GuiDropdownBox( self.bounds, self.text, self.active, self.editMode )
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
     if result == 1 then
 		self.editMode = not self.editMode
 
@@ -794,7 +714,7 @@ end
 local Spinner = {}
 Spinner.__index = Spinner
 
-function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callback, texture, textureRect )
+function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -805,10 +725,9 @@ function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callbac
     object.maxValue = maxValue
     object.editMode = editMode
     object.callback = callback
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -821,15 +740,8 @@ function Spinner:draw()
 	local result = 0
 	local oldValue = self.value
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	result, self.value = RL.GuiSpinner( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
     if result == 1 then
 		self._parent:editMode( self.editMode )
 		self.editMode = not self.editMode
@@ -850,7 +762,7 @@ end
 local ValueBox = {}
 ValueBox.__index = ValueBox
 
-function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callback, texture, textureRect )
+function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -861,10 +773,9 @@ function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callba
     object.maxValue = maxValue
     object.editMode = editMode
     object.callback = callback
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -877,15 +788,8 @@ function ValueBox:draw()
 	local result = 0
 	local oldValue = self.value
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	result, self.value = RL.GuiValueBox( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
     if result == 1 then
 		self._parent:editMode( self.editMode )
 		self.editMode = not self.editMode
@@ -906,7 +810,7 @@ end
 local TextBox = {}
 TextBox.__index = TextBox
 
-function TextBox:new( bounds, text, textSize, editMode, callback, texture, textureRect )
+function TextBox:new( bounds, text, textSize, editMode, callback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -915,11 +819,10 @@ function TextBox:new( bounds, text, textSize, editMode, callback, texture, textu
     object.textSize = textSize
     object.editMode = editMode
     object.callback = callback
-	object.texture = texture
-	object.textureRect = textureRect
 	-- Option for preventing text to be drawn outside bounds.
 	object.scissorMode = false
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -934,15 +837,9 @@ function TextBox:draw()
 	if self.scissorMode then
 		RL.BeginScissorMode( self.bounds )
 	end
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
 
 	result, self.text = RL.GuiTextBox( self.bounds, self.text, self.textSize, self.editMode )
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
 	if self.scissorMode then
 		RL.EndScissorMode()
 	end
@@ -967,7 +864,7 @@ end
 local Slider = {}
 Slider.__index = Slider
 
-function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, texture, textureRect )
+function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, callback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -978,10 +875,9 @@ function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, cal
     object.minValue = minValue
     object.maxValue = maxValue
     object.callback = callback
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -993,15 +889,8 @@ end
 function Slider:draw()
 	local oldValue = self.value
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	_, self.value = RL.GuiSlider( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
     if self.value ~= oldValue then
 		self._parentscrolling = true
 
@@ -1022,7 +911,7 @@ end
 local SliderBar = {}
 SliderBar.__index = SliderBar
 
-function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, texture, textureRect )
+function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -1033,10 +922,9 @@ function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, 
     object.minValue = minValue
     object.maxValue = maxValue
     object.callback = callback
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -1048,15 +936,8 @@ end
 function SliderBar:draw()
 	local oldValue = self.value
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	_, self.value = RL.GuiSliderBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
     if self.value ~= oldValue then
 		self._parentscrolling = true
 
@@ -1077,7 +958,7 @@ end
 local ProgressBar = {}
 ProgressBar.__index = ProgressBar
 
-function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, texture, textureRect )
+function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -1088,10 +969,9 @@ function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue
     object.minValue = minValue
     object.maxValue = maxValue
     object.callback = callback
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -1103,15 +983,8 @@ end
 function ProgressBar:draw()
 	local oldValue = self.value
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	_, self.value = RL.GuiProgressBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
     if self.value ~= oldValue then
 		self.callback( self )
     end
@@ -1128,16 +1001,15 @@ end
 local StatusBar = {}
 StatusBar.__index = StatusBar
 
-function StatusBar:new( bounds, text, texture, textureRect )
+function StatusBar:new( bounds, text )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
     object.bounds = bounds:clone()
     object.text = text
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -1147,15 +1019,7 @@ function StatusBar:process()
 end
 
 function StatusBar:draw()
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	RL.GuiStatusBar( self.bounds, self.text )
-
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
 end
 
 function StatusBar:setPosition( pos )
@@ -1169,16 +1033,15 @@ end
 local DummyRec = {}
 DummyRec.__index = DummyRec
 
-function DummyRec:new( bounds, text, texture, textureRect )
+function DummyRec:new( bounds, text )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
     object.bounds = bounds:clone()
     object.text = text
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -1188,15 +1051,7 @@ function DummyRec:process()
 end
 
 function DummyRec:draw()
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	RL.GuiDummyRec( self.bounds, self.text )
-
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
 end
 
 function DummyRec:setPosition( pos )
@@ -1222,6 +1077,7 @@ function Grid:new( bounds, text, spacing, subdivs, callback )
 
 	object.mouseCell = Vec2:new()
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -1257,7 +1113,7 @@ end
 local ListView = {}
 ListView.__index = ListView
 
-function ListView:new( bounds, text, scrollIndex, active, callback, texture, textureRect )
+function ListView:new( bounds, text, scrollIndex, active, callback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -1266,10 +1122,9 @@ function ListView:new( bounds, text, scrollIndex, active, callback, texture, tex
     object.scrollIndex = scrollIndex
     object.active = active
 	object.callback = callback
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -1286,15 +1141,8 @@ function ListView:draw()
 	local oldActive = self.active
 	local oldScrollIndex = self.scrollIndex
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	_, self.scrollIndex, self.active = RL.GuiListView( self.bounds, self.text, self.scrollIndex, self.active )
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
 	if self.scrollIndex ~= oldScrollIndex then
 		self._parentscrolling = true
 	end
@@ -1314,7 +1162,7 @@ end
 local ListViewEx = {}
 ListViewEx.__index = ListViewEx
 
-function ListViewEx:new( bounds, text, scrollIndex, active, focus, callback, texture, textureRect )
+function ListViewEx:new( bounds, text, scrollIndex, active, focus, callback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -1324,10 +1172,9 @@ function ListViewEx:new( bounds, text, scrollIndex, active, focus, callback, tex
     object.active = active
     object.focus = focus
 	object.callback = callback
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -1344,15 +1191,8 @@ function ListViewEx:draw()
 	local oldActive = self.active
 	local oldScrollIndex = self.scrollIndex
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	_, self.scrollIndex, self.active, self.focus = RL.GuiListViewEx( self.bounds, self.text, self.scrollIndex, self.active, self.focus )
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
 	if self.scrollIndex ~= oldScrollIndex then
 		self._parentscrolling = true
 	end
@@ -1372,7 +1212,7 @@ end
 local MessageBox = {}
 MessageBox.__index = MessageBox
 
-function MessageBox:new( bounds, title, message, buttons, callback, grabCallback, dragCallback, texture, textureRect )
+function MessageBox:new( bounds, title, message, buttons, callback, grabCallback, dragCallback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -1383,11 +1223,10 @@ function MessageBox:new( bounds, title, message, buttons, callback, grabCallback
 	object.callback = callback
 	object.grabCallback = grabCallback
 	object.dragCallback = dragCallback
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.buttonIndex = -1
 	object.visible = true
+	object.disabled = false
 	object.draggable = true
 
 	return object
@@ -1402,15 +1241,8 @@ function MessageBox:process()
 end
 
 function MessageBox:draw()
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	self.buttonIndex = RL.GuiMessageBox( self.bounds, self.title, self.message, self.buttons )
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
 	if 0 <= self.buttonIndex and self.callback ~= nil then
 		self.callback( self )
 	end
@@ -1427,7 +1259,7 @@ end
 local TextInputBox = {}
 TextInputBox.__index = TextInputBox
 
-function TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callback, grabCallback, dragCallback, texture, textureRect )
+function TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callback, grabCallback, dragCallback )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -1441,11 +1273,10 @@ function TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, s
 	object.callback = callback
 	object.grabCallback = grabCallback
 	object.dragCallback = dragCallback
-	object.texture = texture
-	object.textureRect = textureRect
 
 	object.buttonIndex = -1
 	object.visible = true
+	object.disabled = false
 	object.draggable = true
 
 	return object
@@ -1460,15 +1291,8 @@ function TextInputBox:process()
 end
 
 function TextInputBox:draw()
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self.texture, self.textureRect )
-	end
-
 	self.buttonIndex, self.text, self.secretViewActive = RL.GuiTextInputBox( self.bounds, self.title, self.message, self.buttons, self.text, self.textMaxSize, self.secretViewActive )
 
-	if self.texture ~= nil then
-		RL.SetShapesTexture( self._parent.defaultTexture, self._parent.defaultRect )
-	end
 	if 0 <= self.buttonIndex and self.callback ~= nil then
 		self.callback( self )
 	end
@@ -1495,6 +1319,7 @@ function ColorPicker:new( bounds, text, color, callback )
 	object.callback = callback
 
 	object.visible = true
+	object.disabled = false
 	object.focusBounds = Rect:new()
 
 	object:updateFocusBounds()
@@ -1553,6 +1378,7 @@ function ColorPanel:new( bounds, text, color, callback )
 	object.callback = callback
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -1593,6 +1419,7 @@ function ColorBarAlpha:new( bounds, text, alpha, callback )
 	object.callback = callback
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -1635,6 +1462,7 @@ function ColorBarHue:new( bounds, text, value, callback )
 	object.callback = callback
 
 	object.visible = true
+	object.disabled = false
 
 	return object
 end
@@ -1682,6 +1510,9 @@ function Raygui:new()
 	object.defaultTexture = RL.GetTextureDefault()
 	object.defaultRect = Rect:new( 0, 0, 1, 1 )
 
+	object._lastDisabled = false -- Last element disabled state in draw.
+	object._lastStyles = {}
+
 	return object
 end
 
@@ -1716,7 +1547,7 @@ function Raygui:drag( element )
 	local mousePos = Vec2:new( RL.GetMousePosition() )
 	local mouseOver = RL.CheckCollisionPointRec( mousePos, element.bounds )
 
-	if element.draggable and element ~= self.dragging and RL.IsMouseButtonPressed( RL.MOUSE_BUTTON_LEFT )
+	if not element.disabled and element.draggable and element ~= self.dragging and RL.IsMouseButtonPressed( RL.MOUSE_BUTTON_LEFT )
 	and mouseOver and mousePos.y - element.bounds.y <= self.RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT then
 		self.grabPos = mousePos - Vec2:new( element.bounds.x, element.bounds.y )
 
@@ -1741,6 +1572,19 @@ function Raygui:drag( element )
     return mouseOver
 end
 
+-- Add style before current draw that we can then return them.
+function Raygui:_addLastStyle( style )
+	local lastStyle = { style[1], style[2], RL.GuiGetStyle( style[1], style[2] ) }
+
+	for i, slot in ipairs( self._lastStyles ) do
+		if slot == 0 then
+			self._lastStyles[i] = lastStyle
+			return
+		end
+	end
+	table.insert( self._lastStyles, lastStyle )
+end
+
 function Raygui:draw()
 	if self.locked then
 		RL.GuiLock()
@@ -1761,7 +1605,38 @@ function Raygui:draw()
         end
 
         if element.visible and element.draw ~= nil then
-            element:draw()
+			if self._lastDisabled ~= element.disabled then
+				if element.disabled then
+					RL.GuiDisable()
+				else
+					RL.GuiEnable()
+				end
+				self._lastDisabled = element.disabled
+			end
+			if element.styles ~= nil then
+				for _, style in ipairs( element.styles ) do
+					self:_addLastStyle( style )
+					RL.GuiSetStyle( style[1], style[2], style[3] )
+				end
+			end
+			if element.texture ~= nil then
+				RL.SetShapesTexture( element.texture, element.textureRect )
+			end
+
+			element:draw()
+
+			if element.texture ~= nil then
+				RL.SetShapesTexture( self.defaultTexture, self.defaultRect )
+			end
+			-- Set previous styles back.
+			if 0 < #self._lastStyles then
+				for j, style in ipairs( self._lastStyles ) do
+					if type( style ) == "table" then
+						RL.GuiSetStyle( style[1], style[2], style[3] )
+					end
+					self._lastStyles[j] = 0
+				end
+			end
         end
     end
 	RL.GuiUnlock()
@@ -1824,18 +1699,15 @@ end
 ---@alias Rectangle table
 ---@alias Vector2 table
 ---@alias Color table
----@alias Texture userdata
 
 ---@param bounds Rectangle
 ---@param text string
 ---@param callback function|nil
 ---@param grabCallback function|nil
 ---@param dragCallback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table WindowBox
-function Raygui:WindowBox( bounds, text, callback, grabCallback, dragCallback, texture, textureRect )
-	return self:addElement( WindowBox:new( bounds, text, callback, grabCallback, dragCallback, texture, textureRect ) )
+function Raygui:WindowBox( bounds, text, callback, grabCallback, dragCallback )
+	return self:addElement( WindowBox:new( bounds, text, callback, grabCallback, dragCallback ) )
 end
 
 ---@param bounds Rectangle
@@ -1856,11 +1728,9 @@ end
 ---@param text string
 ---@param grabCallback function|nil
 ---@param dragCallback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table Panel
-function Raygui:Panel( bounds, text, grabCallback, dragCallback, texture, textureRect )
-	return self:addElement( Panel:new( bounds, text, grabCallback, dragCallback, texture, textureRect ) )
+function Raygui:Panel( bounds, text, grabCallback, dragCallback )
+	return self:addElement( Panel:new( bounds, text, grabCallback, dragCallback ) )
 end
 
 ---@param bounds Rectangle
@@ -1868,11 +1738,9 @@ end
 ---@param active boolean
 ---@param callback function|nil
 ---@param closeCallback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table GuiTabBar
-function Raygui:GuiTabBar( bounds, text, active, callback, closeCallback, texture, textureRect )
-	return self:addElement( GuiTabBar:new( bounds, text, active, callback, closeCallback, texture, textureRect ) )
+function Raygui:GuiTabBar( bounds, text, active, callback, closeCallback )
+	return self:addElement( GuiTabBar:new( bounds, text, active, callback, closeCallback ) )
 end
 
 ---@param bounds Rectangle
@@ -1882,11 +1750,9 @@ end
 ---@param callback function|nil
 ---@param grabCallback function|nil
 ---@param dragCallback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table ScrollPanel
-function Raygui:ScrollPanel( bounds, text, content, scroll, callback, grabCallback, dragCallback, texture, textureRect )
-	return self:addElement( ScrollPanel:new( bounds, text, content, scroll, callback, grabCallback, dragCallback, texture, textureRect ) )
+function Raygui:ScrollPanel( bounds, text, content, scroll, callback, grabCallback, dragCallback )
+	return self:addElement( ScrollPanel:new( bounds, text, content, scroll, callback, grabCallback, dragCallback ) )
 end
 
 ---@param bounds Rectangle
@@ -1899,11 +1765,9 @@ end
 ---@param bounds Rectangle
 ---@param text string
 ---@param callback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table Button
-function Raygui:Button( bounds, text, callback, texture, textureRect )
-	return self:addElement( Button:new( bounds, text, callback, texture, textureRect ) )
+function Raygui:Button( bounds, text, callback )
+	return self:addElement( Button:new( bounds, text, callback ) )
 end
 
 ---@param bounds Rectangle
@@ -1918,44 +1782,36 @@ end
 ---@param text string
 ---@param active boolean
 ---@param callback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table Toggle
-function Raygui:Toggle( bounds, text, active, callback, texture, textureRect )
-	return self:addElement( Toggle:new( bounds, text, active, callback, texture, textureRect ) )
+function Raygui:Toggle( bounds, text, active, callback )
+	return self:addElement( Toggle:new( bounds, text, active, callback ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
----@param active boolean
+---@param active integer
 ---@param callback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table ToggleGroup
-function Raygui:ToggleGroup( bounds, text, active, callback, texture, textureRect )
-	return self:addElement( ToggleGroup:new( bounds, text, active, callback, texture, textureRect ) )
+function Raygui:ToggleGroup( bounds, text, active, callback )
+	return self:addElement( ToggleGroup:new( bounds, text, active, callback ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
 ---@param checked boolean
 ---@param callback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table CheckBox
-function Raygui:CheckBox( bounds, text, checked, callback, texture, textureRect )
-	return self:addElement( CheckBox:new( bounds, text, checked, callback, texture, textureRect ) )
+function Raygui:CheckBox( bounds, text, checked, callback )
+	return self:addElement( CheckBox:new( bounds, text, checked, callback ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
 ---@param active integer
 ---@param callback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table ComboBox
-function Raygui:ComboBox( bounds, text, active, callback, texture, textureRect )
-	return self:addElement( ComboBox:new( bounds, text, active, callback, texture, textureRect ) )
+function Raygui:ComboBox( bounds, text, active, callback )
+	return self:addElement( ComboBox:new( bounds, text, active, callback ) )
 end
 
 ---@param bounds Rectangle
@@ -1963,11 +1819,9 @@ end
 ---@param active integer
 ---@param editMode boolean
 ---@param callback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table DropdownBox
-function Raygui:DropdownBox( bounds, text, active, editMode, callback, texture, textureRect )
-	return self:addElement( DropdownBox:new( bounds, text, active, editMode, callback, texture, textureRect ) )
+function Raygui:DropdownBox( bounds, text, active, editMode, callback )
+	return self:addElement( DropdownBox:new( bounds, text, active, editMode, callback ) )
 end
 
 ---@param bounds Rectangle
@@ -1977,11 +1831,9 @@ end
 ---@param maxValue integer
 ---@param editMode boolean
 ---@param callback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table Spinner
-function Raygui:Spinner( bounds, text, value, minValue, maxValue, editMode, callback, texture, textureRect )
-	return self:addElement( Spinner:new( bounds, text, value, minValue, maxValue, editMode, callback, texture, textureRect ) )
+function Raygui:Spinner( bounds, text, value, minValue, maxValue, editMode, callback )
+	return self:addElement( Spinner:new( bounds, text, value, minValue, maxValue, editMode, callback ) )
 end
 
 ---@param bounds Rectangle
@@ -1991,11 +1843,9 @@ end
 ---@param maxValue integer
 ---@param editMode boolean
 ---@param callback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table ValueBox
-function Raygui:ValueBox( bounds, text, value, minValue, maxValue, editMode, callback, texture, textureRect )
-	return self:addElement( ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callback, texture, textureRect ) )
+function Raygui:ValueBox( bounds, text, value, minValue, maxValue, editMode, callback )
+	return self:addElement( ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callback ) )
 end
 
 ---@param bounds Rectangle
@@ -2003,11 +1853,9 @@ end
 ---@param textSize integer
 ---@param editMode boolean
 ---@param callback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table TextBox
-function Raygui:TextBox( bounds, text, textSize, editMode, callback, texture, textureRect )
-	return self:addElement( TextBox:new( bounds, text, textSize, editMode, callback, texture, textureRect ) )
+function Raygui:TextBox( bounds, text, textSize, editMode, callback )
+	return self:addElement( TextBox:new( bounds, text, textSize, editMode, callback ) )
 end
 
 ---@param bounds Rectangle
@@ -2017,11 +1865,9 @@ end
 ---@param minValue number
 ---@param maxValue number
 ---@param callback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table Slider
-function Raygui:Slider( bounds, textLeft, textRight, value, minValue, maxValue, callback, texture, textureRect )
-	return self:addElement( Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, texture, textureRect ) )
+function Raygui:Slider( bounds, textLeft, textRight, value, minValue, maxValue, callback )
+	return self:addElement( Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, callback ) )
 end
 
 ---@param bounds Rectangle
@@ -2031,11 +1877,9 @@ end
 ---@param minValue number
 ---@param maxValue number
 ---@param callback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table SliderBar
-function Raygui:SliderBar( bounds, textLeft, textRight, value, minValue, maxValue, callback, texture, textureRect )
-	return self:addElement( SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, texture, textureRect ) )
+function Raygui:SliderBar( bounds, textLeft, textRight, value, minValue, maxValue, callback )
+	return self:addElement( SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback ) )
 end
 
 ---@param bounds Rectangle
@@ -2045,29 +1889,23 @@ end
 ---@param minValue number
 ---@param maxValue number
 ---@param callback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table ProgressBar
-function Raygui:ProgressBar( bounds, textLeft, textRight, value, minValue, maxValue, callback, texture, textureRect )
-	return self:addElement( ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, texture, textureRect ) )
+function Raygui:ProgressBar( bounds, textLeft, textRight, value, minValue, maxValue, callback )
+	return self:addElement( ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table StatusBar
-function Raygui:StatusBar( bounds, text, texture, textureRect )
-	return self:addElement( StatusBar:new( bounds, text, texture, textureRect ) )
+function Raygui:StatusBar( bounds, text )
+	return self:addElement( StatusBar:new( bounds, text ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table DummyRec
-function Raygui:DummyRec( bounds, text, texture, textureRect )
-	return self:addElement( DummyRec:new( bounds, text, texture, textureRect ) )
+function Raygui:DummyRec( bounds, text )
+	return self:addElement( DummyRec:new( bounds, text ) )
 end
 
 ---@param bounds Rectangle
@@ -2085,11 +1923,9 @@ end
 ---@param scrollIndex integer
 ---@param active integer
 ---@param callback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table ListView
-function Raygui:ListView( bounds, text, scrollIndex, active, callback, texture, textureRect )
-	return self:addElement( ListView:new( bounds, text, scrollIndex, active, callback, texture, textureRect ) )
+function Raygui:ListView( bounds, text, scrollIndex, active, callback )
+	return self:addElement( ListView:new( bounds, text, scrollIndex, active, callback ) )
 end
 
 ---@param bounds Rectangle
@@ -2098,11 +1934,9 @@ end
 ---@param active integer
 ---@param focus integer
 ---@param callback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table ListViewEx
-function Raygui:ListViewEx( bounds, text, scrollIndex, active, focus, callback, texture, textureRect )
-	return self:addElement( ListViewEx:new( bounds, text, scrollIndex, active, focus, callback, texture, textureRect ) )
+function Raygui:ListViewEx( bounds, text, scrollIndex, active, focus, callback )
+	return self:addElement( ListViewEx:new( bounds, text, scrollIndex, active, focus, callback ) )
 end
 
 ---@param bounds Rectangle
@@ -2112,11 +1946,9 @@ end
 ---@param callback function|nil
 ---@param grabCallback function|nil
 ---@param dragCallback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table MessageBox
-function Raygui:MessageBox( bounds, title, message, buttons, callback, grabCallback, dragCallback, texture, textureRect )
-	return self:addElement( MessageBox:new( bounds, title, message, buttons, callback, grabCallback, dragCallback, texture, textureRect ) )
+function Raygui:MessageBox( bounds, title, message, buttons, callback, grabCallback, dragCallback )
+	return self:addElement( MessageBox:new( bounds, title, message, buttons, callback, grabCallback, dragCallback ) )
 end
 
 ---@param bounds Rectangle
@@ -2129,11 +1961,9 @@ end
 ---@param callback function|nil
 ---@param grabCallback function|nil
 ---@param dragCallback function|nil
----@param texture Texture|nil
----@param textureRect Rectangle|nil
 ---@return table TextInputBox
-function Raygui:TextInputBox( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callback, grabCallback, dragCallback, texture, textureRect )
-	return self:addElement( TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callback, grabCallback, dragCallback, texture, textureRect ) )
+function Raygui:TextInputBox( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callback, grabCallback, dragCallback )
+	return self:addElement( TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callback, grabCallback, dragCallback ) )
 end
 
 ---@param bounds Rectangle

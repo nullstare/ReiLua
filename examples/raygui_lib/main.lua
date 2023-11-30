@@ -6,6 +6,8 @@ Vec2 = require( "vector2" )
 Color = require( "color" )
 Raygui = require( "raygui" )
 
+Gui = Raygui:new()
+
 local grid = {}
 local windowbox = {}
 local tabBar = {}
@@ -17,7 +19,7 @@ local function closeTab( self, id )
 	local newText = ""
 
 	if #splits == 1 then
-		Raygui.remove( tabBar )
+		Gui:remove( tabBar )
 	end
 	table.remove( splits, id + 1 )
 
@@ -50,24 +52,24 @@ function RL.init()
 	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.ORANGE ) )
 	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( RL.GREEN ) )
 
-	local label = Raygui.Label:new(
+	local label = Gui:Label(
 		Rect:new( 16, 16, 64, 32 ),
 		"Cat"
 	)
-	local toggleGroup = Raygui.ToggleGroup:new(
+	local toggleGroup = Gui:ToggleGroup(
 		Rect:new( 68, 16, 64, 32 ),
 		"Cat\nDog",
 		0,
 		function( self ) print( self:getItem( self.active ) ) end
 	)
-	local button = Raygui.Button:new(
+	local button = Gui:Button(
 		Rect:new( 245, 188, 64, 32 ),
 		"Dog",
 		function() toggleGroup:setText( "Dog;Cat\nEagle" ) end,
 		texture,
 		textureRect
 	)
-	local checkbox = Raygui.CheckBox:new(
+	local checkbox = Gui:CheckBox(
 		Rect:new( 64, 128, 20, 20 ),
 		"Dog",
 		false,
@@ -75,19 +77,19 @@ function RL.init()
 		texture,
 		textureRect
 	)
-	local combobox = Raygui.ComboBox:new(
+	local combobox = Gui:ComboBox(
 		Rect:new( 64, 256, 128, 32 ),
 		"Dog\nCow\nDonkey",
 		0
 	)
-	local dropdownbox = Raygui.DropdownBox:new(
+	local dropdownbox = Gui:DropdownBox(
 		Rect:new( 256, 128, 128, 32 ),
 		"Dog\nGiraffe\nLion\nHorse",
 		0,
 		false,
 		function( self ) print( self:getItem( self.active ) ) end
 	)
-	local spinner = Raygui.Spinner:new(
+	local spinner = Gui:Spinner(
 		Rect:new( 464, 256, 128, 32 ),
 		"Health",
 		0,
@@ -96,7 +98,7 @@ function RL.init()
 		false,
 		function( self ) print( "Spinner value changed to "..self.value ) end
 	)
-	local valuebox = Raygui.ValueBox:new(
+	local valuebox = Gui:ValueBox(
 		Rect:new( 464, 316, 128, 32 ),
 		"Health",
 		0,
@@ -105,21 +107,21 @@ function RL.init()
 		false,
 		function( self ) print( "ValueBox value changed to "..self.value ) end
 	)
-	local textbox = Raygui.TextBox:new(
+	local textbox = Gui:TextBox(
 		Rect:new( 32, 316, 256, 32 ),
 		"Name",
 		32,
 		false,
 		function( self ) print( "Set text "..self.text ) end
 	)
-	local textbox2 = Raygui.TextBox:new(
+	local textbox2 = Gui:TextBox(
 		Rect:new( 32, 380, 256, 32 ),
 		"Name",
 		32,
 		false,
 		function( self ) print( "Set text "..self.text ) end
 	)
-	local slider = Raygui.Slider:new(
+	local slider = Gui:Slider(
 		Rect:new( 50, 500, 256, 32 ),
 		"min",
 		"max",
@@ -130,7 +132,7 @@ function RL.init()
 		texture,
 		textureRect
 	)
-	local sliderbar = Raygui.SliderBar:new(
+	local sliderbar = Gui:SliderBar(
 		Rect:new( 50, 550, 256, 32 ),
 		"min",
 		"max",
@@ -138,9 +140,8 @@ function RL.init()
 		0,
 		100,
 		function( self ) print( "Changed value "..self.value ) end
-
 	)
-	local progressbar = Raygui.ProgressBar:new(
+	local progressbar = Gui:ProgressBar(
 		Rect:new( 50, 600, 256, 32 ),
 		"min",
 		"max",
@@ -149,56 +150,56 @@ function RL.init()
 		100,
 		function( self ) print( "Changed value "..self.value ) end
 	)
-	local statusbar = Raygui.StatusBar:new(
+	local statusbar = Gui:StatusBar(
 		Rect:new( 50, 650, 256, 32 ),
 		"StatusBar"
 	)
-	local dummyrec = Raygui.DummyRec:new(
+	local dummyrec = Gui:DummyRec(
 		Rect:new( 50, 700, 256, 32 ),
 		"DummyRec"
 	)
-	grid = Raygui.Grid:new(
+	grid = Gui:Grid(
 		Rect:new( 400, 400, 256, 256 ),
 		"Grid",
 		32,
 		2
 	)
-	windowbox = Raygui.WindowBox:new(
+	windowbox = Gui:WindowBox(
 		Rect:new( 720, 250, 256, 256 ),
 		"WindowBox",
 		-- Close callback.
 		function( self ) self.visible = false end,
 		-- Grab callback.
-		function( self ) Raygui.set2Top( self ) end,
+		function( self ) Gui:set2Top( self ) end,
 		nil,
 		texture,
 		textureRect
 	)
-	local groupbox = Raygui.GroupBox:new(
+	local groupbox = Gui:GroupBox(
 		Rect:new( 400, 700, 256, 256 ),
 		"GroupBox"
 	)
-	local line = Raygui.Line:new(
+	local line = Gui:Line(
 		Rect:new( 400, 32, 256, 16 ),
 		"Line"
 	)
-	local panel = Raygui.Panel:new(
+	local panel = Gui:Panel(
 		Rect:new( 400, 64, 256, 128 ),
 		"Panel",
 		-- Grab callback.
-		function( self ) Raygui.set2Top( self ) end
+		function( self ) Gui:set2Top( self ) end
 	)
-	tabBar = Raygui.GuiTabBar:new(
+	tabBar = Gui:GuiTabBar(
 		Rect:new( 700, 520, 700, 32 ),
 		"Cat;Dog;Horse;Cow",
 		0,
-		-- function( self ) Raygui.set2Top( self ) end
+		-- function( self ) Gui:set2Top( self ) end
 		nil,
 		closeTab,
 		texture,
 		textureRect
 	)
-	local scrollpanel = Raygui.ScrollPanel:new(
+	local scrollpanel = Gui:ScrollPanel(
 		Rect:new( 800, 64, 256, 256 ),
 		"ScrollPanel",
 		Rect:new( 0, 0, 256, 600 ),
@@ -206,28 +207,26 @@ function RL.init()
 		-- Callback.
 		nil,
 		-- Grab callback.
-		function( self ) Raygui.set2Top( self ) end
+		function( self ) Gui:set2Top( self ) end
 	)
-	local listview = Raygui.ListView:new(
-		Rect:new( 1100, 64, 128, 80 ),
+	local listview = Gui:ListView(
+		Rect:new( 1100, 64, 128, 128 ),
 		"Cat;Dog;Horse;Cow;Pig;Eagle;Lion",
+		0,
+		0,
+		function( self ) print( self:getItem( self.active ) ) end
+	)
+	local listviewex = Gui:ListViewEx(
+		Rect:new( 1300, 64, 128, 128 ),
+		"Cat;Dog;Horse;Cow;Pig;Eagle;Lion",
+		0,
 		0,
 		0,
 		function( self ) print( self:getItem( self.active ) ) end,
 		texture,
 		textureRect
 	)
-	local listviewex = Raygui.ListViewEx:new(
-		Rect:new( 1300, 64, 128, 80 ),
-		"Cat;Dog;Horse;Cow;Pig;Eagle;Lion",
-		0,
-		0,
-		0,
-		function( self ) print( self:getItem( self.active ) ) end,
-		texture,
-		textureRect
-	)
-	local messagebox = Raygui.MessageBox:new(
+	local messagebox = Gui:MessageBox(
 		Rect:new( 1100, 150, 300, 128 ),
 		"Title",
 		"Message",
@@ -237,16 +236,16 @@ function RL.init()
 				print( "You pressed "..self:getItem( self.buttonIndex ) )
 
 				if self.buttonIndex == 1 then
-					Raygui.set2Back( windowbox )
+					Gui:set2Back( windowbox )
 				elseif self.buttonIndex == 2 then
-					Raygui.set2Top( windowbox )
+					Gui:set2Top( windowbox )
 				end
 			end
 		end,
 		-- Grab callback.
-		function( self ) Raygui.set2Top( self ) end
+		function( self ) Gui:set2Top( self ) end
 	)
-	local textinputbox = Raygui.TextInputBox:new(
+	local textinputbox = Gui:TextInputBox(
 		Rect:new( 1100, 300, 300, 128 ),
 		"Title",
 		"Message",
@@ -260,24 +259,24 @@ function RL.init()
 			end
 		end,
 		-- Grab callback.
-		function( self ) Raygui.set2Top( self ) end
+		function( self ) Gui:set2Top( self ) end
 	)
-	local colorpicker = Raygui.ColorPicker:new(
+	local colorpicker = Gui:ColorPicker(
 		Rect:new( 1500, 32, 128, 128 ),
 		"Color Picker",
 		Color:new()
 	)
-	local colorpanel = Raygui.ColorPanel:new(
+	local colorpanel = Gui:ColorPanel(
 		Rect:new( 1700, 32, 128, 128 ),
 		"Color Panel",
 		Color:new()
 	)
-	local colorbaralpha = Raygui.ColorBarAlpha:new(
+	local colorbaralpha = Gui:ColorBarAlpha(
 		Rect:new( 1700, 180, 128, 20 ),
 		"Color Panel",
 		1.0
 	)
-	local colorbarhue = Raygui.ColorBarHue:new(
+	local colorbarhue = Gui:ColorBarHue(
 		Rect:new( 1840, 32, 20, 128 ),
 		"Color Panel",
 		1.0
@@ -285,7 +284,7 @@ function RL.init()
 end
 
 function RL.process( delta )
-	Raygui.process()
+	Gui:process()
 end
 
 function RL.draw()
@@ -302,6 +301,5 @@ function RL.draw()
 			RL.GREEN
 		)
 	end
-
-    Raygui.draw()
+    Gui:draw()
 end

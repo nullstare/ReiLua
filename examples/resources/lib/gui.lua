@@ -1,19 +1,9 @@
-Util = require( "utillib" )
-Rect = require( "rectangle" )
-Vec2 = require( "vector2" )
-Color = require( "color" )
+local Util = require( "utillib" )
+local Rect = require( "rectangle" )
+local Vec2 = require( "vector2" )
+local Color = require( "color" )
 
---[[
-	To add repeat inputs to the keys pressed buffer, you could add GLFW_REPEAT in railib rcore.c in function "KeyCallback" by changing:
-
-	if ((CORE.Input.Keyboard.keyPressedQueueCount < MAX_KEY_PRESSED_QUEUE) && (action == GLFW_PRESS))
-	To
-	if ((CORE.Input.Keyboard.keyPressedQueueCount < MAX_KEY_PRESSED_QUEUE) && (action == GLFW_PRESS || action == GLFW_REPEAT))
-
-	Now GLFW_REPEAT can be read by "RL.GetKeyPressed".
-]]
-
-Gui = {
+local Gui = {
 	ALING = {
 		NONE = 0,
 		LEFT = 1,

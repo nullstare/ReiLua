@@ -5,8 +5,7 @@ end
 
 local Vector2 = require( "vector2" )
 
-Rectangle = {}
-
+local Rectangle = {}
 Rectangle.meta = {
 	__index = Rectangle,
 	__tostring = function( r )

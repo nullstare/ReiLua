@@ -9,6 +9,8 @@ Color = require( "color" )
 Raygui = require( "raygui" )
 Calculator = require( "calculator" )
 
+Gui = Raygui:new()
+
 local calculator = nil
 local calculator2 = nil
 
@@ -32,11 +34,11 @@ function RL.init()
 end
 
 function RL.process( delta )
-	Raygui:process()
+	Gui:process()
 end
 
 function RL.draw()
 	RL.ClearBackground( RL.DARKBLUE )
 
-	Raygui:draw()
+	Gui:draw()
 end

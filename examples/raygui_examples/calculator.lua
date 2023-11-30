@@ -1,4 +1,4 @@
-Calculator = {}
+local Calculator = {}
 Calculator.__index = Calculator
 
 Calculator.OPERATIONS = {
@@ -13,7 +13,7 @@ Calculator.OPERATIONS = {
 function Calculator:new( pos )
     local object = setmetatable( {}, Calculator )
 
-    object.window = Raygui.WindowBox:new(
+    object.window = Gui:WindowBox(
 		Rect:new( pos.x, pos.y, 188, 216 ),
 		"Calculator",
 		-- Close callback.
@@ -23,7 +23,7 @@ function Calculator:new( pos )
 		-- Drag callback.
 		function( self ) object:setPosition( Vec2:new( self.bounds.x, self.bounds.y ) ) end
 	)
-	object.display = Raygui.Label:new(
+	object.display = Gui:Label(
 		Rect:new( 0, 0, 180, 20 ),
 		""
 	)
@@ -54,7 +54,7 @@ function Calculator:new( pos )
 	local buttonSpacing = 6
 
 	for i, button in ipairs( buttons ) do
-		table.insert( object.buttons, Raygui.Button:new(
+		table.insert( object.buttons, Gui:Button(
 			buttonRect:clone(),
 			button[1],
 			button[2]
@@ -139,11 +139,11 @@ function Calculator:setPosition( pos )
 end
 
 function Calculator:set2Top()
-	Raygui.set2Top( self.window )
-	Raygui.set2Top( self.display )
+	Gui:set2Top( self.window )
+	Gui:set2Top( self.display )
 
 	for _, button in ipairs( self.buttons ) do
-		Raygui.set2Top( button )
+		Gui:set2Top( button )
 	end
 end
 

@@ -5,7 +5,7 @@ end
 
 local Vector3 = require( "vector3" )
 
-Color = {}
+local Color = {}
 Color.meta = {
 	__index = Color,
 	__tostring = function( c )

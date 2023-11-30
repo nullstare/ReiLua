@@ -6,7 +6,7 @@ end
 local Vector3 = require( "vector3" )
 local Matrix = require( "matrix" )
 
-Quaternion = {}
+local Quaternion = {}
 Quaternion.meta = {
 	__index = Quaternion,
 	__tostring = function( q )

@@ -5,7 +5,7 @@ end
 
 local Vector2 = require( "vector2" )
 
-Vector3 = {}
+local Vector3 = {}
 Vector3.meta = {
 	__index = Vector3,
 	__tostring = function( v )

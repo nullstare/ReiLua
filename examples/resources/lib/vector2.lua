@@ -3,7 +3,7 @@ if table.unpack == nil then
 	table.unpack = unpack
 end
 
-Vector2 = {}
+local Vector2 = {}
 Vector2.meta = {
 	__index = Vector2,
 	__tostring = function( v )

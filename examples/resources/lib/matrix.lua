@@ -22,7 +22,7 @@ local function deepCopy( orig )
     return copy
 end
 
-Matrix = {}
+local Matrix = {}
 Matrix.meta = {
 	__index = Matrix,
 	__tostring = function( m )

@@ -19,6 +19,7 @@ KEY CHANGES:
 	- ADDED: Raygui textures with SetShapesTexture.
 	- CHANGE: Raygui wrapper library is now object based. Possible to have multiple separated gui systems.
 	- ADDED: Raygui wrapper library disabled and styles for each element.
+	- ADDED: Files management functions.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.
@@ -36,6 +37,8 @@ DETAILED CHANGES:
 	- CHANGE: Event documentation is now described in c files.
 	- ADDED: ExportBufferAsCode.
 	- ADDED: GetTextureDefault.
+	- CHANGE: Renamed Files management functions to Files system functions as in raylib.
+	- CHANGE: Renamed ExportBufferAsCode to ExportDataAsCode.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.6.0		Using Raylib 4.5

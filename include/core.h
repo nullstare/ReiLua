@@ -108,6 +108,12 @@ int lcoreOpenURL( lua_State *L );
 int lcoreIsGCUnloadEnabled( lua_State *L );
 int lcoreSetGCUnload( lua_State *L );
 /* Files management functions. */
+int lcoreLoadFileData( lua_State *L );
+int lcoreSaveFileData( lua_State *L );
+int lcoreExportDataAsCode( lua_State *L );
+int lcoreLoadFileText( lua_State *L );
+int lcoreSaveFileText( lua_State *L );
+/* Files system functions. */
 int lcoreGetBasePath( lua_State *L );
 int lcoreFileExists( lua_State *L );
 int lcoreDirectoryExists( lua_State *L );
@@ -220,4 +226,3 @@ int lcoreGetBufferData( lua_State *L );
 int lcoreGetBufferType( lua_State *L );
 int lcoreGetBufferSize( lua_State *L );
 int lcoreExportBuffer( lua_State *L );
-int lcoreExportBufferAsCode( lua_State *L );

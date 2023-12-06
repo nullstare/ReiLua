@@ -1419,6 +1419,95 @@ int lcoreSetGCUnload( lua_State *L ) {
 */
 
 /*
+> buffer = RL.LoadFileData( string fileName )
+
+Load file data as byte array (read). Buffer type is BUFFER_UNSIGNED_CHAR
+
+- Success return Buffer
+*/
+int lcoreLoadFileData( lua_State *L ) {
+	const char *fileName = luaL_checkstring( L, 1 );
+
+	Buffer buffer = {
+		.type = BUFFER_UNSIGNED_CHAR
+	};
+	buffer.data = LoadFileData( fileName, (int*)&buffer.size );
+
+	uluaPushBuffer( L, buffer );
+
+	return 1;
+}
+
+/*
+> success = RL.SaveFileData( string fileName, buffer Buffer )
+
+Save data to file from byte array (write), returns true on success
+
+- Success return bool
+*/
+int lcoreSaveFileData( lua_State *L ) {
+	const char *fileName = luaL_checkstring( L, 1 );
+	Buffer *buffer = uluaGetBuffer( L, 2 );
+
+	lua_pushboolean( L, SaveFileData( fileName, buffer->data, buffer->size ) );
+
+	return 1;
+}
+
+/*
+> success = RL.ExportDataAsCode( Buffer buffer, string fileName )
+
+Export data to code (.h), returns true on success
+
+- Success return bool
+*/
+int lcoreExportDataAsCode( lua_State *L ) {
+	Buffer *buffer = uluaGetBuffer( L, 1 );
+	const char *fileName = luaL_checkstring( L, 2 );
+
+	lua_pushboolean( L, ExportDataAsCode( buffer->data, buffer->size, fileName ) );
+
+	return 1;
+}
+
+/*
+> text = RL.LoadFileText( string fileName )
+
+Load text data from file (read)
+
+- Success return string
+*/
+int lcoreLoadFileText( lua_State *L ) {
+	const char *fileName = luaL_checkstring( L, 1 );
+
+	char *text = LoadFileText( fileName );
+	lua_pushstring( L, text );
+	UnloadFileText( text );
+
+	return 1;
+}
+
+/*
+> success = RL.SaveFileText( string fileName, string text )
+
+Save text data to file (write), returns true on success
+
+- Success return bool
+*/
+int lcoreSaveFileText( lua_State *L ) {
+	const char *fileName = luaL_checkstring( L, 1 );
+	char *text = (char*)luaL_checkstring( L, 2 );
+
+	lua_pushboolean( L, SaveFileText( fileName, text ) );
+
+	return 1;
+}
+
+/*
+## Core - Files system functions
+*/
+
+/*
 > path = RL.GetBasePath()
 
 Return game directory (where main.lua is located)
@@ -2951,8 +3040,8 @@ Read buffer data from binary file
 - Success return Buffer
 */
 int lcoreLoadBufferFromFile( lua_State *L ) {
-	int type = luaL_checkinteger( L, 2 );
 	const char *path = luaL_checkstring( L, 1 );
+	int type = luaL_checkinteger( L, 2 );
 
 	int fileLen = GetFileLength( path );
 	Buffer buffer = {
@@ -2993,7 +3082,7 @@ int lcoreUnloadBuffer( lua_State *L ) {
 /*
 > data = RL.GetBufferData( Buffer buffer )
 
-Get buffer data as table in the format is was stored
+Get buffer data as table in the format it was stored
 
 - Success return data{}
 */
@@ -3135,24 +3224,8 @@ int lcoreExportBuffer( lua_State *L ) {
 	FILE *file;
 	file = fopen( path, "wb" );
 
-	fwrite( buffer->data, elementSize, buffer->size / elementSize, file ) ;
+	fwrite( buffer->data, elementSize, buffer->size / elementSize, file );
 	fclose( file );
 
 	return 0;
-}
-
-/*
-> success = RL.ExportBufferAsCode( Buffer buffer, string fileName )
-
-Export buffer data to code (.h), returns true on success
-
-- Success return bool
-*/
-int lcoreExportBufferAsCode( lua_State *L ) {
-	Buffer *buffer = uluaGetBuffer( L, 1 );
-	const char *fileName = luaL_checkstring( L, 2 );
-
-	lua_pushboolean( L, ExportDataAsCode( buffer->data, buffer->size, fileName ) );
-
-	return 1;
 }

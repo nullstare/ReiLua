@@ -4220,6 +4220,50 @@ Set Lua garbage collection to unload object data
 
 ---
 
+> buffer = RL.LoadFileData( string fileName )
+
+Load file data as byte array (read). Buffer type is BUFFER_UNSIGNED_CHAR
+
+- Success return Buffer
+
+---
+
+> success = RL.SaveFileData( string fileName, buffer Buffer )
+
+Save data to file from byte array (write), returns true on success
+
+- Success return bool
+
+---
+
+> success = RL.ExportDataAsCode( Buffer buffer, string fileName )
+
+Export data to code (.h), returns true on success
+
+- Success return bool
+
+---
+
+> text = RL.LoadFileText( string fileName )
+
+Load text data from file (read)
+
+- Success return string
+
+---
+
+> success = RL.SaveFileText( string fileName, string text )
+
+Save text data to file (write), returns true on success
+
+- Success return bool
+
+---
+
+## Core - Files system functions
+
+---
+
 > path = RL.GetBasePath()
 
 Return game directory (where main.lua is located)
@@ -4995,7 +5039,7 @@ Unload buffer data
 
 > data = RL.GetBufferData( Buffer buffer )
 
-Get buffer data as table in the format is was stored
+Get buffer data as table in the format it was stored
 
 - Success return data{}
 
@@ -5020,14 +5064,6 @@ Get buffer size
 > RL.ExportBuffer( Buffer buffer, string path )
 
 Write buffer data to binary file
-
----
-
-> success = RL.ExportBufferAsCode( Buffer buffer, string fileName )
-
-Export buffer data to code (.h), returns true on success
-
-- Success return bool
 
 ---
 

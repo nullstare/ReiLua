@@ -519,41 +519,41 @@ static void joystickEvent( int jid, int event ) {
 Called when the pen tablet data is updated. Type GLFW_PEN_TABLET_DATA_EVENT
 NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
 */
-// static void penTabletDataEvent( double x, double y, double z, double pressure, double pitch, double yaw, double roll ) {
-// 	lua_State *L = state->luaState;
+static void penTabletDataEvent( double x, double y, double z, double pressure, double pitch, double yaw, double roll ) {
+	lua_State *L = state->luaState;
 
-// 	lua_pushcfunction( L, luaTraceback );
-// 	int tracebackidx = lua_gettop( L );
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop( L );
 
-// 	lua_getglobal( L, "RL" );
-// 	lua_getfield( L, -1, "event" );
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "event" );
 
-//     if ( lua_isfunction( L, -1 ) ) {
-// 		lua_createtable( L, 8, 0 );
-// 		lua_pushinteger( L, GLFW_PEN_TABLET_DATA_EVENT );
-// 		lua_setfield( L, -2, "type" );
-// 		lua_pushnumber( L, x );
-// 		lua_setfield( L, -2, "x" );
-// 		lua_pushnumber( L, y );
-// 		lua_setfield( L, -2, "y" );
-// 		lua_pushnumber( L, z );
-// 		lua_setfield( L, -2, "z" );
-// 		lua_pushnumber( L, pressure );
-// 		lua_setfield( L, -2, "pressure" );
-// 		lua_pushnumber( L, pitch );
-// 		lua_setfield( L, -2, "pitch" );
-// 		lua_pushnumber( L, yaw );
-// 		lua_setfield( L, -2, "yaw" );
-// 		lua_pushnumber( L, roll );
-// 		lua_setfield( L, -2, "roll" );
+    if ( lua_isfunction( L, -1 ) ) {
+		lua_createtable( L, 8, 0 );
+		lua_pushinteger( L, GLFW_PEN_TABLET_DATA_EVENT );
+		lua_setfield( L, -2, "type" );
+		lua_pushnumber( L, x );
+		lua_setfield( L, -2, "x" );
+		lua_pushnumber( L, y );
+		lua_setfield( L, -2, "y" );
+		lua_pushnumber( L, z );
+		lua_setfield( L, -2, "z" );
+		lua_pushnumber( L, pressure );
+		lua_setfield( L, -2, "pressure" );
+		lua_pushnumber( L, pitch );
+		lua_setfield( L, -2, "pitch" );
+		lua_pushnumber( L, yaw );
+		lua_setfield( L, -2, "yaw" );
+		lua_pushnumber( L, roll );
+		lua_setfield( L, -2, "roll" );
 
-//         if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
-// 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
-// 			state->run = false;
-//         }
-//     }
-// 	lua_pop( L, -1 );
-// }
+        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+        }
+    }
+	lua_pop( L, -1 );
+}
 
 /*
 > GLFWpentabletcursorEvent = { int type, int identifier }
@@ -561,29 +561,29 @@ NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
 Called when the pen tablet cursor has changed. Type GLFW_PEN_TABLET_CURSOR_EVENT
 NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
 */
-// static void penTabletCursorEvent( unsigned int identifier ) {
-// 	lua_State *L = state->luaState;
+static void penTabletCursorEvent( unsigned int identifier ) {
+	lua_State *L = state->luaState;
 
-// 	lua_pushcfunction( L, luaTraceback );
-// 	int tracebackidx = lua_gettop( L );
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop( L );
 
-// 	lua_getglobal( L, "RL" );
-// 	lua_getfield( L, -1, "event" );
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "event" );
 
-//     if ( lua_isfunction( L, -1 ) ) {
-// 		lua_createtable( L, 2, 0 );
-// 		lua_pushinteger( L, GLFW_PEN_TABLET_CURSOR_EVENT );
-// 		lua_setfield( L, -2, "type" );
-// 		lua_pushinteger( L, identifier );
-// 		lua_setfield( L, -2, "identifier" );
+    if ( lua_isfunction( L, -1 ) ) {
+		lua_createtable( L, 2, 0 );
+		lua_pushinteger( L, GLFW_PEN_TABLET_CURSOR_EVENT );
+		lua_setfield( L, -2, "type" );
+		lua_pushinteger( L, identifier );
+		lua_setfield( L, -2, "identifier" );
 
-//         if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
-// 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
-// 			state->run = false;
-//         }
-//     }
-// 	lua_pop( L, -1 );
-// }
+        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+        }
+    }
+	lua_pop( L, -1 );
+}
 
 /*
 > GLFWpentabletproximityEvent = { int type, int proxState }
@@ -591,29 +591,29 @@ NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
 Called when the pen tablet proximity has changed. Type GLFW_PEN_TABLET_PROXIMITY_EVENT
 NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
 */
-// static void penTabletProximityEvent( int proxState ) {
-// 	lua_State *L = state->luaState;
+static void penTabletProximityEvent( int proxState ) {
+	lua_State *L = state->luaState;
 
-// 	lua_pushcfunction( L, luaTraceback );
-// 	int tracebackidx = lua_gettop( L );
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop( L );
 
-// 	lua_getglobal( L, "RL" );
-// 	lua_getfield( L, -1, "event" );
+	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "event" );
 
-//     if ( lua_isfunction( L, -1 ) ) {
-// 		lua_createtable( L, 2, 0 );
-// 		lua_pushinteger( L, GLFW_PEN_TABLET_PROXIMITY_EVENT );
-// 		lua_setfield( L, -2, "type" );
-// 		lua_pushinteger( L, proxState );
-// 		lua_setfield( L, -2, "state" );
+    if ( lua_isfunction( L, -1 ) ) {
+		lua_createtable( L, 2, 0 );
+		lua_pushinteger( L, GLFW_PEN_TABLET_PROXIMITY_EVENT );
+		lua_setfield( L, -2, "type" );
+		lua_pushinteger( L, proxState );
+		lua_setfield( L, -2, "state" );
 
-//         if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
-// 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
-// 			state->run = false;
-//         }
-//     }
-// 	lua_pop( L, -1 );
-// }
+        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+        }
+    }
+	lua_pop( L, -1 );
+}
 
 static void platformRegisterEvents() {
 	/* Window events. */

@@ -1774,6 +1774,41 @@ function  RL.SetGCUnload( enabled ) end
 
 -- Core - Files management functions
 
+---Load file data as byte array (read). Buffer type is BUFFER_UNSIGNED_CHAR
+---- Success return Buffer
+---@param fileName string
+---@return any buffer 
+function RL.LoadFileData( fileName ) end
+
+---Save data to file from byte array (write), returns true on success
+---- Success return bool
+---@param fileName string
+---@param Buffer any
+---@return any success 
+function RL.SaveFileData( fileName, Buffer ) end
+
+---Export data to code (.h), returns true on success
+---- Success return bool
+---@param buffer any
+---@param fileName string
+---@return any success 
+function RL.ExportDataAsCode( buffer, fileName ) end
+
+---Load text data from file (read)
+---- Success return string
+---@param fileName string
+---@return any text 
+function RL.LoadFileText( fileName ) end
+
+---Save text data to file (write), returns true on success
+---- Success return bool
+---@param fileName string
+---@param text string
+---@return any success 
+function RL.SaveFileText( fileName, text ) end
+
+-- Core - Files system functions
+
 ---Return game directory (where main.lua is located)
 ---- Success return string
 ---@return any path 
@@ -2379,7 +2414,7 @@ function RL.LoadBufferFromFile( path, int ) end
 ---@return any RL.UnloadBuffer
 function  RL.UnloadBuffer( buffer ) end
 
----Get buffer data as table in the format is was stored
+---Get buffer data as table in the format it was stored
 ---- Success return data{}
 ---@param buffer any
 ---@return any data 
@@ -2402,13 +2437,6 @@ function RL.GetBufferSize( buffer ) end
 ---@param path string
 ---@return any RL.ExportBuffer
 function  RL.ExportBuffer( buffer, path ) end
-
----Export buffer data to code (.h), returns true on success
----- Success return bool
----@param buffer any
----@param fileName string
----@return any success 
-function RL.ExportBufferAsCode( buffer, fileName ) end
 
 -- Shapes - Basic shapes drawing functions
 

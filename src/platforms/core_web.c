@@ -16,5 +16,4 @@ void platformDefineGlobals() {
 /* Events. */
 
 void luaPlatformRegister() {
-	return;
 }

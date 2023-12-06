@@ -19,7 +19,7 @@ bool wordWrap, Color *tints, int tintCount, Color *backTints, int backTintCount 
 
     // Word/character wrapping mechanism variables
     enum { MEASURE_STATE = 0, DRAW_STATE = 1 };
-    int state = wordWrap? MEASURE_STATE : DRAW_STATE;
+    int state = wordWrap ? MEASURE_STATE : DRAW_STATE;
 
     int startLine = -1;         // Index where to begin drawing (where a line begins)
     int endLine = -1;           // Index where to stop drawing (where a line ends)
@@ -29,7 +29,7 @@ bool wordWrap, Color *tints, int tintCount, Color *backTints, int backTintCount 
 	Vector2 mousePos = GetMousePosition();
 	int mouseChar = -1;
 
-    for (int i = 0, k = 0; i < length; i++, k++)
+    for ( int i = 0, k = 0; i < length; i++, k++)
     {
 		if ( i < tintCount ) {
 			tint = tints[i];

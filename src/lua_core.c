@@ -1264,6 +1264,12 @@ void luaRegister() {
 	assingGlobalFunction( "IsGCUnloadEnabled", lcoreIsGCUnloadEnabled );
 	assingGlobalFunction( "SetGCUnload", lcoreSetGCUnload );
 		/* Files management functions. */
+	assingGlobalFunction( "LoadFileData", lcoreLoadFileData );
+	assingGlobalFunction( "SaveFileData", lcoreSaveFileData );
+	assingGlobalFunction( "ExportDataAsCode", lcoreExportDataAsCode );
+	assingGlobalFunction( "LoadFileText", lcoreLoadFileText );
+	assingGlobalFunction( "SaveFileText", lcoreSaveFileText );
+		/* Files system functions. */
 	assingGlobalFunction( "GetBasePath", lcoreGetBasePath );
 	assingGlobalFunction( "FileExists", lcoreFileExists );
 	assingGlobalFunction( "DirectoryExists", lcoreDirectoryExists );
@@ -1374,7 +1380,6 @@ void luaRegister() {
 	assingGlobalFunction( "GetBufferType", lcoreGetBufferType );
 	assingGlobalFunction( "GetBufferSize", lcoreGetBufferSize );
 	assingGlobalFunction( "ExportBuffer", lcoreExportBuffer );
-	assingGlobalFunction( "ExportBufferAsCode", lcoreExportBufferAsCode );
 
 	/* Shapes. */
 		/* Basic shapes drawing functions. */

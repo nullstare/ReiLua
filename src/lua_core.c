@@ -845,7 +845,7 @@ static void defineGlobals() {
 	assignGlobalInt( RL_FRAGMENT_SHADER, "RL_FRAGMENT_SHADER" ); // GL_FRAGMENT_SHADER
 	assignGlobalInt( RL_VERTEX_SHADER, "RL_VERTEX_SHADER" ); // GL_VERTEX_SHADER
 	assignGlobalInt( RL_COMPUTE_SHADER, "RL_COMPUTE_SHADER" ); // GL_COMPUTE_SHADER
-	/* RLGL GlVersion */
+	/* RLGL GL blending factors */
 	assignGlobalInt( RL_ZERO, "RL_ZERO" ); // GL_ZERO
 	assignGlobalInt( RL_ONE, "RL_ONE" ); // GL_ONE
 	assignGlobalInt( RL_SRC_COLOR, "RL_SRC_COLOR" ); // GL_SRC_COLOR
@@ -1586,10 +1586,20 @@ void luaRegister() {
 	assingGlobalFunction( "IsModelReady", lmodelsIsModelReady );
 	assingGlobalFunction( "UnloadModel", lmodelsUnloadModel );
 	assingGlobalFunction( "GetModelBoundingBox", lmodelsGetModelBoundingBox );
+	assingGlobalFunction( "SetModelTransform", lmodelsSetModelTransform );
+	assingGlobalFunction( "SetModelMesh", lmodelsSetModelMesh );
 	assingGlobalFunction( "SetModelMaterial", lmodelsSetModelMaterial );
 	assingGlobalFunction( "SetModelMeshMaterial", lmodelsSetModelMeshMaterial );
-	assingGlobalFunction( "SetModelTransform", lmodelsSetModelTransform );
+	assingGlobalFunction( "SetModelBone", lmodelsSetModelBone );
+	assingGlobalFunction( "SetModelBindPose", lmodelsSetModelBindPose );
 	assingGlobalFunction( "GetModelTransform", lmodelsGetModelTransform );
+	assingGlobalFunction( "GetModelMeshCount", lmodelsGetModelMeshCount );
+	assingGlobalFunction( "GetModelMaterialCount", lmodelsGetModelMaterialCount );
+	assingGlobalFunction( "GetModelMesh", lmodelsGetModelMesh );
+	assingGlobalFunction( "GetModelMaterial", lmodelsGetModelMaterial );
+	assingGlobalFunction( "GetModelBoneCount", lmodelsGetModelBoneCount );
+	assingGlobalFunction( "GetModelBone", lmodelsGetModelBone );
+	assingGlobalFunction( "GetModelBindPose", lmodelsGetModelBindPose );
 		/* Model drawing functions. */
 	assingGlobalFunction( "DrawModel", lmodelsDrawModel );
 	assingGlobalFunction( "DrawModelEx", lmodelsDrawModelEx );
@@ -2481,7 +2491,6 @@ BoundingBox uluaGetBoundingBox( lua_State *L, int index ) {
 			lua_pop( L, 1 );
 		}
     }
-
 	return box;
 }
 
@@ -2518,7 +2527,6 @@ Ray uluaGetRay( lua_State *L, int index ) {
 			lua_pop( L, 1 );
 		}
     }
-
 	return ray;
 }
 
@@ -2579,6 +2587,139 @@ NPatchInfo uluaGetNPatchInfo( lua_State *L, int index ) {
 		lua_pop( L, 1 );
     }
 	return npatch;
+}
+
+GlyphInfo uluaGetGlyphInfo( lua_State *L, int index ) {
+	luaL_checktype( L, index, LUA_TTABLE );
+	GlyphInfo glyph = { 0 };
+
+	int t = index, i = 0;
+    lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		/* Do not check type since there should be table and ints. */
+		if ( lua_isnumber( L, -2 ) ) {
+			switch ( i ) {
+				case 0:
+					glyph.value = lua_tointeger( L, -1 );
+					break;
+				case 1:
+					glyph.offsetX = lua_tointeger( L, -1 );
+					break;
+				case 2:
+					glyph.offsetY = lua_tointeger( L, -1 );
+					break;
+				case 3:
+					glyph.advanceX = lua_tointeger( L, -1 );
+					break;
+				case 4:
+					glyph.image = *uluaGetImage( L, lua_gettop( L ) );
+					break;
+				default:
+					break;
+			}
+		}
+		else if ( lua_isstring( L, -2 ) ) {
+			if ( strcmp( "value", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				glyph.value = lua_tointeger( L, -1 );
+			}
+			else if ( strcmp( "offsetX", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				glyph.offsetX = lua_tointeger( L, -1 );
+			}
+			else if ( strcmp( "offsetY", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				glyph.offsetY = lua_tointeger( L, -1 );
+			}
+			else if ( strcmp( "advanceX", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				glyph.advanceX = lua_tointeger( L, -1 );
+			}
+			else if ( strcmp( "image", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				glyph.image = *uluaGetImage( L, lua_gettop( L ) );
+			}
+		}
+		i++;
+		lua_pop( L, 1 );
+    }
+	return glyph;
+}
+
+BoneInfo uluaGetBoneInfo( lua_State *L, int index ) {
+	luaL_checktype( L, index, LUA_TTABLE );
+	BoneInfo bone = { 0 };
+
+	int t = index, i = 0;
+    lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		/* Do not check type since there should be table and ints. */
+		if ( lua_isnumber( L, -2 ) ) {
+			switch ( i ) {
+				case 0:
+					strncpy( bone.name, lua_tostring( L, lua_gettop( L ) ), 32 );
+					break;
+				case 1:
+					bone.parent = lua_tointeger( L, -1 );
+					break;
+				default:
+					break;
+			}
+		}
+		else if ( lua_istable( L, -1 ) ) {
+			if ( lua_isstring( L, -2 ) ) {
+				if ( strcmp( "name", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					strncpy( bone.name, lua_tostring( L, lua_gettop( L ) ), 32 );
+				}
+				else if ( strcmp( "parent", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					bone.parent = lua_tointeger( L, -1 );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+    }
+	return bone;
+}
+
+Transform uluaGetTransform( lua_State *L, int index ) {
+	luaL_checktype( L, index, LUA_TTABLE );
+	Transform transform = { 0 };
+
+	int t = index, i = 0;
+    lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		/* Do not check type since there should be table and ints. */
+		if ( lua_isnumber( L, -2 ) ) {
+			switch ( i ) {
+				case 0:
+					transform.translation = uluaGetVector3( L, lua_gettop( L ) );
+					break;
+				case 1:
+					transform.rotation = uluaGetQuaternion( L, lua_gettop( L ) );
+					break;
+				case 2:
+					transform.scale = uluaGetVector3( L, lua_gettop( L ) );
+					break;
+				default:
+					break;
+			}
+		}
+		else if ( lua_istable( L, -1 ) ) {
+			if ( lua_isstring( L, -2 ) ) {
+				if ( strcmp( "translation", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					transform.translation = uluaGetVector3( L, lua_gettop( L ) );
+				}
+				else if ( strcmp( "rotation", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					transform.rotation = uluaGetQuaternion( L, lua_gettop( L ) );
+				}
+				else if ( strcmp( "scale", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+					transform.scale = uluaGetVector3( L, lua_gettop( L ) );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+    }
+	return transform;
 }
 
 Buffer* uluaGetBuffer( lua_State *L, int index ) {
@@ -2866,7 +3007,7 @@ void uluaPushBoundingBox( lua_State *L, BoundingBox box ) {
 }
 
 void uluaPushGlyphInfo( lua_State *L, GlyphInfo glyphInfo, Image *image ) {
-	lua_createtable( L, 4, 0 );
+	lua_createtable( L, 5, 0 );
 	lua_pushinteger( L, glyphInfo.value );
 	lua_setfield( L, -2, "value" );
 	lua_pushinteger( L, glyphInfo.offsetX );
@@ -2877,6 +3018,24 @@ void uluaPushGlyphInfo( lua_State *L, GlyphInfo glyphInfo, Image *image ) {
 	lua_setfield( L, -2, "advanceX" );
 	lua_pushlightuserdata( L, image );
 	lua_setfield( L, -2, "image" );
+}
+
+void uluaPushBoneInfo( lua_State *L, BoneInfo boneInfo ) {
+	lua_createtable( L, 2, 0 );
+	lua_pushstring( L, boneInfo.name );
+	lua_setfield( L, -2, "name" );
+	lua_pushinteger( L, boneInfo.parent );
+	lua_setfield( L, -2, "parent" );
+}
+
+void uluaPushTransform( lua_State *L, Transform transform ) {
+	lua_createtable( L, 3, 0 );
+	uluaPushVector3( L, transform.translation );
+	lua_setfield( L, -2, "name" );
+	uluaPushQuaternion( L, transform.rotation );
+	lua_setfield( L, -2, "rotation" );
+	uluaPushVector3( L, transform.scale );
+	lua_setfield( L, -2, "scale" );
 }
 
 void uluaPushBuffer( lua_State *L, Buffer buffer ) {

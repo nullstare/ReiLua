@@ -1034,7 +1034,7 @@ RL.RL_VERTEX_SHADER=35633
 ---GL_COMPUTE_SHADER
 RL.RL_COMPUTE_SHADER=37305
 
--- Defines - RLGL GlVersion
+-- Defines - RLGL GL blending factors
 
 ---GL_ZERO
 RL.RL_ZERO=0
@@ -3995,7 +3995,22 @@ function  RL.UnloadModel( model ) end
 ---@return any boundingBox 
 function RL.GetModelBoundingBox( model ) end
 
----Copies material to model material. (Model material is the material id in models.)
+---Set model transform matrix
+---@param model any
+---@param transform table
+---@return any RL.SetModelTransform
+function  RL.SetModelTransform( model, transform ) end
+
+---Get model mesh. Return as lightuserdata
+---- Failure return false
+---- Success return true
+---@param model any
+---@param meshId integer
+---@param mesh any
+---@return any success 
+function RL.SetModelMesh( model, meshId, mesh ) end
+
+---Copies material to model material
 ---- Failure return false
 ---- Success return true
 ---@param model any
@@ -4011,17 +4026,79 @@ function RL.SetModelMaterial( model, modelMaterialId, material ) end
 ---@return any RL.SetModelMeshMaterial
 function  RL.SetModelMeshMaterial( model, meshId, materialId ) end
 
----Set model transform matrix
+---Set model bone information (skeleton)
+---- Failure return false
+---- Success return true
 ---@param model any
----@param transform table
----@return any RL.SetModelTransform
-function  RL.SetModelTransform( model, transform ) end
+---@param boneId integer
+---@param bone any
+---@return any success 
+function RL.SetModelBone( model, boneId, bone ) end
+
+---Set model bones base transformation (pose)
+---- Failure return false
+---- Success return true
+---@param model any
+---@param boneId integer
+---@param pose any
+---@return any success 
+function RL.SetModelBindPose( model, boneId, pose ) end
 
 ---Get model transform matrix
 ---- Success return Matrix
 ---@param model any
 ---@return any transform 
 function RL.GetModelTransform( model ) end
+
+---Get model number of meshes
+---- Success return int
+---@param model any
+---@return any meshCount 
+function RL.GetModelMeshCount( model ) end
+
+---Get model number of materials
+---- Success return int
+---@param model any
+---@return any meshCount 
+function RL.GetModelMaterialCount( model ) end
+
+---Get model mesh. Return as lightuserdata
+---- Failure return nil
+---- Success return Mesh
+---@param model any
+---@param meshId integer
+---@return any mesh 
+function RL.GetModelMesh( model, meshId ) end
+
+---Get model material. Return as lightuserdata
+---- Failure return nil
+---- Success return Material
+---@param model any
+---@param materialId integer
+---@return any material 
+function RL.GetModelMaterial( model, materialId ) end
+
+---Get model number of bones
+---- Success return int
+---@param model any
+---@return any boneCount 
+function RL.GetModelBoneCount( model ) end
+
+---Get model bones information (skeleton)
+---- Failure return nil
+---- Success return BoneInfo
+---@param model any
+---@param boneId integer
+---@return any bone 
+function RL.GetModelBone( model, boneId ) end
+
+---Get models bones base transformation (pose)
+---- Failure return nil
+---- Success return Transform
+---@param model any
+---@param boneId integer
+---@return any pose 
+function RL.GetModelBindPose( model, boneId ) end
 
 -- Models - Model drawing functions
 

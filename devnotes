@@ -5,7 +5,7 @@ Backlog {
 	* Raygui lib
 		* Check if could remove flickering from changing draw order by making queue for order changing and only
 		change them after everything is drawn. 
-	* Platform desktop SDL.
+	* Platform desktop SDL
 		* Text input not working on gui. Could this be Raylib issue?
 		* Haptic functions.
 	* Text
@@ -16,12 +16,10 @@ Backlog {
 		* GenImageFontAtlas.
 	* Audio
 		* AudioStream.
-	* Models
-		* More Model management functions. Get mesh and material etc.
-		* BoneInfo.
-		* LoadMaterialsFromModel (Could then for example edit and set back to model).
 	* Core
 		* Automation events functionality.
+	* Models
+		* More Animation management functions.
 
 	* Examples
 		* Improve Dungeon crawler example by generating custom mesh instead of drawing 3D quads.
@@ -40,4 +38,5 @@ Needs Testing {
 	* rlUpdateTexture
 	* rlReadTexturePixels
 	* rlReadScreenPixels
+	* SetModelMesh	Test unloading for double free or other errors.
 }

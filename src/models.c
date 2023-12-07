@@ -573,9 +573,48 @@ int lmodelsGetModelBoundingBox( lua_State *L ) {
 }
 
 /*
+> RL.SetModelTransform( Model model, Matrix transform )
+
+Set model transform matrix
+*/
+int lmodelsSetModelTransform( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+	Matrix transform = uluaGetMatrix( L, 2 );
+
+	model->transform = transform;
+
+	return 0;
+}
+
+/*
+> success = RL.SetModelMesh( Model model, int meshId, Mesh mesh )
+
+Get model mesh. Return as lightuserdata
+
+- Failure return false
+- Success return true
+*/
+int lmodelsSetModelMesh( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+	int meshId = luaL_checkinteger( L, 2 );
+	Mesh *mesh = uluaGetMesh( L, 3 );
+
+	if ( 0 <= meshId && meshId < model->meshCount ) {
+		// TODO Test if mesh should be copied instead. Is there issues with unloading.
+		model->meshes[ meshId ] = *mesh;
+		lua_pushboolean( L, true );
+	}
+	else {
+		TraceLog( LOG_WARNING, "MeshId %d out of bounds", meshId );
+		lua_pushboolean( L, false );
+	}
+	return 1;
+}
+
+/*
 > success = RL.SetModelMaterial( Model model, int modelMaterialId, Material material )
 
-Copies material to model material. (Model material is the material id in models.)
+Copies material to model material
 
 - Failure return false
 - Success return true
@@ -584,8 +623,6 @@ int lmodelsSetModelMaterial( lua_State *L ) {
 	Model *model = uluaGetModel( L, 1 );
 	int modelMaterialId = luaL_checkinteger( L, 2 );
 	Material *material = uluaGetMaterial( L, 3 );
-
-	//TODO Could maybe return old shader and textures for storage or get garbage collected?
 
 	if ( 0 <= modelMaterialId && modelMaterialId < model->materialCount ) {
 		/* Copy material data instead of using pointer. Pointer would result in double free error. */
@@ -630,17 +667,51 @@ int lmodelsSetModelMeshMaterial( lua_State *L ) {
 }
 
 /*
-> RL.SetModelTransform( Model model, Matrix transform )
+> success = RL.SetModelBone( Model model, int boneId, BoneInfo bone )
 
-Set model transform matrix
+Set model bone information (skeleton)
+
+- Failure return false
+- Success return true
 */
-int lmodelsSetModelTransform( lua_State *L ) {
+int lmodelsSetModelBone( lua_State *L ) {
 	Model *model = uluaGetModel( L, 1 );
-	Matrix transform = uluaGetMatrix( L, 2 );
+	int boneId = luaL_checkinteger( L, 2 );
+	BoneInfo bone = uluaGetBoneInfo( L, 3 );
 
-	model->transform = transform;
+	if ( 0 <= boneId && boneId < model->boneCount ) {
+		model->bones[ boneId ] = bone;
+		lua_pushboolean( L, true );
+	}
+	else {
+		TraceLog( LOG_WARNING, "boneId %d out of bounds", boneId );
+		lua_pushboolean( L, false );
+	}
+	return 1;
+}
 
-	return 0;
+/*
+> success = RL.SetModelBindPose( Model model, int boneId, Transform pose )
+
+Set model bones base transformation (pose)
+
+- Failure return false
+- Success return true
+*/
+int lmodelsSetModelBindPose( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+	int boneId = luaL_checkinteger( L, 2 );
+	Transform pose = uluaGetTransform( L, 3 );
+
+	if ( 0 <= boneId && boneId < model->boneCount ) {
+		model->bindPose[ boneId ] = pose;
+		lua_pushboolean( L, true );
+	}
+	else {
+		TraceLog( LOG_WARNING, "boneId %d out of bounds", boneId );
+		lua_pushboolean( L, false );
+	}
+	return 1;
 }
 
 /*
@@ -655,6 +726,139 @@ int lmodelsGetModelTransform( lua_State *L ) {
 
 	uluaPushMatrix( L, model->transform );
 
+	return 1;
+}
+
+/*
+> meshCount = RL.GetModelMeshCount( Model model )
+
+Get model number of meshes
+
+- Success return int
+*/
+int lmodelsGetModelMeshCount( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+
+	lua_pushinteger( L, model->meshCount );
+
+	return 1;
+}
+
+/*
+> meshCount = RL.GetModelMaterialCount( Model model )
+
+Get model number of materials
+
+- Success return int
+*/
+int lmodelsGetModelMaterialCount( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+
+	lua_pushinteger( L, model->materialCount );
+
+	return 1;
+}
+
+/*
+> mesh = RL.GetModelMesh( Model model, int meshId )
+
+Get model mesh. Return as lightuserdata
+
+- Failure return nil
+- Success return Mesh
+*/
+int lmodelsGetModelMesh( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+	int meshId = luaL_checkinteger( L, 2 );
+
+	if ( 0 <= meshId && meshId < model->meshCount ) {
+		lua_pushlightuserdata( L, &model->meshes[ meshId ] );
+	}
+	else {
+		TraceLog( LOG_WARNING, "MeshId %d out of bounds", meshId );
+		lua_pushnil( L );
+	}
+	return 1;
+}
+
+/*
+> material = RL.GetModelMaterial( Model model, int materialId )
+
+Get model material. Return as lightuserdata
+
+- Failure return nil
+- Success return Material
+*/
+int lmodelsGetModelMaterial( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+	int materialId = luaL_checkinteger( L, 2 );
+
+	if ( 0 <= materialId && materialId < model->materialCount ) {
+		lua_pushlightuserdata( L, &model->materials[ materialId ] );
+	}
+	else {
+		TraceLog( LOG_WARNING, "MaterialId %d out of bounds", materialId );
+		lua_pushnil( L );
+	}
+	return 1;
+}
+
+/*
+> boneCount = RL.GetModelBoneCount( Model model )
+
+Get model number of bones
+
+- Success return int
+*/
+int lmodelsGetModelBoneCount( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+
+	lua_pushinteger( L, model->boneCount );
+
+	return 1;
+}
+
+/*
+> bone = RL.GetModelBone( Model model, int boneId )
+
+Get model bones information (skeleton)
+
+- Failure return nil
+- Success return BoneInfo
+*/
+int lmodelsGetModelBone( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+	int boneId = luaL_checkinteger( L, 2 );
+
+	if ( 0 <= boneId && boneId < model->boneCount ) {
+		uluaPushBoneInfo( L, model->bones[ boneId ] );
+	}
+	else {
+		TraceLog( LOG_WARNING, "BoneId %d out of bounds", boneId );
+		lua_pushnil( L );
+	}
+	return 1;
+}
+
+/*
+> pose = RL.GetModelBindPose( Model model, int boneId )
+
+Get models bones base transformation (pose)
+
+- Failure return nil
+- Success return Transform
+*/
+int lmodelsGetModelBindPose( lua_State *L ) {
+	Model *model = uluaGetModel( L, 1 );
+	int boneId = luaL_checkinteger( L, 2 );
+
+	if ( 0 <= boneId && boneId < model->boneCount ) {
+		uluaPushTransform( L, model->bindPose[ boneId ] );
+	}
+	else {
+		TraceLog( LOG_WARNING, "BoneId %d out of bounds", boneId );
+		lua_pushnil( L );
+	}
 	return 1;
 }
 

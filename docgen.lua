@@ -223,6 +223,10 @@ apiFile:write( "\n> BoundingBox = { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } } or { 
 BoundingBox\n\n---\n" )
 apiFile:write( "\n> GlyphInfo = { value = int, offsetX = int, offsetY = int, advanceX = int, image = Image }\n\
 GlyphInfo, font characters glyphs info\n\n---\n" )
+apiFile:write( "\n> BoneInfo = { name = string[32], parent = int }\n\
+Bone, skeletal animation bone\n\n---\n" )
+apiFile:write( "\n> Transform = { translation = Vector3, rotation = Quaternion, scale = Vector3 }\n\
+Transform, vertex transformation data\n\n---\n" )
 apiFile:write( "\n> Wave = Userdata\n\
 Wave, audio wave data\n\n---\n" )
 apiFile:write( "\n> Sound = Userdata\n\

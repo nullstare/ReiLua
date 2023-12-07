@@ -221,6 +221,18 @@ GlyphInfo, font characters glyphs info
 
 ---
 
+> BoneInfo = { name = string[32], parent = int }
+
+Bone, skeletal animation bone
+
+---
+
+> Transform = { translation = Vector3, rotation = Quaternion, scale = Vector3 }
+
+Transform, vertex transformation data
+
+---
+
 > Wave = Userdata
 
 Wave, audio wave data
@@ -2977,7 +2989,7 @@ GL_COMPUTE_SHADER
 ---
 
 
-## Defines - RLGL GlVersion
+## Defines - RLGL GL blending factors
 > RL_ZERO = 0
 
 GL_ZERO
@@ -6585,9 +6597,24 @@ Compute model bounding box limits (considers all meshes)
 
 ---
 
+> RL.SetModelTransform( Model model, Matrix transform )
+
+Set model transform matrix
+
+---
+
+> success = RL.SetModelMesh( Model model, int meshId, Mesh mesh )
+
+Get model mesh. Return as lightuserdata
+
+- Failure return false
+- Success return true
+
+---
+
 > success = RL.SetModelMaterial( Model model, int modelMaterialId, Material material )
 
-Copies material to model material. (Model material is the material id in models.)
+Copies material to model material
 
 - Failure return false
 - Success return true
@@ -6600,9 +6627,21 @@ Set material for a mesh (Mesh and material on this model)
 
 ---
 
-> RL.SetModelTransform( Model model, Matrix transform )
+> success = RL.SetModelBone( Model model, int boneId, BoneInfo bone )
 
-Set model transform matrix
+Set model bone information (skeleton)
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.SetModelBindPose( Model model, int boneId, Transform pose )
+
+Set model bones base transformation (pose)
+
+- Failure return false
+- Success return true
 
 ---
 
@@ -6611,6 +6650,66 @@ Set model transform matrix
 Get model transform matrix
 
 - Success return Matrix
+
+---
+
+> meshCount = RL.GetModelMeshCount( Model model )
+
+Get model number of meshes
+
+- Success return int
+
+---
+
+> meshCount = RL.GetModelMaterialCount( Model model )
+
+Get model number of materials
+
+- Success return int
+
+---
+
+> mesh = RL.GetModelMesh( Model model, int meshId )
+
+Get model mesh. Return as lightuserdata
+
+- Failure return nil
+- Success return Mesh
+
+---
+
+> material = RL.GetModelMaterial( Model model, int materialId )
+
+Get model material. Return as lightuserdata
+
+- Failure return nil
+- Success return Material
+
+---
+
+> boneCount = RL.GetModelBoneCount( Model model )
+
+Get model number of bones
+
+- Success return int
+
+---
+
+> bone = RL.GetModelBone( Model model, int boneId )
+
+Get model bones information (skeleton)
+
+- Failure return nil
+- Success return BoneInfo
+
+---
+
+> pose = RL.GetModelBindPose( Model model, int boneId )
+
+Get models bones base transformation (pose)
+
+- Failure return nil
+- Success return Transform
 
 ---
 

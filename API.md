@@ -6605,16 +6605,16 @@ Set model transform matrix
 
 > success = RL.SetModelMesh( Model model, int meshId, Mesh mesh )
 
-Get model mesh. Return as lightuserdata
+Set model mesh.
 
 - Failure return false
 - Success return true
 
 ---
 
-> success = RL.SetModelMaterial( Model model, int modelMaterialId, Material material )
+> success = RL.SetModelMaterial( Model model, int materialId, Material material )
 
-Copies material to model material
+Set material to model material
 
 - Failure return false
 - Success return true
@@ -7057,11 +7057,47 @@ Update model animation pose
 
 ---
 
+> RL.UnloadModelAnimation( ModelAnimation animation )
+
+Unload animation data
+
+---
+
+> RL.UnloadModelAnimations( ModelAnimation{} animations )
+
+Unload animation table data
+
+---
+
 > valid = RL.IsModelAnimationValid( Model model, ModelAnimation animation )
 
 Check model animation skeleton match
 
 - Success return bool
+
+---
+
+> success = RL.SetModelAnimationBone( ModelAnimation animation, int boneId, BoneInfo bone )
+
+Set modelAnimation bones information (skeleton)
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.SetModelAnimationFramePose( ModelAnimation animation, int frame, int boneId, Transform pose )
+
+Set modelAnimation bones base transformation (pose)
+
+- Failure return false
+- Success return true
+
+---
+
+> RL.SetModelAnimationName( ModelAnimation animation, string name )
+
+Set modelAnimation name
 
 ---
 
@@ -7078,6 +7114,32 @@ Return modelAnimation bone count
 Return modelAnimation frame count
 
 - Success return int
+
+---
+
+> bone = RL.GetModelAnimationBone( ModelAnimation animation, int boneId )
+
+Get modelAnimation bones information (skeleton)
+
+- Failure return nil
+- Success return BoneInfo
+
+---
+
+> pose = RL.GetModelAnimationFramePose( ModelAnimation animation, int frame, int boneId )
+
+Get modelAnimation bones base transformation (pose)
+
+- Failure return nil
+- Success return Transform
+
+---
+
+> name = RL.GetModelAnimationName( ModelAnimation animation )
+
+Get modelAnimation name
+
+- Success return string
 
 ---
 

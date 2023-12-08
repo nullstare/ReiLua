@@ -10,26 +10,6 @@ void unloadMaterial( Material *material ) {
 	free( material->maps );
 }
 
-// Unload model (but not meshes) from memory (RAM and/or VRAM)
-void UnloadModelKeepMeshes( Model model ) {
-    // Unload materials maps
-    // NOTE: As the user could be sharing shaders and textures between models,
-    // we don't unload the material but just free it's maps,
-    // the user is responsible for freeing models shaders and textures
-    for (int i = 0; i < model.materialCount; i++) RL_FREE(model.materials[i].maps);
-
-    // Unload arrays
-    RL_FREE(model.meshes);
-    RL_FREE(model.materials);
-    RL_FREE(model.meshMaterial);
-
-    // Unload animation data
-    RL_FREE(model.bones);
-    RL_FREE(model.bindPose);
-
-    TraceLog( LOG_INFO, "MODEL: Unloaded model (but not meshes) from RAM and VRAM" );
-}
-
 void DrawBillboardProNoRatio( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint ) {
     // NOTE: Billboard size will maintain source rectangle aspect ratio, size will represent billboard width
     // Vector2 sizeRatio = { size.x*(float)source.width/source.height, size.y };
@@ -589,7 +569,7 @@ int lmodelsSetModelTransform( lua_State *L ) {
 /*
 > success = RL.SetModelMesh( Model model, int meshId, Mesh mesh )
 
-Get model mesh. Return as lightuserdata
+Set model mesh.
 
 - Failure return false
 - Success return true
@@ -600,52 +580,35 @@ int lmodelsSetModelMesh( lua_State *L ) {
 	Mesh *mesh = uluaGetMesh( L, 3 );
 
 	if ( 0 <= meshId && meshId < model->meshCount ) {
-		// TODO Test if mesh should be copied instead. Is there issues with unloading.
 		model->meshes[ meshId ] = *mesh;
 		lua_pushboolean( L, true );
 	}
 	else {
-		TraceLog( LOG_WARNING, "MeshId %d out of bounds", meshId );
+		TraceLog( LOG_WARNING, "SetModelMesh meshId %d out of bounds", meshId );
 		lua_pushboolean( L, false );
 	}
 	return 1;
 }
 
 /*
-> success = RL.SetModelMaterial( Model model, int modelMaterialId, Material material )
+> success = RL.SetModelMaterial( Model model, int materialId, Material material )
 
-Copies material to model material
+Set material to model material
 
 - Failure return false
 - Success return true
 */
 int lmodelsSetModelMaterial( lua_State *L ) {
 	Model *model = uluaGetModel( L, 1 );
-	int modelMaterialId = luaL_checkinteger( L, 2 );
+	int materialId = luaL_checkinteger( L, 2 );
 	Material *material = uluaGetMaterial( L, 3 );
 
-	if ( 0 <= modelMaterialId && modelMaterialId < model->materialCount ) {
-		/* Copy material data instead of using pointer. Pointer would result in double free error. */
-		model->materials[ modelMaterialId ].shader = material->shader;
-		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_ALBEDO ] = material->maps[ MATERIAL_MAP_ALBEDO ];
-		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_METALNESS ] = material->maps[ MATERIAL_MAP_METALNESS ];
-		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_NORMAL ] = material->maps[ MATERIAL_MAP_NORMAL ];
-		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_ROUGHNESS ] = material->maps[ MATERIAL_MAP_ROUGHNESS ];
-		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_OCCLUSION ] = material->maps[ MATERIAL_MAP_OCCLUSION ];
-		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_EMISSION ] = material->maps[ MATERIAL_MAP_EMISSION ];
-		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_HEIGHT ] = material->maps[ MATERIAL_MAP_HEIGHT ];
-		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_CUBEMAP ] = material->maps[ MATERIAL_MAP_CUBEMAP ];
-		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_IRRADIANCE ] = material->maps[ MATERIAL_MAP_IRRADIANCE ];
-		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_PREFILTER ] = material->maps[ MATERIAL_MAP_PREFILTER ];
-		model->materials[ modelMaterialId ].maps[ MATERIAL_MAP_BRDF ] = material->maps[ MATERIAL_MAP_BRDF ];
-
-		for ( int i = 0; i < 4; i++ ) {
-			model->materials[ modelMaterialId ].params[i] = material->params[i];
-		}
+	if ( 0 <= materialId && materialId < model->materialCount ) {
+		model->materials[ materialId ] = *material;
 		lua_pushboolean( L, true );
 	}
 	else {
-		TraceLog( LOG_WARNING, "SetModelMaterial modelMaterialId %d out of bounds", modelMaterialId );
+		TraceLog( LOG_WARNING, "SetModelMaterial materialId %d out of bounds", materialId );
 		lua_pushboolean( L, false );
 	}
 	return 1;
@@ -661,8 +624,14 @@ int lmodelsSetModelMeshMaterial( lua_State *L ) {
 	int meshId = luaL_checkinteger( L, 2 );
 	int materialId = luaL_checkinteger( L, 3 );
 
-	SetModelMeshMaterial( model, meshId, materialId );
-
+	if ( 0 <= meshId && meshId < model->meshCount && 0 <= materialId && materialId < model->materialCount ) {
+		SetModelMeshMaterial( model, meshId, materialId );
+		lua_pushboolean( L, true );
+	}
+	else {
+		TraceLog( LOG_WARNING, "SetModelMaterial meshId %d or materialId %d out of bounds", meshId, materialId );
+		lua_pushboolean( L, false );
+	}
 	return 0;
 }
 
@@ -684,7 +653,7 @@ int lmodelsSetModelBone( lua_State *L ) {
 		lua_pushboolean( L, true );
 	}
 	else {
-		TraceLog( LOG_WARNING, "boneId %d out of bounds", boneId );
+		TraceLog( LOG_WARNING, "SetModelBone boneId %d out of bounds", boneId );
 		lua_pushboolean( L, false );
 	}
 	return 1;
@@ -708,7 +677,7 @@ int lmodelsSetModelBindPose( lua_State *L ) {
 		lua_pushboolean( L, true );
 	}
 	else {
-		TraceLog( LOG_WARNING, "boneId %d out of bounds", boneId );
+		TraceLog( LOG_WARNING, "SetModelBindPose boneId %d out of bounds", boneId );
 		lua_pushboolean( L, false );
 	}
 	return 1;
@@ -775,7 +744,7 @@ int lmodelsGetModelMesh( lua_State *L ) {
 		lua_pushlightuserdata( L, &model->meshes[ meshId ] );
 	}
 	else {
-		TraceLog( LOG_WARNING, "MeshId %d out of bounds", meshId );
+		TraceLog( LOG_WARNING, "GetModelMesh meshId %d out of bounds", meshId );
 		lua_pushnil( L );
 	}
 	return 1;
@@ -797,7 +766,7 @@ int lmodelsGetModelMaterial( lua_State *L ) {
 		lua_pushlightuserdata( L, &model->materials[ materialId ] );
 	}
 	else {
-		TraceLog( LOG_WARNING, "MaterialId %d out of bounds", materialId );
+		TraceLog( LOG_WARNING, "GetModelMaterial materialId %d out of bounds", materialId );
 		lua_pushnil( L );
 	}
 	return 1;
@@ -834,7 +803,7 @@ int lmodelsGetModelBone( lua_State *L ) {
 		uluaPushBoneInfo( L, model->bones[ boneId ] );
 	}
 	else {
-		TraceLog( LOG_WARNING, "BoneId %d out of bounds", boneId );
+		TraceLog( LOG_WARNING, "GetModelBone boneId %d out of bounds", boneId );
 		lua_pushnil( L );
 	}
 	return 1;
@@ -856,7 +825,7 @@ int lmodelsGetModelBindPose( lua_State *L ) {
 		uluaPushTransform( L, model->bindPose[ boneId ] );
 	}
 	else {
-		TraceLog( LOG_WARNING, "BoneId %d out of bounds", boneId );
+		TraceLog( LOG_WARNING, "GetModelBindPose boneId %d out of bounds", boneId );
 		lua_pushnil( L );
 	}
 	return 1;
@@ -1955,7 +1924,6 @@ int lmodelsLoadModelAnimations( lua_State *L ) {
 			uluaPushModelAnimation( L, anims[i] );
 			lua_rawseti( L, -2, i+1 );
 		}
-
 		return 1;
 	}
 	TraceLog( state->logLevelInvalid, "Invalid file '%s'", lua_tostring( L, 1 ) );
@@ -1971,11 +1939,44 @@ Update model animation pose
 */
 int lmodelsUpdateModelAnimation( lua_State *L ) {
 	Model *model = uluaGetModel( L, 1 );
-	ModelAnimation *modelAnimation = uluaGetModelAnimation( L, 2 );
+	ModelAnimation *animation = uluaGetModelAnimation( L, 2 );
 	int frame = luaL_checkinteger( L, 3 );
 
-	UpdateModelAnimation( *model, *modelAnimation, frame );
+	UpdateModelAnimation( *model, *animation, frame );
 
+	return 0;
+}
+
+/*
+> RL.UnloadModelAnimation( ModelAnimation animation )
+
+Unload animation data
+*/
+int lmodelsUnloadModelAnimation( lua_State *L ) {
+	ModelAnimation *animation = uluaGetModelAnimation( L, 1 );
+
+	UnloadModelAnimation( *animation );
+
+	return 0;
+}
+
+/*
+> RL.UnloadModelAnimations( ModelAnimation{} animations )
+
+Unload animation table data
+*/
+int lmodelsUnloadModelAnimations( lua_State *L ) {
+	int t = 1, i = 0;
+    lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+        if ( lua_isuserdata( L, -1 ) ) {
+			ModelAnimation *animation = uluaGetModelAnimation( L, lua_gettop( L ) );
+			UnloadModelAnimation( *animation );
+        }
+        i++;
+        lua_pop( L, 1 );
+    }
 	return 0;
 }
 
@@ -1988,9 +1989,72 @@ Check model animation skeleton match
 */
 int lmodelsIsModelAnimationValid( lua_State *L ) {
 	Model *model = uluaGetModel( L, 1 );
-	ModelAnimation *modelAnimation = uluaGetModelAnimation( L, 2 );
+	ModelAnimation *animation = uluaGetModelAnimation( L, 2 );
 
-	lua_pushboolean( L, IsModelAnimationValid( *model, *modelAnimation ) );
+	lua_pushboolean( L, IsModelAnimationValid( *model, *animation ) );
+
+	return 1;
+}
+
+/*
+> success = RL.SetModelAnimationBone( ModelAnimation animation, int boneId, BoneInfo bone )
+
+Set modelAnimation bones information (skeleton)
+
+- Failure return false
+- Success return true
+*/
+int lmodelsSetModelAnimationBone( lua_State *L ) {
+	ModelAnimation *animation = uluaGetModelAnimation( L, 1 );
+	int boneId = luaL_checkinteger( L, 2 );
+	BoneInfo bone = uluaGetBoneInfo( L, 3 );
+
+	if ( 0 <= boneId && boneId < animation->boneCount ) {
+		animation->bones[ boneId ] = bone;
+		lua_pushboolean( L, true );
+	}
+	else {
+		TraceLog( LOG_WARNING, "SetModelAnimationBone boneId %d out of bounds", boneId );
+		lua_pushboolean( L, false );
+	}
+	return 1;
+}
+
+/*
+> success = RL.SetModelAnimationFramePose( ModelAnimation animation, int frame, int boneId, Transform pose )
+
+Set modelAnimation bones base transformation (pose)
+
+- Failure return false
+- Success return true
+*/
+int lmodelsSetModelAnimationFramePose( lua_State *L ) {
+	ModelAnimation *animation = uluaGetModelAnimation( L, 1 );
+	int frame = luaL_checkinteger( L, 2 );
+	int boneId = luaL_checkinteger( L, 3 );
+	Transform pose = uluaGetTransform( L, 4 );
+
+	if ( 0 <= frame && frame < animation->frameCount && 0 <= boneId && boneId < animation->boneCount ) {
+		animation->framePoses[ frame ][ boneId ] = pose;
+		lua_pushboolean( L, true );
+	}
+	else {
+		TraceLog( LOG_WARNING, "SetModelAnimationFramePose frame %d or BoneId %d out of bounds", frame, boneId );
+		lua_pushboolean( L, false );
+	}
+	return 1;
+}
+
+/*
+> RL.SetModelAnimationName( ModelAnimation animation, string name )
+
+Set modelAnimation name
+*/
+int lmodelsSetModelAnimationName( lua_State *L ) {
+	ModelAnimation *animation = uluaGetModelAnimation( L, 1 );
+	const char *name = luaL_checkstring( L, 2 );
+
+	strncpy( animation->name, name, 32 );
 
 	return 1;
 }
@@ -2021,6 +2085,66 @@ int lmodelsGetModelAnimationFrameCount( lua_State *L ) {
 	ModelAnimation *modelAnimation = uluaGetModelAnimation( L, 1 );
 
 	lua_pushinteger( L, modelAnimation->frameCount );
+
+	return 1;
+}
+
+/*
+> bone = RL.GetModelAnimationBone( ModelAnimation animation, int boneId )
+
+Get modelAnimation bones information (skeleton)
+
+- Failure return nil
+- Success return BoneInfo
+*/
+int lmodelsGetModelAnimationBone( lua_State *L ) {
+	ModelAnimation *animation = uluaGetModelAnimation( L, 1 );
+	int boneId = luaL_checkinteger( L, 2 );
+
+	if ( 0 <= boneId && boneId < animation->boneCount ) {
+		uluaPushBoneInfo( L, animation->bones[ boneId ] );
+	}
+	else {
+		TraceLog( LOG_WARNING, "GetModelAnimationBone boneId %d out of bounds", boneId );
+		lua_pushnil( L );
+	}
+	return 1;
+}
+
+/*
+> pose = RL.GetModelAnimationFramePose( ModelAnimation animation, int frame, int boneId )
+
+Get modelAnimation bones base transformation (pose)
+
+- Failure return nil
+- Success return Transform
+*/
+int lmodelsGetModelAnimationFramePose( lua_State *L ) {
+	ModelAnimation *animation = uluaGetModelAnimation( L, 1 );
+	int frame = luaL_checkinteger( L, 2 );
+	int boneId = luaL_checkinteger( L, 3 );
+
+	if ( 0 <= frame && frame < animation->frameCount && 0 <= boneId && boneId < animation->boneCount ) {
+		uluaPushTransform( L, animation->framePoses[ frame ][ boneId ] );
+	}
+	else {
+		TraceLog( LOG_WARNING, "GetModelAnimationFramePose frame %d or BoneId %d out of bounds", frame, boneId );
+		lua_pushnil( L );
+	}
+	return 1;
+}
+
+/*
+> name = RL.GetModelAnimationName( ModelAnimation animation )
+
+Get modelAnimation name
+
+- Success return string
+*/
+int lmodelsGetModelAnimationName( lua_State *L ) {
+	ModelAnimation *animation = uluaGetModelAnimation( L, 1 );
+
+	lua_pushstring( L, animation->name );
 
 	return 1;
 }

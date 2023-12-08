@@ -3,7 +3,6 @@
 /* Internals. */
 void unloadMaterial( Material *material );
 /* Deleted from raylib. Need for freeing models. */
-void UnloadModelKeepMeshes( Model model );
 void DrawBillboardProNoRatio( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint );
 void DrawBillboardRecNoRatio( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Color tint );
 
@@ -97,9 +96,17 @@ int lmodelsGetMaterialParams( lua_State *L );
 /* Model animations management functions. */
 int lmodelsLoadModelAnimations( lua_State *L );
 int lmodelsUpdateModelAnimation( lua_State *L );
+int lmodelsUnloadModelAnimation( lua_State *L );
+int lmodelsUnloadModelAnimations( lua_State *L );
 int lmodelsIsModelAnimationValid( lua_State *L );
+int lmodelsSetModelAnimationBone( lua_State *L );
+int lmodelsSetModelAnimationFramePose( lua_State *L );
+int lmodelsSetModelAnimationName( lua_State *L );
 int lmodelsGetModelAnimationBoneCount( lua_State *L );
 int lmodelsGetModelAnimationFrameCount( lua_State *L );
+int lmodelsGetModelAnimationBone( lua_State *L );
+int lmodelsGetModelAnimationFramePose( lua_State *L );
+int lmodelsGetModelAnimationName( lua_State *L );
 /* Collision detection functions. */
 int lmodelsCheckCollisionSpheres( lua_State *L );
 int lmodelsCheckCollisionBoxes( lua_State *L );

@@ -21,6 +21,7 @@ KEY CHANGES:
 	- ADDED: Raygui wrapper library disabled and styles for each element.
 	- ADDED: Files management functions.
 	- ADDED: More Model management functions.
+	- ADDED: More Model animations management functions.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.

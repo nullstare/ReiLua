@@ -4001,7 +4001,7 @@ function RL.GetModelBoundingBox( model ) end
 ---@return any RL.SetModelTransform
 function  RL.SetModelTransform( model, transform ) end
 
----Get model mesh. Return as lightuserdata
+---Set model mesh.
 ---- Failure return false
 ---- Success return true
 ---@param model any
@@ -4010,14 +4010,14 @@ function  RL.SetModelTransform( model, transform ) end
 ---@return any success 
 function RL.SetModelMesh( model, meshId, mesh ) end
 
----Copies material to model material
+---Set material to model material
 ---- Failure return false
 ---- Success return true
 ---@param model any
----@param modelMaterialId integer
+---@param materialId integer
 ---@param material any
 ---@return any success 
-function RL.SetModelMaterial( model, modelMaterialId, material ) end
+function RL.SetModelMaterial( model, materialId, material ) end
 
 ---Set material for a mesh (Mesh and material on this model)
 ---@param model any
@@ -4436,12 +4436,47 @@ function RL.LoadModelAnimations( fileName ) end
 ---@return any RL.UpdateModelAnimation
 function  RL.UpdateModelAnimation( model, animation, frame ) end
 
+---Unload animation data
+---@param animation any
+---@return any RL.UnloadModelAnimation
+function  RL.UnloadModelAnimation( animation ) end
+
+---Unload animation table data
+---@param animations table
+---@return any RL.UnloadModelAnimations
+function  RL.UnloadModelAnimations( animations ) end
+
 ---Check model animation skeleton match
 ---- Success return bool
 ---@param model any
 ---@param animation any
 ---@return any valid 
 function RL.IsModelAnimationValid( model, animation ) end
+
+---Set modelAnimation bones information (skeleton)
+---- Failure return false
+---- Success return true
+---@param animation any
+---@param boneId integer
+---@param bone any
+---@return any success 
+function RL.SetModelAnimationBone( animation, boneId, bone ) end
+
+---Set modelAnimation bones base transformation (pose)
+---- Failure return false
+---- Success return true
+---@param animation any
+---@param frame integer
+---@param boneId integer
+---@param pose any
+---@return any success 
+function RL.SetModelAnimationFramePose( animation, frame, boneId, pose ) end
+
+---Set modelAnimation name
+---@param animation any
+---@param name string
+---@return any RL.SetModelAnimationName
+function  RL.SetModelAnimationName( animation, name ) end
 
 ---Return modelAnimation bone count
 ---- Success return int
@@ -4454,6 +4489,29 @@ function RL.GetModelAnimationBoneCount( animation ) end
 ---@param animation any
 ---@return any frameCount 
 function RL.GetModelAnimationFrameCount( animation ) end
+
+---Get modelAnimation bones information (skeleton)
+---- Failure return nil
+---- Success return BoneInfo
+---@param animation any
+---@param boneId integer
+---@return any bone 
+function RL.GetModelAnimationBone( animation, boneId ) end
+
+---Get modelAnimation bones base transformation (pose)
+---- Failure return nil
+---- Success return Transform
+---@param animation any
+---@param frame integer
+---@param boneId integer
+---@return any pose 
+function RL.GetModelAnimationFramePose( animation, frame, boneId ) end
+
+---Get modelAnimation name
+---- Success return string
+---@param animation any
+---@return any name 
+function RL.GetModelAnimationName( animation ) end
 
 -- Model - Collision detection functions
 

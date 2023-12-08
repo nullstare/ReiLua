@@ -77,7 +77,6 @@ static void defineTexture() {
 	luaL_newmetatable( L, "Texture" );
 	lua_pushvalue( L, -1 );
 	lua_setfield( L, -2, "__index" );
-
 	lua_pushcfunction( L, gcTexture );
 	lua_setfield( L, -2, "__gc" );
 }
@@ -267,7 +266,6 @@ static int gcModel( lua_State *L ) {
 	if ( state->gcUnload ) {
 		Model *model = luaL_checkudata( L, 1, "Model" );
 		UnloadModel( *model );
-		// UnloadModelKeepMeshes( *model );
 	}
 	return 0;
 }
@@ -1649,9 +1647,17 @@ void luaRegister() {
 		/* Model animations management functions. */
 	assingGlobalFunction( "LoadModelAnimations", lmodelsLoadModelAnimations );
 	assingGlobalFunction( "UpdateModelAnimation", lmodelsUpdateModelAnimation );
+	assingGlobalFunction( "UnloadModelAnimation", lmodelsUnloadModelAnimation );
+	assingGlobalFunction( "UnloadModelAnimations", lmodelsUnloadModelAnimations );
 	assingGlobalFunction( "IsModelAnimationValid", lmodelsIsModelAnimationValid );
+	assingGlobalFunction( "SetModelAnimationBone", lmodelsSetModelAnimationBone );
+	assingGlobalFunction( "SetModelAnimationFramePose", lmodelsSetModelAnimationFramePose );
+	assingGlobalFunction( "SetModelAnimationName", lmodelsSetModelAnimationName );
 	assingGlobalFunction( "GetModelAnimationBoneCount", lmodelsGetModelAnimationBoneCount );
 	assingGlobalFunction( "GetModelAnimationFrameCount", lmodelsGetModelAnimationFrameCount );
+	assingGlobalFunction( "GetModelAnimationBone", lmodelsGetModelAnimationBone );
+	assingGlobalFunction( "GetModelAnimationFramePose", lmodelsGetModelAnimationFramePose );
+	assingGlobalFunction( "GetModelAnimationName", lmodelsGetModelAnimationName );
 		/* Collision detection functions. */
 	assingGlobalFunction( "CheckCollisionSpheres", lmodelsCheckCollisionSpheres );
 	assingGlobalFunction( "CheckCollisionBoxes", lmodelsCheckCollisionBoxes );

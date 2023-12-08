@@ -19,7 +19,7 @@ Backlog {
 	* Core
 		* Automation events functionality.
 	* Models
-		* More Animation management functions.
+		* Mesh bone weight management?
 
 	* Examples
 		* Improve Dungeon crawler example by generating custom mesh instead of drawing 3D quads.
@@ -38,5 +38,4 @@ Needs Testing {
 	* rlUpdateTexture
 	* rlReadTexturePixels
 	* rlReadScreenPixels
-	* SetModelMesh	Test unloading for double free or other errors.
 }

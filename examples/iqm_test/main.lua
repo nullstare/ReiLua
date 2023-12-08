@@ -24,6 +24,10 @@ function RL.init()
 	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
 	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
 
+	RL.SetTextLineSpacing( 26 )
+	-- If custom material or mesh is set to model, we need to use custom unloading to prevent double free errors.
+	RL.SetGCUnload( false )
+
 	texture = RL.LoadTexture( RL.GetBasePath().."../resources/images/monkey_tex.png" )
 
 	material = RL.CreateMaterial( {
@@ -37,8 +41,10 @@ function RL.init()
 			},
 		},
 	} )
-
 	model = RL.LoadModel( RL.GetBasePath().."../resources/iqm/monkey.iqm" )
+	-- Unload old material.
+	RL.UnloadMaterial( RL.GetModelMaterial( model, 0 ) )
+
 	RL.SetModelMaterial( model, 0, material )
 	animations = RL.LoadModelAnimations( RL.GetBasePath().."../resources/iqm/monkey.iqm" )
 end
@@ -85,5 +91,12 @@ function RL.draw()
 Space: Play animation\
 Up arrow: Inreace animation speed\
 Down arrow: Decreace animation speed",
-		{ 10, 10 }, 30, RL.WHITE )
+		{ 10, 10 }, 30, RL.WHITE
+	)
+end
+
+function RL.exit()
+	RL.UnloadTexture( texture )
+	RL.UnloadModel( model )
+	RL.UnloadModelAnimations( animations )
 end

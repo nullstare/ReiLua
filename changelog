@@ -22,6 +22,7 @@ KEY CHANGES:
 	- ADDED: Files management functions.
 	- ADDED: More Model management functions.
 	- ADDED: More Model animations management functions.
+	- ADDED: 2D lightmap example.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.

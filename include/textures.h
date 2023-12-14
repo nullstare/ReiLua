@@ -56,6 +56,7 @@ int ltexturesLoadImagePalette( lua_State *L );
 int ltexturesGetImageAlphaBorder( lua_State *L );
 int ltexturesGetImageColor( lua_State *L );
 /* Image configuration functions. */
+int ltexturesGetImageData( lua_State *L );
 int ltexturesGetImageSize( lua_State *L );
 int ltexturesGetImageMipmaps( lua_State *L );
 int ltexturesGetImageFormat( lua_State *L );

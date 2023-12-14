@@ -71,6 +71,7 @@ int lcoreEndScissorMode( lua_State *L );
 int lcoreLoadShader( lua_State *L );
 int lcoreLoadShaderFromMemory( lua_State *L );
 int lcoreIsShaderReady( lua_State *L );
+int lcoreGetShaderId( lua_State *L );
 int lcoreGetShaderLocation( lua_State *L );
 int lcoreGetShaderLocationAttrib( lua_State *L );
 int lcoreSetShaderLocationIndex( lua_State *L );

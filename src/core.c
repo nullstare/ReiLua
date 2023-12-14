@@ -885,6 +885,21 @@ int lcoreIsShaderReady( lua_State *L ) {
 }
 
 /*
+> shaderId = RL.GetShaderId( Shader shader )
+
+Get shader program id
+
+- Success return int
+*/
+int lcoreGetShaderId( lua_State *L ) {
+	Shader *shader = uluaGetShader( L, 1 );
+
+	lua_pushinteger( L, shader->id );
+
+	return 1;
+}
+
+/*
 > location = RL.GetShaderLocation( Shader shader, string uniformName )
 
 Get shader uniform location

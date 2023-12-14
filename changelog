@@ -23,6 +23,7 @@ KEY CHANGES:
 	- ADDED: More Model management functions.
 	- ADDED: More Model animations management functions.
 	- ADDED: 2D lightmap example.
+	- ADDED: RLGL Hello triangle example.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.
@@ -44,6 +45,9 @@ DETAILED CHANGES:
 	- CHANGE: Renamed ExportBufferAsCode to ExportDataAsCode.
 	- ADDED: BoneInfo.
 	- ADDED: Transform.
+	- ADDED: GetShaderId.
+	- FIXED: rlSetVertexAttribute pointer offset.
+	- ADDED: GetImageData.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.6.0		Using Raylib 4.5

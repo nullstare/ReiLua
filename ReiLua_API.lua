@@ -1564,6 +1564,12 @@ function RL.LoadShaderFromMemory( vsCode, fsCode ) end
 ---@return any isReady 
 function RL.IsShaderReady( shader ) end
 
+---Get shader program id
+---- Success return int
+---@param shader any
+---@return any shaderId 
+function RL.GetShaderId( shader ) end
+
 ---Get shader uniform location
 ---- Success return int
 ---@param shader any
@@ -3247,6 +3253,12 @@ function RL.GetImageAlphaBorder( image, threshold ) end
 function RL.GetImageColor( image, pixelPos ) end
 
 -- Textures - Image configuration functions
+
+---Get image data as Buffer
+---- Success return Buffer
+---@param image any
+---@return any imageData 
+function RL.GetImageData( image ) end
 
 ---Get image size
 ---- Success return Vector2
@@ -6615,7 +6627,7 @@ function  RL.rlUnloadVertexArray( vaoId ) end
 ---@return any RL.rlUnloadVertexBuffer
 function  RL.rlUnloadVertexBuffer( vboId ) end
 
----Set vertex attribute
+---Set vertex attribute. Note! Pointer should be given in size of bytes
 ---@param index integer
 ---@param compSize integer
 ---@param type integer

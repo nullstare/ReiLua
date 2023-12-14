@@ -840,6 +840,28 @@ int ltexturesGetImageColor( lua_State *L ) {
 */
 
 /*
+> imageData = RL.GetImageData( Image image )
+
+Get image data as Buffer
+
+- Success return Buffer
+*/
+int ltexturesGetImageData( lua_State *L ) {
+	Image *image = uluaGetImage( L, 1 );
+
+	Buffer buffer = (Buffer){
+		.type = BUFFER_UNSIGNED_CHAR,
+		.size = GetPixelDataSize( image->width, image->height, image->format ),
+	};
+	buffer.data = malloc( buffer.size * sizeof( unsigned char ) );
+	memcpy( buffer.data, image->data, buffer.size );
+
+	uluaPushBuffer( L, buffer );
+
+	return 1;
+}
+
+/*
 > size = RL.GetImageSize( Image image )
 
 Get image size

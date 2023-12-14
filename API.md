@@ -3984,6 +3984,14 @@ Check if a shader is ready
 
 ---
 
+> shaderId = RL.GetShaderId( Shader shader )
+
+Get shader program id
+
+- Success return int
+
+---
+
 > location = RL.GetShaderLocation( Shader shader, string uniformName )
 
 Get shader uniform location
@@ -5839,6 +5847,14 @@ Get image pixel color at (x, y) position
 ---
 
 ## Textures - Image configuration functions
+
+---
+
+> imageData = RL.GetImageData( Image image )
+
+Get image data as Buffer
+
+- Success return Buffer
 
 ---
 
@@ -9573,7 +9589,7 @@ Unload vertex buffer (VBO)
 
 > RL.rlSetVertexAttribute( int index, int compSize, int type, bool normalized, int stride, int pointer )
 
-Set vertex attribute
+Set vertex attribute. Note! Pointer should be given in size of bytes
 
 ---
 

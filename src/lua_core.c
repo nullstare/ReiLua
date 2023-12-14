@@ -1225,6 +1225,7 @@ void luaRegister() {
 	assingGlobalFunction( "LoadShader", lcoreLoadShader );
 	assingGlobalFunction( "LoadShaderFromMemory", lcoreLoadShaderFromMemory );
 	assingGlobalFunction( "IsShaderReady", lcoreIsShaderReady );
+	assingGlobalFunction( "GetShaderId", lcoreGetShaderId );
 	assingGlobalFunction( "GetShaderLocation", lcoreGetShaderLocation );
 	assingGlobalFunction( "GetShaderLocationAttrib", lcoreGetShaderLocationAttrib );
 	assingGlobalFunction( "SetShaderLocationIndex", lcoreSetShaderLocationIndex );
@@ -1497,6 +1498,7 @@ void luaRegister() {
 	assingGlobalFunction( "GetImageAlphaBorder", ltexturesGetImageAlphaBorder );
 	assingGlobalFunction( "GetImageColor", ltexturesGetImageColor );
 		/* Image configuration functions. */
+	assingGlobalFunction( "GetImageData", ltexturesGetImageData );
 	assingGlobalFunction( "GetImageSize", ltexturesGetImageSize );
 	assingGlobalFunction( "GetImageMipmaps", ltexturesGetImageMipmaps );
 	assingGlobalFunction( "GetImageFormat", ltexturesGetImageFormat );

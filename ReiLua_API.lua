@@ -6567,6 +6567,28 @@ function RL.rlGetShaderLocsDefault() end
 
 -- RLGL - Render batch management
 
+---Load a render batch system
+---- Success return rlRenderBatch
+---@param numBuffers integer
+---@param bufferElements integer
+---@return any renderBatch 
+function RL.rlLoadRenderBatch( numBuffers, bufferElements ) end
+
+---Unload render batch system
+---@param renderBatch any
+---@return any RL.rlUnloadRenderBatch
+function  RL.rlUnloadRenderBatch( renderBatch ) end
+
+---Draw render batch data (Update->Draw->Reset)
+---@param renderBatch any
+---@return any RL.rlDrawRenderBatch
+function  RL.rlDrawRenderBatch( renderBatch ) end
+
+---Set the active render batch for rlgl (nil for default internal)
+---@param renderBatch any
+---@return any RL.rlSetRenderBatchActive
+function  RL.rlSetRenderBatchActive( renderBatch ) end
+
 ---Update and draw internal render batch
 ---@return any RL.rlDrawRenderBatchActive
 function  RL.rlDrawRenderBatchActive() end

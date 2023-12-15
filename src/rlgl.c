@@ -967,6 +967,64 @@ int lrlglGetShaderLocsDefault( lua_State *L ) {
 */
 
 /*
+> renderBatch = RL.rlLoadRenderBatch( int numBuffers, int bufferElements )
+
+Load a render batch system
+
+- Success return rlRenderBatch
+*/
+int lrlglLoadRenderBatch( lua_State *L ) {
+	int numBuffers = luaL_checkinteger( L, 1 );
+	int bufferElements = luaL_checkinteger( L, 2 );
+	
+	uluaPushRLRenderBatch( L, rlLoadRenderBatch( numBuffers, bufferElements ) );
+
+	return 1;
+}
+
+/*
+> RL.rlUnloadRenderBatch( rlRenderBatch renderBatch )
+
+Unload render batch system
+*/
+int lrlglUnloadRenderBatch( lua_State *L ) {
+	rlRenderBatch *renderBatch = uluaGetRLRenderBatch( L, 1 );
+	
+	rlUnloadRenderBatch( *renderBatch );
+
+	return 0;
+}
+
+/*
+> RL.rlDrawRenderBatch( rlRenderBatch renderBatch )
+
+Draw render batch data (Update->Draw->Reset)
+*/
+int lrlglDrawRenderBatch( lua_State *L ) {
+	rlRenderBatch *renderBatch = uluaGetRLRenderBatch( L, 1 );
+
+	rlDrawRenderBatch( renderBatch );
+
+	return 0;
+}
+
+/*
+> RL.rlSetRenderBatchActive( rlRenderBatch renderBatch )
+
+Set the active render batch for rlgl (nil for default internal)
+*/
+int lrlglSetRenderBatchActive( lua_State *L ) {
+	rlRenderBatch *renderBatch = NULL;
+
+	if ( !lua_isnil( L, 1 ) ) {
+		renderBatch = uluaGetRLRenderBatch( L, 1 );
+	}
+	rlSetRenderBatchActive( renderBatch );
+
+	return 0;
+}
+
+/*
 > RL.rlDrawRenderBatchActive()
 
 Update and draw internal render batch

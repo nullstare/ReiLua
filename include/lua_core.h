@@ -64,6 +64,7 @@ Light* uluaGetLight( lua_State *L, int index );
 Material* uluaGetMaterial( lua_State *L, int index );
 Model* uluaGetModel( lua_State *L, int index );
 ModelAnimation* uluaGetModelAnimation( lua_State *L, int index );
+rlRenderBatch* uluaGetRLRenderBatch( lua_State *L, int index );
 /* Lua push types. */
 void uluaPushColor( lua_State *L, Color color );
 void uluaPushVector2( lua_State *L, Vector2 vector );
@@ -94,5 +95,6 @@ void uluaPushMaterial( lua_State *L, Material material );
 void uluaPushMesh( lua_State *L, Mesh mesh );
 void uluaPushModel( lua_State *L, Model model );
 void uluaPushModelAnimation( lua_State *L, ModelAnimation modelAnimation );
+void uluaPushRLRenderBatch( lua_State *L, rlRenderBatch renderBatch );
 /* Utils. */
 int uluaGetTableLen( lua_State *L, int index );

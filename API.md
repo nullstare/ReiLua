@@ -9515,6 +9515,32 @@ Get default shader locations
 
 ---
 
+> renderBatch = RL.rlLoadRenderBatch( int numBuffers, int bufferElements )
+
+Load a render batch system
+
+- Success return rlRenderBatch
+
+---
+
+> RL.rlUnloadRenderBatch( rlRenderBatch renderBatch )
+
+Unload render batch system
+
+---
+
+> RL.rlDrawRenderBatch( rlRenderBatch renderBatch )
+
+Draw render batch data (Update->Draw->Reset)
+
+---
+
+> RL.rlSetRenderBatchActive( rlRenderBatch renderBatch )
+
+Set the active render batch for rlgl (nil for default internal)
+
+---
+
 > RL.rlDrawRenderBatchActive()
 
 Update and draw internal render batch

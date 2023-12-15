@@ -24,6 +24,7 @@ KEY CHANGES:
 	- ADDED: More Model animations management functions.
 	- ADDED: 2D lightmap example.
 	- ADDED: RLGL Hello triangle example.
+	- ADDED: Rest of rlRenderBatch functions.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.

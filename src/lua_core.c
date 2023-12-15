@@ -299,6 +299,25 @@ static void defineModelAnimation() {
 	lua_setfield( L, -2, "__gc" );
 }
 
+	/* rlRenderBatch. */
+static int gcRLRenderBatch( lua_State *L ) {
+	if ( state->gcUnload ) {
+		rlRenderBatch *renderBatch = luaL_checkudata( L, 1, "rlRenderBatch" );
+		rlUnloadRenderBatch( *renderBatch );
+	}
+	return 0;
+}
+
+static void defineRLRenderBatch() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "rlRenderBatch" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcRLRenderBatch );
+	lua_setfield( L, -2, "__gc" );
+}
+
 /* Assing globals. */
 
 void assignGlobalInt( int value, const char *name ) {
@@ -993,6 +1012,7 @@ bool luaInit( int argn, const char **argc ) {
 	defineMesh();
 	defineModel();
 	defineModelAnimation();
+	defineRLRenderBatch();
 	/* Define globals. */
 	defineGlobals();
 	platformDefineGlobals();
@@ -2031,6 +2051,10 @@ void luaRegister() {
 	assingGlobalFunction( "rlGetShaderIdDefault", lrlglGetShaderIdDefault );
 	assingGlobalFunction( "rlGetShaderLocsDefault", lrlglGetShaderLocsDefault );
 		/* Render batch management. */
+	assingGlobalFunction( "rlLoadRenderBatch", lrlglLoadRenderBatch );
+	assingGlobalFunction( "rlUnloadRenderBatch", lrlglUnloadRenderBatch );
+	assingGlobalFunction( "rlDrawRenderBatch", lrlglDrawRenderBatch );
+	assingGlobalFunction( "rlSetRenderBatchActive", lrlglSetRenderBatchActive );
 	assingGlobalFunction( "rlDrawRenderBatchActive", lrlglDrawRenderBatchActive );
 	assingGlobalFunction( "rlCheckRenderBatchLimit", lrlglCheckRenderBatchLimit );
 	assingGlobalFunction( "rlSetTexture", lrlglSetTexture );
@@ -2842,6 +2866,13 @@ ModelAnimation* uluaGetModelAnimation( lua_State *L, int index ) {
 	return luaL_checkudata( L, index, "ModelAnimation" );
 }
 
+rlRenderBatch* uluaGetRLRenderBatch( lua_State *L, int index ) {
+	if ( lua_islightuserdata( L, index ) ) {
+		return (rlRenderBatch*)lua_touserdata( L, index );
+	}
+	return luaL_checkudata( L, index, "rlRenderBatch" );
+}
+
 /* Push types. */
 
 void uluaPushColor( lua_State *L, Color color ) {
@@ -3143,6 +3174,12 @@ void uluaPushModelAnimation( lua_State *L, ModelAnimation modelAnimation ) {
 	ModelAnimation *modelAnimationP = lua_newuserdata( L, sizeof( ModelAnimation ) );
 	*modelAnimationP = modelAnimation;
 	luaL_setmetatable( L, "ModelAnimation" );
+}
+
+void uluaPushRLRenderBatch( lua_State *L, rlRenderBatch renderBatch ) {
+	rlRenderBatch *renderBatchP = lua_newuserdata( L, sizeof( rlRenderBatch ) );
+	*renderBatchP = renderBatch;
+	luaL_setmetatable( L, "rlRenderBatch" );
 }
 
 int uluaGetTableLen( lua_State *L, int index ) {

@@ -84,6 +84,10 @@ int lrlglGetTextureIdDefault( lua_State *L );
 int lrlglGetShaderIdDefault( lua_State *L );
 int lrlglGetShaderLocsDefault( lua_State *L );
 /* Render batch management */
+int lrlglLoadRenderBatch( lua_State *L );
+int lrlglUnloadRenderBatch( lua_State *L );
+int lrlglDrawRenderBatch( lua_State *L );
+int lrlglSetRenderBatchActive( lua_State *L );
 int lrlglDrawRenderBatchActive( lua_State *L );
 int lrlglCheckRenderBatchLimit( lua_State *L );
 int lrlglSetTexture( lua_State *L );

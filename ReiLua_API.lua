@@ -3514,6 +3514,16 @@ function  RL.DrawTexturePro( texture, source, dest, origin, rotation, tint ) end
 ---@return any RL.DrawTextureNPatch
 function  RL.DrawTextureNPatch( texture, nPatchInfo, dest, origin, rotation, tint ) end
 
+---Draws a texture (or part of it) that repeats nicely
+---@param texture any
+---@param nPatchInfo any
+---@param dest table
+---@param origin table
+---@param rotation number
+---@param tint table
+---@return any RL.DrawTextureNPatchRepeat
+function  RL.DrawTextureNPatchRepeat( texture, nPatchInfo, dest, origin, rotation, tint ) end
+
 -- Textures - RenderTexture configuration functions
 
 ---Get OpenGL framebuffer object id
@@ -3955,7 +3965,7 @@ function  RL.DrawCapsuleWires( startPos, endPos, radius, slices, rings, color ) 
 ---@return any RL.DrawPlane
 function  RL.DrawPlane( centerPos, size, color ) end
 
----Draw 3D textured quad. (Texture coordinates opengl style 0.0 - 1.0).
+---Draw 3D textured quad. (Texture coordinates opengl style 0.0 - 1.0)
 ---@param texture any
 ---@param vertices table
 ---@param texCoords table

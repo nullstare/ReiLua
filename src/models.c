@@ -377,7 +377,7 @@ int lmodelsDrawPlane( lua_State *L ) {
 /*
 > RL.DrawQuad3DTexture( Texture texture, Vector3{} vertices, Vector2{} texCoords, Color{} colors )
 
-Draw 3D textured quad. (Texture coordinates opengl style 0.0 - 1.0).
+Draw 3D textured quad. (Texture coordinates opengl style 0.0 - 1.0)
 */
 int lmodelDrawQuad3DTexture( lua_State *L ) {
 	Texture *texture = uluaGetTexture( L, 1 );

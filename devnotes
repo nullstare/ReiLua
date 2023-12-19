@@ -28,7 +28,6 @@ Backlog {
 }
 
 Bugs {
-	* CameraLib. Lateral movement is slower if looking down or up.
 }
 
 Needs Testing {

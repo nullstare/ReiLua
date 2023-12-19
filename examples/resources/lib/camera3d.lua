@@ -135,11 +135,11 @@ function Camera3D:process( delta )
 		elseif RL.IsKeyDown( self.KEYS.BACKWARD ) then
 			RL.Camera3DMoveForward( self.camera, -distance, false )
 		end
-
+		
 		if RL.IsKeyDown( self.KEYS.RIGHT ) then
-			RL.Camera3DMoveRight( self.camera, distance, false )
+			RL.Camera3DMoveRight( self.camera, distance, true )
 		elseif RL.IsKeyDown( self.KEYS.LEFT ) then
-			RL.Camera3DMoveRight( self.camera, -distance, false )
+			RL.Camera3DMoveRight( self.camera, -distance, true )
 		end
 	elseif self.mode == self.MODES.ORBITAL then
 		RL.Camera3DYaw( self.camera, self.ORBITAL_SPEED * delta, true )

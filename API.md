@@ -6125,6 +6125,12 @@ Draws a texture (or part of it) that stretches or shrinks nicely
 
 ---
 
+> RL.DrawTextureNPatchRepeat( Texture texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint )
+
+Draws a texture (or part of it) that repeats nicely
+
+---
+
 ## Textures - RenderTexture configuration functions
 
 ---
@@ -6554,7 +6560,7 @@ Draw a plane XZ
 
 > RL.DrawQuad3DTexture( Texture texture, Vector3{} vertices, Vector2{} texCoords, Color{} colors )
 
-Draw 3D textured quad. (Texture coordinates opengl style 0.0 - 1.0).
+Draw 3D textured quad. (Texture coordinates opengl style 0.0 - 1.0)
 
 ---
 

@@ -1559,6 +1559,7 @@ void luaRegister() {
 	assingGlobalFunction( "DrawTextureRec", ltexturesDrawTextureRec );
 	assingGlobalFunction( "DrawTexturePro", ltexturesDrawTexturePro );
 	assingGlobalFunction( "DrawTextureNPatch", ltexturesDrawTextureNPatch );
+	assingGlobalFunction( "DrawTextureNPatchRepeat", ltexturesDrawTextureNPatchRepeat );
 		/* RenderTexture configuration functions. */
 	assingGlobalFunction( "GetRenderTextureId", ltexturesGetRenderTextureId );
 	assingGlobalFunction( "GetRenderTextureTexture", ltexturesGetRenderTextureTexture );

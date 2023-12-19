@@ -1518,6 +1518,224 @@ int ltexturesDrawTextureNPatch( lua_State *L ) {
 }
 
 /*
+> RL.DrawTextureNPatchRepeat( Texture texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint )
+
+Draws a texture (or part of it) that repeats nicely
+*/
+inline static void drawNPatchTile( Vector4 src, Vector4 dst, Vector2 texSize ) {
+	rlTexCoord2f( src.x / texSize.x, src.w / texSize.y ); rlVertex2f( dst.x, dst.w ); // Bottom-left corner for texture and quad
+	rlTexCoord2f( src.z / texSize.x, src.w / texSize.y ); rlVertex2f( dst.z, dst.w ); // Bottom-right corner for texture and quad
+	rlTexCoord2f( src.z / texSize.x, src.y / texSize.y ); rlVertex2f( dst.z, dst.y ); // Top-right corner for texture and quad
+	rlTexCoord2f( src.x / texSize.x, src.y / texSize.y ); rlVertex2f( dst.x, dst.y ); // Top-left corner for texture and quad
+}
+
+inline static void drawNPatchArea( Vector4 src, Vector4 dst, Vector2 texSize ) {
+	Vector2 tileSize = { src.z - src.x, src.w - src.y };
+	Vector2 areaSize = { dst.z - dst.x, dst.w - dst.y };
+	int width = ceil( areaSize.x / tileSize.x );
+	int height = ceil( areaSize.y / tileSize.y );
+
+	for ( int y = 0; y < height; y++ ) {
+		for ( int x = 0; x < width; x++ ) {
+			Vector2 rTileSize = {
+				fmin( tileSize.x, areaSize.x - x * tileSize.x ),
+				fmin( tileSize.y, areaSize.y - y * tileSize.y )
+			};
+			Vector4 tileSrc = {
+				src.x,
+				src.y,
+				src.x + rTileSize.x,
+				src.y + rTileSize.y
+			};
+			Vector4 tileDst = {
+				dst.x + x * tileSize.x,
+				dst.y + y * tileSize.y,
+				dst.x + x * tileSize.x + rTileSize.x,
+				dst.y + y * tileSize.y + rTileSize.y
+			};
+			drawNPatchTile( tileSrc, tileDst, texSize );
+		}
+	}
+}
+
+int ltexturesDrawTextureNPatchRepeat( lua_State *L ) {
+	Texture *texture = uluaGetTexture( L, 1 );
+	NPatchInfo nPatchInfo = uluaGetNPatchInfo( L, 2 );
+	Rectangle dest = uluaGetRectangle( L, 3 );
+	Vector2 origin = uluaGetVector2( L, 4 );
+	float rotation = luaL_checknumber( L, 5 );
+	Color tint = uluaGetColor( L, 6 );
+
+	if ( texture->id < 0 || dest.width <= 0 || dest.height <= 0 ) {
+		return 0;
+	}
+	Vector2 texSize = { texture->width, texture->height };
+	float leftBorder = (float)nPatchInfo.left;
+	float topBorder = (float)nPatchInfo.top;
+	float rightBorder = (float)nPatchInfo.right;
+	float bottomBorder = (float)nPatchInfo.bottom;
+	bool drawHMiddle = leftBorder + rightBorder <= dest.width;
+	bool drawVMiddle = topBorder + bottomBorder <= dest.height;
+	bool drawCenter = drawHMiddle && drawVMiddle;
+
+	if ( !drawHMiddle ) {
+		leftBorder = ( leftBorder / ( leftBorder + rightBorder ) ) * dest.width;
+		rightBorder = dest.width - leftBorder;
+	}
+	if ( !drawVMiddle ) {
+		topBorder = ( topBorder / ( topBorder + bottomBorder ) ) * dest.height;
+		bottomBorder = dest.height - topBorder;
+	}
+	Vector2 vertA, vertB, vertC, vertD;
+	vertA.x = 0.0f;                             // outer left
+	vertA.y = 0.0f;                             // outer top
+	vertB.x = leftBorder;                       // inner left
+	vertB.y = topBorder;                        // inner top
+	vertC.x = dest.width - rightBorder;         // inner right
+	vertC.y = dest.height - bottomBorder;       // inner bottom
+	vertD.x = dest.width;                       // outer right
+	vertD.y = dest.height;                      // outer bottom
+
+	Vector2 coordA, coordB, coordC, coordD;
+	coordA.x = nPatchInfo.source.x;
+	coordA.y = nPatchInfo.source.y;
+	coordB.x = nPatchInfo.source.x + leftBorder;
+	coordB.y = nPatchInfo.source.y + topBorder;
+	coordC.x = nPatchInfo.source.x + nPatchInfo.source.width - rightBorder;
+	coordC.y = nPatchInfo.source.y + nPatchInfo.source.height - bottomBorder;
+	coordD.x = nPatchInfo.source.x + nPatchInfo.source.width;
+	coordD.y = nPatchInfo.source.y + nPatchInfo.source.height;
+
+	rlSetTexture( texture->id );
+
+	rlPushMatrix();
+		rlTranslatef( dest.x, dest.y, 0.0f );
+		rlRotatef( rotation, 0.0f, 0.0f, 1.0f );
+		rlTranslatef( -origin.x, -origin.y, 0.0f );
+
+		rlBegin( RL_QUADS );
+			rlColor4ub( tint.r, tint.g, tint.b, tint.a );
+			rlNormal3f( 0.0f, 0.0f, 1.0f );               // Normal vector pointing towards viewer
+
+			switch ( nPatchInfo.layout ) {
+			case NPATCH_NINE_PATCH:
+				if ( drawCenter ) {
+					// MIDDLE-CENTER QUAD
+					drawNPatchArea(
+						(Vector4){ coordB.x, coordB.y, coordC.x, coordC.y },
+						(Vector4){ vertB.x, vertB.y, vertC.x, vertC.y },
+						texSize
+					);
+				}
+				if ( drawHMiddle ) {
+					// TOP-CENTER QUAD
+					drawNPatchArea(
+						(Vector4){ coordB.x, coordA.y, coordC.x, coordB.y },
+						(Vector4){ vertB.x, vertA.y, vertC.x, vertB.y },
+						texSize
+					);
+					// BOTTOM-CENTER QUAD
+					drawNPatchArea(
+						(Vector4){ coordB.x, coordC.y, coordC.x, coordD.y },
+						(Vector4){ vertB.x, vertC.y, vertC.x, vertD.y },
+						texSize
+					);
+				}
+				if ( drawVMiddle ) {
+					// LEFT-CENTER QUAD
+					drawNPatchArea(
+						(Vector4){ coordA.x, coordB.y, coordB.x, coordC.y },
+						(Vector4){ vertA.x, vertB.y, vertB.x, vertC.y },
+						texSize
+					);
+					// RIGHT-CENTER QUAD
+					drawNPatchArea(
+						(Vector4){ coordC.x, coordB.y, coordD.x, coordC.y },
+						(Vector4){ vertC.x, vertB.y, vertD.x, vertC.y },
+						texSize
+					);
+				}
+				// TOP-LEFT QUAD
+				drawNPatchTile(
+					(Vector4){ coordA.x, coordA.y, coordB.x, coordB.y },
+					(Vector4){ vertA.x, vertA.y, vertB.x, vertB.y },
+					texSize
+				);
+				// TOP-RIGHT QUAD
+				drawNPatchTile(
+					(Vector4){ coordC.x, coordA.y, coordD.x, coordB.y },
+					(Vector4){ vertC.x, vertA.y, vertD.x, vertB.y },
+					texSize
+				);
+				// BOTTOM-LEFT QUAD
+				drawNPatchTile(
+					(Vector4){ coordA.x, coordC.y, coordB.x, coordD.y },
+					(Vector4){ vertA.x, vertC.y, vertB.x, vertD.y },
+					texSize
+				);
+				// BOTTOM-RIGHT QUAD
+				drawNPatchTile(
+					(Vector4){ coordC.x, coordC.y, coordD.x, coordD.y },
+					(Vector4){ vertC.x, vertC.y, vertD.x, vertD.y },
+					texSize
+				);
+				break;
+			case NPATCH_THREE_PATCH_VERTICAL:
+				// TOP QUAD
+				drawNPatchArea(
+					(Vector4){ coordA.x, coordA.y, coordD.x, coordB.y },
+					(Vector4){ vertA.x, vertA.y, vertD.x, vertB.y },
+					texSize
+				);
+				if ( drawVMiddle ) {
+					// MIDDLE QUAD
+					drawNPatchArea(
+						(Vector4){ coordA.x, coordB.y, coordD.x, coordC.y },
+						(Vector4){ vertA.x, vertB.y, vertD.x, vertC.y },
+						texSize
+					);
+				}
+				// BOTTOM QUAD
+				drawNPatchArea(
+					(Vector4){ coordA.x, coordC.y, coordD.x, coordD.y },
+					(Vector4){ vertA.x, vertC.y, vertD.x, vertD.y },
+					texSize
+				);
+				break;
+			case NPATCH_THREE_PATCH_HORIZONTAL:
+				// LEFT QUAD
+				drawNPatchArea(
+					(Vector4){ coordA.x, coordA.y, coordB.x, coordD.y },
+					(Vector4){ vertA.x, vertA.y, vertB.x, vertD.y },
+					texSize
+				);
+				if ( drawHMiddle ) {
+					// MIDDLE QUAD
+					drawNPatchArea(
+						(Vector4){ coordB.x, coordA.y, coordC.x, coordD.y },
+						(Vector4){ vertB.x, vertA.y, vertC.x, vertD.y },
+						texSize
+					);
+				}
+				// RIGHT QUAD
+				drawNPatchArea(
+					(Vector4){ coordC.x, coordA.y, coordD.x, coordD.y },
+					(Vector4){ vertC.x, vertA.y, vertD.x, vertD.y },
+					texSize
+				);
+				break;
+			default:
+				break;
+			}
+
+		rlEnd();
+	rlPopMatrix();
+	rlSetTexture(0);
+
+	return 0;
+}
+
+/*
 ## Textures - RenderTexture configuration functions
 */
 

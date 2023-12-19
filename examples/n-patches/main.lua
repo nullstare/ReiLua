@@ -1,10 +1,19 @@
-local dstRec = { 160.0, 160.0, 8.0, 8.0 };
-local origin = { 0.0, 0.0 }
+package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
--- local ninePatchInfo = { { 0.0, 0.0, 24.0, 24.0 }, 8, 8, 8, 8, NPATCH_NINE_PATCH }
-local ninePatchInfo = { source = { 0, 0, 24.0, 24.0 }, left = 8, top = 8, right = 8, bottom = 8, layout = RL.NPATCH_NINE_PATCH }
+Vec2 = require( "vector2" )
+Rect = require( "rectangle" )
 
-local nPatchTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/ui_border.png" )
+local dstRec = Rect:new( 100.0, 100.0, 8.0, 8.0 )
+local origin = Vec2:new( 0.0, 0.0 )
+local stretched = true
+
+-- local ninePatchInfo = { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = RL.NPATCH_NINE_PATCH }
+-- local nPatchTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/ui_border.png" )
+
+local ninePatchInfo = { source = { 0, 0, 96, 96 }, left = 32, top = 32, right = 32, bottom = 32, layout = RL.NPATCH_NINE_PATCH }
+-- local ninePatchInfo = { source = { 0, 0, 96, 96 }, left = 32, top = 32, right = 32, bottom = 32, layout = RL.NPATCH_THREE_PATCH_VERTICAL }
+-- local ninePatchInfo = { source = { 0, 0, 96, 96 }, left = 32, top = 32, right = 32, bottom = 32, layout = RL.NPATCH_THREE_PATCH_HORIZONTAL }
+local nPatchTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/nPatch.png" )
 
 function RL.init()
 	RL.SetWindowTitle( "N-Patches" )
@@ -12,14 +21,27 @@ function RL.init()
 end
 
 function RL.process( delta )
-	local mousePosition = RL.GetMousePosition();
+	local mousePosition = Vec2:new( RL.GetMousePosition() )
 
     -- Resize the n-patch based on mouse position
-	dstRec[3] = mousePosition[1] - dstRec[1];
-	dstRec[4] = mousePosition[2] - dstRec[2];
+	dstRec.width = mousePosition.x - dstRec.x;
+	dstRec.height = mousePosition.y - dstRec.y;
+
+	if RL.IsKeyPressed( RL.KEY_SPACE ) then
+		stretched = not stretched
+	end
 end
 
 function RL.draw()
 	RL.ClearBackground( RL.RAYWHITE )
-	RL.DrawTextureNPatch( nPatchTexture, ninePatchInfo, dstRec, origin, 0.0, RL.WHITE )
+	local modeText = "Stretched"
+
+	if stretched then
+		RL.DrawTextureNPatch( nPatchTexture, ninePatchInfo, dstRec, origin, 0.0, RL.WHITE )
+	else
+		RL.DrawTextureNPatchRepeat( nPatchTexture, ninePatchInfo, dstRec, origin, 0.0, RL.WHITE )
+		modeText = "Repeat"
+	end
+
+	RL.DrawText( "Press space to toggle mode: "..modeText, { 20, 20 }, 20, RL.BLACK )
 end

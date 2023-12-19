@@ -25,6 +25,7 @@ KEY CHANGES:
 	- ADDED: 2D lightmap example.
 	- ADDED: RLGL Hello triangle example.
 	- ADDED: Rest of rlRenderBatch functions.
+	- ADDED: DrawTextureNPatchRepeat.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.
@@ -49,6 +50,7 @@ DETAILED CHANGES:
 	- ADDED: GetShaderId.
 	- FIXED: rlSetVertexAttribute pointer offset.
 	- ADDED: GetImageData.
+	- FIXED: CameraLib. Slow lateral movement.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.6.0		Using Raylib 4.5

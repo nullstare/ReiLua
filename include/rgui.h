@@ -54,6 +54,7 @@ int lguiGuiProgressBar( lua_State *L );
 int lguiGuiStatusBar( lua_State *L );
 int lguiGuiDummyRec( lua_State *L );
 int lguiGuiGrid( lua_State *L );
+int lguiGuiScrollBar( lua_State *L );
 /* Advance controls set. */
 int lguiGuiListView( lua_State *L );
 int lguiGuiListViewEx( lua_State *L );

@@ -301,6 +301,13 @@ function RL.init()
 		"Color Panel",
 		1.0
 	)
+	local scrollbar = Gui:GuiScrollBar(
+		Rect:new( 50, 760, 256, 16 ),
+		0,
+		0,
+		256,
+		function( self ) print( "Scrollbar value: ", self.value ) end
+	)
 end
 
 function RL.process( delta )

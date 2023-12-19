@@ -6006,6 +6006,15 @@ function RL.GuiDummyRec( bounds, text ) end
 ---@return any mouseCell 
 function RL.GuiGrid( bounds, text, spacing, subdivs, mouseCell ) end
 
+---Scroll bar control
+---- Success return int
+---@param bounds table
+---@param value integer
+---@param minValue integer
+---@param maxValue integer
+---@return any value 
+function RL.GuiScrollBar( bounds, value, minValue, maxValue ) end
+
 -- Gui - Advance controls set
 
 ---List View control, returns selected list item index

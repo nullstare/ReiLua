@@ -8841,6 +8841,14 @@ Grid control, returns mouse cell position
 
 ---
 
+> value = RL.GuiScrollBar( Rectangle bounds, int value, int minValue, int maxValue )
+
+Scroll bar control
+
+- Success return int
+
+---
+
 ## Gui - Advance controls set
 
 ---

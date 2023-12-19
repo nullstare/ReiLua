@@ -892,7 +892,7 @@ function Slider:draw()
 	_, self.value = RL.GuiSlider( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
 
     if self.value ~= oldValue then
-		self._parentscrolling = true
+		self._parent.scrolling = true
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -939,7 +939,7 @@ function SliderBar:draw()
 	_, self.value = RL.GuiSliderBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
 
     if self.value ~= oldValue then
-		self._parentscrolling = true
+		self._parent.scrolling = true
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -1144,7 +1144,7 @@ function ListView:draw()
 	_, self.scrollIndex, self.active = RL.GuiListView( self.bounds, self.text, self.scrollIndex, self.active )
 
 	if self.scrollIndex ~= oldScrollIndex then
-		self._parentscrolling = true
+		self._parent.scrolling = true
 	end
 	if oldActive ~= self.active and self.callback ~= nil then
 		self.callback( self )
@@ -1194,7 +1194,7 @@ function ListViewEx:draw()
 	_, self.scrollIndex, self.active, self.focus = RL.GuiListViewEx( self.bounds, self.text, self.scrollIndex, self.active, self.focus )
 
 	if self.scrollIndex ~= oldScrollIndex then
-		self._parentscrolling = true
+		self._parent.scrolling = true
 	end
 	if oldActive ~= self.active and self.callback ~= nil then
 		self.callback( self )
@@ -1349,7 +1349,7 @@ function ColorPicker:draw()
 	self.color = Color:new( color )
 
 	if self.color ~= oldColor then
-		self._parentscrolling = true
+		self._parent.scrolling = true
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -1433,7 +1433,7 @@ function ColorBarAlpha:draw()
 	_, self.alpha = RL.GuiColorBarAlpha( self.bounds, self.text, self.alpha )
 
 	if self.alpha ~= oldAlpha then
-		self._parentscrolling = true
+		self._parent.scrolling = true
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -1485,6 +1485,51 @@ function ColorBarHue:draw()
 end
 
 function ColorBarHue:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+end
+
+-- ColorBarHue.
+
+--- Color Bar Hue control
+local GuiScrollBar = {}
+GuiScrollBar.__index = GuiScrollBar
+
+function GuiScrollBar:new( bounds, value, minValue, maxValue, callback )
+    local object = setmetatable( {}, self )
+	object._parent = nil
+
+    object.bounds = bounds:clone()
+    object.value = value
+    object.minValue = minValue
+    object.maxValue = maxValue
+	object.callback = callback
+
+	object.visible = true
+	object.disabled = false
+
+	return object
+end
+
+function GuiScrollBar:process()
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+end
+
+function GuiScrollBar:draw()
+	local oldValue = self.value
+	-- Note. Scrollbar style should be determined by the control that uses it.
+	self.value = RL.GuiScrollBar( self.bounds, self.value, self.minValue, self.maxValue )
+
+	if self.value ~= oldValue then
+		self._parent.scrolling = true
+
+		if self.callback ~= nil then
+			self.callback( self )
+		end
+	end
+end
+
+function GuiScrollBar:setPosition( pos )
 	self.bounds.x = pos.x
 	self.bounds.y = pos.y
 end
@@ -2000,6 +2045,16 @@ end
 ---@return table ColorBarHue
 function Raygui:ColorBarHue( bounds, text, value, callback )
 	return self:addElement( ColorBarHue:new( bounds, text, value, callback ) )
+end
+
+---@param bounds Rectangle
+---@param value integer
+---@param minValue integer
+---@param maxValue integer
+---@param callback function|nil
+---@return table ColorBarHue
+function Raygui:GuiScrollBar( bounds, value, minValue, maxValue, callback )
+	return self:addElement( GuiScrollBar:new( bounds, value, minValue, maxValue, callback ) )
 end
 
 return Raygui

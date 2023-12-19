@@ -1940,6 +1940,7 @@ void luaRegister() {
 	assingGlobalFunction( "GuiStatusBar", lguiGuiStatusBar );
 	assingGlobalFunction( "GuiDummyRec", lguiGuiDummyRec );
 	assingGlobalFunction( "GuiGrid", lguiGuiGrid );
+	assingGlobalFunction( "GuiScrollBar", lguiGuiScrollBar );
 		/* Advance controls set. */
 	assingGlobalFunction( "GuiListView", lguiGuiListView );
 	assingGlobalFunction( "GuiListViewEx", lguiGuiListViewEx );

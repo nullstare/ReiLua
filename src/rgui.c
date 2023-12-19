@@ -765,6 +765,24 @@ int lguiGuiGrid( lua_State *L ) {
 }
 
 /*
+> value = RL.GuiScrollBar( Rectangle bounds, int value, int minValue, int maxValue )
+
+Scroll bar control
+
+- Success return int
+*/
+int lguiGuiScrollBar( lua_State *L ) {
+	Rectangle bounds = uluaGetRectangle( L, 1 );
+	int value = luaL_checkinteger( L, 2 );
+	int minValue = luaL_checkinteger( L, 3 );
+	int maxValue = luaL_checkinteger( L, 4 );
+
+	lua_pushinteger( L, GuiScrollBar( bounds, value, minValue, maxValue ) );
+
+	return 1;
+}
+
+/*
 ## Gui - Advance controls set
 */
 

@@ -26,6 +26,7 @@ KEY CHANGES:
 	- ADDED: RLGL Hello triangle example.
 	- ADDED: Rest of rlRenderBatch functions.
 	- ADDED: DrawTextureNPatchRepeat.
+	- ADDED: GuiScrollBar and made it puplic in raygui.h.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.

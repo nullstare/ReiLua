@@ -156,6 +156,25 @@ static void defineFont() {
 	lua_setfield( L, -2, "__gc" );
 }
 
+	/* GlyphInfo. */
+static int gcGlyphInfo( lua_State *L ) {
+	if ( state->gcUnload ) {
+		GlyphInfo *glyph = luaL_checkudata( L, 1, "GlyphInfo" );
+		unloadGlyphInfo( glyph );
+	}
+	return 0;
+}
+
+static void defineGlyphInfo() {
+	lua_State *L = state->luaState;
+
+	luaL_newmetatable( L, "GlyphInfo" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcGlyphInfo );
+	lua_setfield( L, -2, "__gc" );
+}
+
 	/* Wave. */
 static int gcWave( lua_State *L ) {
 	if ( state->gcUnload ) {
@@ -357,7 +376,7 @@ static void defineGlobals() {
 	lua_setglobal( L, "RL" );
 	lua_getglobal( L, "RL" );
 
-/* Note! Docgen relyes on this line format. */
+/* Note! Docgen rely on this line format. */
 /*DOC_DEFINES_START*/
 	/* System/Window config flags */
 	assignGlobalInt( FLAG_VSYNC_HINT, "FLAG_VSYNC_HINT" ); // Set to try enabling V-Sync on GPU
@@ -1004,6 +1023,7 @@ bool luaInit( int argn, const char **argc ) {
 	defineCamera3D();
 	defineShader();
 	defineFont();
+	defineGlyphInfo();
 	defineWave();
 	defineSound();
 	defineMusic();
@@ -1697,8 +1717,13 @@ void luaRegister() {
 	assingGlobalFunction( "LoadFont", ltextLoadFont );
 	assingGlobalFunction( "LoadFontEx", ltextLoadFontEx );
 	assingGlobalFunction( "LoadFontFromImage", ltextLoadFontFromImage );
+	assingGlobalFunction( "LoadFontFromMemory", ltextLoadFontFromMemory );
+	assingGlobalFunction( "LoadFontFromData", ltextLoadFontFromData );
 	assingGlobalFunction( "IsFontReady", ltextIsFontReady );
+	assingGlobalFunction( "LoadFontData", ltextLoadFontData );
+	assingGlobalFunction( "GenImageFontAtlas", ltextGenImageFontAtlas );
 	assingGlobalFunction( "UnloadFont", ltextUnloadFont );
+	assingGlobalFunction( "ExportFontAsCode", ltextExportFontAsCode );
 		/* Text drawing functions. */
 	assingGlobalFunction( "DrawFPS", ltextDrawFPS );
 	assingGlobalFunction( "DrawText", ltextDrawText );
@@ -1713,11 +1738,24 @@ void luaRegister() {
 	assingGlobalFunction( "MeasureText", ltextMeasureText );
 	assingGlobalFunction( "GetGlyphIndex", ltextGetGlyphIndex );
 	assingGlobalFunction( "GetGlyphInfo", ltextGetGlyphInfo );
+	assingGlobalFunction( "GetGlyphInfoByIndex", ltextGetGlyphInfoByIndex );
 	assingGlobalFunction( "GetGlyphAtlasRec", ltextGetGlyphAtlasRec );
+	assingGlobalFunction( "GetGlyphAtlasRecByIndex", ltextGetGlyphAtlasRecByIndex );
 	assingGlobalFunction( "GetFontBaseSize", ltextGetFontBaseSize );
 	assingGlobalFunction( "GetFontGlyphCount", ltextGetFontGlyphCount );
 	assingGlobalFunction( "GetFontGlyphPadding", ltextGetFontGlyphPadding );
 	assingGlobalFunction( "GetFontTexture", ltextGetFontTexture );
+		/* GlyphInfo management functions. */
+	assingGlobalFunction( "LoadGlyphInfo", ltextLoadGlyphInfo );
+	assingGlobalFunction( "UnloadGlyphInfo", ltextUnloadGlyphInfo );
+	assingGlobalFunction( "SetGlyphInfoValue", ltextSetGlyphInfoValue );
+	assingGlobalFunction( "SetGlyphInfoOffset", ltextSetGlyphInfoOffset );
+	assingGlobalFunction( "SetGlyphInfoAdvanceX", ltextSetGlyphInfoAdvanceX );
+	assingGlobalFunction( "SetGlyphInfoImage", ltextSetGlyphInfoImage );
+	assingGlobalFunction( "GetGlyphInfoValue", ltextGetGlyphInfoValue );
+	assingGlobalFunction( "GetGlyphInfoOffset", ltextGetGlyphInfoOffset );
+	assingGlobalFunction( "GetGlyphInfoAdvanceX", ltextGetGlyphInfoAdvanceX );
+	assingGlobalFunction( "GetGlyphInfoImage", ltextGetGlyphInfoImage );
 
 	/* Audio. */
 		/* Audio device management functions. */
@@ -2623,59 +2661,6 @@ NPatchInfo uluaGetNPatchInfo( lua_State *L, int index ) {
 	return npatch;
 }
 
-GlyphInfo uluaGetGlyphInfo( lua_State *L, int index ) {
-	luaL_checktype( L, index, LUA_TTABLE );
-	GlyphInfo glyph = { 0 };
-
-	int t = index, i = 0;
-    lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-		/* Do not check type since there should be table and ints. */
-		if ( lua_isnumber( L, -2 ) ) {
-			switch ( i ) {
-				case 0:
-					glyph.value = lua_tointeger( L, -1 );
-					break;
-				case 1:
-					glyph.offsetX = lua_tointeger( L, -1 );
-					break;
-				case 2:
-					glyph.offsetY = lua_tointeger( L, -1 );
-					break;
-				case 3:
-					glyph.advanceX = lua_tointeger( L, -1 );
-					break;
-				case 4:
-					glyph.image = *uluaGetImage( L, lua_gettop( L ) );
-					break;
-				default:
-					break;
-			}
-		}
-		else if ( lua_isstring( L, -2 ) ) {
-			if ( strcmp( "value", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-				glyph.value = lua_tointeger( L, -1 );
-			}
-			else if ( strcmp( "offsetX", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-				glyph.offsetX = lua_tointeger( L, -1 );
-			}
-			else if ( strcmp( "offsetY", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-				glyph.offsetY = lua_tointeger( L, -1 );
-			}
-			else if ( strcmp( "advanceX", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-				glyph.advanceX = lua_tointeger( L, -1 );
-			}
-			else if ( strcmp( "image", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-				glyph.image = *uluaGetImage( L, lua_gettop( L ) );
-			}
-		}
-		i++;
-		lua_pop( L, 1 );
-    }
-	return glyph;
-}
-
 BoneInfo uluaGetBoneInfo( lua_State *L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	BoneInfo bone = { 0 };
@@ -2817,6 +2802,13 @@ Font* uluaGetFont( lua_State *L, int index ) {
 		return (Font*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "Font" );
+}
+
+GlyphInfo* uluaGetGlyphInfo( lua_State *L, int index ) {
+	if ( lua_islightuserdata( L, index ) ) {
+		return (GlyphInfo*)lua_touserdata( L, index );
+	}
+	return luaL_checkudata( L, index, "GlyphInfo" );
 }
 
 Wave* uluaGetWave( lua_State *L, int index ) {
@@ -3047,20 +3039,6 @@ void uluaPushBoundingBox( lua_State *L, BoundingBox box ) {
 	lua_rawseti( L, -2, 2 );
 }
 
-void uluaPushGlyphInfo( lua_State *L, GlyphInfo glyphInfo, Image *image ) {
-	lua_createtable( L, 5, 0 );
-	lua_pushinteger( L, glyphInfo.value );
-	lua_setfield( L, -2, "value" );
-	lua_pushinteger( L, glyphInfo.offsetX );
-	lua_setfield( L, -2, "offsetX" );
-	lua_pushinteger( L, glyphInfo.offsetY );
-	lua_setfield( L, -2, "offsetY" );
-	lua_pushinteger( L, glyphInfo.advanceX );
-	lua_setfield( L, -2, "advanceX" );
-	lua_pushlightuserdata( L, image );
-	lua_setfield( L, -2, "image" );
-}
-
 void uluaPushBoneInfo( lua_State *L, BoneInfo boneInfo ) {
 	lua_createtable( L, 2, 0 );
 	lua_pushstring( L, boneInfo.name );
@@ -3128,6 +3106,12 @@ void uluaPushFont( lua_State *L, Font font ) {
 	Font *fontP = lua_newuserdata( L, sizeof( Font ) );
 	*fontP = font;
 	luaL_setmetatable( L, "Font" );
+}
+
+void uluaPushGlyphInfo( lua_State *L, GlyphInfo glyph ) {
+	GlyphInfo *glyphP = lua_newuserdata( L, sizeof( GlyphInfo ) );
+	*glyphP = glyph;
+	luaL_setmetatable( L, "GlyphInfo" );
 }
 
 void uluaPushWave( lua_State *L, Wave wave ) {

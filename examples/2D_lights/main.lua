@@ -103,21 +103,21 @@ function RL.init()
 
 	createShadowMesh()
 
-	addLight( Vector2:new( 230, 480 ), Color:new( RL.ORANGE ), 512 )
-	addLight( Vector2:new( 600, 200 ), Color:new( RL.RED ), 512 )
-	addLight( Vector2:new( 384, 520 ), Color:new( RL.GREEN ), 400 )
-	addLight( Vector2:new( 880, 750 ), Color:new( RL.BLUE ), 300 )
-	addLight( Vector2:new( 800, 500 ), Color:new( RL.PURPLE ), 512 )
-	addLight( Vector2:new( 200, 760 ), Color:new( RL.WHITE ), 400 )
+	-- addLight( Vector2:new( 230, 480 ), Color:new( RL.ORANGE ), 512 )
+	-- addLight( Vector2:new( 600, 200 ), Color:new( RL.RED ), 512 )
+	-- addLight( Vector2:new( 384, 520 ), Color:new( RL.GREEN ), 400 )
+	-- addLight( Vector2:new( 880, 750 ), Color:new( RL.BLUE ), 300 )
+	-- addLight( Vector2:new( 800, 500 ), Color:new( RL.PURPLE ), 512 )
+	-- addLight( Vector2:new( 200, 760 ), Color:new( RL.WHITE ), 400 )
 
 	-- Stress test
 
-	-- for i = 1, 300 do
-	-- 	addLight( Vector2:new( math.random( 20, RESOLUTION.x - 20 ), math.random( 20, RESOLUTION.y - 20 ) ),
-	-- 		Color:new( { math.random( 40, 255 ), math.random( 40, 255 ), math.random( 40, 255 ), 255 } ),
-	-- 		128
-	-- 	)
-	-- end
+	for i = 1, 300 do
+		addLight( Vector2:new( math.random( 20, RESOLUTION.x - 20 ), math.random( 20, RESOLUTION.y - 20 ) ),
+			Color:new( { math.random( 40, 255 ), math.random( 40, 255 ), math.random( 40, 255 ), 255 } ),
+			128
+		)
+	end
 
 	-- Camera for shadow rendering.
 	camera = RL.CreateCamera3D()

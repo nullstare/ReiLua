@@ -9,7 +9,7 @@ end
 
 function RL.process( delta )
 	if RL.IsKeyPressed( RL.KEY_ENTER ) then
-		local textSize = RL.MeasureText( 0, text, 20, 2 )
+		local textSize = RL.MeasureText( RL.GetFontDefault(), text, 20, 2 )
 		local winSize = RL.GetScreenSize()
 
 		textColor = RL.BLUE

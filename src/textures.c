@@ -1134,9 +1134,9 @@ int ltexturesLoadTextureFromData( lua_State *L ) {
 	Texture texture = { 0 };
 
 	int t = 1;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
-    while ( lua_next( L, t ) != 0 ) {
+	while ( lua_next( L, t ) != 0 ) {
 		if ( strcmp( "id", (char*)lua_tostring( L, -2 ) ) == 0 ) {
 			texture.id = (unsigned int)luaL_checkinteger( L, -1 );
 		}
@@ -1152,8 +1152,8 @@ int ltexturesLoadTextureFromData( lua_State *L ) {
 		else if ( strcmp( "format", (char*)lua_tostring( L, -2 ) ) == 0 ) {
 			texture.format = luaL_checkinteger( L, -1 );
 		}
-        lua_pop( L, 1 );
-    }
+		lua_pop( L, 1 );
+	}
 	uluaPushTexture( L, texture );
 
 	return 1;

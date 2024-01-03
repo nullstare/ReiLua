@@ -981,7 +981,7 @@ int lmodelsDrawBillboardPro( lua_State *L ) {
 > RL.UpdateMesh( Mesh mesh, Mesh{} meshData )
 
 Update mesh vertex data in GPU.
-Note! Mainly intented to be used with custom meshes.
+NOTE: Mainly intented to be used with custom meshes.
 */
 int lmodelsUpdateMesh( lua_State *L ) {
 	Mesh *mesh = uluaGetMesh( L, 1 );
@@ -1820,7 +1820,7 @@ int lmodelsSetMaterialParams( lua_State *L ) {
 /*
 > texture = RL.GetMaterialTexture( Material material, int mapType )
 
-Get texture from material map type. Returns -1 if no texture
+Get texture from material map type. Return as lightuserdata
 
 - Success return Texture
 */
@@ -1828,7 +1828,7 @@ int lmodelsGetMaterialTexture( lua_State *L ) {
 	Material *material = uluaGetMaterial( L, 1 );
 	int mapType = luaL_checkinteger( L, 2 );
 
-	uluaPushTexture( L, material->maps[ mapType ].texture );
+	lua_pushlightuserdata( L, &material->maps[ mapType ].texture );
 
 	return 1;
 }
@@ -1868,9 +1868,9 @@ int lmodelsGetMaterialValue( lua_State *L ) {
 /*
 > shader = RL.GetMaterialShader( Material material )
 
-Get material shader
+Get material shader. Return as lightuserdata
 
-- Success return Shader. Return as lightuserdata
+- Success return Shader
 */
 int lmodelsGetMaterialShader( lua_State *L ) {
 	Material *material = uluaGetMaterial( L, 1 );

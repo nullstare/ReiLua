@@ -221,8 +221,17 @@ apiFile:write( "\n> RayCollision = { hit = true, distance = 1.0, point = { 0.0, 
 RayCollision, ray hit information\n\n---\n" )
 apiFile:write( "\n> BoundingBox = { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } } or { min = { 0.0, 0.0, 0.0 }, max = { 1.0, 1.0, 1.0 } }\n\
 BoundingBox\n\n---\n" )
-apiFile:write( "\n> GlyphInfo = { value = int, offsetX = int, offsetY = int, advanceX = int, image = Image }\n\
-GlyphInfo, font characters glyphs info\n\n---\n" )
+apiFile:write( "\n> GlyphInfo = Userdata\n\
+GlyphInfo, font characters glyphs info\n\
+```\
+glyphInfoData = {\
+	value = int,		--Character value (Unicode)\
+	offsetX = int,		--Character offset X when drawing\
+	offsetY = int,		--Character offset Y when drawing\
+	advanceX = int,		--Character advance position X\
+	image = Image,		--Character image data\
+}\
+```\n\n---\n" )
 apiFile:write( "\n> BoneInfo = { name = string[32], parent = int }\n\
 Bone, skeletal animation bone\n\n---\n" )
 apiFile:write( "\n> Transform = { translation = Vector3, rotation = Quaternion, scale = Vector3 }\n\

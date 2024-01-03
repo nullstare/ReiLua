@@ -215,9 +215,19 @@ BoundingBox
 
 ---
 
-> GlyphInfo = { value = int, offsetX = int, offsetY = int, advanceX = int, image = Image }
+> GlyphInfo = Userdata
 
 GlyphInfo, font characters glyphs info
+
+```
+glyphInfoData = {
+	value = int,		--Character value (Unicode)
+	offsetX = int,		--Character offset X when drawing
+	offsetY = int,		--Character offset Y when drawing
+	advanceX = int,		--Character advance position X
+	image = Image,		--Character image data
+}
+```
 
 ---
 
@@ -6313,6 +6323,22 @@ Load font from Image (XNA style)
 
 ---
 
+> font = RL.LoadFontFromMemory( string fileType, Buffer fileData, int fontSize, int{} codepoints )
+
+Load font from memory buffer, fileType refers to extension: i.e. '.ttf'. NOTE: FileData type should be unsigned char
+
+- Success return Font
+
+---
+
+> font = RL.LoadFontFromData( Font{} fontData )
+
+Load Font from data
+
+- Success return Font
+
+---
+
 > isReady = RL.IsFontReady( Font font )
 
 Check if a font is ready
@@ -6321,9 +6347,33 @@ Check if a font is ready
 
 ---
 
+> glyphs = RL.LoadFontData( Buffer fileData, int fontSize, int{} codepoints, int type )
+
+Load font data for further use. NOTE: FileData type should be unsigned char
+
+- Success return GlyphInfo{}
+
+---
+
+> image, rectangles = RL.GenImageFontAtlas( GlyphInfo{} glyphs, int fontSize, int padding, int packMethod )
+
+Generate image font atlas using chars info. NOTE: Packing method: 0-Default, 1-Skyline
+
+- Success Image, Rectangle{}
+
+---
+
 > RL.UnloadFont( Font font )
 
 Unload font from GPU memory (VRAM)
+
+---
+
+> RL.ExportFontAsCode( Font font, string fileName )
+
+Export font as code file, returns true on success
+
+- Success return bool
 
 ---
 
@@ -6411,9 +6461,17 @@ Get glyph index position in font for a codepoint (unicode character), fallback t
 
 > glyphInfo = RL.GetGlyphInfo( Font font, int codepoint )
 
-Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found.
-Return Image as lightuserdata
+Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found
 
+- Success return GlyphInfo
+
+---
+
+> glyphInfo = RL.GetGlyphInfoByIndex( Font font, int index )
+
+Get glyph font info data by index
+
+- Failure return nil
 - Success return GlyphInfo
 
 ---
@@ -6422,6 +6480,15 @@ Return Image as lightuserdata
 
 Get glyph rectangle in font atlas for a codepoint (unicode character), fallback to '?' if not found
 
+- Success return Rectangle
+
+---
+
+> rect = RL.GetGlyphAtlasRecByIndex( Font font, int index )
+
+Get glyph rectangle in font atlas by index
+
+- Failure return nil
 - Success return Rectangle
 
 ---
@@ -6455,6 +6522,80 @@ Get font padding around the glyph characters
 Get font texture atlas containing the glyphs. Return as lightuserdata
 
 - Success return Texture
+
+---
+
+## Text - GlyphInfo management functions
+
+---
+
+> glyphInfo = RL.LoadGlyphInfo( GlyphInfo{} glyphInfoData )
+
+Load GlyphInfo from data
+
+- Success return GlyphInfo
+
+---
+
+> RL.UnloadGlyphInfo( GlyphInfo glyphInfo )
+
+Unload glyphInfo image from CPU memory (RAM)
+
+---
+
+> RL.SetGlyphInfoValue( GlyphInfo glyphInfo, int value )
+
+Set glyphInfo character value (Unicode)
+
+---
+
+> RL.SetGlyphInfoOffset( GlyphInfo glyphInfo, Vector2 offset )
+
+Set glyphInfo character offset when drawing
+
+---
+
+> RL.SetGlyphInfoAdvanceX( GlyphInfo glyphInfo, int advanceX )
+
+Set glyphInfo character advance position X
+
+---
+
+> RL.SetGlyphInfoImage( GlyphInfo glyphInfo, Image image )
+
+Set glyphInfo character image data
+
+---
+
+> value = RL.GetGlyphInfoValue( GlyphInfo glyphInfo )
+
+Get glyphInfo character value (Unicode)
+
+- Success return int
+
+---
+
+> offset = RL.GetGlyphInfoOffset( GlyphInfo glyphInfo )
+
+Get glyphInfo character offset when drawing
+
+- Success return Vector2
+
+---
+
+> advanceX = RL.GetGlyphInfoAdvanceX( GlyphInfo glyphInfo )
+
+Get glyphInfo character advance position X
+
+- Success return int
+
+---
+
+> image = RL.GetGlyphInfoImage( GlyphInfo glyphInfo )
+
+Get glyphInfo character image data. Return as lightuserdata
+
+- Success return Image
 
 ---
 
@@ -6794,7 +6935,7 @@ Draw a billboard texture defined by source and rotation
 > RL.UpdateMesh( Mesh mesh, Mesh{} meshData )
 
 Update mesh vertex data in GPU.
-Note! Mainly intented to be used with custom meshes.
+NOTE: Mainly intented to be used with custom meshes.
 
 ---
 
@@ -7022,7 +7163,7 @@ Set material generic parameters (if required)
 
 > texture = RL.GetMaterialTexture( Material material, int mapType )
 
-Get texture from material map type. Returns -1 if no texture
+Get texture from material map type. Return as lightuserdata
 
 - Success return Texture
 
@@ -7046,9 +7187,9 @@ Get color from material map type
 
 > shader = RL.GetMaterialShader( Material material )
 
-Get material shader
+Get material shader. Return as lightuserdata
 
-- Success return Shader. Return as lightuserdata
+- Success return Shader
 
 ---
 
@@ -9017,7 +9158,7 @@ Get light color
 
 Get light enabled
 
-- Success return boolean
+- Success return bool
 
 ---
 
@@ -9629,7 +9770,7 @@ Unload vertex buffer (VBO)
 
 > RL.rlSetVertexAttribute( int index, int compSize, int type, bool normalized, int stride, int pointer )
 
-Set vertex attribute. Note! Pointer should be given in size of bytes
+Set vertex attribute. NOTE: Pointer should be given in size of bytes
 
 ---
 
@@ -10358,20 +10499,20 @@ Called when a joystick is connected or disconnected. Type GLFW_JOYSTICK_EVENT
 > GLFWpentabletdataEvent = { int type, float x, float y, float z, float pressure, float pitch, float yaw, float roll }
 
 Called when the pen tablet data is updated. Type GLFW_PEN_TABLET_DATA_EVENT
-NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
+NOTE: Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
 
 ---
 
 > GLFWpentabletcursorEvent = { int type, int identifier }
 
 Called when the pen tablet cursor has changed. Type GLFW_PEN_TABLET_CURSOR_EVENT
-NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
+NOTE: Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
 
 ---
 
 > GLFWpentabletproximityEvent = { int type, int proxState }
 
 Called when the pen tablet proximity has changed. Type GLFW_PEN_TABLET_PROXIMITY_EVENT
-NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
+NOTE: Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
 
 ---

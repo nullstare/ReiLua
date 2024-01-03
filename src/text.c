@@ -4,6 +4,10 @@
 #include "textures.h"
 #include "lua_core.h"
 
+void unloadGlyphInfo( GlyphInfo *glyph ) {
+	UnloadImage( glyph->image );
+}
+
 // DrawTextBoxed is modified DrawTextBoxedSelectable from raylib [text] example - Rectangle bounds
 
 // Draw text using font inside rectangle limits
@@ -157,6 +161,18 @@ bool wordWrap, Color *tints, int tintCount, Color *backTints, int backTintCount 
 	return mouseChar;
 }
 
+static inline void getCodepoints( lua_State *L, int codepoints[], int index ) {
+	int t = index;
+	int i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		codepoints[i] = lua_tointeger( L, -1 );
+		i++;
+		lua_pop( L, 1 );
+	}
+}
+
 /*
 ## Text - Font loading/unloading functions
 */
@@ -210,16 +226,7 @@ int ltextLoadFontEx( lua_State *L ) {
 			int codepointCount = uluaGetTableLen( L, 3 );
 			int codepoints[ codepointCount ];
 
-			int t = 3;
-			int i = 0;
-			lua_pushnil( L );
-
-			while ( lua_next( L, t ) != 0 ) {
-				codepoints[i] = lua_tointeger( L, -1 );
-
-				i++;
-				lua_pop( L, 1 );
-			}
+			getCodepoints( L, codepoints, 3 );
 			uluaPushFont( L, LoadFontEx( lua_tostring( L, 1 ), fontSize, codepoints, codepointCount ) );
 
 			return 1;
@@ -252,6 +259,94 @@ int ltextLoadFontFromImage( lua_State *L ) {
 }
 
 /*
+> font = RL.LoadFontFromMemory( string fileType, Buffer fileData, int fontSize, int{} codepoints )
+
+Load font from memory buffer, fileType refers to extension: i.e. '.ttf'. NOTE: fileData type should be unsigned char
+
+- Success return Font
+*/
+int ltextLoadFontFromMemory( lua_State *L ) {
+	const char *fileType = luaL_checkstring( L, 1 );
+	Buffer *fileData = uluaGetBuffer( L, 2 );
+	int fontSize = luaL_checkinteger( L, 3 );
+
+	if ( lua_istable( L, 4 ) ) {
+		int codepointCount = uluaGetTableLen( L, 4 );
+		int codepoints[ codepointCount ];
+
+		getCodepoints( L, codepoints, 4 );
+		uluaPushFont( L, LoadFontFromMemory( fileType, fileData->data, fileData->size, fontSize, codepoints, codepointCount ) );
+
+		return 1;
+	}
+	/* If no codepoints provided. */
+	uluaPushFont( L, LoadFontFromMemory( fileType, fileData->data, fileData->size, fontSize, NULL, 0 ) );
+
+	return 1;
+}
+
+/*
+> font = RL.LoadFontFromData( Font{} fontData )
+
+Load Font from data
+
+- Success return Font
+*/
+int ltextLoadFontFromData( lua_State *L ) {
+	luaL_checktype( L, 1, LUA_TTABLE );
+
+	Font font = { 0 };
+
+	int t = 1;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		if ( strcmp( "baseSize", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			font.baseSize = luaL_checkinteger( L, -1 );
+		}
+		else if ( strcmp( "glyphCount", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			font.glyphCount = luaL_checkinteger( L, -1 );
+		}
+		else if ( strcmp( "glyphPadding", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			font.glyphPadding = luaL_checkinteger( L, -1 );
+		}
+		else if ( strcmp( "texture", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			font.texture = *uluaGetTexture( L, lua_gettop( L ) );
+		}
+		else if ( strcmp( "recs", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			int recCount = uluaGetTableLen( L, lua_gettop( L ) );
+			font.recs = malloc( recCount * sizeof( Rectangle ) );
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				font.recs[i] = uluaGetRectangle( L, lua_gettop( L ) );
+				i++;
+				lua_pop( L, 1 );
+			}
+		}
+		else if ( strcmp( "glyphs", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			int glyphCount = uluaGetTableLen( L, lua_gettop( L ) );
+			font.glyphs = malloc( glyphCount * sizeof( GlyphInfo ) );
+			int t2 = lua_gettop( L );
+			int i = 0;
+			lua_pushnil( L );
+
+			while ( lua_next( L, t2 ) != 0 ) {
+				font.glyphs[i] = *uluaGetGlyphInfo( L, lua_gettop( L ) );
+				i++;
+				lua_pop( L, 1 );
+			}
+		}
+		lua_pop( L, 1 );
+	}
+	uluaPushFont( L, font );
+
+	return 1;
+}
+
+/*
 > isReady = RL.IsFontReady( Font font )
 
 Check if a font is ready
@@ -267,6 +362,84 @@ int ltextIsFontReady( lua_State *L ) {
 }
 
 /*
+> glyphs = RL.LoadFontData( Buffer fileData, int fontSize, int{} codepoints, int type )
+
+Load font data for further use. NOTE: fileData type should be unsigned char
+
+- Success return GlyphInfo{}
+*/
+int ltextLoadFontData( lua_State *L ) {
+	Buffer *fileData = uluaGetBuffer( L, 1 );
+	int fontSize = luaL_checkinteger( L, 2 );
+	int type = luaL_checkinteger( L, 4 );
+	int codepointCount = 95; // In case no chars count provided, default to 95.
+
+	if ( lua_istable( L, 3 ) ) {
+		codepointCount = uluaGetTableLen( L, 3 );
+		int codepoints[ codepointCount ];
+
+		getCodepoints( L, codepoints, 3 );
+		GlyphInfo *glyphs = LoadFontData( fileData->data, fileData->size, fontSize, codepoints, codepointCount, type );
+		lua_createtable( L, codepointCount, 0 );
+
+		for ( int i = 0; i < codepointCount; i++ ) {
+			uluaPushGlyphInfo( L, glyphs[i] );
+			lua_rawseti( L, -2, i + 1 );
+		}
+		UnloadFontData( glyphs, codepointCount );
+
+		return 1;
+	}
+	/* If no codepoints provided. */
+	GlyphInfo *glyphs = LoadFontData( fileData->data, fileData->size, fontSize, NULL, 0, type );
+	lua_createtable( L, codepointCount, 0 );
+
+	for ( int i = 0; i < codepointCount; i++ ) {
+		uluaPushGlyphInfo( L, glyphs[i] );
+		lua_rawseti( L, -2, i + 1 );
+	}
+	UnloadFontData( glyphs, codepointCount );
+
+	return 1;
+}
+
+/*
+> image, rectangles = RL.GenImageFontAtlas( GlyphInfo{} glyphs, int fontSize, int padding, int packMethod )
+
+Generate image font atlas using chars info. NOTE: Packing method: 0-Default, 1-Skyline
+
+- Success Image, Rectangle{}
+*/
+int ltextGenImageFontAtlas( lua_State *L ) {
+	int fontSize = luaL_checkinteger( L, 2 );
+	int padding = luaL_checkinteger( L, 3 );
+	int packMethod = luaL_checkinteger( L, 4 );
+
+	int glyphCount = uluaGetTableLen( L, 1 );
+	GlyphInfo glyphs[ glyphCount ]; 
+	Rectangle *glyphRecs;
+
+	int t = 1;
+	int i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		glyphs[i] = *uluaGetGlyphInfo( L, lua_gettop( L ) );
+		i++;
+		lua_pop( L, 1 );
+	}
+	uluaPushImage( L, GenImageFontAtlas( glyphs, &glyphRecs, glyphCount, fontSize, padding, packMethod ) );
+	lua_createtable( L, glyphCount, 0 );
+
+	for ( i = 0; i < glyphCount; i++ ) {
+		uluaPushRectangle( L, glyphRecs[i] );
+		lua_rawseti( L, -2, i + 1 );
+	}
+
+	return 2;
+}
+
+/*
 > RL.UnloadFont( Font font )
 
 Unload font from GPU memory (VRAM)
@@ -277,6 +450,22 @@ int ltextUnloadFont( lua_State *L ) {
 	UnloadFont( *font );
 
 	return 0;
+}
+
+/*
+> RL.ExportFontAsCode( Font font, string fileName )
+
+Export font as code file, returns true on success
+
+- Success return bool
+*/
+int ltextExportFontAsCode( lua_State *L ) {
+	Font *font = uluaGetFont( L, 1 );
+	const char *fileName = luaL_checkstring( L, 2 );
+
+	lua_pushboolean( L, ExportFontAsCode( *font, fileName ) );
+
+	return 1;
 }
 
 /*
@@ -509,8 +698,7 @@ int ltextGetGlyphIndex( lua_State *L ) {
 /*
 > glyphInfo = RL.GetGlyphInfo( Font font, int codepoint )
 
-Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found.
-Return Image as lightuserdata
+Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found
 
 - Success return GlyphInfo
 */
@@ -519,7 +707,30 @@ int ltextGetGlyphInfo( lua_State *L ) {
 	int codepoint = luaL_checkinteger( L, 2 );
 
 	int id = GetGlyphIndex( *font, codepoint );
-	uluaPushGlyphInfo( L, font->glyphs[id], &font->glyphs[id].image );
+	uluaPushGlyphInfo( L, font->glyphs[id] );
+
+	return 1;
+}
+
+/*
+> glyphInfo = RL.GetGlyphInfoByIndex( Font font, int index )
+
+Get glyph font info data by index
+
+- Failure return nil
+- Success return GlyphInfo
+*/
+int ltextGetGlyphInfoByIndex( lua_State *L ) {
+	Font *font = uluaGetFont( L, 1 );
+	int index = luaL_checkinteger( L, 2 );
+
+	if ( 0 <= index && index < font->glyphCount ) {
+		uluaPushGlyphInfo( L, font->glyphs[ index ] );
+	}
+	else {
+		TraceLog( state->logLevelInvalid, "Glyph index %d out of bounds", index );
+		lua_pushnil( L );
+	}
 
 	return 1;
 }
@@ -536,6 +747,29 @@ int ltextGetGlyphAtlasRec( lua_State *L ) {
 	int codepoint = luaL_checkinteger( L, 2 );
 
 	uluaPushRectangle( L, GetGlyphAtlasRec( *font, codepoint ) );
+
+	return 1;
+}
+
+/*
+> rect = RL.GetGlyphAtlasRecByIndex( Font font, int index )
+
+Get glyph rectangle in font atlas by index
+
+- Failure return nil
+- Success return Rectangle
+*/
+int ltextGetGlyphAtlasRecByIndex( lua_State *L ) {
+	Font *font = uluaGetFont( L, 1 );
+	int index = luaL_checkinteger( L, 2 );
+
+	if ( 0 <= index && index < font->glyphCount ) {
+		uluaPushRectangle( L, font->recs[ index ] );
+	}
+	else {
+		TraceLog( state->logLevelInvalid, "Glyph index %d out of bounds", index );
+		lua_pushnil( L );
+	}
 
 	return 1;
 }
@@ -595,8 +829,179 @@ Get font texture atlas containing the glyphs. Return as lightuserdata
 int ltextGetFontTexture( lua_State *L ) {
 	Font *font = uluaGetFont( L, 1 );
 
-	// uluaPushTexture( L, font->texture );
 	lua_pushlightuserdata( L, &font->texture );
+
+	return 1;
+}
+
+/*
+## Text - GlyphInfo management functions
+*/
+
+/*
+> glyphInfo = RL.LoadGlyphInfo( GlyphInfo{} glyphInfoData )
+
+Load GlyphInfo from data
+
+- Success return GlyphInfo
+*/
+int ltextLoadGlyphInfo( lua_State *L ) {
+	luaL_checktype( L, 1, LUA_TTABLE );
+
+	GlyphInfo glyph = { 0 };
+
+	int t = 1;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		if ( strcmp( "value", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			glyph.value = (unsigned int)luaL_checkinteger( L, -1 );
+		}
+		else if ( strcmp( "offsetX", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			glyph.offsetX = luaL_checkinteger( L, -1 );
+		}
+		else if ( strcmp( "offsetY", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			glyph.offsetY = luaL_checkinteger( L, -1 );
+		}
+		else if ( strcmp( "advanceX", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			glyph.advanceX = luaL_checkinteger( L, -1 );
+		}
+		else if ( strcmp( "image", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			glyph.image = *uluaGetImage( L, lua_gettop( L ) );
+		}
+		lua_pop( L, 1 );
+	}
+	uluaPushGlyphInfo( L, glyph );
+
+	return 1;
+}
+
+/*
+> RL.UnloadGlyphInfo( GlyphInfo glyphInfo )
+
+Unload glyphInfo image from CPU memory (RAM)
+*/
+int ltextUnloadGlyphInfo( lua_State *L ) {
+	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+
+	unloadGlyphInfo( glyph );
+
+	return 0;
+}
+
+/*
+> RL.SetGlyphInfoValue( GlyphInfo glyphInfo, int value )
+
+Set glyphInfo character value (Unicode)
+*/
+int ltextSetGlyphInfoValue( lua_State *L ) {
+	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+	int value = luaL_checkinteger( L, 2 );
+
+	glyph->value = value;
+
+	return 0;
+}
+
+/*
+> RL.SetGlyphInfoOffset( GlyphInfo glyphInfo, Vector2 offset )
+
+Set glyphInfo character offset when drawing
+*/
+int ltextSetGlyphInfoOffset( lua_State *L ) {
+	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+	Vector2 offset = uluaGetVector2( L, 2 );
+
+	glyph->offsetX = (int)offset.x;
+	glyph->offsetY = (int)offset.y;
+
+	return 0;
+}
+
+/*
+> RL.SetGlyphInfoAdvanceX( GlyphInfo glyphInfo, int advanceX )
+
+Set glyphInfo character advance position X
+*/
+int ltextSetGlyphInfoAdvanceX( lua_State *L ) {
+	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+	int advanceX = luaL_checkinteger( L, 2 );
+
+	glyph->advanceX = advanceX;
+
+	return 0;
+}
+
+/*
+> RL.SetGlyphInfoImage( GlyphInfo glyphInfo, Image image )
+
+Set glyphInfo character image data
+*/
+int ltextSetGlyphInfoImage( lua_State *L ) {
+	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+	Image image = *uluaGetImage( L, 2 );
+
+	glyph->image = image;
+
+	return 0;
+}
+
+/*
+> value = RL.GetGlyphInfoValue( GlyphInfo glyphInfo )
+
+Get glyphInfo character value (Unicode)
+
+- Success return int
+*/
+int ltextGetGlyphInfoValue( lua_State *L ) {
+	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+
+	lua_pushinteger( L, glyph->value );
+
+	return 1;
+}
+
+/*
+> offset = RL.GetGlyphInfoOffset( GlyphInfo glyphInfo )
+
+Get glyphInfo character offset when drawing
+
+- Success return Vector2
+*/
+int ltextGetGlyphInfoOffset( lua_State *L ) {
+	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+
+	uluaPushVector2( L, (Vector2){ glyph->offsetX, glyph->offsetY } );
+
+	return 1;
+}
+
+/*
+> advanceX = RL.GetGlyphInfoAdvanceX( GlyphInfo glyphInfo )
+
+Get glyphInfo character advance position X
+
+- Success return int
+*/
+int ltextGetGlyphInfoAdvanceX( lua_State *L ) {
+	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+
+	lua_pushinteger( L, glyph->advanceX );
+
+	return 1;
+}
+
+/*
+> image = RL.GetGlyphInfoImage( GlyphInfo glyphInfo )
+
+Get glyphInfo character image data. Return as lightuserdata
+
+- Success return Image
+*/
+int ltextGetGlyphInfoImage( lua_State *L ) {
+	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+
+	lua_pushlightuserdata( L, &glyph->image );
 
 	return 1;
 }

@@ -517,7 +517,7 @@ static void joystickEvent( int jid, int event ) {
 > GLFWpentabletdataEvent = { int type, float x, float y, float z, float pressure, float pitch, float yaw, float roll }
 
 Called when the pen tablet data is updated. Type GLFW_PEN_TABLET_DATA_EVENT
-NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
+NOTE: Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
 */
 static void penTabletDataEvent( double x, double y, double z, double pressure, double pitch, double yaw, double roll ) {
 	lua_State *L = state->luaState;
@@ -559,7 +559,7 @@ static void penTabletDataEvent( double x, double y, double z, double pressure, d
 > GLFWpentabletcursorEvent = { int type, int identifier }
 
 Called when the pen tablet cursor has changed. Type GLFW_PEN_TABLET_CURSOR_EVENT
-NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
+NOTE: Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
 */
 static void penTabletCursorEvent( unsigned int identifier ) {
 	lua_State *L = state->luaState;
@@ -589,7 +589,7 @@ static void penTabletCursorEvent( unsigned int identifier ) {
 > GLFWpentabletproximityEvent = { int type, int proxState }
 
 Called when the pen tablet proximity has changed. Type GLFW_PEN_TABLET_PROXIMITY_EVENT
-NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
+NOTE: Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
 */
 static void penTabletProximityEvent( int proxState ) {
 	lua_State *L = state->luaState;

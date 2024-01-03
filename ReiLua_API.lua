@@ -3673,16 +3673,57 @@ function RL.LoadFontEx( fileName, fontSize, codepoints ) end
 ---@return any font 
 function RL.LoadFontFromImage( image, key, firstChar ) end
 
+---Load font from memory buffer, fileType refers to extension: i.e. '.ttf'. NOTE: FileData type should be unsigned char
+---- Success return Font
+---@param fileType string
+---@param fileData any
+---@param fontSize integer
+---@param codepoints table
+---@return any font 
+function RL.LoadFontFromMemory( fileType, fileData, fontSize, codepoints ) end
+
+---Load Font from data
+---- Success return Font
+---@param fontData table
+---@return any font 
+function RL.LoadFontFromData( fontData ) end
+
 ---Check if a font is ready
 ---- Success return bool
 ---@param font any
 ---@return any isReady 
 function RL.IsFontReady( font ) end
 
+---Load font data for further use. NOTE: FileData type should be unsigned char
+---- Success return GlyphInfo{}
+---@param fileData any
+---@param fontSize integer
+---@param codepoints table
+---@param type integer
+---@return any glyphs 
+function RL.LoadFontData( fileData, fontSize, codepoints, type ) end
+
+---Generate image font atlas using chars info. NOTE: Packing method: 0-Default, 1-Skyline
+---- Success Image, Rectangle{}
+---@param glyphs table
+---@param fontSize integer
+---@param padding integer
+---@param packMethod integer
+---@return any image
+---@return any rectangles 
+function RL.GenImageFontAtlas( glyphs, fontSize, padding, packMethod ) end
+
 ---Unload font from GPU memory (VRAM)
 ---@param font any
 ---@return any RL.UnloadFont
 function  RL.UnloadFont( font ) end
+
+---Export font as code file, returns true on success
+---- Success return bool
+---@param font any
+---@param fileName string
+---@return any RL.ExportFontAsCode
+function  RL.ExportFontAsCode( font, fileName ) end
 
 -- Text - Text drawing functions
 
@@ -3788,13 +3829,20 @@ function RL.MeasureText( font, text, fontSize, spacing ) end
 ---@return any index 
 function RL.GetGlyphIndex( font, codepoint ) end
 
----Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found.
----Return Image as lightuserdata
+---Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found
 ---- Success return GlyphInfo
 ---@param font any
 ---@param codepoint integer
 ---@return any glyphInfo 
 function RL.GetGlyphInfo( font, codepoint ) end
+
+---Get glyph font info data by index
+---- Failure return nil
+---- Success return GlyphInfo
+---@param font any
+---@param index integer
+---@return any glyphInfo 
+function RL.GetGlyphInfoByIndex( font, index ) end
 
 ---Get glyph rectangle in font atlas for a codepoint (unicode character), fallback to '?' if not found
 ---- Success return Rectangle
@@ -3802,6 +3850,14 @@ function RL.GetGlyphInfo( font, codepoint ) end
 ---@param codepoint integer
 ---@return any rect 
 function RL.GetGlyphAtlasRec( font, codepoint ) end
+
+---Get glyph rectangle in font atlas by index
+---- Failure return nil
+---- Success return Rectangle
+---@param font any
+---@param index integer
+---@return any rect 
+function RL.GetGlyphAtlasRecByIndex( font, index ) end
 
 ---Get font base size (default chars height)
 ---- Success return int
@@ -3826,6 +3882,67 @@ function RL.GetFontGlyphPadding( font ) end
 ---@param font any
 ---@return any texture 
 function RL.GetFontTexture( font ) end
+
+-- Text - GlyphInfo management functions
+
+---Load GlyphInfo from data
+---- Success return GlyphInfo
+---@param glyphInfoData table
+---@return any glyphInfo 
+function RL.LoadGlyphInfo( glyphInfoData ) end
+
+---Unload glyphInfo image from CPU memory (RAM)
+---@param glyphInfo any
+---@return any RL.UnloadGlyphInfo
+function  RL.UnloadGlyphInfo( glyphInfo ) end
+
+---Set glyphInfo character value (Unicode)
+---@param glyphInfo any
+---@param value integer
+---@return any RL.SetGlyphInfoValue
+function  RL.SetGlyphInfoValue( glyphInfo, value ) end
+
+---Set glyphInfo character offset when drawing
+---@param glyphInfo any
+---@param offset table
+---@return any RL.SetGlyphInfoOffset
+function  RL.SetGlyphInfoOffset( glyphInfo, offset ) end
+
+---Set glyphInfo character advance position X
+---@param glyphInfo any
+---@param advanceX integer
+---@return any RL.SetGlyphInfoAdvanceX
+function  RL.SetGlyphInfoAdvanceX( glyphInfo, advanceX ) end
+
+---Set glyphInfo character image data
+---@param glyphInfo any
+---@param image any
+---@return any RL.SetGlyphInfoImage
+function  RL.SetGlyphInfoImage( glyphInfo, image ) end
+
+---Get glyphInfo character value (Unicode)
+---- Success return int
+---@param glyphInfo any
+---@return any value 
+function RL.GetGlyphInfoValue( glyphInfo ) end
+
+---Get glyphInfo character offset when drawing
+---- Success return Vector2
+---@param glyphInfo any
+---@return any offset 
+function RL.GetGlyphInfoOffset( glyphInfo ) end
+
+---Get glyphInfo character advance position X
+---- Success return int
+---@param glyphInfo any
+---@return any advanceX 
+function RL.GetGlyphInfoAdvanceX( glyphInfo ) end
+
+---Get glyphInfo character image data. Return as lightuserdata
+---- Success return Image
+---@param glyphInfo any
+---@return any image 
+function RL.GetGlyphInfoImage( glyphInfo ) end
 
 -- Models - Basic geometric 3D shapes drawing functions
 
@@ -4201,7 +4318,7 @@ function  RL.DrawBillboardPro( camera, texture, source, position, up, size, orig
 -- Models - Mesh management functions
 
 ---Update mesh vertex data in GPU.
----Note! Mainly intented to be used with custom meshes.
+---NOTE: Mainly intented to be used with custom meshes.
 ---@param mesh any
 ---@param meshData table
 ---@return any RL.UpdateMesh
@@ -4409,7 +4526,7 @@ function  RL.SetMaterialShader( material, shader ) end
 ---@return any RL.SetMaterialParams
 function  RL.SetMaterialParams( material, params ) end
 
----Get texture from material map type. Returns -1 if no texture
+---Get texture from material map type. Return as lightuserdata
 ---- Success return Texture
 ---@param material any
 ---@param mapType integer
@@ -4430,8 +4547,8 @@ function RL.GetMaterialColor( material, mapType ) end
 ---@return any value 
 function RL.GetMaterialValue( material, mapType ) end
 
----Get material shader
----- Success return Shader. Return as lightuserdata
+---Get material shader. Return as lightuserdata
+---- Success return Shader
 ---@param material any
 ---@return any shader 
 function RL.GetMaterialShader( material ) end
@@ -6191,7 +6308,7 @@ function RL.GetLightTarget( light ) end
 function RL.GetLightColor( light ) end
 
 ---Get light enabled
----- Success return boolean
+---- Success return bool
 ---@param light any
 ---@return any enabled 
 function RL.IsLightEnabled( light ) end
@@ -6668,7 +6785,7 @@ function  RL.rlUnloadVertexArray( vaoId ) end
 ---@return any RL.rlUnloadVertexBuffer
 function  RL.rlUnloadVertexBuffer( vboId ) end
 
----Set vertex attribute. Note! Pointer should be given in size of bytes
+---Set vertex attribute. NOTE: Pointer should be given in size of bytes
 ---@param index integer
 ---@param compSize integer
 ---@param type integer

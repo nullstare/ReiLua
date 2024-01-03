@@ -179,7 +179,7 @@ int llightsGetLightColor( lua_State *L ) {
 
 Get light enabled
 
-- Success return boolean
+- Success return bool
 */
 int llightsIsLightEnabled( lua_State *L ) {
 	Light *light = uluaGetLight( L, 1 );

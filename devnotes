@@ -11,9 +11,6 @@ Backlog {
 	* Text
 		* Text codepoints management functions (unicode characters)? Could be usefull for luajit.
 		* Some of the Text strings management functions could be easier to use than the Lua ones.
-		* LoadFontFromMemory.
-		* LoadFontData.
-		* GenImageFontAtlas.
 	* Audio
 		* AudioStream.
 	* Core

@@ -32,9 +32,6 @@ Rectangle.meta = {
 	__unm = function( r )
 		return Rectangle:new( -r.x, -r.y, -r.width, -r.height )
 	end,
-	__idiv = function( r, v )
-		return Rectangle:new( r.x // v, r.y // v, r.width // v, r.height // v )
-	end,
 	__len = function()
 		return 4
 	end,

@@ -3673,7 +3673,7 @@ function RL.LoadFontEx( fileName, fontSize, codepoints ) end
 ---@return any font 
 function RL.LoadFontFromImage( image, key, firstChar ) end
 
----Load font from memory buffer, fileType refers to extension: i.e. '.ttf'. NOTE: FileData type should be unsigned char
+---Load font from memory buffer, fileType refers to extension: i.e. '.ttf'. NOTE: fileData type should be unsigned char
 ---- Success return Font
 ---@param fileType string
 ---@param fileData any
@@ -3694,7 +3694,7 @@ function RL.LoadFontFromData( fontData ) end
 ---@return any isReady 
 function RL.IsFontReady( font ) end
 
----Load font data for further use. NOTE: FileData type should be unsigned char
+---Load font data for further use. NOTE: fileData type should be unsigned char
 ---- Success return GlyphInfo{}
 ---@param fileData any
 ---@param fontSize integer
@@ -6001,12 +6001,13 @@ function RL.GuiToggleGroup( bounds, text, active ) end
 function RL.GuiToggleSlider( bounds, text, active ) end
 
 ---Check Box control, returns true when active
----- Success return bool
+---- Success return bool, Rectangle
 ---@param bounds table
 ---@param text string
 ---@param checked boolean
 ---@return any result
----@return any checked 
+---@return any checked
+---@return any textBounds 
 function RL.GuiCheckBox( bounds, text, checked ) end
 
 ---Combo Box control, returns selected item index
@@ -6029,7 +6030,7 @@ function RL.GuiComboBox( bounds, text, active ) end
 function RL.GuiDropdownBox( bounds, text, active, editMode ) end
 
 ---Spinner control, returns selected value
----- Success return int, int
+---- Success return int, int, Rectangle
 ---@param bounds table
 ---@param text string
 ---@param value integer
@@ -6037,11 +6038,12 @@ function RL.GuiDropdownBox( bounds, text, active, editMode ) end
 ---@param maxValue integer
 ---@param editMode boolean
 ---@return any result
----@return any value 
+---@return any value
+---@return any textBounds 
 function RL.GuiSpinner( bounds, text, value, minValue, maxValue, editMode ) end
 
 ---Value Box control, updates input text with numbers
----- Success return int, int
+---- Success return int, int, Rectangle
 ---@param bounds table
 ---@param text string
 ---@param value integer
@@ -6049,7 +6051,8 @@ function RL.GuiSpinner( bounds, text, value, minValue, maxValue, editMode ) end
 ---@param maxValue integer
 ---@param editMode boolean
 ---@return any result
----@return any value 
+---@return any value
+---@return any textBounds 
 function RL.GuiValueBox( bounds, text, value, minValue, maxValue, editMode ) end
 
 ---Text Box control, updates input text
@@ -6063,7 +6066,7 @@ function RL.GuiValueBox( bounds, text, value, minValue, maxValue, editMode ) end
 function RL.GuiTextBox( bounds, text, textSize, editMode ) end
 
 ---Slider control, returns selected value
----- Success return int, float
+---- Success return int, float, Rectangle, Rectangle
 ---@param bounds table
 ---@param textLeft string
 ---@param textRight string
@@ -6071,11 +6074,13 @@ function RL.GuiTextBox( bounds, text, textSize, editMode ) end
 ---@param minValue number
 ---@param maxValue number
 ---@return any result
----@return any value 
+---@return any value
+---@return any textLeftBounds
+---@return any textRightBounds 
 function RL.GuiSlider( bounds, textLeft, textRight, value, minValue, maxValue ) end
 
 ---Slider Bar control, returns selected value
----- Success return int, float
+---- Success return int, float, Rectangle, Rectangle
 ---@param bounds table
 ---@param textLeft string
 ---@param textRight string
@@ -6083,11 +6088,13 @@ function RL.GuiSlider( bounds, textLeft, textRight, value, minValue, maxValue ) 
 ---@param minValue number
 ---@param maxValue number
 ---@return any result
----@return any value 
+---@return any value
+---@return any textLeftBounds
+---@return any textRightBounds 
 function RL.GuiSliderBar( bounds, textLeft, textRight, value, minValue, maxValue ) end
 
 ---Progress Bar control, shows current progress value
----- Success return int, float
+---- Success return int, float, Rectangle, Rectangle
 ---@param bounds table
 ---@param textLeft string
 ---@param textRight string
@@ -6095,7 +6102,9 @@ function RL.GuiSliderBar( bounds, textLeft, textRight, value, minValue, maxValue
 ---@param minValue number
 ---@param maxValue number
 ---@return any result
----@return any value 
+---@return any value
+---@return any textLeftBounds
+---@return any textRightBounds 
 function RL.GuiProgressBar( bounds, textLeft, textRight, value, minValue, maxValue ) end
 
 ---Status Bar control, shows info text

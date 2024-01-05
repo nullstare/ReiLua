@@ -416,7 +416,7 @@ int ltextGenImageFontAtlas( lua_State *L ) {
 	int packMethod = luaL_checkinteger( L, 4 );
 
 	int glyphCount = uluaGetTableLen( L, 1 );
-	GlyphInfo glyphs[ glyphCount ]; 
+	GlyphInfo glyphs[ glyphCount ];
 	Rectangle *glyphRecs;
 
 	int t = 1;

@@ -30,6 +30,8 @@ KEY CHANGES:
 	- ADDED: Rest of font loading/unloading functions.
 	- CHANGE: GlyphInfo type to userdata.
 	- ADDED: GlyphInfo management functions.
+	- CHANGE: GuiTabBar works differently to raygui implementation.
+	- UPDATED: Raygui lib enhancements.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.
@@ -56,6 +58,8 @@ DETAILED CHANGES:
 	- ADDED: GetImageData.
 	- FIXED: CameraLib. Slow lateral movement.
 	- ADDED: GetGlyphInfoByIndex and GetGlyphAtlasRecByIndex.
+	- ADDED: Raygui lib extensions example.
+	- ADDED: Raygui.h returns textBounds for some controls.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.6.0		Using Raylib 4.5

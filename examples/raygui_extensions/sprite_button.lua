@@ -1,4 +1,3 @@
---- Button control
 local SpriteButton = {}
 SpriteButton.__index = SpriteButton
 
@@ -24,7 +23,7 @@ function SpriteButton:process()
 end
 
 function SpriteButton:draw()
-	if RL.IsMouseButtonDown( RL.MOUSE_BUTTON_LEFT ) and self:process() then
+	if RL.IsMouseButtonDown( RL.MOUSE_BUTTON_LEFT ) and self:process() and not RL.GuiIsLocked() and not self._parent.scrolling then
 		RL.DrawTextureNPatchRepeat( self.buttonTexture, self.nPatchPressed, self.bounds, { 0, 0 }, 0.0, RL.WHITE )
 	else
 		RL.DrawTextureNPatchRepeat( self.buttonTexture, self.nPatchNormal, self.bounds, { 0, 0 }, 0.0, RL.WHITE )
@@ -32,12 +31,9 @@ function SpriteButton:draw()
 
 	local result = RL.GuiLabelButton( self.bounds, self.text )
 
-    if result == 1 then
-		if self.callback ~= nil then
-			self.callback( self )
-		end
+    if result == 1 and self.callback ~= nil and self._parent:clickedInBounds( self.bounds ) then
+		self.callback( self )
     end
-	
 end
 
 function SpriteButton:setPosition( pos )

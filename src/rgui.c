@@ -547,20 +547,22 @@ int lguiGuiToggleSlider( lua_State *L ) {
 }
 
 /*
-> result, checked = RL.GuiCheckBox( Rectangle bounds, string text, bool checked )
+> result, checked, textBounds = RL.GuiCheckBox( Rectangle bounds, string text, bool checked )
 
 Check Box control, returns true when active
 
-- Success return bool
+- Success return bool, Rectangle
 */
 int lguiGuiCheckBox( lua_State *L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	bool checked = uluaGetBoolean( L, 3 );
 
-	lua_pushinteger( L, GuiCheckBox( bounds, luaL_checkstring( L, 2 ), &checked ) );
+	Rectangle textBounds = {};
+	lua_pushinteger( L, GuiCheckBox( bounds, luaL_checkstring( L, 2 ), &checked, &textBounds ) );
 	lua_pushboolean( L, checked );
+	uluaPushRectangle( L, textBounds );
 
-	return 2;
+	return 3;
 }
 
 /*
@@ -599,11 +601,11 @@ int lguiGuiDropdownBox( lua_State *L ) {
 }
 
 /*
-> result, value = RL.GuiSpinner( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )
+> result, value, textBounds = RL.GuiSpinner( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )
 
 Spinner control, returns selected value
 
-- Success return int, int
+- Success return int, int, Rectangle
 */
 int lguiGuiSpinner( lua_State *L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
@@ -612,18 +614,20 @@ int lguiGuiSpinner( lua_State *L ) {
 	int maxValue = luaL_checkinteger( L, 5 );
 	bool editMode = uluaGetBoolean( L, 6 );
 
-	lua_pushinteger( L, GuiSpinner( bounds, luaL_checkstring( L, 2 ), &value, minValue, maxValue, editMode ) );
+	Rectangle textBounds = { 0 };
+	lua_pushinteger( L, GuiSpinner( bounds, luaL_checkstring( L, 2 ), &value, minValue, maxValue, editMode, &textBounds ) );
 	lua_pushinteger( L, value );
+	uluaPushRectangle( L, textBounds );
 
-	return 2;
+	return 3;
 }
 
 /*
-> result, value = RL.GuiValueBox( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )
+> result, value, textBounds = RL.GuiValueBox( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )
 
 Value Box control, updates input text with numbers
 
-- Success return int, int
+- Success return int, int, Rectangle
 */
 int lguiGuiValueBox( lua_State *L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
@@ -632,10 +636,12 @@ int lguiGuiValueBox( lua_State *L ) {
 	int maxValue = luaL_checkinteger( L, 5 );
 	bool editMode = uluaGetBoolean( L, 6 );
 
-	lua_pushinteger( L, GuiValueBox( bounds, luaL_checkstring( L, 2 ), &value, minValue, maxValue, editMode ) );
+	Rectangle textBounds = { 0 };
+	lua_pushinteger( L, GuiValueBox( bounds, luaL_checkstring( L, 2 ), &value, minValue, maxValue, editMode, &textBounds ) );
 	lua_pushinteger( L, value );
+	uluaPushRectangle( L, textBounds );
 
-	return 2;
+	return 3;
 }
 
 /*
@@ -659,11 +665,11 @@ int lguiGuiTextBox( lua_State *L ) {
 }
 
 /*
-> result, value = RL.GuiSlider( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
+> result, value, textLeftBounds, textRightBounds = RL.GuiSlider( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
 
 Slider control, returns selected value
 
-- Success return int, float
+- Success return int, float, Rectangle, Rectangle
 */
 int lguiGuiSlider( lua_State *L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
@@ -671,18 +677,22 @@ int lguiGuiSlider( lua_State *L ) {
 	float minValue = luaL_checknumber( L, 5 );
 	float maxValue = luaL_checknumber( L, 6 );
 
-	lua_pushinteger( L, GuiSlider( bounds, luaL_checkstring( L, 2 ), luaL_checkstring( L, 3 ), &value, minValue, maxValue ) );
+	Rectangle textLeftBounds = { 0 };
+	Rectangle textRightBounds = { 0 };
+	lua_pushinteger( L, GuiSlider( bounds, luaL_checkstring( L, 2 ), luaL_checkstring( L, 3 ), &value, minValue, maxValue, &textLeftBounds, &textRightBounds ) );
 	lua_pushnumber( L, value );
+	uluaPushRectangle( L, textLeftBounds );
+	uluaPushRectangle( L, textRightBounds );
 
-	return 2;
+	return 4;
 }
 
 /*
-> result, value = RL.GuiSliderBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
+> result, value, textLeftBounds, textRightBounds = RL.GuiSliderBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
 
 Slider Bar control, returns selected value
 
-- Success return int, float
+- Success return int, float, Rectangle, Rectangle
 */
 int lguiGuiSliderBar( lua_State *L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
@@ -690,18 +700,22 @@ int lguiGuiSliderBar( lua_State *L ) {
 	float minValue = luaL_checknumber( L, 5 );
 	float maxValue = luaL_checknumber( L, 6 );
 
-	lua_pushinteger( L, GuiSliderBar( bounds, luaL_checkstring( L, 2 ), luaL_checkstring( L, 3 ), &value, minValue, maxValue ) );
+	Rectangle textLeftBounds = { 0 };
+	Rectangle textRightBounds = { 0 };
+	lua_pushinteger( L, GuiSliderBar( bounds, luaL_checkstring( L, 2 ), luaL_checkstring( L, 3 ), &value, minValue, maxValue, &textLeftBounds, &textRightBounds ) );
 	lua_pushnumber( L, value );
+	uluaPushRectangle( L, textLeftBounds );
+	uluaPushRectangle( L, textRightBounds );
 
-	return 2;
+	return 4;
 }
 
 /*
-> result, value = RL.GuiProgressBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
+> result, value, textLeftBounds, textRightBounds = RL.GuiProgressBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
 
 Progress Bar control, shows current progress value
 
-- Success return int, float
+- Success return int, float, Rectangle, Rectangle
 */
 int lguiGuiProgressBar( lua_State *L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
@@ -709,10 +723,14 @@ int lguiGuiProgressBar( lua_State *L ) {
 	float minValue = luaL_checknumber( L, 5 );
 	float maxValue = luaL_checknumber( L, 6 );
 
-	lua_pushinteger( L, GuiProgressBar( bounds, luaL_checkstring( L, 2 ), luaL_checkstring( L, 3 ), &value, minValue, maxValue ) );
+	Rectangle textLeftBounds = { 0 };
+	Rectangle textRightBounds = { 0 };
+	lua_pushinteger( L, GuiProgressBar( bounds, luaL_checkstring( L, 2 ), luaL_checkstring( L, 3 ), &value, minValue, maxValue, &textLeftBounds, &textRightBounds ) );
 	lua_pushnumber( L, value );
+	uluaPushRectangle( L, textLeftBounds );
+	uluaPushRectangle( L, textRightBounds );
 
-	return 2;
+	return 4;
 }
 
 /*

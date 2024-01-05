@@ -76,8 +76,11 @@ end
 function WindowBox:draw()
 	local result = RL.GuiWindowBox( self.bounds, self.text )
 
-	if result == 1 and self.callback ~= nil then
-        self.callback( self )
+	if result == 1 then
+		-- //TODO Could add self._parent:clickedInBounds( closeButtonBounds )
+		if self.callback ~= nil then
+			self.callback( self )
+		end
     end
 end
 
@@ -216,10 +219,17 @@ function GuiTabBar:draw()
 
 	result, self.active = RL.GuiTabBar( self.bounds, self.text, self.active )
 
-	if self.active ~= oldActive and self.callback ~= nil then
-		self.callback( self )
+	if self.active ~= oldActive then
+		if not self._parent:clickedInBounds( self.bounds ) then
+			self.active = oldActive
+			return
+		end
+
+		if self.callback ~= nil then
+			self.callback( self )
+		end
 	end
-	if 0 <= result and self.closeCallback ~= nil then
+	if 0 <= result and self.closeCallback ~= nil and self._parent:clickedInBounds( self.bounds ) then
 		self.closeCallback( self, result )
 	end
 end
@@ -268,7 +278,7 @@ function ScrollPanel:draw()
 	self.scroll = Vec2:new( scroll )
 
 	if self.scroll ~= oldScroll then
-		self._parent.scrolling = true
+		self._parent:checkScrolling()
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -344,7 +354,7 @@ end
 function Button:draw()
     local result = RL.GuiButton( self.bounds, self.text )
 
-    if result == 1 and self.callback ~= nil then
+    if result == 1 and self.callback ~= nil and self._parent:clickedInBounds( self.bounds ) then
         self.callback( self )
     end
 end
@@ -381,7 +391,7 @@ end
 function LabelButton:draw()
     local result = RL.GuiLabelButton( self.bounds, self.text )
 
-    if result == 1 and self.callback ~= nil then
+    if result == 1 and self.callback ~= nil and self._parent:clickedInBounds( self.bounds ) then
         self.callback( self )
     end
 end
@@ -421,8 +431,15 @@ function Toggle:draw()
 
 	_, self.active = RL.GuiToggle( self.bounds, self.text, self.active )
 
-    if self.active ~= oldActive and self.callback ~= nil then
-        self.callback( self )
+    if self.active ~= oldActive then
+		if not self._parent:clickedInBounds( self.bounds ) then
+			self.active = oldActive
+			return
+		end
+
+		if self.callback ~= nil then
+			self.callback( self )
+		end
     end
 end
 
@@ -449,6 +466,7 @@ function ToggleGroup:new( bounds, text, active, callback )
 	object.visible = true
 	object.disabled = false
 	object.focusBounds = {}
+	object.viewBounds = bounds:clone()
     object:updateFocusBounds()
 
 	return object
@@ -472,17 +490,20 @@ function ToggleGroup:updateFocusBounds()
 	local _, rowItemCounts = getItemCount( self.text )
 
 	self.focusBounds = {}
+	self.viewBounds = self.bounds:clone()
 
 	for y, rowItemCount in ipairs( rowItemCounts ) do
 		for x = 1, rowItemCount do
 			local pos = Vec2:new( x - 1, y - 1 )
-
-			table.insert( self.focusBounds, Rect:new(
+			local focusBound = Rect:new(
 				self.bounds.x + pos.x * ( self.bounds.width + RL.GuiGetStyle( RL.TOGGLE, RL.GROUP_PADDING ) ),
 				self.bounds.y + pos.y * ( self.bounds.height + RL.GuiGetStyle( RL.TOGGLE, RL.GROUP_PADDING ) ),
 				self.bounds.width,
 				self.bounds.height
-			) )
+			)
+
+			table.insert( self.focusBounds, focusBound )
+			self.viewBounds = self.viewBounds:fit( focusBound )
 		end
 	end
 end
@@ -502,8 +523,24 @@ function ToggleGroup:draw()
 
 	_, self.active = RL.GuiToggleGroup( self.bounds, self.text, self.active )
 
-    if self.active ~= oldActive and self.callback ~= nil then
-        self.callback( self )
+    if self.active ~= oldActive then
+		local inBounds = false
+	
+		for _, bounds in ipairs( self.focusBounds ) do
+			if self._parent:clickedInBounds( bounds ) then
+				inBounds = true
+				break
+			end
+		end
+
+		if not inBounds then
+			self.active = oldActive
+			return
+		end
+
+		if self.callback ~= nil then
+			self.callback( self )
+		end
     end
 end
 
@@ -531,69 +568,42 @@ function CheckBox:new( bounds, text, checked, callback )
 
 	object.visible = true
 	object.disabled = false
+	object.textBounds = Rect:new()
     object.focusBounds = bounds:clone()
-    object:updateFocusBounds()
 
 	return object
 end
 
 function CheckBox:setText( text )
     self.text = text
-
-    self:updateFocusBounds()
-end
-
-function CheckBox:updateFocusBounds()
-    if self.text == "" then
-        return
-    end
-
-    local textSize = Vec2:new( RL.MeasureText(
-        RL.GuiGetFont(),
-        self.text,
-        RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SIZE ),
-        RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING )
-    ) )
-
-    local textBounds = Rect:new()
-
-	textBounds.width = textSize.x
-	textBounds.height = textSize.y
-	textBounds.x = self.bounds.x + self.bounds.width + RL.GuiGetStyle( RL.CHECKBOX, RL.TEXT_PADDING )
-	textBounds.x = self.bounds.y + self.bounds.height / 2 - RL.GuiGetStyle( RL.CHECKBOX, RL.TEXT_SIZE ) / 2
-
-	if RL.GuiGetStyle( RL.CHECKBOX, RL.TEXT_ALIGNMENT ) == RL.TEXT_ALIGN_LEFT then
-		textBounds.x = self.bounds.x - textBounds.width - RL.GuiGetStyle( RL.CHECKBOX, RL.TEXT_PADDING )
-		self.focusBounds.x = textBounds.x
-	else
-		self.focusBounds.x = self.bounds.x
-	end
-
-	self.focusBounds.y = self.bounds.y
-	self.focusBounds.width = self.bounds.width + textBounds.width + RL.GuiGetStyle( RL.CHECKBOX, RL.TEXT_PADDING )
-	self.focusBounds.height = self.bounds.height
 end
 
 function CheckBox:process()
+	self.focusBounds = self.bounds:fit( self.textBounds )
     return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.focusBounds )
 end
 
 function CheckBox:draw()
     local oldChecked = self.checked
+	local textBounds = nil
 
-	_, self.checked = RL.GuiCheckBox( self.bounds, self.text, self.checked )
+	_, self.checked, textBounds = RL.GuiCheckBox( self.bounds, self.text, self.checked )
+	self.textBounds:set( textBounds )
 
-    if self.checked ~= oldChecked and self.callback ~= nil then
-        self.callback( self )
+    if self.checked ~= oldChecked then
+		if not self._parent:clickedInBounds( self.focusBounds ) then
+			self.checked = oldChecked
+		end
+
+		if self.callback ~= nil then
+			self.callback( self )
+		end
     end
-    -- RL.DrawRectangleLines( self.focusBounds, RL.RED )
 end
 
 function CheckBox:setPosition( pos )
 	self.bounds.x = pos.x
 	self.bounds.y = pos.y
-
-	self:updateFocusBounds()
 end
 
 -- ComboBox.
@@ -626,8 +636,15 @@ function ComboBox:draw()
 
 	_, self.active = RL.GuiComboBox( self.bounds, self.text, self.active )
 
-    if self.active ~= oldActive and self.callback ~= nil then
-        self.callback( self )
+    if self.active ~= oldActive then
+		if not self._parent:clickedInBounds( self.bounds ) then
+			self.active = oldActive
+			return
+		end
+
+		if self.callback ~= nil then
+			self.callback( self )
+		end
     end
 end
 
@@ -655,7 +672,7 @@ function DropdownBox:new( bounds, text, active, editMode, callback )
 	object.visible = true
 	object.disabled = false
 	object.editModeBounds = bounds:clone()
-	object:updateFocusBounds()
+	object:updateEditModeBounds()
 
 	return object
 end
@@ -663,14 +680,14 @@ end
 function DropdownBox:setText( text )
     self.text = text
 
-	self:updateFocusBounds()
+	self:updateEditModeBounds()
 end
 
 function DropdownBox:getItem( id )
 	return getItems( self.text )[ id + 1 ]
 end
 
-function DropdownBox:updateFocusBounds()
+function DropdownBox:updateEditModeBounds()
 	if self.text == "" then
 		return
 	end
@@ -715,39 +732,55 @@ local Spinner = {}
 Spinner.__index = Spinner
 
 function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callback )
-    local object = setmetatable( {}, self )
+	local object = setmetatable( {}, self )
 	object._parent = nil
-
-    object.bounds = bounds:clone()
-    object.text = text
-    object.value = value
-    object.minValue = minValue
-    object.maxValue = maxValue
-    object.editMode = editMode
-    object.callback = callback
-
+	
+	object.bounds = bounds:clone()
+	object.text = text
+	object.value = value
+	object.minValue = minValue
+	object.maxValue = maxValue
+	object.editMode = editMode
+	object.callback = callback
+	
 	object.visible = true
 	object.disabled = false
+	object.textBounds = Rect:new()
+	object.viewBounds = bounds:clone()
 
 	return object
 end
 
+function Spinner:setText( text )
+    self.text = text
+end
+
 function Spinner:process()
+	self.viewBounds = self.bounds:fit( self.textBounds )
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function Spinner:draw()
 	local result = 0
 	local oldValue = self.value
+	local textBounds
 
-	result, self.value = RL.GuiSpinner( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
+	result, self.value, textBounds = RL.GuiSpinner( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
+	self.textBounds:set( textBounds )
 
     if result == 1 then
 		self._parent:editMode( self.editMode )
 		self.editMode = not self.editMode
     end
-	if self.value ~= oldValue and self.callback ~= nil then
-		self.callback( self )
+	if self.value ~= oldValue then
+		if not self._parent:clickedInBounds( self.bounds ) then
+			self.value = oldValue
+			return
+		end
+
+		if self.callback ~= nil then
+			self.callback( self )
+		end
 	end
 end
 
@@ -765,30 +798,39 @@ ValueBox.__index = ValueBox
 function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callback )
     local object = setmetatable( {}, self )
 	object._parent = nil
-
-    object.bounds = bounds:clone()
-    object.text = text
-    object.value = value
-    object.minValue = minValue
-    object.maxValue = maxValue
-    object.editMode = editMode
-    object.callback = callback
-
+	
+	object.bounds = bounds:clone()
+	object.text = text
+	object.value = value
+	object.minValue = minValue
+	object.maxValue = maxValue
+	object.editMode = editMode
+	object.callback = callback
+	
 	object.visible = true
 	object.disabled = false
+	object.textBounds = Rect:new()
+	object.viewBounds = bounds:clone()
 
 	return object
 end
 
+function ValueBox:setText( text )
+	self.text = text
+end
+
 function ValueBox:process()
+	self.viewBounds = self.bounds:fit( self.textBounds )
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function ValueBox:draw()
 	local result = 0
 	local oldValue = self.value
+	local textBounds
 
-	result, self.value = RL.GuiValueBox( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
+	result, self.value, textBounds = RL.GuiValueBox( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
+	self.textBounds:set( textBounds )
 
     if result == 1 then
 		self._parent:editMode( self.editMode )
@@ -867,32 +909,42 @@ Slider.__index = Slider
 function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, callback )
     local object = setmetatable( {}, self )
 	object._parent = nil
-
-    object.bounds = bounds:clone()
-    object.textLeft = textLeft
-    object.textRight = textRight
-    object.value = value
-    object.minValue = minValue
-    object.maxValue = maxValue
-    object.callback = callback
-
+	
+	object.bounds = bounds:clone()
+	object.textLeft = textLeft
+	object.textRight = textRight
+	object.value = value
+	object.minValue = minValue
+	object.maxValue = maxValue
+	object.callback = callback
+	
 	object.visible = true
 	object.disabled = false
+	object.textLeftBounds = Rect:new()
+	object.textRightBounds = Rect:new()
+	object.viewBounds = bounds:clone()
 
 	return object
 end
 
 function Slider:process()
+	self.viewBounds = self.bounds:fit( self.textLeftBounds ):fit( self.textRightBounds )
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function Slider:draw()
-	local oldValue = self.value
+	local oldValue, textLeftBounds, textRightBounds = self.value, nil, nil
 
-	_, self.value = RL.GuiSlider( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
+	_, self.value, textLeftBounds, textRightBounds = RL.GuiSlider( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
+	self.textLeftBounds:set( textLeftBounds )
+	self.textRightBounds:set( textRightBounds )
 
     if self.value ~= oldValue then
-		self._parent.scrolling = true
+		if not self._parent:clickedInBounds( self.bounds ) then
+			self.value = oldValue
+			return
+		end
+		self._parent:checkScrolling()
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -925,26 +977,36 @@ function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, 
 
 	object.visible = true
 	object.disabled = false
+	object.textLeftBounds = Rect:new()
+	object.textRightBounds = Rect:new()
+	object.viewBounds = bounds:clone()
 
 	return object
 end
 
 function SliderBar:process()
+	self.viewBounds = self.bounds:fit( self.textLeftBounds ):fit( self.textRightBounds )
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function SliderBar:draw()
-	local oldValue = self.value
+	local oldValue, textLeftBounds, textRightBounds = self.value, nil, nil
 
-	_, self.value = RL.GuiSliderBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
+	_, self.value, textLeftBounds, textRightBounds = RL.GuiSliderBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
+	self.textLeftBounds:set( textLeftBounds )
+	self.textRightBounds:set( textRightBounds )
 
-    if self.value ~= oldValue then
-		self._parent.scrolling = true
+	if self.value ~= oldValue then
+		if not self._parent:clickedInBounds( self.bounds ) then
+			self.value = oldValue
+			return
+		end
+		self._parent:checkScrolling()
 
 		if self.callback ~= nil then
 			self.callback( self )
 		end
-    end
+	end
 end
 
 function SliderBar:setPosition( pos )
@@ -972,21 +1034,34 @@ function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue
 
 	object.visible = true
 	object.disabled = false
+	object.textLeftBounds = Rect:new()
+	object.textRightBounds = Rect:new()
+	object.viewBounds = bounds:clone()
 
 	return object
 end
 
 function ProgressBar:process()
+	self.viewBounds = self.bounds:fit( self.textLeftBounds ):fit( self.textRightBounds )
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function ProgressBar:draw()
-	local oldValue = self.value
+	local oldValue, textLeftBounds, textRightBounds = self.value, nil, nil
 
-	_, self.value = RL.GuiProgressBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
-
+	_, self.value, textLeftBounds, textRightBounds = RL.GuiProgressBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
+	self.textLeftBounds:set( textLeftBounds )
+	self.textRightBounds:set( textRightBounds )
+	
     if self.value ~= oldValue then
-		self.callback( self )
+		if not self._parent:clickedInBounds( self.bounds ) then
+			self.value = oldValue
+			return
+		end
+
+		if self.callback ~= nil then
+			self.callback( self )
+		end
     end
 end
 
@@ -1002,11 +1077,11 @@ local StatusBar = {}
 StatusBar.__index = StatusBar
 
 function StatusBar:new( bounds, text )
-    local object = setmetatable( {}, self )
+	local object = setmetatable( {}, self )
 	object._parent = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
+	object.bounds = bounds:clone()
+	object.text = text
 
 	object.visible = true
 	object.disabled = false
@@ -1034,7 +1109,7 @@ local DummyRec = {}
 DummyRec.__index = DummyRec
 
 function DummyRec:new( bounds, text )
-    local object = setmetatable( {}, self )
+	local object = setmetatable( {}, self )
 	object._parent = nil
 
     object.bounds = bounds:clone()
@@ -1144,7 +1219,7 @@ function ListView:draw()
 	_, self.scrollIndex, self.active = RL.GuiListView( self.bounds, self.text, self.scrollIndex, self.active )
 
 	if self.scrollIndex ~= oldScrollIndex then
-		self._parent.scrolling = true
+		self._parent:checkScrolling()
 	end
 	if oldActive ~= self.active and self.callback ~= nil then
 		self.callback( self )
@@ -1194,7 +1269,7 @@ function ListViewEx:draw()
 	_, self.scrollIndex, self.active, self.focus = RL.GuiListViewEx( self.bounds, self.text, self.scrollIndex, self.active, self.focus )
 
 	if self.scrollIndex ~= oldScrollIndex then
-		self._parent.scrolling = true
+		self._parent:checkScrolling()
 	end
 	if oldActive ~= self.active and self.callback ~= nil then
 		self.callback( self )
@@ -1243,7 +1318,7 @@ end
 function MessageBox:draw()
 	self.buttonIndex = RL.GuiMessageBox( self.bounds, self.title, self.message, self.buttons )
 
-	if 0 <= self.buttonIndex and self.callback ~= nil then
+	if 0 <= self.buttonIndex and self.callback ~= nil and self._parent:clickedInBounds( self.bounds ) then
 		self.callback( self )
 	end
 end
@@ -1293,7 +1368,7 @@ end
 function TextInputBox:draw()
 	self.buttonIndex, self.text, self.secretViewActive = RL.GuiTextInputBox( self.bounds, self.title, self.message, self.buttons, self.text, self.textMaxSize, self.secretViewActive )
 
-	if 0 <= self.buttonIndex and self.callback ~= nil then
+	if 0 <= self.buttonIndex and self.callback ~= nil and self._parent:clickedInBounds( self.bounds ) then
 		self.callback( self )
 	end
 end
@@ -1349,7 +1424,11 @@ function ColorPicker:draw()
 	self.color = Color:new( color )
 
 	if self.color ~= oldColor then
-		self._parent.scrolling = true
+		if not self._parent:clickedInBounds( self.focusBounds ) then
+			self.color = oldColor
+			return
+		end
+		self._parent:checkScrolling()
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -1393,8 +1472,15 @@ function ColorPanel:draw()
 
 	self.color = Color:new( color )
 
-	if oldColor ~= self.color and self.callback ~= nil then
-		self.callback( self )
+	if oldColor ~= self.color then
+		if not self._parent:clickedInBounds( self.bounds ) then
+			self.color = oldColor
+			return
+		end
+
+		if self.callback ~= nil then
+			self.callback( self )
+		end
 	end
 end
 
@@ -1433,7 +1519,11 @@ function ColorBarAlpha:draw()
 	_, self.alpha = RL.GuiColorBarAlpha( self.bounds, self.text, self.alpha )
 
 	if self.alpha ~= oldAlpha then
-		self._parent.scrolling = true
+		if not self._parent:clickedInBounds( self.bounds ) then
+			self.alpha = oldAlpha
+			return
+		end
+		self._parent:checkScrolling()
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -1476,7 +1566,11 @@ function ColorBarHue:draw()
 	_, self.value = RL.GuiColorBarHue( self.bounds, self.text, self.value )
 
 	if self.value ~= oldValue then
-		self._parent.scrolling = true
+		if not self._parent:clickedInBounds( self.bounds ) then
+			self.value = oldValue
+			return
+		end
+		self._parent:checkScrolling()
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -1521,7 +1615,11 @@ function GuiScrollBar:draw()
 	self.value = RL.GuiScrollBar( self.bounds, self.value, self.minValue, self.maxValue )
 
 	if self.value ~= oldValue then
-		self._parent.scrolling = true
+		if not self._parent:clickedInBounds( self.bounds ) then
+			self.value = oldValue
+			return
+		end
+		self._parent:checkScrolling()
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -1553,12 +1651,20 @@ function Raygui:new()
 	object.scrolling = false
 	object.textEdit = false
 	object.defaultTexture = RL.GetTextureDefault()
-	object.defaultRect = Rect:new( 0, 0, 1, 1 )
+	object.defaultRect = Rect:new( 0, 0, 1, 1 ) -- For texture.
+	object.mouseOffset = Vec2:new()
+	object.view = Rect:new() -- Active if larger than 0. Then only elements in view will be processed and drawn.
 
 	object._lastDisabled = false -- Last element disabled state in draw.
 	object._lastStyles = {}
+	object._mousePressPos = Vec2:new( -1, -1 ) -- Use to check if release and check are inside bounds.
 
 	return object
+end
+
+function Raygui:inView( element )
+	-- CheckBox for example uses focusBounds and sliders viewBounds.
+	return self.view.width == 0 or self.view.height == 0 or self.view:checkCollisionRec( element.viewBounds or element.focusBounds or element.bounds )
 end
 
 function Raygui:process()
@@ -1568,24 +1674,28 @@ function Raygui:process()
 	-- If dragging, don't process element masking.
 	if self.dragging ~= nil then
 		self:drag( self.dragging )
-
 		return
 	end
+	-- Set mouse ofset if gui is for example embedded to some element.
+	RL.SetMouseOffset( self.mouseOffset )
 
+	if RL.IsMouseButtonPressed( RL.MOUSE_BUTTON_LEFT ) then
+		self._mousePressPos:set( RL.GetMousePosition() )
+	end
 	-- Focused is 0 if not over any element.
 	self.focused = 0
 
 	for i = #self.elements, 1, -1 do
 		local element = self.elements[i]
 
-        if element.visible and element.process ~= nil then
+        if element.visible and element.process ~= nil and self:inView( element ) then
             if element:process() then
                 self.focused = i
-
                 return
             end
         end
     end
+	RL.SetMouseOffset( { 0, 0 } )
 end
 
 function Raygui:drag( element )
@@ -1644,12 +1754,15 @@ function Raygui:draw()
 			self.scrolling = false
 		end
 	end
+
+	RL.SetMouseOffset( self.mouseOffset )
+
     for i, element in ipairs( self.elements ) do
         if not self.locked and not self.disabled and i == self.focused then
             RL.GuiUnlock()
         end
 
-        if element.visible and element.draw ~= nil then
+        if element.visible and element.draw ~= nil and self:inView( element ) then
 			if self._lastDisabled ~= element.disabled then
 				if element.disabled then
 					RL.GuiDisable()
@@ -1686,6 +1799,18 @@ function Raygui:draw()
     end
 	RL.GuiUnlock()
 	RL.GuiEnable()
+	RL.SetMouseOffset( { 0, 0 } )
+end
+
+function Raygui:checkScrolling()
+	-- Don't set if scrolling with mouse wheel.
+	if RL.GetMouseWheelMove() == 0.0 then
+		self.scrolling = true
+	end
+end
+
+function Raygui:clickedInBounds( bounds )
+	return RL.CheckCollisionPointRec( self._mousePressPos, bounds )
 end
 
 function Raygui:set2Top( element )

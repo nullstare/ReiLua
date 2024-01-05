@@ -6325,7 +6325,7 @@ Load font from Image (XNA style)
 
 > font = RL.LoadFontFromMemory( string fileType, Buffer fileData, int fontSize, int{} codepoints )
 
-Load font from memory buffer, fileType refers to extension: i.e. '.ttf'. NOTE: FileData type should be unsigned char
+Load font from memory buffer, fileType refers to extension: i.e. '.ttf'. NOTE: fileData type should be unsigned char
 
 - Success return Font
 
@@ -6349,7 +6349,7 @@ Check if a font is ready
 
 > glyphs = RL.LoadFontData( Buffer fileData, int fontSize, int{} codepoints, int type )
 
-Load font data for further use. NOTE: FileData type should be unsigned char
+Load font data for further use. NOTE: fileData type should be unsigned char
 
 - Success return GlyphInfo{}
 
@@ -8886,11 +8886,11 @@ Toggle Slider control, returns true when clicked
 
 ---
 
-> result, checked = RL.GuiCheckBox( Rectangle bounds, string text, bool checked )
+> result, checked, textBounds = RL.GuiCheckBox( Rectangle bounds, string text, bool checked )
 
 Check Box control, returns true when active
 
-- Success return bool
+- Success return bool, Rectangle
 
 ---
 
@@ -8910,19 +8910,19 @@ Dropdown Box control, returns selected item
 
 ---
 
-> result, value = RL.GuiSpinner( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )
+> result, value, textBounds = RL.GuiSpinner( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )
 
 Spinner control, returns selected value
 
-- Success return int, int
+- Success return int, int, Rectangle
 
 ---
 
-> result, value = RL.GuiValueBox( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )
+> result, value, textBounds = RL.GuiValueBox( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )
 
 Value Box control, updates input text with numbers
 
-- Success return int, int
+- Success return int, int, Rectangle
 
 ---
 
@@ -8934,27 +8934,27 @@ Text Box control, updates input text
 
 ---
 
-> result, value = RL.GuiSlider( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
+> result, value, textLeftBounds, textRightBounds = RL.GuiSlider( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
 
 Slider control, returns selected value
 
-- Success return int, float
+- Success return int, float, Rectangle, Rectangle
 
 ---
 
-> result, value = RL.GuiSliderBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
+> result, value, textLeftBounds, textRightBounds = RL.GuiSliderBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
 
 Slider Bar control, returns selected value
 
-- Success return int, float
+- Success return int, float, Rectangle, Rectangle
 
 ---
 
-> result, value = RL.GuiProgressBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
+> result, value, textLeftBounds, textRightBounds = RL.GuiProgressBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
 
 Progress Bar control, shows current progress value
 
-- Success return int, float
+- Success return int, float, Rectangle, Rectangle
 
 ---
 

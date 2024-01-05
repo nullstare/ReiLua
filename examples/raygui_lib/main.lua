@@ -190,6 +190,7 @@ function RL.init()
 	}
 	windowbox.texture = texture
 	windowbox.textureRect = textureRect
+
 	local groupbox = Gui:GroupBox(
 		Rect:new( 400, 700, 256, 256 ),
 		"GroupBox"
@@ -211,7 +212,7 @@ function RL.init()
 	}
 	tabBar = Gui:GuiTabBar(
 		Rect:new( 700, 520, 700, 32 ),
-		"Cat;Dog;Horse;Cow",
+		"Cat;Dog;Horse;Cow;Dog;Horse;Cow",
 		0,
 		nil,
 		closeTab
@@ -219,10 +220,10 @@ function RL.init()
 	local scrollpanel = Gui:ScrollPanel(
 		Rect:new( 800, 64, 256, 256 ),
 		"ScrollPanel",
-		Rect:new( 0, 0, 256, 600 ),
+		Rect:new( 0, 0, 300, 600 ),
 		Vec2:new( 0, 0 ),
 		-- Callback.
-		nil,
+		function( self ) print( self.scroll ) end,
 		-- Grab callback.
 		function( self ) Gui:set2Top( self ) end
 	)

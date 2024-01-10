@@ -2662,7 +2662,7 @@ int GuiTextBox(Rectangle bounds, char *text, int bufferSize, bool editMode)
             //if (multiline) cursor.y = GetTextLines()
 
             // Finish text editing on ENTER or mouse click outside bounds
-            if ((!multiline && IsKeyPressed(KEY_ENTER)) ||
+            if ((!multiline && IsKeyPressed(KEY_ENTER)) || (!multiline && IsKeyPressed(KEY_KP_ENTER)) ||
                 (!CheckCollisionPointRec(mousePosition, bounds) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)))
             {
                 textBoxCursorIndex = 0;     // GLOBAL: Reset the shared cursor index
@@ -2825,7 +2825,7 @@ int GuiValueBox(Rectangle bounds, const char *text, int *value, int minValue, in
     GuiState state = guiState;
 
     char textValue[RAYGUI_VALUEBOX_MAX_CHARS + 1] = "\0";
-    sprintf(textValue, "%i", *value);
+	sprintf(textValue, "%i", *value);
 
     Rectangle textBounds = { 0 };
     if (text != NULL)
@@ -2858,6 +2858,7 @@ int GuiValueBox(Rectangle bounds, const char *text, int *value, int minValue, in
                 {
                     int key = GetCharPressed();
                     if ((key >= 48) && (key <= 57))
+                    // if ( ( key >= 48 && key <= 57 ) || key == 45 )
                     {
                         textValue[keyCount] = (char)key;
                         keyCount++;

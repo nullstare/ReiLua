@@ -15,22 +15,32 @@ Gui = Raygui:new()
 
 local buttonTexture = nil
 local winSize = Vec2:new( 1024, 720 )
+local cat = {
+	texture = nil,
+	source = Rect:new(),
+	dest = Rect:new(),
+	origin = Vec2:new(),
+	rotation = 0.0,
+	tint = Color:new( RL.WHITE ),
+	visible = true,
+	flipped = false
+}
 
 local function addButton( bounds, text, callback )
-	local button = Gui:SpriteButton(
+	Gui:SpriteButton(
 		bounds,
 		text,
 		buttonTexture,
 		{ source = { 0, 0, 48, 48 }, left = 16, top = 16, right = 16, bottom = 16, layout = RL.NPATCH_NINE_PATCH },
 		{ source = { 48, 0, 48, 48 }, left = 16, top = 16, right = 16, bottom = 16, layout = RL.NPATCH_NINE_PATCH },
-		callback
+		callback,
+		{
+			{ RL.LABEL, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_CENTER },
+			{ RL.LABEL, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( { 84, 59, 22 } ) },
+			{ RL.LABEL, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( { 84/2, 59/2, 22/2 } ) },
+			{ RL.LABEL, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.GREEN ) },
+		}
 	)
-	button.styles = {
-		{ RL.LABEL, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_CENTER },
-		{ RL.LABEL, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( { 84, 59, 22 } ) },
-		{ RL.LABEL, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( { 84/2, 59/2, 22/2 } ) },
-		{ RL.LABEL, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.GREEN ) },
-	}
 end
 
 local function addSpriteButtons()
@@ -48,156 +58,151 @@ local function addSpriteButtons()
 	addButton( bounds, "Quit", function() RL.CloseWindow() end )
 end
 
+local function getTextValue( text )
+	local value = tonumber( text )
+	if value == nil then value = 0 end
+	return value
+end
+
 local function addPropertyList()
-	local propertyList = Gui:PropertyList(
-		Rect:new( 20, 20, 214, 256 ),
+	PropertyList = Gui:PropertyList(
+		Rect:new( 20, 20, 256, 328 ),
 		"Property List",
-		Rect:new( 0, 0, 200, 400 ),
-		-- Rect:new( 0, 0, 400, 400 ),
-		Vec2:new( 0, 0 ),
 		-- Callback.
 		nil,
 		-- Grab callback.
-		function( self ) Gui:set2Top( self ) end
+		function( self ) Gui:set2Top( self ) end,
+		nil,
+		{
+			{ RL.SCROLLBAR, RL.ARROWS_VISIBLE, RL.ARROWS_VISIBLE },
+		}
 	)
-	local bounds = Rect:new( 2, 2, 200 - 4, 22 )
-	local gap = bounds.height + 2
+	RL.GuiSetStyle( RL.SPINNER, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT )
 
-	propertyList.gui:Button(
-		bounds,
-		"Button",
-		function() print( "Button clicked" ) end
-	)
-	-----
-	bounds.y = bounds.y + gap
-	propertyList.gui:CheckBox(
-		Rect:new( bounds.x, bounds.y, 20, 20 ),
+	PropertyList:addControl( PropertyList.gui:Line(
+		Rect:new(),
+		"Cat Texture"
+	) )
+
+	--Transform.
+
+	local transformGroup = PropertyList:addGroup( "Transform", false )
+
+	-- Position.
+	PropertyList:addControl( PropertyList.gui:Label(
+		Rect:new(),
+		"Position:"
+	), transformGroup )
+	PropertyList:addControl( PropertyList.gui:TextBox(
+		Rect:new( 0, 0, 64, 22 ),
+		cat.dest.x,
+		32,
+		false,
+		function( self ) self.value = getTextValue( self.text ) self.text = tostring( self.value ) cat.dest.x = self.value end
+	), transformGroup, true )
+	PropertyList:addControl( PropertyList.gui:TextBox(
+		Rect:new( 74, 0, 64, 22 ),
+		cat.dest.y,
+		32,
+		false,
+		function( self ) self.value = getTextValue( self.text ) self.text = tostring( self.value ) cat.dest.y = self.value end
+	), transformGroup )
+	-- Origin.
+	PropertyList:addControl( PropertyList.gui:Label(
+		Rect:new(),
+		"Origin:"
+	), transformGroup )
+	PropertyList:addControl( PropertyList.gui:TextBox(
+		Rect:new( 0, 0, 64, 22 ),
+		cat.dest.x,
+		32,
+		false,
+		function( self ) self.value = getTextValue( self.text ) self.text = tostring( self.value ) cat.origin.x = self.value end
+	), transformGroup, true )
+	PropertyList:addControl( PropertyList.gui:TextBox(
+		Rect:new( 74, 0, 64, 22 ),
+		cat.dest.y,
+		32,
+		false,
+		function( self ) self.value = getTextValue( self.text ) self.text = tostring( self.value ) cat.origin.y = self.value end
+	), transformGroup )
+	-- Rotation.
+	PropertyList:addControl( PropertyList.gui:Slider(
+		-- Rect:new( 112, 0, PropertyList.defaultControlSize.x - 150, 22 ),
+		Rect:new( 60, 0, PropertyList.defaultControlSize.x - 150, 22 ),
+		"Rotation",
+		"0",
+		0,
+		0,
+		360,
+		function( self )
+			self.value = Util.round( self.value )
+			cat.rotation = self.value
+			self.textRight = self.value
+		end
+	), transformGroup )
+	-- Flipped.
+	PropertyList:addControl( PropertyList.gui:CheckBox(
+		Rect:new( 0, 0, 20, 20 ),
+		"Flipped",
+		cat.flipped,
+		function( self ) cat.flipped = self.checked end
+		-- {
+		-- 	{ RL.CHECKBOX, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_RIGHT }
+		-- }
+	), transformGroup )
+
+	-- Visibility.
+
+	local visibilityGroup = PropertyList:addGroup( "Visibility", false )
+
+	PropertyList:addControl( PropertyList.gui:CheckBox(
+		Rect:new( 0, 0, 20, 20 ),
 		"Visible",
-		false,
-		function() print( "Checked!" ) end
-	)
-	-----
-	bounds.y = bounds.y + gap
-	propertyList.gui:Toggle(
-		bounds,
-		"Toggle",
-		false,
-		function( self ) print( "Toggled" ) end
-	)
-	-----
-	bounds.y = bounds.y + gap
-	local dropdown = propertyList.gui:DropdownBox(
-		bounds,
+		cat.visible,
+		function( self ) cat.visible = self.checked end,
+		{
+			{ RL.CHECKBOX, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_RIGHT }
+		}
+	), visibilityGroup )
+
+	local tintGroup = PropertyList:addGroup( "Tint", false, visibilityGroup )
+
+	PropertyList:addControl( PropertyList.gui:ColorPicker(
+		Rect:new( 0, 0, 128, 128 ),
+		"Color Picker",
+		Color:new(),
+		function( self ) cat.tint = self.color end
+	), tintGroup )
+
+	PropertyList:addControl( PropertyList.gui:Line(
+		Rect:new(),
+		"Testing"
+	) )
+
+	PropertyList:addControl( PropertyList.gui:DropdownBox(
+		Rect:new(),
 		"Dog\nGiraffe\nLion\nHorse",
 		0,
 		false,
 		function( self ) print( self:getItem( self.active ) ) end
-	)
-	-----
-	bounds.y = bounds.y + gap
-	propertyList.gui:Spinner(
-		Rect:new( bounds.x, bounds.y, 96, 20 ),
-		"Health",
-		0,
-		0,
-		100,
-		false,
-		function( self ) print( "Spinner value changed to "..self.value ) end
-	)
-	-----
-	bounds.y = bounds.y + gap
-	propertyList.gui:TextBox(
-		bounds,
-		"Name",
-		32,
-		false,
-		function( self ) print( "Set text "..self.text ) end
-	)
-	-----
-	bounds.y = bounds.y + gap
-	propertyList.gui:ColorBarAlpha(
-		bounds,
-		"",
-		1.0
-	)
-	-----
-	bounds.y = bounds.y + gap
-	local valueBox = propertyList.gui:ValueBox(
-		Rect:new( bounds.x, bounds.y, 96, 20 ),
-		"Mana",
-		0,
-		0,
-		100,
-		false,
-		function( self ) print( "ValueBox value changed to "..self.value ) end
-	)
-	valueBox.styles = {
-		{ RL.VALUEBOX, RL.TEXT_PADDING, 2 },
-		{ RL.VALUEBOX, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_RIGHT },
-	}
-	-----
-	bounds.y = bounds.y + gap
-	propertyList.gui:Label(
-		bounds,
-		"Label"
-	)
-	-----
-	bounds.y = bounds.y + gap
-	propertyList.gui:Line(
-		bounds,
-		"Divider"
-	)
-	-----
-	bounds.y = bounds.y + gap
-	propertyList.gui:Slider(
-		Rect:new( bounds.x + 38, bounds.y, bounds.width - 80, bounds.height ),
-		"min",
-		"max",
-		0,
-		0,
-		100,
-		function( self ) print( "Changed value "..self.value ) end
-	)
-	-----
-	bounds.y = bounds.y + gap
-	propertyList.gui:SliderBar(
-		Rect:new( bounds.x + 38, bounds.y, bounds.width - 80, bounds.height ),
-		"min",
-		"max",
-		0,
-		0,
-		100,
-		function( self ) print( "Changed value "..self.value ) end
-	)
-	-----
-	bounds.y = bounds.y + gap
-	propertyList.gui:ProgressBar(
-		Rect:new( bounds.x + 38, bounds.y, bounds.width - 80, bounds.height ),
-		"min",
-		"max",
-		0,
-		0,
-		100,
-		function( self ) print( "Changed value "..self.value ) end
-	)
-	-----
-	bounds.y = bounds.y + gap
-	propertyList.gui:ToggleGroup(
-		Rect:new( bounds.x, bounds.y, 64, bounds.height ),
-		"Cat;Dog;Car",
-		0,
-		function( self ) print( self:getItem( self.active ) ) end
-	)
-	-----
-	bounds.y = bounds.y + gap
-	propertyList.gui:ColorPicker(
-		Rect:new( bounds.x, bounds.y, 128, 128 ),
-		"",
-		Color:new()
-	)
+	) )
 
-	propertyList.content.height = bounds.y + 130
-	propertyList.gui:set2Top( dropdown )
+	local test = PropertyList:addGroup( "Test", false )
+
+	for i = 1, 5 do
+		PropertyList:addControl( PropertyList.gui:CheckBox(
+			-- Rect:new( 0, 0, 20, 20 ),
+			Rect:new( 128, 0, 20, 20 ),
+			i.."_Visible",
+			false,
+			function( self ) print( "Checked" ) end,
+			{
+				-- { RL.CHECKBOX, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT },
+				{ RL.DEFAULT, RL.TEXT_SIZE, 32 }
+			}
+		), test )
+	end
 end
 
 function RL.init()
@@ -215,6 +220,13 @@ function RL.init()
 	RL.GuiSetStyle( RL.SPINNER, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_RIGHT )
 	RL.GuiSetStyle( RL.SPINNER, RL.TEXT_PADDING, 2 )
 
+	cat.texture = RL.LoadTexture( RL.GetBasePath().."../resources/images/cat.png" )
+	local texSize = Vec2:new( RL.GetTextureSize( cat.texture ) )
+	cat.source:set( 0, 0, texSize.x, texSize.y )
+	cat.dest = cat.source:clone()
+
+	RL.GuiLoadStyle( RL.GetBasePath().."../resources/styles/style_dark.rgs" )
+
 	addSpriteButtons()
 	addPropertyList()
 end
@@ -224,6 +236,14 @@ function RL.process( delta )
 end
 
 function RL.draw()
-	RL.ClearBackground( { 50, 20, 75 } )
+	RL.ClearBackground( RL.DARKBLUE )
+
+	if cat.visible then
+		if cat.flipped then
+			RL.DrawTexturePro( cat.texture, { cat.source.x, cat.source.y, -cat.source.width, cat.source.height }, cat.dest, cat.origin, cat.rotation, cat.tint )
+		else
+			RL.DrawTexturePro( cat.texture, cat.source, cat.dest, cat.origin, cat.rotation, cat.tint )
+		end
+	end
 	Gui:draw()
 end

@@ -68,13 +68,13 @@ function RL.init()
 	local button = Gui:Button(
 		Rect:new( 245, 188, 64, 32 ),
 		"Dog",
-		function() toggleGroup:setText( "Dog;Cat\nEagle" ) end
+		function() toggleGroup:setText( "Dog;Cat\nEagle" ) end,
+		{
+			{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
+			{ RL.DEFAULT, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.ORANGE ) },
+			{ RL.DEFAULT, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( RL.GREEN ) },
+		}
 	)
-	button.styles = {
-		{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
-		{ RL.DEFAULT, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.ORANGE ) },
-		{ RL.DEFAULT, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( RL.GREEN ) },
-	}
 	button.texture = texture
 	button.textureRect = textureRect
 	local checkbox = Gui:CheckBox(
@@ -183,11 +183,11 @@ function RL.init()
 		function( self ) self.visible = false end,
 		-- Grab callback.
 		function( self ) Gui:set2Top( self ) end,
-		nil
+		nil,
+		{
+			{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
+		}
 	)
-	windowbox.styles = {
-		{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
-	}
 	windowbox.texture = texture
 	windowbox.textureRect = textureRect
 
@@ -203,13 +203,14 @@ function RL.init()
 		Rect:new( 400, 64, 256, 128 ),
 		"Panel",
 		-- Grab callback.
-		function( self ) Gui:set2Top( self ) end
+		function( self ) Gui:set2Top( self ) end,
+		nil,
+		{
+			{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.MAGENTA ) },
+			{ RL.DEFAULT, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_CENTER },
+			{ RL.DEFAULT, RL.BACKGROUND_COLOR, RL.ColorToInt( RL.DARKBLUE ) },
+		}
 	)
-	panel.styles = {
-		{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.MAGENTA ) },
-		{ RL.DEFAULT, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_CENTER },
-		{ RL.DEFAULT, RL.BACKGROUND_COLOR, RL.ColorToInt( RL.DARKBLUE ) },
-	}
 	tabBar = Gui:GuiTabBar(
 		Rect:new( 700, 520, 700, 32 ),
 		"Cat;Dog;Horse;Cow;Dog;Horse;Cow",
@@ -240,13 +241,13 @@ function RL.init()
 		0,
 		0,
 		0,
-		function( self ) print( self:getItem( self.active ) ) end
+		function( self ) print( self:getItem( self.active ) ) end,
+		{
+			{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
+			{ RL.DEFAULT, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.ORANGE ) },
+			{ RL.DEFAULT, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( RL.GREEN ) },
+		}
 	)
-	listviewex.styles = {
-		{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
-		{ RL.DEFAULT, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.ORANGE ) },
-		{ RL.DEFAULT, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( RL.GREEN ) },
-	}
 	listviewex.texture = texture
 	listviewex.textureRect = textureRect
 	local messagebox = Gui:MessageBox(

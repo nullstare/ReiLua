@@ -1,7 +1,7 @@
 local SpriteButton = {}
 SpriteButton.__index = SpriteButton
 
-function SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, callback )
+function SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, callback, styles )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -11,6 +11,7 @@ function SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, c
 	object.nPatchNormal = nPatchNormal
 	object.nPatchPressed = nPatchPressed
     object.callback = callback
+	object.styles = styles
 
 	object.visible = true
 	object.disabled = false
@@ -42,8 +43,8 @@ function SpriteButton:setPosition( pos )
 end
 
 function SpriteButton:register( gui )
-	function gui:SpriteButton( bounds, text, texture, nPatchNormal, nPatchPressed, callback )
-		return self:addElement( SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, callback ) )
+	function gui:SpriteButton( bounds, text, texture, nPatchNormal, nPatchPressed, callback, styles )
+		return self:addControl( SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, callback, styles ) )
 	end
 end
 

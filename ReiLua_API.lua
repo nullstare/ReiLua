@@ -2415,6 +2415,13 @@ function RL.LoadBuffer( buffer, type ) end
 ---@return any buffer 
 function RL.LoadBufferFromFile( path, int ) end
 
+---Read buffer data from string
+---- Failure return nil
+---- Success return Buffer
+---@param buffer string
+---@return any buffer 
+function RL.LoadBufferFromString( buffer ) end
+
 ---Unload buffer data
 ---@param buffer any
 ---@return any RL.UnloadBuffer
@@ -4761,6 +4768,13 @@ function RL.LoadSound( fileName ) end
 ---@return any wave 
 function RL.LoadWave( fileName ) end
 
+---Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
+---- Success return Wave
+---@param fileType string
+---@param data any
+---@return any wave 
+function RL.LoadWaveFromMemory( fileType, data ) end
+
 ---Checks if wave data is ready
 ---- Success return bool
 ---@param wave any
@@ -4888,6 +4902,13 @@ function  RL.WaveCrop( wave, initSample, finalSample ) end
 ---@param fileName string
 ---@return any music 
 function RL.LoadMusicStream( fileName ) end
+
+---Load music stream from data
+---- Success return Music
+---@param fileType string
+---@param data any
+---@return any music 
+function RL.LoadMusicStreamFromMemory( fileType, data ) end
 
 ---Checks if a music stream is ready
 ---- Success return bool

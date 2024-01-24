@@ -101,7 +101,7 @@ function PropertyList:updateContent()
 	self._forceCheckScroll = true
 end
 
--- Leave control bounds size to 0 to use default. Optional group for parameter 2
+-- Leave control bounds size to 0 to use default. Optional group for parameter 2.
 function PropertyList:addControl( control, group, noYAdvance )
 	control._noYAdvance = noYAdvance
 

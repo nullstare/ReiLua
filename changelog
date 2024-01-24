@@ -62,6 +62,7 @@ DETAILED CHANGES:
 	- ADDED: Raygui lib extensions example.
 	- CHANGE: Raygui.h returns textBounds for some controls.
 	- CHANGE: Raygui lib changed term element to control to correspond raylib naming.
+	- ADDED: LoadBufferFromString, LoadWaveFromMemory and LoadMusicStreamFromMemory.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.6.0		Using Raylib 4.5

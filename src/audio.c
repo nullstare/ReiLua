@@ -113,6 +113,22 @@ int laudioLoadWave( lua_State *L ) {
 }
 
 /*
+> wave = RL.LoadWaveFromMemory( string fileType, Buffer data )
+
+Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
+
+- Success return Wave
+*/
+int laudioLoadWaveFromMemory( lua_State *L ) {
+	const char* fileType = luaL_checkstring( L, 1 );
+	Buffer* buffer = uluaGetBuffer( L, 2 );
+
+	uluaPushWave( L, LoadWaveFromMemory( fileType, buffer->data, buffer->size ) );
+
+	return 1;
+}
+
+/*
 > isReady = RL.IsWaveReady( Wave wave )
 
 Checks if wave data is ready
@@ -419,6 +435,22 @@ int laudioLoadMusicStream( lua_State *L ) {
 	}
 	TraceLog( state->logLevelInvalid, "Invalid file '%s'", lua_tostring( L, 1 ) );
 	lua_pushnil( L );
+
+	return 1;
+}
+
+/*
+> music = RL.LoadMusicStreamFromMemory( string fileType, Buffer data )
+
+Load music stream from data
+
+- Success return Music
+*/
+int laudioLoadMusicStreamFromMemory( lua_State* L ) {
+	const char* fileType = luaL_checkstring( L, 1 );
+	Buffer* buffer = uluaGetBuffer( L, 2 );
+
+	uluaPushMusic( L, LoadMusicStreamFromMemory( fileType, buffer->data, buffer->size ) );
 
 	return 1;
 }

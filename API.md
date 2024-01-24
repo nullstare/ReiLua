@@ -5061,6 +5061,15 @@ Read buffer data from binary file
 
 ---
 
+> buffer = RL.LoadBufferFromString( string buffer )
+
+Read buffer data from string
+
+- Failure return nil
+- Success return Buffer
+
+---
+
 > RL.UnloadBuffer( Buffer buffer )
 
 Unload buffer data
@@ -7434,6 +7443,14 @@ Load wave data from file
 
 ---
 
+> wave = RL.LoadWaveFromMemory( string fileType, Buffer data )
+
+Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
+
+- Success return Wave
+
+---
+
 > isReady = RL.IsWaveReady( Wave wave )
 
 Checks if wave data is ready
@@ -7581,6 +7598,14 @@ Crop a wave to defined samples range
 > music = RL.LoadMusicStream( string fileName )
 
 Load music stream from file
+
+- Success return Music
+
+---
+
+> music = RL.LoadMusicStreamFromMemory( string fileType, Buffer data )
+
+Load music stream from data
 
 - Success return Music
 

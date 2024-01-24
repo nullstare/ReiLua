@@ -14,7 +14,7 @@ local function setupWindow()
 	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 end
 
-function ray_collision()
+local function ray_collision()
 	rayCol = RL.GetRayCollisionMesh( ray, sphereMesh, RL.MatrixIdentity() )
 
 	if rayCol ~= nil and rayCol.hit then

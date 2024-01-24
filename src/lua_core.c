@@ -1414,6 +1414,7 @@ void luaRegister() {
 		/* Buffer management functions. */
 	assingGlobalFunction( "LoadBuffer", lcoreLoadBuffer );
 	assingGlobalFunction( "LoadBufferFromFile", lcoreLoadBufferFromFile );
+	assingGlobalFunction( "LoadBufferFromString", lcoreLoadBufferFromString );
 	assingGlobalFunction( "UnloadBuffer", lcoreUnloadBuffer );
 	assingGlobalFunction( "GetBufferData", lcoreGetBufferData );
 	assingGlobalFunction( "GetBufferType", lcoreGetBufferType );
@@ -1767,6 +1768,7 @@ void luaRegister() {
 		/* Wave/Sound loading/unloading functions. */
 	assingGlobalFunction( "LoadSound", laudioLoadSound );
 	assingGlobalFunction( "LoadWave", laudioLoadWave );
+	assingGlobalFunction( "LoadWaveFromMemory", laudioLoadWaveFromMemory );
 	assingGlobalFunction( "IsWaveReady", laudioIsWaveReady );
 	assingGlobalFunction( "LoadSoundFromWave", laudioLoadSoundFromWave );
 	assingGlobalFunction( "LoadSoundAlias", laudioLoadSoundAlias );
@@ -1790,6 +1792,7 @@ void luaRegister() {
 	assingGlobalFunction( "WaveCrop", laudioWaveCrop );
 		/* Music management functions. */
 	assingGlobalFunction( "LoadMusicStream", laudioLoadMusicStream );
+	assingGlobalFunction( "LoadMusicStreamFromMemory", laudioLoadMusicStreamFromMemory );
 	assingGlobalFunction( "IsMusicReady", laudioIsMusicReady );
 	assingGlobalFunction( "UnloadMusicStream", laudioUnloadMusicStream );
 	assingGlobalFunction( "PlayMusicStream", laudioPlayMusicStream );

@@ -3082,6 +3082,30 @@ int lcoreLoadBufferFromFile( lua_State *L ) {
 }
 
 /*
+> buffer = RL.LoadBufferFromString( string buffer )
+
+Read buffer data from string
+
+- Failure return nil
+- Success return Buffer
+*/
+int lcoreLoadBufferFromString( lua_State *L ) {
+	size_t len = 0;
+	const char *string = luaL_checklstring( L, 1, &len );
+
+	Buffer buffer = {
+		.type = BUFFER_UNSIGNED_CHAR,
+		.size = len,
+		.data = malloc( len * sizeof( unsigned char ) )
+	};
+	memcpy( buffer.data, string, len );
+
+	uluaPushBuffer( L, buffer );
+
+	return 1;
+}
+
+/*
 > RL.UnloadBuffer( Buffer buffer )
 
 Unload buffer data

@@ -698,7 +698,7 @@ int ltextGetGlyphIndex( lua_State *L ) {
 /*
 > glyphInfo = RL.GetGlyphInfo( Font font, int codepoint )
 
-Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found
+Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found. Return as lightuserdata
 
 - Success return GlyphInfo
 */
@@ -707,7 +707,7 @@ int ltextGetGlyphInfo( lua_State *L ) {
 	int codepoint = luaL_checkinteger( L, 2 );
 
 	int id = GetGlyphIndex( *font, codepoint );
-	uluaPushGlyphInfo( L, font->glyphs[id] );
+	lua_pushlightuserdata( L, &font->glyphs[id] );
 
 	return 1;
 }
@@ -715,7 +715,7 @@ int ltextGetGlyphInfo( lua_State *L ) {
 /*
 > glyphInfo = RL.GetGlyphInfoByIndex( Font font, int index )
 
-Get glyph font info data by index
+Get glyph font info data by index. Return as lightuserdata
 
 - Failure return nil
 - Success return GlyphInfo
@@ -725,7 +725,7 @@ int ltextGetGlyphInfoByIndex( lua_State *L ) {
 	int index = luaL_checkinteger( L, 2 );
 
 	if ( 0 <= index && index < font->glyphCount ) {
-		uluaPushGlyphInfo( L, font->glyphs[ index ] );
+		lua_pushlightuserdata( L, &font->glyphs[ index ] );
 	}
 	else {
 		TraceLog( state->logLevelInvalid, "Glyph index %d out of bounds", index );
@@ -1004,4 +1004,132 @@ int ltextGetGlyphInfoImage( lua_State *L ) {
 	lua_pushlightuserdata( L, &glyph->image );
 
 	return 1;
+}
+
+/*
+## Text - Text codepoints management functions (unicode characters)
+*/
+
+/*
+> string = RL.LoadUTF8( int{} codepoints )
+
+Load UTF-8 text encoded from codepoints array
+
+- Success return string
+*/
+int ltextLoadUTF8( lua_State *L ) {
+	int codepointCount = uluaGetTableLen( L, 1 );
+	int codepoints[ codepointCount ];
+	getCodepoints( L, codepoints, 1 );
+
+	char* string = LoadUTF8( codepoints, codepointCount );
+	lua_pushstring( L, string );
+	UnloadUTF8( string );
+
+	return 1;
+}
+
+/*
+> codepoints = RL.LoadCodepoints( string text )
+
+Load all codepoints from a UTF-8 text string
+
+- Success return int{}
+*/
+int ltextLoadCodepoints( lua_State *L ) {
+	const char* text = luaL_checkstring( L, 1 );
+
+	int count = 0;
+	int* codepoints = LoadCodepoints( text, &count );
+
+	for ( int i = 0; i < count; i++ ) {
+		lua_pushinteger( L, codepoints[i] );
+		lua_rawseti( L, -2, i + 1 );
+	}
+	UnloadCodepoints( codepoints );
+
+	return 1;
+}
+
+/*
+> count = RL.GetCodepointCount( string text )
+
+Get total number of codepoints in a UTF-8 encoded string
+
+- Success return int
+*/
+int ltextGetCodepointCount( lua_State *L ) {
+	const char* text = luaL_checkstring( L, 1 );
+
+	lua_pushinteger( L, GetCodepointCount( text ) );
+
+	return 1;
+}
+
+/*
+> codepoint, codepointSize = RL.GetCodepoint( string text )
+
+Get codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+
+- Success return int, int
+*/
+int ltextGetCodepoint( lua_State *L ) {
+	const char* text = luaL_checkstring( L, 1 );
+
+	int codepointSize = 0;
+	lua_pushinteger( L, GetCodepoint( text, &codepointSize ) );
+	lua_pushinteger( L, codepointSize );
+
+	return 2;
+}
+
+/*
+> codepoint, codepointSize = RL.GetCodepointNext( string text )
+
+Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+
+- Success return int, int
+*/
+int ltextGetCodepointNext( lua_State *L ) {
+	const char* text = luaL_checkstring( L, 1 );
+
+	int codepointSize = 0;
+	lua_pushinteger( L, GetCodepointNext( text, &codepointSize ) );
+	lua_pushinteger( L, codepointSize );
+
+	return 2;
+}
+
+/*
+> codepoint, codepointSize = RL.GetCodepointPrevious( string text )
+
+Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+
+- Success return int, int
+*/
+int ltextGetCodepointPrevious( lua_State *L ) {
+	const char* text = luaL_checkstring( L, 1 );
+
+	int codepointSize = 0;
+	lua_pushinteger( L, GetCodepointPrevious( text, &codepointSize ) );
+	lua_pushinteger( L, codepointSize );
+
+	return 2;
+}
+
+/*
+> string, utf8Size = RL.CodepointToUTF8( int codepoint )
+
+Encode one codepoint into UTF-8 byte array
+
+- Success return string, int
+*/
+int ltextCodepointToUTF8( lua_State *L ) {
+	int codepoint = luaL_checkinteger( L, 1 );
+
+	int utf8Size = 0;
+	lua_pushstring( L, CodepointToUTF8( codepoint, &utf8Size ) );
+	lua_pushinteger( L, utf8Size );
+
+	return 2;
 }

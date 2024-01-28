@@ -45,3 +45,11 @@ int ltextGetGlyphInfoValue( lua_State *L );
 int ltextGetGlyphInfoOffset( lua_State *L );
 int ltextGetGlyphInfoAdvanceX( lua_State *L );
 int ltextGetGlyphInfoImage( lua_State *L );
+/* Text codepoints management functions (unicode characters). */
+int ltextLoadUTF8( lua_State *L );
+int ltextLoadCodepoints( lua_State *L );
+int ltextGetCodepointCount( lua_State *L );
+int ltextGetCodepoint( lua_State *L );
+int ltextGetCodepointNext( lua_State *L );
+int ltextGetCodepointPrevious( lua_State *L );
+int ltextCodepointToUTF8( lua_State *L );

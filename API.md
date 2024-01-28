@@ -6470,7 +6470,7 @@ Get glyph index position in font for a codepoint (unicode character), fallback t
 
 > glyphInfo = RL.GetGlyphInfo( Font font, int codepoint )
 
-Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found
+Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found. Return as lightuserdata
 
 - Success return GlyphInfo
 
@@ -6478,7 +6478,7 @@ Get glyph font info data for a codepoint (unicode character), fallback to '?' if
 
 > glyphInfo = RL.GetGlyphInfoByIndex( Font font, int index )
 
-Get glyph font info data by index
+Get glyph font info data by index. Return as lightuserdata
 
 - Failure return nil
 - Success return GlyphInfo
@@ -6605,6 +6605,66 @@ Get glyphInfo character advance position X
 Get glyphInfo character image data. Return as lightuserdata
 
 - Success return Image
+
+---
+
+## Text - Text codepoints management functions (unicode characters)
+
+---
+
+> string = RL.LoadUTF8( int{} codepoints )
+
+Load UTF-8 text encoded from codepoints array
+
+- Success return string
+
+---
+
+> codepoints = RL.LoadCodepoints( string text )
+
+Load all codepoints from a UTF-8 text string
+
+- Success return int{}
+
+---
+
+> count = RL.GetCodepointCount( string text )
+
+Get total number of codepoints in a UTF-8 encoded string
+
+- Success return int
+
+---
+
+> codepoint, codepointSize = RL.GetCodepoint( string text )
+
+Get codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+
+- Success return int, int
+
+---
+
+> codepoint, codepointSize = RL.GetCodepointNext( string text )
+
+Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+
+- Success return int, int
+
+---
+
+> codepoint, codepointSize = RL.GetCodepointPrevious( string text )
+
+Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+
+- Success return int, int
+
+---
+
+> string, utf8Size = RL.CodepointToUTF8( int codepoint )
+
+Encode one codepoint into UTF-8 byte array
+
+- Success return string, int
 
 ---
 

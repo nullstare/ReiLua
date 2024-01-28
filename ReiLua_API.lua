@@ -3836,14 +3836,14 @@ function RL.MeasureText( font, text, fontSize, spacing ) end
 ---@return any index 
 function RL.GetGlyphIndex( font, codepoint ) end
 
----Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found
+---Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found. Return as lightuserdata
 ---- Success return GlyphInfo
 ---@param font any
 ---@param codepoint integer
 ---@return any glyphInfo 
 function RL.GetGlyphInfo( font, codepoint ) end
 
----Get glyph font info data by index
+---Get glyph font info data by index. Return as lightuserdata
 ---- Failure return nil
 ---- Success return GlyphInfo
 ---@param font any
@@ -3950,6 +3950,54 @@ function RL.GetGlyphInfoAdvanceX( glyphInfo ) end
 ---@param glyphInfo any
 ---@return any image 
 function RL.GetGlyphInfoImage( glyphInfo ) end
+
+-- Text - Text codepoints management functions (unicode characters)
+
+---Load UTF-8 text encoded from codepoints array
+---- Success return string
+---@param codepoints table
+---@return any string 
+function RL.LoadUTF8( codepoints ) end
+
+---Load all codepoints from a UTF-8 text string
+---- Success return int{}
+---@param text string
+---@return any codepoints 
+function RL.LoadCodepoints( text ) end
+
+---Get total number of codepoints in a UTF-8 encoded string
+---- Success return int
+---@param text string
+---@return any count 
+function RL.GetCodepointCount( text ) end
+
+---Get codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+---- Success return int, int
+---@param text string
+---@return any codepoint
+---@return any codepointSize 
+function RL.GetCodepoint( text ) end
+
+---Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+---- Success return int, int
+---@param text string
+---@return any codepoint
+---@return any codepointSize 
+function RL.GetCodepointNext( text ) end
+
+---Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+---- Success return int, int
+---@param text string
+---@return any codepoint
+---@return any codepointSize 
+function RL.GetCodepointPrevious( text ) end
+
+---Encode one codepoint into UTF-8 byte array
+---- Success return string, int
+---@param codepoint integer
+---@return any string
+---@return any utf8Size 
+function RL.CodepointToUTF8( codepoint ) end
 
 -- Models - Basic geometric 3D shapes drawing functions
 

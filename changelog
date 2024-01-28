@@ -33,6 +33,7 @@ KEY CHANGES:
 	- CHANGE: GuiTabBar works differently to raygui implementation.
 	- CHANGE: Raygui lib refactoring.
 	- ADDED: Raygui lib extensions property list.
+	- ADDED: Text codepoints management functions.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.
@@ -63,6 +64,7 @@ DETAILED CHANGES:
 	- CHANGE: Raygui.h returns textBounds for some controls.
 	- CHANGE: Raygui lib changed term element to control to correspond raylib naming.
 	- ADDED: LoadBufferFromString, LoadWaveFromMemory and LoadMusicStreamFromMemory.
+	- CHANGE: GetGlyphInfo and GetGlyphInfoByIndex return glyphInfo as lightuserdata.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.6.0		Using Raylib 4.5

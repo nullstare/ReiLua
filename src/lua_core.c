@@ -1757,6 +1757,14 @@ void luaRegister() {
 	assingGlobalFunction( "GetGlyphInfoOffset", ltextGetGlyphInfoOffset );
 	assingGlobalFunction( "GetGlyphInfoAdvanceX", ltextGetGlyphInfoAdvanceX );
 	assingGlobalFunction( "GetGlyphInfoImage", ltextGetGlyphInfoImage );
+		/* Text codepoints management functions (unicode characters). */
+	assingGlobalFunction( "LoadUTF8", ltextLoadUTF8 );
+	assingGlobalFunction( "LoadCodepoints", ltextLoadCodepoints );
+	assingGlobalFunction( "GetCodepointCount", ltextGetCodepointCount );
+	assingGlobalFunction( "GetCodepoint", ltextGetCodepoint );
+	assingGlobalFunction( "GetCodepointNext", ltextGetCodepointNext );
+	assingGlobalFunction( "GetCodepointPrevious", ltextGetCodepointPrevious );
+	assingGlobalFunction( "CodepointToUTF8", ltextCodepointToUTF8 );
 
 	/* Audio. */
 		/* Audio device management functions. */

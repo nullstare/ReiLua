@@ -53,3 +53,6 @@ int ltextGetCodepoint( lua_State *L );
 int ltextGetCodepointNext( lua_State *L );
 int ltextGetCodepointPrevious( lua_State *L );
 int ltextCodepointToUTF8( lua_State *L );
+/* Text strings management functions (no UTF-8 strings, only byte chars) */
+int ltextTextInsert( lua_State *L );
+int ltextTextSplit( lua_State *L );

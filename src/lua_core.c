@@ -1765,6 +1765,9 @@ void luaRegister() {
 	assingGlobalFunction( "GetCodepointNext", ltextGetCodepointNext );
 	assingGlobalFunction( "GetCodepointPrevious", ltextGetCodepointPrevious );
 	assingGlobalFunction( "CodepointToUTF8", ltextCodepointToUTF8 );
+		/* Text strings management functions (no UTF-8 strings, only byte chars) */
+	assingGlobalFunction( "TextInsert", ltextTextInsert );
+	assingGlobalFunction( "TextSplit", ltextTextSplit );
 
 	/* Audio. */
 		/* Audio device management functions. */

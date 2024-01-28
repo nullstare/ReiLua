@@ -1042,6 +1042,8 @@ int ltextLoadCodepoints( lua_State *L ) {
 	int count = 0;
 	int* codepoints = LoadCodepoints( text, &count );
 
+	lua_createtable( L, count, 0 );
+
 	for ( int i = 0; i < count; i++ ) {
 		lua_pushinteger( L, codepoints[i] );
 		lua_rawseti( L, -2, i + 1 );
@@ -1132,4 +1134,63 @@ int ltextCodepointToUTF8( lua_State *L ) {
 	lua_pushinteger( L, utf8Size );
 
 	return 2;
+}
+
+/*
+## Text - Text strings management functions (no UTF-8 strings, only byte chars)
+*/
+
+/*
+> text = RL.TextInsert( string text, string insert, int position )
+
+Insert text in a specific position, moves all text forward
+
+- Success return string
+*/
+int ltextTextInsert( lua_State *L ) {
+	const char* text = luaL_checkstring( L, 1 );
+	const char* insert = luaL_checkstring( L, 2 );
+	int position = luaL_checkinteger( L, 3 );
+
+	// char* result = TextInsert( text, insert, position ); // Bug in the raylib implementation.
+
+	int textLen = TextLength( text );
+    int insertLen = TextLength( insert );
+	char* result = RL_MALLOC( textLen + insertLen + 1 );
+
+	memcpy( result, text, position );
+	memcpy( result + position, insert, insertLen );
+	memcpy( result + position + insertLen, text + position, textLen - position );
+
+	result[ textLen + insertLen ] = '\0';     // Make sure text string is valid!
+
+	lua_pushstring( L, result );
+	free( result );
+
+	return 1;
+}
+
+/*
+> splits = RL.TextSplit( string text, char delimiter )
+
+Split text into multiple strings
+
+- Success return string{}
+*/
+int ltextTextSplit( lua_State *L ) {
+	const char* text = luaL_checkstring( L, 1 );
+	const char* delimiter = luaL_checkstring( L, 2 );
+
+	int count = 0;
+	const char** splits = TextSplit( text, delimiter[0], &count );
+
+	lua_createtable( L, count, 0 );
+
+	for ( int i = 0; i < count; i++ ) {
+		lua_pushstring( L, splits[i] );
+		lua_rawseti( L, -2, i + 1 );
+	}
+	/* Note! No need to free. Uses static memory. */
+
+	return 1;
 }

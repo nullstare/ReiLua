@@ -3999,6 +3999,23 @@ function RL.GetCodepointPrevious( text ) end
 ---@return any utf8Size 
 function RL.CodepointToUTF8( codepoint ) end
 
+-- Text - Text strings management functions (no UTF-8 strings, only byte chars)
+
+---Insert text in a specific position, moves all text forward
+---- Success return string
+---@param text string
+---@param insert string
+---@param position integer
+---@return any text 
+function RL.TextInsert( text, insert, position ) end
+
+---Split text into multiple strings
+---- Success return string{}
+---@param text string
+---@param delimiter any
+---@return any splits 
+function RL.TextSplit( text, delimiter ) end
+
 -- Models - Basic geometric 3D shapes drawing functions
 
 ---Draw a line in 3D world space

@@ -6668,6 +6668,26 @@ Encode one codepoint into UTF-8 byte array
 
 ---
 
+## Text - Text strings management functions (no UTF-8 strings, only byte chars)
+
+---
+
+> text = RL.TextInsert( string text, string insert, int position )
+
+Insert text in a specific position, moves all text forward
+
+- Success return string
+
+---
+
+> splits = RL.TextSplit( string text, char delimiter )
+
+Split text into multiple strings
+
+- Success return string{}
+
+---
+
 ## Models - Basic geometric 3D shapes drawing functions
 
 ---

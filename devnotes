@@ -23,7 +23,6 @@ Backlog {
 }
 
 Bugs {
-	* Test if Rectangle:fit works with negative position.
 }
 
 Needs Testing {

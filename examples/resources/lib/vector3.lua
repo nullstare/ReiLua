@@ -38,6 +38,9 @@ Vector3.meta = {
 	__eq = function( v1, v2 )
 		return RL.Vector3Equals( v1, v2 ) == 1
 	end,
+	__concat = function( a, b )
+		return tostring( a )..tostring( b )
+	end,
 }
 
 function Vector3:new( x, y, z )

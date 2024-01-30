@@ -36,6 +36,9 @@ Vector2.meta = {
 	__eq = function( v1, v2 )
 		return RL.Vector2Equals( v1, v2 ) == 1
 	end,
+	__concat = function( a, b )
+		return tostring( a )..tostring( b )
+	end,
 }
 
 function Vector2:new( x, y )

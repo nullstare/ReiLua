@@ -41,6 +41,9 @@ Color.meta = {
 		and math.floor( c1.b ) == math.floor( c2.b )
 		and math.floor( c1.a ) == math.floor( c2.a )
 	end,
+	__concat = function( a, b )
+		return tostring( a )..tostring( b )
+	end,
 }
 
 function Color:new( r, g, b, a )

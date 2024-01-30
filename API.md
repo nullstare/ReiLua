@@ -6660,11 +6660,11 @@ Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failu
 
 ---
 
-> string, utf8Size = RL.CodepointToUTF8( int codepoint )
+> string = RL.CodepointToUTF8( int codepoint )
 
 Encode one codepoint into UTF-8 byte array
 
-- Success return string, int
+- Success return string
 
 ---
 

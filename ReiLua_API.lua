@@ -3993,10 +3993,9 @@ function RL.GetCodepointNext( text ) end
 function RL.GetCodepointPrevious( text ) end
 
 ---Encode one codepoint into UTF-8 byte array
----- Success return string, int
+---- Success return string
 ---@param codepoint integer
----@return any string
----@return any utf8Size 
+---@return any string 
 function RL.CodepointToUTF8( codepoint ) end
 
 -- Text - Text strings management functions (no UTF-8 strings, only byte chars)

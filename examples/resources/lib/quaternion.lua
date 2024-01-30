@@ -33,6 +33,9 @@ Quaternion.meta = {
 	__eq = function( q1, q2 )
 		return RL.QuaternionEquals( q1, q2 ) == 1
 	end,
+	__concat = function( a, b )
+		return tostring( a )..tostring( b )
+	end,
 }
 
 function Quaternion:new( x, y, z, w )

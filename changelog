@@ -34,6 +34,7 @@ KEY CHANGES:
 	- CHANGE: Raygui lib refactoring.
 	- ADDED: Raygui lib extensions property list.
 	- ADDED: Text codepoints management functions.
+	- ADDED: Rune, UTF8 lib.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.
@@ -66,6 +67,7 @@ DETAILED CHANGES:
 	- ADDED: LoadBufferFromString, LoadWaveFromMemory and LoadMusicStreamFromMemory.
 	- CHANGE: GetGlyphInfo and GetGlyphInfoByIndex return glyphInfo as lightuserdata.
 	- ADDED: TextInsert and TextSplit.
+	- ADDED: __concat for variable wrapper libraries.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.6.0		Using Raylib 4.5

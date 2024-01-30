@@ -38,6 +38,9 @@ Rectangle.meta = {
 	__eq = function( r1, r2 )
 		return RL.Vector2Equals( { r1.x, r1.y }, { r2.x, r2.y } ) and RL.Vector2Equals( { r1.width, r1.height }, { r2.width, r2.height } )
 	end,
+	__concat = function( a, b )
+		return tostring( a )..tostring( b )
+	end,
 }
 
 function Rectangle:new( x, y, width, height )

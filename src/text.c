@@ -1120,20 +1120,23 @@ int ltextGetCodepointPrevious( lua_State *L ) {
 }
 
 /*
-> string, utf8Size = RL.CodepointToUTF8( int codepoint )
+> string = RL.CodepointToUTF8( int codepoint )
 
 Encode one codepoint into UTF-8 byte array
 
-- Success return string, int
+- Success return string
 */
 int ltextCodepointToUTF8( lua_State *L ) {
 	int codepoint = luaL_checkinteger( L, 1 );
 
 	int utf8Size = 0;
-	lua_pushstring( L, CodepointToUTF8( codepoint, &utf8Size ) );
-	lua_pushinteger( L, utf8Size );
+	char text[5] = { '\0' };
+	const char* utf8 = CodepointToUTF8( codepoint, &utf8Size );
+	memcpy( text, utf8, utf8Size );
 
-	return 2;
+	lua_pushstring( L, text );
+
+	return 1;
 }
 
 /*
@@ -1155,7 +1158,7 @@ int ltextTextInsert( lua_State *L ) {
 	// char* result = TextInsert( text, insert, position ); // Bug in the raylib implementation.
 
 	int textLen = TextLength( text );
-    int insertLen = TextLength( insert );
+	int insertLen = TextLength( insert );
 	char* result = RL_MALLOC( textLen + insertLen + 1 );
 
 	memcpy( result, text, position );

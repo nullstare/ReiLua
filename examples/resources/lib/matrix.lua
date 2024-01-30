@@ -41,7 +41,10 @@ Matrix.meta = {
 	end,
 	__mul = function( m1, m2 )
 		return Matrix:new( RL.MatrixMultiply( m1, m2 ) )
-	end
+	end,
+	__concat = function( a, b )
+		return tostring( a )..tostring( b )
+	end,
 }
 
 function Matrix:new( m )

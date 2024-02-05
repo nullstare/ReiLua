@@ -1701,10 +1701,11 @@ function Raygui:new()
 	object.textEdit = false
 	object.defaultTexture = RL.GetTextureDefault()
 	object.defaultRect = Rect:new( 0, 0, 1, 1 ) -- For texture.
+	object.defaultFont = RL.GetFontDefault()
 	object.mouseOffset = Vec2:new()
 	object.view = Rect:new() -- Active if larger than 0. Then only controls in view will be processed and drawn.
 
-	object._lastStyles = {}
+	object._lastProperties = {}
 	object._mousePressPos = Vec2:new( -1, -1 ) -- Use to check if release and check are inside bounds.
 
 	return object
@@ -1774,17 +1775,17 @@ function Raygui:drag( control )
     return mouseOver
 end
 
--- Add style before current draw that we can then return them.
-function Raygui:_addLastStyle( style )
-	local lastStyle = { style[1], style[2], RL.GuiGetStyle( style[1], style[2] ) }
+-- Add property before current draw that we can then return them.
+function Raygui:_addLastProperty( property )
+	local lastProperty = { property[1], property[2], RL.GuiGetStyle( property[1], property[2] ) }
 
-	for i, slot in ipairs( self._lastStyles ) do
+	for i, slot in ipairs( self._lastProperties ) do
 		if slot == 0 then
-			self._lastStyles[i] = lastStyle
+			self._lastProperties[i] = lastProperty
 			return
 		end
 	end
-	table.insert( self._lastStyles, lastStyle )
+	table.insert( self._lastProperties, lastProperty )
 end
 
 function Raygui:draw()
@@ -1804,43 +1805,21 @@ function Raygui:draw()
 	-- Set mouse ofset if gui is for example embedded to some control.
 	RL.SetMouseOffset( self.mouseOffset )
 
-    for i, control in ipairs( self.controls ) do
-        if not self.locked and not self.disabled and i == self.focused then
-            RL.GuiUnlock()
-        end
+	for i, control in ipairs( self.controls ) do
+		if not self.locked and not self.disabled and i == self.focused then
+			RL.GuiUnlock()
+		end
 
-        if control.visible and control.draw ~= nil and self:inView( control ) then
+		if control.visible and control.draw ~= nil and self:inView( control ) then
 			if control.disabled then
 				RL.GuiDisable()
 			else
 				RL.GuiEnable()
 			end
-			if control.styles ~= nil then
-				for _, style in ipairs( control.styles ) do
-					self:_addLastStyle( style )
-					RL.GuiSetStyle( style[1], style[2], style[3] )
-				end
-			end
-			if control.texture ~= nil then
-				RL.SetShapesTexture( control.texture, control.textureRect )
-			end
 
-			control:draw()
-
-			if control.texture ~= nil then
-				RL.SetShapesTexture( self.defaultTexture, self.defaultRect )
-			end
-			-- Set previous styles back.
-			if 0 < #self._lastStyles then
-				for j, style in ipairs( self._lastStyles ) do
-					if type( style ) == "table" then
-						RL.GuiSetStyle( style[1], style[2], style[3] )
-					end
-					self._lastStyles[j] = 0
-				end
-			end
-        end
-    end
+			self:drawControl( control )
+		end
+	end
 	RL.GuiUnlock()
 	RL.GuiEnable()
 	RL.SetMouseOffset( { 0, 0 } )
@@ -1902,24 +1881,42 @@ function Raygui:editMode( editMode )
 	self.textEdit = not editMode
 end
 
--- Mainly to set focusBounds and viewBounds by drawing control.
-function Raygui:applyStyles( control )
+function Raygui:drawControl( control )
 	if control == nil or control.draw == nil then
 		return
 	end
-	local oldStyles = {}
 
 	if control.styles ~= nil then
-		for _, style in ipairs( control.styles ) do
-			local oldStyle = { style[1], style[2], RL.GuiGetStyle( style[1], style[2] ) }
-			table.insert( oldStyles, oldStyle )
-			RL.GuiSetStyle( style[1], style[2], style[3] )
+		for name, style in pairs( control.styles ) do
+			if name == "properties" then
+				for _, property in ipairs( style ) do
+					self:_addLastProperty( property )
+					RL.GuiSetStyle( property[1], property[2], property[3] )
+				end
+			elseif name == "texture" then
+				RL.SetShapesTexture( style.texture, style.rect )
+			elseif name == "font" then
+				RL.GuiSetFont( style )
+			end
 		end
 	end
+
 	control:draw()
+
 	if control.styles ~= nil then
-		for _, style in ipairs( oldStyles ) do
-			RL.GuiSetStyle( style[1], style[2], style[3] )
+		for name, _ in pairs( control.styles ) do
+			if name == "properties" then
+				for j, property in ipairs( self._lastProperties ) do
+					if type( property ) == "table" then
+						RL.GuiSetStyle( property[1], property[2], property[3] )
+						self._lastProperties[j] = 0
+					end
+				end
+			elseif name == "texture" then
+				RL.SetShapesTexture( self.defaultTexture, self.defaultRect )
+			elseif name == "font" then
+				RL.GuiSetFont( self.defaultFont )
+			end
 		end
 	end
 end
@@ -1928,7 +1925,8 @@ end
 
 function Raygui:addControl( control )
 	control._parent = self
-	self:applyStyles( control )
+	-- self:applyStyles( control )
+	self:drawControl( control )
 	table.insert( self.controls, control )
 	return control
 end

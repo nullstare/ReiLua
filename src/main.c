@@ -77,5 +77,5 @@ int main( int argn, const char **argc ) {
 	}
 	stateFree();
 
-	return 1;
+	return 0;
 }

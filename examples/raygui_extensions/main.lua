@@ -35,11 +35,13 @@ local function addButton( bounds, text, callback )
 		{ source = { 48, 0, 48, 48 }, left = 16, top = 16, right = 16, bottom = 16, layout = RL.NPATCH_NINE_PATCH },
 		callback,
 		{
-			{ RL.LABEL, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_CENTER },
-			{ RL.DEFAULT, RL.TEXT_SIZE, 32 },
-			{ RL.LABEL, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( { 84, 59, 22 } ) },
-			{ RL.LABEL, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( { 84/2, 59/2, 22/2 } ) },
-			{ RL.LABEL, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.GREEN ) },
+			properties = {
+				{ RL.LABEL, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_CENTER },
+				{ RL.DEFAULT, RL.TEXT_SIZE, 32 },
+				{ RL.LABEL, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( { 84, 59, 22 } ) },
+				{ RL.LABEL, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( { 84/2, 59/2, 22/2 } ) },
+				{ RL.LABEL, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.GREEN ) },
+			},
 		}
 	)
 end
@@ -75,7 +77,9 @@ local function addPropertyList()
 		function( self ) Gui:set2Top( self ) end,
 		nil,
 		{
-			{ RL.SCROLLBAR, RL.ARROWS_VISIBLE, RL.ARROWS_VISIBLE },
+			properties = {
+				{ RL.SCROLLBAR, RL.ARROWS_VISIBLE, RL.ARROWS_VISIBLE },
+			}
 		}
 	)
 	RL.GuiSetStyle( RL.SPINNER, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT )
@@ -148,9 +152,6 @@ local function addPropertyList()
 		"Flipped",
 		cat.flipped,
 		function( self ) cat.flipped = self.checked end
-		-- {
-		-- 	{ RL.CHECKBOX, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_RIGHT }
-		-- }
 	), transformGroup )
 
 	-- Visibility.
@@ -163,7 +164,9 @@ local function addPropertyList()
 		cat.visible,
 		function( self ) cat.visible = self.checked end,
 		{
-			{ RL.CHECKBOX, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_RIGHT }
+			properties = {
+				{ RL.CHECKBOX, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_RIGHT },
+			}
 		}
 	), visibilityGroup )
 
@@ -199,8 +202,10 @@ local function addPropertyList()
 			false,
 			function( self ) print( "Checked" ) end,
 			{
-				-- { RL.CHECKBOX, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT },
-				{ RL.DEFAULT, RL.TEXT_SIZE, 32 }
+				properties = {
+					-- { RL.CHECKBOX, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT },
+					{ RL.DEFAULT, RL.TEXT_SIZE, 32 }
+				}
 			}
 		), test )
 	end

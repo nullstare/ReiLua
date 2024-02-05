@@ -35,6 +35,7 @@ KEY CHANGES:
 	- ADDED: Raygui lib extensions property list.
 	- ADDED: Text codepoints management functions.
 	- ADDED: Rune, UTF8 lib.
+	- CHANGE: Raygui styles include properties, texture and font.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.

@@ -74,6 +74,10 @@ Application should now start successfully from executable. All functionality can
 
 ReiLua_API.lua can be put into project folder to provide annotations when using "Lua Language Server".
 
+## Object unloading
+
+Some objects allocate memory that needs to be freed when object is no longer needed. By default objects like Textures are unloaded by the Lua garbage collector. It is generatty however recommended to handle this manually in more complex projects. You can change the behavior with SetGCUnload.
+
 ## Interpreter Mode
 
 ReiLua can also be used to run single lua file using interpreter mode with arguments -i or --interpret. Given file will be called with dofile. Usage example:

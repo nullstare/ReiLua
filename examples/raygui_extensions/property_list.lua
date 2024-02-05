@@ -141,7 +141,9 @@ function PropertyList:addGroup( name, active, group )
 		active,
 		function( this ) this.text = setGroupText( name, this.active ) self:updateContent() end,
 		{
-			{ RL.TOGGLE, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT }
+			properties = {
+				{ RL.TOGGLE, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT }
+			}
 		}
 	)
 	control._controls = {} -- Prefix _ to try to prevent clashing with control definition.

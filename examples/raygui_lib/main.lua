@@ -70,13 +70,14 @@ function RL.init()
 		"Dog",
 		function() toggleGroup:setText( "Dog;Cat\nEagle" ) end,
 		{
-			{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
-			{ RL.DEFAULT, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.ORANGE ) },
-			{ RL.DEFAULT, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( RL.GREEN ) },
+			properties = {
+				{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
+				{ RL.DEFAULT, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.ORANGE ) },
+				{ RL.DEFAULT, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( RL.GREEN ) },
+			},
+			texture = { texture = texture, rect = textureRect },
 		}
 	)
-	button.texture = texture
-	button.textureRect = textureRect
 	local checkbox = Gui:CheckBox(
 		Rect:new( 116, 128, 20, 20 ),
 		"Visible",
@@ -140,10 +141,11 @@ function RL.init()
 		0,
 		0,
 		100,
-		function( self ) print( "Changed value "..self.value ) end
+		function( self ) print( "Changed value "..self.value ) end,
+		{
+			texture = { texture = texture, rect = textureRect },
+		}
 	)
-	slider.texture = texture
-	slider.textureRect = textureRect
 	local sliderbar = Gui:SliderBar(
 		Rect:new( 50, 550, 256, 32 ),
 		"min",
@@ -185,11 +187,12 @@ function RL.init()
 		function( self ) Gui:set2Top( self ) end,
 		nil,
 		{
-			{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
+			properties = {
+				{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
+			},
+			texture = { texture = texture, rect = textureRect },
 		}
 	)
-	windowbox.texture = texture
-	windowbox.textureRect = textureRect
 
 	local groupbox = Gui:GroupBox(
 		Rect:new( 400, 700, 256, 256 ),
@@ -206,9 +209,11 @@ function RL.init()
 		function( self ) Gui:set2Top( self ) end,
 		nil,
 		{
-			{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.MAGENTA ) },
-			{ RL.DEFAULT, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_CENTER },
-			{ RL.DEFAULT, RL.BACKGROUND_COLOR, RL.ColorToInt( RL.DARKBLUE ) },
+			properties = {
+				{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.MAGENTA ) },
+				{ RL.DEFAULT, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_CENTER },
+				{ RL.DEFAULT, RL.BACKGROUND_COLOR, RL.ColorToInt( RL.DARKBLUE ) },
+			}
 		}
 	)
 	tabBar = Gui:GuiTabBar(
@@ -243,13 +248,14 @@ function RL.init()
 		0,
 		function( self ) print( self:getItem( self.active ) ) end,
 		{
-			{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
-			{ RL.DEFAULT, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.ORANGE ) },
-			{ RL.DEFAULT, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( RL.GREEN ) },
+			properties = {
+				{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
+				{ RL.DEFAULT, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.ORANGE ) },
+				{ RL.DEFAULT, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( RL.GREEN ) },
+			},
+			texture = { texture = texture, rect = textureRect },
 		}
 	)
-	listviewex.texture = texture
-	listviewex.textureRect = textureRect
 	local messagebox = Gui:MessageBox(
 		Rect:new( 1100, 150, 300, 128 ),
 		"Title",

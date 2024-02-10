@@ -76,7 +76,11 @@ ReiLua_API.lua can be put into project folder to provide annotations when using 
 
 ## Object unloading
 
-Some objects allocate memory that needs to be freed when object is no longer needed. By default objects like Textures are unloaded by the Lua garbage collector. It is generatty however recommended to handle this manually in more complex projects. You can change the behavior with SetGCUnload.
+Some objects allocate memory that needs to be freed when object is no longer needed. By default objects like Textures are unloaded by the Lua garbage collector. It is generatty however recommended to handle this manually in more complex projects. You can change the behavior with:
+
+```
+SetGCUnload()
+```
 
 ## Interpreter Mode
 

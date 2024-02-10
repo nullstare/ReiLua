@@ -555,5 +555,7 @@ void luaPlatformRegister() {
 
 	lua_pop( L, -1 );
 
-	platformRegisterEvents()
+#ifdef LUA_EVENTS
+	platformRegisterEvents();
+#endif
 }

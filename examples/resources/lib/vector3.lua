@@ -6,7 +6,7 @@ end
 local Vector2 = require( "vector2" )
 
 local Vector3 = {}
-Vector3.meta = {
+local metatable = {
 	__index = Vector3,
 	__tostring = function( v )
 		return "{"..tostring( v.x )..", "..tostring( v.y )..", "..tostring( v.z ).."}"
@@ -50,7 +50,7 @@ function Vector3:new( x, y, z )
 		x, y, z = 0, 0, 0
 	end
 
-	local object = setmetatable( {}, Vector3.meta )
+	local object = setmetatable( {}, metatable )
 
 	object.x = x
 	object.y = y

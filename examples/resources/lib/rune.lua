@@ -4,7 +4,7 @@ if table.unpack == nil then
 end
 
 local Rune = {}
-Rune.meta = {
+local metatable = {
 	__index = Rune,
 	__tostring = function( r )
 		return r.string
@@ -27,7 +27,7 @@ function Rune:new( string )
 		string = ""
 	end
 
-	local object = setmetatable( {}, Rune.meta )
+	local object = setmetatable( {}, metatable )
 
 	object.string = string
 

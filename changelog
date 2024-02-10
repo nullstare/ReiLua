@@ -36,6 +36,7 @@ KEY CHANGES:
 	- ADDED: Text codepoints management functions.
 	- ADDED: Rune, UTF8 lib.
 	- CHANGE: Raygui styles include properties, texture and font.
+	- ADDED: Build option for Lua events that is off by default.
 
 DETAILED CHANGES:
 	- REMOVED: DrawLineBezierQuad, DrawLineBezierCubic.

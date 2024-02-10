@@ -4,7 +4,7 @@ if table.unpack == nil then
 end
 
 local Vector2 = {}
-Vector2.meta = {
+local metatable = {
 	__index = Vector2,
 	__tostring = function( v )
 		return "{"..tostring( v.x )..", "..tostring( v.y ).."}"
@@ -48,7 +48,7 @@ function Vector2:new( x, y )
 		x, y = 0, 0
 	end
 
-	local object = setmetatable( {}, Vector2.meta )
+	local object = setmetatable( {}, metatable )
 
 	object.x = x
 	object.y = y

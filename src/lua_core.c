@@ -1129,7 +1129,7 @@ bool luaCallMain() {
 
 void luaCallProcess() {
 
-#ifdef PLATFORM_DESKTOP_SDL
+#if defined PLATFORM_DESKTOP_SDL && defined LUA_EVENTS
 	platformSendEvents();
 #endif
     lua_State *L = state->luaState;

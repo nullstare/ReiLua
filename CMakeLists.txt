@@ -12,6 +12,7 @@ set( CMAKE_C_STANDARD 99 ) # Requires C99 standard
 
 option( SHARED "Build using dynamic libraries." off )
 option( LUAJIT "Use LuaJIT." off )
+option( LUA_EVENTS "Enable Lua event callbacks (RL.event)." off )
 
 enum_option( PLATFORM "Desktop;Desktop_SDL;Web" "Platform to build for." )
 
@@ -31,6 +32,10 @@ elseif( PLATFORM STREQUAL "Desktop_SDL" )
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DPLATFORM_DESKTOP_SDL" )
 elseif( PLATFORM STREQUAL "Web" )
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DPLATFORM_WEB" )
+endif()
+
+if( LUA_EVENTS )
+	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DLUA_EVENTS" )
 endif()
 
 if( PLATFORM STREQUAL "Web" )
@@ -77,7 +82,7 @@ else() # Desktop
 			target_link_libraries( ${PROJECT_NAME} ${SDL2_LIBRARIES} )
 		endif()
 
-		if( DRM ) # Mainly for Raspberry Pi
+		if( DRM ) # For Raspberry Pi
 			# target_link_libraries( ${PROJECT_NAME} GLESv2 EGL drm gbm rt bcm_host m dl pthread )
 			# target_link_libraries( ${PROJECT_NAME} GLESv2 EGL drm gbm pthread rt m dl )
 			target_link_libraries( ${PROJECT_NAME} raylib GLESv2 EGL pthread rt m gbm drm dl atomic )
@@ -86,6 +91,8 @@ else() # Desktop
 		endif()
 	elseif( APPLE )
 		set( CMAKE_C_COMPILER "clang" )
+
+		# TODO Linking to sdl2.
 
 		target_link_libraries( ${PROJECT_NAME} "-framework IOKit" )
 		target_link_libraries( ${PROJECT_NAME} "-framework Cocoa" )

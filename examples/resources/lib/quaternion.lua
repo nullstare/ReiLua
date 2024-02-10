@@ -7,7 +7,7 @@ local Vector3 = require( "vector3" )
 local Matrix = require( "matrix" )
 
 local Quaternion = {}
-Quaternion.meta = {
+local metatable = {
 	__index = Quaternion,
 	__tostring = function( q )
 		return "{"..tostring( q.x )..", "..tostring( q.y )..", "..tostring( q.z )..", "..tostring( q.w ).."}"
@@ -45,7 +45,7 @@ function Quaternion:new( x, y, z, w )
 		x, y, z, w = 0, 0, 0, 1 -- QuaternionIdentity.
 	end
 
-	local object = setmetatable( {}, Quaternion.meta )
+	local object = setmetatable( {}, metatable )
 
 	object.x = x
 	object.y = y

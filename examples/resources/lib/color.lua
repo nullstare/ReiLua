@@ -6,7 +6,7 @@ end
 local Vector3 = require( "vector3" )
 
 local Color = {}
-Color.meta = {
+local metatable = {
 	__index = Color,
 	__tostring = function( c )
 		return "{"..math.floor( c.r )..", "..math.floor( c.g )..", "..math.floor( c.b )..", "..math.floor( c.a ).."}"
@@ -57,7 +57,7 @@ function Color:new( r, g, b, a )
 		a = 255
 	end
 
-	local object = setmetatable( {}, Color.meta )
+	local object = setmetatable( {}, metatable )
 
 	object.r = r
 	object.g = g

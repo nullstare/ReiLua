@@ -1,3 +1,5 @@
+![ReiLua logo](logo.png)
+
 ## About
 
 Idea of this project was to bring the power and simplicity of Raylib to easy beginner friendly language like Lua in a very straight forward manner. It is loose binding to Raylib, some functions will not be included and some are added. The idea of pointing "main.lua" file and access functions "init", "process" and "draw" are borrowed from Löve game framework.
@@ -27,8 +29,8 @@ List of some MISSING features that are planned to be included. For specific func
 
 ## Roadmap
 
-* v0.7
-	* Switch to Raylib v5.0
+* v0.8
+	* Thorough search for any missing raylib functions that should get implemented.
 
 ## Usage
 

@@ -18,9 +18,9 @@ local monitorSize = Vec2:new( RL.GetMonitorSize( monitor ) )
 local winScale = 6
 local winSize = Vec2:new( RESOLUTION.x * winScale, RESOLUTION.y * winScale )
 local gameState = STATE.GAME
-local grassTexture = -1
-local snakeTexture = -1
-local appleTexture = -1
+local grassTexture = nil
+local snakeTexture = nil
+local appleTexture = nil
 local gameSpeed = 7.0
 local moveTimer = 1.0
 local snake = {}
@@ -213,8 +213,7 @@ local function drawSnake()
 	RL.DrawTexturePro(
 		snakeTexture,
 		{ 24, 0, 8, 8 },
-		{ snake.headPos.x * TILE_SIZE + 4,
-		snake.headPos.y * TILE_SIZE + 4, 8, 8 },
+		{ snake.headPos.x * TILE_SIZE + 4, snake.headPos.y * TILE_SIZE + 4, 8, 8 },
 		{ 4, 4 },
 		angle * RL.RAD2DEG,
 		RL.WHITE

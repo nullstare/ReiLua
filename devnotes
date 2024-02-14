@@ -4,7 +4,7 @@ Current {
 Backlog {
 	* Godot scene importer lib.
 	* Script to find unimplemented raylib functions. Should have list for fuctions that will not
-	be implemented.
+	get implemented.
 	* Raygui lib
 		* Check if could remove flickering from changing draw order by making queue for order changing and only
 		change them after everything is drawn.

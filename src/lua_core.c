@@ -1491,6 +1491,7 @@ void luaRegister() {
 	assingGlobalFunction( "LoadImageSvg", ltexturesLoadImageSvg );
 	assingGlobalFunction( "LoadImageAnim", ltexturesLoadImageAnim );
 	assingGlobalFunction( "LoadImageFromMemory", ltexturesLoadImageFromMemory );
+	assingGlobalFunction( "LoadImageFromData", ltexturesLoadImageFromData );
 	assingGlobalFunction( "LoadImageFromTexture", ltexturesLoadImageFromTexture );
 	assingGlobalFunction( "LoadImageFromScreen", ltexturesLoadImageFromScreen );
 	assingGlobalFunction( "IsImageReady", ltextureIsImageReady );

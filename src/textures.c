@@ -110,6 +110,34 @@ int ltexturesLoadImageFromMemory( lua_State *L ) {
 }
 
 /*
+> image, frameCount = RL.LoadImageFromData( Buffer data, Vector2 size, int mipmaps, int format )
+
+Load image from data
+
+- Success return Image
+*/
+int ltexturesLoadImageFromData( lua_State *L ) {
+	Buffer *data = uluaGetBuffer( L, 1 );
+	Vector2 size = uluaGetVector2( L, 2 );
+	int mipmaps = luaL_checkinteger( L, 3 );
+	int format = luaL_checkinteger( L, 4 );
+
+	Image image = {
+		.width = size.x,
+		.height = size.y,
+		.mipmaps = mipmaps,
+		.format = format
+	};
+	size_t dataSize = GetPixelDataSize( size.x, size.y, format );
+	image.data = malloc( dataSize * sizeof( unsigned char ) );
+	memcpy( image.data, data->data, dataSize );
+
+	uluaPushImage( L, image );
+
+	return 1;
+}
+
+/*
 > image = RL.LoadImageFromTexture( Texture texture )
 
 Load image from GPU texture data

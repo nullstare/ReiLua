@@ -2964,6 +2964,16 @@ function RL.LoadImageAnim( fileName ) end
 ---@return any frameCount 
 function RL.LoadImageFromMemory( fileType, data ) end
 
+---Load image from data
+---- Success return Image
+---@param data any
+---@param size table
+---@param mipmaps integer
+---@param format integer
+---@return any image
+---@return any frameCount 
+function RL.LoadImageFromData( data, size, mipmaps, format ) end
+
 ---Load image from GPU texture data
 ---- Success return Image
 ---@param texture any

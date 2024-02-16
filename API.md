@@ -5547,6 +5547,14 @@ Load image from memory buffer, fileType refers to extension: i.e. '.png'
 
 ---
 
+> image, frameCount = RL.LoadImageFromData( Buffer data, Vector2 size, int mipmaps, int format )
+
+Load image from data
+
+- Success return Image
+
+---
+
 > image = RL.LoadImageFromTexture( Texture texture )
 
 Load image from GPU texture data

@@ -3,7 +3,7 @@ local bitlib = {}
 function bitlib.setBit( v, i, b )
 	if b then
 		return v | 1 << i
-	else 
+	else
 		return v & ~( 1 << i )
 	end
 end

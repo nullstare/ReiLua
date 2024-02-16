@@ -3,6 +3,7 @@ Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0
 ------------------------------------------------------------------------
 KEY CHANGES:
 	- CHANGE: GetBufferData takes also position and length arguments.
+	- ADDED: LoadImageFromData.
 
 DETAILED CHANGES:
 	- ADDED: GetBufferElementSize and GetBufferLength.

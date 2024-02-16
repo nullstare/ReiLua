@@ -2430,8 +2430,10 @@ function  RL.UnloadBuffer( buffer ) end
 ---Get buffer data as table in the format it was stored
 ---- Success return data{}
 ---@param buffer any
+---@param position integer
+---@param length integer
 ---@return any data 
-function RL.GetBufferData( buffer ) end
+function RL.GetBufferData( buffer, position, length ) end
 
 ---Get buffer type
 ---- Success return int
@@ -2439,11 +2441,23 @@ function RL.GetBufferData( buffer ) end
 ---@return any type 
 function RL.GetBufferType( buffer ) end
 
----Get buffer size
+---Get buffer size in bytes
 ---- Success return int
 ---@param buffer any
 ---@return any size 
 function RL.GetBufferSize( buffer ) end
+
+---Get buffer element size in bytes
+---- Success return int
+---@param buffer any
+---@return any size 
+function RL.GetBufferElementSize( buffer ) end
+
+---Get buffer element count
+---- Success return int
+---@param buffer any
+---@return any length 
+function RL.GetBufferLength( buffer ) end
 
 ---Write buffer data to binary file
 ---@param buffer any

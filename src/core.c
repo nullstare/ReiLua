@@ -3119,7 +3119,7 @@ int lcoreUnloadBuffer( lua_State *L ) {
 }
 
 /*
-> data = RL.GetBufferData( Buffer buffer )
+> data = RL.GetBufferData( Buffer buffer, int position, int length )
 
 Get buffer data as table in the format it was stored
 
@@ -3127,10 +3127,13 @@ Get buffer data as table in the format it was stored
 */
 int lcoreGetBufferData( lua_State *L ) {
 	Buffer *buffer = uluaGetBuffer( L, 1 );
+	size_t position = luaL_checkinteger( L, 2 );
+	size_t length = luaL_checkinteger( L, 3 );
 
 	if ( buffer->type == BUFFER_UNSIGNED_CHAR ) {
-		unsigned char *p = buffer->data;
-		size_t count = buffer->size / sizeof( unsigned char );
+		unsigned char *p = buffer->data + position * sizeof( unsigned char );
+		size_t bufLen = buffer->size / sizeof( unsigned char );
+		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
 
 		for ( int i = 0; i < count; i++ ) {
@@ -3140,8 +3143,9 @@ int lcoreGetBufferData( lua_State *L ) {
 		}
 	}
 	else if ( buffer->type == BUFFER_UNSIGNED_SHORT ) {
-		unsigned short *p = buffer->data;
-		size_t count = buffer->size / sizeof( unsigned short );
+		unsigned short *p = buffer->data + position * sizeof( unsigned short );
+		size_t bufLen = buffer->size / sizeof( unsigned short );
+		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
 
 		for ( int i = 0; i < count; i++ ) {
@@ -3151,8 +3155,9 @@ int lcoreGetBufferData( lua_State *L ) {
 		}
 	}
 	else if ( buffer->type == BUFFER_UNSIGNED_INT ) {
-		unsigned int *p = buffer->data;
-		size_t count = buffer->size / sizeof( unsigned int );
+		unsigned int *p = buffer->data + position * sizeof( unsigned int );
+		size_t bufLen = buffer->size / sizeof( unsigned int );
+		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
 
 		for ( int i = 0; i < count; i++ ) {
@@ -3162,8 +3167,9 @@ int lcoreGetBufferData( lua_State *L ) {
 		}
 	}
 	else if ( buffer->type == BUFFER_CHAR ) {
-		char *p = buffer->data;
-		size_t count = buffer->size / sizeof( char );
+		char *p = buffer->data + position * sizeof( char );
+		size_t bufLen = buffer->size / sizeof( char );
+		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
 
 		for ( int i = 0; i < count; i++ ) {
@@ -3173,8 +3179,9 @@ int lcoreGetBufferData( lua_State *L ) {
 		}
 	}
 	else if ( buffer->type == BUFFER_SHORT ) {
-		short *p = buffer->data;
-		size_t count = buffer->size / sizeof( short );
+		short *p = buffer->data + position * sizeof( short );
+		size_t bufLen = buffer->size / sizeof( short );
+		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
 
 		for ( int i = 0; i < count; i++ ) {
@@ -3184,8 +3191,9 @@ int lcoreGetBufferData( lua_State *L ) {
 		}
 	}
 	else if ( buffer->type == BUFFER_INT ) {
-		int *p = buffer->data;
-		size_t count = buffer->size / sizeof( int );
+		int *p = buffer->data + position * sizeof( int );
+		size_t bufLen = buffer->size / sizeof( int );
+		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
 
 		for ( int i = 0; i < count; i++ ) {
@@ -3195,8 +3203,9 @@ int lcoreGetBufferData( lua_State *L ) {
 		}
 	}
 	else if ( buffer->type == BUFFER_FLOAT ) {
-		float *p = buffer->data;
-		size_t count = buffer->size / sizeof( float );
+		float *p = buffer->data + position * sizeof( float );
+		size_t bufLen = buffer->size / sizeof( float );
+		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
 
 		for ( int i = 0; i < count; i++ ) {
@@ -3206,8 +3215,9 @@ int lcoreGetBufferData( lua_State *L ) {
 		}
 	}
 	else if ( buffer->type == BUFFER_DOUBLE ) {
-		double *p = buffer->data;
-		size_t count = buffer->size / sizeof( double );
+		double *p = buffer->data + position * sizeof( double );
+		size_t bufLen = buffer->size / sizeof( double );
+		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
 
 		for ( int i = 0; i < count; i++ ) {
@@ -3216,7 +3226,6 @@ int lcoreGetBufferData( lua_State *L ) {
 			p++;
 		}
 	}
-
 	return 1;
 }
 
@@ -3238,7 +3247,7 @@ int lcoreGetBufferType( lua_State *L ) {
 /*
 > size = RL.GetBufferSize( Buffer buffer )
 
-Get buffer size
+Get buffer size in bytes
 
 - Success return int
 */
@@ -3246,6 +3255,36 @@ int lcoreGetBufferSize( lua_State *L ) {
 	Buffer *buffer = uluaGetBuffer( L, 1 );
 
 	lua_pushinteger( L, buffer->size );
+
+	return 1;
+}
+
+/*
+> size = RL.GetBufferElementSize( Buffer buffer )
+
+Get buffer element size in bytes
+
+- Success return int
+*/
+int lcoreGetBufferElementSize( lua_State *L ) {
+	Buffer *buffer = uluaGetBuffer( L, 1 );
+
+	lua_pushinteger( L, getBufferElementSize( buffer ) );
+
+	return 1;
+}
+
+/*
+> length = RL.GetBufferLength( Buffer buffer )
+
+Get buffer element count
+
+- Success return int
+*/
+int lcoreGetBufferLength( lua_State *L ) {
+	Buffer *buffer = uluaGetBuffer( L, 1 );
+
+	lua_pushinteger( L, buffer->size / getBufferElementSize( buffer ) );
 
 	return 1;
 }

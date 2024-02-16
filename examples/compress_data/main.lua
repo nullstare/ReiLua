@@ -21,7 +21,7 @@ local function compressDecompressData()
 
 	deCompressedText = ""
 
-	for _, c in ipairs( RL.GetBufferData( deCompBuffer ) ) do
+	for _, c in ipairs( RL.GetBufferData( deCompBuffer, 0, RL.GetBufferLength( deCompBuffer ) ) ) do
 		deCompressedText = deCompressedText..string.char( c )
 	end
 end
@@ -30,14 +30,14 @@ function RL.draw()
 	RL.ClearBackground( RL.RAYWHITE )
     RL.DrawText( "Decompressed text: "..deCompressedText, { 20, 200 }, 20, textColor )
 
-	if RL.GuiButton( { 20, 20, 168, 32 }, "Compress/Decompress Data" ) then
+	if 0 < RL.GuiButton( { 20, 20, 168, 32 }, "Compress/Decompress Data" ) then
 		compressDecompressData()
 	end
 	
 	local pressed = false
 	pressed, text = RL.GuiTextBox( { 220, 20, 400, 32 }, text, 64, editMode )
 
-	if pressed then
+	if 0 < pressed then
 		editMode = not editMode
 	end
 end

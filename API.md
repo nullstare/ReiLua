@@ -5076,7 +5076,7 @@ Unload buffer data
 
 ---
 
-> data = RL.GetBufferData( Buffer buffer )
+> data = RL.GetBufferData( Buffer buffer, int position, int length )
 
 Get buffer data as table in the format it was stored
 
@@ -5094,7 +5094,23 @@ Get buffer type
 
 > size = RL.GetBufferSize( Buffer buffer )
 
-Get buffer size
+Get buffer size in bytes
+
+- Success return int
+
+---
+
+> size = RL.GetBufferElementSize( Buffer buffer )
+
+Get buffer element size in bytes
+
+- Success return int
+
+---
+
+> length = RL.GetBufferLength( Buffer buffer )
+
+Get buffer element count
 
 - Success return int
 

@@ -6,7 +6,7 @@
 
 // typedef struct {
 // 	int SDL_eventQueueLen;
-// 	SDL_Event **SDL_eventQueue;
+// 	SDL_Event** SDL_eventQueue;
 // } SDL_State;
 
 // extern SDL_State *SDL_state;

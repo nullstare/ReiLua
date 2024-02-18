@@ -4,7 +4,7 @@
 #include "platforms/core_desktop.h"
 
 void platformDefineGlobals() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_getglobal( L, "RL" );
 /*DOC_DEFINES_START*/
@@ -55,11 +55,11 @@ this function returns nil but does not emit an error.
 
 - Success return string or nil
 */
-int lcoreGetKeyName( lua_State *L ) {
+int lcoreGetKeyName( lua_State* L ) {
 	int key = luaL_checkinteger( L, 1 );
 	int scancode = luaL_checkinteger( L, 2 );
 
-	const char *keyName = glfwGetKeyName( key, scancode );
+	const char* keyName = glfwGetKeyName( key, scancode );
 
 	if ( keyName != NULL ) {
 		lua_pushstring( L, keyName );
@@ -79,7 +79,7 @@ If the key is KEY_UNKNOWN or does not exist on the keyboard this method will ret
 
 - Success return int
 */
-int lcoreGetKeyScancode( lua_State *L ) {
+int lcoreGetKeyScancode( lua_State* L ) {
 	int key = luaL_checkinteger( L, 1 );
 
 	lua_pushinteger( L, glfwGetKeyScancode( key ) );
@@ -98,11 +98,11 @@ int lcoreGetKeyScancode( lua_State *L ) {
 
 Called when the window is resized. Type GLFW_WINDOW_SIZE_EVENT
 */
-static void windowSizeEvent( GLFWwindow *window, int width, int height ) {
+static void windowSizeEvent( GLFWwindow* window, int width, int height ) {
 	/* Pass through to raylib callback. */
 	state->raylibWindowSizeCallback( window, width, height );
 
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
@@ -134,11 +134,11 @@ static void windowSizeEvent( GLFWwindow *window, int width, int height ) {
 
 Called when the window is maximized or restored. Type GLFW_WINDOW_MAXIMIZE_EVENT
 */
-static void windowMaximizeEvent( GLFWwindow *window, int maximized ) {
+static void windowMaximizeEvent( GLFWwindow* window, int maximized ) {
 	/* Pass through to raylib callback. */
 	state->raylibWindowMaximizeCallback( window, maximized );
 
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
@@ -168,11 +168,11 @@ static void windowMaximizeEvent( GLFWwindow *window, int maximized ) {
 
 Called when the window is iconified or restored. Type GLFW_WINDOW_ICONYFY_EVENT
 */
-static void windowIconyfyEvent( GLFWwindow *window, int iconified ) {
+static void windowIconyfyEvent( GLFWwindow* window, int iconified ) {
 	/* Pass through to raylib callback. */
 	state->raylibWindowIconifyCallback( window, iconified );
 
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
@@ -200,11 +200,11 @@ static void windowIconyfyEvent( GLFWwindow *window, int iconified ) {
 
 Called when the window gains or loses input focus. Type GLFW_WINDOW_FOCUS_EVENT
 */
-static void windowFocusEvent( GLFWwindow *window, int focused ) {
+static void windowFocusEvent( GLFWwindow* window, int focused ) {
 	/* Pass through to raylib callback. */
 	state->raylibWindowFocusCallback( window, focused );
 
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
@@ -232,11 +232,11 @@ static void windowFocusEvent( GLFWwindow *window, int focused ) {
 
 Called when files are dropped to the window. Type GLFW_WINDOW_DROP_EVENT
 */
-static void windowDropEvent( GLFWwindow *window, int count, const char **paths ) {
+static void windowDropEvent( GLFWwindow* window, int count, const char** paths ) {
 	/* Pass through to raylib callback. */
 	state->raylibWindowDropCallback( window, count, paths );
 
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
@@ -280,7 +280,7 @@ static void keyInputEvent( GLFWwindow* window, int key, int scancode, int action
 	/* Pass through to raylib callback. */
 	state->raylibKeyCallback( window, key, scancode, action, mods );
 
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
@@ -318,7 +318,7 @@ static void charInputEvent( GLFWwindow* window, unsigned int key ) {
 	/* Pass through to raylib callback. */
 	state->raylibCharCallback( window, key );
 
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
@@ -350,7 +350,7 @@ static void mouseButtonInputEvent( GLFWwindow* window, int button, int action, i
 	/* Pass through to raylib callback. */
 	state->raylibMouseButtonCallback( window, button, action, mods );
 
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
@@ -386,7 +386,7 @@ static void mouseCursorPosInputEvent( GLFWwindow* window, double x, double y ) {
 	/* Pass through to raylib callback. */
 	state->raylibMouseCursorPosCallback( window, x, y );
 
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
@@ -420,7 +420,7 @@ static void mouseScrollInputEvent( GLFWwindow* window, double xoffset, double yo
 	/* Pass through to raylib callback. */
 	state->raylibMouseScrollCallback( window, xoffset, yoffset );
 
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
@@ -454,7 +454,7 @@ static void cursorEnterInputEvent( GLFWwindow* window, int enter ) {
 	/* Pass through to raylib callback. */
 	state->raylibCursorEnterCallback( window, enter );
 
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
@@ -488,7 +488,7 @@ static void joystickEvent( int jid, int event ) {
 		state->raylibJoystickCallback( jid, event );
 	}
 
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
@@ -520,7 +520,7 @@ Called when the pen tablet data is updated. Type GLFW_PEN_TABLET_DATA_EVENT
 NOTE: Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
 */
 static void penTabletDataEvent( double x, double y, double z, double pressure, double pitch, double yaw, double roll ) {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
@@ -562,7 +562,7 @@ Called when the pen tablet cursor has changed. Type GLFW_PEN_TABLET_CURSOR_EVENT
 NOTE: Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
 */
 static void penTabletCursorEvent( unsigned int identifier ) {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
@@ -592,7 +592,7 @@ Called when the pen tablet proximity has changed. Type GLFW_PEN_TABLET_PROXIMITY
 NOTE: Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445
 */
 static void penTabletProximityEvent( int proxState ) {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
@@ -640,7 +640,7 @@ static void platformRegisterEvents() {
 }
 
 void luaPlatformRegister() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 	lua_getglobal( L, "RL" );
 
 	/* Input-related functions: keyboard. */

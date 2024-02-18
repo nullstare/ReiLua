@@ -4,7 +4,7 @@
 #include "platforms/core_desktop_sdl.h"
 
 void platformDefineGlobals() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_getglobal( L, "RL" );
 /*DOC_DEFINES_START*/
@@ -88,7 +88,7 @@ Use this function to get a human-readable name for a key. If the key doesn't hav
 
 - Success return string
 */
-int lcoreGetKeyName( lua_State *L ) {
+int lcoreGetKeyName( lua_State* L ) {
 	int key = luaL_checkinteger( L, 1 );
 
 	lua_pushstring( L, SDL_GetKeyName( key ) );
@@ -103,7 +103,7 @@ Use this function to get the scancode corresponding to the given key code accord
 
 - Success return int
 */
-int lcoreGetScancodeFromKey( lua_State *L ) {
+int lcoreGetScancodeFromKey( lua_State* L ) {
 	int key = luaL_checkinteger( L, 1 );
 
 	lua_pushinteger( L, SDL_GetScancodeFromKey( key ) );
@@ -118,7 +118,7 @@ int lcoreGetScancodeFromKey( lua_State *L ) {
 */
 
 /* This function is not thread safe so we don't use Lua inside it directly. It only adds events to another queue. */
-static int SDLEventFilter( void *userdata, SDL_Event *event ) {
+static int SDLEventFilter( void* userdata, SDL_Event* event ) {
 	/* SDL_EVENT_POLL_SENTINEL = 0x7F00, /**< Signals the end of an event poll cycle */
 	if ( event->type != SDL_QUIT && event->type != 0x7F00 && state->SDL_eventQueueLen < PLATFORM_SDL_EVENT_QUEUE_LEN ) {
 		state->SDL_eventQueue[ state->SDL_eventQueueLen ] = *event;
@@ -134,7 +134,7 @@ static void platformRegisterEvents() {
 }
 
 static void platformSendEvents() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
@@ -546,7 +546,7 @@ Event occurs an event of type SDL_DOLLARGESTURE or SDL_DOLLARRECORD is reported.
 }
 
 void luaPlatformRegister() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 	lua_getglobal( L, "RL" );
 
 	/* Input-related functions: keyboard. */

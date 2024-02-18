@@ -19,7 +19,7 @@ inline static void printVersion() {
 #endif
 }
 
-int main( int argn, const char **argc ) {
+int main( int argn, const char** argc ) {
 	char exePath[ STRING_LEN ] = { '\0' };
 	bool interpret_mode = false;
 
@@ -50,7 +50,7 @@ int main( int argn, const char **argc ) {
 	if ( interpret_mode ) {
 		stateInitInterpret( argn, argc );
 
-		lua_State *L = state->luaState;
+		lua_State* L = state->luaState;
 		lua_pushcfunction( L, luaTraceback );
 		int tracebackidx = lua_gettop( L );
 

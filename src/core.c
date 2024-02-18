@@ -4,7 +4,7 @@
 #include "textures.h"
 #include "lua_core.h"
 
-static int getBufferElementSize( Buffer *buffer ) {
+static int getBufferElementSize( Buffer* buffer ) {
 	switch ( buffer->type ) {
 		case BUFFER_UNSIGNED_CHAR: return sizeof( unsigned char );
 		case BUFFER_UNSIGNED_SHORT: return sizeof( unsigned short );
@@ -18,7 +18,7 @@ static int getBufferElementSize( Buffer *buffer ) {
 	return 1;
 }
 
-void unloadBuffer( Buffer *buffer ) {
+void unloadBuffer( Buffer* buffer ) {
 	free( buffer->data );
 
 	TraceLog( LOG_INFO, "BUFFER: Unloaded buffer with %u bytes of data", buffer->size );
@@ -33,7 +33,7 @@ void unloadBuffer( Buffer *buffer ) {
 
 Close window and unload OpenGL context and free all resources
 */
-int lcoreCloseWindow( lua_State *L ) {
+int lcoreCloseWindow( lua_State* L ) {
 	state->run = false;
 
 	return 0;
@@ -46,7 +46,7 @@ Check if window has been initialized successfully
 
 - Success return bool
 */
-int lcoreIsWindowReady( lua_State *L ) {
+int lcoreIsWindowReady( lua_State* L ) {
 	lua_pushboolean( L, IsWindowReady() );
 
 	return 1;
@@ -59,7 +59,7 @@ Check if window is currently fullscreen
 
 - Success return bool
 */
-int lcoreIsWindowFullscreen( lua_State *L ) {
+int lcoreIsWindowFullscreen( lua_State* L ) {
 	lua_pushboolean( L, IsWindowFullscreen() );
 
 	return 1;
@@ -72,7 +72,7 @@ Check if window is currently hidden (only PLATFORM_DESKTOP)
 
 - Success return bool
 */
-int lcoreIsWindowHidden( lua_State *L ) {
+int lcoreIsWindowHidden( lua_State* L ) {
 	lua_pushboolean( L, IsWindowHidden() );
 
 	return 1;
@@ -85,7 +85,7 @@ Check if window is currently minimized (only PLATFORM_DESKTOP)
 
 - Success return bool
 */
-int lcoreIsWindowMinimized( lua_State *L ) {
+int lcoreIsWindowMinimized( lua_State* L ) {
 	lua_pushboolean( L, IsWindowMinimized() );
 
 	return 1;
@@ -98,7 +98,7 @@ Check if window is currently maximized (only PLATFORM_DESKTOP)
 
 - Success return bool
 */
-int lcoreIsWindowMaximized( lua_State *L ) {
+int lcoreIsWindowMaximized( lua_State* L ) {
 	lua_pushboolean( L, IsWindowMaximized() );
 
 	return 1;
@@ -111,7 +111,7 @@ Check if window is currently focused (only PLATFORM_DESKTOP)
 
 - Success return bool
 */
-int lcoreIsWindowFocused( lua_State *L ) {
+int lcoreIsWindowFocused( lua_State* L ) {
 	lua_pushboolean( L, IsWindowFocused() );
 
 	return 1;
@@ -124,7 +124,7 @@ Check if window has been resized from last frame
 
 - Success return bool
 */
-int lcoreIsWindowResized( lua_State *L ) {
+int lcoreIsWindowResized( lua_State* L ) {
 	lua_pushboolean( L, IsWindowResized() );
 
 	return 1;
@@ -137,7 +137,7 @@ Check if one specific window flag is enabled (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_
 
 - Success return bool
 */
-int lcoreIsWindowState( lua_State *L ) {
+int lcoreIsWindowState( lua_State* L ) {
 	unsigned int flag = (unsigned int)luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsWindowState( flag ) );
@@ -150,7 +150,7 @@ int lcoreIsWindowState( lua_State *L ) {
 
 Set window configuration state using flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZABLE...)
 */
-int lcoreSetWindowState( lua_State *L ) {
+int lcoreSetWindowState( lua_State* L ) {
 	unsigned int flag = (unsigned int)luaL_checkinteger( L, 1 );
 
 	SetWindowState( flag );
@@ -165,7 +165,7 @@ Clear window configuration state flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZA
 
 - Success return bool
 */
-int lcoreClearWindowState( lua_State *L ) {
+int lcoreClearWindowState( lua_State* L ) {
 	unsigned int flag = (unsigned int)luaL_checkinteger( L, 1 );
 
 	ClearWindowState( flag );
@@ -178,7 +178,7 @@ int lcoreClearWindowState( lua_State *L ) {
 
 Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
 */
-int lcoreToggleFullscreen( lua_State *L ) {
+int lcoreToggleFullscreen( lua_State* L ) {
 	ToggleFullscreen();
 
 	return 0;
@@ -189,7 +189,7 @@ int lcoreToggleFullscreen( lua_State *L ) {
 
 Toggle window state: borderless windowed (only PLATFORM_DESKTOP)
 */
-int lcoreToggleBorderlessWindowed( lua_State *L ) {
+int lcoreToggleBorderlessWindowed( lua_State* L ) {
 	ToggleBorderlessWindowed();
 
 	return 0;
@@ -200,7 +200,7 @@ int lcoreToggleBorderlessWindowed( lua_State *L ) {
 
 Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
 */
-int lcoreMaximizeWindow( lua_State *L ) {
+int lcoreMaximizeWindow( lua_State* L ) {
 	MaximizeWindow();
 
 	return 0;
@@ -211,7 +211,7 @@ int lcoreMaximizeWindow( lua_State *L ) {
 
 Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
 */
-int lcoreMinimizeWindow( lua_State *L ) {
+int lcoreMinimizeWindow( lua_State* L ) {
 	MinimizeWindow();
 
 	return 0;
@@ -222,7 +222,7 @@ int lcoreMinimizeWindow( lua_State *L ) {
 
 Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
 */
-int lcoreRestoreWindow( lua_State *L ) {
+int lcoreRestoreWindow( lua_State* L ) {
 	RestoreWindow();
 
 	return 0;
@@ -233,8 +233,8 @@ int lcoreRestoreWindow( lua_State *L ) {
 
 Set icon for window (Only PLATFORM_DESKTOP)
 */
-int lcoreSetWindowIcon( lua_State *L ) {
-	Image *image = uluaGetImage( L, 1 );
+int lcoreSetWindowIcon( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
 
 	SetWindowIcon( *image );
 
@@ -246,7 +246,7 @@ int lcoreSetWindowIcon( lua_State *L ) {
 
 Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
 */
-int lcoreSetWindowIcons( lua_State *L ) {
+int lcoreSetWindowIcons( lua_State* L ) {
 	int count = uluaGetTableLen( L, 1 );
 	Image images[ count ];
 
@@ -270,7 +270,7 @@ int lcoreSetWindowIcons( lua_State *L ) {
 
 Set title for window (only PLATFORM_DESKTOP and PLATFORM_WEB)
 */
-int lcoreSetWindowTitle( lua_State *L ) {
+int lcoreSetWindowTitle( lua_State* L ) {
 	SetWindowTitle( luaL_checkstring( L, 1 ) );
 
 	return 0;
@@ -281,7 +281,7 @@ int lcoreSetWindowTitle( lua_State *L ) {
 
 Set window position on screen
 */
-int lcoreSetWindowPosition( lua_State *L ) {
+int lcoreSetWindowPosition( lua_State* L ) {
 	Vector2 pos = uluaGetVector2( L, 1 );
 
 	SetWindowPosition( pos.x, pos.y );
@@ -294,7 +294,7 @@ int lcoreSetWindowPosition( lua_State *L ) {
 
 Set monitor for the current window
 */
-int lcoreSetWindowMonitor( lua_State *L ) {
+int lcoreSetWindowMonitor( lua_State* L ) {
 	int monitor = luaL_checkinteger( L, 1 );
 
 	SetWindowMonitor( monitor );
@@ -307,7 +307,7 @@ int lcoreSetWindowMonitor( lua_State *L ) {
 
 Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
 */
-int lcoreSetWindowMinSize( lua_State *L ) {
+int lcoreSetWindowMinSize( lua_State* L ) {
 	Vector2 size = uluaGetVector2( L, 1 );
 
 	SetWindowMinSize( (int)size.x, (int)size.y );
@@ -320,7 +320,7 @@ int lcoreSetWindowMinSize( lua_State *L ) {
 
 Set window maximum dimensions (for FLAG_WINDOW_RESIZABLE)
 */
-int lcoreSetWindowMaxSize( lua_State *L ) {
+int lcoreSetWindowMaxSize( lua_State* L ) {
 	Vector2 size = uluaGetVector2( L, 1 );
 
 	SetWindowMaxSize( (int)size.x, (int)size.y );
@@ -333,7 +333,7 @@ int lcoreSetWindowMaxSize( lua_State *L ) {
 
 Set window dimensions
 */
-int lcoreSetWindowSize( lua_State *L ) {
+int lcoreSetWindowSize( lua_State* L ) {
 	Vector2 size = uluaGetVector2( L, 1 );
 
 	SetWindowSize( (int)size.x, (int)size.y );
@@ -346,7 +346,7 @@ int lcoreSetWindowSize( lua_State *L ) {
 
 Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)
 */
-int lcoreSetWindowOpacity( lua_State *L ) {
+int lcoreSetWindowOpacity( lua_State* L ) {
 	float opacity = luaL_checknumber( L, 1 );
 
 	SetWindowOpacity( opacity );
@@ -359,7 +359,7 @@ int lcoreSetWindowOpacity( lua_State *L ) {
 
 Set window focused (only PLATFORM_DESKTOP)
 */
-int lcoreSetWindowFocused( lua_State *L ) {
+int lcoreSetWindowFocused( lua_State* L ) {
 	SetWindowFocused();
 
 	return 0;
@@ -372,7 +372,7 @@ Get native window handle. Return as lightuserdata
 
 - Success return lightuserdata
 */
-int lcoreGetWindowHandle( lua_State *L ) {
+int lcoreGetWindowHandle( lua_State* L ) {
 	lua_pushlightuserdata( L, GetWindowHandle() );
 
 	return 1;
@@ -385,7 +385,7 @@ Get screen size
 
 - Success return Vector2
 */
-int lcoreGetScreenSize( lua_State *L ) {
+int lcoreGetScreenSize( lua_State* L ) {
 	Vector2 size = (Vector2){ GetScreenWidth(), GetScreenHeight() };
 	uluaPushVector2( L, size );
 
@@ -399,7 +399,7 @@ Get render size
 
 - Success return Vector2
 */
-int lcoreGetRenderSize( lua_State *L ) {
+int lcoreGetRenderSize( lua_State* L ) {
 	Vector2 size = (Vector2){ GetRenderWidth(), GetRenderHeight() };
 	uluaPushVector2( L, size );
 
@@ -413,7 +413,7 @@ Get number of connected monitors
 
 - Success return int
 */
-int lcoreGetMonitorCount( lua_State *L ) {
+int lcoreGetMonitorCount( lua_State* L ) {
 	lua_pushinteger( L, GetMonitorCount() );
 
 	return 1;
@@ -426,7 +426,7 @@ Get current connected monitor
 
 - Success return int
 */
-int lcoreGetCurrentMonitor( lua_State *L ) {
+int lcoreGetCurrentMonitor( lua_State* L ) {
 	lua_pushinteger( L, GetCurrentMonitor() );
 
 	return 1;
@@ -439,7 +439,7 @@ Get specified monitor position
 
 - Success return Vector2
 */
-int lcoreGetMonitorPosition( lua_State *L ) {
+int lcoreGetMonitorPosition( lua_State* L ) {
 	int monitor = luaL_checkinteger( L, 1 );
 
 	uluaPushVector2( L, GetMonitorPosition( monitor ) );
@@ -454,7 +454,7 @@ Get specified monitor size
 
 - Success return Vector2
 */
-int lcoreGetMonitorSize( lua_State *L ) {
+int lcoreGetMonitorSize( lua_State* L ) {
 	int monitor = luaL_checkinteger( L, 1 );
 
 	Vector2 size = (Vector2){ GetMonitorWidth( monitor ), GetMonitorHeight( monitor ) };
@@ -470,7 +470,7 @@ Get specified monitor physical size in millimetres
 
 - Success return Vector2
 */
-int lcoreGetMonitorPhysicalSize( lua_State *L ) {
+int lcoreGetMonitorPhysicalSize( lua_State* L ) {
 	int monitor = luaL_checkinteger( L, 1 );
 
 	Vector2 size = { GetMonitorPhysicalWidth( monitor ), GetMonitorPhysicalHeight( monitor ) };
@@ -486,7 +486,7 @@ Get specified monitor refresh rate
 
 - Success return int
 */
-int lcoreGetMonitorRefreshRate( lua_State *L ) {
+int lcoreGetMonitorRefreshRate( lua_State* L ) {
 	int monitor = luaL_checkinteger( L, 1 );
 	
 	lua_pushinteger( L, GetMonitorRefreshRate( monitor ) );
@@ -501,7 +501,7 @@ Get window position on monitor
 
 - Success return Vector2
 */
-int lcoreGetWindowPosition( lua_State *L ) {
+int lcoreGetWindowPosition( lua_State* L ) {
 	uluaPushVector2( L, GetWindowPosition() );
 
 	return 1;
@@ -514,7 +514,7 @@ Get window scale DPI factor
 
 - Success return Vector2
 */
-int lcoreGetWindowScaleDPI( lua_State *L ) {
+int lcoreGetWindowScaleDPI( lua_State* L ) {
 	uluaPushVector2( L, GetWindowScaleDPI() );
 
 	return 1;
@@ -527,7 +527,7 @@ Get the human-readable, UTF-8 encoded name of the specified monitor
 
 - Success return string
 */
-int lcoreGetMonitorName( lua_State *L ) {
+int lcoreGetMonitorName( lua_State* L ) {
 	int monitor = luaL_checkinteger( L, 1 );
 
 	lua_pushstring( L, GetMonitorName( monitor ) );
@@ -540,7 +540,7 @@ int lcoreGetMonitorName( lua_State *L ) {
 
 Set clipboard text content
 */
-int lcoreSetClipboardText( lua_State *L ) {
+int lcoreSetClipboardText( lua_State* L ) {
 	SetClipboardText( luaL_checkstring( L, 1 ) );
 
 	return 0;
@@ -553,7 +553,7 @@ Get clipboard text content
 
 - Success return string
 */
-int lcoreGetClipboardText( lua_State *L ) {
+int lcoreGetClipboardText( lua_State* L ) {
 	lua_pushstring( L, GetClipboardText() );
 
 	return 1;
@@ -568,7 +568,7 @@ int lcoreGetClipboardText( lua_State *L ) {
 
 Shows cursor
 */
-int lcoreShowCursor( lua_State *L ) {
+int lcoreShowCursor( lua_State* L ) {
 	ShowCursor();
 
 	return 0;
@@ -579,7 +579,7 @@ int lcoreShowCursor( lua_State *L ) {
 
 Hides cursor
 */
-int lcoreHideCursor( lua_State *L ) {
+int lcoreHideCursor( lua_State* L ) {
 	HideCursor();
 
 	return 0;
@@ -592,7 +592,7 @@ Check if cursor is not visible
 
 - Success return bool
 */
-int lcoreIsCursorHidden( lua_State *L ) {
+int lcoreIsCursorHidden( lua_State* L ) {
 	lua_pushboolean( L, IsCursorHidden() );
 
 	return 1;
@@ -603,7 +603,7 @@ int lcoreIsCursorHidden( lua_State *L ) {
 
 Enables cursor (unlock cursor)
 */
-int lcoreEnableCursor( lua_State *L ) {
+int lcoreEnableCursor( lua_State* L ) {
 	EnableCursor();
 
 	return 0;
@@ -614,7 +614,7 @@ int lcoreEnableCursor( lua_State *L ) {
 
 Disables cursor (lock cursor)
 */
-int lcoreDisableCursor( lua_State *L ) {
+int lcoreDisableCursor( lua_State* L ) {
 	DisableCursor();
 
 	return 0;
@@ -627,7 +627,7 @@ Check if cursor is on the screen
 
 - Success return bool
 */
-int lcoreIsCursorOnScreen( lua_State *L ) {
+int lcoreIsCursorOnScreen( lua_State* L ) {
 	lua_pushboolean( L, IsCursorOnScreen() );
 
 	return 1;
@@ -642,7 +642,7 @@ int lcoreIsCursorOnScreen( lua_State *L ) {
 
 Set background color (framebuffer clear color)
 */
-int lcoreClearBackground( lua_State *L ) {
+int lcoreClearBackground( lua_State* L ) {
 	Color color = uluaGetColor( L, 1 );
 
 	ClearBackground( color );
@@ -655,7 +655,7 @@ int lcoreClearBackground( lua_State *L ) {
 
 Setup canvas (framebuffer) to start drawing
 */
-int lcoreBeginDrawing( lua_State *L ) {
+int lcoreBeginDrawing( lua_State* L ) {
 	BeginDrawing();
 
 	return 0;
@@ -666,7 +666,7 @@ int lcoreBeginDrawing( lua_State *L ) {
 
 End canvas drawing and swap buffers (double buffering)
 */
-int lcoreEndDrawing( lua_State *L ) {
+int lcoreEndDrawing( lua_State* L ) {
 	EndDrawing();
 
 	return 0;
@@ -677,8 +677,8 @@ int lcoreEndDrawing( lua_State *L ) {
 
 Begin 2D mode with custom camera (2D)
 */
-int lcoreBeginMode2D( lua_State *L ) {
-	Camera2D *camera = uluaGetCamera2D( L, 1 );
+int lcoreBeginMode2D( lua_State* L ) {
+	Camera2D* camera = uluaGetCamera2D( L, 1 );
 
 	BeginMode2D( *camera );
 
@@ -690,7 +690,7 @@ int lcoreBeginMode2D( lua_State *L ) {
 
 Ends 2D mode with custom camera
 */
-int lcoreEndMode2D( lua_State *L ) {
+int lcoreEndMode2D( lua_State* L ) {
 	EndMode2D();
 
 	return 0;
@@ -701,8 +701,8 @@ int lcoreEndMode2D( lua_State *L ) {
 
 Begin 3D mode with custom camera (3D)
 */
-int lcoreBeginMode3D( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreBeginMode3D( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 
 	BeginMode3D( *camera );
 
@@ -714,7 +714,7 @@ int lcoreBeginMode3D( lua_State *L ) {
 
 Ends 3D mode and returns to default 2D orthographic mode
 */
-int lcoreEndMode3D( lua_State *L ) {
+int lcoreEndMode3D( lua_State* L ) {
 	EndMode3D();
 
 	return 0;
@@ -725,8 +725,8 @@ int lcoreEndMode3D( lua_State *L ) {
 
 Begin drawing to render texture
 */
-int lcoreBeginTextureMode( lua_State *L ) {
-	RenderTexture *renderTexture = uluaGetRenderTexture( L, 1 );
+int lcoreBeginTextureMode( lua_State* L ) {
+	RenderTexture* renderTexture = uluaGetRenderTexture( L, 1 );
 
 	BeginTextureMode( *renderTexture );
 
@@ -738,7 +738,7 @@ int lcoreBeginTextureMode( lua_State *L ) {
 
 Ends drawing to render texture
 */
-int lcoreEndTextureMode( lua_State *L ) {
+int lcoreEndTextureMode( lua_State* L ) {
 	EndTextureMode();
 
 	return 0;
@@ -749,8 +749,8 @@ int lcoreEndTextureMode( lua_State *L ) {
 
 Begin custom shader drawing
 */
-int lcoreBeginShaderMode( lua_State *L ) {
-	Shader *shader = uluaGetShader( L, 1 );
+int lcoreBeginShaderMode( lua_State* L ) {
+	Shader* shader = uluaGetShader( L, 1 );
 
 	BeginShaderMode( *shader );
 
@@ -762,7 +762,7 @@ int lcoreBeginShaderMode( lua_State *L ) {
 
 End custom shader drawing (use default shader)
 */
-int lcoreEndShaderMode( lua_State *L ) {
+int lcoreEndShaderMode( lua_State* L ) {
 	EndShaderMode();
 
 	return 0;
@@ -773,7 +773,7 @@ int lcoreEndShaderMode( lua_State *L ) {
 
 Begin blending mode (BLEND_ALPHA, BLEND_ADDITIVE, BLEND_MULTIPLIED...)
 */
-int lcoreBeginBlendMode( lua_State *L ) {
+int lcoreBeginBlendMode( lua_State* L ) {
 	int mode = luaL_checkinteger( L, 1 );
 
 	BeginBlendMode( mode );
@@ -786,7 +786,7 @@ int lcoreBeginBlendMode( lua_State *L ) {
 
 End blending mode (reset to default: BLEND_ALPHA)
 */
-int lcoreEndBlendMode( lua_State *L ) {
+int lcoreEndBlendMode( lua_State* L ) {
 	EndBlendMode();
 	
 	return 0;
@@ -797,7 +797,7 @@ int lcoreEndBlendMode( lua_State *L ) {
 
 Begin scissor mode (define screen area for following drawing)
 */
-int lcoreBeginScissorMode( lua_State *L ) {
+int lcoreBeginScissorMode( lua_State* L ) {
 	Rectangle rect = uluaGetRectangle( L, 1 );
 
 	BeginScissorMode( rect.x, rect.y, rect.width, rect.height );
@@ -810,7 +810,7 @@ int lcoreBeginScissorMode( lua_State *L ) {
 
 End scissor mode
 */
-int lcoreEndScissorMode( lua_State *L ) {
+int lcoreEndScissorMode( lua_State* L ) {
 	EndScissorMode();
 
 	return 0;
@@ -829,15 +829,15 @@ NOTE: Set nil if no shader
 - Failure return nil
 - Success return Shader
 */
-int lcoreLoadShader( lua_State *L ) {
+int lcoreLoadShader( lua_State* L ) {
 	if ( !( lua_isstring( L, 1 ) || lua_isnil( L, 1 ) ) || !( lua_isstring( L, 2 ) || lua_isnil( L, 2 ) ) ) {
 		TraceLog( state->logLevelInvalid, "%s", "Argument needs to be string or nil" );
 		lua_pushnil( L );
 		return 1;
 	}
 	/* Will result to NULL if given nil. */
-	const char *vsFileName = lua_tostring( L, 1 );
-	const char *fsFileName = lua_tostring( L, 2 );
+	const char* vsFileName = lua_tostring( L, 1 );
+	const char* fsFileName = lua_tostring( L, 2 );
 
 	uluaPushShader( L, LoadShader( vsFileName, fsFileName ) );
 
@@ -854,15 +854,15 @@ NOTE: Set nil if no shader
 - Success return Shader
 */
 
-int lcoreLoadShaderFromMemory( lua_State *L ) {
+int lcoreLoadShaderFromMemory( lua_State* L ) {
 	if ( !( lua_isstring( L, 1 ) || lua_isnil( L, 1 ) ) || !( lua_isstring( L, 2 ) || lua_isnil( L, 2 ) ) ) {
 		TraceLog( state->logLevelInvalid, "%s", "Bad call of function. RL.LoadShaderFromMemory( string vsCode, string fsCode )" );
 		lua_pushnil( L );
 		return 1;
 	}
 	/* Will result to NULL if given nil. */
-	const char *vs = lua_tostring( L, 1 );
-	const char *fs = lua_tostring( L, 2 );
+	const char* vs = lua_tostring( L, 1 );
+	const char* fs = lua_tostring( L, 2 );
 
 	uluaPushShader( L, LoadShaderFromMemory( vs, fs ) );
 
@@ -876,8 +876,8 @@ Check if a shader is ready
 
 - Success return bool
 */
-int lcoreIsShaderReady( lua_State *L ) {
-	Shader *shader = uluaGetShader( L, 1 );
+int lcoreIsShaderReady( lua_State* L ) {
+	Shader* shader = uluaGetShader( L, 1 );
 
 	lua_pushboolean( L, IsShaderReady( *shader ) );
 
@@ -891,8 +891,8 @@ Get shader program id
 
 - Success return int
 */
-int lcoreGetShaderId( lua_State *L ) {
-	Shader *shader = uluaGetShader( L, 1 );
+int lcoreGetShaderId( lua_State* L ) {
+	Shader* shader = uluaGetShader( L, 1 );
 
 	lua_pushinteger( L, shader->id );
 
@@ -906,8 +906,8 @@ Get shader uniform location
 
 - Success return int
 */
-int lcoreGetShaderLocation( lua_State *L ) {
-	Shader *shader = uluaGetShader( L, 1 );
+int lcoreGetShaderLocation( lua_State* L ) {
+	Shader* shader = uluaGetShader( L, 1 );
 
 	lua_pushinteger( L, GetShaderLocation( *shader, luaL_checkstring( L, 2 ) ) );
 
@@ -921,8 +921,8 @@ Get shader attribute location
 
 - Success return int
 */
-int lcoreGetShaderLocationAttrib( lua_State *L ) {
-	Shader *shader = uluaGetShader( L, 1 );
+int lcoreGetShaderLocationAttrib( lua_State* L ) {
+	Shader* shader = uluaGetShader( L, 1 );
 
 	lua_pushinteger( L, GetShaderLocationAttrib( *shader, luaL_checkstring( L, 2 ) ) );
 
@@ -934,8 +934,8 @@ int lcoreGetShaderLocationAttrib( lua_State *L ) {
 
 Set shader location index
 */
-int lcoreSetShaderLocationIndex( lua_State *L ) {
-	Shader *shader = uluaGetShader( L, 1 );
+int lcoreSetShaderLocationIndex( lua_State* L ) {
+	Shader* shader = uluaGetShader( L, 1 );
 	int shaderLocationIndex = luaL_checkinteger( L, 2 );
 	int location = luaL_checkinteger( L, 3 );
 
@@ -951,8 +951,8 @@ Get shader location index
 
 - Success return int
 */
-int lcoreGetShaderLocationIndex( lua_State *L ) {
-	Shader *shader = uluaGetShader( L, 1 );
+int lcoreGetShaderLocationIndex( lua_State* L ) {
+	Shader* shader = uluaGetShader( L, 1 );
 	int shaderLocationIndex = luaL_checkinteger( L, 2 );
 
 	lua_pushinteger( L, shader->locs[ shaderLocationIndex ] );
@@ -965,8 +965,8 @@ int lcoreGetShaderLocationIndex( lua_State *L ) {
 
 Set shader uniform value (matrix 4x4)
 */
-int lcoreSetShaderValueMatrix( lua_State *L ) {
-	Shader *shader = uluaGetShader( L, 1 );
+int lcoreSetShaderValueMatrix( lua_State* L ) {
+	Shader* shader = uluaGetShader( L, 1 );
 	int locIndex = luaL_checkinteger( L, 2 );
 	Matrix mat = uluaGetMatrix( L, 3 );
 
@@ -980,10 +980,10 @@ int lcoreSetShaderValueMatrix( lua_State *L ) {
 
 Set shader uniform value for texture (sampler2d)
 */
-int lcoreSetShaderValueTexture( lua_State *L ) {
-	Shader *shader = uluaGetShader( L, 1 );
+int lcoreSetShaderValueTexture( lua_State* L ) {
+	Shader* shader = uluaGetShader( L, 1 );
 	int locIndex = luaL_checkinteger( L, 2 );
-	Texture *texture = uluaGetTexture( L, 3 );
+	Texture* texture = uluaGetTexture( L, 3 );
 
 	SetShaderValueTexture( *shader, locIndex, *texture );
 
@@ -996,8 +996,8 @@ int lcoreSetShaderValueTexture( lua_State *L ) {
 Set shader uniform value
 NOTE: Even one value should be in table
 */
-int lcoreSetShaderValue( lua_State *L ) {
-	Shader *shader = uluaGetShader( L, 1 );
+int lcoreSetShaderValue( lua_State* L ) {
+	Shader* shader = uluaGetShader( L, 1 );
 	int locIndex = luaL_checkinteger( L, 2 );
 	size_t valueCount = uluaGetTableLen( L, 3 );
 	int uniformType = luaL_checkinteger( L, 4 );
@@ -1038,8 +1038,8 @@ int lcoreSetShaderValue( lua_State *L ) {
 Set shader uniform value vector
 NOTE: Even one value should be in table
 */
-int lcoreSetShaderValueV( lua_State *L ) {
-	Shader *shader = uluaGetShader( L, 1 );
+int lcoreSetShaderValueV( lua_State* L ) {
+	Shader* shader = uluaGetShader( L, 1 );
 	int locIndex = luaL_checkinteger( L, 2 );
 	size_t valueCount = uluaGetTableLen( L, 3 );
 	int uniformType = luaL_checkinteger( L, 4 );
@@ -1080,8 +1080,8 @@ int lcoreSetShaderValueV( lua_State *L ) {
 
 Unload shader from GPU memory (VRAM)
 */
-int lcoreUnloadShader( lua_State *L ) {
-	Shader *shader = uluaGetShader( L, 1 );
+int lcoreUnloadShader( lua_State* L ) {
+	Shader* shader = uluaGetShader( L, 1 );
 
 	UnloadShader( *shader );
 
@@ -1099,9 +1099,9 @@ Get a ray trace from mouse position
 
 - Success return Ray
 */
-int lcoreGetMouseRay( lua_State *L ) {
+int lcoreGetMouseRay( lua_State* L ) {
 	Vector2 mousePosition = uluaGetVector2( L, 1 );
-	Camera3D *camera = uluaGetCamera3D( L, 2 );
+	Camera3D* camera = uluaGetCamera3D( L, 2 );
 
 	uluaPushRay( L, GetMouseRay( mousePosition, *camera ) );
 
@@ -1115,8 +1115,8 @@ Get camera transform matrix (view matrix)
 
 - Success return Matrix
 */
-int lcoreGetCameraMatrix( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreGetCameraMatrix( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 
 	uluaPushMatrix( L, GetCameraMatrix( *camera ) );
 
@@ -1130,8 +1130,8 @@ Get camera 2d transform matrix
 
 - Success return Matrix
 */
-int lcoreGetCameraMatrix2D( lua_State *L ) {
-	Camera2D *camera = uluaGetCamera2D( L, 1 );
+int lcoreGetCameraMatrix2D( lua_State* L ) {
+	Camera2D* camera = uluaGetCamera2D( L, 1 );
 
 	uluaPushMatrix( L, GetCameraMatrix2D( *camera ) );
 
@@ -1145,9 +1145,9 @@ Get the screen space position for a 3d world space position
 
 - Success return Vector2
 */
-int lcoreGetWorldToScreen( lua_State *L ) {
+int lcoreGetWorldToScreen( lua_State* L ) {
 	Vector3 position = uluaGetVector3( L, 1 );
-	Camera3D *camera = uluaGetCamera3D( L, 2 );
+	Camera3D* camera = uluaGetCamera3D( L, 2 );
 
 	uluaPushVector2( L, GetWorldToScreen( position, *camera ) );
 
@@ -1161,9 +1161,9 @@ Get size position for a 3d world space position
 
 - Success return Vector2
 */
-int lcoreGetWorldToScreenEx( lua_State *L ) {
+int lcoreGetWorldToScreenEx( lua_State* L ) {
 	Vector3 position = uluaGetVector3( L, 1 );
-	Camera3D *camera = uluaGetCamera3D( L, 2 );
+	Camera3D* camera = uluaGetCamera3D( L, 2 );
 	Vector2 size = uluaGetVector2( L, 3 );
 
 	uluaPushVector2( L, GetWorldToScreenEx( position, *camera, size.x, size.y ) );
@@ -1178,9 +1178,9 @@ Get the screen space position for a 2d camera world space position
 
 - Success return Vector2
 */
-int lcoreGetWorldToScreen2D( lua_State *L ) {
+int lcoreGetWorldToScreen2D( lua_State* L ) {
 	Vector2 position = uluaGetVector2( L, 1 );
-	Camera2D *camera = uluaGetCamera2D( L, 2 );
+	Camera2D* camera = uluaGetCamera2D( L, 2 );
 
 	uluaPushVector2( L, GetWorldToScreen2D( position, *camera ) );
 
@@ -1194,9 +1194,9 @@ Get the world space position for a 2d camera screen space position
 
 - Success return Vector2
 */
-int lcoreGetScreenToWorld2D( lua_State *L ) {
+int lcoreGetScreenToWorld2D( lua_State* L ) {
 	Vector2 position = uluaGetVector2( L, 1 );
-	Camera2D *camera = uluaGetCamera2D( L, 2 );
+	Camera2D* camera = uluaGetCamera2D( L, 2 );
 
 	uluaPushVector2( L, GetScreenToWorld2D( position, *camera ) );
 
@@ -1212,7 +1212,7 @@ int lcoreGetScreenToWorld2D( lua_State *L ) {
 
 Set target FPS (maximum)
 */
-int lcoreSetTargetFPS( lua_State *L ) {
+int lcoreSetTargetFPS( lua_State* L ) {
 	int fps = luaL_checkinteger( L, 1 );
 
 	SetTargetFPS( fps );
@@ -1227,7 +1227,7 @@ Get current FPS
 
 - Success return int
 */
-int lcoreGetFPS( lua_State *L ) {
+int lcoreGetFPS( lua_State* L ) {
 	lua_pushinteger( L, GetFPS() );
 
 	return 1;
@@ -1240,7 +1240,7 @@ Get time in seconds for last frame drawn (Delta time)
 
 - Success return float
 */
-int lcoreGetFrameTime( lua_State *L ) {
+int lcoreGetFrameTime( lua_State* L ) {
 	lua_pushnumber( L, GetFrameTime() );
 
 	return 1;
@@ -1253,7 +1253,7 @@ Get elapsed time in seconds since InitWindow()
 
 - Success return float
 */
-int lcoreGetTime( lua_State *L ) {
+int lcoreGetTime( lua_State* L ) {
 	lua_pushnumber( L, GetTime() );
 
 	return 1;
@@ -1268,7 +1268,7 @@ int lcoreGetTime( lua_State *L ) {
 
 Set the seed for the random number generator
 */
-int lcoreSetRandomSeed( lua_State *L ) {
+int lcoreSetRandomSeed( lua_State* L ) {
 	unsigned int seed = (unsigned int)luaL_checkinteger( L, 1 );
 
 	SetRandomSeed( seed );
@@ -1283,7 +1283,7 @@ Get a random value between min and max (both included)
 
 - Success return int
 */
-int lcoreGetRandomValue( lua_State *L ) {
+int lcoreGetRandomValue( lua_State* L ) {
 	int min = luaL_checkinteger( L, 1 );
 	int max = luaL_checkinteger( L, 2 );
 
@@ -1299,12 +1299,12 @@ Load random values sequence, no values repeated
 
 - Success return int{}
 */
-int lcoreLoadRandomSequence( lua_State *L ) {
+int lcoreLoadRandomSequence( lua_State* L ) {
 	unsigned int count = luaL_checkinteger( L, 1 );
 	int min = luaL_checkinteger( L, 1 );
 	int max = luaL_checkinteger( L, 2 );
 
-	int *sequence = LoadRandomSequence( count, min, max );
+	int* sequence = LoadRandomSequence( count, min, max );
 	lua_createtable( L, count, 0 );
 
 	for ( int i = 0; i < count; i++ ) {
@@ -1325,7 +1325,7 @@ int lcoreLoadRandomSequence( lua_State *L ) {
 
 Takes a screenshot of current screen (filename extension defines format)
 */
-int lcoreTakeScreenshot( lua_State *L ) {
+int lcoreTakeScreenshot( lua_State* L ) {
 	TakeScreenshot( luaL_checkstring( L, 1 ) );
 
 	return 0;
@@ -1336,7 +1336,7 @@ int lcoreTakeScreenshot( lua_State *L ) {
 
 Setup init configuration flags (view FLAGS)
 */
-int lcoreSetConfigFlags( lua_State *L ) {
+int lcoreSetConfigFlags( lua_State* L ) {
 	unsigned int flag = (unsigned int)luaL_checkinteger( L, 1 );
 
 	SetConfigFlags( flag );
@@ -1349,7 +1349,7 @@ int lcoreSetConfigFlags( lua_State *L ) {
 
 Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
 */
-int lcoreTraceLog( lua_State *L ) {
+int lcoreTraceLog( lua_State* L ) {
 	int logLevel = luaL_checkinteger( L, 1 );
 
 	TraceLog( logLevel, "%s", luaL_checkstring( L, 2 ) );
@@ -1362,7 +1362,7 @@ int lcoreTraceLog( lua_State *L ) {
 
 Set the current threshold (minimum) log level
 */
-int lcoreSetTraceLogLevel( lua_State *L ) {
+int lcoreSetTraceLogLevel( lua_State* L ) {
 	int logLevel = luaL_checkinteger( L, 1 );
 
 	SetTraceLogLevel( logLevel );
@@ -1375,7 +1375,7 @@ int lcoreSetTraceLogLevel( lua_State *L ) {
 
 Set the log level for bad function calls and invalid data formats.
 */
-int lcoreSetLogLevelInvalid( lua_State *L ) {
+int lcoreSetLogLevelInvalid( lua_State* L ) {
 	state->logLevelInvalid = luaL_checkinteger( L, 1 );
 
 	return 0;
@@ -1388,7 +1388,7 @@ Get the log level for bad function calls and invalid data formats.
 
 - Success return int
 */
-int lcoreGetLogLevelInvalid( lua_State *L ) {
+int lcoreGetLogLevelInvalid( lua_State* L ) {
 	lua_pushinteger( L, state->logLevelInvalid );
 
 	return 1;
@@ -1399,7 +1399,7 @@ int lcoreGetLogLevelInvalid( lua_State *L ) {
 
 Open URL with default system browser (if available)
 */
-int lcoreOpenURL( lua_State *L ) {
+int lcoreOpenURL( lua_State* L ) {
 	OpenURL( luaL_checkstring( L, 1 ) );
 
 	return 0;
@@ -1412,7 +1412,7 @@ Check if Lua garbage collection is set to unload object data
 
 - Success return bool
 */
-int lcoreIsGCUnloadEnabled( lua_State *L ) {
+int lcoreIsGCUnloadEnabled( lua_State* L ) {
 	lua_pushboolean( L, state->gcUnload );
 
 	return 1;
@@ -1423,7 +1423,7 @@ int lcoreIsGCUnloadEnabled( lua_State *L ) {
 
 Set Lua garbage collection to unload object data
 */
-int lcoreSetGCUnload( lua_State *L ) {
+int lcoreSetGCUnload( lua_State* L ) {
 	state->gcUnload = uluaGetBoolean( L, 1 );
 
 	return 0;
@@ -1440,8 +1440,8 @@ Load file data as byte array (read). Buffer type is BUFFER_UNSIGNED_CHAR
 
 - Success return Buffer
 */
-int lcoreLoadFileData( lua_State *L ) {
-	const char *fileName = luaL_checkstring( L, 1 );
+int lcoreLoadFileData( lua_State* L ) {
+	const char* fileName = luaL_checkstring( L, 1 );
 
 	Buffer buffer = {
 		.type = BUFFER_UNSIGNED_CHAR
@@ -1460,9 +1460,9 @@ Save data to file from byte array (write), returns true on success
 
 - Success return bool
 */
-int lcoreSaveFileData( lua_State *L ) {
-	const char *fileName = luaL_checkstring( L, 1 );
-	Buffer *buffer = uluaGetBuffer( L, 2 );
+int lcoreSaveFileData( lua_State* L ) {
+	const char* fileName = luaL_checkstring( L, 1 );
+	Buffer* buffer = uluaGetBuffer( L, 2 );
 
 	lua_pushboolean( L, SaveFileData( fileName, buffer->data, buffer->size ) );
 
@@ -1476,9 +1476,9 @@ Export data to code (.h), returns true on success
 
 - Success return bool
 */
-int lcoreExportDataAsCode( lua_State *L ) {
-	Buffer *buffer = uluaGetBuffer( L, 1 );
-	const char *fileName = luaL_checkstring( L, 2 );
+int lcoreExportDataAsCode( lua_State* L ) {
+	Buffer* buffer = uluaGetBuffer( L, 1 );
+	const char* fileName = luaL_checkstring( L, 2 );
 
 	lua_pushboolean( L, ExportDataAsCode( buffer->data, buffer->size, fileName ) );
 
@@ -1492,10 +1492,10 @@ Load text data from file (read)
 
 - Success return string
 */
-int lcoreLoadFileText( lua_State *L ) {
-	const char *fileName = luaL_checkstring( L, 1 );
+int lcoreLoadFileText( lua_State* L ) {
+	const char* fileName = luaL_checkstring( L, 1 );
 
-	char *text = LoadFileText( fileName );
+	char* text = LoadFileText( fileName );
 	lua_pushstring( L, text );
 	UnloadFileText( text );
 
@@ -1509,9 +1509,9 @@ Save text data to file (write), returns true on success
 
 - Success return bool
 */
-int lcoreSaveFileText( lua_State *L ) {
-	const char *fileName = luaL_checkstring( L, 1 );
-	char *text = (char*)luaL_checkstring( L, 2 );
+int lcoreSaveFileText( lua_State* L ) {
+	const char* fileName = luaL_checkstring( L, 1 );
+	char* text = (char*)luaL_checkstring( L, 2 );
 
 	lua_pushboolean( L, SaveFileText( fileName, text ) );
 
@@ -1529,7 +1529,7 @@ Return game directory (where main.lua is located)
 
 - Success return string
 */
-int lcoreGetBasePath( lua_State *L ) {
+int lcoreGetBasePath( lua_State* L ) {
 	lua_pushstring( L, state->exePath );
 
 	return 1;
@@ -1542,7 +1542,7 @@ Check if file exists
 
 - Success return bool
 */
-int lcoreFileExists( lua_State *L ) {
+int lcoreFileExists( lua_State* L ) {
 	lua_pushboolean( L, FileExists( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
@@ -1555,7 +1555,7 @@ Check if a directory path exists
 
 - Success return bool
 */
-int lcoreDirectoryExists( lua_State *L ) {
+int lcoreDirectoryExists( lua_State* L ) {
 	lua_pushboolean( L, DirectoryExists( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
@@ -1568,7 +1568,7 @@ Check file extension (Including point: .png, .wav)
 
 - Success return bool
 */
-int lcoreIsFileExtension( lua_State *L ) {
+int lcoreIsFileExtension( lua_State* L ) {
 	lua_pushboolean( L, IsFileExtension( luaL_checkstring( L, 1 ), luaL_checkstring( L, 2 ) ) );
 
 	return 1;
@@ -1581,7 +1581,7 @@ Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
 
 - Success return int
 */
-int lcoreGetFileLength( lua_State *L ) {
+int lcoreGetFileLength( lua_State* L ) {
 	lua_pushinteger( L, GetFileLength( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
@@ -1594,7 +1594,7 @@ Get pointer to extension for a filename string (Includes dot: '.png')
 
 - Success return string
 */
-int lcoreGetFileExtension( lua_State *L ) {
+int lcoreGetFileExtension( lua_State* L ) {
 	lua_pushstring( L, GetFileExtension( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
@@ -1607,7 +1607,7 @@ Get pointer to filename for a path string
 
 - Success return string
 */
-int lcoreGetFileName( lua_State *L ) {
+int lcoreGetFileName( lua_State* L ) {
 	lua_pushstring( L, GetFileName( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
@@ -1620,7 +1620,7 @@ Get filename string without extension (Uses static string)
 
 - Success return string
 */
-int lcoreGetFileNameWithoutExt( lua_State *L ) {
+int lcoreGetFileNameWithoutExt( lua_State* L ) {
 	lua_pushstring( L, GetFileNameWithoutExt( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
@@ -1633,7 +1633,7 @@ Get full path for a given fileName with path (Uses static string)
 
 - Success return string
 */
-int lcoreGetDirectoryPath( lua_State *L ) {
+int lcoreGetDirectoryPath( lua_State* L ) {
 	lua_pushstring( L, GetDirectoryPath( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
@@ -1646,7 +1646,7 @@ Get previous directory path for a given path (Uses static string)
 
 - Success return string
 */
-int lcoreGetPrevDirectoryPath( lua_State *L ) {
+int lcoreGetPrevDirectoryPath( lua_State* L ) {
 	lua_pushstring( L, GetPrevDirectoryPath( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
@@ -1659,7 +1659,7 @@ Get current working directory (Uses static string)
 
 - Success return string
 */
-int lcoreGetWorkingDirectory( lua_State *L ) {
+int lcoreGetWorkingDirectory( lua_State* L ) {
 	lua_pushstring( L, GetWorkingDirectory() );
 
 	return 1;
@@ -1672,7 +1672,7 @@ Get the directory of the running application (uses static string)
 
 - Success return string
 */
-int lcoreGetApplicationDirectory( lua_State *L ) {
+int lcoreGetApplicationDirectory( lua_State* L ) {
 	lua_pushstring( L, GetApplicationDirectory() );
 
 	return 1;
@@ -1685,7 +1685,7 @@ Load directory filepaths
 
 - Success return string{}
 */
-int lcoreLoadDirectoryFiles( lua_State *L ) {
+int lcoreLoadDirectoryFiles( lua_State* L ) {
 	FilePathList files = LoadDirectoryFiles( luaL_checkstring( L, 1 ) );
 
 	lua_createtable( L, files.count, 0 );
@@ -1706,7 +1706,7 @@ Load directory filepaths with extension filtering and recursive directory scan
 
 - Success return string{}
 */
-int lcoreLoadDirectoryFilesEx( lua_State *L ) {
+int lcoreLoadDirectoryFilesEx( lua_State* L ) {
 	bool scanSubdirs = uluaGetBoolean( L, 3 );
 
 	FilePathList files = LoadDirectoryFilesEx( luaL_checkstring( L, 1 ), luaL_checkstring( L, 2 ), scanSubdirs );
@@ -1729,7 +1729,7 @@ Change working directory, return true on success
 
 - Success return bool
 */
-int lcoreChangeDirectory( lua_State *L ) {
+int lcoreChangeDirectory( lua_State* L ) {
 	lua_pushboolean( L, ChangeDirectory( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
@@ -1742,7 +1742,7 @@ Check if a given path is a file or a directory
 
 - Success return bool
 */
-int lcoreIsPathFile( lua_State *L ) {
+int lcoreIsPathFile( lua_State* L ) {
 	lua_pushboolean( L, IsPathFile( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
@@ -1755,7 +1755,7 @@ Check if a file has been dropped into window
 
 - Success return bool
 */
-int lcoreIsFileDropped( lua_State *L ) {
+int lcoreIsFileDropped( lua_State* L ) {
 	lua_pushboolean( L, IsFileDropped() );
 
 	return 1;
@@ -1768,7 +1768,7 @@ Load dropped filepaths
 
 - Success return string{}
 */
-int lcoreLoadDroppedFiles( lua_State *L ) {
+int lcoreLoadDroppedFiles( lua_State* L ) {
 	FilePathList files = LoadDroppedFiles();
 
 	lua_createtable( L, files.count, 0 );
@@ -1789,7 +1789,7 @@ Get file modification time (Last write time)
 
 - Success return int
 */
-int lcoreGetFileModTime( lua_State *L ) {
+int lcoreGetFileModTime( lua_State* L ) {
 	lua_pushinteger( L, GetFileModTime( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
@@ -1806,13 +1806,13 @@ Compress data (DEFLATE algorithm)
 
 - Success return Buffer
 */
-int lcoreCompressData( lua_State *L ) {
-	Buffer *inBuffer = uluaGetBuffer( L, 1 );
+int lcoreCompressData( lua_State* L ) {
+	Buffer* inBuffer = uluaGetBuffer( L, 1 );
 	Buffer outBuffer = {
 		.size = 0,
 		.type = inBuffer->type
 	};
-	unsigned char *compData = CompressData( inBuffer->data, inBuffer->size, (int*)&outBuffer.size );
+	unsigned char* compData = CompressData( inBuffer->data, inBuffer->size, (int*)&outBuffer.size );
 
 	outBuffer.data = malloc( outBuffer.size );
 	memcpy( outBuffer.data, compData, outBuffer.size );
@@ -1830,13 +1830,13 @@ Decompress data (DEFLATE algorithm).
 
 - Success Buffer 
 */
-int lcoreDecompressData( lua_State *L ) {
-	Buffer *inBuffer = uluaGetBuffer( L, 1 );
+int lcoreDecompressData( lua_State* L ) {
+	Buffer* inBuffer = uluaGetBuffer( L, 1 );
 	Buffer outBuffer = {
 		.size = 0,
 		.type = inBuffer->type
 	};
-	unsigned char *data = DecompressData( inBuffer->data, inBuffer->size, (int*)&outBuffer.size );
+	unsigned char* data = DecompressData( inBuffer->data, inBuffer->size, (int*)&outBuffer.size );
 
 	outBuffer.data = malloc( outBuffer.size );
 	memcpy( outBuffer.data, data, outBuffer.size );
@@ -1854,12 +1854,12 @@ Encode data to Base64 string
 
 - Success return string, int
 */
-int lcoreEncodeDataBase64( lua_State *L ) {
+int lcoreEncodeDataBase64( lua_State* L ) {
 	int dataSize = 0;
-	const char *string = luaL_checklstring( L, 1, (size_t*)&dataSize );
+	const char* string = luaL_checklstring( L, 1, (size_t*)&dataSize );
 
 	int outputSize = 0;
-	char *compData = EncodeDataBase64( string, dataSize, &outputSize );
+	char* compData = EncodeDataBase64( string, dataSize, &outputSize );
 
 	lua_pushstring( L, compData );
 	lua_pushinteger( L, outputSize );
@@ -1876,9 +1876,9 @@ Decode Base64 string data
 
 - Success return string, int
 */
-int lcoreDecodeDataBase64( lua_State *L ) {
+int lcoreDecodeDataBase64( lua_State* L ) {
 	int outputSize = 0;
-	unsigned char *decodedData = DecodeDataBase64( luaL_checkstring( L, 1 ), &outputSize );
+	unsigned char* decodedData = DecodeDataBase64( luaL_checkstring( L, 1 ), &outputSize );
 
 	lua_pushstring( L, decodedData );
 	lua_pushinteger( L, outputSize );
@@ -1899,7 +1899,7 @@ Detect if a key has been pressed once
 
 - Success return bool
 */
-int lcoreIsKeyPressed( lua_State *L ) {
+int lcoreIsKeyPressed( lua_State* L ) {
 	int key = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsKeyPressed( key ) );
@@ -1914,7 +1914,7 @@ Detect if a key is being pressed
 
 - Success return bool
 */
-int lcoreIsKeyDown( lua_State *L ) {
+int lcoreIsKeyDown( lua_State* L ) {
 	int key = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsKeyDown( key ) );
@@ -1929,7 +1929,7 @@ Detect if a key has been released once
 
 - Success return bool
 */
-int lcoreIsKeyReleased( lua_State *L ) {
+int lcoreIsKeyReleased( lua_State* L ) {
 	int key = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsKeyReleased( key ) );
@@ -1944,7 +1944,7 @@ Check if a key is NOT being pressed
 
 - Success return bool
 */
-int lcoreIsKeyUp( lua_State *L ) {
+int lcoreIsKeyUp( lua_State* L ) {
 	int key = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsKeyUp( key ) );
@@ -1959,7 +1959,7 @@ Get key pressed (keycode), call it multiple times for keys queued, returns 0 whe
 
 - Success return int
 */
-int lcoreGetKeyPressed( lua_State *L ) {
+int lcoreGetKeyPressed( lua_State* L ) {
 	lua_pushinteger( L, GetKeyPressed() );
 
 	return 1;
@@ -1972,7 +1972,7 @@ Get char pressed (unicode), call it multiple times for chars queued, returns 0 w
 
 - Success return int
 */
-int lcoreGetCharPressed( lua_State *L ) {
+int lcoreGetCharPressed( lua_State* L ) {
 	lua_pushinteger( L, GetCharPressed() );
 
 	return 1;
@@ -1983,7 +1983,7 @@ int lcoreGetCharPressed( lua_State *L ) {
 
 Set a custom key to exit program (default is ESC)
 */
-int lcoreSetExitKey( lua_State *L ) {
+int lcoreSetExitKey( lua_State* L ) {
 	int key = luaL_checkinteger( L, 1 );
 
 	SetExitKey( key );
@@ -2002,7 +2002,7 @@ Detect if a gamepad is available
 
 - Success return bool
 */
-int lcoreIsGamepadAvailable( lua_State *L ) {
+int lcoreIsGamepadAvailable( lua_State* L ) {
 	int gamepad = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsGamepadAvailable( gamepad ) );
@@ -2017,7 +2017,7 @@ Return gamepad internal name id
 
 - Success return string
 */
-int lcoreGetGamepadName( lua_State *L ) {
+int lcoreGetGamepadName( lua_State* L ) {
 	int gamepad = luaL_checkinteger( L, 1 );
 
 	lua_pushstring( L, GetGamepadName( gamepad ) );
@@ -2032,7 +2032,7 @@ Detect if a gamepad button has been pressed once
 
 - Success return bool
 */
-int lcoreIsGamepadButtonPressed( lua_State *L ) {
+int lcoreIsGamepadButtonPressed( lua_State* L ) {
 	int gamepad = luaL_checkinteger( L, 1 );
 	int button = luaL_checkinteger( L, 2 );
 
@@ -2048,7 +2048,7 @@ Detect if a gamepad button is being pressed
 
 - Success return bool
 */
-int lcoreIsGamepadButtonDown( lua_State *L ) {
+int lcoreIsGamepadButtonDown( lua_State* L ) {
 	int gamepad = luaL_checkinteger( L, 1 );
 	int button = luaL_checkinteger( L, 2 );
 
@@ -2064,7 +2064,7 @@ Detect if a gamepad button has been released once
 
 - Success return bool
 */
-int lcoreIsGamepadButtonReleased( lua_State *L ) {
+int lcoreIsGamepadButtonReleased( lua_State* L ) {
 	int gamepad = luaL_checkinteger( L, 1 );
 	int button = luaL_checkinteger( L, 2 );
 
@@ -2080,7 +2080,7 @@ Return gamepad axis count for a gamepad
 
 - Success return int
 */
-int lcoreGetGamepadAxisCount( lua_State *L ) {
+int lcoreGetGamepadAxisCount( lua_State* L ) {
 	int gamepad = luaL_checkinteger( L, 1 );
 
 	lua_pushinteger( L, GetGamepadAxisCount( gamepad ) );
@@ -2095,7 +2095,7 @@ Return axis movement value for a gamepad axis
 
 - Success return float
 */
-int lcoreGetGamepadAxisMovement( lua_State *L ) {
+int lcoreGetGamepadAxisMovement( lua_State* L ) {
 	int gamepad = luaL_checkinteger( L, 1 );
 	int axis = luaL_checkinteger( L, 2 );
 
@@ -2111,8 +2111,8 @@ Set internal gamepad mappings (SDL_GameControllerDB)
 
 - Success return int
 */
-int lcoreSetGamepadMappings( lua_State *L ) {
-	const char *mappings = luaL_checkstring( L, 1 );
+int lcoreSetGamepadMappings( lua_State* L ) {
+	const char* mappings = luaL_checkstring( L, 1 );
 
 	lua_pushnumber( L, SetGamepadMappings( mappings ) );
 
@@ -2130,7 +2130,7 @@ Detect if a mouse button has been pressed once
 
 - Success return bool
 */
-int lcoreIsMouseButtonPressed( lua_State *L ) {
+int lcoreIsMouseButtonPressed( lua_State* L ) {
 	int button = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsMouseButtonPressed( button ) );
@@ -2145,7 +2145,7 @@ Detect if a mouse button is being pressed
 
 - Success return bool
 */
-int lcoreIsMouseButtonDown( lua_State *L ) {
+int lcoreIsMouseButtonDown( lua_State* L ) {
 	int button = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsMouseButtonDown( button ) );
@@ -2160,7 +2160,7 @@ Detect if a mouse button has been released once
 
 - Success return bool
 */
-int lcoreIsMouseButtonReleased( lua_State *L ) {
+int lcoreIsMouseButtonReleased( lua_State* L ) {
 	int button = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsMouseButtonReleased( button ) );
@@ -2175,7 +2175,7 @@ Check if a mouse button is NOT being pressed
 
 - Success return bool
 */
-int lcoreIsMouseButtonUp( lua_State *L ) {
+int lcoreIsMouseButtonUp( lua_State* L ) {
 	int button = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsMouseButtonUp( button ) );
@@ -2190,7 +2190,7 @@ Returns mouse position
 
 - Success return Vector2
 */
-int lcoreGetMousePosition( lua_State *L ) {
+int lcoreGetMousePosition( lua_State* L ) {
 	uluaPushVector2( L, GetMousePosition() );
 
 	return 1;
@@ -2203,7 +2203,7 @@ Get mouse delta between frames
 
 - Success return Vector2
 */
-int lcoreGetMouseDelta( lua_State *L ) {
+int lcoreGetMouseDelta( lua_State* L ) {
 	uluaPushVector2( L, GetMouseDelta() );
 
 	return 1;
@@ -2214,7 +2214,7 @@ int lcoreGetMouseDelta( lua_State *L ) {
 
 Set mouse position XY
 */
-int lcoreSetMousePosition( lua_State *L ) {
+int lcoreSetMousePosition( lua_State* L ) {
 	Vector2 pos = uluaGetVector2( L, 1 );
 
 	SetMousePosition( pos.x, pos.y );
@@ -2227,7 +2227,7 @@ int lcoreSetMousePosition( lua_State *L ) {
 
 Set mouse offset
 */
-int lcoreSetMouseOffset( lua_State *L ) {
+int lcoreSetMouseOffset( lua_State* L ) {
 	Vector2 offset = uluaGetVector2( L, 1 );
 
 	SetMouseOffset( offset.x, offset.y );
@@ -2240,7 +2240,7 @@ int lcoreSetMouseOffset( lua_State *L ) {
 
 Set mouse scaling
 */
-int lcoreSetMouseScale( lua_State *L ) {
+int lcoreSetMouseScale( lua_State* L ) {
 	Vector2 scale = uluaGetVector2( L, 1 );
 
 	SetMouseScale( scale.x, scale.y );
@@ -2255,7 +2255,7 @@ Returns mouse wheel movement Y
 
 - Success return float
 */
-int lcoreGetMouseWheelMove( lua_State *L ) {
+int lcoreGetMouseWheelMove( lua_State* L ) {
 	lua_pushnumber( L, GetMouseWheelMove() );
 
 	return 1;
@@ -2266,7 +2266,7 @@ int lcoreGetMouseWheelMove( lua_State *L ) {
 
 Set mouse cursor
 */
-int lcoreSetMouseCursor( lua_State *L ) {
+int lcoreSetMouseCursor( lua_State* L ) {
 	int cursor = luaL_checkinteger( L, 1 );
 
 	SetMouseCursor( cursor );
@@ -2285,7 +2285,7 @@ Get touch position XY for a touch point index (relative to screen size)
 
 - Success return Vector2
 */
-int lcoreGetTouchPosition( lua_State *L ) {
+int lcoreGetTouchPosition( lua_State* L ) {
 	int index = luaL_checkinteger( L, 1 );
 
 	uluaPushVector2( L, GetTouchPosition( index ) );
@@ -2300,7 +2300,7 @@ Get touch point identifier for given index
 
 - Success return int
 */
-int lcoreGetTouchPointId( lua_State *L ) {
+int lcoreGetTouchPointId( lua_State* L ) {
 	int index = luaL_checkinteger( L, 1 );
 
 	lua_pushinteger( L, GetTouchPointId( index ) );
@@ -2315,7 +2315,7 @@ Get touch point identifier for given index
 
 - Success return int
 */
-int lcoreGetTouchPointCount( lua_State *L ) {
+int lcoreGetTouchPointCount( lua_State* L ) {
 	lua_pushinteger( L, GetTouchPointCount() );
 
 	return 1;
@@ -2330,7 +2330,7 @@ int lcoreGetTouchPointCount( lua_State *L ) {
 
 Enable a set of gestures using flags
 */
-int lcoreSetGesturesEnabled( lua_State *L ) {
+int lcoreSetGesturesEnabled( lua_State* L ) {
 	unsigned int flags = (unsigned int)luaL_checkinteger( L, 1 );
 
 	SetGesturesEnabled( flags );
@@ -2345,7 +2345,7 @@ Check if a gesture have been detected
 
 - Success return bool
 */
-int lcoreIsGestureDetected( lua_State *L ) {
+int lcoreIsGestureDetected( lua_State* L ) {
 	int gesture = luaL_checkinteger( L, 1 );
 
 	lua_pushboolean( L, IsGestureDetected( gesture ) );
@@ -2360,7 +2360,7 @@ Get latest detected gesture
 
 - Success return int
 */
-int lcoreGetGestureDetected( lua_State *L ) {
+int lcoreGetGestureDetected( lua_State* L ) {
 	lua_pushinteger( L, GetGestureDetected() );
 
 	return 1;
@@ -2373,7 +2373,7 @@ Get gesture hold time in milliseconds
 
 - Success return float
 */
-int lcoreGetGestureHoldDuration( lua_State *L ) {
+int lcoreGetGestureHoldDuration( lua_State* L ) {
 	lua_pushnumber( L, GetGestureHoldDuration() );
 
 	return 1;
@@ -2386,7 +2386,7 @@ Get gesture drag vector
 
 - Success return Vector2
 */
-int lcoreGetGestureDragVector( lua_State *L ) {
+int lcoreGetGestureDragVector( lua_State* L ) {
 	uluaPushVector2( L, GetGestureDragVector() );
 
 	return 1;
@@ -2399,7 +2399,7 @@ Get gesture drag angle
 
 - Success return float
 */
-int lcoreGetGestureDragAngle( lua_State *L ) {
+int lcoreGetGestureDragAngle( lua_State* L ) {
 	lua_pushnumber( L, GetGestureDragAngle() );
 
 	return 1;
@@ -2412,7 +2412,7 @@ Get gesture pinch delta
 
 - Success return Vector2
 */
-int lcoreGetGesturePinchVector( lua_State *L ) {
+int lcoreGetGesturePinchVector( lua_State* L ) {
 	uluaPushVector2( L, GetGesturePinchVector() );
 
 	return 1;
@@ -2425,7 +2425,7 @@ Get gesture pinch angle
 
 - Success return float
 */
-int lcoreGetGesturePinchAngle( lua_State *L ) {
+int lcoreGetGesturePinchAngle( lua_State* L ) {
 	lua_pushnumber( L, GetGesturePinchAngle() );
 
 	return 1;
@@ -2442,7 +2442,7 @@ Return camera2D set to default configuration
 
 - Success return Camera2D
 */
-int lcoreCreateCamera2D( lua_State *L ) {
+int lcoreCreateCamera2D( lua_State* L ) {
 	Camera2D camera = { 0 };
 	
 	camera.offset = (Vector2){ 0.0, 0.0 };
@@ -2460,8 +2460,8 @@ int lcoreCreateCamera2D( lua_State *L ) {
 
 Set camera target (rotation and zoom origin)
 */
-int lcoreSetCamera2DTarget( lua_State *L ) {
-	Camera2D *camera = uluaGetCamera2D( L, 1 );
+int lcoreSetCamera2DTarget( lua_State* L ) {
+	Camera2D* camera = uluaGetCamera2D( L, 1 );
 	Vector2 target = uluaGetVector2( L, 2 );
 
 	camera->target = target;
@@ -2474,8 +2474,8 @@ int lcoreSetCamera2DTarget( lua_State *L ) {
 
 Set camera offset (displacement from target)
 */
-int lcoreSetCamera2DOffset( lua_State *L ) {
-	Camera2D *camera = uluaGetCamera2D( L, 1 );
+int lcoreSetCamera2DOffset( lua_State* L ) {
+	Camera2D* camera = uluaGetCamera2D( L, 1 );
 	Vector2 offset = uluaGetVector2( L, 2 );
 
 	camera->offset = offset;
@@ -2488,8 +2488,8 @@ int lcoreSetCamera2DOffset( lua_State *L ) {
 
 Set camera rotation in degrees
 */
-int lcoreSetCamera2DRotation( lua_State *L ) {
-	Camera2D *camera = uluaGetCamera2D( L, 1 );
+int lcoreSetCamera2DRotation( lua_State* L ) {
+	Camera2D* camera = uluaGetCamera2D( L, 1 );
 	float rotation = luaL_checknumber( L, 2 );
 
 	camera->rotation = rotation;
@@ -2502,8 +2502,8 @@ int lcoreSetCamera2DRotation( lua_State *L ) {
 
 Set camera zoom (scaling), should be 1.0f by default
 */
-int lcoreSetCamera2DZoom( lua_State *L ) {
-	Camera2D *camera = uluaGetCamera2D( L, 1 );
+int lcoreSetCamera2DZoom( lua_State* L ) {
+	Camera2D* camera = uluaGetCamera2D( L, 1 );
 	float zoom = luaL_checknumber( L, 2 );
 
 	camera->zoom = zoom;
@@ -2518,8 +2518,8 @@ Get camera2D target
 
 - Success return Vector2
 */
-int lcoreGetCamera2DTarget( lua_State *L ) {
-	Camera2D *camera = uluaGetCamera2D( L, 1 );
+int lcoreGetCamera2DTarget( lua_State* L ) {
+	Camera2D* camera = uluaGetCamera2D( L, 1 );
 
 	uluaPushVector2( L, camera->target );
 
@@ -2533,8 +2533,8 @@ Get camera2D offset
 
 - Success return Vector2
 */
-int lcoreGetCamera2DOffset( lua_State *L ) {
-	Camera2D *camera = uluaGetCamera2D( L, 1 );
+int lcoreGetCamera2DOffset( lua_State* L ) {
+	Camera2D* camera = uluaGetCamera2D( L, 1 );
 	uluaPushVector2( L, camera->offset );
 
 	return 1;
@@ -2547,8 +2547,8 @@ Get camera2D rotation
 
 - Success return float
 */
-int lcoreGetCamera2DRotation( lua_State *L ) {
-	Camera2D *camera = uluaGetCamera2D( L, 1 );
+int lcoreGetCamera2DRotation( lua_State* L ) {
+	Camera2D* camera = uluaGetCamera2D( L, 1 );
 	lua_pushnumber( L, camera->rotation );
 
 	return 1;
@@ -2561,8 +2561,8 @@ Get camera2D zoom
 
 - Success return float
 */
-int lcoreGetCamera2DZoom( lua_State *L ) {
-	Camera2D *camera = uluaGetCamera2D( L, 1 );
+int lcoreGetCamera2DZoom( lua_State* L ) {
+	Camera2D* camera = uluaGetCamera2D( L, 1 );
 	lua_pushnumber( L, camera->zoom );
 
 	return 1;
@@ -2579,7 +2579,7 @@ Return camera3D id set to default configuration
 
 - Success return int
 */
-int lcoreCreateCamera3D( lua_State *L ) {
+int lcoreCreateCamera3D( lua_State* L ) {
 	Camera3D camera = { 0 };
 
 	camera.position = (Vector3){ 0.0, 0.0, 0.0 };
@@ -2598,8 +2598,8 @@ int lcoreCreateCamera3D( lua_State *L ) {
 
 Set camera position (Remember to call "RL.UpdateCamera3D()" to apply changes)
 */
-int lcoreSetCamera3DPosition( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreSetCamera3DPosition( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 	Vector3 pos = uluaGetVector3( L, 2 );
 
 	camera->position = pos;
@@ -2612,8 +2612,8 @@ int lcoreSetCamera3DPosition( lua_State *L ) {
 
 Set camera target it looks-at
 */
-int lcoreSetCamera3DTarget( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreSetCamera3DTarget( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 	Vector3 target = uluaGetVector3( L, 2 );
 
 	camera->target = target;
@@ -2626,8 +2626,8 @@ int lcoreSetCamera3DTarget( lua_State *L ) {
 
 Set camera up vector (Rotation over it's axis)
 */
-int lcoreSetCamera3DUp( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreSetCamera3DUp( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 	Vector3 up = uluaGetVector3( L, 2 );
 
 	camera->up = up;
@@ -2640,8 +2640,8 @@ int lcoreSetCamera3DUp( lua_State *L ) {
 
 Set camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic
 */
-int lcoreSetCamera3DFovy( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreSetCamera3DFovy( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 	float fovy = luaL_checknumber( L, 2 );
 
 	camera->fovy = fovy;
@@ -2654,8 +2654,8 @@ int lcoreSetCamera3DFovy( lua_State *L ) {
 
 Set camera projection mode (CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC)
 */
-int lcoreSetCamera3DProjection( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreSetCamera3DProjection( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 	int projection = luaL_checkinteger( L, 2 );
 
 	camera->projection = projection;
@@ -2670,8 +2670,8 @@ Get camera position
 
 - Success return Vector3
 */
-int lcoreGetCamera3DPosition( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreGetCamera3DPosition( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 
 	uluaPushVector3( L, camera->position );
 
@@ -2685,8 +2685,8 @@ Get camera target it looks-at
 
 - Success return Vector3
 */
-int lcoreGetCamera3DTarget( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreGetCamera3DTarget( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 
 	uluaPushVector3( L, camera->target );
 
@@ -2700,8 +2700,8 @@ Get camera up vector (Rotation over it's axis)
 
 - Success return Vector3
 */
-int lcoreGetCamera3DUp( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreGetCamera3DUp( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 
 	uluaPushVector3( L, camera->up );
 
@@ -2715,8 +2715,8 @@ Get camera field-of-view apperture in Y (degrees) in perspective, used as near p
 
 - Success return float
 */
-int lcoreGetCamera3DFovy( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreGetCamera3DFovy( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 
 	lua_pushnumber( L, camera->fovy );
 
@@ -2730,8 +2730,8 @@ Get camera projection mode
 
 - Success return int
 */
-int lcoreGetCamera3DProjection( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreGetCamera3DProjection( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 
 	lua_pushinteger( L, camera->projection );
 
@@ -2745,8 +2745,8 @@ Returns the cameras forward vector (normalized)
 
 - Success return Vector3
 */
-int lcoreGetCamera3DForward( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreGetCamera3DForward( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 
 	uluaPushVector3( L, GetCameraForward( camera ) );
 
@@ -2761,8 +2761,8 @@ Note: The up vector might not be perpendicular to the forward vector
 
 - Success return Vector3
 */
-int lcoreGetCamera3DUpNormalized( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreGetCamera3DUpNormalized( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 
 	uluaPushVector3( L, GetCameraUp( camera ) );
 
@@ -2776,8 +2776,8 @@ Returns the cameras right vector (normalized)
 
 - Success return Vector3
 */
-int lcoreGetCamera3DRight( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreGetCamera3DRight( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 
 	uluaPushVector3( L, GetCameraRight( camera ) );
 
@@ -2789,8 +2789,8 @@ int lcoreGetCamera3DRight( lua_State *L ) {
 
 Moves the camera in it's forward direction
 */
-int lcoreCamera3DMoveForward( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreCamera3DMoveForward( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 	float distance = luaL_checknumber( L, 2 );
 	bool moveInWorldPlane = uluaGetBoolean( L, 3 );
 
@@ -2804,8 +2804,8 @@ int lcoreCamera3DMoveForward( lua_State *L ) {
 
 Moves the camera in it's up direction
 */
-int lcoreCamera3DMoveUp( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreCamera3DMoveUp( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 	float distance = luaL_checknumber( L, 2 );
 
 	CameraMoveUp( camera, distance );
@@ -2818,8 +2818,8 @@ int lcoreCamera3DMoveUp( lua_State *L ) {
 
 Moves the camera target in it's current right direction
 */
-int lcoreCamera3DMoveRight( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreCamera3DMoveRight( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 	float distance = luaL_checknumber( L, 2 );
 	bool moveInWorldPlane = uluaGetBoolean( L, 3 );
 
@@ -2833,8 +2833,8 @@ int lcoreCamera3DMoveRight( lua_State *L ) {
 
 Moves the camera position closer/farther to/from the camera target
 */
-int lcoreCamera3DMoveToTarget( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreCamera3DMoveToTarget( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 	float delta = luaL_checknumber( L, 2 );
 
 	CameraMoveToTarget( camera, delta );
@@ -2850,8 +2850,8 @@ Yaw is "looking left and right"
 If rotateAroundTarget is false, the camera rotates around it's position
 Note: angle must be provided in radians
 */
-int lcoreCamera3DYaw( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreCamera3DYaw( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 	float delta = luaL_checknumber( L, 2 );
 	bool rotateAroundTarget = uluaGetBoolean( L, 3 );
 
@@ -2869,8 +2869,8 @@ Rotates the camera around it's right vector, pitch is "looking up and down"
  - rotateUp rotates the up direction as well (typically only usefull in CAMERA_FREE)
 NOTE: angle must be provided in radians
 */
-int lcoreCamera3DPitch( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreCamera3DPitch( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 	float delta = luaL_checknumber( L, 2 );
 	bool lockView = uluaGetBoolean( L, 3 );
 	bool rotateAroundTarget = uluaGetBoolean( L, 4 );
@@ -2888,8 +2888,8 @@ Rotates the camera around it's forward vector
 Roll is "turning your head sideways to the left or right"
 Note: angle must be provided in radians
 */
-int lcoreCamera3DRoll( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreCamera3DRoll( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 	float angle = luaL_checknumber( L, 2 );
 
 	CameraRoll( camera, angle );
@@ -2904,8 +2904,8 @@ Returns the camera view matrix
 
 - Success return Matrix
 */
-int lcoreGetCamera3DViewMatrix( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreGetCamera3DViewMatrix( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 
 	uluaPushMatrix( L, GetCameraViewMatrix( camera ) );
 
@@ -2919,8 +2919,8 @@ Returns the camera projection matrix
 
 - Success return Matrix
 */
-int lcoreGetCamera3DProjectionMatrix( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreGetCamera3DProjectionMatrix( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 	float aspect = luaL_checknumber( L, 2 );
 
 	uluaPushMatrix( L, GetCameraProjectionMatrix( camera, aspect ) );
@@ -2933,8 +2933,8 @@ int lcoreGetCamera3DProjectionMatrix( lua_State *L ) {
 
 Update camera position for selected mode
 */
-int lcoreUpdateCamera3D( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreUpdateCamera3D( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 	int mode = luaL_checkinteger( L, 2 );
 
 	UpdateCamera( camera, mode );
@@ -2947,8 +2947,8 @@ int lcoreUpdateCamera3D( lua_State *L ) {
 
 Update camera movement, movement/rotation values should be provided by user
 */
-int lcoreUpdateCamera3DPro( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
+int lcoreUpdateCamera3DPro( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
 	Vector3 movement = uluaGetVector3( L, 2 );
 	Vector3 rotation = uluaGetVector3( L, 3 );
 	float zoom = luaL_checknumber( L, 4 );
@@ -2969,7 +2969,7 @@ Load Buffer. Type should be one of the Buffer types. Empty buffer will set data 
 
 - Success return Buffer
 */
-int lcoreLoadBuffer( lua_State *L ) {
+int lcoreLoadBuffer( lua_State* L ) {
 	luaL_checktype( L, 1, LUA_TTABLE );
 	int type = luaL_checkinteger( L, 2 );
 
@@ -2990,14 +2990,14 @@ int lcoreLoadBuffer( lua_State *L ) {
 
 	int t = 1;
 	int i = 0;
-	unsigned char *ucp = buffer.data;
+	unsigned char* ucp = buffer.data;
 	unsigned short *usp = buffer.data;
-	unsigned int *uip = buffer.data;
-	char *cp = buffer.data;
+	unsigned int* uip = buffer.data;
+	char* cp = buffer.data;
 	short *sp = buffer.data;
-	int *ip = buffer.data;
-	float *fp = buffer.data;
-	double *dp = buffer.data;
+	int* ip = buffer.data;
+	float* fp = buffer.data;
+	double* dp = buffer.data;
 	
 	lua_pushnil( L );
 
@@ -3054,8 +3054,8 @@ Read buffer data from binary file
 - Failure return nil
 - Success return Buffer
 */
-int lcoreLoadBufferFromFile( lua_State *L ) {
-	const char *path = luaL_checkstring( L, 1 );
+int lcoreLoadBufferFromFile( lua_State* L ) {
+	const char* path = luaL_checkstring( L, 1 );
 	int type = luaL_checkinteger( L, 2 );
 
 	int fileLen = GetFileLength( path );
@@ -3065,7 +3065,7 @@ int lcoreLoadBufferFromFile( lua_State *L ) {
 		.data = malloc( fileLen )
 	};
 	size_t elementSize = getBufferElementSize( &buffer );
-	FILE *file;
+	FILE* file;
 	file = fopen( path, "rb" );
 
 	if ( file == NULL ) {
@@ -3089,9 +3089,9 @@ Read buffer data from string
 - Failure return nil
 - Success return Buffer
 */
-int lcoreLoadBufferFromString( lua_State *L ) {
+int lcoreLoadBufferFromString( lua_State* L ) {
 	size_t len = 0;
-	const char *string = luaL_checklstring( L, 1, &len );
+	const char* string = luaL_checklstring( L, 1, &len );
 
 	Buffer buffer = {
 		.type = BUFFER_UNSIGNED_CHAR,
@@ -3110,8 +3110,8 @@ int lcoreLoadBufferFromString( lua_State *L ) {
 
 Unload buffer data
 */
-int lcoreUnloadBuffer( lua_State *L ) {
-	Buffer *buffer = uluaGetBuffer( L, 1 );
+int lcoreUnloadBuffer( lua_State* L ) {
+	Buffer* buffer = uluaGetBuffer( L, 1 );
 
 	unloadBuffer( buffer );
 
@@ -3125,13 +3125,13 @@ Get buffer data as table in the format it was stored
 
 - Success return data{}
 */
-int lcoreGetBufferData( lua_State *L ) {
-	Buffer *buffer = uluaGetBuffer( L, 1 );
+int lcoreGetBufferData( lua_State* L ) {
+	Buffer* buffer = uluaGetBuffer( L, 1 );
 	size_t position = luaL_checkinteger( L, 2 );
 	size_t length = luaL_checkinteger( L, 3 );
 
 	if ( buffer->type == BUFFER_UNSIGNED_CHAR ) {
-		unsigned char *p = buffer->data + position * sizeof( unsigned char );
+		unsigned char* p = buffer->data + position * sizeof( unsigned char );
 		size_t bufLen = buffer->size / sizeof( unsigned char );
 		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
@@ -3155,7 +3155,7 @@ int lcoreGetBufferData( lua_State *L ) {
 		}
 	}
 	else if ( buffer->type == BUFFER_UNSIGNED_INT ) {
-		unsigned int *p = buffer->data + position * sizeof( unsigned int );
+		unsigned int* p = buffer->data + position * sizeof( unsigned int );
 		size_t bufLen = buffer->size / sizeof( unsigned int );
 		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
@@ -3167,7 +3167,7 @@ int lcoreGetBufferData( lua_State *L ) {
 		}
 	}
 	else if ( buffer->type == BUFFER_CHAR ) {
-		char *p = buffer->data + position * sizeof( char );
+		char* p = buffer->data + position * sizeof( char );
 		size_t bufLen = buffer->size / sizeof( char );
 		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
@@ -3191,7 +3191,7 @@ int lcoreGetBufferData( lua_State *L ) {
 		}
 	}
 	else if ( buffer->type == BUFFER_INT ) {
-		int *p = buffer->data + position * sizeof( int );
+		int* p = buffer->data + position * sizeof( int );
 		size_t bufLen = buffer->size / sizeof( int );
 		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
@@ -3203,7 +3203,7 @@ int lcoreGetBufferData( lua_State *L ) {
 		}
 	}
 	else if ( buffer->type == BUFFER_FLOAT ) {
-		float *p = buffer->data + position * sizeof( float );
+		float* p = buffer->data + position * sizeof( float );
 		size_t bufLen = buffer->size / sizeof( float );
 		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
@@ -3215,7 +3215,7 @@ int lcoreGetBufferData( lua_State *L ) {
 		}
 	}
 	else if ( buffer->type == BUFFER_DOUBLE ) {
-		double *p = buffer->data + position * sizeof( double );
+		double* p = buffer->data + position * sizeof( double );
 		size_t bufLen = buffer->size / sizeof( double );
 		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
@@ -3236,8 +3236,8 @@ Get buffer type
 
 - Success return int
 */
-int lcoreGetBufferType( lua_State *L ) {
-	Buffer *buffer = uluaGetBuffer( L, 1 );
+int lcoreGetBufferType( lua_State* L ) {
+	Buffer* buffer = uluaGetBuffer( L, 1 );
 
 	lua_pushinteger( L, buffer->type );
 
@@ -3251,8 +3251,8 @@ Get buffer size in bytes
 
 - Success return int
 */
-int lcoreGetBufferSize( lua_State *L ) {
-	Buffer *buffer = uluaGetBuffer( L, 1 );
+int lcoreGetBufferSize( lua_State* L ) {
+	Buffer* buffer = uluaGetBuffer( L, 1 );
 
 	lua_pushinteger( L, buffer->size );
 
@@ -3266,8 +3266,8 @@ Get buffer element size in bytes
 
 - Success return int
 */
-int lcoreGetBufferElementSize( lua_State *L ) {
-	Buffer *buffer = uluaGetBuffer( L, 1 );
+int lcoreGetBufferElementSize( lua_State* L ) {
+	Buffer* buffer = uluaGetBuffer( L, 1 );
 
 	lua_pushinteger( L, getBufferElementSize( buffer ) );
 
@@ -3281,8 +3281,8 @@ Get buffer element count
 
 - Success return int
 */
-int lcoreGetBufferLength( lua_State *L ) {
-	Buffer *buffer = uluaGetBuffer( L, 1 );
+int lcoreGetBufferLength( lua_State* L ) {
+	Buffer* buffer = uluaGetBuffer( L, 1 );
 
 	lua_pushinteger( L, buffer->size / getBufferElementSize( buffer ) );
 
@@ -3294,12 +3294,12 @@ int lcoreGetBufferLength( lua_State *L ) {
 
 Write buffer data to binary file
 */
-int lcoreExportBuffer( lua_State *L ) {
-	Buffer *buffer = uluaGetBuffer( L, 1 );
-	const char *path = luaL_checkstring( L, 2 );
+int lcoreExportBuffer( lua_State* L ) {
+	Buffer* buffer = uluaGetBuffer( L, 1 );
+	const char* path = luaL_checkstring( L, 2 );
 
 	size_t elementSize = getBufferElementSize( buffer );
-	FILE *file;
+	FILE* file;
 	file = fopen( path, "wb" );
 
 	fwrite( buffer->data, elementSize, buffer->size / elementSize, file );

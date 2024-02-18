@@ -15,7 +15,7 @@ Ease linear
 
 - Success return float
 */
-int leasingsEaseLinear( lua_State *L ) {
+int leasingsEaseLinear( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -37,7 +37,7 @@ Ease sine in
 
 - Success return float
 */
-int leasingsEaseSineIn( lua_State *L ) {
+int leasingsEaseSineIn( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -55,7 +55,7 @@ Ease sine out
 
 - Success return float
 */
-int leasingsEaseSineOut( lua_State *L ) {
+int leasingsEaseSineOut( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -73,7 +73,7 @@ Ease sine in out
 
 - Success return float
 */
-int leasingsEaseSineInOut( lua_State *L ) {
+int leasingsEaseSineInOut( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -95,7 +95,7 @@ Ease circle in
 
 - Success return float
 */
-int leasingsEaseCircIn( lua_State *L ) {
+int leasingsEaseCircIn( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -113,7 +113,7 @@ Ease circle out
 
 - Success return float
 */
-int leasingsEaseCircOut( lua_State *L ) {
+int leasingsEaseCircOut( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -131,7 +131,7 @@ Ease circle in out
 
 - Success return float
 */
-int leasingsEaseCircInOut( lua_State *L ) {
+int leasingsEaseCircInOut( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -153,7 +153,7 @@ Ease cubic in
 
 - Success return float
 */
-int leasingsEaseCubicIn( lua_State *L ) {
+int leasingsEaseCubicIn( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -171,7 +171,7 @@ Ease cubic out
 
 - Success return float
 */
-int leasingsEaseCubicOut( lua_State *L ) {
+int leasingsEaseCubicOut( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -189,7 +189,7 @@ Ease cubic in out
 
 - Success return float
 */
-int leasingsEaseCubicInOut( lua_State *L ) {
+int leasingsEaseCubicInOut( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -211,7 +211,7 @@ Ease quadratic in
 
 - Success return float
 */
-int leasingsEaseQuadIn( lua_State *L ) {
+int leasingsEaseQuadIn( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -229,7 +229,7 @@ Ease quadratic out
 
 - Success return float
 */
-int leasingsEaseQuadOut( lua_State *L ) {
+int leasingsEaseQuadOut( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -247,7 +247,7 @@ Ease quadratic in out
 
 - Success return float
 */
-int leasingsEaseQuadInOut( lua_State *L ) {
+int leasingsEaseQuadInOut( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -269,7 +269,7 @@ Ease exponential in
 
 - Success return float
 */
-int leasingsEaseExpoIn( lua_State *L ) {
+int leasingsEaseExpoIn( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -287,7 +287,7 @@ Ease exponential out
 
 - Success return float
 */
-int leasingsEaseExpoOut( lua_State *L ) {
+int leasingsEaseExpoOut( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -305,7 +305,7 @@ Ease exponential in out
 
 - Success return float
 */
-int leasingsEaseExpoInOut( lua_State *L ) {
+int leasingsEaseExpoInOut( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -327,7 +327,7 @@ Ease back in
 
 - Success return float
 */
-int leasingsEaseBackIn( lua_State *L ) {
+int leasingsEaseBackIn( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -345,7 +345,7 @@ Ease back out
 
 - Success return float
 */
-int leasingsEaseBackOut( lua_State *L ) {
+int leasingsEaseBackOut( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -363,7 +363,7 @@ Ease back in out
 
 - Success return float
 */
-int leasingsEaseBackInOut( lua_State *L ) {
+int leasingsEaseBackInOut( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -385,7 +385,7 @@ Ease bounce in
 
 - Success return float
 */
-int leasingsEaseBounceIn( lua_State *L ) {
+int leasingsEaseBounceIn( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -403,7 +403,7 @@ Ease bounce out
 
 - Success return float
 */
-int leasingsEaseBounceOut( lua_State *L ) {
+int leasingsEaseBounceOut( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -421,7 +421,7 @@ Ease bounce in out
 
 - Success return float
 */
-int leasingsEaseBounceInOut( lua_State *L ) {
+int leasingsEaseBounceInOut( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -443,7 +443,7 @@ Ease elastic in
 
 - Success return float
 */
-int leasingsEaseElasticIn( lua_State *L ) {
+int leasingsEaseElasticIn( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -461,7 +461,7 @@ Ease elastic out
 
 - Success return float
 */
-int leasingsEaseElasticOut( lua_State *L ) {
+int leasingsEaseElasticOut( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );
@@ -479,7 +479,7 @@ Ease elastic in out
 
 - Success return float
 */
-int leasingsEaseElasticInOut( lua_State *L ) {
+int leasingsEaseElasticInOut( lua_State* L ) {
 	float t = luaL_checknumber( L, 1 );
 	float b = luaL_checknumber( L, 2 );
 	float c = luaL_checknumber( L, 3 );

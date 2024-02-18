@@ -12,7 +12,7 @@
 
 Initialize audio device and context
 */
-int laudioInitAudioDevice( lua_State *L ) {
+int laudioInitAudioDevice( lua_State* L ) {
 	InitAudioDevice();
 
 	return 0;
@@ -23,7 +23,7 @@ int laudioInitAudioDevice( lua_State *L ) {
 
 Close the audio device and context
 */
-int laudioCloseAudioDevice( lua_State *L ) {
+int laudioCloseAudioDevice( lua_State* L ) {
 	CloseAudioDevice();
 
 	return 0;
@@ -36,7 +36,7 @@ Check if audio device has been initialized successfully
 
 - Success return bool
 */
-int laudioIsAudioDeviceReady( lua_State *L ) {
+int laudioIsAudioDeviceReady( lua_State* L ) {
 	lua_pushboolean( L, IsAudioDeviceReady() );
 
 	return 1;
@@ -47,7 +47,7 @@ int laudioIsAudioDeviceReady( lua_State *L ) {
 
 Set master volume (listener)
 */
-int laudioSetMasterVolume( lua_State *L ) {
+int laudioSetMasterVolume( lua_State* L ) {
 	float volume = luaL_checknumber( L, 1 );
 
 	SetMasterVolume( volume );
@@ -62,7 +62,7 @@ Get master volume (listener)
 
 - Success return float
 */
-int laudioGetMasterVolume( lua_State *L ) {
+int laudioGetMasterVolume( lua_State* L ) {
 	lua_pushnumber( L, GetMasterVolume() );
 
 	return 1;
@@ -80,7 +80,7 @@ Load sound from file
 - Failure return nil
 - Success return Sound
 */
-int laudioLoadSound( lua_State *L ) {
+int laudioLoadSound( lua_State* L ) {
 	if ( FileExists( luaL_checkstring( L, 1 ) ) ) {
 		uluaPushSound( L, LoadSound( lua_tostring( L, 1 ) ) );
 
@@ -100,7 +100,7 @@ Load wave data from file
 - Failure return nil
 - Success return Wave
 */
-int laudioLoadWave( lua_State *L ) {
+int laudioLoadWave( lua_State* L ) {
 	if ( FileExists( luaL_checkstring( L, 1 ) ) ) {
 		uluaPushWave( L, LoadWave( lua_tostring( L, 1 ) ) );
 
@@ -119,7 +119,7 @@ Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
 
 - Success return Wave
 */
-int laudioLoadWaveFromMemory( lua_State *L ) {
+int laudioLoadWaveFromMemory( lua_State* L ) {
 	const char* fileType = luaL_checkstring( L, 1 );
 	Buffer* buffer = uluaGetBuffer( L, 2 );
 
@@ -135,8 +135,8 @@ Checks if wave data is ready
 
 - Success return bool
 */
-int laudioIsWaveReady( lua_State *L ) {
-	Wave *wave = uluaGetWave( L, 1 );
+int laudioIsWaveReady( lua_State* L ) {
+	Wave* wave = uluaGetWave( L, 1 );
 
 	lua_pushboolean( L, IsWaveReady( *wave ) );
 
@@ -150,8 +150,8 @@ Load sound from wave data
 
 - Success return Sound
 */
-int laudioLoadSoundFromWave( lua_State *L ) {
-	Wave *wave = uluaGetWave( L, 1 );
+int laudioLoadSoundFromWave( lua_State* L ) {
+	Wave* wave = uluaGetWave( L, 1 );
 
 	uluaPushSound( L, LoadSoundFromWave( *wave ) );
 
@@ -165,8 +165,8 @@ Create a new sound that shares the same sample data as the source sound, does no
 
 - Success return Sound
 */
-int laudioLoadSoundAlias( lua_State *L ) {
-	Sound *source = uluaGetSound( L, 1 );
+int laudioLoadSoundAlias( lua_State* L ) {
+	Sound* source = uluaGetSound( L, 1 );
 
 	uluaPushSound( L, LoadSoundAlias( *source ) );
 
@@ -180,8 +180,8 @@ Checks if a sound is ready
 
 - Success return bool
 */
-int laudioIsSoundReady( lua_State *L ) {
-	Sound *sound = uluaGetSound( L, 1 );
+int laudioIsSoundReady( lua_State* L ) {
+	Sound* sound = uluaGetSound( L, 1 );
 
 	lua_pushboolean( L, IsSoundReady( *sound ) );
 
@@ -193,8 +193,8 @@ int laudioIsSoundReady( lua_State *L ) {
 
 Unload wave data
 */
-int laudioUnloadWave( lua_State *L ) {
-	Wave *wave = uluaGetWave( L, 1 );
+int laudioUnloadWave( lua_State* L ) {
+	Wave* wave = uluaGetWave( L, 1 );
 
 	UnloadWave( *wave );
 
@@ -206,8 +206,8 @@ int laudioUnloadWave( lua_State *L ) {
 
 Unload sound
 */
-int laudioUnloadSound( lua_State *L ) {
-	Sound *sound = uluaGetSound( L, 1 );
+int laudioUnloadSound( lua_State* L ) {
+	Sound* sound = uluaGetSound( L, 1 );
 
 	UnloadSound( *sound );
 
@@ -219,8 +219,8 @@ int laudioUnloadSound( lua_State *L ) {
 
 Unload a sound alias (does not deallocate sample data)
 */
-int laudioUnloadSoundAlias( lua_State *L ) {
-	Sound *alias = uluaGetSound( L, 1 );
+int laudioUnloadSoundAlias( lua_State* L ) {
+	Sound* alias = uluaGetSound( L, 1 );
 
 	UnloadSoundAlias( *alias );
 
@@ -234,8 +234,8 @@ Export wave data to file, returns true on success
 
 - Success return bool
 */
-int laudioExportWave( lua_State *L ) {
-	Wave *wave = uluaGetWave( L, 1 );
+int laudioExportWave( lua_State* L ) {
+	Wave* wave = uluaGetWave( L, 1 );
 
 	lua_pushboolean( L, ExportWave( *wave, luaL_checkstring( L, 2 ) ) );
 
@@ -249,8 +249,8 @@ Export wave sample data to code (.h), returns true on success
 
 - Success return true
 */
-int laudioExportWaveAsCode( lua_State *L ) {
-	Wave *wave = uluaGetWave( L, 1 );
+int laudioExportWaveAsCode( lua_State* L ) {
+	Wave* wave = uluaGetWave( L, 1 );
 
 	lua_pushboolean( L, ExportWaveAsCode( *wave, luaL_checkstring( L, 2 ) ) );
 
@@ -266,8 +266,8 @@ int laudioExportWaveAsCode( lua_State *L ) {
 
 Play a sound
 */
-int laudioPlaySound( lua_State *L ) {
-	Sound *sound = uluaGetSound( L, 1 );
+int laudioPlaySound( lua_State* L ) {
+	Sound* sound = uluaGetSound( L, 1 );
 
 	PlaySound( *sound );
 
@@ -279,8 +279,8 @@ int laudioPlaySound( lua_State *L ) {
 
 Stop playing a sound
 */
-int laudioStopSound( lua_State *L ) {
-	Sound *sound = uluaGetSound( L, 1 );
+int laudioStopSound( lua_State* L ) {
+	Sound* sound = uluaGetSound( L, 1 );
 
 	StopSound( *sound );
 
@@ -292,8 +292,8 @@ int laudioStopSound( lua_State *L ) {
 
 Pause a sound
 */
-int laudioPauseSound( lua_State *L ) {
-	Sound *sound = uluaGetSound( L, 1 );
+int laudioPauseSound( lua_State* L ) {
+	Sound* sound = uluaGetSound( L, 1 );
 
 	PauseSound( *sound );
 
@@ -305,8 +305,8 @@ int laudioPauseSound( lua_State *L ) {
 
 Resume a paused sound
 */
-int laudioResumeSound( lua_State *L ) {
-	Sound *sound = uluaGetSound( L, 1 );
+int laudioResumeSound( lua_State* L ) {
+	Sound* sound = uluaGetSound( L, 1 );
 
 	ResumeSound( *sound );
 
@@ -320,8 +320,8 @@ Check if a sound is currently playing
 
 - Success return bool
 */
-int laudioIsSoundPlaying( lua_State *L ) {
-	Sound *sound = uluaGetSound( L, 1 );
+int laudioIsSoundPlaying( lua_State* L ) {
+	Sound* sound = uluaGetSound( L, 1 );
 
 	lua_pushboolean( L, IsSoundPlaying( *sound ) );
 
@@ -333,8 +333,8 @@ int laudioIsSoundPlaying( lua_State *L ) {
 
 Set volume for a sound (1.0 is max level)
 */
-int laudioSetSoundVolume( lua_State *L ) {
-	Sound *sound = uluaGetSound( L, 1 );
+int laudioSetSoundVolume( lua_State* L ) {
+	Sound* sound = uluaGetSound( L, 1 );
 	float volume = luaL_checknumber( L, 2 );
 
 	SetSoundVolume( *sound, volume );
@@ -347,8 +347,8 @@ int laudioSetSoundVolume( lua_State *L ) {
 
 Set pitch for a sound (1.0 is base level)
 */
-int laudioSetSoundPitch( lua_State *L ) {
-	Sound *sound = uluaGetSound( L, 1 );
+int laudioSetSoundPitch( lua_State* L ) {
+	Sound* sound = uluaGetSound( L, 1 );
 	float pitch = luaL_checknumber( L, 2 );
 
 	SetSoundPitch( *sound, pitch );
@@ -361,8 +361,8 @@ int laudioSetSoundPitch( lua_State *L ) {
 
 Set pan for a sound (0.5 is center)
 */
-int laudioSetSoundPan( lua_State *L ) {
-	Sound *sound = uluaGetSound( L, 1 );
+int laudioSetSoundPan( lua_State* L ) {
+	Sound* sound = uluaGetSound( L, 1 );
 	float pan = luaL_checknumber( L, 2 );
 
 	SetSoundPan( *sound, pan );
@@ -375,8 +375,8 @@ int laudioSetSoundPan( lua_State *L ) {
 
 Convert wave data to desired format
 */
-int laudioWaveFormat( lua_State *L ) {
-	Wave *wave = uluaGetWave( L, 1 );
+int laudioWaveFormat( lua_State* L ) {
+	Wave* wave = uluaGetWave( L, 1 );
 	int sampleRate = luaL_checkinteger( L, 2 );
 	int sampleSize = luaL_checkinteger( L, 3 );
 	int channels = luaL_checkinteger( L, 4 );
@@ -393,8 +393,8 @@ Copy a wave to a new wave
 
 - Success return Wave
 */
-int laudioWaveCopy( lua_State *L ) {
-	Wave *wave = uluaGetWave( L, 1 );
+int laudioWaveCopy( lua_State* L ) {
+	Wave* wave = uluaGetWave( L, 1 );
 
 	uluaPushWave( L, WaveCopy( *wave ) );
 
@@ -406,8 +406,8 @@ int laudioWaveCopy( lua_State *L ) {
 
 Crop a wave to defined samples range
 */
-int laudioWaveCrop( lua_State *L ) {
-	Wave *wave = uluaGetWave( L, 1 );
+int laudioWaveCrop( lua_State* L ) {
+	Wave* wave = uluaGetWave( L, 1 );
 	int initSample = luaL_checkinteger( L, 2 );
 	int finalSample = luaL_checkinteger( L, 3 );
 
@@ -427,7 +427,7 @@ Load music stream from file
 
 - Success return Music
 */
-int laudioLoadMusicStream( lua_State *L ) {
+int laudioLoadMusicStream( lua_State* L ) {
 	if ( FileExists( luaL_checkstring( L, 1 ) ) ) {
 		uluaPushMusic( L, LoadMusicStream( lua_tostring( L, 1 ) ) );
 
@@ -462,8 +462,8 @@ Checks if a music stream is ready
 
 - Success return bool
 */
-int laudioIsMusicReady( lua_State *L ) {
-	Music *music = uluaGetMusic( L, 1 );
+int laudioIsMusicReady( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
 
 	lua_pushboolean( L, IsMusicReady( *music ) );
 
@@ -475,8 +475,8 @@ int laudioIsMusicReady( lua_State *L ) {
 
 Unload music stream
 */
-int laudioUnloadMusicStream( lua_State *L ) {
-	Music *music = uluaGetMusic( L, 1 );
+int laudioUnloadMusicStream( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
 
 	UnloadMusicStream( *music );
 
@@ -488,8 +488,8 @@ int laudioUnloadMusicStream( lua_State *L ) {
 
 Start music playing
 */
-int laudioPlayMusicStream( lua_State *L ) {
-	Music *music = uluaGetMusic( L, 1 );
+int laudioPlayMusicStream( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
 
 	PlayMusicStream( *music );
 
@@ -503,8 +503,8 @@ Check if music is playing
 
 - Success return bool
 */
-int laudioIsMusicStreamPlaying( lua_State *L ) {
-	Music *music = uluaGetMusic( L, 1 );
+int laudioIsMusicStreamPlaying( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
 
 	lua_pushboolean( L, IsMusicStreamPlaying( *music ) );
 
@@ -516,8 +516,8 @@ int laudioIsMusicStreamPlaying( lua_State *L ) {
 
 Updates buffers for music streaming
 */
-int laudioUpdateMusicStream( lua_State *L ) {
-	Music *music = uluaGetMusic( L, 1 );
+int laudioUpdateMusicStream( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
 
 	UpdateMusicStream( *music );
 
@@ -529,8 +529,8 @@ int laudioUpdateMusicStream( lua_State *L ) {
 
 Stop music playing
 */
-int laudioStopMusicStream( lua_State *L ) {
-	Music *music = uluaGetMusic( L, 1 );
+int laudioStopMusicStream( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
 
 	StopMusicStream( *music );
 
@@ -542,8 +542,8 @@ int laudioStopMusicStream( lua_State *L ) {
 
 Pause music playing
 */
-int laudioPauseMusicStream( lua_State *L ) {
-	Music *music = uluaGetMusic( L, 1 );
+int laudioPauseMusicStream( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
 
 	PauseMusicStream( *music );
 
@@ -555,8 +555,8 @@ int laudioPauseMusicStream( lua_State *L ) {
 
 Resume playing paused music
 */
-int laudioResumeMusicStream( lua_State *L ) {
-	Music *music = uluaGetMusic( L, 1 );
+int laudioResumeMusicStream( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
 
 	ResumeMusicStream( *music );
 
@@ -568,8 +568,8 @@ int laudioResumeMusicStream( lua_State *L ) {
 
 Seek music to a position (in seconds)
 */
-int laudioSeekMusicStream( lua_State *L ) {
-	Music *music = uluaGetMusic( L, 1 );
+int laudioSeekMusicStream( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
 	float position = luaL_checknumber( L, 2 );
 
 	SeekMusicStream( *music, position );
@@ -582,8 +582,8 @@ int laudioSeekMusicStream( lua_State *L ) {
 
 Set volume for music (1.0 is max level)
 */
-int laudioSetMusicVolume( lua_State *L ) {
-	Music *music = uluaGetMusic( L, 1 );
+int laudioSetMusicVolume( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
 	float volume = luaL_checknumber( L, 2 );
 
 	SetMusicVolume( *music, volume );
@@ -596,8 +596,8 @@ int laudioSetMusicVolume( lua_State *L ) {
 
 Set pitch for a music (1.0 is base level)
 */
-int laudioSetMusicPitch( lua_State *L ) {
-	Music *music = uluaGetMusic( L, 1 );
+int laudioSetMusicPitch( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
 	float pitch = luaL_checknumber( L, 2 );
 
 	SetMusicPitch( *music, pitch );
@@ -610,8 +610,8 @@ int laudioSetMusicPitch( lua_State *L ) {
 
 Set pan for a music (0.5 is center)
 */
-int laudioSetMusicPan( lua_State *L ) {
-	Music *music = uluaGetMusic( L, 1 );
+int laudioSetMusicPan( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
 	float pan = luaL_checknumber( L, 2 );
 
 	SetMusicPitch( *music, pan );
@@ -624,8 +624,8 @@ int laudioSetMusicPan( lua_State *L ) {
 
 Set looping for a music
 */
-int laudioSetMusicLooping( lua_State *L ) {
-	Music *music = uluaGetMusic( L, 1 );
+int laudioSetMusicLooping( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
 	bool looping = uluaGetBoolean( L, 2 );
 
 	music->looping = looping;
@@ -640,8 +640,8 @@ Get looping of a music
 
 - Success return bool
 */
-int laudioGetMusicLooping( lua_State *L ) {
-	Music *music = uluaGetMusic( L, 1 );
+int laudioGetMusicLooping( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
 
 	lua_pushboolean( L, music->looping );
 
@@ -655,8 +655,8 @@ Get music time length (in seconds)
 
 - Success return float
 */
-int laudioGetMusicTimeLength( lua_State *L ) {
-	Music *music = uluaGetMusic( L, 1 );
+int laudioGetMusicTimeLength( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
 
 	lua_pushnumber( L, GetMusicTimeLength( *music ) );
 
@@ -670,8 +670,8 @@ Get current music time played (in seconds)
 
 - Success return float
 */
-int laudioGetMusicTimePlayed( lua_State *L ) {
-	Music *music = uluaGetMusic( L, 1 );
+int laudioGetMusicTimePlayed( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
 
 	lua_pushnumber( L, GetMusicTimePlayed( *music ) );
 

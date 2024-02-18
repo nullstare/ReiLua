@@ -3,7 +3,7 @@
 #include "core.h"
 
 void platformDefineGlobals() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_getglobal( L, "RL" );
 /*DOC_DEFINES_START*/

@@ -6,7 +6,7 @@
 #include "textures.h"
 #include "core.h"
 
-void unloadMaterial( Material *material ) {
+void unloadMaterial( Material* material ) {
 	free( material->maps );
 }
 
@@ -115,7 +115,7 @@ void DrawBillboardRecNoRatio( Camera camera, Texture2D texture, Rectangle source
 
 Draw a line in 3D world space
 */
-int lmodelsDrawLine3D( lua_State *L ) {
+int lmodelsDrawLine3D( lua_State* L ) {
 	Vector3 startPos = uluaGetVector3( L, 1 );
 	Vector3 endPos = uluaGetVector3( L, 2 );
 	Color color = uluaGetColor( L, 3 );
@@ -130,7 +130,7 @@ int lmodelsDrawLine3D( lua_State *L ) {
 
 Draw a point in 3D space, actually a small line
 */
-int lmodelsDrawPoint3D( lua_State *L ) {
+int lmodelsDrawPoint3D( lua_State* L ) {
 	Vector3 position = uluaGetVector3( L, 1 );
 	Color color = uluaGetColor( L, 2 );
 
@@ -144,7 +144,7 @@ int lmodelsDrawPoint3D( lua_State *L ) {
 
 Draw a circle in 3D world space
 */
-int lmodelsDrawCircle3D( lua_State *L ) {
+int lmodelsDrawCircle3D( lua_State* L ) {
 	Vector3 center = uluaGetVector3( L, 1 );
 	float radius = luaL_checknumber( L, 2 );
 	Vector3 rotationAxis = uluaGetVector3( L, 3 );
@@ -161,7 +161,7 @@ int lmodelsDrawCircle3D( lua_State *L ) {
 
 Draw a color-filled triangle (Vertex in counter-clockwise order!)
 */
-int lmodelsDrawTriangle3D( lua_State *L ) {
+int lmodelsDrawTriangle3D( lua_State* L ) {
 	Vector3 v1 = uluaGetVector3( L, 1 );
 	Vector3 v2 = uluaGetVector3( L, 2 );
 	Vector3 v3 = uluaGetVector3( L, 3 );
@@ -177,7 +177,7 @@ int lmodelsDrawTriangle3D( lua_State *L ) {
 
 Draw cube
 */
-int lmodelsDrawCube( lua_State *L ) {
+int lmodelsDrawCube( lua_State* L ) {
 	Vector3 pos = uluaGetVector3( L, 1 );
 	Vector3 size = uluaGetVector3( L, 2 );
 	Color color = uluaGetColor( L, 3 );
@@ -192,7 +192,7 @@ int lmodelsDrawCube( lua_State *L ) {
 
 Draw cube wires
 */
-int lmodelsDrawCubeWires( lua_State *L ) {
+int lmodelsDrawCubeWires( lua_State* L ) {
 	Vector3 pos = uluaGetVector3( L, 1 );
 	Vector3 size = uluaGetVector3( L, 2 );
 	Color color = uluaGetColor( L, 3 );
@@ -207,7 +207,7 @@ int lmodelsDrawCubeWires( lua_State *L ) {
 
 Draw sphere
 */
-int lmodelsDrawSphere( lua_State *L ) {
+int lmodelsDrawSphere( lua_State* L ) {
 	Vector3 centerPos = uluaGetVector3( L, 1 );
 	float radius = luaL_checknumber( L, 2 );
 	Color color = uluaGetColor( L, 3 );
@@ -222,7 +222,7 @@ int lmodelsDrawSphere( lua_State *L ) {
 
 Draw sphere with extended parameters
 */
-int lmodelsDrawSphereEx( lua_State *L ) {
+int lmodelsDrawSphereEx( lua_State* L ) {
 	Vector3 centerPos = uluaGetVector3( L, 1 );
 	float radius = luaL_checknumber( L, 2 );
 	int rings = luaL_checkinteger( L, 3 );
@@ -239,7 +239,7 @@ int lmodelsDrawSphereEx( lua_State *L ) {
 
 Draw sphere wires
 */
-int lmodelsDrawSphereWires( lua_State *L ) {
+int lmodelsDrawSphereWires( lua_State* L ) {
 	Vector3 centerPos = uluaGetVector3( L, 1 );
 	float radius = luaL_checknumber( L, 2 );
 	int rings = luaL_checkinteger( L, 3 );
@@ -256,7 +256,7 @@ int lmodelsDrawSphereWires( lua_State *L ) {
 
 Draw a cylinder/cone
 */
-int lmodelsDrawCylinder( lua_State *L ) {
+int lmodelsDrawCylinder( lua_State* L ) {
 	Vector3 position = uluaGetVector3( L, 1 );
 	float radiusTop = luaL_checknumber( L, 2 );
 	float radiusBottom = luaL_checknumber( L, 3 );
@@ -274,7 +274,7 @@ int lmodelsDrawCylinder( lua_State *L ) {
 
 Draw a cylinder with base at startPos and top at endPos
 */
-int lmodelsDrawCylinderEx( lua_State *L ) {
+int lmodelsDrawCylinderEx( lua_State* L ) {
 	Vector3 startPos = uluaGetVector3( L, 1 );
 	Vector3 endPos = uluaGetVector3( L, 2 );
 	float startRadius = luaL_checknumber( L, 3 );
@@ -292,7 +292,7 @@ int lmodelsDrawCylinderEx( lua_State *L ) {
 
 Draw a cylinder/cone wires
 */
-int lmodelsDrawCylinderWires( lua_State *L ) {
+int lmodelsDrawCylinderWires( lua_State* L ) {
 	Vector3 position = uluaGetVector3( L, 1 );
 	float radiusTop = luaL_checknumber( L, 2 );
 	float radiusBottom = luaL_checknumber( L, 3 );
@@ -310,7 +310,7 @@ int lmodelsDrawCylinderWires( lua_State *L ) {
 
 Draw a cylinder wires with base at startPos and top at endPos
 */
-int lmodelsDrawCylinderWiresEx( lua_State *L ) {
+int lmodelsDrawCylinderWiresEx( lua_State* L ) {
 	Vector3 startPos = uluaGetVector3( L, 1 );
 	Vector3 endPos = uluaGetVector3( L, 2 );
 	float startRadius = luaL_checknumber( L, 3 );
@@ -328,7 +328,7 @@ int lmodelsDrawCylinderWiresEx( lua_State *L ) {
 
 Draw a capsule with the center of its sphere caps at startPos and endPos
 */
-int lmodelsDrawCapsule( lua_State *L ) {
+int lmodelsDrawCapsule( lua_State* L ) {
 	Vector3 startPos = uluaGetVector3( L, 1 );
 	Vector3 endPos = uluaGetVector3( L, 2 );
 	float radius = luaL_checknumber( L, 3 );
@@ -346,7 +346,7 @@ int lmodelsDrawCapsule( lua_State *L ) {
 
 Draw capsule wireframe with the center of its sphere caps at startPos and endPos
 */
-int lmodelsDrawCapsuleWires( lua_State *L ) {
+int lmodelsDrawCapsuleWires( lua_State* L ) {
 	Vector3 startPos = uluaGetVector3( L, 1 );
 	Vector3 endPos = uluaGetVector3( L, 2 );
 	float radius = luaL_checknumber( L, 3 );
@@ -364,7 +364,7 @@ int lmodelsDrawCapsuleWires( lua_State *L ) {
 
 Draw a plane XZ
 */
-int lmodelsDrawPlane( lua_State *L ) {
+int lmodelsDrawPlane( lua_State* L ) {
 	Vector3 centerPos = uluaGetVector3( L, 1 );
 	Vector2 size = uluaGetVector2( L, 2 );
 	Color color = uluaGetColor( L, 3 );
@@ -379,8 +379,8 @@ int lmodelsDrawPlane( lua_State *L ) {
 
 Draw 3D textured quad. (Texture coordinates opengl style 0.0 - 1.0)
 */
-int lmodelDrawQuad3DTexture( lua_State *L ) {
-	Texture *texture = uluaGetTexture( L, 1 );
+int lmodelDrawQuad3DTexture( lua_State* L ) {
+	Texture* texture = uluaGetTexture( L, 1 );
 
 	/* Vertices. */
 	Vector3 vertices[4] = { 0 };
@@ -447,7 +447,7 @@ int lmodelDrawQuad3DTexture( lua_State *L ) {
 
 Draw a ray line
 */
-int lmodelsDrawRay( lua_State *L ) {
+int lmodelsDrawRay( lua_State* L ) {
 	Ray ray = uluaGetRay( L, 1 );
 	Color color = uluaGetColor( L, 2 );
 
@@ -461,7 +461,7 @@ int lmodelsDrawRay( lua_State *L ) {
 
 Draw a grid (Centered at ( 0, 0, 0 ))
 */
-int lmodelsDrawGrid( lua_State *L ) {
+int lmodelsDrawGrid( lua_State* L ) {
 	int slices = luaL_checkinteger( L, 1 );
 	float spacing = luaL_checknumber( L, 2 );
 
@@ -482,7 +482,7 @@ Load model from files (Meshes and materials)
 - Failure return nil
 - Success return Model
 */
-int lmodelsLoadModel( lua_State *L ) {
+int lmodelsLoadModel( lua_State* L ) {
 	if ( FileExists( luaL_checkstring( L, 1 ) ) ) {
 		uluaPushModel( L, LoadModel( lua_tostring( L, 1 ) ) );
 
@@ -501,8 +501,8 @@ Load model from generated mesh (Default material)
 
 - Success return Model
 */
-int lmodelsLoadModelFromMesh( lua_State *L ) {
-	Mesh *mesh = uluaGetMesh( L, 1 );
+int lmodelsLoadModelFromMesh( lua_State* L ) {
+	Mesh* mesh = uluaGetMesh( L, 1 );
 
 	uluaPushModel( L, LoadModelFromMesh( *mesh ) );
 
@@ -516,8 +516,8 @@ Check if a model is ready
 
 - Success return bool
 */
-int lmodelsIsModelReady( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsIsModelReady( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 
 	lua_pushboolean( L, IsModelReady( *model ) );
 
@@ -529,8 +529,8 @@ int lmodelsIsModelReady( lua_State *L ) {
 
 Unload model (including meshes) from memory (RAM and/or VRAM)
 */
-int lmodelsUnloadModel( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsUnloadModel( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 
 	UnloadModel( *model );
 
@@ -544,8 +544,8 @@ Compute model bounding box limits (considers all meshes)
 
 - Success return BoundingBox
 */
-int lmodelsGetModelBoundingBox( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsGetModelBoundingBox( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 
 	uluaPushBoundingBox( L, GetModelBoundingBox( *model ) );
 
@@ -557,8 +557,8 @@ int lmodelsGetModelBoundingBox( lua_State *L ) {
 
 Set model transform matrix
 */
-int lmodelsSetModelTransform( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsSetModelTransform( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 	Matrix transform = uluaGetMatrix( L, 2 );
 
 	model->transform = transform;
@@ -574,10 +574,10 @@ Set model mesh.
 - Failure return false
 - Success return true
 */
-int lmodelsSetModelMesh( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsSetModelMesh( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 	int meshId = luaL_checkinteger( L, 2 );
-	Mesh *mesh = uluaGetMesh( L, 3 );
+	Mesh* mesh = uluaGetMesh( L, 3 );
 
 	if ( 0 <= meshId && meshId < model->meshCount ) {
 		model->meshes[ meshId ] = *mesh;
@@ -598,10 +598,10 @@ Set material to model material
 - Failure return false
 - Success return true
 */
-int lmodelsSetModelMaterial( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsSetModelMaterial( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 	int materialId = luaL_checkinteger( L, 2 );
-	Material *material = uluaGetMaterial( L, 3 );
+	Material* material = uluaGetMaterial( L, 3 );
 
 	if ( 0 <= materialId && materialId < model->materialCount ) {
 		model->materials[ materialId ] = *material;
@@ -619,8 +619,8 @@ int lmodelsSetModelMaterial( lua_State *L ) {
 
 Set material for a mesh (Mesh and material on this model)
 */
-int lmodelsSetModelMeshMaterial( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsSetModelMeshMaterial( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 	int meshId = luaL_checkinteger( L, 2 );
 	int materialId = luaL_checkinteger( L, 3 );
 
@@ -643,8 +643,8 @@ Set model bone information (skeleton)
 - Failure return false
 - Success return true
 */
-int lmodelsSetModelBone( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsSetModelBone( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 	int boneId = luaL_checkinteger( L, 2 );
 	BoneInfo bone = uluaGetBoneInfo( L, 3 );
 
@@ -667,8 +667,8 @@ Set model bones base transformation (pose)
 - Failure return false
 - Success return true
 */
-int lmodelsSetModelBindPose( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsSetModelBindPose( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 	int boneId = luaL_checkinteger( L, 2 );
 	Transform pose = uluaGetTransform( L, 3 );
 
@@ -690,8 +690,8 @@ Get model transform matrix
 
 - Success return Matrix
 */
-int lmodelsGetModelTransform( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsGetModelTransform( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 
 	uluaPushMatrix( L, model->transform );
 
@@ -705,8 +705,8 @@ Get model number of meshes
 
 - Success return int
 */
-int lmodelsGetModelMeshCount( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsGetModelMeshCount( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 
 	lua_pushinteger( L, model->meshCount );
 
@@ -720,8 +720,8 @@ Get model number of materials
 
 - Success return int
 */
-int lmodelsGetModelMaterialCount( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsGetModelMaterialCount( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 
 	lua_pushinteger( L, model->materialCount );
 
@@ -736,8 +736,8 @@ Get model mesh. Return as lightuserdata
 - Failure return nil
 - Success return Mesh
 */
-int lmodelsGetModelMesh( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsGetModelMesh( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 	int meshId = luaL_checkinteger( L, 2 );
 
 	if ( 0 <= meshId && meshId < model->meshCount ) {
@@ -758,8 +758,8 @@ Get model material. Return as lightuserdata
 - Failure return nil
 - Success return Material
 */
-int lmodelsGetModelMaterial( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsGetModelMaterial( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 	int materialId = luaL_checkinteger( L, 2 );
 
 	if ( 0 <= materialId && materialId < model->materialCount ) {
@@ -779,8 +779,8 @@ Get model number of bones
 
 - Success return int
 */
-int lmodelsGetModelBoneCount( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsGetModelBoneCount( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 
 	lua_pushinteger( L, model->boneCount );
 
@@ -795,8 +795,8 @@ Get model bones information (skeleton)
 - Failure return nil
 - Success return BoneInfo
 */
-int lmodelsGetModelBone( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsGetModelBone( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 	int boneId = luaL_checkinteger( L, 2 );
 
 	if ( 0 <= boneId && boneId < model->boneCount ) {
@@ -817,8 +817,8 @@ Get models bones base transformation (pose)
 - Failure return nil
 - Success return Transform
 */
-int lmodelsGetModelBindPose( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsGetModelBindPose( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 	int boneId = luaL_checkinteger( L, 2 );
 
 	if ( 0 <= boneId && boneId < model->boneCount ) {
@@ -840,8 +840,8 @@ int lmodelsGetModelBindPose( lua_State *L ) {
 
 Draw a model (With texture if set)
 */
-int lmodelsDrawModel( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsDrawModel( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 	Vector3 position = uluaGetVector3( L, 2 );
 	float scale = luaL_checknumber( L, 3 );
 	Color tint = uluaGetColor( L, 4 );
@@ -856,8 +856,8 @@ int lmodelsDrawModel( lua_State *L ) {
 
 Draw a model with extended parameters
 */
-int lmodelsDrawModelEx( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsDrawModelEx( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 	Vector3 position = uluaGetVector3( L, 2 );
 	Vector3 rotationAxis = uluaGetVector3( L, 3 );
 	float rotationAngle = luaL_checknumber( L, 4 );
@@ -874,8 +874,8 @@ int lmodelsDrawModelEx( lua_State *L ) {
 
 Draw a model wires (with texture if set)
 */
-int lmodelsDrawModelWires( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsDrawModelWires( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 	Vector3 position = uluaGetVector3( L, 2 );
 	float scale = luaL_checknumber( L, 3 );
 	Color tint = uluaGetColor( L, 4 );
@@ -890,8 +890,8 @@ int lmodelsDrawModelWires( lua_State *L ) {
 
 Draw a model wires (with texture if set) with extended parameters
 */
-int lmodelsDrawModelWiresEx( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
+int lmodelsDrawModelWiresEx( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
 	Vector3 position = uluaGetVector3( L, 2 );
 	Vector3 rotationAxis = uluaGetVector3( L, 3 );
 	float rotationAngle = luaL_checknumber( L, 4 );
@@ -908,7 +908,7 @@ int lmodelsDrawModelWiresEx( lua_State *L ) {
 
 Draw bounding box (wires)
 */
-int lmodelsDrawBoundingBox( lua_State *L ) {
+int lmodelsDrawBoundingBox( lua_State* L ) {
 	BoundingBox box = uluaGetBoundingBox( L, 1 );
 	Color color = uluaGetColor( L, 2 );
 
@@ -922,9 +922,9 @@ int lmodelsDrawBoundingBox( lua_State *L ) {
 
 Draw a billboard texture
 */
-int lmodelsDrawBillboard( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
-	Texture *texture = uluaGetTexture( L, 2 );
+int lmodelsDrawBillboard( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
+	Texture* texture = uluaGetTexture( L, 2 );
 	Vector3 position = uluaGetVector3( L, 3 );
 	float size = luaL_checknumber( L, 4 );
 	Color tint = uluaGetColor( L, 5 );
@@ -939,9 +939,9 @@ int lmodelsDrawBillboard( lua_State *L ) {
 
 Draw a billboard texture defined by source
 */
-int lmodelsDrawBillboardRec( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
-	Texture *texture = uluaGetTexture( L, 2 );
+int lmodelsDrawBillboardRec( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
+	Texture* texture = uluaGetTexture( L, 2 );
 	Rectangle source = uluaGetRectangle( L, 3 );
 	Vector3 position = uluaGetVector3( L, 4 );
 	Vector2 size = uluaGetVector2( L, 5 );
@@ -957,9 +957,9 @@ int lmodelsDrawBillboardRec( lua_State *L ) {
 
 Draw a billboard texture defined by source and rotation
 */
-int lmodelsDrawBillboardPro( lua_State *L ) {
-	Camera3D *camera = uluaGetCamera3D( L, 1 );
-	Texture *texture = uluaGetTexture( L, 2 );
+int lmodelsDrawBillboardPro( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
+	Texture* texture = uluaGetTexture( L, 2 );
 	Rectangle source = uluaGetRectangle( L, 3 );
 	Vector3 position = uluaGetVector3( L, 4 );
 	Vector3 up = uluaGetVector3( L, 5 );
@@ -983,8 +983,8 @@ int lmodelsDrawBillboardPro( lua_State *L ) {
 Update mesh vertex data in GPU.
 NOTE: Mainly intented to be used with custom meshes.
 */
-int lmodelsUpdateMesh( lua_State *L ) {
-	Mesh *mesh = uluaGetMesh( L, 1 );
+int lmodelsUpdateMesh( lua_State* L ) {
+	Mesh* mesh = uluaGetMesh( L, 1 );
 	luaL_checktype( L, 2, LUA_TTABLE );
 
 	int t = 2;
@@ -1107,8 +1107,8 @@ int lmodelsUpdateMesh( lua_State *L ) {
 
 Unload mesh data from CPU and GPU
 */
-int lmodelsUnloadMesh( lua_State *L ) {
-	Mesh *mesh = uluaGetMesh( L, 1 );
+int lmodelsUnloadMesh( lua_State* L ) {
+	Mesh* mesh = uluaGetMesh( L, 1 );
 
 	UnloadMesh( *mesh );
 
@@ -1120,9 +1120,9 @@ int lmodelsUnloadMesh( lua_State *L ) {
 
 Draw a 3d mesh with material and transform
 */
-int lmodelsDrawMesh( lua_State *L ) {
-	Mesh *mesh = uluaGetMesh( L, 1 );
-	Material *material = uluaGetMaterial( L, 2 );
+int lmodelsDrawMesh( lua_State* L ) {
+	Mesh* mesh = uluaGetMesh( L, 1 );
+	Material* material = uluaGetMaterial( L, 2 );
 	Matrix matrix = uluaGetMatrix( L, 3 );
 
 	DrawMesh( *mesh, *material, matrix );
@@ -1135,9 +1135,9 @@ int lmodelsDrawMesh( lua_State *L ) {
 
 Draw multiple mesh instances with material and different transforms
 */
-int lmodelsDrawMeshInstanced( lua_State *L ) {
-	Mesh *mesh = uluaGetMesh( L, 1 );
-	Material *material = uluaGetMaterial( L, 2 );
+int lmodelsDrawMeshInstanced( lua_State* L ) {
+	Mesh* mesh = uluaGetMesh( L, 1 );
+	Material* material = uluaGetMaterial( L, 2 );
 	luaL_checktype( L, 3, LUA_TTABLE );
 	int instances = luaL_checkinteger( L, 4 );
 
@@ -1167,8 +1167,8 @@ NOTE: Currently only works on custom mesh
 - Failure return false
 - Success return true
 */
-int lmodelsSetMeshColor( lua_State *L ) {
-	Mesh *mesh = uluaGetMesh( L, 1 );
+int lmodelsSetMeshColor( lua_State* L ) {
+	Mesh* mesh = uluaGetMesh( L, 1 );
 	Color color = uluaGetColor( L, 2 );
 
 	if ( mesh->colors == NULL ) {
@@ -1198,8 +1198,8 @@ Export mesh data to file, returns true on success
 
 - Success return bool
 */
-int lmodelsExportMesh( lua_State *L ) {
-	Mesh *mesh = uluaGetMesh( L, 1 );
+int lmodelsExportMesh( lua_State* L ) {
+	Mesh* mesh = uluaGetMesh( L, 1 );
 
 	lua_pushboolean( L, ExportMesh( *mesh, luaL_checkstring( L, 2 ) ) );
 
@@ -1213,8 +1213,8 @@ Compute mesh bounding box limits
 
 - Success return BoundingBox
 */
-int lmodelsGetMeshBoundingBox( lua_State *L ) {
-	Mesh *mesh = uluaGetMesh( L, 1 );
+int lmodelsGetMeshBoundingBox( lua_State* L ) {
+	Mesh* mesh = uluaGetMesh( L, 1 );
 
 	uluaPushBoundingBox( L, GetMeshBoundingBox( *mesh ) );
 
@@ -1226,8 +1226,8 @@ int lmodelsGetMeshBoundingBox( lua_State *L ) {
 
 Compute mesh tangents
 */
-int lmodelsGenMeshTangents( lua_State *L ) {
-	Mesh *mesh = uluaGetMesh( L, 1 );
+int lmodelsGenMeshTangents( lua_State* L ) {
+	Mesh* mesh = uluaGetMesh( L, 1 );
 
 	GenMeshTangents( mesh );
 
@@ -1245,7 +1245,7 @@ Generate polygonal mesh
 
 - Success return Mesh
 */
-int lmodelsGenMeshPoly( lua_State *L ) {
+int lmodelsGenMeshPoly( lua_State* L ) {
 	int sides = luaL_checkinteger( L, 1 );
 	float radius = luaL_checknumber( L, 2 );
 
@@ -1261,7 +1261,7 @@ Generate plane mesh (With subdivisions)
 
 - Success return Mesh
 */
-int lmodelsGenMeshPlane( lua_State *L ) {
+int lmodelsGenMeshPlane( lua_State* L ) {
 	float width = luaL_checknumber( L, 1 );
 	float length = luaL_checknumber( L, 2 );
 	int resX = luaL_checkinteger( L, 3 );
@@ -1279,7 +1279,7 @@ Generate cuboid mesh
 
 - Success return Mesh
 */
-int lmodelsGenMeshCube( lua_State *L ) {
+int lmodelsGenMeshCube( lua_State* L ) {
 	Vector3 size = uluaGetVector3( L, 1 );
 
 	uluaPushMesh( L, GenMeshCube( size.x, size.y, size.z ) );
@@ -1294,7 +1294,7 @@ Generate sphere mesh (Standard sphere)
 
 - Success return Mesh
 */
-int lmodelsGenMeshSphere( lua_State *L ) {
+int lmodelsGenMeshSphere( lua_State* L ) {
 	float radius = luaL_checknumber( L, 1 );
 	int rings = luaL_checkinteger( L, 2 );
 	int slices = luaL_checkinteger( L, 3 );
@@ -1311,7 +1311,7 @@ Generate cylinder mesh
 
 - Success return Mesh
 */
-int lmodelsGenMeshCylinder( lua_State *L ) {
+int lmodelsGenMeshCylinder( lua_State* L ) {
 	float radius = luaL_checknumber( L, 1 );
 	float height = luaL_checknumber( L, 2 );
 	int slices = luaL_checkinteger( L, 3 );
@@ -1328,7 +1328,7 @@ Generate cone/pyramid mesh
 
 - Success return Mesh
 */
-int lmodelsGenMeshCone( lua_State *L ) {
+int lmodelsGenMeshCone( lua_State* L ) {
 	float radius = luaL_checknumber( L, 1 );
 	float height = luaL_checknumber( L, 2 );
 	int slices = luaL_checkinteger( L, 3 );
@@ -1345,7 +1345,7 @@ Generate torus mesh
 
 - Success return Mesh
 */
-int lmodelsGenMeshTorus( lua_State *L ) {
+int lmodelsGenMeshTorus( lua_State* L ) {
 	float radius = luaL_checknumber( L, 1 );
 	float size = luaL_checknumber( L, 2 );
 	int radSeg = luaL_checkinteger( L, 3 );
@@ -1363,7 +1363,7 @@ Generate torus mesh
 
 - Success return Mesh
 */
-int lmodelsGenMeshKnot( lua_State *L ) {
+int lmodelsGenMeshKnot( lua_State* L ) {
 	float radius = luaL_checknumber( L, 1 );
 	float size = luaL_checknumber( L, 2 );
 	int radSeg = luaL_checkinteger( L, 3 );
@@ -1381,8 +1381,8 @@ Generate heightmap mesh from image data
 
 - Success return Mesh
 */
-int lmodelsGenMeshHeightmap( lua_State *L ) {
-	Image *heightmap = uluaGetImage( L, 1 );
+int lmodelsGenMeshHeightmap( lua_State* L ) {
+	Image* heightmap = uluaGetImage( L, 1 );
 	Vector3 size = uluaGetVector3( L, 2 );
 
 	uluaPushMesh( L, GenMeshHeightmap( *heightmap, size ) );
@@ -1397,8 +1397,8 @@ Generate cubes-based map mesh from image data
 
 - Success return Mesh
 */
-int lmodelsGenMeshCubicmap( lua_State *L ) {
-	Image *cubicmap = uluaGetImage( L, 1 );
+int lmodelsGenMeshCubicmap( lua_State* L ) {
+	Image* cubicmap = uluaGetImage( L, 1 );
 	Vector3 cubeSize = uluaGetVector3( L, 2 );
 
 	uluaPushMesh( L, GenMeshCubicmap( *cubicmap, cubeSize ) );
@@ -1413,7 +1413,7 @@ Generate custom mesh from vertex attribute data and uploads it into a VAO (if su
 
 - Success return Mesh
 */
-int lmodelsGenMeshCustom( lua_State *L ) {
+int lmodelsGenMeshCustom( lua_State* L ) {
 	luaL_checktype( L, 1, LUA_TTABLE );
 	bool dynamic = uluaGetBoolean( L, 2 );
 
@@ -1573,11 +1573,11 @@ Load materials from model file
 
 - Success return Material{}
 */
-int lmodelsLoadMaterials( lua_State *L ) {
-	const char *fileName = luaL_checkstring( L, 1 );
+int lmodelsLoadMaterials( lua_State* L ) {
+	const char* fileName = luaL_checkstring( L, 1 );
 
 	int materialCount = 0;
-	Material *materials = LoadMaterials( fileName, &materialCount );
+	Material* materials = LoadMaterials( fileName, &materialCount );
 	lua_createtable( L, materialCount, 0 );
 
 	for ( int i = 0; i < materialCount; i++ ) {
@@ -1594,7 +1594,7 @@ Default material for reference. Return as lightuserdata
 
 - Success return Material
 */
-int lmodelsGetMaterialDefault( lua_State *L ) {
+int lmodelsGetMaterialDefault( lua_State* L ) {
 	lua_pushlightuserdata( L, &state->defaultMaterial );
 
 	return 1;
@@ -1607,7 +1607,7 @@ Load default material as new object
 
 - Success return Material
 */
-int lmodelsLoadMaterialDefault( lua_State *L ) {
+int lmodelsLoadMaterialDefault( lua_State* L ) {
 	uluaPushMaterial( L, LoadMaterialDefault() );
 
 	return 1;
@@ -1620,7 +1620,7 @@ Load material from table. See material table definition
 
 - Success return Material
 */
-int lmodelsCreateMaterial( lua_State *L ) {
+int lmodelsCreateMaterial( lua_State* L ) {
 	luaL_checktype( L, 1, LUA_TTABLE );
 
 	Material material = LoadMaterialDefault();
@@ -1651,7 +1651,7 @@ int lmodelsCreateMaterial( lua_State *L ) {
 
 								while ( lua_next( L, t4 ) != 0 ) {
 									if ( strcmp( "texture", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-										Texture *texture = uluaGetTexture( L, lua_gettop( L ) );
+										Texture* texture = uluaGetTexture( L, lua_gettop( L ) );
 										material.maps[map].texture = *texture;
 									}
 									else if ( strcmp( "color", (char*)lua_tostring( L, -2 ) ) == 0 ) {
@@ -1687,7 +1687,7 @@ int lmodelsCreateMaterial( lua_State *L ) {
 			}
 		}
 		else if ( strcmp( "shader", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-			Shader *shader = uluaGetShader( L, lua_gettop( L ) );
+			Shader* shader = uluaGetShader( L, lua_gettop( L ) );
 			material.shader = *shader;
 		}
 		lua_pop( L, 1 );
@@ -1704,8 +1704,8 @@ Check if a material is ready
 
 - Success return bool
 */
-int lmodelsIsMaterialReady( lua_State *L ) {
-	Material *material = uluaGetMaterial( L, 1 );
+int lmodelsIsMaterialReady( lua_State* L ) {
+	Material* material = uluaGetMaterial( L, 1 );
 
 	lua_pushboolean( L, IsMaterialReady( *material ) );
 
@@ -1717,8 +1717,8 @@ int lmodelsIsMaterialReady( lua_State *L ) {
 
 Unload material from GPU memory (VRAM)
 */
-int lmodelsUnloadMaterial( lua_State *L ) {
-	Material *material = uluaGetMaterial( L, 1 );
+int lmodelsUnloadMaterial( lua_State* L ) {
+	Material* material = uluaGetMaterial( L, 1 );
 
 	/* Custom UnloadMaterial since we don't want to free Shaders or Textures. */
 	unloadMaterial( material );
@@ -1733,10 +1733,10 @@ int lmodelsUnloadMaterial( lua_State *L ) {
 
 Set texture for a material map type (MATERIAL_MAP_ALBEDO, MATERIAL_MAP_METALNESS...)
 */
-int lmodelsSetMaterialTexture( lua_State *L ) {
-	Material *material = uluaGetMaterial( L, 1 );
+int lmodelsSetMaterialTexture( lua_State* L ) {
+	Material* material = uluaGetMaterial( L, 1 );
 	int mapType = luaL_checkinteger( L, 2 );
-	Texture *texture = uluaGetTexture( L, 3 );
+	Texture* texture = uluaGetTexture( L, 3 );
 
 	SetMaterialTexture( material, mapType, *texture );
 
@@ -1748,8 +1748,8 @@ int lmodelsSetMaterialTexture( lua_State *L ) {
 
 Set color for a material map type
 */
-int lmodelsSetMaterialColor( lua_State *L ) {
-	Material *material = uluaGetMaterial( L, 1 );
+int lmodelsSetMaterialColor( lua_State* L ) {
+	Material* material = uluaGetMaterial( L, 1 );
 	int mapType = luaL_checkinteger( L, 2 );
 	Color color = uluaGetColor( L, 3 );
 
@@ -1763,8 +1763,8 @@ int lmodelsSetMaterialColor( lua_State *L ) {
 
 Set value for a material map type
 */
-int lmodelsSetMaterialValue( lua_State *L ) {
-	Material *material = uluaGetMaterial( L, 1 );
+int lmodelsSetMaterialValue( lua_State* L ) {
+	Material* material = uluaGetMaterial( L, 1 );
 	int mapType = luaL_checkinteger( L, 2 );
 	float value = luaL_checknumber( L, 3 );
 
@@ -1778,9 +1778,9 @@ int lmodelsSetMaterialValue( lua_State *L ) {
 
 Set shader for material
 */
-int lmodelsSetMaterialShader( lua_State *L ) {
-	Material *material = uluaGetMaterial( L, 1 );
-	Shader *shader = uluaGetShader( L, 2 );
+int lmodelsSetMaterialShader( lua_State* L ) {
+	Material* material = uluaGetMaterial( L, 1 );
+	Shader* shader = uluaGetShader( L, 2 );
 
 	material->shader = *shader;
 
@@ -1792,8 +1792,8 @@ int lmodelsSetMaterialShader( lua_State *L ) {
 
 Set material generic parameters (if required)
 */
-int lmodelsSetMaterialParams( lua_State *L ) {
-	Material *material = uluaGetMaterial( L, 1 );
+int lmodelsSetMaterialParams( lua_State* L ) {
+	Material* material = uluaGetMaterial( L, 1 );
 
 	size_t len = uluaGetTableLen( L, 2 );
 
@@ -1824,8 +1824,8 @@ Get texture from material map type. Return as lightuserdata
 
 - Success return Texture
 */
-int lmodelsGetMaterialTexture( lua_State *L ) {
-	Material *material = uluaGetMaterial( L, 1 );
+int lmodelsGetMaterialTexture( lua_State* L ) {
+	Material* material = uluaGetMaterial( L, 1 );
 	int mapType = luaL_checkinteger( L, 2 );
 
 	lua_pushlightuserdata( L, &material->maps[ mapType ].texture );
@@ -1840,8 +1840,8 @@ Get color from material map type
 
 - Success return Color
 */
-int lmodelsGetMaterialColor( lua_State *L ) {
-	Material *material = uluaGetMaterial( L, 1 );
+int lmodelsGetMaterialColor( lua_State* L ) {
+	Material* material = uluaGetMaterial( L, 1 );
 	int mapType = luaL_checkinteger( L, 2 );
 
 	uluaPushColor( L, material->maps[ mapType ].color );
@@ -1856,8 +1856,8 @@ Get color from material map type
 
 - Success return float
 */
-int lmodelsGetMaterialValue( lua_State *L ) {
-	Material *material = uluaGetMaterial( L, 1 );
+int lmodelsGetMaterialValue( lua_State* L ) {
+	Material* material = uluaGetMaterial( L, 1 );
 	int mapType = luaL_checkinteger( L, 2 );
 
 	lua_pushnumber( L, material->maps[ mapType ].value );
@@ -1872,8 +1872,8 @@ Get material shader. Return as lightuserdata
 
 - Success return Shader
 */
-int lmodelsGetMaterialShader( lua_State *L ) {
-	Material *material = uluaGetMaterial( L, 1 );
+int lmodelsGetMaterialShader( lua_State* L ) {
+	Material* material = uluaGetMaterial( L, 1 );
 
 	lua_pushlightuserdata( L, &material->shader );
 
@@ -1887,8 +1887,8 @@ Get material parameters
 
 - Success return float{}
 */
-int lmodelsGetMaterialParams( lua_State *L ) {
-	Material *material = uluaGetMaterial( L, 1 );
+int lmodelsGetMaterialParams( lua_State* L ) {
+	Material* material = uluaGetMaterial( L, 1 );
 
 	Vector4 params = {
 		material->params[0],
@@ -1913,10 +1913,10 @@ Load model animations from file
 - Failure return nil
 - Success return ModelAnimations{}
 */
-int lmodelsLoadModelAnimations( lua_State *L ) {
+int lmodelsLoadModelAnimations( lua_State* L ) {
 	if ( FileExists( luaL_checkstring( L, 1 ) ) ) {
 		int animationCount = 0;
-		ModelAnimation *anims = LoadModelAnimations( lua_tostring( L, 1 ), &animationCount );
+		ModelAnimation* anims = LoadModelAnimations( lua_tostring( L, 1 ), &animationCount );
 
 		lua_createtable( L, animationCount, 0 );
 
@@ -1937,9 +1937,9 @@ int lmodelsLoadModelAnimations( lua_State *L ) {
 
 Update model animation pose
 */
-int lmodelsUpdateModelAnimation( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
-	ModelAnimation *animation = uluaGetModelAnimation( L, 2 );
+int lmodelsUpdateModelAnimation( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
+	ModelAnimation* animation = uluaGetModelAnimation( L, 2 );
 	int frame = luaL_checkinteger( L, 3 );
 
 	UpdateModelAnimation( *model, *animation, frame );
@@ -1952,8 +1952,8 @@ int lmodelsUpdateModelAnimation( lua_State *L ) {
 
 Unload animation data
 */
-int lmodelsUnloadModelAnimation( lua_State *L ) {
-	ModelAnimation *animation = uluaGetModelAnimation( L, 1 );
+int lmodelsUnloadModelAnimation( lua_State* L ) {
+	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
 
 	UnloadModelAnimation( *animation );
 
@@ -1965,13 +1965,13 @@ int lmodelsUnloadModelAnimation( lua_State *L ) {
 
 Unload animation table data
 */
-int lmodelsUnloadModelAnimations( lua_State *L ) {
+int lmodelsUnloadModelAnimations( lua_State* L ) {
 	int t = 1, i = 0;
     lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
         if ( lua_isuserdata( L, -1 ) ) {
-			ModelAnimation *animation = uluaGetModelAnimation( L, lua_gettop( L ) );
+			ModelAnimation* animation = uluaGetModelAnimation( L, lua_gettop( L ) );
 			UnloadModelAnimation( *animation );
         }
         i++;
@@ -1987,9 +1987,9 @@ Check model animation skeleton match
 
 - Success return bool
 */
-int lmodelsIsModelAnimationValid( lua_State *L ) {
-	Model *model = uluaGetModel( L, 1 );
-	ModelAnimation *animation = uluaGetModelAnimation( L, 2 );
+int lmodelsIsModelAnimationValid( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
+	ModelAnimation* animation = uluaGetModelAnimation( L, 2 );
 
 	lua_pushboolean( L, IsModelAnimationValid( *model, *animation ) );
 
@@ -2004,8 +2004,8 @@ Set modelAnimation bones information (skeleton)
 - Failure return false
 - Success return true
 */
-int lmodelsSetModelAnimationBone( lua_State *L ) {
-	ModelAnimation *animation = uluaGetModelAnimation( L, 1 );
+int lmodelsSetModelAnimationBone( lua_State* L ) {
+	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
 	int boneId = luaL_checkinteger( L, 2 );
 	BoneInfo bone = uluaGetBoneInfo( L, 3 );
 
@@ -2028,8 +2028,8 @@ Set modelAnimation bones base transformation (pose)
 - Failure return false
 - Success return true
 */
-int lmodelsSetModelAnimationFramePose( lua_State *L ) {
-	ModelAnimation *animation = uluaGetModelAnimation( L, 1 );
+int lmodelsSetModelAnimationFramePose( lua_State* L ) {
+	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
 	int frame = luaL_checkinteger( L, 2 );
 	int boneId = luaL_checkinteger( L, 3 );
 	Transform pose = uluaGetTransform( L, 4 );
@@ -2050,9 +2050,9 @@ int lmodelsSetModelAnimationFramePose( lua_State *L ) {
 
 Set modelAnimation name
 */
-int lmodelsSetModelAnimationName( lua_State *L ) {
-	ModelAnimation *animation = uluaGetModelAnimation( L, 1 );
-	const char *name = luaL_checkstring( L, 2 );
+int lmodelsSetModelAnimationName( lua_State* L ) {
+	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
+	const char* name = luaL_checkstring( L, 2 );
 
 	strncpy( animation->name, name, 32 );
 
@@ -2066,8 +2066,8 @@ Return modelAnimation bone count
 
 - Success return int
 */
-int lmodelsGetModelAnimationBoneCount( lua_State *L ) {
-	ModelAnimation *modelAnimation = uluaGetModelAnimation( L, 1 );
+int lmodelsGetModelAnimationBoneCount( lua_State* L ) {
+	ModelAnimation* modelAnimation = uluaGetModelAnimation( L, 1 );
 
 	lua_pushinteger( L, modelAnimation->boneCount );
 
@@ -2081,8 +2081,8 @@ Return modelAnimation frame count
 
 - Success return int
 */
-int lmodelsGetModelAnimationFrameCount( lua_State *L ) {
-	ModelAnimation *modelAnimation = uluaGetModelAnimation( L, 1 );
+int lmodelsGetModelAnimationFrameCount( lua_State* L ) {
+	ModelAnimation* modelAnimation = uluaGetModelAnimation( L, 1 );
 
 	lua_pushinteger( L, modelAnimation->frameCount );
 
@@ -2097,8 +2097,8 @@ Get modelAnimation bones information (skeleton)
 - Failure return nil
 - Success return BoneInfo
 */
-int lmodelsGetModelAnimationBone( lua_State *L ) {
-	ModelAnimation *animation = uluaGetModelAnimation( L, 1 );
+int lmodelsGetModelAnimationBone( lua_State* L ) {
+	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
 	int boneId = luaL_checkinteger( L, 2 );
 
 	if ( 0 <= boneId && boneId < animation->boneCount ) {
@@ -2119,8 +2119,8 @@ Get modelAnimation bones base transformation (pose)
 - Failure return nil
 - Success return Transform
 */
-int lmodelsGetModelAnimationFramePose( lua_State *L ) {
-	ModelAnimation *animation = uluaGetModelAnimation( L, 1 );
+int lmodelsGetModelAnimationFramePose( lua_State* L ) {
+	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
 	int frame = luaL_checkinteger( L, 2 );
 	int boneId = luaL_checkinteger( L, 3 );
 
@@ -2141,8 +2141,8 @@ Get modelAnimation name
 
 - Success return string
 */
-int lmodelsGetModelAnimationName( lua_State *L ) {
-	ModelAnimation *animation = uluaGetModelAnimation( L, 1 );
+int lmodelsGetModelAnimationName( lua_State* L ) {
+	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
 
 	lua_pushstring( L, animation->name );
 
@@ -2160,7 +2160,7 @@ Check collision between two spheres
 
 - Success return bool
 */
-int lmodelsCheckCollisionSpheres( lua_State *L ) {
+int lmodelsCheckCollisionSpheres( lua_State* L ) {
 	Vector3 center1 = uluaGetVector3( L, 1 );
 	float radius1 = luaL_checknumber( L, 2 );
 	Vector3 center2 = uluaGetVector3( L, 3 );
@@ -2178,7 +2178,7 @@ Check collision between two bounding boxes
 
 - Success return bool
 */
-int lmodelsCheckCollisionBoxes( lua_State *L ) {
+int lmodelsCheckCollisionBoxes( lua_State* L ) {
 	BoundingBox box1 = uluaGetBoundingBox( L, 1 );
 	BoundingBox box2 = uluaGetBoundingBox( L, 2 );
 
@@ -2194,7 +2194,7 @@ Check collision between box and sphere
 
 - Success return bool
 */
-int lmodelsCheckCollisionBoxSphere( lua_State *L ) {
+int lmodelsCheckCollisionBoxSphere( lua_State* L ) {
 	BoundingBox box = uluaGetBoundingBox( L, 1 );
 	Vector3 center = uluaGetVector3( L, 2 );
 	float radius = luaL_checknumber( L, 3 );
@@ -2211,7 +2211,7 @@ Get collision info between ray and sphere. ( RayCollision is Lua table of { hit,
 
 - Success return RayCollision
 */
-int lmodelsGetRayCollisionSphere( lua_State *L ) {
+int lmodelsGetRayCollisionSphere( lua_State* L ) {
 	Ray ray = uluaGetRay( L, 1 );
 	Vector3 center = uluaGetVector3( L, 2 );
 	float radius = luaL_checknumber( L, 3 );
@@ -2228,7 +2228,7 @@ Get collision info between ray and box
 
 - Success return RayCollision
 */
-int lmodelsGetRayCollisionBox( lua_State *L ) {
+int lmodelsGetRayCollisionBox( lua_State* L ) {
 	Ray ray = uluaGetRay( L, 1 );
 	BoundingBox box = uluaGetBoundingBox( L, 2 );
 
@@ -2244,9 +2244,9 @@ Get collision info between ray and mesh
 
 - Success return RayCollision
 */
-int lmodelsGetRayCollisionMesh( lua_State *L ) {
+int lmodelsGetRayCollisionMesh( lua_State* L ) {
 	Ray ray = uluaGetRay( L, 1 );
-	Mesh *mesh = uluaGetMesh( L, 2 );
+	Mesh* mesh = uluaGetMesh( L, 2 );
 	Matrix transform = uluaGetMatrix( L, 3 );
 
 	uluaPushRayCollision( L, GetRayCollisionMesh( ray, *mesh, transform ) );
@@ -2261,7 +2261,7 @@ Get collision info between ray and triangle
 
 - Success return RayCollision
 */
-int lmodelsGetRayCollisionTriangle( lua_State *L ) {
+int lmodelsGetRayCollisionTriangle( lua_State* L ) {
 	Ray ray = uluaGetRay( L, 1 );
 	Vector3 p1 = uluaGetVector3( L, 2 );
 	Vector3 p2 = uluaGetVector3( L, 3 );
@@ -2279,7 +2279,7 @@ Get collision info between ray and quad
 
 - Success return RayCollision
 */
-int lmodelsGetRayCollisionQuad( lua_State *L ) {
+int lmodelsGetRayCollisionQuad( lua_State* L ) {
 	Ray ray = uluaGetRay( L, 1 );
 	Vector3 p1 = uluaGetVector3( L, 2 );
 	Vector3 p2 = uluaGetVector3( L, 3 );

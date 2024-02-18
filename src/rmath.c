@@ -22,7 +22,7 @@ Clamp float value
 
 - Success return float
 */
-int lmathClamp( lua_State *L ) {
+int lmathClamp( lua_State* L ) {
 	float value = luaL_checknumber( L, 1 );
 	float min = luaL_checknumber( L, 2 );
 	float max = luaL_checknumber( L, 3 );
@@ -39,7 +39,7 @@ Calculate linear interpolation between two floats
 
 - Success return float
 */
-int lmathLerp( lua_State *L ) {
+int lmathLerp( lua_State* L ) {
 	float start = luaL_checknumber( L, 1 );
 	float end = luaL_checknumber( L, 2 );
 	float amount = luaL_checknumber( L, 3 );
@@ -56,7 +56,7 @@ Normalize input value within input range
 
 - Success return float
 */
-int lmathNormalize( lua_State *L ) {
+int lmathNormalize( lua_State* L ) {
 	float value = luaL_checknumber( L, 1 );
 	float start = luaL_checknumber( L, 2 );
 	float end = luaL_checknumber( L, 3 );
@@ -73,7 +73,7 @@ Remap input value within input range to output range
 
 - Success return float
 */
-int lmathRemap( lua_State *L ) {
+int lmathRemap( lua_State* L ) {
 	float value = luaL_checknumber( L, 1 );
 	float inputStart = luaL_checknumber( L, 2 );
 	float inputEnd = luaL_checknumber( L, 3 );
@@ -92,7 +92,7 @@ Wrap input value from min to max
 
 - Success return float
 */
-int lmathWrap( lua_State *L ) {
+int lmathWrap( lua_State* L ) {
 	float value = luaL_checknumber( L, 1 );
 	float min = luaL_checknumber( L, 2 );
 	float max = luaL_checknumber( L, 3 );
@@ -109,7 +109,7 @@ Check whether two given floats are almost equal
 
 - Success return int
 */
-int lmathFloatEquals( lua_State *L ) {
+int lmathFloatEquals( lua_State* L ) {
 	float x = luaL_checknumber( L, 1 );
 	float y = luaL_checknumber( L, 2 );
 
@@ -129,7 +129,7 @@ Vector with components value 0.0f
 
 - Success return Vector2
 */
-int lmathVector2Zero( lua_State *L ) {
+int lmathVector2Zero( lua_State* L ) {
 	uluaPushVector2( L, Vector2Zero() );
 
 	return 1;
@@ -142,7 +142,7 @@ Vector with components value 1.0f
 
 - Success return Vector2
 */
-int lmathVector2One( lua_State *L ) {
+int lmathVector2One( lua_State* L ) {
 	uluaPushVector2( L, Vector2One() );
 
 	return 1;
@@ -155,7 +155,7 @@ Add two vectors (v1 + v2)
 
 - Success return Vector2
 */
-int lmathVector2Add( lua_State *L ) {
+int lmathVector2Add( lua_State* L ) {
 	Vector2 v1 = uluaGetVector2( L, 1 );
 	Vector2 v2 = uluaGetVector2( L, 2 );
 
@@ -171,7 +171,7 @@ Add vector and float value
 
 - Success return Vector2
 */
-int lmathVector2AddValue( lua_State *L ) {
+int lmathVector2AddValue( lua_State* L ) {
 	Vector2 v = uluaGetVector2( L, 1 );
 	float add = luaL_checknumber( L, 2 );
 
@@ -187,7 +187,7 @@ Subtract two vectors (v1 - v2)
 
 - Success return Vector2
 */
-int lmathVector2Subtract( lua_State *L ) {
+int lmathVector2Subtract( lua_State* L ) {
 	Vector2 v1 = uluaGetVector2( L, 1 );
 	Vector2 v2 = uluaGetVector2( L, 2 );
 
@@ -203,7 +203,7 @@ Subtract vector by float value
 
 - Success return Vector2
 */
-int lmathVector2SubtractValue( lua_State *L ) {
+int lmathVector2SubtractValue( lua_State* L ) {
 	Vector2 v = uluaGetVector2( L, 1 );
 	float sub = luaL_checknumber( L, 2 );
 
@@ -219,7 +219,7 @@ Calculate vector length
 
 - Success return float
 */
-int lmathVector2Length( lua_State *L ) {
+int lmathVector2Length( lua_State* L ) {
 	Vector2 v = uluaGetVector2( L, 1 );
 
 	lua_pushnumber( L, Vector2Length( v ) );
@@ -234,7 +234,7 @@ Calculate vector square length
 
 - Success return float
 */
-int lmathVector2LengthSqr( lua_State *L ) {
+int lmathVector2LengthSqr( lua_State* L ) {
 	Vector2 v = uluaGetVector2( L, 1 );
 
 	lua_pushnumber( L, Vector2LengthSqr( v ) );
@@ -249,7 +249,7 @@ Calculate two vectors dot product
 
 - Success return float
 */
-int lmathVector2DotProduct( lua_State *L ) {
+int lmathVector2DotProduct( lua_State* L ) {
 	Vector2 v1 = uluaGetVector2( L, 1 );
 	Vector2 v2 = uluaGetVector2( L, 2 );
 
@@ -265,7 +265,7 @@ Calculate distance between two vectors
 
 - Success return float
 */
-int lmathVector2Distance( lua_State *L ) {
+int lmathVector2Distance( lua_State* L ) {
 	Vector2 v1 = uluaGetVector2( L, 1 );
 	Vector2 v2 = uluaGetVector2( L, 2 );
 
@@ -281,7 +281,7 @@ Calculate square distance between two vectors
 
 - Success return float
 */
-int lmathVector2DistanceSqr( lua_State *L ) {
+int lmathVector2DistanceSqr( lua_State* L ) {
 	Vector2 v1 = uluaGetVector2( L, 1 );
 	Vector2 v2 = uluaGetVector2( L, 2 );
 
@@ -298,7 +298,7 @@ NOTE: Angle is calculated from origin point (0, 0)
 
 - Success return float
 */
-int lmathVector2Angle( lua_State *L ) {
+int lmathVector2Angle( lua_State* L ) {
 	Vector2 v1 = uluaGetVector2( L, 1 );
 	Vector2 v2 = uluaGetVector2( L, 2 );
 
@@ -316,7 +316,7 @@ Current implementation should be aligned with glm::angle
 
 - Success return float
 */
-int lmathVector2LineAngle( lua_State *L ) {
+int lmathVector2LineAngle( lua_State* L ) {
 	Vector2 start = uluaGetVector2( L, 1 );
 	Vector2 end = uluaGetVector2( L, 2 );
 
@@ -332,7 +332,7 @@ Scale vector (multiply by value)
 
 - Success return Vector2
 */
-int lmathVector2Scale( lua_State *L ) {
+int lmathVector2Scale( lua_State* L ) {
 	Vector2 v = uluaGetVector2( L, 1 );
 	float scale = luaL_checknumber( L, 2 );
 
@@ -348,7 +348,7 @@ Multiply vector by vector
 
 - Success return Vector2
 */
-int lmathVector2Multiply( lua_State *L ) {
+int lmathVector2Multiply( lua_State* L ) {
 	Vector2 v1 = uluaGetVector2( L, 1 );
 	Vector2 v2 = uluaGetVector2( L, 2 );
 
@@ -364,7 +364,7 @@ Negate vector
 
 - Success return Vector2
 */
-int lmathVector2Negate( lua_State *L ) {
+int lmathVector2Negate( lua_State* L ) {
 	Vector2 v = uluaGetVector2( L, 1 );
 
 	uluaPushVector2( L, Vector2Negate( v ) );
@@ -379,7 +379,7 @@ Divide vector by vector
 
 - Success return Vector2
 */
-int lmathVector2Divide( lua_State *L ) {
+int lmathVector2Divide( lua_State* L ) {
 	Vector2 v1 = uluaGetVector2( L, 1 );
 	Vector2 v2 = uluaGetVector2( L, 2 );
 
@@ -395,7 +395,7 @@ Normalize provided vector
 
 - Success return Vector2
 */
-int lmathVector2Normalize( lua_State *L ) {
+int lmathVector2Normalize( lua_State* L ) {
 	Vector2 v = uluaGetVector2( L, 1 );
 
 	uluaPushVector2( L, Vector2Normalize( v ) );
@@ -410,7 +410,7 @@ Transforms a Vector2 by a given Matrix
 
 - Success return Vector2
 */
-int lmathVector2Transform( lua_State *L ) {
+int lmathVector2Transform( lua_State* L ) {
 	Vector2 v = uluaGetVector2( L, 1 );
 	Matrix mat = uluaGetMatrix( L, 2 );
 
@@ -426,7 +426,7 @@ Calculate linear interpolation between two vectors
 
 - Success return Vector2
 */
-int lmathVector2Lerp( lua_State *L ) {
+int lmathVector2Lerp( lua_State* L ) {
 	Vector2 v1 = uluaGetVector2( L, 1 );
 	Vector2 v2 = uluaGetVector2( L, 2 );
 	float amount = luaL_checknumber( L, 3 );
@@ -443,7 +443,7 @@ Calculate reflected vector to normal
 
 - Success return Vector2
 */
-int lmathVector2Reflect( lua_State *L ) {
+int lmathVector2Reflect( lua_State* L ) {
 	Vector2 v1 = uluaGetVector2( L, 1 );
 	Vector2 v2 = uluaGetVector2( L, 2 );
 
@@ -459,7 +459,7 @@ Rotate vector by angle
 
 - Success return Vector2
 */
-int lmathVector2Rotate( lua_State *L ) {
+int lmathVector2Rotate( lua_State* L ) {
 	Vector2 v = uluaGetVector2( L, 1 );
 	float degs = luaL_checknumber( L, 2 );
 
@@ -475,7 +475,7 @@ Move Vector towards target
 
 - Success return Vector2
 */
-int lmathVector2MoveTowards( lua_State *L ) {
+int lmathVector2MoveTowards( lua_State* L ) {
 	Vector2 v1 = uluaGetVector2( L, 1 );
 	Vector2 v2 = uluaGetVector2( L, 2 );
 	float maxDistance = luaL_checknumber( L, 3 );
@@ -492,7 +492,7 @@ Invert the given vector
 
 - Success return Vector2
 */
-int lmathVector2Invert( lua_State *L ) {
+int lmathVector2Invert( lua_State* L ) {
 	Vector2 v = uluaGetVector2( L, 1 );
 
 	uluaPushVector2( L, Vector2Invert( v ) );
@@ -508,7 +508,7 @@ min and max values specified by the given vectors
 
 - Success return Vector2
 */
-int lmathVector2Clamp( lua_State *L ) {
+int lmathVector2Clamp( lua_State* L ) {
 	Vector2 v = uluaGetVector2( L, 1 );
 	Vector2 min = uluaGetVector2( L, 2 );
 	Vector2 max = uluaGetVector2( L, 3 );
@@ -525,7 +525,7 @@ Clamp the magnitude of the vector between two min and max values
 
 - Success return Vector2
 */
-int lmathVector2ClampValue( lua_State *L ) {
+int lmathVector2ClampValue( lua_State* L ) {
 	Vector2 v = uluaGetVector2( L, 1 );
 	float min = luaL_checknumber( L, 2 );
 	float max = luaL_checknumber( L, 3 );
@@ -542,7 +542,7 @@ Check whether two given vectors are almost equal
 
 - Success return int
 */
-int lmathVector2Equals( lua_State *L ) {
+int lmathVector2Equals( lua_State* L ) {
 	Vector2 v1 = uluaGetVector2( L, 1 );
 	Vector2 v2 = uluaGetVector2( L, 2 );
 
@@ -562,7 +562,7 @@ Vector with components value 0.0f
 
 - Success return Vector3
 */
-int lmathVector3Zero( lua_State *L ) {
+int lmathVector3Zero( lua_State* L ) {
 	uluaPushVector3( L, Vector3Zero() );
 
 	return 1;
@@ -575,7 +575,7 @@ Vector with components value 1.0f
 
 - Success return Vector3
 */
-int lmathVector3One( lua_State *L ) {
+int lmathVector3One( lua_State* L ) {
 	uluaPushVector3( L, Vector3One() );
 
 	return 1;
@@ -588,7 +588,7 @@ Add two vectors
 
 - Success return Vector3
 */
-int lmathVector3Add( lua_State *L ) {
+int lmathVector3Add( lua_State* L ) {
 	Vector3 v1 = uluaGetVector3( L, 1 );
 	Vector3 v2 = uluaGetVector3( L, 2 );
 
@@ -604,7 +604,7 @@ Add vector and float value
 
 - Success return Vector3
 */
-int lmathVector3AddValue( lua_State *L ) {
+int lmathVector3AddValue( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 	float add = luaL_checknumber( L, 2 );
 
@@ -620,7 +620,7 @@ Subtract two vectors
 
 - Success return Vector3
 */
-int lmathVector3Subtract( lua_State *L ) {
+int lmathVector3Subtract( lua_State* L ) {
 	Vector3 v1 = uluaGetVector3( L, 1 );
 	Vector3 v2 = uluaGetVector3( L, 2 );
 
@@ -636,7 +636,7 @@ Subtract vector by float value
 
 - Success return Vector3
 */
-int lmathVector3SubtractValue( lua_State *L ) {
+int lmathVector3SubtractValue( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 	float sub = luaL_checknumber( L, 2 );
 
@@ -652,7 +652,7 @@ Multiply vector by scalar
 
 - Success return Vector3
 */
-int lmathVector3Scale( lua_State *L ) {
+int lmathVector3Scale( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 	float scalar = luaL_checknumber( L, 2 );
 
@@ -668,7 +668,7 @@ Multiply vector by vector
 
 - Success return Vector3
 */
-int lmathVector3Multiply( lua_State *L ) {
+int lmathVector3Multiply( lua_State* L ) {
 	Vector3 v1 = uluaGetVector3( L, 1 );
 	Vector3 v2 = uluaGetVector3( L, 2 );
 
@@ -684,7 +684,7 @@ Calculate two vectors cross product
 
 - Success return Vector3
 */
-int lmathVector3CrossProduct( lua_State *L ) {
+int lmathVector3CrossProduct( lua_State* L ) {
 	Vector3 v1 = uluaGetVector3( L, 1 );
 	Vector3 v2 = uluaGetVector3( L, 2 );
 
@@ -700,7 +700,7 @@ Calculate one vector perpendicular vector
 
 - Success return Vector3
 */
-int lmathVector3Perpendicular( lua_State *L ) {
+int lmathVector3Perpendicular( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 
 	uluaPushVector3( L, Vector3Perpendicular( v ) );
@@ -715,7 +715,7 @@ Calculate vector length
 
 - Success return float
 */
-int lmathVector3Length( lua_State *L ) {
+int lmathVector3Length( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 
 	lua_pushnumber( L, Vector3Length( v ) );
@@ -730,7 +730,7 @@ Calculate vector square length
 
 - Success return float
 */
-int lmathVector3LengthSqr( lua_State *L ) {
+int lmathVector3LengthSqr( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 
 	lua_pushnumber( L, Vector3LengthSqr( v ) );
@@ -745,7 +745,7 @@ Calculate two vectors dot product
 
 - Success return float
 */
-int lmathVector3DotProduct( lua_State *L ) {
+int lmathVector3DotProduct( lua_State* L ) {
 	Vector3 v1 = uluaGetVector3( L, 1 );
 	Vector3 v2 = uluaGetVector3( L, 2 );
 
@@ -761,7 +761,7 @@ Calculate distance between two vectors
 
 - Success return float
 */
-int lmathVector3Distance( lua_State *L ) {
+int lmathVector3Distance( lua_State* L ) {
 	Vector3 v1 = uluaGetVector3( L, 1 );
 	Vector3 v2 = uluaGetVector3( L, 2 );
 
@@ -777,7 +777,7 @@ Calculate square distance between two vectors
 
 - Success return float
 */
-int lmathVector3DistanceSqr( lua_State *L ) {
+int lmathVector3DistanceSqr( lua_State* L ) {
 	Vector3 v1 = uluaGetVector3( L, 1 );
 	Vector3 v2 = uluaGetVector3( L, 2 );
 
@@ -793,7 +793,7 @@ Calculate angle between two vectors
 
 - Success return float
 */
-int lmathVector3Angle( lua_State *L ) {
+int lmathVector3Angle( lua_State* L ) {
 	Vector3 v1 = uluaGetVector3( L, 1 );
 	Vector3 v2 = uluaGetVector3( L, 2 );
 
@@ -809,7 +809,7 @@ Negate provided vector (invert direction)
 
 - Success return Vector3
 */
-int lmathVector3Negate( lua_State *L ) {
+int lmathVector3Negate( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 
 	uluaPushVector3( L, Vector3Negate( v ) );
@@ -824,7 +824,7 @@ Divide vector by vector
 
 - Success return Vector3
 */
-int lmathVector3Divide( lua_State *L ) {
+int lmathVector3Divide( lua_State* L ) {
 	Vector3 v1 = uluaGetVector3( L, 1 );
 	Vector3 v2 = uluaGetVector3( L, 2 );
 
@@ -840,7 +840,7 @@ Normalize provided vector
 
 - Success return Vector3
 */
-int lmathVector3Normalize( lua_State *L ) {
+int lmathVector3Normalize( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 
 	uluaPushVector3( L, Vector3Normalize( v ) );
@@ -856,7 +856,7 @@ Gram-Schmidt function implementation
 
 - Success return Vector3, Vector3
 */
-int lmathVector3OrthoNormalize( lua_State *L ) {
+int lmathVector3OrthoNormalize( lua_State* L ) {
 	Vector3 v1 = uluaGetVector3( L, 1 );
 	Vector3 v2 = uluaGetVector3( L, 2 );
 
@@ -875,7 +875,7 @@ Transforms a Vector3 by a given Matrix
 
 - Success return Vector3
 */
-int lmathVector3Transform( lua_State *L ) {
+int lmathVector3Transform( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 	Matrix mat = uluaGetMatrix( L, 2 );
 
@@ -891,7 +891,7 @@ Transform a vector by quaternion rotation
 
 - Success return Vector3
 */
-int lmathVector3RotateByQuaternion( lua_State *L ) {
+int lmathVector3RotateByQuaternion( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 	Quaternion q = uluaGetQuaternion( L, 2 );
 
@@ -907,7 +907,7 @@ Rotates a vector around an axis
 
 - Success return Vector3
 */
-int lmathVector3RotateByAxisAngle( lua_State *L ) {
+int lmathVector3RotateByAxisAngle( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 	Vector3 axis = uluaGetVector3( L, 2 );
 	float angle = luaL_checknumber( L, 3 );
@@ -924,7 +924,7 @@ Calculate linear interpolation between two vectors
 
 - Success return Vector3
 */
-int lmathVector3Lerp( lua_State *L ) {
+int lmathVector3Lerp( lua_State* L ) {
 	Vector3 v1 = uluaGetVector3( L, 1 );
 	Vector3 v2 = uluaGetVector3( L, 2 );
 	float amount = luaL_checknumber( L, 3 );
@@ -941,7 +941,7 @@ Calculate reflected vector to normal
 
 - Success return Vector3
 */
-int lmathVector3Reflect( lua_State *L ) {
+int lmathVector3Reflect( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 	Vector3 normal = uluaGetVector3( L, 2 );
 
@@ -957,7 +957,7 @@ Get min value for each pair of components
 
 - Success return Vector3
 */
-int lmathVector3Min( lua_State *L ) {
+int lmathVector3Min( lua_State* L ) {
 	Vector3 v1 = uluaGetVector3( L, 1 );
 	Vector3 v2 = uluaGetVector3( L, 2 );
 
@@ -973,7 +973,7 @@ Get max value for each pair of components
 
 - Success return Vector3
 */
-int lmathVector3Max( lua_State *L ) {
+int lmathVector3Max( lua_State* L ) {
 	Vector3 v1 = uluaGetVector3( L, 1 );
 	Vector3 v2 = uluaGetVector3( L, 2 );
 
@@ -990,7 +990,7 @@ NOTE: Assumes P is on the plane of the triangle
 
 - Success return Vector3
 */
-int lmathVector3Barycenter( lua_State *L ) {
+int lmathVector3Barycenter( lua_State* L ) {
 	Vector3 p = uluaGetVector3( L, 1 );
 	Vector3 a = uluaGetVector3( L, 2 );
 	Vector3 b = uluaGetVector3( L, 3 );
@@ -1009,7 +1009,7 @@ NOTE: We are avoiding calling other raymath functions despite available
 
 - Success return Vector3
 */
-int lmathVector3Unproject( lua_State *L ) {
+int lmathVector3Unproject( lua_State* L ) {
 	Vector3 source = uluaGetVector3( L, 1 );
 	Matrix projection = uluaGetMatrix( L, 2 );
 	Matrix view = uluaGetMatrix( L, 3 );
@@ -1026,7 +1026,7 @@ Invert the given vector
 
 - Success return Vector3
 */
-int lmathVector3Invert( lua_State *L ) {
+int lmathVector3Invert( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 
 	uluaPushVector3( L, Vector3Invert( v ) );
@@ -1042,7 +1042,7 @@ min and max values specified by the given vectors
 
 - Success return Vector3
 */
-int lmathVector3Clamp( lua_State *L ) {
+int lmathVector3Clamp( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 	Vector3 min = uluaGetVector3( L, 2 );
 	Vector3 max = uluaGetVector3( L, 3 );
@@ -1059,7 +1059,7 @@ Clamp the magnitude of the vector between two values
 
 - Success return Vector3
 */
-int lmathVector3ClampValue( lua_State *L ) {
+int lmathVector3ClampValue( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 	float min = luaL_checknumber( L, 2 );
 	float max = luaL_checknumber( L, 3 );
@@ -1076,7 +1076,7 @@ Check whether two given vectors are almost equal
 
 - Success return int
 */
-int lmathVector3Equals( lua_State *L ) {
+int lmathVector3Equals( lua_State* L ) {
 	Vector3 v1 = uluaGetVector3( L, 1 );
 	Vector3 v2 = uluaGetVector3( L, 2 );
 
@@ -1097,7 +1097,7 @@ on the other side of the surface
 
 - Success return Vector3
 */
-int lmathVector3Refract( lua_State *L ) {
+int lmathVector3Refract( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 	Vector3 n = uluaGetVector3( L, 2 );
 	float r = luaL_checknumber( L, 3 );
@@ -1118,7 +1118,7 @@ Compute matrix determinant
 
 - Success return float
 */
-int lmathMatrixDeterminant( lua_State *L ) {
+int lmathMatrixDeterminant( lua_State* L ) {
 	Matrix mat = uluaGetMatrix( L, 1 );
 
 	lua_pushnumber( L, MatrixDeterminant( mat ) );
@@ -1133,7 +1133,7 @@ Get the trace of the matrix (sum of the values along the diagonal)
 
 - Success return float
 */
-int lmathMatrixTrace( lua_State *L ) {
+int lmathMatrixTrace( lua_State* L ) {
 	Matrix mat = uluaGetMatrix( L, 1 );
 
 	lua_pushnumber( L, MatrixTrace( mat ) );
@@ -1148,7 +1148,7 @@ Transposes provided matrix
 
 - Success return Matrix
 */
-int lmathMatrixTranspose( lua_State *L ) {
+int lmathMatrixTranspose( lua_State* L ) {
 	Matrix mat = uluaGetMatrix( L, 1 );
 
 	uluaPushMatrix( L, MatrixTranspose( mat ) );
@@ -1163,7 +1163,7 @@ Invert provided matrix
 
 - Success return Matrix
 */
-int lmathMatrixInvert( lua_State *L ) {
+int lmathMatrixInvert( lua_State* L ) {
 	Matrix mat = uluaGetMatrix( L, 1 );
 
 	uluaPushMatrix( L, MatrixInvert( mat ) );
@@ -1178,7 +1178,7 @@ Get identity matrix
 
 - Success return Matrix
 */
-int lmathMatrixIdentity( lua_State *L ) {
+int lmathMatrixIdentity( lua_State* L ) {
 	uluaPushMatrix( L, MatrixIdentity() );
 
 	return 1;
@@ -1191,7 +1191,7 @@ Add two matrices
 
 - Success return Matrix
 */
-int lmathMatrixAdd( lua_State *L ) {
+int lmathMatrixAdd( lua_State* L ) {
 	Matrix mat1 = uluaGetMatrix( L, 1 );
 	Matrix mat2 = uluaGetMatrix( L, 2 );
 
@@ -1207,7 +1207,7 @@ Subtract two matrices (left - right)
 
 - Success return Matrix
 */
-int lmathMatrixSubtract( lua_State *L ) {
+int lmathMatrixSubtract( lua_State* L ) {
 	Matrix mat1 = uluaGetMatrix( L, 1 );
 	Matrix mat2 = uluaGetMatrix( L, 2 );
 
@@ -1223,7 +1223,7 @@ Get two matrix multiplication
 
 - Success return Matrix
 */
-int lmathMatrixMultiply( lua_State *L ) {
+int lmathMatrixMultiply( lua_State* L ) {
 	Matrix mat1 = uluaGetMatrix( L, 1 );
 	Matrix mat2 = uluaGetMatrix( L, 2 );
 
@@ -1239,7 +1239,7 @@ Get translation matrix
 
 - Success return Matrix
 */
-int lmathMatrixTranslate( lua_State *L ) {
+int lmathMatrixTranslate( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 
 	uluaPushMatrix( L, MatrixTranslate( v.x, v.y, v.z ) );
@@ -1254,7 +1254,7 @@ Create rotation matrix from axis and angle. NOTE: Angle should be provided in ra
 
 - Success return Matrix
 */
-int lmathMatrixRotate( lua_State *L ) {
+int lmathMatrixRotate( lua_State* L ) {
 	Vector3 axis = uluaGetVector3( L, 1 );
 	float angle = luaL_checknumber( L, 2 );
 
@@ -1270,7 +1270,7 @@ Get x-rotation matrix (angle in radians)
 
 - Success return Matrix
 */
-int lmathMatrixRotateX( lua_State *L ) {
+int lmathMatrixRotateX( lua_State* L ) {
 	float angle = luaL_checknumber( L, 1 );
 
 	uluaPushMatrix( L, MatrixRotateX( angle ) );
@@ -1285,7 +1285,7 @@ Get y-rotation matrix (angle in radians)
 
 - Success return Matrix
 */
-int lmathMatrixRotateY( lua_State *L ) {
+int lmathMatrixRotateY( lua_State* L ) {
 	float angle = luaL_checknumber( L, 1 );
 
 	uluaPushMatrix( L, MatrixRotateY( angle ) );
@@ -1300,7 +1300,7 @@ Get z-rotation matrix (angle in radians)
 
 - Success return Matrix
 */
-int lmathMatrixRotateZ( lua_State *L ) {
+int lmathMatrixRotateZ( lua_State* L ) {
 	float angle = luaL_checknumber( L, 1 );
 
 	uluaPushMatrix( L, MatrixRotateZ( angle ) );
@@ -1315,7 +1315,7 @@ Get xyz-rotation matrix (angles in radians)
 
 - Success return Matrix
 */
-int lmathMatrixRotateXYZ( lua_State *L ) {
+int lmathMatrixRotateXYZ( lua_State* L ) {
 	Vector3 angle = uluaGetVector3( L, 1 );
 
 	uluaPushMatrix( L, MatrixRotateXYZ( angle ) );
@@ -1330,7 +1330,7 @@ Get zyx-rotation matrix (angles in radians)
 
 - Success return Matrix
 */
-int lmathMatrixRotateZYX( lua_State *L ) {
+int lmathMatrixRotateZYX( lua_State* L ) {
 	Vector3 angle = uluaGetVector3( L, 1 );
 
 	uluaPushMatrix( L, MatrixRotateZYX( angle ) );
@@ -1345,7 +1345,7 @@ Get scaling matrix
 
 - Success return Matrix
 */
-int lmathMatrixScale( lua_State *L ) {
+int lmathMatrixScale( lua_State* L ) {
 	Vector3 v = uluaGetVector3( L, 1 );
 
 	uluaPushMatrix( L, MatrixScale( v.x, v.y, v.z ) );
@@ -1360,7 +1360,7 @@ Get perspective projection matrix
 
 - Success return Matrix
 */
-int lmathMatrixFrustum( lua_State *L ) {
+int lmathMatrixFrustum( lua_State* L ) {
 	float left = luaL_checknumber( L, 1 );
 	float right = luaL_checknumber( L, 2);
 	float bottom = luaL_checknumber( L, 3 );
@@ -1380,7 +1380,7 @@ Get perspective projection matrix
 
 - Success return Matrix
 */
-int lmathMatrixPerspective( lua_State *L ) {
+int lmathMatrixPerspective( lua_State* L ) {
 	float fovy = luaL_checknumber( L, 1 );
 	float aspect = luaL_checknumber( L, 2 );
 	float near = luaL_checknumber( L, 3 );
@@ -1398,7 +1398,7 @@ Get orthographic projection matrix
 
 - Success return Matrix
 */
-int lmathMatrixOrtho( lua_State *L ) {
+int lmathMatrixOrtho( lua_State* L ) {
 	float left = luaL_checknumber( L, 1 );
 	float right = luaL_checknumber( L, 2 );
 	float bottom = luaL_checknumber( L, 3 );
@@ -1418,7 +1418,7 @@ Get camera look-at matrix (View matrix)
 
 - Success return Matrix
 */
-int lmathMatrixLookAt( lua_State *L ) {
+int lmathMatrixLookAt( lua_State* L ) {
 	Vector3 eye = uluaGetVector3( L, 1 );
 	Vector3 target = uluaGetVector3( L, 2 );
 	Vector3 up = uluaGetVector3( L, 3 );
@@ -1439,7 +1439,7 @@ Add two quaternions
 
 - Success return Quaternion
 */
-int lmathQuaternionAdd( lua_State *L ) {
+int lmathQuaternionAdd( lua_State* L ) {
 	Quaternion q1 = uluaGetQuaternion( L, 1 );
 	Quaternion q2 = uluaGetQuaternion( L, 2 );
 
@@ -1455,7 +1455,7 @@ Add quaternion and float value
 
 - Success return Quaternion
 */
-int lmathQuaternionAddValue( lua_State *L ) {
+int lmathQuaternionAddValue( lua_State* L ) {
 	Quaternion q = uluaGetQuaternion( L, 1 );
 	float add = luaL_checknumber( L, 2 );
 
@@ -1471,7 +1471,7 @@ Subtract two quaternions
 
 - Success return Quaternion
 */
-int lmathQuaternionSubtract( lua_State *L ) {
+int lmathQuaternionSubtract( lua_State* L ) {
 	Quaternion q1 = uluaGetQuaternion( L, 1 );
 	Quaternion q2 = uluaGetQuaternion( L, 2 );
 
@@ -1487,7 +1487,7 @@ Subtract quaternion and float value
 
 - Success return Quaternion
 */
-int lmathQuaternionSubtractValue( lua_State *L ) {
+int lmathQuaternionSubtractValue( lua_State* L ) {
 	Quaternion q = uluaGetQuaternion( L, 1 );
 	float sub = luaL_checknumber( L, 2 );
 
@@ -1503,7 +1503,7 @@ Get identity quaternion
 
 - Success return Quaternion
 */
-int lmathQuaternionIdentity( lua_State *L ) {
+int lmathQuaternionIdentity( lua_State* L ) {
 	uluaPushQuaternion( L, QuaternionIdentity() );
 
 	return 1;
@@ -1516,7 +1516,7 @@ Computes the length of a quaternion
 
 - Success return float
 */
-int lmathQuaternionLength( lua_State *L ) {
+int lmathQuaternionLength( lua_State* L ) {
 	Quaternion q = uluaGetQuaternion( L, 1 );
 
 	lua_pushnumber( L, QuaternionLength( q ) );
@@ -1531,7 +1531,7 @@ Normalize provided quaternion
 
 - Success return Quaternion
 */
-int lmathQuaternionNormalize( lua_State *L ) {
+int lmathQuaternionNormalize( lua_State* L ) {
 	Quaternion q = uluaGetQuaternion( L, 1 );
 
 	uluaPushQuaternion( L, QuaternionNormalize( q ) );
@@ -1546,7 +1546,7 @@ Invert provided quaternion
 
 - Success return Quaternion
 */
-int lmathQuaternionInvert( lua_State *L ) {
+int lmathQuaternionInvert( lua_State* L ) {
 	Quaternion q = uluaGetQuaternion( L, 1 );
 
 	uluaPushQuaternion( L, QuaternionInvert( q ) );
@@ -1561,7 +1561,7 @@ Calculate two quaternion multiplication
 
 - Success return Quaternion
 */
-int lmathQuaternionMultiply( lua_State *L ) {
+int lmathQuaternionMultiply( lua_State* L ) {
 	Quaternion q1 = uluaGetQuaternion( L, 1 );
 	Quaternion q2 = uluaGetQuaternion( L, 2 );
 
@@ -1577,7 +1577,7 @@ Scale quaternion by float value
 
 - Success return Quaternion
 */
-int lmathQuaternionScale( lua_State *L ) {
+int lmathQuaternionScale( lua_State* L ) {
 	Quaternion q = uluaGetQuaternion( L, 1 );
 	float mul = luaL_checknumber( L, 2 );
 
@@ -1593,7 +1593,7 @@ Divide two quaternions
 
 - Success return Quaternion
 */
-int lmathQuaternionDivide( lua_State *L ) {
+int lmathQuaternionDivide( lua_State* L ) {
 	Quaternion q1 = uluaGetQuaternion( L, 1 );
 	Quaternion q2 = uluaGetQuaternion( L, 2 );
 
@@ -1609,7 +1609,7 @@ Calculate linear interpolation between two quaternions
 
 - Success return Quaternion
 */
-int lmathQuaternionLerp( lua_State *L ) {
+int lmathQuaternionLerp( lua_State* L ) {
 	Quaternion q1 = uluaGetQuaternion( L, 1 );
 	Quaternion q2 = uluaGetQuaternion( L, 2 );
 	float amount = luaL_checknumber( L, 3 );
@@ -1626,7 +1626,7 @@ Calculate slerp-optimized interpolation between two quaternions
 
 - Success return Quaternion
 */
-int lmathQuaternionNlerp( lua_State *L ) {
+int lmathQuaternionNlerp( lua_State* L ) {
 	Quaternion q1 = uluaGetQuaternion( L, 1 );
 	Quaternion q2 = uluaGetQuaternion( L, 2 );
 	float amount = luaL_checknumber( L, 3 );
@@ -1643,7 +1643,7 @@ Calculates spherical linear interpolation between two quaternions
 
 - Success return Quaternion
 */
-int lmathQuaternionSlerp( lua_State *L ) {
+int lmathQuaternionSlerp( lua_State* L ) {
 	Quaternion q1 = uluaGetQuaternion( L, 1 );
 	Quaternion q2 = uluaGetQuaternion( L, 2 );
 	float amount = luaL_checknumber( L, 3 );
@@ -1660,7 +1660,7 @@ Calculate quaternion based on the rotation from one vector to another
 
 - Success return Quaternion
 */
-int lmathQuaternionFromVector3ToVector3( lua_State *L ) {
+int lmathQuaternionFromVector3ToVector3( lua_State* L ) {
 	Vector3 from = uluaGetVector3( L, 1 );
 	Vector3 to = uluaGetVector3( L, 2 );
 
@@ -1676,7 +1676,7 @@ Get a quaternion for a given rotation matrix
 
 - Success return Quaternion
 */
-int lmathQuaternionFromMatrix( lua_State *L ) {
+int lmathQuaternionFromMatrix( lua_State* L ) {
 	Matrix mat = uluaGetMatrix( L, 1 );
 
 	uluaPushQuaternion( L, QuaternionFromMatrix( mat ) );
@@ -1691,7 +1691,7 @@ Get a quaternion for a given rotation matrix
 
 - Success return Matrix
 */
-int lmathQuaternionToMatrix( lua_State *L ) {
+int lmathQuaternionToMatrix( lua_State* L ) {
 	Quaternion q = uluaGetQuaternion( L, 1 );
 
 	uluaPushMatrix( L, QuaternionToMatrix( q ) );
@@ -1707,7 +1707,7 @@ NOTE: angle must be provided in radians
 
 - Success return Quaternion
 */
-int lmathQuaternionFromAxisAngle( lua_State *L ) {
+int lmathQuaternionFromAxisAngle( lua_State* L ) {
 	Vector3 axis = uluaGetVector3( L, 1 );
 	float angle = luaL_checknumber( L, 2 );
 
@@ -1723,7 +1723,7 @@ Get the rotation angle and axis for a given quaternion
 
 - Success return Vector3, float
 */
-int lmathQuaternionToAxisAngle( lua_State *L ) {
+int lmathQuaternionToAxisAngle( lua_State* L ) {
 	Quaternion q = uluaGetQuaternion( L, 1 );
 	float angle = 0.0;
 	Vector3 axis = { 0.0 };
@@ -1744,7 +1744,7 @@ NOTE: Rotation order is ZYX
 
 - Success return Quaternion
 */
-int lmathQuaternionFromEuler( lua_State *L ) {
+int lmathQuaternionFromEuler( lua_State* L ) {
 	float pitch = luaL_checknumber( L, 1 );
 	float yaw = luaL_checknumber( L, 2 );
 	float roll = luaL_checknumber( L, 3 );
@@ -1762,7 +1762,7 @@ NOTE: Angles are returned in a Vector3 struct in radians
 
 - Success return Vector3
 */
-int lmathQuaternionToEuler( lua_State *L ) {
+int lmathQuaternionToEuler( lua_State* L ) {
 	Quaternion q = uluaGetQuaternion( L, 1 );
 
 	uluaPushVector3( L, QuaternionToEuler( q ) );
@@ -1777,7 +1777,7 @@ Transform a quaternion given a transformation matrix
 
 - Success return Quaternion
 */
-int lmathQuaternionTransform( lua_State *L ) {
+int lmathQuaternionTransform( lua_State* L ) {
 	Quaternion q = uluaGetQuaternion( L, 1 );
 	Matrix mat = uluaGetMatrix( L, 2 );
 
@@ -1793,7 +1793,7 @@ Check whether two given quaternions are almost equal
 
 - Success return int
 */
-int lmathQuaternionEquals( lua_State *L ) {
+int lmathQuaternionEquals( lua_State* L ) {
 	Quaternion q1 = uluaGetQuaternion( L, 1 );
 	Quaternion q2 = uluaGetQuaternion( L, 2 );
 

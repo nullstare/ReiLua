@@ -4,15 +4,15 @@
 #include "textures.h"
 #include "lua_core.h"
 
-void unloadGlyphInfo( GlyphInfo *glyph ) {
+void unloadGlyphInfo( GlyphInfo* glyph ) {
 	UnloadImage( glyph->image );
 }
 
 // DrawTextBoxed is modified DrawTextBoxedSelectable from raylib [text] example - Rectangle bounds
 
 // Draw text using font inside rectangle limits
-static int DrawTextBoxed( Font font, const char *text, Rectangle rec, float fontSize, float spacing,
-bool wordWrap, Color *tints, int tintCount, Color *backTints, int backTintCount )
+static int DrawTextBoxed( Font font, const char* text, Rectangle rec, float fontSize, float spacing,
+bool wordWrap, Color* tints, int tintCount, Color* backTints, int backTintCount )
 {
     int length = TextLength(text);  // Total length in bytes of the text, scanned by codepoints in loop
 
@@ -161,7 +161,7 @@ bool wordWrap, Color *tints, int tintCount, Color *backTints, int backTintCount 
 	return mouseChar;
 }
 
-static inline void getCodepoints( lua_State *L, int codepoints[], int index ) {
+static inline void getCodepoints( lua_State* L, int codepoints[], int index ) {
 	int t = index;
 	int i = 0;
 	lua_pushnil( L );
@@ -184,7 +184,7 @@ Get the default Font. Return as lightuserdata
 
 - Success return Font
 */
-int ltextGetFontDefault( lua_State *L ) {
+int ltextGetFontDefault( lua_State* L ) {
 	lua_pushlightuserdata( L, &state->defaultFont );
 
 	return 1;
@@ -198,7 +198,7 @@ Load font from file into GPU memory (VRAM)
 - Failure return nil
 - Success return Font
 */
-int ltextLoadFont( lua_State *L ) {
+int ltextLoadFont( lua_State* L ) {
 	if ( FileExists( luaL_checkstring( L, 1 ) ) ) {
 		uluaPushFont( L, LoadFont( lua_tostring( L, 1 ) ) );
 
@@ -218,7 +218,7 @@ Load font from file with extended parameters, use NULL for codepoints to load th
 - Failure return nil
 - Success return Font
 */
-int ltextLoadFontEx( lua_State *L ) {
+int ltextLoadFontEx( lua_State* L ) {
 	int fontSize = luaL_checkinteger( L, 2 );
 
 	if ( FileExists( luaL_checkstring( L, 1 ) ) ) {
@@ -248,8 +248,8 @@ Load font from Image (XNA style)
 
 - Success return Font
 */
-int ltextLoadFontFromImage( lua_State *L ) {
-	Image *image = uluaGetImage( L, 1 );
+int ltextLoadFontFromImage( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
 	Color key = uluaGetColor( L, 2 );
 	int firstChar = luaL_checkinteger( L, 3 );
 
@@ -265,9 +265,9 @@ Load font from memory buffer, fileType refers to extension: i.e. '.ttf'. NOTE: f
 
 - Success return Font
 */
-int ltextLoadFontFromMemory( lua_State *L ) {
-	const char *fileType = luaL_checkstring( L, 1 );
-	Buffer *fileData = uluaGetBuffer( L, 2 );
+int ltextLoadFontFromMemory( lua_State* L ) {
+	const char* fileType = luaL_checkstring( L, 1 );
+	Buffer* fileData = uluaGetBuffer( L, 2 );
 	int fontSize = luaL_checkinteger( L, 3 );
 
 	if ( lua_istable( L, 4 ) ) {
@@ -292,7 +292,7 @@ Load Font from data
 
 - Success return Font
 */
-int ltextLoadFontFromData( lua_State *L ) {
+int ltextLoadFontFromData( lua_State* L ) {
 	luaL_checktype( L, 1, LUA_TTABLE );
 
 	Font font = { 0 };
@@ -353,8 +353,8 @@ Check if a font is ready
 
 - Success return bool
 */
-int ltextIsFontReady( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int ltextIsFontReady( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 
 	lua_pushboolean( L, IsFontReady( *font ) );
 
@@ -368,8 +368,8 @@ Load font data for further use. NOTE: fileData type should be unsigned char
 
 - Success return GlyphInfo{}
 */
-int ltextLoadFontData( lua_State *L ) {
-	Buffer *fileData = uluaGetBuffer( L, 1 );
+int ltextLoadFontData( lua_State* L ) {
+	Buffer* fileData = uluaGetBuffer( L, 1 );
 	int fontSize = luaL_checkinteger( L, 2 );
 	int type = luaL_checkinteger( L, 4 );
 	int codepointCount = 95; // In case no chars count provided, default to 95.
@@ -379,7 +379,7 @@ int ltextLoadFontData( lua_State *L ) {
 		int codepoints[ codepointCount ];
 
 		getCodepoints( L, codepoints, 3 );
-		GlyphInfo *glyphs = LoadFontData( fileData->data, fileData->size, fontSize, codepoints, codepointCount, type );
+		GlyphInfo* glyphs = LoadFontData( fileData->data, fileData->size, fontSize, codepoints, codepointCount, type );
 		lua_createtable( L, codepointCount, 0 );
 
 		for ( int i = 0; i < codepointCount; i++ ) {
@@ -391,7 +391,7 @@ int ltextLoadFontData( lua_State *L ) {
 		return 1;
 	}
 	/* If no codepoints provided. */
-	GlyphInfo *glyphs = LoadFontData( fileData->data, fileData->size, fontSize, NULL, 0, type );
+	GlyphInfo* glyphs = LoadFontData( fileData->data, fileData->size, fontSize, NULL, 0, type );
 	lua_createtable( L, codepointCount, 0 );
 
 	for ( int i = 0; i < codepointCount; i++ ) {
@@ -410,7 +410,7 @@ Generate image font atlas using chars info. NOTE: Packing method: 0-Default, 1-S
 
 - Success Image, Rectangle{}
 */
-int ltextGenImageFontAtlas( lua_State *L ) {
+int ltextGenImageFontAtlas( lua_State* L ) {
 	int fontSize = luaL_checkinteger( L, 2 );
 	int padding = luaL_checkinteger( L, 3 );
 	int packMethod = luaL_checkinteger( L, 4 );
@@ -444,8 +444,8 @@ int ltextGenImageFontAtlas( lua_State *L ) {
 
 Unload font from GPU memory (VRAM)
 */
-int ltextUnloadFont( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int ltextUnloadFont( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 
 	UnloadFont( *font );
 
@@ -459,9 +459,9 @@ Export font as code file, returns true on success
 
 - Success return bool
 */
-int ltextExportFontAsCode( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
-	const char *fileName = luaL_checkstring( L, 2 );
+int ltextExportFontAsCode( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
+	const char* fileName = luaL_checkstring( L, 2 );
 
 	lua_pushboolean( L, ExportFontAsCode( *font, fileName ) );
 
@@ -477,7 +477,7 @@ int ltextExportFontAsCode( lua_State *L ) {
 
 Draw current FPS
 */
-int ltextDrawFPS( lua_State *L ) {
+int ltextDrawFPS( lua_State* L ) {
 	Vector2 pos = uluaGetVector2( L, 1 );
 
 	DrawFPS( pos.x, pos.y );
@@ -490,7 +490,7 @@ int ltextDrawFPS( lua_State *L ) {
 
 Draw text (using default font)
 */
-int ltextDrawText( lua_State *L ) {
+int ltextDrawText( lua_State* L ) {
 	Vector2 position = uluaGetVector2( L, 2 );
 	float fontSize = luaL_checknumber( L, 3 );
 	Color tint = uluaGetColor( L, 4 );
@@ -505,8 +505,8 @@ int ltextDrawText( lua_State *L ) {
 
 Draw text using font and additional parameters
 */
-int ltextDrawTextEx( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int ltextDrawTextEx( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 	Vector2 position = uluaGetVector2( L, 3 );
 	float fontSize = luaL_checknumber( L, 4 );
 	float spacing = luaL_checknumber( L, 5 );
@@ -522,8 +522,8 @@ int ltextDrawTextEx( lua_State *L ) {
 
 Draw text using Font and pro parameters (rotation)
 */
-int ltextDrawTextPro( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int ltextDrawTextPro( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 	Vector2 position = uluaGetVector2( L, 3 );
 	Vector2 origin = uluaGetVector2( L, 4 );
 	float rotation = luaL_checknumber( L, 5 );
@@ -541,8 +541,8 @@ int ltextDrawTextPro( lua_State *L ) {
 
 Draw one character (codepoint)
 */
-int ltextDrawTextCodepoint( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int ltextDrawTextCodepoint( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 	int codepoint = luaL_checkinteger( L, 2 );
 	Vector2 position = uluaGetVector2( L, 3 );
 	float fontSize = luaL_checknumber( L, 4 );
@@ -558,8 +558,8 @@ int ltextDrawTextCodepoint( lua_State *L ) {
 
 Draw multiple character (codepoint)
 */
-int ltextDrawTextCodepoints( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int ltextDrawTextCodepoints( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 	Vector2 position = uluaGetVector2( L, 3 );
 	float fontSize = luaL_checknumber( L, 4 );
 	float spacing = luaL_checknumber( L, 5 );
@@ -590,9 +590,9 @@ Draw text using font inside rectangle limits. Return character id from mouse pos
 
 - Success return int
 */
-int ltextDrawTextBoxed( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
-	const char *text = luaL_checkstring( L, 2 );
+int ltextDrawTextBoxed( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
+	const char* text = luaL_checkstring( L, 2 );
 	Rectangle rec = uluaGetRectangle( L, 3 );
 	float fontSize = luaL_checknumber( L, 4 );
 	float spacing = luaL_checknumber( L, 5 );
@@ -611,9 +611,9 @@ Draw text using font inside rectangle limits with support for tint and backgroun
 
 - Success return int
 */
-int ltextDrawTextBoxedTinted( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
-	const char *text = luaL_checkstring( L, 2 );
+int ltextDrawTextBoxedTinted( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
+	const char* text = luaL_checkstring( L, 2 );
 	Rectangle rec = uluaGetRectangle( L, 3 );
 	float fontSize = luaL_checknumber( L, 4 );
 	float spacing = luaL_checknumber( L, 5 );
@@ -656,7 +656,7 @@ int ltextDrawTextBoxedTinted( lua_State *L ) {
 
 Set vertical line spacing when drawing with line-breaks
 */
-int ltextSetTextLineSpacing( lua_State *L ) {
+int ltextSetTextLineSpacing( lua_State* L ) {
 	int spacing = luaL_checkinteger( L, 1 );
 
 	SetTextLineSpacing( spacing );
@@ -669,8 +669,8 @@ Measure string size for Font
 
 - Success return Vector2
 */
-int ltextMeasureText( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int ltextMeasureText( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 	float fontSize = luaL_checknumber( L, 3 );
 	float spacing = luaL_checknumber( L, 4 );
 
@@ -686,8 +686,8 @@ Get glyph index position in font for a codepoint (unicode character), fallback t
 
 - Success return int
 */
-int ltextGetGlyphIndex( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int ltextGetGlyphIndex( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 	int codepoint = luaL_checkinteger( L, 2 );
 
 	lua_pushinteger( L, GetGlyphIndex( *font, codepoint ) );
@@ -702,8 +702,8 @@ Get glyph font info data for a codepoint (unicode character), fallback to '?' if
 
 - Success return GlyphInfo
 */
-int ltextGetGlyphInfo( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int ltextGetGlyphInfo( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 	int codepoint = luaL_checkinteger( L, 2 );
 
 	int id = GetGlyphIndex( *font, codepoint );
@@ -720,8 +720,8 @@ Get glyph font info data by index. Return as lightuserdata
 - Failure return nil
 - Success return GlyphInfo
 */
-int ltextGetGlyphInfoByIndex( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int ltextGetGlyphInfoByIndex( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 	int index = luaL_checkinteger( L, 2 );
 
 	if ( 0 <= index && index < font->glyphCount ) {
@@ -742,8 +742,8 @@ Get glyph rectangle in font atlas for a codepoint (unicode character), fallback 
 
 - Success return Rectangle
 */
-int ltextGetGlyphAtlasRec( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int ltextGetGlyphAtlasRec( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 	int codepoint = luaL_checkinteger( L, 2 );
 
 	uluaPushRectangle( L, GetGlyphAtlasRec( *font, codepoint ) );
@@ -759,8 +759,8 @@ Get glyph rectangle in font atlas by index
 - Failure return nil
 - Success return Rectangle
 */
-int ltextGetGlyphAtlasRecByIndex( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int ltextGetGlyphAtlasRecByIndex( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 	int index = luaL_checkinteger( L, 2 );
 
 	if ( 0 <= index && index < font->glyphCount ) {
@@ -781,8 +781,8 @@ Get font base size (default chars height)
 
 - Success return int
 */
-int ltextGetFontBaseSize( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int ltextGetFontBaseSize( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 
 	lua_pushinteger( L, font->baseSize );
 
@@ -796,8 +796,8 @@ Get font number of glyph characters
 
 - Success return int
 */
-int ltextGetFontGlyphCount( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int ltextGetFontGlyphCount( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 
 	lua_pushinteger( L, font->glyphCount );
 
@@ -811,8 +811,8 @@ Get font padding around the glyph characters
 
 - Success return int
 */
-int ltextGetFontGlyphPadding( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int ltextGetFontGlyphPadding( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 
 	lua_pushinteger( L, font->glyphPadding );
 
@@ -826,8 +826,8 @@ Get font texture atlas containing the glyphs. Return as lightuserdata
 
 - Success return Texture
 */
-int ltextGetFontTexture( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int ltextGetFontTexture( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 
 	lua_pushlightuserdata( L, &font->texture );
 
@@ -845,7 +845,7 @@ Load GlyphInfo from data
 
 - Success return GlyphInfo
 */
-int ltextLoadGlyphInfo( lua_State *L ) {
+int ltextLoadGlyphInfo( lua_State* L ) {
 	luaL_checktype( L, 1, LUA_TTABLE );
 
 	GlyphInfo glyph = { 0 };
@@ -881,8 +881,8 @@ int ltextLoadGlyphInfo( lua_State *L ) {
 
 Unload glyphInfo image from CPU memory (RAM)
 */
-int ltextUnloadGlyphInfo( lua_State *L ) {
-	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+int ltextUnloadGlyphInfo( lua_State* L ) {
+	GlyphInfo* glyph = uluaGetGlyphInfo( L, 1 );
 
 	unloadGlyphInfo( glyph );
 
@@ -894,8 +894,8 @@ int ltextUnloadGlyphInfo( lua_State *L ) {
 
 Set glyphInfo character value (Unicode)
 */
-int ltextSetGlyphInfoValue( lua_State *L ) {
-	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+int ltextSetGlyphInfoValue( lua_State* L ) {
+	GlyphInfo* glyph = uluaGetGlyphInfo( L, 1 );
 	int value = luaL_checkinteger( L, 2 );
 
 	glyph->value = value;
@@ -908,8 +908,8 @@ int ltextSetGlyphInfoValue( lua_State *L ) {
 
 Set glyphInfo character offset when drawing
 */
-int ltextSetGlyphInfoOffset( lua_State *L ) {
-	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+int ltextSetGlyphInfoOffset( lua_State* L ) {
+	GlyphInfo* glyph = uluaGetGlyphInfo( L, 1 );
 	Vector2 offset = uluaGetVector2( L, 2 );
 
 	glyph->offsetX = (int)offset.x;
@@ -923,8 +923,8 @@ int ltextSetGlyphInfoOffset( lua_State *L ) {
 
 Set glyphInfo character advance position X
 */
-int ltextSetGlyphInfoAdvanceX( lua_State *L ) {
-	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+int ltextSetGlyphInfoAdvanceX( lua_State* L ) {
+	GlyphInfo* glyph = uluaGetGlyphInfo( L, 1 );
 	int advanceX = luaL_checkinteger( L, 2 );
 
 	glyph->advanceX = advanceX;
@@ -937,8 +937,8 @@ int ltextSetGlyphInfoAdvanceX( lua_State *L ) {
 
 Set glyphInfo character image data
 */
-int ltextSetGlyphInfoImage( lua_State *L ) {
-	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+int ltextSetGlyphInfoImage( lua_State* L ) {
+	GlyphInfo* glyph = uluaGetGlyphInfo( L, 1 );
 	Image image = *uluaGetImage( L, 2 );
 
 	glyph->image = image;
@@ -953,8 +953,8 @@ Get glyphInfo character value (Unicode)
 
 - Success return int
 */
-int ltextGetGlyphInfoValue( lua_State *L ) {
-	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+int ltextGetGlyphInfoValue( lua_State* L ) {
+	GlyphInfo* glyph = uluaGetGlyphInfo( L, 1 );
 
 	lua_pushinteger( L, glyph->value );
 
@@ -968,8 +968,8 @@ Get glyphInfo character offset when drawing
 
 - Success return Vector2
 */
-int ltextGetGlyphInfoOffset( lua_State *L ) {
-	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+int ltextGetGlyphInfoOffset( lua_State* L ) {
+	GlyphInfo* glyph = uluaGetGlyphInfo( L, 1 );
 
 	uluaPushVector2( L, (Vector2){ glyph->offsetX, glyph->offsetY } );
 
@@ -983,8 +983,8 @@ Get glyphInfo character advance position X
 
 - Success return int
 */
-int ltextGetGlyphInfoAdvanceX( lua_State *L ) {
-	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+int ltextGetGlyphInfoAdvanceX( lua_State* L ) {
+	GlyphInfo* glyph = uluaGetGlyphInfo( L, 1 );
 
 	lua_pushinteger( L, glyph->advanceX );
 
@@ -998,8 +998,8 @@ Get glyphInfo character image data. Return as lightuserdata
 
 - Success return Image
 */
-int ltextGetGlyphInfoImage( lua_State *L ) {
-	GlyphInfo *glyph = uluaGetGlyphInfo( L, 1 );
+int ltextGetGlyphInfoImage( lua_State* L ) {
+	GlyphInfo* glyph = uluaGetGlyphInfo( L, 1 );
 
 	lua_pushlightuserdata( L, &glyph->image );
 
@@ -1017,7 +1017,7 @@ Load UTF-8 text encoded from codepoints array
 
 - Success return string
 */
-int ltextLoadUTF8( lua_State *L ) {
+int ltextLoadUTF8( lua_State* L ) {
 	int codepointCount = uluaGetTableLen( L, 1 );
 	int codepoints[ codepointCount ];
 	getCodepoints( L, codepoints, 1 );
@@ -1036,7 +1036,7 @@ Load all codepoints from a UTF-8 text string
 
 - Success return int{}
 */
-int ltextLoadCodepoints( lua_State *L ) {
+int ltextLoadCodepoints( lua_State* L ) {
 	const char* text = luaL_checkstring( L, 1 );
 
 	int count = 0;
@@ -1060,7 +1060,7 @@ Get total number of codepoints in a UTF-8 encoded string
 
 - Success return int
 */
-int ltextGetCodepointCount( lua_State *L ) {
+int ltextGetCodepointCount( lua_State* L ) {
 	const char* text = luaL_checkstring( L, 1 );
 
 	lua_pushinteger( L, GetCodepointCount( text ) );
@@ -1075,7 +1075,7 @@ Get codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 
 - Success return int, int
 */
-int ltextGetCodepoint( lua_State *L ) {
+int ltextGetCodepoint( lua_State* L ) {
 	const char* text = luaL_checkstring( L, 1 );
 
 	int codepointSize = 0;
@@ -1092,7 +1092,7 @@ Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 
 - Success return int, int
 */
-int ltextGetCodepointNext( lua_State *L ) {
+int ltextGetCodepointNext( lua_State* L ) {
 	const char* text = luaL_checkstring( L, 1 );
 
 	int codepointSize = 0;
@@ -1109,7 +1109,7 @@ Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failu
 
 - Success return int, int
 */
-int ltextGetCodepointPrevious( lua_State *L ) {
+int ltextGetCodepointPrevious( lua_State* L ) {
 	const char* text = luaL_checkstring( L, 1 );
 
 	int codepointSize = 0;
@@ -1126,7 +1126,7 @@ Encode one codepoint into UTF-8 byte array
 
 - Success return string
 */
-int ltextCodepointToUTF8( lua_State *L ) {
+int ltextCodepointToUTF8( lua_State* L ) {
 	int codepoint = luaL_checkinteger( L, 1 );
 
 	int utf8Size = 0;
@@ -1150,7 +1150,7 @@ Insert text in a specific position, moves all text forward
 
 - Success return string
 */
-int ltextTextInsert( lua_State *L ) {
+int ltextTextInsert( lua_State* L ) {
 	const char* text = luaL_checkstring( L, 1 );
 	const char* insert = luaL_checkstring( L, 2 );
 	int position = luaL_checkinteger( L, 3 );
@@ -1180,7 +1180,7 @@ Split text into multiple strings
 
 - Success return string{}
 */
-int ltextTextSplit( lua_State *L ) {
+int ltextTextSplit( lua_State* L ) {
 	const char* text = luaL_checkstring( L, 1 );
 	const char* delimiter = luaL_checkstring( L, 2 );
 

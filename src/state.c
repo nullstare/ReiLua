@@ -6,7 +6,7 @@
 
 State *state;
 
-bool stateInit( int argn, const char **argc, const char *exePath ) {
+bool stateInit( int argn, const char** argc, const char* exePath ) {
 	state = malloc( sizeof( State ) );
 
 	state->exePath = malloc( STRING_LEN * sizeof( char ) );
@@ -32,7 +32,7 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 	state->defaultMaterial = LoadMaterialDefault();
 	state->defaultTexture = (Texture){ 1, 1, 1, 1, 7 };
 	state->RLGLcurrentShaderLocs = malloc( RL_MAX_SHADER_LOCATIONS * sizeof( int ) );
-	int *defaultShaderLocs = rlGetShaderLocsDefault();
+	int* defaultShaderLocs = rlGetShaderLocsDefault();
 
 	for ( int i = 0; i < RL_MAX_SHADER_LOCATIONS; i++ ) {
 		state->RLGLcurrentShaderLocs[i] = defaultShaderLocs[i];
@@ -45,7 +45,7 @@ bool stateInit( int argn, const char **argc, const char *exePath ) {
 	return state->run;
 }
 
-void stateInitInterpret( int argn, const char **argc ) {
+void stateInitInterpret( int argn, const char** argc ) {
 	state = malloc( sizeof( State ) );
 	luaInit( argn, argc );
 }

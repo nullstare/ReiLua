@@ -25,16 +25,16 @@
 /* Define types. */
 
 	/* Buffer. */
-static int gcBuffer( lua_State *L ) {
+static int gcBuffer( lua_State* L ) {
 	if ( state->gcUnload ) {
-		Buffer *buffer = luaL_checkudata( L, 1, "Buffer" );
+		Buffer* buffer = luaL_checkudata( L, 1, "Buffer" );
 		unloadBuffer( buffer );
 	}
 	return 0;
 }
 
 static void defineBuffer() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "Buffer" );
 	lua_pushvalue( L, -1 );
@@ -44,16 +44,16 @@ static void defineBuffer() {
 }
 
 	/* Image */
-static int gcImage( lua_State *L ) {
+static int gcImage( lua_State* L ) {
 	if ( state->gcUnload ) {
-		Image *image = luaL_checkudata( L, 1, "Image" );
+		Image* image = luaL_checkudata( L, 1, "Image" );
 		UnloadImage( *image );
 	}
 	return 0;
 }
 
 static void defineImage() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "Image" );
 	lua_pushvalue( L, -1 );
@@ -63,16 +63,16 @@ static void defineImage() {
 }
 
 	/* Texture */
-static int gcTexture( lua_State *L ) {
+static int gcTexture( lua_State* L ) {
 	if ( state->gcUnload ) {
-		Texture *texture = luaL_checkudata( L, 1, "Texture" );
+		Texture* texture = luaL_checkudata( L, 1, "Texture" );
 		UnloadTexture( *texture );
 	}
 	return 0;
 }
 
 static void defineTexture() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "Texture" );
 	lua_pushvalue( L, -1 );
@@ -82,16 +82,16 @@ static void defineTexture() {
 }
 
 	/* RenderRexture. */
-static int gcRenderTexture( lua_State *L ) {
+static int gcRenderTexture( lua_State* L ) {
 	if ( state->gcUnload ) {
-		RenderTexture *renderTexture = luaL_checkudata( L, 1, "RenderTexture" );
+		RenderTexture* renderTexture = luaL_checkudata( L, 1, "RenderTexture" );
 		UnloadRenderTexture( *renderTexture );
 	}
 	return 0;
 }
 
 static void defineRenderTexture() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "RenderTexture" );
 	lua_pushvalue( L, -1 );
@@ -102,7 +102,7 @@ static void defineRenderTexture() {
 
 	/* Camera2D. */
 static void defineCamera2D() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "Camera2D" );
 	lua_pushvalue( L, -1 );
@@ -111,7 +111,7 @@ static void defineCamera2D() {
 
 	/* Camera3D. */
 static void defineCamera3D() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "Camera3D" );
 	lua_pushvalue( L, -1 );
@@ -119,16 +119,16 @@ static void defineCamera3D() {
 }
 
 	/* Shader. */
-static int gcShader( lua_State *L ) {
+static int gcShader( lua_State* L ) {
 	if ( state->gcUnload ) {
-		Shader *shader = luaL_checkudata( L, 1, "Shader" );
+		Shader* shader = luaL_checkudata( L, 1, "Shader" );
 		UnloadShader( *shader );
 	}
 	return 0;
 }
 
 static void defineShader() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "Shader" );
 	lua_pushvalue( L, -1 );
@@ -138,16 +138,16 @@ static void defineShader() {
 }
 
 	/* Font. */
-static int gcFont( lua_State *L ) {
+static int gcFont( lua_State* L ) {
 	if ( state->gcUnload ) {
-		Font *font = luaL_checkudata( L, 1, "Font" );
+		Font* font = luaL_checkudata( L, 1, "Font" );
 		UnloadFont( *font );
 	}
 	return 0;
 }
 
 static void defineFont() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "Font" );
 	lua_pushvalue( L, -1 );
@@ -157,16 +157,16 @@ static void defineFont() {
 }
 
 	/* GlyphInfo. */
-static int gcGlyphInfo( lua_State *L ) {
+static int gcGlyphInfo( lua_State* L ) {
 	if ( state->gcUnload ) {
-		GlyphInfo *glyph = luaL_checkudata( L, 1, "GlyphInfo" );
+		GlyphInfo* glyph = luaL_checkudata( L, 1, "GlyphInfo" );
 		unloadGlyphInfo( glyph );
 	}
 	return 0;
 }
 
 static void defineGlyphInfo() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "GlyphInfo" );
 	lua_pushvalue( L, -1 );
@@ -176,16 +176,16 @@ static void defineGlyphInfo() {
 }
 
 	/* Wave. */
-static int gcWave( lua_State *L ) {
+static int gcWave( lua_State* L ) {
 	if ( state->gcUnload ) {
-		Wave *wave = luaL_checkudata( L, 1, "Wave" );
+		Wave* wave = luaL_checkudata( L, 1, "Wave" );
 		UnloadWave( *wave );
 	}
 	return 0;
 }
 
 static void defineWave() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "Wave" );
 	lua_pushvalue( L, -1 );
@@ -195,16 +195,16 @@ static void defineWave() {
 }
 
 	/* Sound. */
-static int gcSound( lua_State *L ) {
+static int gcSound( lua_State* L ) {
 	if ( state->gcUnload ) {
-		Sound *sound = luaL_checkudata( L, 1, "Sound" );
+		Sound* sound = luaL_checkudata( L, 1, "Sound" );
 		UnloadSound( *sound );
 	}
 	return 0;
 }
 
 static void defineSound() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "Sound" );
 	lua_pushvalue( L, -1 );
@@ -214,16 +214,16 @@ static void defineSound() {
 }
 
 	/* Music. */
-static int gcMusic( lua_State *L ) {
+static int gcMusic( lua_State* L ) {
 	if ( state->gcUnload ) {
-		Music *music = luaL_checkudata( L, 1, "Music" );
+		Music* music = luaL_checkudata( L, 1, "Music" );
 		UnloadMusicStream( *music );
 	}
 	return 0;
 }
 
 static void defineMusic() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "Music" );
 	lua_pushvalue( L, -1 );
@@ -234,7 +234,7 @@ static void defineMusic() {
 
 	/* Light. */
 static void defineLight() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "Light" );
 	lua_pushvalue( L, -1 );
@@ -242,9 +242,9 @@ static void defineLight() {
 }
 
 	/* Material. */
-static int gcMaterial( lua_State *L ) {
+static int gcMaterial( lua_State* L ) {
 	if ( state->gcUnload ) {
-		Material *material = luaL_checkudata( L, 1, "Material" );
+		Material* material = luaL_checkudata( L, 1, "Material" );
 		/* Custom UnloadMaterial since we don't want to free Shaders or Textures. */
 		unloadMaterial( material );
 	}
@@ -252,7 +252,7 @@ static int gcMaterial( lua_State *L ) {
 }
 
 static void defineMaterial() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "Material" );
 	lua_pushvalue( L, -1 );
@@ -262,16 +262,16 @@ static void defineMaterial() {
 }
 
 	/* Mesh. */
-static int gcMesh( lua_State *L ) {
+static int gcMesh( lua_State* L ) {
 	if ( state->gcUnload ) {
-		Mesh *mesh = luaL_checkudata( L, 1, "Mesh" );
+		Mesh* mesh = luaL_checkudata( L, 1, "Mesh" );
 		UnloadMesh( *mesh );
 	}
 	return 0;
 }
 
 static void defineMesh() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "Mesh" );
 	lua_pushvalue( L, -1 );
@@ -281,16 +281,16 @@ static void defineMesh() {
 }
 
 	/* Model. */
-static int gcModel( lua_State *L ) {
+static int gcModel( lua_State* L ) {
 	if ( state->gcUnload ) {
-		Model *model = luaL_checkudata( L, 1, "Model" );
+		Model* model = luaL_checkudata( L, 1, "Model" );
 		UnloadModel( *model );
 	}
 	return 0;
 }
 
 static void defineModel() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "Model" );
 	lua_pushvalue( L, -1 );
@@ -300,16 +300,16 @@ static void defineModel() {
 }
 
 	/* ModelAnimation. */
-static int gcModelAnimation( lua_State *L ) {
+static int gcModelAnimation( lua_State* L ) {
 	if ( state->gcUnload ) {
-		ModelAnimation *modelAnimation = luaL_checkudata( L, 1, "ModelAnimation" );
+		ModelAnimation* modelAnimation = luaL_checkudata( L, 1, "ModelAnimation" );
 		UnloadModelAnimation( *modelAnimation );
 	}
 	return 0;
 }
 
 static void defineModelAnimation() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "ModelAnimation" );
 	lua_pushvalue( L, -1 );
@@ -319,16 +319,16 @@ static void defineModelAnimation() {
 }
 
 	/* rlRenderBatch. */
-static int gcRLRenderBatch( lua_State *L ) {
+static int gcRLRenderBatch( lua_State* L ) {
 	if ( state->gcUnload ) {
-		rlRenderBatch *renderBatch = luaL_checkudata( L, 1, "rlRenderBatch" );
+		rlRenderBatch* renderBatch = luaL_checkudata( L, 1, "rlRenderBatch" );
 		rlUnloadRenderBatch( *renderBatch );
 	}
 	return 0;
 }
 
 static void defineRLRenderBatch() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	luaL_newmetatable( L, "rlRenderBatch" );
 	lua_pushvalue( L, -1 );
@@ -339,38 +339,38 @@ static void defineRLRenderBatch() {
 
 /* Assing globals. */
 
-void assignGlobalInt( int value, const char *name ) {
-	lua_State *L = state->luaState;
+void assignGlobalInt( int value, const char* name ) {
+	lua_State* L = state->luaState;
 	lua_pushinteger( L, value );
 	lua_setfield( L, -2, name );
 }
 
-void assignGlobalFloat( float value, const char *name ) {
-	lua_State *L = state->luaState;
+void assignGlobalFloat( float value, const char* name ) {
+	lua_State* L = state->luaState;
 	lua_pushnumber( L, value );
 	lua_setfield( L, -2, name );
 }
 
-void assignGlobalDouble( double value, const char *name ) {
-	lua_State *L = state->luaState;
+void assignGlobalDouble( double value, const char* name ) {
+	lua_State* L = state->luaState;
 	lua_pushnumber( L, value );
 	lua_setfield( L, -2, name );
 }
 
-void assignGlobalColor( Color color, const char *name ) {
-	lua_State *L = state->luaState;
+void assignGlobalColor( Color color, const char* name ) {
+	lua_State* L = state->luaState;
 	uluaPushColor( L, color );
 	lua_setfield( L, -2, name );
 }
 
-void assingGlobalFunction( const char *name, int ( *functionPtr )( lua_State* ) ) {
-	lua_State *L = state->luaState;
+void assingGlobalFunction( const char* name, int ( *functionPtr )( lua_State* ) ) {
+	lua_State* L = state->luaState;
 	lua_pushcfunction( L, functionPtr );
 	lua_setfield( L, -2, name );
 }
 
 static void defineGlobals() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_newtable( L );
 	lua_setglobal( L, "RL" );
@@ -960,7 +960,7 @@ static void defineGlobals() {
 }
 
 // Custom logging funtion.
-static void logCustom( int logLevel, const char *text, va_list args ) {
+static void logCustom( int logLevel, const char* text, va_list args ) {
 	char string[ STRING_LEN ] = {'\0'};
 	char msg[ STRING_LEN ] = {'\0'};
 
@@ -979,7 +979,7 @@ static void logCustom( int logLevel, const char *text, va_list args ) {
 	printf( "%s\n", msg );
 
 	/* Call Lua log function if exists. */
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	/* Prevent calling lua log function when lua is already shutdown. */
 	if ( L != NULL ) {
@@ -1004,9 +1004,9 @@ static void logCustom( int logLevel, const char *text, va_list args ) {
 	}
 }
 
-bool luaInit( int argn, const char **argc ) {
+bool luaInit( int argn, const char** argc ) {
 	state->luaState = luaL_newstate();
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
     luaL_openlibs( L );
 
@@ -1057,7 +1057,7 @@ bool luaInit( int argn, const char **argc ) {
 	return true;
 }
 
-int luaTraceback( lua_State *L ) {
+int luaTraceback( lua_State* L ) {
 	lua_getglobal( L, "debug" );
 
 	if ( !lua_istable( L, -1 ) ) {
@@ -1078,7 +1078,7 @@ int luaTraceback( lua_State *L ) {
 }
 
 bool luaCallMain() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 
 	char path[ STRING_LEN ] = { '\0' };
 
@@ -1132,7 +1132,7 @@ void luaCallUpdate() {
 #if defined PLATFORM_DESKTOP_SDL && defined LUA_EVENTS
 	platformSendEvents();
 #endif
-    lua_State *L = state->luaState;
+    lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop(L);
@@ -1154,7 +1154,7 @@ void luaCallUpdate() {
 }
 
 void luaCallDraw() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop(L);
 	
@@ -1175,7 +1175,7 @@ void luaCallDraw() {
 }
 
 void luaCallExit() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop(L);
 	
@@ -1193,7 +1193,7 @@ void luaCallExit() {
 }
 
 void luaRegister() {
-	lua_State *L = state->luaState;
+	lua_State* L = state->luaState;
 	lua_getglobal( L, "RL" );
 
 	/* Core. */
@@ -2226,13 +2226,13 @@ void luaRegister() {
 
 /* Lua util functions. */
 
-bool uluaGetBoolean( lua_State *L, int index ) {
+bool uluaGetBoolean( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TBOOLEAN );
 
 	return lua_toboolean( L, index );
 }
 
-Color uluaGetColor( lua_State *L, int index ) {
+Color uluaGetColor( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Color color = { 0, 0, 0, 255 };
 
@@ -2280,7 +2280,7 @@ Color uluaGetColor( lua_State *L, int index ) {
     return color;
 }
 
-Vector2 uluaGetVector2( lua_State *L, int index ) {
+Vector2 uluaGetVector2( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Vector2 vector = { 0.0f, 0.0f };
 
@@ -2316,7 +2316,7 @@ Vector2 uluaGetVector2( lua_State *L, int index ) {
     return vector;
 }
 
-Vector3 uluaGetVector3( lua_State *L, int index ) {
+Vector3 uluaGetVector3( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Vector3 vector = { 0.0f, 0.0f, 0.0f };
 
@@ -2358,7 +2358,7 @@ Vector3 uluaGetVector3( lua_State *L, int index ) {
     return vector;
 }
 
-Vector4 uluaGetVector4( lua_State *L, int index ) {
+Vector4 uluaGetVector4( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Vector4 vector = { 0.0f, 0.0f, 0.0f, 0.0f };
 
@@ -2406,7 +2406,7 @@ Vector4 uluaGetVector4( lua_State *L, int index ) {
     return vector;
 }
 
-Rectangle uluaGetRectangle( lua_State *L, int index ) {
+Rectangle uluaGetRectangle( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Rectangle rect = { 0.0f, 0.0f, 0.0f, 0.0f };
 
@@ -2454,7 +2454,7 @@ Rectangle uluaGetRectangle( lua_State *L, int index ) {
     return rect;
 }
 
-Quaternion uluaGetQuaternion( lua_State *L, int index ) {
+Quaternion uluaGetQuaternion( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
     Quaternion quaternion = { 0.0f, 0.0f, 0.0f, 0.0f };
 
@@ -2502,7 +2502,7 @@ Quaternion uluaGetQuaternion( lua_State *L, int index ) {
     return quaternion;
 }
 
-Matrix uluaGetMatrix( lua_State *L, int index ) {
+Matrix uluaGetMatrix( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	Matrix matrix = { 0.0f };
 	float m[4][4];
@@ -2547,7 +2547,7 @@ Matrix uluaGetMatrix( lua_State *L, int index ) {
 	return matrix;
 }
 
-BoundingBox uluaGetBoundingBox( lua_State *L, int index ) {
+BoundingBox uluaGetBoundingBox( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	BoundingBox box = { .min = { 0.0, 0.0, 0.0 }, .max = { 0.0, 0.0, 0.0 } };
 
@@ -2583,7 +2583,7 @@ BoundingBox uluaGetBoundingBox( lua_State *L, int index ) {
 	return box;
 }
 
-Ray uluaGetRay( lua_State *L, int index ) {
+Ray uluaGetRay( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	Ray ray = { .position = { 0.0, 0.0, 0.0 }, .direction = { 0.0, 0.0, 0.0 } };
 
@@ -2619,7 +2619,7 @@ Ray uluaGetRay( lua_State *L, int index ) {
 	return ray;
 }
 
-NPatchInfo uluaGetNPatchInfo( lua_State *L, int index ) {
+NPatchInfo uluaGetNPatchInfo( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	NPatchInfo npatch = { .source = { 0.0, 0.0, 0.0, 0.0 }, .left = 0, .top = 0, .right = 0, .bottom = 0, .layout = NPATCH_NINE_PATCH };
 
@@ -2678,7 +2678,7 @@ NPatchInfo uluaGetNPatchInfo( lua_State *L, int index ) {
 	return npatch;
 }
 
-BoneInfo uluaGetBoneInfo( lua_State *L, int index ) {
+BoneInfo uluaGetBoneInfo( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	BoneInfo bone = { 0 };
 
@@ -2715,7 +2715,7 @@ BoneInfo uluaGetBoneInfo( lua_State *L, int index ) {
 	return bone;
 }
 
-Transform uluaGetTransform( lua_State *L, int index ) {
+Transform uluaGetTransform( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	Transform transform = { 0 };
 
@@ -2758,126 +2758,126 @@ Transform uluaGetTransform( lua_State *L, int index ) {
 	return transform;
 }
 
-Buffer* uluaGetBuffer( lua_State *L, int index ) {
+Buffer* uluaGetBuffer( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (Buffer*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "Buffer" );
 }
 
-Image* uluaGetImage( lua_State *L, int index ) {
+Image* uluaGetImage( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (Image*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "Image" );
 }
 
-Texture* uluaGetTexture( lua_State *L, int index ) {
+Texture* uluaGetTexture( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (Texture*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "Texture" );
 }
 
-RenderTexture* uluaGetRenderTexture( lua_State *L, int index ) {
+RenderTexture* uluaGetRenderTexture( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (RenderTexture*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "RenderTexture" );
 }
 
-Shader* uluaGetShader( lua_State *L, int index ) {
+Shader* uluaGetShader( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (Shader*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "Shader" );
 }
 
-Mesh* uluaGetMesh( lua_State *L, int index ) {
+Mesh* uluaGetMesh( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (Mesh*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "Mesh" );
 }
 
-Camera2D* uluaGetCamera2D( lua_State *L, int index ) {
+Camera2D* uluaGetCamera2D( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (Camera2D*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "Camera2D" );
 }
 
-Camera3D* uluaGetCamera3D( lua_State *L, int index ) {
+Camera3D* uluaGetCamera3D( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (Camera3D*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "Camera3D" );
 }
 
-Font* uluaGetFont( lua_State *L, int index ) {
+Font* uluaGetFont( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (Font*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "Font" );
 }
 
-GlyphInfo* uluaGetGlyphInfo( lua_State *L, int index ) {
+GlyphInfo* uluaGetGlyphInfo( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (GlyphInfo*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "GlyphInfo" );
 }
 
-Wave* uluaGetWave( lua_State *L, int index ) {
+Wave* uluaGetWave( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (Wave*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "Wave" );
 }
 
-Sound* uluaGetSound( lua_State *L, int index ) {
+Sound* uluaGetSound( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (Sound*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "Sound" );
 }
 
-Music* uluaGetMusic( lua_State *L, int index ) {
+Music* uluaGetMusic( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (Music*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "Music" );
 }
 
-Light* uluaGetLight( lua_State *L, int index ) {
+Light* uluaGetLight( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (Light*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "Light" );
 }
 
-Material* uluaGetMaterial( lua_State *L, int index ) {
+Material* uluaGetMaterial( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (Material*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "Material" );
 }
 
-Model* uluaGetModel( lua_State *L, int index ) {
+Model* uluaGetModel( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (Model*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "Model" );
 }
 
-ModelAnimation* uluaGetModelAnimation( lua_State *L, int index ) {
+ModelAnimation* uluaGetModelAnimation( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (ModelAnimation*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "ModelAnimation" );
 }
 
-rlRenderBatch* uluaGetRLRenderBatch( lua_State *L, int index ) {
+rlRenderBatch* uluaGetRLRenderBatch( lua_State* L, int index ) {
 	if ( lua_islightuserdata( L, index ) ) {
 		return (rlRenderBatch*)lua_touserdata( L, index );
 	}
@@ -2886,7 +2886,7 @@ rlRenderBatch* uluaGetRLRenderBatch( lua_State *L, int index ) {
 
 /* Push types. */
 
-void uluaPushColor( lua_State *L, Color color ) {
+void uluaPushColor( lua_State* L, Color color ) {
 	lua_createtable( L, 3, 0 );
     lua_pushnumber( L, color.r );
     lua_rawseti( L, -2, 1 );
@@ -2898,7 +2898,7 @@ void uluaPushColor( lua_State *L, Color color ) {
     lua_rawseti( L, -2, 4 );
 }
 
-void uluaPushVector2( lua_State *L, Vector2 vector ) {
+void uluaPushVector2( lua_State* L, Vector2 vector ) {
 	lua_createtable( L, 2, 0 );
     lua_pushnumber( L, vector.x );
     lua_rawseti( L, -2, 1 );
@@ -2906,7 +2906,7 @@ void uluaPushVector2( lua_State *L, Vector2 vector ) {
     lua_rawseti( L, -2, 2 );
 }
 
-void uluaPushVector3( lua_State *L, Vector3 vector ) {
+void uluaPushVector3( lua_State* L, Vector3 vector ) {
 	lua_createtable( L, 3, 0 );
     lua_pushnumber( L, vector.x );
     lua_rawseti( L, -2, 1 );
@@ -2916,7 +2916,7 @@ void uluaPushVector3( lua_State *L, Vector3 vector ) {
     lua_rawseti( L, -2, 3 );
 }
 
-void uluaPushVector4( lua_State *L, Vector4 vector ) {
+void uluaPushVector4( lua_State* L, Vector4 vector ) {
 	lua_createtable( L, 4, 0 );
 	lua_pushnumber( L, vector.x );
 	lua_rawseti( L, -2, 1 );
@@ -2928,7 +2928,7 @@ void uluaPushVector4( lua_State *L, Vector4 vector ) {
 	lua_rawseti( L, -2, 4 );
 }
 
-void uluaPushRectangle( lua_State *L, Rectangle rect ) {
+void uluaPushRectangle( lua_State* L, Rectangle rect ) {
 	lua_createtable( L, 4, 0 );
 	lua_pushnumber( L, rect.x );
 	lua_rawseti( L, -2, 1 );
@@ -2940,7 +2940,7 @@ void uluaPushRectangle( lua_State *L, Rectangle rect ) {
 	lua_rawseti( L, -2, 4 );
 }
 
-void uluaPushQuaternion( lua_State *L, Quaternion quaternion ) {
+void uluaPushQuaternion( lua_State* L, Quaternion quaternion ) {
 	lua_createtable( L, 4, 0 );
 	lua_pushnumber( L, quaternion.x );
 	lua_rawseti( L, -2, 1 );
@@ -2952,7 +2952,7 @@ void uluaPushQuaternion( lua_State *L, Quaternion quaternion ) {
 	lua_rawseti( L, -2, 4 );
 }
 
-void uluaPushMatrix( lua_State *L, Matrix matrix ) {
+void uluaPushMatrix( lua_State* L, Matrix matrix ) {
 	lua_createtable( L, 4, 0 );
 
 	lua_createtable( L, 4, 0 );
@@ -3000,7 +3000,7 @@ void uluaPushMatrix( lua_State *L, Matrix matrix ) {
 	lua_rawseti( L, -2, 4 );
 }
 
-void uluaPushRay( lua_State *L, Ray ray ) {
+void uluaPushRay( lua_State* L, Ray ray ) {
 	lua_createtable( L, 2, 0 );
 
 	lua_createtable( L, 3, 0 );
@@ -3022,7 +3022,7 @@ void uluaPushRay( lua_State *L, Ray ray ) {
 	lua_rawseti( L, -2, 2 );
 }
 
-void uluaPushRayCollision( lua_State *L, RayCollision rayCol ) {
+void uluaPushRayCollision( lua_State* L, RayCollision rayCol ) {
 	lua_createtable( L, 4, 0 );
 	lua_pushboolean( L, rayCol.hit );
 	lua_setfield( L, -2, "hit" );
@@ -3034,7 +3034,7 @@ void uluaPushRayCollision( lua_State *L, RayCollision rayCol ) {
 	lua_setfield( L, -2, "normal" );
 }
 
-void uluaPushBoundingBox( lua_State *L, BoundingBox box ) {
+void uluaPushBoundingBox( lua_State* L, BoundingBox box ) {
 	lua_createtable( L, 2, 0 );
 
 	lua_createtable( L, 3, 0 );
@@ -3056,7 +3056,7 @@ void uluaPushBoundingBox( lua_State *L, BoundingBox box ) {
 	lua_rawseti( L, -2, 2 );
 }
 
-void uluaPushBoneInfo( lua_State *L, BoneInfo boneInfo ) {
+void uluaPushBoneInfo( lua_State* L, BoneInfo boneInfo ) {
 	lua_createtable( L, 2, 0 );
 	lua_pushstring( L, boneInfo.name );
 	lua_setfield( L, -2, "name" );
@@ -3064,7 +3064,7 @@ void uluaPushBoneInfo( lua_State *L, BoneInfo boneInfo ) {
 	lua_setfield( L, -2, "parent" );
 }
 
-void uluaPushTransform( lua_State *L, Transform transform ) {
+void uluaPushTransform( lua_State* L, Transform transform ) {
 	lua_createtable( L, 3, 0 );
 	uluaPushVector3( L, transform.translation );
 	lua_setfield( L, -2, "name" );
@@ -3074,118 +3074,118 @@ void uluaPushTransform( lua_State *L, Transform transform ) {
 	lua_setfield( L, -2, "scale" );
 }
 
-void uluaPushBuffer( lua_State *L, Buffer buffer ) {
+void uluaPushBuffer( lua_State* L, Buffer buffer ) {
 	if ( buffer.size == 0 ) {
 		buffer.data = NULL;
 	}
-	Buffer *bufferP = lua_newuserdata( L, sizeof( Buffer ) );
+	Buffer* bufferP = lua_newuserdata( L, sizeof( Buffer ) );
 	*bufferP = buffer;
 	luaL_setmetatable( L, "Buffer" );
 }
 
-void uluaPushImage( lua_State *L, Image image ) {
-	Image *imageP = lua_newuserdata( L, sizeof( Image ) );
+void uluaPushImage( lua_State* L, Image image ) {
+	Image* imageP = lua_newuserdata( L, sizeof( Image ) );
 	*imageP = image;
 	luaL_setmetatable( L, "Image" );
 }
 
-void uluaPushTexture( lua_State *L, Texture texture ) {
-	Texture *textureP = lua_newuserdata( L, sizeof( Texture ) );
+void uluaPushTexture( lua_State* L, Texture texture ) {
+	Texture* textureP = lua_newuserdata( L, sizeof( Texture ) );
 	*textureP = texture;
 	luaL_setmetatable( L, "Texture" );
 }
 
-void uluaPushRenderTexture( lua_State *L, RenderTexture renderTexture ) {
-	RenderTexture *renderTextureP = lua_newuserdata( L, sizeof( RenderTexture ) );
+void uluaPushRenderTexture( lua_State* L, RenderTexture renderTexture ) {
+	RenderTexture* renderTextureP = lua_newuserdata( L, sizeof( RenderTexture ) );
 	*renderTextureP = renderTexture;
 	luaL_setmetatable( L, "RenderTexture" );
 }
 
-void uluaPushCamera2D( lua_State *L, Camera2D camera ) {
-	Camera2D *cameraP = lua_newuserdata( L, sizeof( Camera2D ) );
+void uluaPushCamera2D( lua_State* L, Camera2D camera ) {
+	Camera2D* cameraP = lua_newuserdata( L, sizeof( Camera2D ) );
 	*cameraP = camera;
 	luaL_setmetatable( L, "Camera2D" );
 }
 
-void uluaPushCamera3D( lua_State *L, Camera3D camera ) {
-	Camera3D *cameraP = lua_newuserdata( L, sizeof( Camera3D ) );
+void uluaPushCamera3D( lua_State* L, Camera3D camera ) {
+	Camera3D* cameraP = lua_newuserdata( L, sizeof( Camera3D ) );
 	*cameraP = camera;
 	luaL_setmetatable( L, "Camera3D" );
 }
 
-void uluaPushShader( lua_State *L, Shader shader ) {
-	Shader *shaderP = lua_newuserdata( L, sizeof( Shader ) );
+void uluaPushShader( lua_State* L, Shader shader ) {
+	Shader* shaderP = lua_newuserdata( L, sizeof( Shader ) );
 	*shaderP = shader;
 	luaL_setmetatable( L, "Shader" );
 }
 
-void uluaPushFont( lua_State *L, Font font ) {
-	Font *fontP = lua_newuserdata( L, sizeof( Font ) );
+void uluaPushFont( lua_State* L, Font font ) {
+	Font* fontP = lua_newuserdata( L, sizeof( Font ) );
 	*fontP = font;
 	luaL_setmetatable( L, "Font" );
 }
 
-void uluaPushGlyphInfo( lua_State *L, GlyphInfo glyph ) {
-	GlyphInfo *glyphP = lua_newuserdata( L, sizeof( GlyphInfo ) );
+void uluaPushGlyphInfo( lua_State* L, GlyphInfo glyph ) {
+	GlyphInfo* glyphP = lua_newuserdata( L, sizeof( GlyphInfo ) );
 	*glyphP = glyph;
 	luaL_setmetatable( L, "GlyphInfo" );
 }
 
-void uluaPushWave( lua_State *L, Wave wave ) {
-	Wave *waveP = lua_newuserdata( L, sizeof( Wave ) );
+void uluaPushWave( lua_State* L, Wave wave ) {
+	Wave* waveP = lua_newuserdata( L, sizeof( Wave ) );
 	*waveP = wave;
 	luaL_setmetatable( L, "Wave" );
 }
 
-void uluaPushSound( lua_State *L, Sound sound ) {
-	Sound *soundP = lua_newuserdata( L, sizeof( Sound ) );
+void uluaPushSound( lua_State* L, Sound sound ) {
+	Sound* soundP = lua_newuserdata( L, sizeof( Sound ) );
 	*soundP = sound;
 	luaL_setmetatable( L, "Sound" );
 }
 
-void uluaPushMusic( lua_State *L, Music music ) {
-	Music *musicP = lua_newuserdata( L, sizeof( Music ) );
+void uluaPushMusic( lua_State* L, Music music ) {
+	Music* musicP = lua_newuserdata( L, sizeof( Music ) );
 	*musicP = music;
 	luaL_setmetatable( L, "Music" );
 }
 
-void uluaPushLight( lua_State *L, Light light ) {
-	Light *lightP = lua_newuserdata( L, sizeof( Light ) );
+void uluaPushLight( lua_State* L, Light light ) {
+	Light* lightP = lua_newuserdata( L, sizeof( Light ) );
 	*lightP = light;
 	luaL_setmetatable( L, "Light" );
 }
 
-void uluaPushMaterial( lua_State *L, Material material ) {
-	Material *materialP = lua_newuserdata( L, sizeof( Material ) );
+void uluaPushMaterial( lua_State* L, Material material ) {
+	Material* materialP = lua_newuserdata( L, sizeof( Material ) );
 	*materialP = material;
 	luaL_setmetatable( L, "Material" );
 }
 
-void uluaPushMesh( lua_State *L, Mesh mesh ) {
-	Mesh *meshP = lua_newuserdata( L, sizeof( Mesh ) );
+void uluaPushMesh( lua_State* L, Mesh mesh ) {
+	Mesh* meshP = lua_newuserdata( L, sizeof( Mesh ) );
 	*meshP = mesh;
 	luaL_setmetatable( L, "Mesh" );
 }
 
-void uluaPushModel( lua_State *L, Model model ) {
-	Model *modelP = lua_newuserdata( L, sizeof( Model ) );
+void uluaPushModel( lua_State* L, Model model ) {
+	Model* modelP = lua_newuserdata( L, sizeof( Model ) );
 	*modelP = model;
 	luaL_setmetatable( L, "Model" );
 }
 
-void uluaPushModelAnimation( lua_State *L, ModelAnimation modelAnimation ) {
-	ModelAnimation *modelAnimationP = lua_newuserdata( L, sizeof( ModelAnimation ) );
+void uluaPushModelAnimation( lua_State* L, ModelAnimation modelAnimation ) {
+	ModelAnimation* modelAnimationP = lua_newuserdata( L, sizeof( ModelAnimation ) );
 	*modelAnimationP = modelAnimation;
 	luaL_setmetatable( L, "ModelAnimation" );
 }
 
-void uluaPushRLRenderBatch( lua_State *L, rlRenderBatch renderBatch ) {
-	rlRenderBatch *renderBatchP = lua_newuserdata( L, sizeof( rlRenderBatch ) );
+void uluaPushRLRenderBatch( lua_State* L, rlRenderBatch renderBatch ) {
+	rlRenderBatch* renderBatchP = lua_newuserdata( L, sizeof( rlRenderBatch ) );
 	*renderBatchP = renderBatch;
 	luaL_setmetatable( L, "rlRenderBatch" );
 }
 
-int uluaGetTableLen( lua_State *L, int index ) {
+int uluaGetTableLen( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	int t = index, i = 0;
     lua_pushnil( L );

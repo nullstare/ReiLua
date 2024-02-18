@@ -15,7 +15,7 @@
 
 Enable gui controls (global state)
 */
-int lguiGuiEnable( lua_State *L ) {
+int lguiGuiEnable( lua_State* L ) {
 	GuiEnable();
 
 	return 0;
@@ -26,7 +26,7 @@ int lguiGuiEnable( lua_State *L ) {
 
 Disable gui controls (global state)
 */
-int lguiGuiDisable( lua_State *L ) {
+int lguiGuiDisable( lua_State* L ) {
 	GuiDisable();
 
 	return 0;
@@ -37,7 +37,7 @@ int lguiGuiDisable( lua_State *L ) {
 
 Lock gui controls (global state)
 */
-int lguiGuiLock( lua_State *L ) {
+int lguiGuiLock( lua_State* L ) {
 	GuiLock();
 
 	return 0;
@@ -48,7 +48,7 @@ int lguiGuiLock( lua_State *L ) {
 
 Unlock gui controls (global state)
 */
-int lguiGuiUnlock( lua_State *L ) {
+int lguiGuiUnlock( lua_State* L ) {
 	GuiUnlock();
 
 	return 0;
@@ -61,7 +61,7 @@ Check if gui is locked (global state)
 
 - Success return bool
 */
-int lguiGuiIsLocked( lua_State *L ) {
+int lguiGuiIsLocked( lua_State* L ) {
 	lua_pushboolean( L, GuiIsLocked() );
 
 	return 1;
@@ -72,7 +72,7 @@ int lguiGuiIsLocked( lua_State *L ) {
 
 Set gui controls alpha (global state), alpha goes from 0.0f to 1.0f
 */
-int lguiGuiSetAlpha( lua_State *L ) {
+int lguiGuiSetAlpha( lua_State* L ) {
 	float alpha = luaL_checknumber( L, 1 );
 
 	GuiSetAlpha( alpha );
@@ -85,7 +85,7 @@ int lguiGuiSetAlpha( lua_State *L ) {
 
 Set gui state (global state)
 */
-int lguiGuiSetState( lua_State *L ) {
+int lguiGuiSetState( lua_State* L ) {
 	int state = luaL_checkinteger( L, 1 );
 
 	GuiSetState( state );
@@ -100,7 +100,7 @@ Get gui state (global state)
 
 - Success return int
 */
-int lguiGuiGetState( lua_State *L ) {
+int lguiGuiGetState( lua_State* L ) {
 	lua_pushinteger( L, GuiGetState() );
 
 	return 1;
@@ -115,8 +115,8 @@ int lguiGuiGetState( lua_State *L ) {
 
 Set gui custom font (global state)
 */
-int lguiGuiSetFont( lua_State *L ) {
-	Font *font = uluaGetFont( L, 1 );
+int lguiGuiSetFont( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
 
 	GuiSetFont( *font );
 
@@ -130,7 +130,7 @@ Get gui custom font (global state)
 
 - Success return Font
 */
-int lguiGuiGetFont( lua_State *L ) {
+int lguiGuiGetFont( lua_State* L ) {
 	uluaPushFont( L, GuiGetFont() );
 
 	return 1;
@@ -145,7 +145,7 @@ int lguiGuiGetFont( lua_State *L ) {
 
 Set one style property
 */
-int lguiGuiSetStyle( lua_State *L ) {
+int lguiGuiSetStyle( lua_State* L ) {
 	int control = luaL_checkinteger( L, 1 );
 	int property = luaL_checkinteger( L, 2 );
 	int value = luaL_checkinteger( L, 3 );
@@ -162,7 +162,7 @@ Get one style property
 
 - Success return int
 */
-int lguiGuiGetStyle( lua_State *L ) {
+int lguiGuiGetStyle( lua_State* L ) {
 	int control = luaL_checkinteger( L, 1 );
 	int property = luaL_checkinteger( L, 2 );
 
@@ -183,7 +183,7 @@ Load style file over global style variable (.rgs)
 - Failure return nil
 - Success return true
 */
-int lguiGuiLoadStyle( lua_State *L ) {
+int lguiGuiLoadStyle( lua_State* L ) {
 	if ( FileExists( luaL_checkstring( L, 1 ) ) ) {
 		GuiLoadStyle( lua_tostring( L, 1 ) );
 		lua_pushboolean( L, true );
@@ -201,7 +201,7 @@ int lguiGuiLoadStyle( lua_State *L ) {
 
 Load style default over global style
 */
-int lguiGuiLoadStyleDefault( lua_State *L ) {
+int lguiGuiLoadStyleDefault( lua_State* L ) {
 	GuiLoadStyleDefault();
 
 	return 0;
@@ -216,7 +216,7 @@ int lguiGuiLoadStyleDefault( lua_State *L ) {
 
 Enable gui tooltips (global state)
 */
-int lguiGuiEnableTooltip( lua_State *L ) {
+int lguiGuiEnableTooltip( lua_State* L ) {
 	GuiEnableTooltip();
 
 	return 0;
@@ -227,7 +227,7 @@ int lguiGuiEnableTooltip( lua_State *L ) {
 
 Disable gui tooltips (global state)
 */
-int lguiGuiDisableTooltip( lua_State *L ) {
+int lguiGuiDisableTooltip( lua_State* L ) {
 	GuiDisableTooltip();
 
 	return 0;
@@ -238,7 +238,7 @@ int lguiGuiDisableTooltip( lua_State *L ) {
 
 Set tooltip string
 */
-int lguiGuiSetTooltip( lua_State *L ) {
+int lguiGuiSetTooltip( lua_State* L ) {
 	GuiSetTooltip( luaL_checkstring( L, 1 ) );
 
 	return 0;
@@ -255,7 +255,7 @@ Get text with icon id prepended (if supported)
 
 - Success return string
 */
-int lguiGuiIconText( lua_State *L ) {
+int lguiGuiIconText( lua_State* L ) {
 	int iconId = luaL_checkinteger( L, 1 );
 
 	if ( TextIsEqual( luaL_checkstring( L, 2 ), "" ) ) {
@@ -273,7 +273,7 @@ int lguiGuiIconText( lua_State *L ) {
 
 Set icon scale (1 by default)
 */
-int lguiGuiSetIconScale( lua_State *L ) {
+int lguiGuiSetIconScale( lua_State* L ) {
 	unsigned int scale = luaL_checkinteger( L, 1 );
 
 	GuiSetIconScale( scale );
@@ -288,7 +288,7 @@ Get raygui icons data pointer
 
 - Success return int
 */
-int lguiGuiGetIcons( lua_State *L ) {
+int lguiGuiGetIcons( lua_State* L ) {
 	lua_pushinteger( L, *GuiGetIcons() );
 
 	return 1;
@@ -302,12 +302,12 @@ Load raygui icons file (.rgi) into internal icons data
 - Failure return nil
 - Success return strings{}
 */
-int lguiGuiLoadIcons( lua_State *L ) {
-	const char *fileName = luaL_checkstring( L, 1 );
+int lguiGuiLoadIcons( lua_State* L ) {
+	const char* fileName = luaL_checkstring( L, 1 );
 	bool loadIconsName = uluaGetBoolean( L, 2 );
 
 	if ( FileExists( fileName ) ) {
-		char **iconNames = GuiLoadIcons( fileName, loadIconsName );
+		char** iconNames = GuiLoadIcons( fileName, loadIconsName );
 
 		lua_createtable( L, 255, 0 );
 
@@ -331,7 +331,7 @@ int lguiGuiLoadIcons( lua_State *L ) {
 
 Draw icon
 */
-int lguiGuiDrawIcon( lua_State *L ) {
+int lguiGuiDrawIcon( lua_State* L ) {
 	int iconId = luaL_checkinteger( L, 1 );
 	Vector2 pos = uluaGetVector2( L, 2 );
 	int pixelSize = luaL_checkinteger( L, 3 );
@@ -353,7 +353,7 @@ Window Box control, shows a window that can be closed
 
 - Success return int
 */
-int lguiGuiWindowBox( lua_State *L ) {
+int lguiGuiWindowBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 
 	lua_pushinteger( L, GuiWindowBox( bounds, luaL_checkstring( L, 2 ) ) );
@@ -368,7 +368,7 @@ Group Box control with text name
 
 - Success return int
 */
-int lguiGuiGroupBox( lua_State *L ) {
+int lguiGuiGroupBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 
 	lua_pushinteger( L, GuiGroupBox( bounds, luaL_checkstring( L, 2 ) ) );
@@ -383,7 +383,7 @@ Line separator control, could contain text
 
 - Success return int
 */
-int lguiGuiLine( lua_State *L ) {
+int lguiGuiLine( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 
 	lua_pushinteger( L, GuiLine( bounds, luaL_checkstring( L, 2 ) ) );
@@ -398,7 +398,7 @@ Panel control, useful to group controls
 
 - Success return int
 */
-int lguiGuiPanel( lua_State *L ) {
+int lguiGuiPanel( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 
 	lua_pushinteger( L, GuiPanel( bounds, luaL_checkstring( L, 2 ) ) );
@@ -413,12 +413,12 @@ Tab Bar control, returns TAB to be closed or -1
 
 - Success return int, int
 */
-int lguiGuiTabBar( lua_State *L ) {
+int lguiGuiTabBar( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	int active = luaL_checkinteger( L, 3 );
 
 	int count = 0;
-	const char **text = TextSplit( luaL_checkstring( L, 2 ), ';', &count );
+	const char** text = TextSplit( luaL_checkstring( L, 2 ), ';', &count );
 
 	lua_pushinteger( L, GuiTabBar( bounds, text, count, &active ) );
 	lua_pushinteger( L, active );
@@ -433,7 +433,7 @@ Scroll Panel control
 
 - Success return int, Vector2, Rectangle
 */
-int lguiGuiScrollPanel( lua_State *L ) {
+int lguiGuiScrollPanel( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	Rectangle content = uluaGetRectangle( L, 3 );
 	Vector2 scroll = uluaGetVector2( L, 4 );
@@ -457,7 +457,7 @@ Label control, shows text
 
 - Success return int
 */
-int lguiGuiLabel( lua_State *L ) {
+int lguiGuiLabel( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 
 	lua_pushinteger( L, GuiLabel( bounds, luaL_checkstring( L, 2 ) ) );
@@ -472,7 +472,7 @@ Button control, returns true when clicked
 
 - Success return int
 */
-int lguiGuiButton( lua_State *L ) {
+int lguiGuiButton( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 
 	lua_pushinteger( L, GuiButton( bounds, luaL_checkstring( L, 2 ) ) );
@@ -487,7 +487,7 @@ Label button control, show true when clicked
 
 - Success return int
 */
-int lguiGuiLabelButton( lua_State *L ) {
+int lguiGuiLabelButton( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 
 	lua_pushinteger( L, GuiLabelButton( bounds, luaL_checkstring( L, 2 ) ) );
@@ -502,7 +502,7 @@ Toggle Button control, returns true when active
 
 - Success return int, bool
 */
-int lguiGuiToggle( lua_State *L ) {
+int lguiGuiToggle( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	bool active = uluaGetBoolean( L, 3 );
 
@@ -519,7 +519,7 @@ Toggle Group control, returns active toggle index
 
 - Success return int, int
 */
-int lguiGuiToggleGroup( lua_State *L ) {
+int lguiGuiToggleGroup( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	int active = luaL_checkinteger( L, 3 );
 
@@ -536,7 +536,7 @@ Toggle Slider control, returns true when clicked
 
 - Success return int, int
 */
-int lguiGuiToggleSlider( lua_State *L ) {
+int lguiGuiToggleSlider( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	int active = luaL_checkinteger( L, 3 );
 
@@ -553,7 +553,7 @@ Check Box control, returns true when active
 
 - Success return bool, Rectangle
 */
-int lguiGuiCheckBox( lua_State *L ) {
+int lguiGuiCheckBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	bool checked = uluaGetBoolean( L, 3 );
 
@@ -572,7 +572,7 @@ Combo Box control, returns selected item index
 
 - Success return int, int
 */
-int lguiGuiComboBox( lua_State *L ) {
+int lguiGuiComboBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	int active = luaL_checkinteger( L, 3 );
 
@@ -589,7 +589,7 @@ Dropdown Box control, returns selected item
 
 - Success return int, int
 */
-int lguiGuiDropdownBox( lua_State *L ) {
+int lguiGuiDropdownBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	int active = luaL_checkinteger( L, 3 );
 	bool editMode = uluaGetBoolean( L, 4 );
@@ -607,7 +607,7 @@ Spinner control, returns selected value
 
 - Success return int, int, Rectangle
 */
-int lguiGuiSpinner( lua_State *L ) {
+int lguiGuiSpinner( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	int value = luaL_checkinteger( L, 3 );
 	int minValue = luaL_checkinteger( L, 4 );
@@ -629,7 +629,7 @@ Value Box control, updates input text with numbers
 
 - Success return int, int, Rectangle
 */
-int lguiGuiValueBox( lua_State *L ) {
+int lguiGuiValueBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	int value = luaL_checkinteger( L, 3 );
 	int minValue = luaL_checkinteger( L, 4 );
@@ -651,7 +651,7 @@ Text Box control, updates input text
 
 - Success return int, string
 */
-int lguiGuiTextBox( lua_State *L ) {
+int lguiGuiTextBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	int textSize = luaL_checkinteger( L, 3 );
 	char text[ textSize + 1 ];
@@ -671,7 +671,7 @@ Slider control, returns selected value
 
 - Success return int, float, Rectangle, Rectangle
 */
-int lguiGuiSlider( lua_State *L ) {
+int lguiGuiSlider( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	float value = luaL_checknumber( L, 4 );
 	float minValue = luaL_checknumber( L, 5 );
@@ -694,7 +694,7 @@ Slider Bar control, returns selected value
 
 - Success return int, float, Rectangle, Rectangle
 */
-int lguiGuiSliderBar( lua_State *L ) {
+int lguiGuiSliderBar( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	float value = luaL_checknumber( L, 4 );
 	float minValue = luaL_checknumber( L, 5 );
@@ -717,7 +717,7 @@ Progress Bar control, shows current progress value
 
 - Success return int, float, Rectangle, Rectangle
 */
-int lguiGuiProgressBar( lua_State *L ) {
+int lguiGuiProgressBar( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	float value = luaL_checknumber( L, 4 );
 	float minValue = luaL_checknumber( L, 5 );
@@ -740,7 +740,7 @@ Status Bar control, shows info text
 
 - Success return int
 */
-int lguiGuiStatusBar( lua_State *L ) {
+int lguiGuiStatusBar( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 
 	lua_pushinteger( L, GuiStatusBar( bounds, luaL_checkstring( L, 2 ) ) );
@@ -755,7 +755,7 @@ Dummy control for placeholders
 
 - Success return int
 */
-int lguiGuiDummyRec( lua_State *L ) {
+int lguiGuiDummyRec( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 
 	lua_pushinteger( L, GuiDummyRec( bounds, luaL_checkstring( L, 2 ) ) );
@@ -770,7 +770,7 @@ Grid control, returns mouse cell position
 
 - Success return int, Vector2
 */
-int lguiGuiGrid( lua_State *L ) {
+int lguiGuiGrid( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	float spacing = luaL_checknumber( L, 3 );
 	int subdivs = luaL_checkinteger( L, 4 );
@@ -789,7 +789,7 @@ Scroll bar control
 
 - Success return int
 */
-int lguiGuiScrollBar( lua_State *L ) {
+int lguiGuiScrollBar( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	int value = luaL_checkinteger( L, 2 );
 	int minValue = luaL_checkinteger( L, 3 );
@@ -811,7 +811,7 @@ List View control, returns selected list item index
 
 - Success return int, int, int
 */
-int lguiGuiListView( lua_State *L ) {
+int lguiGuiListView( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	int scrollIndex = luaL_checkinteger( L, 3 );
 	int active = luaL_checkinteger( L, 4 );
@@ -830,14 +830,14 @@ List View with extended parameters
 
 - Success return int, int, int, int
 */
-int lguiGuiListViewEx( lua_State *L ) {
+int lguiGuiListViewEx( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	int scrollIndex = luaL_checkinteger( L, 3 );
 	int active = luaL_checkinteger( L, 4 );
 	int focus = luaL_checkinteger( L, 5 );
 
 	int count = 0;
-	const char **text = TextSplit( luaL_checkstring( L, 2 ), ';', &count );
+	const char** text = TextSplit( luaL_checkstring( L, 2 ), ';', &count );
 
 	lua_pushinteger( L, GuiListViewEx( bounds, text, count, &scrollIndex, &active, &focus ) );
 	lua_pushinteger( L, scrollIndex );
@@ -854,7 +854,7 @@ Message Box control, displays a message
 
 - Success return int
 */
-int lguiGuiMessageBox( lua_State *L ) {
+int lguiGuiMessageBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 
 	lua_pushinteger( L, GuiMessageBox( bounds, luaL_checkstring( L, 2 ), luaL_checkstring( L, 3 ), luaL_checkstring( L, 4 ) ) );
@@ -869,11 +869,11 @@ Text Input Box control, ask for text, supports secret
 
 - Success return int, string, bool
 */
-int lguiGuiTextInputBox( lua_State *L ) {
+int lguiGuiTextInputBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
-	const char *title = luaL_checkstring( L, 2 );
-	const char *message = luaL_checkstring( L, 3 );
-	const char *buttons = luaL_checkstring( L, 4 );
+	const char* title = luaL_checkstring( L, 2 );
+	const char* message = luaL_checkstring( L, 3 );
+	const char* buttons = luaL_checkstring( L, 4 );
 	int textMaxSize = luaL_checkinteger( L, 6 );
 	bool secretViewActive = uluaGetBoolean( L, 7 );
 	char text[ textMaxSize + 1 ];
@@ -893,7 +893,7 @@ Color Picker control (multiple color controls)
 
 - Success return int, Color
 */
-int lguiGuiColorPicker( lua_State *L ) {
+int lguiGuiColorPicker( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	Color color = uluaGetColor( L, 3 );
 
@@ -910,7 +910,7 @@ Color Panel control
 
 - Success return int, Color
 */
-int lguiGuiColorPanel( lua_State *L ) {
+int lguiGuiColorPanel( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	Color color = uluaGetColor( L, 3 );
 
@@ -927,7 +927,7 @@ Color Bar Alpha control
 
 - Success return int, float
 */
-int lguiGuiColorBarAlpha( lua_State *L ) {
+int lguiGuiColorBarAlpha( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	float alpha = luaL_checknumber( L, 3 );
 
@@ -944,7 +944,7 @@ Color Bar Hue control
 
 - Success return int, float
 */
-int lguiGuiColorBarHue( lua_State *L ) {
+int lguiGuiColorBarHue( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	float value = luaL_checknumber( L, 3 );
 
@@ -961,7 +961,7 @@ Color Picker control that avoids conversion to RGB on each call (multiple color 
 
 - Success return int, Vector3
 */
-int lguiGuiColorPickerHSV( lua_State *L ) {
+int lguiGuiColorPickerHSV( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	Vector3 colorHsv = uluaGetVector3( L, 3 );
 
@@ -978,7 +978,7 @@ Color Panel control that returns HSV color value, used by GuiColorPickerHSV()
 
 - Success return int, Vector3
 */
-int lguiGuiColorPanelHSV( lua_State *L ) {
+int lguiGuiColorPanelHSV( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	Vector3 colorHsv = uluaGetVector3( L, 3 );
 

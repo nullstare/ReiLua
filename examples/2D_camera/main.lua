@@ -5,7 +5,7 @@ local cameraRot = 0.0
 local cameraZoom = 1.0
 local cameraSpeed = 100.0
 local cameraRotSpeed = 100.0
-local cameraZoomSpeed = 10.0
+local cameraZoomSpeed = 2.0
 
 function RL.init()
 	local monitor = 0
@@ -23,7 +23,7 @@ function RL.init()
 	RL.SetCamera2DOffset( camera, { winSize[1] / 2, winSize[2] / 2 } )
 end
 
-function RL.process( delta )
+function RL.update( delta )
 	-- Move.
 	if RL.IsKeyDown( RL.KEY_RIGHT ) then
 		cameraPos[1] = cameraPos[1] + cameraSpeed * delta
@@ -36,16 +36,16 @@ function RL.process( delta )
 		cameraPos[2] = cameraPos[2] - cameraSpeed * delta
 	end
 	-- Rotate.
-	if RL.IsKeyDown( RL.KEY_E ) then -- Or RL.IsKeyDown( KEY_E )
+	if RL.IsKeyDown( RL.KEY_E ) then
 		cameraRot = cameraRot + cameraRotSpeed * delta
 	elseif RL.IsKeyDown( RL.KEY_Q ) then
 		cameraRot = cameraRot - cameraRotSpeed * delta
 	end
 	-- Zoom.
 	if RL.IsKeyDown( RL.KEY_R ) then
-		cameraZoom = cameraZoom + cameraZoomSpeed * delta
+		cameraZoom = cameraZoom + cameraZoom * cameraZoomSpeed * delta
 	elseif RL.IsKeyDown( RL.KEY_F ) then
-		cameraZoom = cameraZoom - cameraZoomSpeed * delta
+		cameraZoom = cameraZoom - cameraZoom * cameraZoomSpeed * delta
 	end
 end
 

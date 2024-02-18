@@ -19,12 +19,12 @@ function SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, c
 	return object
 end
 
-function SpriteButton:process()
+function SpriteButton:update()
     return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function SpriteButton:draw()
-	if RL.IsMouseButtonDown( RL.MOUSE_BUTTON_LEFT ) and self:process() and not RL.GuiIsLocked() and not self._parent.scrolling then
+	if RL.IsMouseButtonDown( RL.MOUSE_BUTTON_LEFT ) and self:update() and not RL.GuiIsLocked() and not self._parent.scrolling then
 		RL.DrawTextureNPatchRepeat( self.buttonTexture, self.nPatchPressed, self.bounds, { 0, 0 }, 0.0, RL.WHITE )
 	else
 		RL.DrawTextureNPatchRepeat( self.buttonTexture, self.nPatchNormal, self.bounds, { 0, 0 }, 0.0, RL.WHITE )

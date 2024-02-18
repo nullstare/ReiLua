@@ -90,7 +90,7 @@ function Camera3D:getUpward()
 	return Vec3:new( RL.GetCamera3DUpNormalized( self.camera ) )
 end
 
-function Camera3D:process( delta )
+function Camera3D:update( delta )
 	if self.mode == self.MODES.FREE then
 		if RL.IsMouseButtonDown( RL.MOUSE_BUTTON_MIDDLE ) then
 			local mouseDelta = Vec2:new( RL.GetMouseDelta() )

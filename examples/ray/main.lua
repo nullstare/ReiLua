@@ -38,7 +38,7 @@ function RL.init()
 	ray_collision()
 end
 
-function RL.process( delta )
+function RL.update( delta )
 	if RL.IsMouseButtonPressed( 0 ) then
 		ray = RL.GetMouseRay( RL.GetMousePosition(), camera )
 		ray_collision()

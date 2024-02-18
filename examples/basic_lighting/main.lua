@@ -91,8 +91,8 @@ function RL.init()
 	table.insert( lights, RL.CreateLight( RL.LIGHT_POINT, { 2, 1, -2 }, RL.Vector3Zero(), RL.BLUE, shader ) )
 end
 
-function RL.process( delta )
-	camera:process( delta )
+function RL.update( delta )
+	camera:update( delta )
 
 	-- Check key inputs to enable/disable lights.
 	if RL.IsKeyPressed( RL.KEY_Y ) then

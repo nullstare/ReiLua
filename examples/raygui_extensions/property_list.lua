@@ -158,14 +158,14 @@ function PropertyList:addGroup( name, active, group )
 	return control
 end
 
-function PropertyList:process()
+function PropertyList:update()
 	if not RL.CheckCollisionRecs( self.view, RL.GetMousePosition() ) then
 		self.gui.locked = true
 	else
 		self.gui.locked = false
 	end
 
-	self.gui:process()
+	self.gui:update()
 
 	RL.BeginTextureMode( self.framebuffer )
 		RL.ClearBackground( RL.BLANK )

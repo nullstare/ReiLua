@@ -17,7 +17,7 @@ function bitlib.getBit( v, i )
 		return false
 	end
 
-	return v & ( 1 << i ) > 0
+	return 0 < v & ( 1 << i )
 end
 
 return bitlib

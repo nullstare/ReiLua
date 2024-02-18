@@ -2,7 +2,7 @@
 
 ## Functions
 
-Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.process', 'RL.draw', 'RL.event', 'RL.log', and 'RL.exit'.
+Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.update', 'RL.draw', 'RL.event', 'RL.log', and 'RL.exit'.
 
 ---
 > function RL.init()
@@ -11,7 +11,7 @@ This function will be called first when 'main.lua' is found
 
 ---
 
-> function RL.process( delta )
+> function RL.update( delta )
 
 This function will be called every frame during execution. It will get time duration from last frame on argument 'delta'
 
@@ -19,7 +19,7 @@ This function will be called every frame during execution. It will get time dura
 
 > function RL.draw()
 
-This function will be called every frame after process and it should have all rendering related functions. Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it. You can still use RL.BeginDrawing() and RL.EndDrawing() manually from anywhere.
+This function will be called every frame after update and it should have all rendering related functions. Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it. You can still use RL.BeginDrawing() and RL.EndDrawing() manually from anywhere.
 
 ---
 

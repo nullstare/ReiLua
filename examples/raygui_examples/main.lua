@@ -33,8 +33,8 @@ function RL.init()
 	calculator2 = Calculator:new( Vec2:new( 64, 65 ) )
 end
 
-function RL.process( delta )
-	Gui:process()
+function RL.update( delta )
+	Gui:update()
 end
 
 function RL.draw()

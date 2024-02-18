@@ -70,7 +70,7 @@ int main( int argn, const char **argc ) {
 			if ( WindowShouldClose() ) {
 				state->run = false;
 			}
-			luaCallProcess();
+			luaCallUpdate();
 			luaCallDraw();
 		}
 		luaCallExit();

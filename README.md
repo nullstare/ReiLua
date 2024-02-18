@@ -2,7 +2,7 @@
 
 ## About
 
-Idea of this project was to bring the power and simplicity of Raylib to easy beginner friendly language like Lua in a very straight forward manner. It is loose binding to Raylib, some functions will not be included and some are added. The idea of pointing "main.lua" file and access functions "init", "process" and "draw" are borrowed from Löve game framework.
+Idea of this project was to bring the power and simplicity of Raylib to easy beginner friendly language like Lua in a very straight forward manner. It is loose binding to Raylib, some functions will not be included and some are added. The idea of pointing "main.lua" file and access functions "init", "update" and "draw" are borrowed from Löve game framework.
 
 ReiLua is not planned to be a one-to-one binding to raylib. If you want more direct bindings, there are other projects like https://github.com/TSnake41/raylib-lua.
 
@@ -34,7 +34,7 @@ List of some MISSING features that are planned to be included. For specific func
 
 ## Usage
 
-Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.process', 'RL.draw', 'RL.log' and 'RL.exit'.
+Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.update', 'RL.draw', 'RL.log' and 'RL.exit'.
 
 Example of basic "main.lua" file that will show basic windows with text.
 
@@ -46,7 +46,7 @@ function RL.init()
 	RL.SetWindowTitle( "First window" )
 end
 
-function RL.process( delta )
+function RL.update( delta )
 	if RL.IsKeyPressed( RL.KEY_ENTER ) then
 		textColor = BLUE
 		textPos = { 230, 230 }

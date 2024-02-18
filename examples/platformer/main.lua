@@ -221,7 +221,7 @@ local function playerMovement( delta )
 	player.colRect.y = player.pos.y - player.colRect.height
 end
 
-function RL.process( delta )
+function RL.update( delta )
 	if RL.IsWindowResized() then
 		winSize:set( RL.GetScreenSize() )
 	end

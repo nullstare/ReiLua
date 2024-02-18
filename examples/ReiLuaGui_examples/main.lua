@@ -76,8 +76,8 @@ function RL.init()
 	initGui()
 end
 
-function RL.process( delta )
-	Gui.process( Vec2:new( RL.GetMousePosition() ) )
+function RL.update( delta )
+	Gui.update( Vec2:new( RL.GetMousePosition() ) )
 end
 
 function RL.draw()

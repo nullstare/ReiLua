@@ -40,7 +40,7 @@ local Gui = {
 	heldCallback = nil,
 
 	_cells = {},
-	_mousePos = Vec2:new( 0, 0 ), -- Last mouse position that was passed to Gui.process.
+	_mousePos = Vec2:new( 0, 0 ), -- Last mouse position that was passed to Gui.Update.
 	_inputElement = nil, -- Element that has the input text item.
 	_inputItem = nil, -- Must be type Text.
 }
@@ -103,7 +103,7 @@ function Gui.set2Back( cell )
 	Util.tableMove( Gui._cells, Gui.getId( cell ), 1, 1 )
 end
 
-function Gui.process( mousePosition )
+function Gui.update( mousePosition )
 	local mouseWheel = RL.GetMouseWheelMove()
 
 	Gui._mousePos = mousePosition
@@ -120,7 +120,7 @@ function Gui.process( mousePosition )
 
 	local foundFirst = false
 
-	-- Go backwards on process check so we trigger the top most ui first and stop there.
+	-- Go backwards on update check so we trigger the top most ui first and stop there.
 	for i = #Gui._cells, 1, -1 do
 		local cell = Gui._cells[i]
 

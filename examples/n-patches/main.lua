@@ -20,7 +20,7 @@ function RL.init()
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 end
 
-function RL.process( delta )
+function RL.update( delta )
 	local mousePosition = Vec2:new( RL.GetMousePosition() )
 
     -- Resize the n-patch based on mouse position

@@ -129,7 +129,7 @@ local function moveSnake()
 	moveTimer = moveTimer + 1.0
 end
 
-function RL.process( delta )
+function RL.update( delta )
 	if gameState == STATE.GAME then -- Run game.
 		-- Controls.
 		if RL.IsKeyPressed( RL.KEY_RIGHT ) and 0 <= snake.heading.x then

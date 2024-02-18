@@ -83,8 +83,8 @@ function RL.init()
 	matrix = RL.MatrixMultiply( RL.MatrixIdentity(), RL.MatrixTranslate( { -4, 0, -4 } ) )
 end
 
-function RL.process( delta )
-	camera:process( delta )
+function RL.update( delta )
+	camera:update( delta )
 
 	if RL.IsKeyPressed( RL.KEY_SPACE ) then
 		if camera.mode == camera.MODES.FREE then

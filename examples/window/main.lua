@@ -7,7 +7,7 @@ function RL.init()
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 end
 
-function RL.process( delta )
+function RL.update( delta )
 	if RL.IsKeyPressed( RL.KEY_ENTER ) then
 		local textSize = RL.MeasureText( RL.GetFontDefault(), text, 20, 2 )
 		local winSize = RL.GetScreenSize()

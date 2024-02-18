@@ -1127,7 +1127,7 @@ bool luaCallMain() {
 	return state->run;
 }
 
-void luaCallProcess() {
+void luaCallUpdate() {
 
 #if defined PLATFORM_DESKTOP_SDL && defined LUA_EVENTS
 	platformSendEvents();
@@ -1138,7 +1138,7 @@ void luaCallProcess() {
 	int tracebackidx = lua_gettop(L);
 	
 	lua_getglobal( L, "RL" );
-	lua_getfield( L, -1, "process" );
+	lua_getfield( L, -1, "update" );
 
     if ( lua_isfunction( L, -1 ) ) {
         lua_pushnumber( L, GetFrameTime() );

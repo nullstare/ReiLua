@@ -20,7 +20,7 @@ Backlog {
 
 	* Examples
 		* Improve Dungeon crawler example by generating custom mesh instead of drawing 3D quads.
-		* Platformer example physics process for true framerate independence.
+		* Platformer example physics update for true framerate independence.
 	* Android support
 	* Git submodules for raylib and lua. Should maybe find windows compatible lua repo for this.
 }

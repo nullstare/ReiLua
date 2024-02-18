@@ -50,7 +50,7 @@ function RL.init()
 	end
 end
 
-function RL.process( delta )
+function RL.update( delta )
 	polygon.angle = polygon.angle + delta
 
 	-- Update points rotation with an angle transform

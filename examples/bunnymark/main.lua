@@ -51,7 +51,7 @@ function RL.init()
 	texSize = RL.GetTextureSize( texBunny )
 end
 
-function RL.process( delta )
+function RL.update( delta )
 	if RL.IsMouseButtonDown( 0 ) then
 	 	-- Create more bunnies
 		for i = 1, 100 do

@@ -70,7 +70,7 @@ function WindowBox:new( bounds, text, callback, grabCallback, dragCallback, styl
 	return object
 end
 
-function WindowBox:process()
+function WindowBox:update()
 	return self._parent:drag( self )
 end
 
@@ -109,7 +109,7 @@ function GroupBox:new( bounds, text, styles )
 	return object
 end
 
-function GroupBox:process()
+function GroupBox:update()
     return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -142,7 +142,7 @@ function Line:new( bounds, text, styles )
 	return object
 end
 
-function Line:process()
+function Line:update()
     return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -178,7 +178,7 @@ function Panel:new( bounds, text, grabCallback, dragCallback, styles )
 	return object
 end
 
-function Panel:process()
+function Panel:update()
     return self._parent:drag( self )
 end
 
@@ -214,7 +214,7 @@ function GuiTabBar:new( bounds, text, active, callback, closeCallback, styles )
 	return object
 end
 
-function GuiTabBar:process()
+function GuiTabBar:update()
     return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -271,7 +271,7 @@ function ScrollPanel:new( bounds, text, content, scroll, callback, grabCallback,
 	return object
 end
 
-function ScrollPanel:process()
+function ScrollPanel:update()
     return self._parent:drag( self )
 end
 
@@ -318,7 +318,7 @@ function Label:new( bounds, text, styles )
 	return object
 end
 
-function Label:process()
+function Label:update()
     return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -352,7 +352,7 @@ function Button:new( bounds, text, callback, styles )
 	return object
 end
 
-function Button:process()
+function Button:update()
     return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -390,7 +390,7 @@ function LabelButton:new( bounds, text, callback, styles )
 	return object
 end
 
-function LabelButton:process()
+function LabelButton:update()
     return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -429,7 +429,7 @@ function Toggle:new( bounds, text, active, callback, styles )
 	return object
 end
 
-function Toggle:process()
+function Toggle:update()
     return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -516,7 +516,7 @@ function ToggleGroup:updateFocusBounds()
 	end
 end
 
-function ToggleGroup:process()
+function ToggleGroup:update()
 	for _, bounds in ipairs( self.focusBounds ) do
 		if RL.CheckCollisionPointRec( RL.GetMousePosition(), bounds ) then
 			return true
@@ -585,7 +585,7 @@ function CheckBox:new( bounds, text, checked, callback, styles )
 	return object
 end
 
-function CheckBox:process()
+function CheckBox:update()
     return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.focusBounds )
 end
 
@@ -638,7 +638,7 @@ function ComboBox:new( bounds, text, active, callback, styles )
 	return object
 end
 
-function ComboBox:process()
+function ComboBox:update()
     return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -702,7 +702,7 @@ function DropdownBox:updateEditModeBounds()
 	self.editModeBounds.height = ( 1 + count ) * ( self.bounds.height + RL.GuiGetStyle( RL.DROPDOWNBOX, RL.DROPDOWN_ITEMS_SPACING ) )
 end
 
-function DropdownBox:process()
+function DropdownBox:update()
 	if self.editMode then
 		self:updateEditModeBounds()
 		return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.editModeBounds )
@@ -763,7 +763,7 @@ function Spinner:setText( text )
     self.text = text
 end
 
-function Spinner:process()
+function Spinner:update()
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -833,7 +833,7 @@ function ValueBox:setText( text )
 	self.text = text
 end
 
-function ValueBox:process()
+function ValueBox:update()
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -887,7 +887,7 @@ function TextBox:new( bounds, text, textSize, editMode, callback, styles )
 	return object
 end
 
-function TextBox:process()
+function TextBox:update()
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -948,7 +948,7 @@ function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, cal
 	return object
 end
 
-function Slider:process()
+function Slider:update()
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -1011,7 +1011,7 @@ function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, 
 	return object
 end
 
-function SliderBar:process()
+function SliderBar:update()
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -1074,7 +1074,7 @@ function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue
 	return object
 end
 
-function ProgressBar:process()
+function ProgressBar:update()
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -1126,7 +1126,7 @@ function StatusBar:new( bounds, text, styles )
 	return object
 end
 
-function StatusBar:process()
+function StatusBar:update()
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -1159,7 +1159,7 @@ function DummyRec:new( bounds, text, styles )
 	return object
 end
 
-function DummyRec:process()
+function DummyRec:update()
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -1196,7 +1196,7 @@ function Grid:new( bounds, text, spacing, subdivs, callback, styles )
 	return object
 end
 
-function Grid:process()
+function Grid:update()
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -1248,7 +1248,7 @@ function ListView:getItem( id )
 	return getItems( self.text )[ id + 1 ]
 end
 
-function ListView:process()
+function ListView:update()
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -1299,7 +1299,7 @@ function ListViewEx:getItem( id )
 	return getItems( self.text )[ id + 1 ]
 end
 
-function ListViewEx:process()
+function ListViewEx:update()
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -1353,7 +1353,7 @@ function MessageBox:getItem( id )
 	return getItems( self.buttons )[ id ]
 end
 
-function MessageBox:process()
+function MessageBox:update()
 	return self._parent:drag( self )
 end
 
@@ -1404,7 +1404,7 @@ function TextInputBox:getItem( id )
 	return getItems( self.buttons )[ id ]
 end
 
-function TextInputBox:process()
+function TextInputBox:update()
 	return self._parent:drag( self )
 end
 
@@ -1446,7 +1446,7 @@ function ColorPicker:new( bounds, text, color, callback, styles )
 	return object
 end
 
-function ColorPicker:process()
+function ColorPicker:update()
 	-- self:updateFocusBounds()
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.focusBounds )
 end
@@ -1508,7 +1508,7 @@ function ColorPanel:new( bounds, text, color, callback, styles )
 	return object
 end
 
-function ColorPanel:process()
+function ColorPanel:update()
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -1557,7 +1557,7 @@ function ColorBarAlpha:new( bounds, text, alpha, callback, styles )
 	return object
 end
 
-function ColorBarAlpha:process()
+function ColorBarAlpha:update()
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -1605,7 +1605,7 @@ function ColorBarHue:new( bounds, text, value, callback, styles )
 	return object
 end
 
-function ColorBarHue:process()
+function ColorBarHue:update()
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -1654,7 +1654,7 @@ function GuiScrollBar:new( bounds, value, minValue, maxValue, callback, styles )
 	return object
 end
 
-function GuiScrollBar:process()
+function GuiScrollBar:update()
 	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -1703,7 +1703,7 @@ function Raygui:new()
 	object.defaultRect = Rect:new( 0, 0, 1, 1 ) -- For texture.
 	object.defaultFont = RL.GetFontDefault()
 	object.mouseOffset = Vec2:new()
-	object.view = Rect:new() -- Active if larger than 0. Then only controls in view will be processed and drawn.
+	object.view = Rect:new() -- Active if larger than 0. Then only controls in view will be updated and drawn.
 
 	object._lastProperties = {}
 	object._mousePressPos = Vec2:new( -1, -1 ) -- Use to check if release and check are inside bounds.
@@ -1716,11 +1716,11 @@ function Raygui:inView( control )
 	return self.view.width == 0 or self.view.height == 0 or self.view:checkCollisionRec( control.viewBounds or control.focusBounds or control.bounds )
 end
 
-function Raygui:process()
+function Raygui:update()
 	if self.disabled or self.locked then
 		return
 	end
-	-- If dragging, don't process control masking.
+	-- If dragging, don't update control masking.
 	if self.dragging ~= nil then
 		self:drag( self.dragging )
 		return
@@ -1737,8 +1737,8 @@ function Raygui:process()
 	for i = #self.controls, 1, -1 do
 		local control = self.controls[i]
 
-        if control.visible and control.process ~= nil and self:inView( control ) then
-            if control:process() then
+        if control.visible and control.update ~= nil and self:inView( control ) then
+            if control:update() then
                 self.focused = i
                 return
             end

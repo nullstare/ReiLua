@@ -69,7 +69,7 @@ function RL.init()
 	reset()
 end
 
-function RL.process( delta )
+function RL.update( delta )
 	-- Left player controls.
 	if RL.IsKeyDown( RL.KEY_W ) and 0 < playerLeft.pos.y then
 		playerLeft.pos.y = playerLeft.pos.y - PLAYER_SPEED * delta

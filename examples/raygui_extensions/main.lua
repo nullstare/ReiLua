@@ -237,8 +237,8 @@ function RL.init()
 	addPropertyList()
 end
 
-function RL.process( delta )
-	Gui:process()
+function RL.update( delta )
+	Gui:update()
 end
 
 function RL.draw()

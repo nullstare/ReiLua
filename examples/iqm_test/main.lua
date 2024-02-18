@@ -49,7 +49,7 @@ function RL.init()
 	animations = RL.LoadModelAnimations( RL.GetBasePath().."../resources/iqm/monkey.iqm" )
 end
 
-function RL.process( delta )
+function RL.update( delta )
 	if RL.IsKeyPressed( RL.KEY_ENTER ) then
 		curAnim = curAnim + 1
 

@@ -30,8 +30,8 @@ function RL.init()
 	camera.mode = camera.MODES.FREE
 end
 
-function RL.process( delta )
-	camera:process( delta )
+function RL.update( delta )
+	camera:update( delta )
 
 	if RL.IsKeyPressed( RL.KEY_SPACE ) then
 		if camera.mode == camera.MODES.FREE then

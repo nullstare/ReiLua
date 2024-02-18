@@ -82,7 +82,7 @@ function RL.init()
 	RL.SetMaterialColor( matDefault, RL.MATERIAL_MAP_DIFFUSE, RL.BLUE )
 end
 
-function RL.process( delta )
+function RL.update( delta )
 	RL.UpdateCamera3D( camera, RL.CAMERA_ORBITAL )
 
 	-- Update the light shader with the camera view position

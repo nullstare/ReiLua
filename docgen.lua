@@ -89,19 +89,19 @@ apiFile:write( "# ReiLua API\n" )
 -- Usage.
 
 apiFile:write( "\n## Functions\n" )
-apiFile:write( "\nApplication needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where \"main.lua\" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.process', 'RL.draw', 'RL.event', 'RL.log', and 'RL.exit'.\n" )
+apiFile:write( "\nApplication needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where \"main.lua\" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.update', 'RL.draw', 'RL.event', 'RL.log', and 'RL.exit'.\n" )
 
 local FUNC_DESC = {
 	init = "This function will be called first when 'main.lua' is found",
-	process = "This function will be called every frame during execution. It will get time duration from last frame on argument 'delta'",
-	draw = "This function will be called every frame after process and it should have all rendering related functions. Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it. You can still use RL.BeginDrawing() and RL.EndDrawing() manually from anywhere.",
+	update = "This function will be called every frame during execution. It will get time duration from last frame on argument 'delta'",
+	draw = "This function will be called every frame after update and it should have all rendering related functions. Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it. You can still use RL.BeginDrawing() and RL.EndDrawing() manually from anywhere.",
 	event = "This function will be called on events input. Content of event table is determined by event type.",
 	log = "This function can be used for custom log message handling.",
 	exit = "This function will be called on program close. Cleanup could be done here.",
 }
 
 apiFile:write( "\n---\n> function RL.init()\n\n"..FUNC_DESC.init.."\n\n---\n" )
-apiFile:write( "\n> function RL.process( delta )\n\n"..FUNC_DESC.process.."\n\n---\n" )
+apiFile:write( "\n> function RL.update( delta )\n\n"..FUNC_DESC.update.."\n\n---\n" )
 apiFile:write( "\n> function RL.draw()\n\n"..FUNC_DESC.draw.."\n\n---\n" )
 apiFile:write( "\n> function RL.event( event )\n\n"..FUNC_DESC.event.."\n\n---\n" )
 apiFile:write( "\n> function RL.log( logLevel, message )\n\n"..FUNC_DESC.log.."\n\n---\n" )
@@ -114,7 +114,7 @@ luaApiFile:write( "-- Functions.\n\n" )
 luaApiFile:write(
 "---"..FUNC_DESC.init.."\nfunction RL.init() end\n" )
 luaApiFile:write(
-"---"..FUNC_DESC.process.."\n---@param delta number\nfunction RL.process( delta ) end\n" )
+"---"..FUNC_DESC.update.."\n---@param delta number\nfunction RL.update( delta ) end\n" )
 luaApiFile:write(
 "---"..FUNC_DESC.draw.."\nfunction RL.draw() end\n" )
 luaApiFile:write(

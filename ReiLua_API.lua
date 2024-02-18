@@ -8,8 +8,8 @@ RL={}
 function RL.init() end
 ---This function will be called every frame during execution. It will get time duration from last frame on argument 'delta'
 ---@param delta number
-function RL.process( delta ) end
----This function will be called every frame after process and it should have all rendering related functions. Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it. You can still use RL.BeginDrawing() and RL.EndDrawing() manually from anywhere.
+function RL.update( delta ) end
+---This function will be called every frame after update and it should have all rendering related functions. Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it. You can still use RL.BeginDrawing() and RL.EndDrawing() manually from anywhere.
 function RL.draw() end
 ---This function will be called on events input. Content of event table is determined by event type.
 ---@param event table

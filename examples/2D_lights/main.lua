@@ -133,7 +133,7 @@ end
 
 -- Process.
 
-function RL.process( delta )
+function RL.update( delta )
 	lights[1].pos = Vector2:new( RL.GetMousePosition() )
 end
 

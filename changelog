@@ -10,6 +10,8 @@ KEY CHANGES:
 DETAILED CHANGES:
 	- ADDED: GetBufferElementSize and GetBufferLength.
 	- FIXED: Compress_data example.
+	- FIXED: GuiGetFont return lightuserdata.
+	- FIXED: GuiSetStyle, GuiLoadStyle and GuiLoadStyleDefault sets state->guiDefaultFont to GuiGetFont.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

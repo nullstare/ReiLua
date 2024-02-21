@@ -29,6 +29,7 @@ bool stateInit( int argn, const char** argc, const char* exePath ) {
 		state->run = luaInit( argn, argc );
 	}
 	state->defaultFont = GetFontDefault();
+	state->guiDefaultFont = GuiGetFont();
 	state->defaultMaterial = LoadMaterialDefault();
 	state->defaultTexture = (Texture){ 1, 1, 1, 1, 7 };
 	state->RLGLcurrentShaderLocs = malloc( RL_MAX_SHADER_LOCATIONS * sizeof( int ) );

@@ -5924,7 +5924,7 @@ function RL.GuiGetState() end
 ---@return any RL.GuiSetFont
 function  RL.GuiSetFont( font ) end
 
----Get gui custom font (global state)
+---Get gui custom font (global state). Return as lightuserdata
 ---- Success return Font
 ---@return any font 
 function RL.GuiGetFont() end

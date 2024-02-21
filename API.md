@@ -8805,7 +8805,7 @@ Set gui custom font (global state)
 
 > font = RL.GuiGetFont()
 
-Get gui custom font (global state)
+Get gui custom font (global state). Return as lightuserdata
 
 - Success return Font
 

@@ -1733,7 +1733,7 @@ function Raygui:new()
 	object.textEdit = false
 	object.defaultTexture = RL.GetTextureDefault()
 	object.defaultRect = Rect:new( 0, 0, 1, 1 ) -- For texture.
-	object.defaultFont = RL.GetFontDefault()
+	object.defaultFont = RL.GuiGetFont()
 	object.mouseOffset = Vec2:new()
 	object.view = Rect:new() -- Active if larger than 0. Then only controls in view will be updated and drawn.
 	object.tooltip = {
@@ -1788,7 +1788,7 @@ function Raygui:update()
 				
 				if control.tooltip ~= nil then
 					self.tooltip.focused = i
-
+					
 					if self.tooltip.timer < self.tooltip.delay then
 						self.tooltip.timer = self.tooltip.timer + RL.GetFrameTime()
 					else
@@ -1866,7 +1866,7 @@ function Raygui:drawTooltip()
 		view.width = screenSize.x
 		view.height = screenSize.y
 	end
-
+	
 	RL.GuiDummyRec( tooltipRect:clampInside( view ), self.tooltip.text )
 end
 

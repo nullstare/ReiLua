@@ -13,6 +13,7 @@ typedef struct {
 	Vector2 resolution;
 	int logLevelInvalid;
 	Font defaultFont;
+	Font guiDefaultFont;
 	Material defaultMaterial;
 	Texture defaultTexture;
 	int* RLGLcurrentShaderLocs;

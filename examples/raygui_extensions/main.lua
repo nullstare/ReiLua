@@ -42,7 +42,8 @@ local function addButton( bounds, text, callback )
 				{ RL.LABEL, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( { 84/2, 59/2, 22/2 } ) },
 				{ RL.LABEL, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.GREEN ) },
 			},
-		}
+		},
+		text
 	)
 end
 
@@ -103,14 +104,26 @@ local function addPropertyList()
 		cat.dest.x,
 		32,
 		false,
-		function( self ) self.value = getTextValue( self.text ) self.text = tostring( self.value ) cat.dest.x = self.value end
+		function( self )
+			self.value = getTextValue( self.text )
+			self.text = tostring( self.value )
+			cat.dest.x = self.value
+		end,
+		nil,
+		"Position X"
 	), transformGroup, true )
 	PropertyList:addControl( PropertyList.gui:TextBox(
 		Rect:new( 74, 0, 64, 22 ),
 		cat.dest.y,
 		32,
 		false,
-		function( self ) self.value = getTextValue( self.text ) self.text = tostring( self.value ) cat.dest.y = self.value end
+		function( self )
+			self.value = getTextValue( self.text )
+			self.text = tostring( self.value )
+			cat.dest.y = self.value
+		end,
+		nil,
+		"Position Y"
 	), transformGroup )
 	-- Origin.
 	PropertyList:addControl( PropertyList.gui:Label(
@@ -122,18 +135,29 @@ local function addPropertyList()
 		cat.dest.x,
 		32,
 		false,
-		function( self ) self.value = getTextValue( self.text ) self.text = tostring( self.value ) cat.origin.x = self.value end
+		function( self )
+			self.value = getTextValue( self.text )
+			self.text = tostring( self.value )
+			cat.origin.x = self.value
+		end,
+		nil,
+		"Origin X"
 	), transformGroup, true )
 	PropertyList:addControl( PropertyList.gui:TextBox(
 		Rect:new( 74, 0, 64, 22 ),
 		cat.dest.y,
 		32,
 		false,
-		function( self ) self.value = getTextValue( self.text ) self.text = tostring( self.value ) cat.origin.y = self.value end
+		function( self )
+			self.value = getTextValue( self.text )
+			self.text = tostring( self.value )
+			cat.origin.y = self.value
+		end,
+		nil,
+		"Origin Y"
 	), transformGroup )
 	-- Rotation.
 	PropertyList:addControl( PropertyList.gui:Slider(
-		-- Rect:new( 112, 0, PropertyList.defaultControlSize.x - 150, 22 ),
 		Rect:new( 60, 0, PropertyList.defaultControlSize.x - 150, 22 ),
 		"Rotation",
 		"0",
@@ -144,14 +168,18 @@ local function addPropertyList()
 			self.value = Util.round( self.value )
 			cat.rotation = self.value
 			self.textRight = self.value
-		end
+		end,
+		nil,
+		"Rotation angle"
 	), transformGroup )
 	-- Flipped.
 	PropertyList:addControl( PropertyList.gui:CheckBox(
 		Rect:new( 0, 0, 20, 20 ),
 		"Flipped",
 		cat.flipped,
-		function( self ) cat.flipped = self.checked end
+		function( self ) cat.flipped = self.checked end,
+		nil,
+		"Flips the image"
 	), transformGroup )
 
 	-- Visibility.
@@ -196,7 +224,6 @@ local function addPropertyList()
 
 	for i = 1, 5 do
 		PropertyList:addControl( PropertyList.gui:CheckBox(
-			-- Rect:new( 0, 0, 20, 20 ),
 			Rect:new( 128, 0, 20, 20 ),
 			i.."_Visible",
 			false,
@@ -246,9 +273,23 @@ function RL.draw()
 
 	if cat.visible then
 		if cat.flipped then
-			RL.DrawTexturePro( cat.texture, { cat.source.x, cat.source.y, -cat.source.width, cat.source.height }, cat.dest, cat.origin, cat.rotation, cat.tint )
+			RL.DrawTexturePro(
+				cat.texture,
+				{ cat.source.x, cat.source.y, -cat.source.width, cat.source.height },
+				cat.dest,
+				cat.origin,
+				cat.rotation,
+				cat.tint
+			)
 		else
-			RL.DrawTexturePro( cat.texture, cat.source, cat.dest, cat.origin, cat.rotation, cat.tint )
+			RL.DrawTexturePro(
+				cat.texture,
+				cat.source,
+				cat.dest,
+				cat.origin,
+				cat.rotation,
+				cat.tint
+			)
 		end
 	end
 	Gui:draw()

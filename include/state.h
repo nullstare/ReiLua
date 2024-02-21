@@ -42,7 +42,7 @@ typedef struct {
 #endif
 } State;
 
-extern State *state;
+extern State* state;
 
 bool stateInit( int argn, const char** argc, const char* exePath );
 void stateInitInterpret( int argn, const char** argc );

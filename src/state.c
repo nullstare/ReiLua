@@ -4,7 +4,7 @@
 #include "textures.h"
 #include "models.h"
 
-State *state;
+State* state;
 
 bool stateInit( int argn, const char** argc, const char* exePath ) {
 	state = malloc( sizeof( State ) );

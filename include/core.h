@@ -2,7 +2,7 @@
 
 #include "lua_core.h"
 
-void unloadBuffer( Buffer *buffer );
+void unloadBuffer( Buffer* buffer );
 /* Window-related functions. */
 int lcoreCloseWindow( lua_State* L );
 int lcoreIsWindowReady( lua_State* L );

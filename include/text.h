@@ -1,6 +1,6 @@
 #pragma once
 
-void unloadGlyphInfo( GlyphInfo *glyph );
+void unloadGlyphInfo( GlyphInfo* glyph );
 /* Font loading/unloading functions. */
 int ltextGetFontDefault( lua_State* L );
 int ltextLoadFont( lua_State* L );

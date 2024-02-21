@@ -5,6 +5,7 @@ KEY CHANGES:
 	- CHANGE: GetBufferData takes also position and length arguments.
 	- ADDED: LoadImageFromData.
 	- CHANGE: Process renamed to update to be more inline with naming of raylib and common convention.
+	- ADDED: Raygui lib tooltip.
 
 DETAILED CHANGES:
 	- ADDED: GetBufferElementSize and GetBufferLength.

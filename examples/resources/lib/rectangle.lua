@@ -109,7 +109,7 @@ function Rectangle:area()
 	return self.width * self.height
 end
 
---- Returns rectangle that fits both rectangles inside it
+-- Returns rectangle that fits both rectangles inside it
 function Rectangle:fit( rec )
 	local pos = Vector2:new( math.min( self.x, rec.x ), math.min( self.y, rec.y ) )
 
@@ -121,10 +121,20 @@ function Rectangle:fit( rec )
 	)
 end
 
---- If rectangle is fully inside another rectangle
-function Rectangle:isInside( rect )
-	return rect.x <= self.x and self.x + self.width <= rect.x + rect.width
-	and rect.y <= self.y and self.y + self.height <= rect.y + rect.height
+-- If rectangle is fully inside another rectangle
+function Rectangle:isInside( rec )
+	return rec.x <= self.x and self.x + self.width <= rec.x + rec.width
+	and rec.y <= self.y and self.y + self.height <= rec.y + rec.height
+end
+
+-- Returns clamped rectangle that is inside another rectangle.
+function Rectangle:clampInside( rec )
+	return Rectangle:new(
+		math.max( rec.x, math.min( self.x, rec.x + rec.width - self.width ) ),
+		math.max( rec.y, math.min( self.y, rec.y + rec.height - self.height ) ),
+		self.width,
+		self.height
+	)
 end
 
 function Rectangle:checkCollisionRec( rec )

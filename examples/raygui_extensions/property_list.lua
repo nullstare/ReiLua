@@ -3,7 +3,7 @@ PropertyList.__index = PropertyList
 
 local RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT = 24
 
-function PropertyList:new( bounds, text, callback, grabCallback, dragCallback, styles )
+function PropertyList:new( bounds, text, callback, grabCallback, dragCallback, styles, tooltip )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -26,6 +26,7 @@ function PropertyList:new( bounds, text, callback, grabCallback, dragCallback, s
 	object.grabCallback = grabCallback
 	object.dragCallback = dragCallback
 	object.styles = styles
+	object.tooltip = tooltip
 
 	object.gui = Raygui:new() -- Contains full independent gui system.
 	object.controls = {}
@@ -218,8 +219,8 @@ function PropertyList:setPosition( pos )
 end
 
 function PropertyList:register( gui )
-	function gui:PropertyList( bounds, text, callback, grabCallback, dragCallback, styles )
-		return self:addControl( PropertyList:new( bounds, text, callback, grabCallback, dragCallback, styles ) )
+	function gui:PropertyList( bounds, text, callback, grabCallback, dragCallback, styles, tooltip )
+		return self:addControl( PropertyList:new( bounds, text, callback, grabCallback, dragCallback, styles, tooltip ) )
 	end
 end
 

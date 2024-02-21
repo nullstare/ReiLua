@@ -1,7 +1,7 @@
 local SpriteButton = {}
 SpriteButton.__index = SpriteButton
 
-function SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, callback, styles )
+function SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, callback, styles, tooltip )
     local object = setmetatable( {}, self )
 	object._parent = nil
 
@@ -12,6 +12,7 @@ function SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, c
 	object.nPatchPressed = nPatchPressed
     object.callback = callback
 	object.styles = styles
+	object.tooltip = tooltip
 
 	object.visible = true
 	object.disabled = false
@@ -20,6 +21,7 @@ function SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, c
 end
 
 function SpriteButton:update()
+	-- print( self.tooltip )
     return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
@@ -43,8 +45,8 @@ function SpriteButton:setPosition( pos )
 end
 
 function SpriteButton:register( gui )
-	function gui:SpriteButton( bounds, text, texture, nPatchNormal, nPatchPressed, callback, styles )
-		return self:addControl( SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, callback, styles ) )
+	function gui:SpriteButton( bounds, text, texture, nPatchNormal, nPatchPressed, callback, styles, tooltip )
+		return self:addControl( SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, callback, styles, tooltip ) )
 	end
 end
 

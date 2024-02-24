@@ -93,10 +93,8 @@ local rlgl = {
 		rlLoadDrawQuad = true, -- Most likely not needed.
 	},
 	info = {
-		rlBlitFramebuffer = "Will be added",
-		rlEnablePointMode = "Will be added",
-		rlEnableStatePointer = "Should probably be added for GRAPHICS_API_OPENGL_11",
-		rlDisableStatePointer = "Should probably be added for GRAPHICS_API_OPENGL_11",
+		rlEnableStatePointer = "Available for GRAPHICS_API_OPENGL_11",
+		rlDisableStatePointer = "Available for GRAPHICS_API_OPENGL_11",
 	},
 }
 local raygui = {
@@ -123,12 +121,12 @@ local easings = {
 	prefix = "EASEDEF",
 	file = "easings.h",
 	blacklist = {
+		EaseLinearNone = true, -- "Replaced by EaseLinear"
+		EaseLinearIn = true, -- "Replaced by EaseLinear"
+		EaseLinearOut = true, -- "Replaced by EaseLinear"
+		EaseLinearInOut = true, -- "Replaced by EaseLinear"
 	},
 	info = {
-		EaseLinearNone = "Will be added",
-		EaseLinearIn = "Will be added",
-		EaseLinearOut = "Will be added",
-		EaseLinearInOut = "Will be added",
 	},
 }
 

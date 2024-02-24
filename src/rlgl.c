@@ -374,6 +374,35 @@ int lrlglDisableVertexAttribute( lua_State* L ) {
 	return 0;
 }
 
+#if defined( GRAPHICS_API_OPENGL_11 )
+/*
+> RL.rlEnableStatePointer( int vertexAttribType, Buffer buffer )
+
+Enable attribute state pointer
+*/
+int lrlglEnableStatePointer( lua_State* L ) {
+	int vertexAttribType = luaL_checkinteger( L, 1 );
+	Buffer* buffer = uluaGetBuffer( L, 2 );
+
+	rlEnableStatePointer( vertexAttribType, buffer->data );
+
+	return 0;
+}
+
+/*
+> RL.rlDisableStatePointer( int vertexAttribType )
+
+Disable attribute state pointer
+*/
+int lrlglDisableStatePointer( lua_State* L ) {
+	int vertexAttribType = luaL_checkinteger( L, 1 );
+
+	rlDisableStatePointer( vertexAttribType );
+
+	return 0;
+}
+#endif
+
 /*
 ## RLGL - Textures state
 */
@@ -527,6 +556,21 @@ int lrlglActiveDrawBuffers( lua_State* L ) {
 }
 
 /*
+> RL.rlBlitFramebuffer( Rectangle srcRect, Rectangle dstRect, int bufferMask )
+
+Blit active framebuffer to main framebuffer
+*/
+int lrlglBlitFramebuffer( lua_State* L ) {
+	Rectangle src = uluaGetRectangle( L, 1 );
+	Rectangle dst = uluaGetRectangle( L, 2 );
+	int bufferMask = luaL_checkinteger( L, 3 );
+
+	rlBlitFramebuffer( (int)src.x, (int)src.y, (int)src.width, (int)src.height, (int)dst.x, (int)dst.y, (int)dst.width, (int)dst.height, bufferMask );
+
+	return 0;
+}
+
+/*
 ## RLGL - General render state
 */
 
@@ -671,6 +715,17 @@ Enable wire mode
 */
 int lrlglEnableWireMode( lua_State* L ) {
 	rlEnableWireMode();
+
+	return 0;
+}
+
+/*
+> RL.rlEnablePointMode()
+
+Enable point mode
+*/
+int lrlglEnablePointMode( lua_State* L ) {
+	rlEnablePointMode();
 
 	return 0;
 }

@@ -58,6 +58,8 @@ int lmathVector3Angle( lua_State* L );
 int lmathVector3Negate( lua_State* L );
 int lmathVector3Divide( lua_State* L );
 int lmathVector3Normalize( lua_State* L );
+int lmathVector3Project( lua_State* L );
+int lmathVector3Reject( lua_State* L );
 int lmathVector3OrthoNormalize( lua_State* L );
 int lmathVector3Transform( lua_State* L );
 int lmathVector3RotateByQuaternion( lua_State* L );

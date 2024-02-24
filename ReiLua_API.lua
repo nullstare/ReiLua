@@ -5462,6 +5462,20 @@ function RL.Vector3Divide( v1, v2 ) end
 ---@return any result 
 function RL.Vector3Normalize( v ) end
 
+---Calculate the projection of the vector v1 on to v2
+---- Success return Vector3
+---@param v1 table
+---@param v2 table
+---@return any result 
+function RL.Vector3Project( v1, v2 ) end
+
+---Calculate the rejection of the vector v1 on to v2
+---- Success return Vector3
+---@param v1 table
+---@param v2 table
+---@return any result 
+function RL.Vector3Reject( v1, v2 ) end
+
 ---Orthonormalize provided vectors. Makes vectors normalized and orthogonal to each other.
 ---Gram-Schmidt function implementation
 ---- Success return Vector3, Vector3
@@ -6592,6 +6606,17 @@ function  RL.rlEnableVertexAttribute( index ) end
 ---@return any RL.rlDisableVertexAttribute
 function  RL.rlDisableVertexAttribute( index ) end
 
+---Enable attribute state pointer
+---@param vertexAttribType integer
+---@param buffer any
+---@return any RL.rlEnableStatePointer
+function  RL.rlEnableStatePointer( vertexAttribType, buffer ) end
+
+---Disable attribute state pointer
+---@param vertexAttribType integer
+---@return any RL.rlDisableStatePointer
+function  RL.rlDisableStatePointer( vertexAttribType ) end
+
 -- RLGL - Textures state
 
 ---Select and active a texture slot
@@ -6658,6 +6683,13 @@ function  RL.rlDisableFramebuffer() end
 ---@return any RL.rlActiveDrawBuffers
 function  RL.rlActiveDrawBuffers( count ) end
 
+---Blit active framebuffer to main framebuffer
+---@param srcRect table
+---@param dstRect table
+---@param bufferMask integer
+---@return any RL.rlBlitFramebuffer
+function  RL.rlBlitFramebuffer( srcRect, dstRect, bufferMask ) end
+
 -- RLGL - General render state
 
 ---Enable color blending
@@ -6713,6 +6745,10 @@ function  RL.rlScissor( area ) end
 ---Enable wire mode
 ---@return any RL.rlEnableWireMode
 function  RL.rlEnableWireMode() end
+
+---Enable point mode
+---@return any RL.rlEnablePointMode
+function  RL.rlEnablePointMode() end
 
 ---Disable wire mode
 ---@return any RL.rlDisableWireMode

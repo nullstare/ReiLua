@@ -849,6 +849,38 @@ int lmathVector3Normalize( lua_State* L ) {
 }
 
 /*
+> result = RL.Vector3Project( Vector3 v1, Vector3 v2 )
+
+Calculate the projection of the vector v1 on to v2
+
+- Success return Vector3
+*/
+int lmathVector3Project( lua_State* L ) {
+	Vector3 v1 = uluaGetVector3( L, 1 );
+	Vector3 v2 = uluaGetVector3( L, 2 );
+
+	uluaPushVector3( L, Vector3Project( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector3Reject( Vector3 v1, Vector3 v2 )
+
+Calculate the rejection of the vector v1 on to v2
+
+- Success return Vector3
+*/
+int lmathVector3Reject( lua_State* L ) {
+	Vector3 v1 = uluaGetVector3( L, 1 );
+	Vector3 v2 = uluaGetVector3( L, 2 );
+
+	uluaPushVector3( L, Vector3Reject( v1, v2 ) );
+
+	return 1;
+}
+
+/*
 > v1, v2 = RL.Vector3OrthoNormalize( Vector3 v1, Vector3 v2 )
 
 Orthonormalize provided vectors. Makes vectors normalized and orthogonal to each other.

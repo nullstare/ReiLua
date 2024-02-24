@@ -31,6 +31,10 @@ int lrlglEnableVertexBufferElement( lua_State* L );
 int lrlglDisableVertexBufferElement( lua_State* L );
 int lrlglEnableVertexAttribute( lua_State* L );
 int lrlglDisableVertexAttribute( lua_State* L );
+#if defined( GRAPHICS_API_OPENGL_11 )
+int lrlglEnableStatePointer( lua_State* L );
+int lrlglDisableStatePointer( lua_State* L );
+#endif
 /* Textures state */
 int lrlglActiveTextureSlot( lua_State* L );
 int lrlglEnableTexture( lua_State* L );
@@ -46,6 +50,7 @@ int lrlglDisableShader( lua_State* L );
 int lrlglEnableFramebuffer( lua_State* L );
 int lrlglDisableFramebuffer( lua_State* L );
 int lrlglActiveDrawBuffers( lua_State* L );
+int lrlglBlitFramebuffer( lua_State* L );
 /* General render state. */
 int lrlglEnableColorBlend( lua_State* L );
 int lrlglDisableColorBlend( lua_State* L );
@@ -60,6 +65,7 @@ int lrlglEnableScissorTest( lua_State* L );
 int lrlglDisableScissorTest( lua_State* L );
 int lrlglScissor( lua_State* L );
 int lrlglEnableWireMode( lua_State* L );
+int lrlglEnablePointMode( lua_State* L );
 int lrlglDisableWireMode( lua_State* L );
 int lrlglSetLineWidth( lua_State* L );
 int lrlglGetLineWidth( lua_State* L );

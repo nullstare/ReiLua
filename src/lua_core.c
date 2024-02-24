@@ -1881,6 +1881,8 @@ void luaRegister() {
 	assingGlobalFunction( "Vector3Negate", lmathVector3Negate );
 	assingGlobalFunction( "Vector3Divide", lmathVector3Divide );
 	assingGlobalFunction( "Vector3Normalize", lmathVector3Normalize );
+	assingGlobalFunction( "Vector3Project", lmathVector3Project );
+	assingGlobalFunction( "Vector3Reject", lmathVector3Reject );
 	assingGlobalFunction( "Vector3OrthoNormalize", lmathVector3OrthoNormalize );
 	assingGlobalFunction( "Vector3Transform", lmathVector3Transform );
 	assingGlobalFunction( "Vector3RotateByQuaternion", lmathVector3RotateByQuaternion );
@@ -2057,6 +2059,10 @@ void luaRegister() {
 	assingGlobalFunction( "rlDisableVertexBufferElement", lrlglDisableVertexBufferElement );
 	assingGlobalFunction( "rlEnableVertexAttribute", lrlglEnableVertexAttribute );
 	assingGlobalFunction( "rlDisableVertexAttribute", lrlglDisableVertexAttribute );
+#if defined( GRAPHICS_API_OPENGL_11 )
+	assingGlobalFunction( "rlEnableStatePointer", lrlglEnableStatePointer );
+	assingGlobalFunction( "rlDisableStatePointer", lrlglDisableStatePointer );
+#endif
 		/* Textures state. */
 	assingGlobalFunction( "rlActiveTextureSlot", lrlglActiveTextureSlot );
 	assingGlobalFunction( "rlEnableTexture", lrlglEnableTexture );
@@ -2072,6 +2078,7 @@ void luaRegister() {
 	assingGlobalFunction( "rlEnableFramebuffer", lrlglEnableFramebuffer );
 	assingGlobalFunction( "rlDisableFramebuffer", lrlglDisableFramebuffer );
 	assingGlobalFunction( "rlActiveDrawBuffers", lrlglActiveDrawBuffers );
+	assingGlobalFunction( "rlBlitFramebuffer", lrlglBlitFramebuffer );
 		/* General render state. */
 	assingGlobalFunction( "rlEnableColorBlend", lrlglEnableColorBlend );
 	assingGlobalFunction( "rlDisableColorBlend", lrlglDisableColorBlend );
@@ -2086,6 +2093,7 @@ void luaRegister() {
 	assingGlobalFunction( "rlDisableScissorTest", lrlglDisableScissorTest );
 	assingGlobalFunction( "rlScissor", lrlglScissor );
 	assingGlobalFunction( "rlEnableWireMode", lrlglEnableWireMode );
+	assingGlobalFunction( "rlEnablePointMode", lrlglEnablePointMode );
 	assingGlobalFunction( "rlDisableWireMode", lrlglDisableWireMode );
 	assingGlobalFunction( "rlSetLineWidth", lrlglSetLineWidth );
 	assingGlobalFunction( "rlGetLineWidth", lrlglGetLineWidth );

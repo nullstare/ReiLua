@@ -15,6 +15,9 @@ DETAILED CHANGES:
 	- FIXED: GuiSetStyle, GuiLoadStyle and GuiLoadStyleDefault sets state->guiDefaultFont to GuiGetFont.
 	- ADDED: TextFindIndex.
 	- FIXED: SeekMusicStream was not assigned.
+	- ADDED: rlEnableStatePointer and rlDisableStatePointer for GRAPHICS_API_OPENGL_11.
+	- ADDED: rlBlitFramebuffer and rlEnablePointMode.
+	- ADDED: Vector3Project and Vector3Reject.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

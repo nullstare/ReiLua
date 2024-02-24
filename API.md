@@ -8261,6 +8261,22 @@ Normalize provided vector
 
 ---
 
+> result = RL.Vector3Project( Vector3 v1, Vector3 v2 )
+
+Calculate the projection of the vector v1 on to v2
+
+- Success return Vector3
+
+---
+
+> result = RL.Vector3Reject( Vector3 v1, Vector3 v2 )
+
+Calculate the rejection of the vector v1 on to v2
+
+- Success return Vector3
+
+---
+
 > v1, v2 = RL.Vector3OrthoNormalize( Vector3 v1, Vector3 v2 )
 
 Orthonormalize provided vectors. Makes vectors normalized and orthogonal to each other.
@@ -9485,6 +9501,18 @@ Disable vertex attribute index
 
 ---
 
+> RL.rlEnableStatePointer( int vertexAttribType, Buffer buffer )
+
+Enable attribute state pointer
+
+---
+
+> RL.rlDisableStatePointer( int vertexAttribType )
+
+Disable attribute state pointer
+
+---
+
 ## RLGL - Textures state
 
 ---
@@ -9569,6 +9597,12 @@ Activate multiple draw color buffers
 
 ---
 
+> RL.rlBlitFramebuffer( Rectangle srcRect, Rectangle dstRect, int bufferMask )
+
+Blit active framebuffer to main framebuffer
+
+---
+
 ## RLGL - General render state
 
 ---
@@ -9648,6 +9682,12 @@ Scissor test
 > RL.rlEnableWireMode()
 
 Enable wire mode
+
+---
+
+> RL.rlEnablePointMode()
+
+Enable point mode
 
 ---
 

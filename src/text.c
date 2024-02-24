@@ -1197,3 +1197,19 @@ int ltextTextSplit( lua_State* L ) {
 
 	return 1;
 }
+
+/*
+> index = RL.TextFindIndex( string text, string find )
+
+Find first text occurrence within a string
+
+- Success return int
+*/
+int ltextTextFindIndex( lua_State* L ) {
+	const char* text = luaL_checkstring( L, 1 );
+	const char* find = luaL_checkstring( L, 2 );
+
+	lua_pushinteger( L, TextFindIndex( text, find ) );
+
+	return 1;
+}

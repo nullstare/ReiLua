@@ -1771,6 +1771,7 @@ void luaRegister() {
 		/* Text strings management functions (no UTF-8 strings, only byte chars) */
 	assingGlobalFunction( "TextInsert", ltextTextInsert );
 	assingGlobalFunction( "TextSplit", ltextTextSplit );
+	assingGlobalFunction( "TextFindIndex", ltextTextFindIndex );
 
 	/* Audio. */
 		/* Audio device management functions. */
@@ -1815,6 +1816,7 @@ void luaRegister() {
 	assingGlobalFunction( "StopMusicStream", laudioStopMusicStream );
 	assingGlobalFunction( "PauseMusicStream", laudioPauseMusicStream );
 	assingGlobalFunction( "ResumeMusicStream", laudioResumeMusicStream );
+	assingGlobalFunction( "SeekMusicStream", laudioSeekMusicStream );
 	assingGlobalFunction( "SetMusicVolume", laudioSetMusicVolume );
 	assingGlobalFunction( "SetMusicPitch", laudioSetMusicPitch );
 	assingGlobalFunction( "SetMusicPan", laudioSetMusicPan );

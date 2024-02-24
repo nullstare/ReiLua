@@ -6712,6 +6712,14 @@ Split text into multiple strings
 
 ---
 
+> index = RL.TextFindIndex( string text, string find )
+
+Find first text occurrence within a string
+
+- Success return int
+
+---
+
 ## Models - Basic geometric 3D shapes drawing functions
 
 ---

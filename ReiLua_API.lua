@@ -4039,6 +4039,13 @@ function RL.TextInsert( text, insert, position ) end
 ---@return any splits 
 function RL.TextSplit( text, delimiter ) end
 
+---Find first text occurrence within a string
+---- Success return int
+---@param text string
+---@param find string
+---@return any index 
+function RL.TextFindIndex( text, find ) end
+
 -- Models - Basic geometric 3D shapes drawing functions
 
 ---Draw a line in 3D world space

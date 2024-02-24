@@ -2,9 +2,6 @@ Current {
 }
 
 Backlog {
-	* Godot scene importer lib.
-	* Script to find unimplemented raylib functions. Should have list for fuctions that will not
-	get implemented.
 	* Raygui lib
 		* Check if could remove flickering from changing draw order by making queue for order changing and only
 		change them after everything is drawn.
@@ -22,6 +19,7 @@ Backlog {
 		* Improve Dungeon crawler example by generating custom mesh instead of drawing 3D quads.
 		* Platformer example physics update for true framerate independence.
 	* Android support
+	* Godot scene importer lib.
 	* Git submodules for raylib and lua. Should maybe find windows compatible lua repo for this.
 }
 

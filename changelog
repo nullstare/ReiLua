@@ -6,12 +6,15 @@ KEY CHANGES:
 	- ADDED: LoadImageFromData.
 	- CHANGE: Process renamed to update to be more inline with naming of raylib and common convention.
 	- ADDED: Raygui lib tooltip.
+	- ADDED: apiScanner.lua for searching unimplemented functions from raylib.
 
 DETAILED CHANGES:
 	- ADDED: GetBufferElementSize and GetBufferLength.
 	- FIXED: Compress_data example.
 	- FIXED: GuiGetFont return lightuserdata.
 	- FIXED: GuiSetStyle, GuiLoadStyle and GuiLoadStyleDefault sets state->guiDefaultFont to GuiGetFont.
+	- ADDED: TextFindIndex.
+	- FIXED: SeekMusicStream was not assigned.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

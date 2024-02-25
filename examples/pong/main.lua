@@ -127,6 +127,6 @@ function RL.draw()
 
 	-- Draw score.
     RL.DrawText( tostring( playerLeft.score ), { 50, 10 }, 40, RL.WHITE )
-	local rightTextSize = Vec2:new( RL.MeasureText( RL.GetFontDefault(), tostring( playerRight.score ), 40, 2 ) )
+	local rightTextSize = Vec2:new( RL.MeasureTextEx( RL.GetFontDefault(), tostring( playerRight.score ), 40, 2 ) )
     RL.DrawText( tostring( playerRight.score ), { winSize.x - 50 - rightTextSize.x, 10 }, 40, RL.WHITE )
 end

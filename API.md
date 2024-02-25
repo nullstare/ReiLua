@@ -4494,6 +4494,14 @@ Detect if a key has been pressed once
 
 ---
 
+> pressed = RL.IsKeyPressedRepeat( int key )
+
+Check if a key has been pressed again (Only PLATFORM_DESKTOP)
+
+- Success return bool
+
+---
+
 > pressed = RL.IsKeyDown( int key )
 
 Detect if a key is being pressed
@@ -4581,6 +4589,22 @@ Detect if a gamepad button is being pressed
 Detect if a gamepad button has been released once
 
 - Success return bool
+
+---
+
+> notPressed = RL.IsGamepadButtonUp( int gamepad, int button )
+
+Check if a gamepad button is NOT being pressed
+
+- Success return bool
+
+---
+
+> button = RL.GetGamepadButtonPressed()
+
+Get the last gamepad button pressed
+
+- Success return int
 
 ---
 
@@ -4680,9 +4704,17 @@ Set mouse scaling
 
 > movement = RL.GetMouseWheelMove()
 
-Returns mouse wheel movement Y
+Get mouse wheel movement for X or Y, whichever is larger
 
 - Success return float
+
+---
+
+> movement = RL.GetMouseWheelMoveV()
+
+Get mouse wheel movement for both X and Y
+
+- Success return Vector2
 
 ---
 
@@ -5705,7 +5737,15 @@ Create an image from another image piece
 
 ---
 
-> image = RL.ImageText( Font font, string text, float fontSize, float spacing, Color tint )
+> image = RL.ImageText( string text, int fontSize, Color tint )
+
+Create an image from text (default font)
+
+- Success return Image
+
+---
+
+> image = RL.ImageTextEx( Font font, string text, float fontSize, float spacing, Color tint )
 
 Create an image from text (custom sprite font)
 
@@ -5977,6 +6017,12 @@ Draw a source image within a destination image (Tint applied to source)
 
 ---
 
+> RL.ImageDrawText( Image dst, string text, Vector2 position, float fontSize, Color tint )
+
+Draw text (using default font) within an image (destination)
+
+---
+
 > RL.ImageDrawTextEx( Image dst, Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
 
 Draw text (Custom sprite font) within an image (Destination)
@@ -6147,6 +6193,12 @@ Get texture data format (PixelFormat type)
 > RL.DrawTexture( Texture texture, Vector2 position, Color tint )
 
 Draw a Texture2D
+
+---
+
+> RL.DrawTextureEx( Texture texture, Vector2 position, float rotation, float scale, Color tint )
+
+Draw a Texture2D with extended parameters
 
 ---
 
@@ -6476,7 +6528,15 @@ Set vertical line spacing when drawing with line-breaks
 
 ---
 
-> size = RL.MeasureText( Font font, string text, float fontSize, float spacing )
+> width = RL.MeasureText( string text, int fontSize )
+
+Measure string width for default font
+
+- Success return int
+
+---
+
+> size = RL.MeasureTextEx( Font font, string text, float fontSize, float spacing )
 
 Measure string size for Font
 
@@ -6745,6 +6805,12 @@ Draw a circle in 3D world space
 > RL.DrawTriangle3D( Vector3 v1, Vector3 v2, Vector3 v3, Color color )
 
 Draw a color-filled triangle (Vertex in counter-clockwise order!)
+
+---
+
+> RL.DrawTriangleStrip3D( Vector3{} points, Color color )
+
+Draw a triangle strip defined by points
 
 ---
 
@@ -7141,6 +7207,14 @@ Generate cuboid mesh
 > mesh = RL.GenMeshSphere( float radius, int rings, int slices )
 
 Generate sphere mesh (Standard sphere)
+
+- Success return Mesh
+
+---
+
+> mesh = RL.GenMeshHemiSphere( float radius, int rings, int slices )
+
+Generate half-sphere mesh (no bottom cap)
 
 - Success return Mesh
 
@@ -7595,6 +7669,12 @@ Checks if a sound is ready
 
 ---
 
+> RL.UpdateSound( Sound sound, Buffer data, int sampleCount )
+
+Update sound buffer with new data
+
+---
+
 > RL.UnloadWave( Wave wave )
 
 Unload wave data
@@ -7686,6 +7766,14 @@ Set pan for a sound (0.5 is center)
 > RL.WaveFormat( Wave wave, int sampleRate, int sampleSize, int channels )
 
 Convert wave data to desired format
+
+---
+
+> samples = RL.LoadWaveSamples( Wave wave )
+
+Load samples data from wave as a 32bit float data array
+
+- Success return float{}
 
 ---
 

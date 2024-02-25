@@ -25,6 +25,7 @@ int ltextDrawTextBoxedTinted( lua_State* L );
 /* Text font info functions. */
 int ltextSetTextLineSpacing( lua_State* L );
 int ltextMeasureText( lua_State* L );
+int ltextMeasureTextEx( lua_State* L );
 int ltextGetGlyphIndex( lua_State* L );
 int ltextGetGlyphInfo( lua_State* L );
 int ltextGetGlyphInfoByIndex( lua_State* L );
@@ -54,6 +55,9 @@ int ltextGetCodepointNext( lua_State* L );
 int ltextGetCodepointPrevious( lua_State* L );
 int ltextCodepointToUTF8( lua_State* L );
 /* Text strings management functions (no UTF-8 strings, only byte chars) */
+int ltextTextSubtext( lua_State* L );
+int ltextTextReplace( lua_State* L );
 int ltextTextInsert( lua_State* L );
 int ltextTextSplit( lua_State* L );
 int ltextTextFindIndex( lua_State* L );
+int ltextTextToPascal( lua_State* L );

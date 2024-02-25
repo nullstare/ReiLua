@@ -663,18 +663,35 @@ int ltextSetTextLineSpacing( lua_State* L ) {
 }
 
 /*
-> size = RL.MeasureText( Font font, string text, float fontSize, float spacing )
+> width = RL.MeasureText( string text, int fontSize )
+
+Measure string width for default font
+
+- Success return int
+*/
+int ltextMeasureText( lua_State* L ) {
+	const char* text = luaL_checkstring( L, 1 );
+	int fontSize = luaL_checkinteger( L, 2 );
+
+	lua_pushinteger( L, MeasureText( text, fontSize ) );
+
+	return 1;
+}
+
+/*
+> size = RL.MeasureTextEx( Font font, string text, float fontSize, float spacing )
 
 Measure string size for Font
 
 - Success return Vector2
 */
-int ltextMeasureText( lua_State* L ) {
+int ltextMeasureTextEx( lua_State* L ) {
 	Font* font = uluaGetFont( L, 1 );
+	const char* text = luaL_checkstring( L, 2 );
 	float fontSize = luaL_checknumber( L, 3 );
 	float spacing = luaL_checknumber( L, 4 );
 
-	uluaPushVector2( L, MeasureTextEx( *font, luaL_checkstring( L, 2 ), fontSize, spacing ) );
+	uluaPushVector2( L, MeasureTextEx( *font, text, fontSize, spacing ) );
 
 	return 1;
 }
@@ -1144,6 +1161,43 @@ int ltextCodepointToUTF8( lua_State* L ) {
 */
 
 /*
+> text = RL.TextSubtext( string text, int position, int length )
+
+Get a piece of a text string
+
+- Success return string
+*/
+int ltextTextSubtext( lua_State* L ) {
+	const char* text = luaL_checkstring( L, 1 );
+	int position = luaL_checkinteger( L, 2 );
+	int length = luaL_checkinteger( L, 3 );
+
+	lua_pushstring( L, TextSubtext( text, position, length ) );
+
+	return 1;
+}
+
+/*
+> text = RL.TextReplace( string text, string replace, string by )
+
+Replace text string
+
+- Success return string
+*/
+int ltextTextReplace( lua_State* L ) {
+	char* text = (char*)luaL_checkstring( L, 1 );
+	const char* replace = luaL_checkstring( L, 2 );
+	const char* by = luaL_checkstring( L, 3 );
+
+	char* result = TextReplace( text, replace, by );
+
+	lua_pushstring( L, result );
+	free( result );
+
+	return 1;
+}
+
+/*
 > text = RL.TextInsert( string text, string insert, int position )
 
 Insert text in a specific position, moves all text forward
@@ -1210,6 +1264,21 @@ int ltextTextFindIndex( lua_State* L ) {
 	const char* find = luaL_checkstring( L, 2 );
 
 	lua_pushinteger( L, TextFindIndex( text, find ) );
+
+	return 1;
+}
+
+/*
+> text = RL.TextToPascal( string text )
+
+Get Pascal case notation version of provided string
+
+- Success return string
+*/
+int ltextTextToPascal( lua_State* L ) {
+	const char* text = luaL_checkstring( L, 1 );
+
+	lua_pushstring( L, TextToPascal( text ) );
 
 	return 1;
 }

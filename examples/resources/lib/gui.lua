@@ -243,7 +243,7 @@ function Text:set( text )
 		self.text = text
 	end
 
-	local textSize = Vec2:new( RL.MeasureText( self.font, self.text, self.fontSize, self.spacing ) )
+	local textSize = Vec2:new( RL.MeasureTextEx( self.font, self.text, self.fontSize, self.spacing ) )
 
 	self.bounds.width = textSize.x
 	self.bounds.height = textSize.y

@@ -1221,19 +1221,6 @@ int lcoreSetTargetFPS( lua_State* L ) {
 }
 
 /*
-> FPS = RL.GetFPS()
-
-Get current FPS
-
-- Success return int
-*/
-int lcoreGetFPS( lua_State* L ) {
-	lua_pushinteger( L, GetFPS() );
-
-	return 1;
-}
-
-/*
 > delta = RL.GetFrameTime()
 
 Get time in seconds for last frame drawn (Delta time)
@@ -1257,6 +1244,58 @@ int lcoreGetTime( lua_State* L ) {
 	lua_pushnumber( L, GetTime() );
 
 	return 1;
+}
+
+/*
+> FPS = RL.GetFPS()
+
+Get current FPS
+
+- Success return int
+*/
+int lcoreGetFPS( lua_State* L ) {
+	lua_pushinteger( L, GetFPS() );
+
+	return 1;
+}
+
+/*
+## Core - Custom frame control functions
+*/
+
+/*
+> RL.SwapScreenBuffer()
+
+Swap back buffer with front buffer (screen drawing)
+*/
+int lcoreSwapScreenBuffer( lua_State* L ) {
+	SwapScreenBuffer();
+
+	return 0;
+}
+
+/*
+> RL.PollInputEvents()
+
+Register all input events
+*/
+int lcorePollInputEvents( lua_State* L ) {
+	PollInputEvents();
+
+	return 0;
+}
+
+/*
+> RL.WaitTime( number seconds )
+
+Wait for some time (halt program execution)
+*/
+int lcoreWaitTime( lua_State* L ) {
+	double seconds = luaL_checknumber( L, 1 );
+
+	WaitTime( seconds );
+
+	return 0;
 }
 
 /*
@@ -1908,6 +1947,21 @@ int lcoreIsKeyPressed( lua_State* L ) {
 }
 
 /*
+> pressed = RL.IsKeyPressedRepeat( int key )
+
+Check if a key has been pressed again (Only PLATFORM_DESKTOP)
+
+- Success return bool
+*/
+int lcoreIsKeyPressedRepeat( lua_State* L ) {
+	int key = luaL_checkinteger( L, 1 );
+
+	lua_pushboolean( L, IsKeyPressedRepeat( key ) );
+
+	return 1;
+}
+
+/*
 > pressed = RL.IsKeyDown( int key )
 
 Detect if a key is being pressed
@@ -2069,6 +2123,35 @@ int lcoreIsGamepadButtonReleased( lua_State* L ) {
 	int button = luaL_checkinteger( L, 2 );
 
 	lua_pushboolean( L, IsGamepadButtonReleased( gamepad, button ) );
+
+	return 1;
+}
+
+/*
+> notPressed = RL.IsGamepadButtonUp( int gamepad, int button )
+
+Check if a gamepad button is NOT being pressed
+
+- Success return bool
+*/
+int lcoreIsGamepadButtonUp( lua_State* L ) {
+	int gamepad = luaL_checkinteger( L, 1 );
+	int button = luaL_checkinteger( L, 2 );
+
+	lua_pushboolean( L, IsGamepadButtonUp( gamepad, button ) );
+
+	return 1;
+}
+
+/*
+> button = RL.GetGamepadButtonPressed()
+
+Get the last gamepad button pressed
+
+- Success return int
+*/
+int lcoreGetGamepadButtonPressed( lua_State* L ) {
+	lua_pushinteger( L, GetGamepadButtonPressed() );
 
 	return 1;
 }
@@ -2251,12 +2334,25 @@ int lcoreSetMouseScale( lua_State* L ) {
 /*
 > movement = RL.GetMouseWheelMove()
 
-Returns mouse wheel movement Y
+Get mouse wheel movement for X or Y, whichever is larger
 
 - Success return float
 */
 int lcoreGetMouseWheelMove( lua_State* L ) {
 	lua_pushnumber( L, GetMouseWheelMove() );
+
+	return 1;
+}
+
+/*
+> movement = RL.GetMouseWheelMoveV()
+
+Get mouse wheel movement for both X and Y
+
+- Success return Vector2
+*/
+int lcoreGetMouseWheelMoveV( lua_State* L ) {
+	uluaPushVector2( L, GetMouseWheelMoveV() );
 
 	return 1;
 }

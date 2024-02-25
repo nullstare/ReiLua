@@ -7,6 +7,8 @@ KEY CHANGES:
 	- CHANGE: Process renamed to update to be more inline with naming of raylib and common convention.
 	- ADDED: Raygui lib tooltip.
 	- ADDED: apiScanner.lua for searching unimplemented functions from raylib.
+	- ADDED & CHANGE: ImageText. ImageTextEx is now equivalent to raylib function and old ImageText.
+	- ADDED & CHANGE: MeasureText. MeasureTextEx is now equivalent to raylib function and old MeasureText.
 
 DETAILED CHANGES:
 	- ADDED: GetBufferElementSize and GetBufferLength.
@@ -18,6 +20,16 @@ DETAILED CHANGES:
 	- ADDED: rlEnableStatePointer and rlDisableStatePointer for GRAPHICS_API_OPENGL_11.
 	- ADDED: rlBlitFramebuffer and rlEnablePointMode.
 	- ADDED: Vector3Project and Vector3Reject.
+	- ADDED: IsKeyPressedRepeat, IsGamepadButtonUp, GetGamepadButtonPressed and GetMouseWheelMoveV.
+	- ADDED: ImageDrawText.
+	- ADDED: DrawTextureEx.
+	- ADDED: DrawTriangleStrip3D.
+	- ADDED: GenMeshHemiSphere.
+	- FIXED: GenMeshCubicmap was not assigned.
+	- ADDED: UpdateSound and LoadWaveSamples.
+	- ADDED: TextSubtext, TextReplace and TextToPascal.
+	- ADDED: Custom frame control functions.
+	- REMOVED: GetPixelColor. Deviates too much from raylib function.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0
@@ -112,7 +124,7 @@ KEY CHANGES:
 	- ADDED: Global variable descriptions for API.
 	- CHANGED: Organized functions by putting them in the same order as in Raylib.
 	- ADDED: Matrix library.
-	- Removed: GC_UNLOAD build time define and replaced with flag to change it at runtime.
+	- REMOVED: GC_UNLOAD build time define and replaced with flag to change it at runtime.
 	- ADDED: Quaternion library.
 	- ADDED: Shader buffer storage object management (ssbo).
 	- ADDED: Rest of rlgl texture management functions.

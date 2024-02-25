@@ -1,5 +1,6 @@
 local textColor = RL.BLACK
 local textPos = { 192, 200 }
+local textSize = 20
 local text = "Congrats! You created your first window!"
 
 function RL.init()
@@ -9,9 +10,9 @@ end
 
 function RL.update( delta )
 	if RL.IsKeyPressed( RL.KEY_ENTER ) then
-		local textSize = RL.MeasureText( RL.GetFontDefault(), text, 20, 2 )
 		local winSize = RL.GetScreenSize()
-
+		
+		textSize = RL.MeasureText( text, textSize )
 		textColor = RL.BLUE
 		textPos = { winSize[1] / 2 - textSize[1] / 2, winSize[2] / 2 - textSize[2] / 2 }
 	end
@@ -24,5 +25,5 @@ end
 
 function RL.draw()
 	RL.ClearBackground( RL.RAYWHITE )
-    RL.DrawText( text, textPos, 20, textColor )
+    RL.DrawText( text, textPos, textSize, textColor )
 end

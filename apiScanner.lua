@@ -2,79 +2,69 @@ local raylib = {
 	prefix = "RLAPI",
 	file = "raylib.h",
 	blacklist = {
-		InitWindow = true, -- Handled internally.
-		WindowShouldClose = true, -- Handled internally.
-		GetScreenWidth = true, -- Replaced by GetScreenSize.
-		GetScreenHeight = true, -- Replaced by GetScreenSize.
-		GetRenderWidth = true, -- Replaced by GetRenderSize.
-		GetRenderHeight = true, -- Replaced by GetRenderSize.
-		GetMonitorWidth = true, -- Replaced by GetMonitorSize.
-		GetMonitorHeight = true, -- Replaced by GetMonitorSize.
-		GetMonitorPhysicalWidth = true, -- Replaced by GetMonitorPhysicalSize.
-		GetMonitorPhysicalHeight = true, -- Replaced by GetMonitorPhysicalSize.
-		UnloadRandomSequence = true, -- Handled internally.
-		MemAlloc = true, -- Buffer should be used instead.
-		MemRealloc = true, -- Buffer should be used instead.
-		MemFree = true, -- Buffer should be used instead.
-		SetTraceLogCallback = true, -- Handled internally.
-		SetLoadFileDataCallback = true, -- Not seen necessary.
-		SetSaveFileDataCallback = true, -- Not seen necessary.
-		SetLoadFileTextCallback = true, -- Not seen necessary.
-		SetSaveFileTextCallback = true, -- Not seen necessary.
-		UnloadFileData = true, -- Handled internally.
-		UnloadFileText = true, -- Handled internally.
-		UnloadDirectoryFiles = true, -- Handled internally.
-		UnloadDroppedFiles = true, -- Handled internally.
-		GetMouseX = true, -- Replaced by GetMousePosition.
-		GetMouseY = true, -- Replaced by GetMousePosition.
-		GetTouchX = true, -- Replaced by GetTouchPosition.
-		GetTouchY = true, -- Replaced by GetTouchPosition.
-		UpdateCamera = true, -- Replaced by UpdateCamera3D.
-		UpdateCameraPro = true, -- Replaced by UpdateCameraPro3D.
-		DrawPixelV = true, -- Replaced by DrawPixel.
-		DrawLineV = true, -- Replaced by DrawLine.
-		DrawCircleV = true, -- Replaced by DrawCircle.
-		DrawCircleLinesV = true, -- Replaced by DrawCircleLines.
-		DrawRectangleV = true, -- Replaced by DrawRectangle.
-		DrawRectangleRec = true, -- Replaced by DrawRectangle.
-		ImageTextEx = true, -- Replaced by ImageText.
-		UnloadImageColors = true, -- Handled internally.
-		UnloadImagePalette = true, -- Handled internally.
-		ImageDrawPixelV = true, -- Replaced by ImageDrawPixel.
-		ImageDrawLineV = true, -- Replaced by ImageDrawLine.
-		ImageDrawCircleV = true, -- Replaced by ImageDrawCircle.
-		ImageDrawCircleLinesV = true, -- Replaced by ImageDrawCircleLines.
-		ImageDrawRectangleV = true, -- Replaced by ImageDrawRectangle.
-		ImageDrawRectangleRec = true, -- Replaced by ImageDrawRectangle.
-		DrawTextureV = true, -- Replaced by DrawTexture.
-		UnloadFontData = true, -- Handled internally.
-		MeasureTextEx = true, -- Replaced by MeasureText.
-		UnloadUTF8 = true, -- Handled internally.
-		UnloadCodepoints = true, -- Handled internally.
-		TextCopy = true, -- Can be replaced by Lua equivalent.
-		TextIsEqual = true, -- Can be replaced by Lua equivalent.
-		TextLength = true, -- Can be replaced by Lua equivalent.
-		TextSubtext = true, -- Can be replaced by Lua equivalent.
-		TextJoin = true, -- Can be replaced by Lua equivalent.
-		TextAppend = true, -- Can be replaced by Lua equivalent.
-		TextToUpper = true, -- Can be replaced by Lua equivalent.
-		TextToLower = true, -- Can be replaced by Lua equivalent.
-		TextToInteger = true, -- Can be replaced by Lua equivalent.
-		DrawCubeV = true, -- Replaced by DrawCube.
-		DrawCubeWiresV = true, -- Replaced by DrawCubeWires.
-		UploadMesh = true, -- Handled internally.
-		UpdateMeshBuffer = true, -- Handled internally.
-		UnloadWaveSamples = true, -- Handled internally.
+		InitWindow = "Handled internally",
+		WindowShouldClose = "Handled internally",
+		GetScreenWidth = "Replaced by GetScreenSize",
+		GetScreenHeight = "Replaced by GetScreenSize",
+		GetRenderWidth = "Replaced by GetRenderSize",
+		GetRenderHeight = "Replaced by GetRenderSize",
+		GetMonitorWidth = "Replaced by GetMonitorSize",
+		GetMonitorHeight = "Replaced by GetMonitorSize",
+		GetMonitorPhysicalWidth = "Replaced by GetMonitorPhysicalSize",
+		GetMonitorPhysicalHeight = "Replaced by GetMonitorPhysicalSize",
+		UnloadRandomSequence = "Handled internally",
+		MemAlloc = "Buffer should be used instead",
+		MemRealloc = "Buffer should be used instead",
+		MemFree = "Buffer should be used instead",
+		SetTraceLogCallback = "Handled internally",
+		SetLoadFileDataCallback = "Not seen necessary",
+		SetSaveFileDataCallback = "Not seen necessary",
+		SetLoadFileTextCallback = "Not seen necessary",
+		SetSaveFileTextCallback = "Not seen necessary",
+		UnloadFileData = "Handled internally",
+		UnloadFileText = "Handled internally",
+		UnloadDirectoryFiles = "Handled internally",
+		UnloadDroppedFiles = "Handled internally",
+		GetMouseX = "Replaced by GetMousePosition",
+		GetMouseY = "Replaced by GetMousePosition",
+		GetTouchX = "Replaced by GetTouchPosition",
+		GetTouchY = "Replaced by GetTouchPosition",
+		UpdateCamera = "Replaced by UpdateCamera3D",
+		UpdateCameraPro = "Replaced by UpdateCameraPro3D",
+		DrawPixelV = "Replaced by DrawPixel",
+		DrawLineV = "Replaced by DrawLine",
+		DrawLineEx = "Replaced by DrawLine",
+		DrawCircleV = "Replaced by DrawCircle",
+		DrawCircleLinesV = "Replaced by DrawCircleLines",
+		DrawRectangleV = "Replaced by DrawRectangle",
+		DrawRectangleRec = "Replaced by DrawRectangle",
+		UnloadImageColors = "Handled internally",
+		UnloadImagePalette = "Handled internally",
+		ImageDrawPixelV = "Replaced by ImageDrawPixel",
+		ImageDrawLineV = "Replaced by ImageDrawLine",
+		ImageDrawCircleV = "Replaced by ImageDrawCircle",
+		ImageDrawCircleLinesV = "Replaced by ImageDrawCircleLines",
+		ImageDrawRectangleV = "Replaced by ImageDrawRectangle",
+		ImageDrawRectangleRec = "Replaced by ImageDrawRectangle",
+		DrawTextureV = "Replaced by DrawTexture",
+		UnloadFontData = "Handled internally",
+		UnloadUTF8 = "Handled internally",
+		UnloadCodepoints = "Handled internally",
+		TextCopy = "Can be replaced by Lua equivalent",
+		TextIsEqual = "Can be replaced by Lua equivalent",
+		TextLength = "Can be replaced by Lua equivalent",
+		TextJoin = "Can be replaced by Lua equivalent",
+		TextAppend = "Can be replaced by Lua equivalent",
+		TextToUpper = "Can be replaced by Lua equivalent",
+		TextToLower = "Can be replaced by Lua equivalent",
+		TextToInteger = "Can be replaced by Lua equivalent",
+		DrawCubeV = "Replaced by DrawCube",
+		DrawCubeWiresV = "Replaced by DrawCubeWires",
+		UploadMesh = "Handled internally",
+		UpdateMeshBuffer = "Handled internally",
+		UnloadWaveSamples = "Handled internally",
 	},
 	info = {
-		IsKeyPressedRepeat = "Will be added",
-		IsGamepadButtonUp = "Will be added",
-		GetGamepadButtonPressed = "Will be added",
-		GetMouseWheelMoveV = "Will be added",
-		DrawLineEx = "Will be added",
-		ImageDrawText = "Could be added",
-		DrawTextureEx = "Will be added",
-		DrawTriangleStrip3D = "Will be added",
 		GenMeshHemiSphere = "Will be added",
 		GenMeshCubicmap = "Will be added",
 		UpdateSound = "Will be added",
@@ -85,12 +75,12 @@ local rlgl = {
 	prefix = "RLAPI",
 	file = "rlgl.h",
 	blacklist = {
-		rlVertex2i = true, -- Most likely not needed.
-		rlglInit = true, -- Handled internally.
-		rlglClose = true, -- Handled internally.
-		rlLoadExtensions = true, -- Handled internally.
-		rlLoadDrawCube = true, -- Most likely not needed.
-		rlLoadDrawQuad = true, -- Most likely not needed.
+		rlVertex2i = "Most likely not needed",
+		rlglInit = "Handled internally",
+		rlglClose = "Handled internally",
+		rlLoadExtensions = "Handled internally",
+		rlLoadDrawCube = "Most likely not needed",
+		rlLoadDrawQuad = "Most likely not needed",
 	},
 	info = {
 		rlEnableStatePointer = "Available for GRAPHICS_API_OPENGL_11",
@@ -109,8 +99,8 @@ local raymath = {
 	prefix = "RMAPI",
 	file = "raymath.h",
 	blacklist = {
-		Vector3ToFloatV = true, -- Can be replaced by Lua equivalent.
-		MatrixToFloatV = true, -- Can be replaced by Lua equivalent.
+		Vector3ToFloatV = "Can be replaced by Lua equivalent",
+		MatrixToFloatV = "Can be replaced by Lua equivalent",
 	},
 	info = {
 		Vector3Project = "Will be added",
@@ -121,10 +111,10 @@ local easings = {
 	prefix = "EASEDEF",
 	file = "easings.h",
 	blacklist = {
-		EaseLinearNone = true, -- "Replaced by EaseLinear"
-		EaseLinearIn = true, -- "Replaced by EaseLinear"
-		EaseLinearOut = true, -- "Replaced by EaseLinear"
-		EaseLinearInOut = true, -- "Replaced by EaseLinear"
+		EaseLinearNone = "Replaced by EaseLinear",
+		EaseLinearIn = "Replaced by EaseLinear",
+		EaseLinearOut = "Replaced by EaseLinear",
+		EaseLinearInOut = "Replaced by EaseLinear",
 	},
 	info = {
 	},
@@ -139,32 +129,53 @@ local headers = {
 	easings,
 }
 
+if RL.arg[4] == "--help" then
+	print( "You can get blacklisted functions with argument '--blacklist'. Give additional argument to find specific function." )
+	return
+end
+
 for _, header in ipairs( headers ) do
-	local file = io.open( filePrefix..header.file, "r" )
-
-	if file ~= nil then
-		local line = ""
-
-		print( "\nFunctions not implemented from '"..header.file.."':\n" )
-
-		repeat
-			line = file:read( "*l" )
-
-			if line ~= nil and line:sub( 1, #header.prefix ) == header.prefix then
-				local splits = RL.TextSplit( line:sub( 1, RL.TextFindIndex( line, "(" ) ), " " )
-				local func = splits[ #splits ]
-				func = func:gsub( "*", "" )
-
-				if RL[ func ] == nil and not header.blacklist[ func ] then
-					local output = func
-
-					if header.info[ func ] ~= nil then
-						output = output.."\t\""..header.info[ func ].."\""
-					end
-
-					print( output )
+	if RL.arg[4] == "--blacklist" then
+		if RL.arg[5] == nil then
+			print( "\nFunctions blacklisted from '"..header.file.."':\n" )
+	
+			for func, info in pairs( header.blacklist ) do
+				print( func.."\t\""..info.."\"" )
+			end
+		else
+			for func, info in pairs( header.blacklist ) do
+				if func:lower() == RL.arg[5]:lower() then
+					print( "\nFunction '"..func.."' blacklisted from '"..header.file.."'\t\""..info.."\"\n" )
 				end
 			end
-		until line == nil
+		end
+	else
+		local file = io.open( filePrefix..header.file, "r" )
+	
+		if file ~= nil then
+			local line = ""
+	
+			print( "\nFunctions not implemented from '"..header.file.."':\n" )
+	
+			repeat
+				line = file:read( "*l" )
+	
+				if line ~= nil and line:sub( 1, #header.prefix ) == header.prefix then
+					local splits = RL.TextSplit( line:sub( 1, RL.TextFindIndex( line, "(" ) ), " " )
+					local func = splits[ #splits ]
+					func = func:gsub( "*", "" )
+	
+					if RL[ func ] == nil and not header.blacklist[ func ] then
+						local output = func
+	
+						if header.info[ func ] ~= nil then
+							output = output.."\t\""..header.info[ func ].."\""
+						end
+	
+						print( output )
+					end
+				end
+			until line == nil
+		end
 	end
 end

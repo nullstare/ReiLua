@@ -1852,7 +1852,7 @@ function Raygui:_addLastProperty( property )
 end
 
 function Raygui:drawTooltip()
-	local textSize = Vec2:new( RL.MeasureText(
+	local textSize = Vec2:new( RL.MeasureTextEx(
 		self.defaultFont,
 		self.tooltip.text,
 		RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SIZE ),

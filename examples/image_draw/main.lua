@@ -31,7 +31,7 @@ function RL.init()
 
 	RL.ImageDraw( image, catCopy, src, { 600, 200, src[3], src[4] }, RL.WHITE )
 
-	textImage = RL.ImageText( RL.GetFontDefault(), "Cat", 10, 4, RL.WHITE )
+	textImage = RL.ImageTextEx( RL.GetFontDefault(), "Cat", 10, 4, RL.WHITE )
 	local imageSize = RL.GetImageSize( textImage )
 	RL.ImageDraw( image, textImage, { 0, 0, imageSize[1], imageSize[2] }, { 250, 40, imageSize[1], imageSize[2] }, RL.WHITE )
 

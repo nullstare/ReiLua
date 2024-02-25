@@ -41,27 +41,34 @@ Example of basic "main.lua" file that will show basic windows with text.
 ```Lua
 local textColor = RL.BLACK
 local textPos = { 192, 200 }
+local textSize = 20
+local text = "Congrats! You created your first window!"
 
 function RL.init()
 	RL.SetWindowTitle( "First window" )
+	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 end
 
 function RL.update( delta )
 	if RL.IsKeyPressed( RL.KEY_ENTER ) then
-		textColor = BLUE
-		textPos = { 230, 230 }
+		local winSize = RL.GetScreenSize()
+		
+		textSize = RL.MeasureText( text, textSize )
+		textColor = RL.BLUE
+		textPos = { winSize[1] / 2 - textSize[1] / 2, winSize[2] / 2 - textSize[2] / 2 }
 	end
 
 	if RL.IsKeyPressed( RL.KEY_SPACE ) then
-		textColor = RL.BLACK
+		textColor = RL.RED
 		textPos = { 192, 200 }
 	end
 end
 
 function RL.draw()
 	RL.ClearBackground( RL.RAYWHITE )
-	RL.DrawText( RL.GetFontDefault(), "Congrats! You created your first window!", textPos, 20, 2, textColor )
+    RL.DrawText( text, textPos, textSize, textColor )
 end
+
 ```
 
 Application folder structure should be...

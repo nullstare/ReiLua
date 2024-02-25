@@ -173,6 +173,32 @@ int lmodelsDrawTriangle3D( lua_State* L ) {
 }
 
 /*
+> RL.DrawTriangleStrip3D( Vector3{} points, Color color )
+
+Draw a triangle strip defined by points
+*/
+int lmodelsDrawTriangleStrip3D( lua_State* L ) {
+	int pointCount = uluaGetTableLen( L, 1 ); 
+	Color color = uluaGetColor( L, 2 );
+
+	Vector3 points[ pointCount ];
+
+	int t = 1, i = 0;
+    lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+        if ( lua_istable( L, -1 ) ) {
+			points[i] = uluaGetVector3( L, lua_gettop( L ) );
+        }
+        i++;
+        lua_pop( L, 1 );
+    }
+	DrawTriangleStrip3D( points, pointCount, color );
+
+	return 0;
+}
+
+/*
 > RL.DrawCube( Vector3 position, Vector3 size, Color color )
 
 Draw cube
@@ -1300,6 +1326,23 @@ int lmodelsGenMeshSphere( lua_State* L ) {
 	int slices = luaL_checkinteger( L, 3 );
 
 	uluaPushMesh( L, GenMeshSphere( radius, rings, slices ) );
+
+	return 1;
+}
+
+/*
+> mesh = RL.GenMeshHemiSphere( float radius, int rings, int slices )
+
+Generate half-sphere mesh (no bottom cap)
+
+- Success return Mesh
+*/
+int lmodelsGenMeshHemiSphere( lua_State* L ) {
+	float radius = luaL_checknumber( L, 1 );
+	int rings = luaL_checkinteger( L, 2 );
+	int slices = luaL_checkinteger( L, 3 );
+
+	uluaPushMesh( L, GenMeshHemiSphere( radius, rings, slices ) );
 
 	return 1;
 }

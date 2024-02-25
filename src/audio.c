@@ -189,6 +189,21 @@ int laudioIsSoundReady( lua_State* L ) {
 }
 
 /*
+> RL.UpdateSound( Sound sound, Buffer data, int sampleCount )
+
+Update sound buffer with new data
+*/
+int laudioUpdateSound( lua_State* L ) {
+	Sound* sound = uluaGetSound( L, 1 );
+	Buffer* buffer = uluaGetBuffer( L, 2 );
+	int sampleCount = luaL_checkinteger( L, 3 );
+
+	UpdateSound( *sound, buffer->data, sampleCount );
+
+	return 0;
+}
+
+/*
 > RL.UnloadWave( Wave wave )
 
 Unload wave data
@@ -384,6 +399,29 @@ int laudioWaveFormat( lua_State* L ) {
 	WaveFormat( wave, sampleRate, sampleSize, channels );
 
 	return 0;
+}
+
+/*
+> samples = RL.LoadWaveSamples( Wave wave )
+
+Load samples data from wave as a 32bit float data array
+
+- Success return float{}
+*/
+int laudioLoadWaveSamples( lua_State* L ) {
+	Wave* wave = uluaGetWave( L, 1 );
+
+	float* samples = LoadWaveSamples( *wave );
+
+	lua_createtable( L, wave->frameCount * wave->channels, 0 );
+
+	for ( int i = 0; i < wave->frameCount * wave->channels; ++i ) {
+		lua_pushnumber( L, samples[i] );
+    	lua_rawseti( L, -2, i+1 );
+	}
+	UnloadWaveSamples( samples );
+
+	return 1;
 }
 
 /*

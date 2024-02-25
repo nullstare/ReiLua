@@ -433,19 +433,37 @@ int ltexturesImageFromImage( lua_State* L ) {
 }
 
 /*
-> image = RL.ImageText( Font font, string text, float fontSize, float spacing, Color tint )
+> image = RL.ImageText( string text, int fontSize, Color tint )
+
+Create an image from text (default font)
+
+- Success return Image
+*/
+int ltexturesImageText( lua_State* L ) {
+	const char* text = luaL_checkstring( L, 1 );
+	int fontSize = luaL_checkinteger( L, 2 );
+	Color tint = uluaGetColor( L, 3 );
+
+	uluaPushImage( L, ImageText( text, fontSize, tint ) );
+
+	return 1;
+}
+
+/*
+> image = RL.ImageTextEx( Font font, string text, float fontSize, float spacing, Color tint )
 
 Create an image from text (custom sprite font)
 
 - Success return Image
 */
-int ltexturesImageText( lua_State* L ) {
+int ltexturesImageTextEx( lua_State* L ) {
 	Font* font = uluaGetFont( L, 1 );
-	float fontSize = lua_tonumber( L, 3 );
-	float spacing = lua_tonumber( L, 4 );
+	const char* text = luaL_checkstring( L, 2 );
+	float fontSize = luaL_checknumber( L, 3 );
+	float spacing = luaL_checknumber( L, 4 );
 	Color tint = uluaGetColor( L, 5 );
 
-	uluaPushImage( L, ImageTextEx( *font, luaL_checkstring( L, 2 ), fontSize, spacing, tint ) );
+	uluaPushImage( L, ImageTextEx( *font, text, fontSize, spacing, tint ) );
 
 	return 1;
 }
@@ -499,7 +517,7 @@ Crop image depending on alpha value
 */
 int ltexturesImageAlphaCrop( lua_State* L ) {
 	Image* image = uluaGetImage( L, 1 );
-	float threshold = lua_tonumber( L, 2 );
+	float threshold = luaL_checknumber( L, 2 );
 
 	ImageAlphaCrop( image, threshold );
 
@@ -514,7 +532,7 @@ Clear alpha channel to desired color
 int ltexturesImageAlphaClear( lua_State* L ) {
 	Image* image = uluaGetImage( L, 1 );
 	Color color = uluaGetColor( L, 2 );
-	float threshold = lua_tonumber( L, 3 );
+	float threshold = luaL_checknumber( L, 3 );
 
 	ImageAlphaClear( image, color, threshold );
 
@@ -1064,6 +1082,23 @@ int ltexturesImageDraw( lua_State* L ) {
 }
 
 /*
+> RL.ImageDrawText( Image dst, string text, Vector2 position, float fontSize, Color tint )
+
+Draw text (using default font) within an image (destination)
+*/
+int ltexturesImageDrawText( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	const char* text = luaL_checkstring( L, 2 );
+	Vector2 position = uluaGetVector2( L, 3 );
+	float fontSize = luaL_checknumber( L, 4 );
+	Color tint = uluaGetColor( L, 5 );
+
+	ImageDrawText( image, text, position.x, position.y, fontSize, tint );
+
+	return 0;
+}
+
+/*
 > RL.ImageDrawTextEx( Image dst, Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
 
 Draw text (Custom sprite font) within an image (Destination)
@@ -1071,12 +1106,13 @@ Draw text (Custom sprite font) within an image (Destination)
 int ltexturesImageDrawTextEx( lua_State* L ) {
 	Image* image = uluaGetImage( L, 1 );
 	Font* font = uluaGetFont( L, 2 );
+	const char* text = luaL_checkstring( L, 3 );
 	Vector2 position = uluaGetVector2( L, 4 );
 	float fontSize = luaL_checknumber( L, 5 );
 	float spacing = luaL_checknumber( L, 6 );
 	Color tint = uluaGetColor( L, 7 );
 
-	ImageDrawTextEx( image, *font, luaL_checkstring( L, 3 ), position, fontSize, spacing, tint );
+	ImageDrawTextEx( image, *font, text, position, fontSize, spacing, tint );
 
 	return 0;
 }
@@ -1487,10 +1523,26 @@ Draw a Texture2D
 */
 int ltexturesDrawTexture( lua_State* L ) {
 	Texture* texture = uluaGetTexture( L, 1 );
-	Vector2 pos = uluaGetVector2( L, 2 );
+	Vector2 position = uluaGetVector2( L, 2 );
 	Color color = uluaGetColor( L, 3 );
 
-	DrawTexture( *texture, pos.x, pos.y, color );
+	DrawTexture( *texture, position.x, position.y, color );
+	return 0;
+}
+
+/*
+> RL.DrawTextureEx( Texture texture, Vector2 position, float rotation, float scale, Color tint )
+
+Draw a Texture2D with extended parameters
+*/
+int ltexturesDrawTextureEx( lua_State* L ) {
+	Texture* texture = uluaGetTexture( L, 1 );
+	Vector2 position = uluaGetVector2( L, 2 );
+	float rotation = luaL_checknumber( L, 3 );
+	float scale = luaL_checknumber( L, 4 );
+	Color color = uluaGetColor( L, 5 );
+
+	DrawTextureEx( *texture, position, rotation, scale, color );
 	return 0;
 }
 
@@ -1502,10 +1554,10 @@ Draw a part of a texture defined by a rectangle
 int ltexturesDrawTextureRec( lua_State* L ) {
 	Texture* texture = uluaGetTexture( L, 1 );
 	Rectangle srcRect = uluaGetRectangle( L, 2 );
-	Vector2 pos = uluaGetVector2( L, 3 );
+	Vector2 position = uluaGetVector2( L, 3 );
 	Color tint = uluaGetColor( L, 4 );
 
-	DrawTextureRec( *texture, srcRect, pos, tint );
+	DrawTextureRec( *texture, srcRect, position, tint );
 	return 0;
 }
 
@@ -1519,10 +1571,10 @@ int ltexturesDrawTexturePro( lua_State* L ) {
 	Rectangle srcRect = uluaGetRectangle( L, 2 );
 	Rectangle dstRect = uluaGetRectangle( L, 3 );
 	Vector2 origin = uluaGetVector2( L, 4 );
-	float rot = luaL_checknumber( L, 5 );
+	float rotation = luaL_checknumber( L, 5 );
 	Color color = uluaGetColor( L, 6 );
 
-	DrawTexturePro( *texture, srcRect, dstRect, origin, rot, color );
+	DrawTexturePro( *texture, srcRect, dstRect, origin, rotation, color );
 
 	return 0;
 }
@@ -2001,24 +2053,6 @@ int ltexturesGetColor( lua_State* L ) {
 	unsigned int hexValue = (unsigned int)luaL_checkinteger( L, 1 );
 
 	uluaPushColor( L, GetColor( hexValue ) );
-
-	return 1;
-}
-
-/*
-> color = RL.GetPixelColor( Texture texture, Vector2 position )
-
-Get pixel color from source texture
-
-- Success return Color
-*/
-int ltexturesGetPixelColor( lua_State* L ) {
-	Texture* texture = uluaGetTexture( L, 1 );
-	Vector2 pos = uluaGetVector2( L, 2 );
-	Image srcImage = LoadImageFromTexture( *texture );
-
-	uluaPushColor( L, GetImageColor( srcImage, pos.x, pos.y ) );
-	UnloadImage( srcImage );
 
 	return 1;
 }

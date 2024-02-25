@@ -1963,6 +1963,12 @@ function RL.DecodeDataBase64( data ) end
 ---@return any pressed 
 function RL.IsKeyPressed( key ) end
 
+---Check if a key has been pressed again (Only PLATFORM_DESKTOP)
+---- Success return bool
+---@param key integer
+---@return any pressed 
+function RL.IsKeyPressedRepeat( key ) end
+
 ---Detect if a key is being pressed
 ---- Success return bool
 ---@param key integer
@@ -2030,6 +2036,18 @@ function RL.IsGamepadButtonDown( gamepad, button ) end
 ---@param button integer
 ---@return any released 
 function RL.IsGamepadButtonReleased( gamepad, button ) end
+
+---Check if a gamepad button is NOT being pressed
+---- Success return bool
+---@param gamepad integer
+---@param button integer
+---@return any notPressed 
+function RL.IsGamepadButtonUp( gamepad, button ) end
+
+---Get the last gamepad button pressed
+---- Success return int
+---@return any button 
+function RL.GetGamepadButtonPressed() end
 
 ---Return gamepad axis count for a gamepad
 ---- Success return int
@@ -2101,10 +2119,15 @@ function  RL.SetMouseOffset( offset ) end
 ---@return any RL.SetMouseScale
 function  RL.SetMouseScale( scale ) end
 
----Returns mouse wheel movement Y
+---Get mouse wheel movement for X or Y, whichever is larger
 ---- Success return float
 ---@return any movement 
 function RL.GetMouseWheelMove() end
+
+---Get mouse wheel movement for both X and Y
+---- Success return Vector2
+---@return any movement 
+function RL.GetMouseWheelMoveV() end
 
 ---Set mouse cursor
 ---@param cursor integer
@@ -3106,6 +3129,14 @@ function RL.ImageCopy( image ) end
 ---@return any image 
 function RL.ImageFromImage( image, rec ) end
 
+---Create an image from text (default font)
+---- Success return Image
+---@param text string
+---@param fontSize integer
+---@param tint table
+---@return any image 
+function RL.ImageText( text, fontSize, tint ) end
+
 ---Create an image from text (custom sprite font)
 ---- Success return Image
 ---@param font any
@@ -3114,7 +3145,7 @@ function RL.ImageFromImage( image, rec ) end
 ---@param spacing number
 ---@param tint table
 ---@return any image 
-function RL.ImageText( font, text, fontSize, spacing, tint ) end
+function RL.ImageTextEx( font, text, fontSize, spacing, tint ) end
 
 ---Convert image data to desired format
 ---@param image any
@@ -3372,6 +3403,15 @@ function  RL.ImageDrawRectangleLines( dst, rec, thick, color ) end
 ---@return any RL.ImageDraw
 function  RL.ImageDraw( dst, src, srcRec, dstRec, tint ) end
 
+---Draw text (using default font) within an image (destination)
+---@param dst any
+---@param text string
+---@param position table
+---@param fontSize number
+---@param tint table
+---@return any RL.ImageDrawText
+function  RL.ImageDrawText( dst, text, position, fontSize, tint ) end
+
 ---Draw text (Custom sprite font) within an image (Destination)
 ---@param dst any
 ---@param font any
@@ -3516,6 +3556,15 @@ function RL.GetTextureFormat( texture ) end
 ---@param tint table
 ---@return any RL.DrawTexture
 function  RL.DrawTexture( texture, position, tint ) end
+
+---Draw a Texture2D with extended parameters
+---@param texture any
+---@param position table
+---@param rotation number
+---@param scale number
+---@param tint table
+---@return any RL.DrawTextureEx
+function  RL.DrawTextureEx( texture, position, rotation, scale, tint ) end
 
 ---Draw a part of a texture defined by a rectangle
 ---@param texture any
@@ -3844,6 +3893,13 @@ function RL.DrawTextBoxedTinted( font, text, rec, fontSize, spacing, wordWrap, t
 ---@return any size 
 function RL.SetTextLineSpacing( spacing ) end
 
+---Measure string width for default font
+---- Success return int
+---@param text string
+---@param fontSize integer
+---@return any width 
+function RL.MeasureText( text, fontSize ) end
+
 ---Measure string size for Font
 ---- Success return Vector2
 ---@param font any
@@ -3851,7 +3907,7 @@ function RL.SetTextLineSpacing( spacing ) end
 ---@param fontSize number
 ---@param spacing number
 ---@return any size 
-function RL.MeasureText( font, text, fontSize, spacing ) end
+function RL.MeasureTextEx( font, text, fontSize, spacing ) end
 
 ---Get glyph index position in font for a codepoint (unicode character), fallback to '?' if not found
 ---- Success return int
@@ -4077,6 +4133,12 @@ function  RL.DrawCircle3D( center, radius, rotationAxis, rotationAngle, color ) 
 ---@param color table
 ---@return any RL.DrawTriangle3D
 function  RL.DrawTriangle3D( v1, v2, v3, color ) end
+
+---Draw a triangle strip defined by points
+---@param points table
+---@param color table
+---@return any RL.DrawTriangleStrip3D
+function  RL.DrawTriangleStrip3D( points, color ) end
 
 ---Draw cube
 ---@param position table
@@ -4505,6 +4567,14 @@ function RL.GenMeshCube( size ) end
 ---@return any mesh 
 function RL.GenMeshSphere( radius, rings, slices ) end
 
+---Generate half-sphere mesh (no bottom cap)
+---- Success return Mesh
+---@param radius number
+---@param rings integer
+---@param slices integer
+---@return any mesh 
+function RL.GenMeshHemiSphere( radius, rings, slices ) end
+
 ---Generate cylinder mesh
 ---- Success return Mesh
 ---@param radius number
@@ -4894,6 +4964,13 @@ function RL.LoadSoundAlias( source ) end
 ---@return any isReady 
 function RL.IsSoundReady( sound ) end
 
+---Update sound buffer with new data
+---@param sound any
+---@param data any
+---@param sampleCount integer
+---@return any RL.UpdateSound
+function  RL.UpdateSound( sound, data, sampleCount ) end
+
 ---Unload wave data
 ---@param wave any
 ---@return any RL.UnloadWave
@@ -4976,6 +5053,12 @@ function  RL.SetSoundPan( sound, pan ) end
 ---@param channels integer
 ---@return any RL.WaveFormat
 function  RL.WaveFormat( wave, sampleRate, sampleSize, channels ) end
+
+---Load samples data from wave as a 32bit float data array
+---- Success return float{}
+---@param wave any
+---@return any samples 
+function RL.LoadWaveSamples( wave ) end
 
 ---Copy a wave to a new wave
 ---- Success return Wave

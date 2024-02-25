@@ -91,9 +91,13 @@ int lcoreGetWorldToScreen2D( lua_State* L );
 int lcoreGetScreenToWorld2D( lua_State* L );
 /* Timing-related functions. */
 int lcoreSetTargetFPS( lua_State* L );
-int lcoreGetFPS( lua_State* L );
 int lcoreGetFrameTime( lua_State* L );
 int lcoreGetTime( lua_State* L );
+int lcoreGetFPS( lua_State* L );
+/* Custom frame control functions. */
+int lcoreSwapScreenBuffer( lua_State* L );
+int lcorePollInputEvents( lua_State* L );
+int lcoreWaitTime( lua_State* L );
 /* Random values generation functions. */
 int lcoreSetRandomSeed( lua_State* L );
 int lcoreGetRandomValue( lua_State* L );
@@ -141,6 +145,7 @@ int lcoreEncodeDataBase64( lua_State* L );
 int lcoreDecodeDataBase64( lua_State* L );
 /* Input-related functions: keyboard. */
 int lcoreIsKeyPressed( lua_State* L );
+int lcoreIsKeyPressedRepeat( lua_State* L );
 int lcoreIsKeyDown( lua_State* L );
 int lcoreIsKeyReleased( lua_State* L );
 int lcoreIsKeyUp( lua_State* L );
@@ -155,6 +160,8 @@ int lcoreGetGamepadName( lua_State* L );
 int lcoreIsGamepadButtonPressed( lua_State* L );
 int lcoreIsGamepadButtonDown( lua_State* L );
 int lcoreIsGamepadButtonReleased( lua_State* L );
+int lcoreIsGamepadButtonUp( lua_State* L );
+int lcoreGetGamepadButtonPressed( lua_State* L );
 int lcoreGetGamepadAxisCount( lua_State* L );
 int lcoreGetGamepadAxisMovement( lua_State* L );
 int lcoreSetGamepadMappings( lua_State* L );
@@ -169,6 +176,7 @@ int lcoreSetMousePosition( lua_State* L );
 int lcoreSetMouseOffset( lua_State* L );
 int lcoreSetMouseScale( lua_State* L );
 int lcoreGetMouseWheelMove( lua_State* L );
+int lcoreGetMouseWheelMoveV( lua_State* L );
 int lcoreSetMouseCursor( lua_State* L );
 /* Input-related functions: touch. */
 int lcoreGetTouchPosition( lua_State* L );

@@ -1285,9 +1285,13 @@ void luaRegister() {
 	assingGlobalFunction( "GetScreenToWorld2D", lcoreGetScreenToWorld2D );
 		/* Timing-related functions. */
 	assingGlobalFunction( "SetTargetFPS", lcoreSetTargetFPS );
-	assingGlobalFunction( "GetFPS", lcoreGetFPS );
 	assingGlobalFunction( "GetFrameTime", lcoreGetFrameTime );
 	assingGlobalFunction( "GetTime", lcoreGetTime );
+	assingGlobalFunction( "GetFPS", lcoreGetFPS );
+		/* Custom frame control functions. */
+	assingGlobalFunction( "SwapScreenBuffer", lcoreSwapScreenBuffer );
+	assingGlobalFunction( "PollInputEvents", lcorePollInputEvents );
+	assingGlobalFunction( "WaitTime", lcoreWaitTime );
 		/* Random values generation functions. */
 	assingGlobalFunction( "SetRandomSeed", lcoreSetRandomSeed );
 	assingGlobalFunction( "GetRandomValue", lcoreGetRandomValue );
@@ -1335,6 +1339,7 @@ void luaRegister() {
 	assingGlobalFunction( "DecodeDataBase64", lcoreDecodeDataBase64 );
 		/* Input-related functions: keyboard. */
 	assingGlobalFunction( "IsKeyPressed", lcoreIsKeyPressed );
+	assingGlobalFunction( "IsKeyPressedRepeat", lcoreIsKeyPressedRepeat );
 	assingGlobalFunction( "IsKeyDown", lcoreIsKeyDown );
 	assingGlobalFunction( "IsKeyReleased", lcoreIsKeyReleased );
 	assingGlobalFunction( "IsKeyUp", lcoreIsKeyUp );
@@ -1347,6 +1352,8 @@ void luaRegister() {
 	assingGlobalFunction( "IsGamepadButtonPressed", lcoreIsGamepadButtonPressed );
 	assingGlobalFunction( "IsGamepadButtonDown", lcoreIsGamepadButtonDown );
 	assingGlobalFunction( "IsGamepadButtonReleased", lcoreIsGamepadButtonReleased );
+	assingGlobalFunction( "IsGamepadButtonUp", lcoreIsGamepadButtonUp );
+	assingGlobalFunction( "GetGamepadButtonPressed", lcoreGetGamepadButtonPressed );
 	assingGlobalFunction( "GetGamepadAxisCount", lcoreGetGamepadAxisCount );
 	assingGlobalFunction( "GetGamepadAxisMovement", lcoreGetGamepadAxisMovement );
 	assingGlobalFunction( "SetGamepadMappings", lcoreSetGamepadMappings );
@@ -1361,6 +1368,7 @@ void luaRegister() {
 	assingGlobalFunction( "SetMouseOffset", lcoreSetMouseOffset );
 	assingGlobalFunction( "SetMouseScale", lcoreSetMouseScale );
 	assingGlobalFunction( "GetMouseWheelMove", lcoreGetMouseWheelMove );
+	assingGlobalFunction( "GetMouseWheelMoveV", lcoreGetMouseWheelMoveV );
 	assingGlobalFunction( "SetMouseCursor", lcoreSetMouseCursor );
 		/* Input-related functions: touch */
 	assingGlobalFunction( "GetTouchPosition", lcoreGetTouchPosition );
@@ -1513,6 +1521,7 @@ void luaRegister() {
 	assingGlobalFunction( "ImageCopy", ltexturesImageCopy );
 	assingGlobalFunction( "ImageFromImage", ltexturesImageFromImage );
 	assingGlobalFunction( "ImageText", ltexturesImageText );
+	assingGlobalFunction( "ImageTextEx", ltexturesImageTextEx );
 	assingGlobalFunction( "ImageFormat", ltexturesImageFormat );
 	assingGlobalFunction( "ImageToPOT", ltexturesImageToPOT );
 	assingGlobalFunction( "ImageCrop", ltexturesImageCrop );
@@ -1555,6 +1564,7 @@ void luaRegister() {
 	assingGlobalFunction( "ImageDrawRectangle", ltexturesImageDrawRectangle );
 	assingGlobalFunction( "ImageDrawRectangleLines", ltexturesImageDrawRectangleLines );
 	assingGlobalFunction( "ImageDraw", ltexturesImageDraw );
+	assingGlobalFunction( "ImageDrawText", ltexturesImageDrawText );
 	assingGlobalFunction( "ImageDrawTextEx", ltexturesImageDrawTextEx );
 		/* Texture loading functions. */
 	assingGlobalFunction( "GetTextureDefault", ltexturesGetTextureDefault );
@@ -1580,6 +1590,7 @@ void luaRegister() {
 	assingGlobalFunction( "GetTextureFormat", ltexturesGetTextureFormat );
 		/* Texture drawing functions. */
 	assingGlobalFunction( "DrawTexture", ltexturesDrawTexture );
+	assingGlobalFunction( "DrawTextureEx", ltexturesDrawTextureEx );
 	assingGlobalFunction( "DrawTextureRec", ltexturesDrawTextureRec );
 	assingGlobalFunction( "DrawTexturePro", ltexturesDrawTexturePro );
 	assingGlobalFunction( "DrawTextureNPatch", ltexturesDrawTextureNPatch );
@@ -1601,7 +1612,6 @@ void luaRegister() {
 	assingGlobalFunction( "ColorAlpha", ltexturesColorAlpha );
 	assingGlobalFunction( "ColorAlphaBlend", ltexturesColorAlphaBlend );
 	assingGlobalFunction( "GetColor", ltexturesGetColor );
-	assingGlobalFunction( "GetPixelColor", ltexturesGetPixelColor );
 	assingGlobalFunction( "GetPixelDataSize", ltexturesGetPixelDataSize );
 
 	/* Models. */
@@ -1610,6 +1620,7 @@ void luaRegister() {
 	assingGlobalFunction( "DrawPoint3D", lmodelsDrawPoint3D );
 	assingGlobalFunction( "DrawCircle3D", lmodelsDrawCircle3D );
 	assingGlobalFunction( "DrawTriangle3D", lmodelsDrawTriangle3D );
+	assingGlobalFunction( "DrawTriangleStrip3D", lmodelsDrawTriangleStrip3D );
 	assingGlobalFunction( "DrawCube", lmodelsDrawCube );
 	assingGlobalFunction( "DrawCubeWires", lmodelsDrawCubeWires );
 	assingGlobalFunction( "DrawSphere", lmodelsDrawSphere );
@@ -1668,11 +1679,13 @@ void luaRegister() {
 	assingGlobalFunction( "GenMeshPlane", lmodelsGenMeshPlane );
 	assingGlobalFunction( "GenMeshCube", lmodelsGenMeshCube );
 	assingGlobalFunction( "GenMeshSphere", lmodelsGenMeshSphere );
+	assingGlobalFunction( "GenMeshHemiSphere", lmodelsGenMeshHemiSphere );
 	assingGlobalFunction( "GenMeshCylinder", lmodelsGenMeshCylinder );
 	assingGlobalFunction( "GenMeshCone", lmodelsGenMeshCone );
 	assingGlobalFunction( "GenMeshTorus", lmodelsGenMeshTorus );
 	assingGlobalFunction( "GenMeshKnot", lmodelsGenMeshKnot );
 	assingGlobalFunction( "GenMeshHeightmap", lmodelsGenMeshHeightmap );
+	assingGlobalFunction( "GenMeshCubicmap", lmodelsGenMeshCubicmap );
 	assingGlobalFunction( "GenMeshCustom", lmodelsGenMeshCustom );
 		/* Material management functions. */
 	assingGlobalFunction( "LoadMaterials", lmodelsLoadMaterials );
@@ -1740,6 +1753,7 @@ void luaRegister() {
 		/* Text font info functions. */
 	assingGlobalFunction( "SetTextLineSpacing", ltextSetTextLineSpacing );
 	assingGlobalFunction( "MeasureText", ltextMeasureText );
+	assingGlobalFunction( "MeasureTextEx", ltextMeasureTextEx );
 	assingGlobalFunction( "GetGlyphIndex", ltextGetGlyphIndex );
 	assingGlobalFunction( "GetGlyphInfo", ltextGetGlyphInfo );
 	assingGlobalFunction( "GetGlyphInfoByIndex", ltextGetGlyphInfoByIndex );
@@ -1769,9 +1783,12 @@ void luaRegister() {
 	assingGlobalFunction( "GetCodepointPrevious", ltextGetCodepointPrevious );
 	assingGlobalFunction( "CodepointToUTF8", ltextCodepointToUTF8 );
 		/* Text strings management functions (no UTF-8 strings, only byte chars) */
+	assingGlobalFunction( "TextSubtext", ltextTextSubtext );
+	assingGlobalFunction( "TextReplace", ltextTextReplace );
 	assingGlobalFunction( "TextInsert", ltextTextInsert );
 	assingGlobalFunction( "TextSplit", ltextTextSplit );
 	assingGlobalFunction( "TextFindIndex", ltextTextFindIndex );
+	assingGlobalFunction( "TextToPascal", ltextTextToPascal );
 
 	/* Audio. */
 		/* Audio device management functions. */
@@ -1788,6 +1805,7 @@ void luaRegister() {
 	assingGlobalFunction( "LoadSoundFromWave", laudioLoadSoundFromWave );
 	assingGlobalFunction( "LoadSoundAlias", laudioLoadSoundAlias );
 	assingGlobalFunction( "IsSoundReady", laudioIsSoundReady );
+	assingGlobalFunction( "UpdateSound", laudioUpdateSound );
 	assingGlobalFunction( "UnloadWave", laudioUnloadWave );
 	assingGlobalFunction( "UnloadSound", laudioUnloadSound );
 	assingGlobalFunction( "UnloadSoundAlias", laudioUnloadSoundAlias );
@@ -1803,6 +1821,7 @@ void luaRegister() {
 	assingGlobalFunction( "SetSoundPitch", laudioSetSoundPitch );
 	assingGlobalFunction( "SetSoundPan", laudioSetSoundPan );
 	assingGlobalFunction( "WaveFormat", laudioWaveFormat );
+	assingGlobalFunction( "LoadWaveSamples", laudioLoadWaveSamples );
 	assingGlobalFunction( "WaveCopy", laudioWaveCopy );
 	assingGlobalFunction( "WaveCrop", laudioWaveCrop );
 		/* Music management functions. */

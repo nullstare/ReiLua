@@ -14,6 +14,7 @@ int laudioIsWaveReady( lua_State* L );
 int laudioLoadSoundFromWave( lua_State* L );
 int laudioLoadSoundAlias( lua_State* L );
 int laudioIsSoundReady( lua_State* L );
+int laudioUpdateSound( lua_State* L );
 int laudioUnloadWave( lua_State* L );
 int laudioUnloadSound( lua_State* L );
 int laudioUnloadSoundAlias( lua_State* L );
@@ -29,6 +30,7 @@ int laudioSetSoundVolume( lua_State* L );
 int laudioSetSoundPitch( lua_State* L );
 int laudioSetSoundPan( lua_State* L );
 int laudioWaveFormat( lua_State* L );
+int laudioLoadWaveSamples( lua_State* L );
 int laudioWaveCopy( lua_State* L );
 int laudioWaveCrop( lua_State* L );
 /* Music management functions. */

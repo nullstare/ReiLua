@@ -3824,6 +3824,18 @@ Get clipboard text content
 
 ---
 
+> RL.EnableEventWaiting()
+
+Enable waiting for events on EndDrawing(), no automatic event polling
+
+---
+
+> RL.DisableEventWaiting()
+
+Disable waiting for events on EndDrawing(), automatic events polling
+
+---
+
 ## Core - Cursor-related functions
 
 ---
@@ -4134,14 +4146,6 @@ Set target FPS (maximum)
 
 ---
 
-> FPS = RL.GetFPS()
-
-Get current FPS
-
-- Success return int
-
----
-
 > delta = RL.GetFrameTime()
 
 Get time in seconds for last frame drawn (Delta time)
@@ -4155,6 +4159,36 @@ Get time in seconds for last frame drawn (Delta time)
 Get elapsed time in seconds since InitWindow()
 
 - Success return float
+
+---
+
+> FPS = RL.GetFPS()
+
+Get current FPS
+
+- Success return int
+
+---
+
+## Core - Custom frame control functions
+
+---
+
+> RL.SwapScreenBuffer()
+
+Swap back buffer with front buffer (screen drawing)
+
+---
+
+> RL.PollInputEvents()
+
+Register all input events
+
+---
+
+> RL.WaitTime( number seconds )
+
+Wait for some time (halt program execution)
 
 ---
 
@@ -6354,14 +6388,6 @@ Get Color structure from hexadecimal value
 
 ---
 
-> color = RL.GetPixelColor( Texture texture, Vector2 position )
-
-Get pixel color from source texture
-
-- Success return Color
-
----
-
 > size = RL.GetPixelDataSize( int width, int height, int format )
 
 Get pixel data size in bytes for certain format
@@ -6756,6 +6782,22 @@ Encode one codepoint into UTF-8 byte array
 
 ---
 
+> text = RL.TextSubtext( string text, int position, int length )
+
+Get a piece of a text string
+
+- Success return string
+
+---
+
+> text = RL.TextReplace( string text, string replace, string by )
+
+Replace text string
+
+- Success return string
+
+---
+
 > text = RL.TextInsert( string text, string insert, int position )
 
 Insert text in a specific position, moves all text forward
@@ -6777,6 +6819,14 @@ Split text into multiple strings
 Find first text occurrence within a string
 
 - Success return int
+
+---
+
+> text = RL.TextToPascal( string text )
+
+Get Pascal case notation version of provided string
+
+- Success return string
 
 ---
 

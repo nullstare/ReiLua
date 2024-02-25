@@ -30,6 +30,7 @@ DETAILED CHANGES:
 	- ADDED: TextSubtext, TextReplace and TextToPascal.
 	- ADDED: Custom frame control functions.
 	- REMOVED: GetPixelColor. Deviates too much from raylib function.
+	- ADDED: EnableEventWaiting and DisableEventWaiting.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

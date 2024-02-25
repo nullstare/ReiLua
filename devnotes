@@ -20,7 +20,6 @@ Backlog {
 		* Platformer example physics update for true framerate independence.
 	* Android support
 	* Godot scene importer lib.
-	* Git submodules for raylib and lua. Should maybe find windows compatible lua repo for this.
 }
 
 Bugs {

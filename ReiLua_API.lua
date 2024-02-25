@@ -1441,6 +1441,14 @@ function  RL.SetClipboardText( text ) end
 ---@return any text 
 function RL.GetClipboardText() end
 
+---Enable waiting for events on EndDrawing(), no automatic event polling
+---@return any RL.EnableEventWaiting
+function  RL.EnableEventWaiting() end
+
+---Disable waiting for events on EndDrawing(), automatic events polling
+---@return any RL.DisableEventWaiting
+function  RL.DisableEventWaiting() end
+
 -- Core - Cursor-related functions
 
 ---Shows cursor
@@ -1693,11 +1701,6 @@ function RL.GetScreenToWorld2D( position, camera ) end
 ---@return any RL.SetTargetFPS
 function  RL.SetTargetFPS( fps ) end
 
----Get current FPS
----- Success return int
----@return any FPS 
-function RL.GetFPS() end
-
 ---Get time in seconds for last frame drawn (Delta time)
 ---- Success return float
 ---@return any delta 
@@ -1707,6 +1710,26 @@ function RL.GetFrameTime() end
 ---- Success return float
 ---@return any time 
 function RL.GetTime() end
+
+---Get current FPS
+---- Success return int
+---@return any FPS 
+function RL.GetFPS() end
+
+-- Core - Custom frame control functions
+
+---Swap back buffer with front buffer (screen drawing)
+---@return any RL.SwapScreenBuffer
+function  RL.SwapScreenBuffer() end
+
+---Register all input events
+---@return any RL.PollInputEvents
+function  RL.PollInputEvents() end
+
+---Wait for some time (halt program execution)
+---@param seconds any
+---@return any RL.WaitTime
+function  RL.WaitTime( seconds ) end
 
 -- Core - Random values generation functions
 
@@ -3707,13 +3730,6 @@ function RL.ColorAlphaBlend( dst, src, tint ) end
 ---@return any color 
 function RL.GetColor( hexValue ) end
 
----Get pixel color from source texture
----- Success return Color
----@param texture any
----@param position table
----@return any color 
-function RL.GetPixelColor( texture, position ) end
-
 ---Get pixel data size in bytes for certain format
 ---- Success return int
 ---@param width integer
@@ -4080,6 +4096,22 @@ function RL.CodepointToUTF8( codepoint ) end
 
 -- Text - Text strings management functions (no UTF-8 strings, only byte chars)
 
+---Get a piece of a text string
+---- Success return string
+---@param text string
+---@param position integer
+---@param length integer
+---@return any text 
+function RL.TextSubtext( text, position, length ) end
+
+---Replace text string
+---- Success return string
+---@param text string
+---@param replace string
+---@param by string
+---@return any text 
+function RL.TextReplace( text, replace, by ) end
+
 ---Insert text in a specific position, moves all text forward
 ---- Success return string
 ---@param text string
@@ -4101,6 +4133,12 @@ function RL.TextSplit( text, delimiter ) end
 ---@param find string
 ---@return any index 
 function RL.TextFindIndex( text, find ) end
+
+---Get Pascal case notation version of provided string
+---- Success return string
+---@param text string
+---@return any text 
+function RL.TextToPascal( text ) end
 
 -- Models - Basic geometric 3D shapes drawing functions
 

@@ -560,6 +560,28 @@ int lcoreGetClipboardText( lua_State* L ) {
 }
 
 /*
+> RL.EnableEventWaiting()
+
+Enable waiting for events on EndDrawing(), no automatic event polling
+*/
+int lcoreEnableEventWaiting( lua_State* L ) {
+	EnableEventWaiting();
+
+	return 0;
+}
+
+/*
+> RL.DisableEventWaiting()
+
+Disable waiting for events on EndDrawing(), automatic events polling
+*/
+int lcoreDisableEventWaiting( lua_State* L ) {
+	DisableEventWaiting();
+
+	return 0;
+}
+
+/*
 ## Core - Cursor-related functions
 */
 

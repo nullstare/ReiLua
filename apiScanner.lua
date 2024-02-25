@@ -53,6 +53,7 @@ local raylib = {
 		TextCopy = "Can be replaced by Lua equivalent",
 		TextIsEqual = "Can be replaced by Lua equivalent",
 		TextLength = "Can be replaced by Lua equivalent",
+		TextFormat = "Can be replaced by Lua equivalent",
 		TextJoin = "Can be replaced by Lua equivalent",
 		TextAppend = "Can be replaced by Lua equivalent",
 		TextToUpper = "Can be replaced by Lua equivalent",
@@ -63,6 +64,8 @@ local raylib = {
 		UploadMesh = "Handled internally",
 		UpdateMeshBuffer = "Handled internally",
 		UnloadWaveSamples = "Handled internally",
+		GetPixelColor = "Not seen necessary",
+		SetPixelColor = "Not seen necessary",
 	},
 	info = {
 		GenMeshHemiSphere = "Will be added",

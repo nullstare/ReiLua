@@ -44,6 +44,8 @@ int lcoreGetWindowScaleDPI( lua_State* L );
 int lcoreGetMonitorName( lua_State* L );
 int lcoreSetClipboardText( lua_State* L );
 int lcoreGetClipboardText( lua_State* L );
+int lcoreEnableEventWaiting( lua_State* L );
+int lcoreDisableEventWaiting( lua_State* L );
 /* Cursor-related functions. */
 int lcoreShowCursor( lua_State* L );
 int lcoreHideCursor( lua_State* L );

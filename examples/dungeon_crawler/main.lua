@@ -6,7 +6,7 @@ local textureSize = { 256, 96 }
 local res = { 384, 216 }
 local winSize = RL.GetScreenSize()
 local winScale = 4
-local framebuffer = -1
+local framebuffer = nil
 
 local TILE_SIZE = 32
 local TILE_VERTEX_COLORS = { RL.WHITE, RL.WHITE, RL.WHITE, RL.WHITE }
@@ -91,11 +91,9 @@ function RL.draw()
 	RL.UpdateCamera3D( camera, RL.CAMERA_FIRST_PERSON )
 	pos = RL.GetCamera3DPosition( camera )
 
-	-- RL.BeginTextureMode( framebuffer )
 	RL.ClearBackground( { 100, 150, 150 } )
 
 	RL.BeginMode3D( camera )
-
 		-- Floor and ceiling.
 		for x = 0, 3 do
 			for y = 0, 10 do
@@ -119,7 +117,4 @@ function RL.draw()
 
 		drawSprites()
 	RL.EndMode3D()
-	-- RL.EndTextureMode()
-
-	-- RL.DrawTexturePro( framebuffer, { 0, 0, res[1], -res[2] }, { 0, 0, winSize[1], winSize[2] }, { 0, 0 }, 0.0, WHITE )
 end

@@ -66,9 +66,8 @@ end
 
 function RL.draw()
 	RL.ClearBackground( RL.RAYWHITE )
-    RL.DrawText( text, textPos, textSize, textColor )
+	RL.DrawText( text, textPos, textSize, textColor )
 end
-
 ```
 
 Application folder structure should be...

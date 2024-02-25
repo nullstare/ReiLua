@@ -1238,6 +1238,8 @@ void luaRegister() {
 	assingGlobalFunction( "GetMonitorName", lcoreGetMonitorName );
 	assingGlobalFunction( "SetClipboardText", lcoreSetClipboardText );
 	assingGlobalFunction( "GetClipboardText", lcoreGetClipboardText );
+	assingGlobalFunction( "EnableEventWaiting", lcoreEnableEventWaiting );
+	assingGlobalFunction( "DisableEventWaiting", lcoreDisableEventWaiting );
 		/* Cursor-related functions. */
 	assingGlobalFunction( "ShowCursor", lcoreShowCursor );
 	assingGlobalFunction( "HideCursor", lcoreHideCursor );

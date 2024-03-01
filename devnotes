@@ -10,8 +10,6 @@ Backlog {
 		* Haptic functions.
 	* Audio
 		* AudioStream.
-	* Core
-		* Automation events functionality.
 	* Models
 		* Mesh bone weight management?
 

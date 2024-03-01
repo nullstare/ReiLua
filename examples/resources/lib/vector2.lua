@@ -181,4 +181,24 @@ function Vector2:equals( v2 )
 	return RL.Vector2Equals( self, v2 )
 end
 
+function Vector2:addEq( v2 )
+	self.x = self.x + v2.x
+	self.y = self.y + v2.y
+end
+
+function Vector2:subEq( v2 )
+	self.x = self.x - v2.x
+	self.y = self.y - v2.y
+end
+
+function Vector2:mulEq( v2 )
+	self.x = self.x * v2.x
+	self.y = self.y * v2.y
+end
+
+function Vector2:divEq( v2 )
+	self.x = self.x / v2.x
+	self.y = self.y / v2.y
+end
+
 return Vector2

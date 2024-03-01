@@ -4516,6 +4516,112 @@ Decode Base64 string data
 
 ---
 
+## Core - Automation events functionality
+
+---
+
+> eventList = RL.LoadAutomationEventList( string|nil fileName )
+
+Load automation events list from file, nil for empty list, capacity = MAX_AUTOMATION_EVENTS
+
+- Success return AutomationEventList
+
+---
+
+> RL.UnloadAutomationEventList( AutomationEventList list )
+
+Unload automation events list from file
+
+---
+
+> success = RL.ExportAutomationEventList( string fileName )
+
+Export automation events list as text file
+
+- Failure return false
+- Success return true
+
+---
+
+> RL.SetAutomationEventList( AutomationEventList list )
+
+Set automation event list to record to
+
+---
+
+> RL.SetAutomationEventBaseFrame( int frame )
+
+Set automation event internal base frame to start recording
+
+---
+
+> RL.StartAutomationEventRecording()
+
+Start recording automation events (AutomationEventList must be set)
+
+---
+
+> RL.StopAutomationEventRecording()
+
+Stop recording automation events
+
+---
+
+> RL.PlayAutomationEvent( AutomationEvent event )
+
+Play a recorded automation event
+
+---
+
+> capacity = RL.GetAutomationEventListCapacity( AutomationEventList list )
+
+Get automation event list capacity
+
+- Success return int
+
+---
+
+> count = RL.GetAutomationEventListCount( AutomationEventList list )
+
+Get automation event list count
+
+- Success return int
+
+---
+
+> event = RL.GetAutomationEvent( AutomationEventList list, int index )
+
+Get automation event from automation event list
+
+- Failure return nil
+- Success return AutomationEvent
+
+---
+
+> frame = RL.GetAutomationEventFrame( AutomationEvent event )
+
+Get automation event frame
+
+- Success return int
+
+---
+
+> type = RL.GetAutomationEventType( AutomationEvent event )
+
+Get automation event type
+
+- Success return int
+
+---
+
+> params = RL.GetAutomationEventParams( AutomationEvent event )
+
+Get automation event params
+
+- Success return int{}
+
+---
+
 ## Core - Input-related functions: keyboard
 
 ---

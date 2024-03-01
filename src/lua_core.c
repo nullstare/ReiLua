@@ -337,6 +337,34 @@ static void defineRLRenderBatch() {
 	lua_setfield( L, -2, "__gc" );
 }
 
+	/* AutomationEvent. */
+static void defineAutomationEvent() {
+	lua_State* L = state->luaState;
+
+	luaL_newmetatable( L, "AutomationEvent" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+}
+
+	/* AutomationEventList. */
+static int gcAutomationEventList( lua_State* L ) {
+	if ( state->gcUnload ) {
+		AutomationEventList* automationEventList = luaL_checkudata( L, 1, "AutomationEventList" );
+		UnloadAutomationEventList( automationEventList );
+	}
+	return 0;
+}
+
+static void defineAutomationEventList() {
+	lua_State* L = state->luaState;
+
+	luaL_newmetatable( L, "AutomationEventList" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcAutomationEventList );
+	lua_setfield( L, -2, "__gc" );
+}
+
 /* Assing globals. */
 
 void assignGlobalInt( int value, const char* name ) {
@@ -1033,6 +1061,8 @@ bool luaInit( int argn, const char** argc ) {
 	defineModel();
 	defineModelAnimation();
 	defineRLRenderBatch();
+	defineAutomationEvent();
+	defineAutomationEventList();
 	/* Define globals. */
 	defineGlobals();
 	platformDefineGlobals();
@@ -1339,6 +1369,21 @@ void luaRegister() {
 	assingGlobalFunction( "DecompressData", lcoreDecompressData );
 	assingGlobalFunction( "EncodeDataBase64", lcoreEncodeDataBase64 );
 	assingGlobalFunction( "DecodeDataBase64", lcoreDecodeDataBase64 );
+		/* Automation events functionality. */
+	assingGlobalFunction( "LoadAutomationEventList", lcoreLoadAutomationEventList );
+	assingGlobalFunction( "UnloadAutomationEventList", lcoreUnloadAutomationEventList );
+	assingGlobalFunction( "ExportAutomationEventList", lcoreExportAutomationEventList );
+	assingGlobalFunction( "SetAutomationEventList", lcoreSetAutomationEventList );
+	assingGlobalFunction( "SetAutomationEventBaseFrame", lcoreSetAutomationEventBaseFrame );
+	assingGlobalFunction( "StartAutomationEventRecording", lcoreStartAutomationEventRecording );
+	assingGlobalFunction( "StopAutomationEventRecording", lcoreStopAutomationEventRecording );
+	assingGlobalFunction( "PlayAutomationEvent", lcorePlayAutomationEvent );
+	assingGlobalFunction( "GetAutomationEventListCapacity", lcoreGetAutomationEventListCapacity );
+	assingGlobalFunction( "GetAutomationEventListCount", lcoreGetAutomationEventListCount );
+	assingGlobalFunction( "GetAutomationEvent", lcoreGetAutomationEvent );
+	assingGlobalFunction( "GetAutomationEventFrame", lcoreGetAutomationEventFrame );
+	assingGlobalFunction( "GetAutomationEventType", lcoreGetAutomationEventType );
+	assingGlobalFunction( "GetAutomationEventParams", lcoreGetAutomationEventParams );
 		/* Input-related functions: keyboard. */
 	assingGlobalFunction( "IsKeyPressed", lcoreIsKeyPressed );
 	assingGlobalFunction( "IsKeyPressedRepeat", lcoreIsKeyPressedRepeat );
@@ -2619,7 +2664,7 @@ Ray uluaGetRay( lua_State* L, int index ) {
 	Ray ray = { .position = { 0.0, 0.0, 0.0 }, .direction = { 0.0, 0.0, 0.0 } };
 
 	int t = index, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
 		if ( lua_istable( L, -1 ) ) {
@@ -2646,7 +2691,7 @@ Ray uluaGetRay( lua_State* L, int index ) {
 			i++;
 			lua_pop( L, 1 );
 		}
-    }
+	}
 	return ray;
 }
 
@@ -2913,6 +2958,20 @@ rlRenderBatch* uluaGetRLRenderBatch( lua_State* L, int index ) {
 		return (rlRenderBatch*)lua_touserdata( L, index );
 	}
 	return luaL_checkudata( L, index, "rlRenderBatch" );
+}
+
+AutomationEvent* uluaGetAutomationEvent( lua_State* L, int index ) {
+	if ( lua_islightuserdata( L, index ) ) {
+		return (AutomationEvent*)lua_touserdata( L, index );
+	}
+	return luaL_checkudata( L, index, "AutomationEvent" );
+}
+
+AutomationEventList* uluaGetAutomationEventList( lua_State* L, int index ) {
+	if ( lua_islightuserdata( L, index ) ) {
+		return (AutomationEventList*)lua_touserdata( L, index );
+	}
+	return luaL_checkudata( L, index, "AutomationEventList" );
 }
 
 /* Push types. */
@@ -3215,6 +3274,20 @@ void uluaPushRLRenderBatch( lua_State* L, rlRenderBatch renderBatch ) {
 	*renderBatchP = renderBatch;
 	luaL_setmetatable( L, "rlRenderBatch" );
 }
+
+void uluaPushAutomationEvent( lua_State* L, AutomationEvent event ) {
+	AutomationEvent* eventP = lua_newuserdata( L, sizeof( AutomationEvent ) );
+	*eventP = event;
+	luaL_setmetatable( L, "AutomationEvent" );
+}
+
+void uluaPushAutomationEventList( lua_State* L, AutomationEventList eventList ) {
+	AutomationEventList* eventListP = lua_newuserdata( L, sizeof( AutomationEventList ) );
+	*eventListP = eventList;
+	luaL_setmetatable( L, "AutomationEventList" );
+}
+
+/* Utils. */
 
 int uluaGetTableLen( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );

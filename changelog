@@ -9,6 +9,7 @@ KEY CHANGES:
 	- ADDED: apiScanner.lua for searching unimplemented functions from raylib.
 	- ADDED & CHANGE: ImageText. ImageTextEx is now equivalent to raylib function and old ImageText.
 	- ADDED & CHANGE: MeasureText. MeasureTextEx is now equivalent to raylib function and old MeasureText.
+	- ADDED Automation events.
 
 DETAILED CHANGES:
 	- ADDED: GetBufferElementSize and GetBufferLength.

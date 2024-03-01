@@ -153,4 +153,32 @@ function Quaternion:transform( mat )
 	return Quaternion:new( RL.QuaternionTransform( self, mat ) )
 end
 
+function Quaternion:addEq( q2 )
+	self.x = self.x + q2.x
+	self.y = self.y + q2.y
+	self.z = self.z + q2.z
+	self.w = self.w + q2.w
+end
+
+function Quaternion:subEq( q2 )
+	self.x = self.x - q2.x
+	self.y = self.y - q2.y
+	self.z = self.z - q2.z
+	self.w = self.w - q2.w
+end
+
+function Quaternion:mulEq( q2 )
+	self.x = self.x * q2.x
+	self.y = self.y * q2.y
+	self.z = self.z * q2.z
+	self.w = self.w * q2.w
+end
+
+function Quaternion:divEq( q2 )
+	self.x = self.x / q2.x
+	self.y = self.y / q2.y
+	self.z = self.z / q2.z
+	self.w = self.w / q2.w
+end
+
 return Quaternion

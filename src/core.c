@@ -1030,16 +1030,16 @@ int lcoreSetShaderValue( lua_State* L ) {
 
 	/* t = values index. */
 	int t = 3, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-        if ( lua_isnumber( L, -1 ) ) {
+		if ( lua_isnumber( L, -1 ) ) {
 			floats[i] = lua_tonumber( L, -1 );
 			ints[i] = lua_tointeger( L, -1 );
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
+		}
+		i++;
+		lua_pop( L, 1 );
+	}
 	lua_pop( L, 1 );
 	/* Read values end. */
 
@@ -1947,6 +1947,223 @@ int lcoreDecodeDataBase64( lua_State* L ) {
 	free( decodedData );
 
 	return 2;
+}
+
+/*
+## Core - Automation events functionality
+*/
+
+/*
+> eventList = RL.LoadAutomationEventList( string|nil fileName )
+
+Load automation events list from file, nil for empty list, capacity = MAX_AUTOMATION_EVENTS
+
+- Success return AutomationEventList
+*/
+int lcoreLoadAutomationEventList( lua_State* L ) {
+	if ( lua_isstring( L, 1 ) ) {
+		uluaPushAutomationEventList( L, LoadAutomationEventList( lua_tostring( L, 1 ) ) );
+	}
+	else if ( lua_isnil( L, 1 ) ) {
+		uluaPushAutomationEventList( L, LoadAutomationEventList( NULL ) );
+	}
+
+	return 1;
+}
+
+/*
+> RL.UnloadAutomationEventList( AutomationEventList list )
+
+Unload automation events list from file
+*/
+int lcoreUnloadAutomationEventList( lua_State* L ) {
+	AutomationEventList* list = uluaGetAutomationEventList( L, 1 );
+
+	UnloadAutomationEventList( list );
+
+	return 0;
+}
+
+/*
+> success = RL.ExportAutomationEventList( string fileName )
+
+Export automation events list as text file
+
+- Failure return false
+- Success return true
+*/
+int lcoreExportAutomationEventList( lua_State* L ) {
+	AutomationEventList* list = uluaGetAutomationEventList( L, 1 );
+	const char* fileName = luaL_checkstring( L, 2 );
+
+	lua_pushboolean( L, ExportAutomationEventList( *list, fileName ) );
+
+	return 1;
+}
+
+/*
+> RL.SetAutomationEventList( AutomationEventList list )
+
+Set automation event list to record to
+*/
+int lcoreSetAutomationEventList( lua_State* L ) {
+	AutomationEventList* list = uluaGetAutomationEventList( L, 1 );
+
+	SetAutomationEventList( list );
+
+	return 0;
+}
+
+/*
+> RL.SetAutomationEventBaseFrame( int frame )
+
+Set automation event internal base frame to start recording
+*/
+int lcoreSetAutomationEventBaseFrame( lua_State* L ) {
+	int frame = luaL_checkinteger( L, 1 );
+
+	SetAutomationEventBaseFrame( frame );
+
+	return 0;
+}
+
+/*
+> RL.StartAutomationEventRecording()
+
+Start recording automation events (AutomationEventList must be set)
+*/
+int lcoreStartAutomationEventRecording( lua_State* L ) {
+	StartAutomationEventRecording();
+
+	return 0;
+}
+
+/*
+> RL.StopAutomationEventRecording()
+
+Stop recording automation events
+*/
+int lcoreStopAutomationEventRecording( lua_State* L ) {
+	
+	StopAutomationEventRecording();
+
+	return 0;
+}
+
+/*
+> RL.PlayAutomationEvent( AutomationEvent event )
+
+Play a recorded automation event
+*/
+int lcorePlayAutomationEvent( lua_State* L ) {
+	AutomationEvent* event = uluaGetAutomationEvent( L, 1 );
+
+	PlayAutomationEvent( *event );
+
+	return 0;
+}
+
+/*
+> capacity = RL.GetAutomationEventListCapacity( AutomationEventList list )
+
+Get automation event list capacity
+
+- Success return int
+*/
+int lcoreGetAutomationEventListCapacity( lua_State* L ) {
+	AutomationEventList* list = uluaGetAutomationEventList( L, 1 );
+
+	lua_pushinteger( L, list->capacity );
+
+	return 1;
+}
+
+/*
+> count = RL.GetAutomationEventListCount( AutomationEventList list )
+
+Get automation event list count
+
+- Success return int
+*/
+int lcoreGetAutomationEventListCount( lua_State* L ) {
+	AutomationEventList* list = uluaGetAutomationEventList( L, 1 );
+
+	lua_pushinteger( L, list->count );
+
+	return 1;
+}
+
+/*
+> event = RL.GetAutomationEvent( AutomationEventList list, int index )
+
+Get automation event from automation event list
+
+- Failure return nil
+- Success return AutomationEvent
+*/
+int lcoreGetAutomationEvent( lua_State* L ) {
+	AutomationEventList* list = uluaGetAutomationEventList( L, 1 );
+	int index = luaL_checkinteger( L, 2 );
+
+	if ( 0 <= index && index < list->count ) {
+		uluaPushAutomationEvent( L, list->events[ index ] );
+	}
+	else {
+		TraceLog( LOG_WARNING, "GetAutomationEvent index %d out of bounds", index );
+		lua_pushnil( L );
+	}
+
+	return 1;
+}
+
+/*
+> frame = RL.GetAutomationEventFrame( AutomationEvent event )
+
+Get automation event frame
+
+- Success return int
+*/
+int lcoreGetAutomationEventFrame( lua_State* L ) {
+	AutomationEvent* event = uluaGetAutomationEvent( L, 1 );
+
+	lua_pushinteger( L, event->frame );
+
+	return 1;
+}
+
+/*
+> type = RL.GetAutomationEventType( AutomationEvent event )
+
+Get automation event type
+
+- Success return int
+*/
+int lcoreGetAutomationEventType( lua_State* L ) {
+	AutomationEvent* event = uluaGetAutomationEvent( L, 1 );
+
+	lua_pushinteger( L, event->type );
+
+	return 1;
+}
+
+/*
+> params = RL.GetAutomationEventParams( AutomationEvent event )
+
+Get automation event params
+
+- Success return int{}
+*/
+int lcoreGetAutomationEventParams( lua_State* L ) {
+	AutomationEvent* event = uluaGetAutomationEvent( L, 1 );
+
+	lua_createtable( L, 4, 0 );
+
+	for ( int i = 0; i < 4; i++ ) {
+		lua_pushnumber( L, event->params[i] );
+		lua_rawseti( L, -2, i + 1 );
+	}
+
+	return 1;
 }
 
 /*

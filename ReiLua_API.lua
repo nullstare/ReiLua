@@ -1978,6 +1978,87 @@ function RL.EncodeDataBase64( data ) end
 ---@return any outputSize 
 function RL.DecodeDataBase64( data ) end
 
+-- Core - Automation events functionality
+
+---Load automation events list from file, nil for empty list, capacity = MAX_AUTOMATION_EVENTS
+---- Success return AutomationEventList
+---@param fileName any
+---@return any eventList 
+function RL.LoadAutomationEventList( fileName ) end
+
+---Unload automation events list from file
+---@param list any
+---@return any RL.UnloadAutomationEventList
+function  RL.UnloadAutomationEventList( list ) end
+
+---Export automation events list as text file
+---- Failure return false
+---- Success return true
+---@param fileName string
+---@return any success 
+function RL.ExportAutomationEventList( fileName ) end
+
+---Set automation event list to record to
+---@param list any
+---@return any RL.SetAutomationEventList
+function  RL.SetAutomationEventList( list ) end
+
+---Set automation event internal base frame to start recording
+---@param frame integer
+---@return any RL.SetAutomationEventBaseFrame
+function  RL.SetAutomationEventBaseFrame( frame ) end
+
+---Start recording automation events (AutomationEventList must be set)
+---@return any RL.StartAutomationEventRecording
+function  RL.StartAutomationEventRecording() end
+
+---Stop recording automation events
+---@return any RL.StopAutomationEventRecording
+function  RL.StopAutomationEventRecording() end
+
+---Play a recorded automation event
+---@param event any
+---@return any RL.PlayAutomationEvent
+function  RL.PlayAutomationEvent( event ) end
+
+---Get automation event list capacity
+---- Success return int
+---@param list any
+---@return any capacity 
+function RL.GetAutomationEventListCapacity( list ) end
+
+---Get automation event list count
+---- Success return int
+---@param list any
+---@return any count 
+function RL.GetAutomationEventListCount( list ) end
+
+---Get automation event from automation event list
+---- Failure return nil
+---- Success return AutomationEvent
+---@param list any
+---@param index integer
+---@return any event 
+function RL.GetAutomationEvent( list, index ) end
+
+---Get automation event frame
+---- Success return int
+---@param event any
+---@return any frame 
+function RL.GetAutomationEventFrame( event ) end
+
+---Get automation event type
+---- Success return int
+---@param event any
+---@return any type 
+function RL.GetAutomationEventType( event ) end
+
+---Get automation event params
+---- Success return int{}
+---@param event any
+---@return any params 
+function RL.GetAutomationEventParams( event ) end
+
 -- Core - Input-related functions: keyboard
 
 ---Detect if a key has been pressed once

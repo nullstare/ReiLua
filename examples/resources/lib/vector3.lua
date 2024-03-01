@@ -208,4 +208,28 @@ function Vector3:equals( v2 )
 	return RL.Vector3Equals( self, v2 )
 end
 
+function Vector3:addEq( v2 )
+	self.x = self.x + v2.x
+	self.y = self.y + v2.y
+	self.z = self.z + v2.z
+end
+
+function Vector3:subEq( v2 )
+	self.x = self.x - v2.x
+	self.y = self.y - v2.y
+	self.z = self.z - v2.z
+end
+
+function Vector3:mulEq( v2 )
+	self.x = self.x * v2.x
+	self.y = self.y * v2.y
+	self.z = self.z * v2.z
+end
+
+function Vector3:divEq( v2 )
+	self.x = self.x / v2.x
+	self.y = self.y / v2.y
+	self.z = self.z / v2.z
+end
+
 return Vector3

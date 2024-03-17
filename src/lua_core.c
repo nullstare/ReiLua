@@ -1893,6 +1893,7 @@ void luaRegister() {
 
 	/* Math. */
 		/* Utils. */
+	assingGlobalFunction( "Round", lmathRound );
 	assingGlobalFunction( "Clamp", lmathClamp );
 	assingGlobalFunction( "Lerp", lmathLerp );
 	assingGlobalFunction( "Normalize", lmathNormalize );

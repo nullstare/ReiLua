@@ -1,5 +1,10 @@
 -- Define useful global functions.
 
+-- For luaJit compatibility.
+if table.unpack == nil then
+	table.unpack = unpack
+end
+
 local utillib = {}
 
 function utillib.tableClone( org )

@@ -144,4 +144,13 @@ function Color:alphaBlend( dst, src, tint )
 	return Color:new( RL.ColorAlphaBlend( dst, src, tint ) )
 end
 
+function Color:lerp( color, amount )
+	return Color:new(
+		RL.Lerp( self.r, color.r, amount ),
+		RL.Lerp( self.g, color.g, amount ),
+		RL.Lerp( self.b, color.b, amount ),
+		RL.Lerp( self.a, color.a, amount )
+	)
+end
+
 return Color

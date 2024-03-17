@@ -40,8 +40,6 @@ function RL.init()
 	camera:setTarget( { 0, 0, 0 } )
 	camera:setUp( { 0, 1, 0 } )
 	camera.mode = camera.MODES.ORBITAL
-	-- camera.mode = camera.MODES.FREE
-	-- camera.mode = camera.MODES.FIRST_PERSON
 
 	heigthImage = RL.LoadImage( RL.GetBasePath().."../resources/images/heightmap.png" )
 
@@ -78,7 +76,7 @@ function RL.init()
 	material = RL.LoadMaterialDefault()
 	RL.SetMaterialTexture( material, RL.MATERIAL_MAP_ALBEDO, groundTexture )
 
-	matrix = RL.MatrixMultiply( RL.MatrixIdentity(), RL.MatrixTranslate( { -4, 0, -4 } ) )
+	matrix = RL.MatrixTranslate( { -4, 0, -4 } )
 end
 
 function RL.update( delta )

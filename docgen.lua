@@ -246,6 +246,10 @@ apiFile:write( "\n> NPatchInfo = { { 0, 0, 24, 24 }, 8, 8, 8, 8, NPATCH_NINE_PAT
 NPatchInfo, n-patch layout info\n\n---\n" )
 apiFile:write( "\n> ModelAnimations = Userdata\n\
 ModelAnimation\n\n---\n" )
+apiFile:write( "\n> AutomationEvent = Userdata\n\
+Automation event\n\n---\n" )
+apiFile:write( "\n> AutomationEventList = Userdata\n\
+Automation event list\n\n---\n" )
 apiFile:write( "\n> Buffer = Buffer userdata\n\
 Data buffer for C primitive types. Type should be one of the Buffer types.\n\n---\n" )
 
@@ -368,7 +372,6 @@ for _, src in ipairs( sourceFiles ) do
 		local splits = split( src, "/" )
 
 		apiFile = io.open( "../"..splits[ #splits ]..".md", "a" )
-		-- apiFile = io.open( "../"..src..".md", "w" )
 	end
 
 	repeat

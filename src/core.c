@@ -2096,7 +2096,7 @@ int lcoreGetAutomationEventListCount( lua_State* L ) {
 /*
 > event = RL.GetAutomationEvent( AutomationEventList list, int index )
 
-Get automation event from automation event list
+Get automation event from automation event list. Return as lightuserdata
 
 - Failure return nil
 - Success return AutomationEvent
@@ -2106,7 +2106,7 @@ int lcoreGetAutomationEvent( lua_State* L ) {
 	int index = luaL_checkinteger( L, 2 );
 
 	if ( 0 <= index && index < list->count ) {
-		uluaPushAutomationEvent( L, list->events[ index ] );
+		lua_pushlightuserdata( L, &list->events[ index ] );
 	}
 	else {
 		TraceLog( LOG_WARNING, "GetAutomationEvent index %d out of bounds", index );

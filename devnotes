@@ -3,8 +3,8 @@ Current {
 
 Backlog {
 	* Raygui lib
-		* Check if could remove flickering from changing draw order by making queue for order changing and only
-		change them after everything is drawn.
+		* Check if could remove flickering from changing draw order by making queue for order
+		changing and only change them after everything is drawn.
 	* Platform desktop SDL
 		* Text input not working on gui. Could this be Raylib issue?
 		* Haptic functions.

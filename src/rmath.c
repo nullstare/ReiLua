@@ -16,6 +16,21 @@ inline int imax( int a, int b ) {
 */
 
 /*
+> result = RL.Round( float value )
+
+Round float value
+
+- Success return float
+*/
+int lmathRound( lua_State* L ) {
+	float value = luaL_checknumber( L, 1 );
+	
+	lua_pushnumber( L, round( value ) );
+
+	return 1;
+}
+
+/*
 > result = RL.Clamp( float value, float min, float max )
 
 Clamp float value

@@ -52,10 +52,10 @@ end
 function RL.update( delta )
 	if RL.IsKeyPressed( RL.KEY_ENTER ) then
 		local winSize = RL.GetScreenSize()
+		local measuredSize = RL.MeasureTextEx( RL.GetFontDefault(), text, textSize, 2 )
 		
-		textSize = RL.MeasureText( text, textSize )
 		textColor = RL.BLUE
-		textPos = { winSize[1] / 2 - textSize[1] / 2, winSize[2] / 2 - textSize[2] / 2 }
+		textPos = { winSize[1] / 2 - measuredSize[1] / 2, winSize[2] / 2 - measuredSize[2] / 2 }
 	end
 
 	if RL.IsKeyPressed( RL.KEY_SPACE ) then
@@ -87,7 +87,7 @@ ReiLua_API.lua can be put into project folder to provide annotations when using 
 Some objects allocate memory that needs to be freed when object is no longer needed. By default objects like Textures are unloaded by the Lua garbage collector. It is generatty however recommended to handle this manually in more complex projects. You can change the behavior with:
 
 ```
-SetGCUnload()
+RL.SetGCUnload()
 ```
 
 ## Interpreter Mode

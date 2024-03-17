@@ -273,6 +273,18 @@ ModelAnimation
 
 ---
 
+> AutomationEvent = Userdata
+
+Automation event
+
+---
+
+> AutomationEventList = Userdata
+
+Automation event list
+
+---
+
 > Buffer = Buffer userdata
 
 Data buffer for C primitive types. Type should be one of the Buffer types.
@@ -4591,7 +4603,7 @@ Get automation event list count
 
 > event = RL.GetAutomationEvent( AutomationEventList list, int index )
 
-Get automation event from automation event list
+Get automation event from automation event list. Return as lightuserdata
 
 - Failure return nil
 - Success return AutomationEvent
@@ -8074,6 +8086,14 @@ Get current music time played (in seconds)
 ---
 
 ## Math - Utils
+
+---
+
+> result = RL.Round( float value )
+
+Round float value
+
+- Success return float
 
 ---
 

@@ -11,10 +11,10 @@ end
 function RL.update( delta )
 	if RL.IsKeyPressed( RL.KEY_ENTER ) then
 		local winSize = RL.GetScreenSize()
+		local measuredSize = RL.MeasureTextEx( RL.GetFontDefault(), text, textSize, 2 )
 		
-		textSize = RL.MeasureText( text, textSize )
 		textColor = RL.BLUE
-		textPos = { winSize[1] / 2 - textSize[1] / 2, winSize[2] / 2 - textSize[2] / 2 }
+		textPos = { winSize[1] / 2 - measuredSize[1] / 2, winSize[2] / 2 - measuredSize[2] / 2 }
 	end
 
 	if RL.IsKeyPressed( RL.KEY_SPACE ) then
@@ -25,5 +25,5 @@ end
 
 function RL.draw()
 	RL.ClearBackground( RL.RAYWHITE )
-    RL.DrawText( text, textPos, textSize, textColor )
+	RL.DrawText( text, textPos, textSize, textColor )
 end

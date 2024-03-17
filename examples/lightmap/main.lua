@@ -31,15 +31,12 @@ function RL.init()
 	camera:setTarget( { 0, 0, 0 } )
 	camera:setUp( { 0, 1, 0 } )
 	camera.mode = camera.MODES.ORBITAL
-	-- camera.mode = camera.MODES.FREE
-	-- camera.mode = camera.MODES.FIRST_PERSON
 
-	local ts = PLANE_SIZE
 	local meshData = {
 		vertices = { { 0, 0, 0 }, { 0, 0, PLANE_SIZE }, { PLANE_SIZE, 0, PLANE_SIZE },
 					 { 0, 0, 0 }, { PLANE_SIZE, 0, PLANE_SIZE }, { PLANE_SIZE, 0, 0 } },
-		texcoords = { { 0, 0 }, { 0, ts }, { ts, ts },
-					  { 0, 0 }, { ts, ts }, { ts, 0 } },
+		texcoords = { { 0, 0 }, { 0, PLANE_SIZE }, { PLANE_SIZE, PLANE_SIZE },
+					  { 0, 0 }, { PLANE_SIZE, PLANE_SIZE }, { PLANE_SIZE, 0 } },
 		texcoords2 = { { 0, 0 }, { 0, 1 }, { 1, 1 },
 					   { 0, 0 }, { 1, 1 }, { 1, 0 } },
 		colors = { RL.WHITE, RL.WHITE, RL.WHITE,
@@ -80,7 +77,7 @@ function RL.init()
 		},
 	}
 	material = RL.CreateMaterial( materialData )
-	matrix = RL.MatrixMultiply( RL.MatrixIdentity(), RL.MatrixTranslate( { -4, 0, -4 } ) )
+	matrix = RL.MatrixTranslate( { -PLANE_SIZE / 2, 0, -PLANE_SIZE / 2 } )
 end
 
 function RL.update( delta )

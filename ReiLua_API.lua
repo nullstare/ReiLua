@@ -2033,7 +2033,7 @@ function RL.GetAutomationEventListCapacity( list ) end
 ---@return any count 
 function RL.GetAutomationEventListCount( list ) end
 
----Get automation event from automation event list
+---Get automation event from automation event list. Return as lightuserdata
 ---- Failure return nil
 ---- Success return AutomationEvent
 ---@param list any
@@ -5298,6 +5298,12 @@ function RL.GetMusicTimeLength( music ) end
 function RL.GetMusicTimePlayed( music ) end
 
 -- Math - Utils
+
+---Round float value
+---- Success return float
+---@param value number
+---@return any result 
+function RL.Round( value ) end
 
 ---Clamp float value
 ---- Success return float

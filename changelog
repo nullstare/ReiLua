@@ -2,13 +2,8 @@
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0
 ------------------------------------------------------------------------
 KEY CHANGES:
-	- CHANGE: GetBufferData takes also position and length arguments.
-	- ADDED: LoadImageFromData.
 	- CHANGE: Process renamed to update to be more inline with naming of raylib and common convention.
-	- ADDED: Raygui lib tooltip.
 	- ADDED: apiScanner.lua for searching unimplemented functions from raylib.
-	- ADDED & CHANGE: ImageText. ImageTextEx is now equivalent to raylib function and old ImageText.
-	- ADDED & CHANGE: MeasureText. MeasureTextEx is now equivalent to raylib function and old MeasureText.
 	- ADDED Automation events.
 
 DETAILED CHANGES:
@@ -32,6 +27,13 @@ DETAILED CHANGES:
 	- ADDED: Custom frame control functions.
 	- REMOVED: GetPixelColor. Deviates too much from raylib function.
 	- ADDED: EnableEventWaiting and DisableEventWaiting.
+	- CHANGE: GetBufferData takes also position and length arguments.
+	- ADDED & CHANGE: ImageText. ImageTextEx is now equivalent to raylib function and old ImageText.
+	- ADDED & CHANGE: MeasureText. MeasureTextEx is now equivalent to raylib function and old MeasureText.
+	- ADDED: LoadImageFromData.
+	- ADDED: Raygui lib tooltip.
+	- ADDED: Round.
+	- ADDED: PubSub lib.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

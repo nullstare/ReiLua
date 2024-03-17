@@ -248,4 +248,6 @@ function RL.draw()
 		0.0,
 		RL.WHITE
 	)
+
+	RL.DrawFPS( { 20, 20 } )
 end

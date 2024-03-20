@@ -10,6 +10,8 @@ Raygui = require( "raygui" )
 
 require( "sprite_button" ):register( Raygui )
 require( "property_list" ):register( Raygui )
+require( "tree_view" ):register( Raygui )
+require( "tree_item" ):register( Raygui )
 
 Gui = Raygui:new()
 
@@ -72,11 +74,9 @@ local function addPropertyList()
 	PropertyList = Gui:PropertyList(
 		Rect:new( 20, 20, 256, 328 ),
 		"Property List",
-		-- Callback.
-		nil,
-		-- Grab callback.
-		function( self ) Gui:set2Top( self ) end,
-		nil,
+		nil, -- Callback.
+		function( self ) Gui:set2Top( self ) end, -- Grab callback.
+		nil, -- Drag callback.
 		{
 			properties = {
 				-- { RL.SCROLLBAR, RL.ARROWS_VISIBLE, RL.ARROWS_VISIBLE },
@@ -240,6 +240,42 @@ local function addPropertyList()
 	end
 end
 
+local function selected( controls )
+	for i, control in ipairs( controls ) do
+		print( i, control.text, control._id )
+	end
+end
+
+local function addTreeView()
+	TreeView = Gui:TreeView(
+		Rect:new( 600, 20, 256, 328 ),
+		-- Rect:new( 600, 20, 256, 600 ),
+		"Tree View",
+		function( controls ) selected( controls ) end, -- Callback.
+		function( self ) Gui:set2Top( self ) end, -- Grab callback.
+		nil, -- Drag callback.
+		{
+			properties = {
+				-- { RL.SCROLLBAR, RL.ARROWS_VISIBLE, RL.ARROWS_VISIBLE },
+				{ RL.LISTVIEW, RL.BORDER_COLOR_FOCUSED, RL.GuiGetStyle( RL.LISTVIEW, RL.BORDER_COLOR_NORMAL ) },
+				{ RL.LISTVIEW, RL.BORDER_COLOR_PRESSED, RL.GuiGetStyle( RL.LISTVIEW, RL.BORDER_COLOR_NORMAL ) },
+			}
+		}
+	)
+	-- Items.
+	
+	local folder = TreeView:addItem( RL.GuiIconText( 1, "Images" ) )
+	local folderEmpty = TreeView:addItem( RL.GuiIconText( 1, "Empty Folder" ) )
+	local folder2 = TreeView:addItem( RL.GuiIconText( 1, "More images" ), folder )
+	TreeView:addItem( RL.GuiIconText( 12, "Cat.png" ), folder )
+	TreeView:addItem( RL.GuiIconText( 12, "Dog.png" ), folder2 )
+	TreeView:addItem( RL.GuiIconText( 12, "Horse.png" ), folder2 )
+
+	for i = 0, 10 do
+		TreeView:addItem( RL.GuiIconText( 12, "Duck"..i..".png" ), folder2 )
+	end
+end
+
 function RL.init()
 	local monitor = 0
 	local mPos = Vec2:new( RL.GetMonitorPosition( monitor ) )
@@ -264,6 +300,7 @@ function RL.init()
 
 	addSpriteButtons()
 	addPropertyList()
+	addTreeView()
 end
 
 function RL.update( delta )

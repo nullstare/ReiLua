@@ -54,7 +54,7 @@ WindowBox.__index = WindowBox
 
 function WindowBox:new( bounds, text, callback, grabCallback, dragCallback, styles, tooltip )
 	local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -72,14 +72,14 @@ function WindowBox:new( bounds, text, callback, grabCallback, dragCallback, styl
 end
 
 function WindowBox:update()
-	return self._parent:drag( self )
+	return self._gui:drag( self )
 end
 
 function WindowBox:draw()
 	local result = RL.GuiWindowBox( self.bounds, self.text )
 
 	if result == 1 then
-		-- //TODO Could add self._parent:clickedInBounds( closeButtonBounds )
+		-- //TODO Could add self._gui:clickedInBounds( closeButtonBounds )
 		if self.callback ~= nil then
 			self.callback( self )
 		end
@@ -98,7 +98,7 @@ GroupBox.__index = GroupBox
 
 function GroupBox:new( bounds, text, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -132,7 +132,7 @@ Line.__index = Line
 
 function Line:new( bounds, text, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -166,7 +166,7 @@ Panel.__index = Panel
 
 function Panel:new( bounds, text, grabCallback, dragCallback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -183,7 +183,7 @@ function Panel:new( bounds, text, grabCallback, dragCallback, styles, tooltip )
 end
 
 function Panel:update()
-    return self._parent:drag( self )
+    return self._gui:drag( self )
 end
 
 function Panel:draw()
@@ -203,7 +203,7 @@ GuiTabBar.__index = GuiTabBar
 
 function GuiTabBar:new( bounds, text, active, callback, closeCallback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -230,7 +230,7 @@ function GuiTabBar:draw()
 	result, self.active = RL.GuiTabBar( self.bounds, self.text, self.active )
 
 	if self.active ~= oldActive then
-		if not self._parent:clickedInBounds( self.bounds ) then
+		if not self._gui:clickedInBounds( self.bounds ) then
 			self.active = oldActive
 			return
 		end
@@ -239,7 +239,7 @@ function GuiTabBar:draw()
 			self.callback( self )
 		end
 	end
-	if 0 <= result and self.closeCallback ~= nil and self._parent:clickedInBounds( self.bounds ) then
+	if 0 <= result and self.closeCallback ~= nil and self._gui:clickedInBounds( self.bounds ) then
 		self.closeCallback( self, result )
 	end
 end
@@ -257,7 +257,7 @@ ScrollPanel.__index = ScrollPanel
 
 function ScrollPanel:new( bounds, text, content, scroll, callback, grabCallback, dragCallback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -278,7 +278,7 @@ function ScrollPanel:new( bounds, text, content, scroll, callback, grabCallback,
 end
 
 function ScrollPanel:update()
-    return self._parent:drag( self )
+    return self._gui:drag( self )
 end
 
 function ScrollPanel:draw()
@@ -288,7 +288,7 @@ function ScrollPanel:draw()
 	self.scroll:set( scroll )
 
 	if self.scroll ~= oldScroll then
-		self._parent:checkScrolling()
+		self._gui:checkScrolling()
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -312,7 +312,7 @@ Label.__index = Label
 
 function Label:new( bounds, text, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -346,7 +346,7 @@ Button.__index = Button
 
 function Button:new( bounds, text, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -367,7 +367,7 @@ end
 function Button:draw()
     local result = RL.GuiButton( self.bounds, self.text )
 
-    if result == 1 and self.callback ~= nil and self._parent:clickedInBounds( self.bounds ) then
+    if result == 1 and self.callback ~= nil and self._gui:clickedInBounds( self.bounds ) then
         self.callback( self )
     end
 end
@@ -385,7 +385,7 @@ LabelButton.__index = LabelButton
 
 function LabelButton:new( bounds, text, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -406,7 +406,7 @@ end
 function LabelButton:draw()
     local result = RL.GuiLabelButton( self.bounds, self.text )
 
-    if result == 1 and self.callback ~= nil and self._parent:clickedInBounds( self.bounds ) then
+    if result == 1 and self.callback ~= nil and self._gui:clickedInBounds( self.bounds ) then
         self.callback( self )
     end
 end
@@ -424,7 +424,7 @@ Toggle.__index = Toggle
 
 function Toggle:new( bounds, text, active, callback, styles, tooltip )
 	local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
 	object.bounds = bounds:clone()
 	object.text = text
@@ -449,7 +449,7 @@ function Toggle:draw()
 	_, self.active = RL.GuiToggle( self.bounds, self.text, self.active )
 
     if self.active ~= oldActive then
-		if not self._parent:clickedInBounds( self.bounds ) then
+		if not self._gui:clickedInBounds( self.bounds ) then
 			self.active = oldActive
 			return
 		end
@@ -473,7 +473,7 @@ ToggleGroup.__index = ToggleGroup
 
 function ToggleGroup:new( bounds, text, active, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -546,7 +546,7 @@ function ToggleGroup:draw()
 		local inBounds = false
 	
 		for _, bounds in ipairs( self.focusBounds ) do
-			if self._parent:clickedInBounds( bounds ) then
+			if self._gui:clickedInBounds( bounds ) then
 				inBounds = true
 				break
 			end
@@ -578,7 +578,7 @@ CheckBox.__index = CheckBox
 
 function CheckBox:new( bounds, text, checked, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -611,7 +611,7 @@ function CheckBox:draw()
 	self._focusBoundsOffset:set( self.focusBounds.x - self.bounds.x, self.focusBounds.y - self.bounds.y )
 
     if self.checked ~= oldChecked then
-		if not self._parent:clickedInBounds( self.focusBounds ) then
+		if not self._gui:clickedInBounds( self.focusBounds ) then
 			self.checked = oldChecked
 		end
 
@@ -636,7 +636,7 @@ ComboBox.__index = ComboBox
 
 function ComboBox:new( bounds, text, active, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -661,7 +661,7 @@ function ComboBox:draw()
 	_, self.active = RL.GuiComboBox( self.bounds, self.text, self.active )
 
     if self.active ~= oldActive then
-		if not self._parent:clickedInBounds( self.bounds ) then
+		if not self._gui:clickedInBounds( self.bounds ) then
 			self.active = oldActive
 			return
 		end
@@ -685,7 +685,7 @@ DropdownBox.__index = DropdownBox
 
 function DropdownBox:new( bounds, text, active, editMode, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -752,7 +752,7 @@ Spinner.__index = Spinner
 
 function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callback, styles, tooltip )
 	local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 	
 	object.bounds = bounds:clone()
 	object.text = text
@@ -793,11 +793,11 @@ function Spinner:draw()
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
     if result == 1 then
-		self._parent:editMode( self.editMode )
+		self._gui:editMode( self.editMode )
 		self.editMode = not self.editMode
     end
 	if self.value ~= oldValue then
-		if not self._parent:clickedInBounds( self.bounds ) then
+		if not self._gui:clickedInBounds( self.bounds ) then
 			self.value = oldValue
 			return
 		end
@@ -823,7 +823,7 @@ ValueBox.__index = ValueBox
 
 function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 	
 	object.bounds = bounds:clone()
 	object.text = text
@@ -864,7 +864,7 @@ function ValueBox:draw()
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
     if result == 1 then
-		self._parent:editMode( self.editMode )
+		self._gui:editMode( self.editMode )
 		self.editMode = not self.editMode
     end
 	if self.value ~= oldValue and self.callback ~= nil then
@@ -887,7 +887,7 @@ TextBox.__index = TextBox
 
 function TextBox:new( bounds, text, textSize, editMode, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -921,7 +921,7 @@ function TextBox:draw()
 		RL.EndScissorMode()
 	end
     if result == 1 then
-		self._parent:editMode( self.editMode )
+		self._gui:editMode( self.editMode )
 		self.editMode = not self.editMode
 
 		if not self.editMode and self.callback ~= nil then
@@ -943,7 +943,7 @@ Slider.__index = Slider
 
 function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 	
 	object.bounds = bounds:clone()
 	object.textLeft = textLeft
@@ -980,11 +980,11 @@ function Slider:draw()
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
     if self.value ~= oldValue then
-		if not self._parent:clickedInBounds( self.bounds ) then
+		if not self._gui:clickedInBounds( self.bounds ) then
 			self.value = oldValue
 			return
 		end
-		self._parent:checkScrolling()
+		self._gui:checkScrolling()
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -1007,7 +1007,7 @@ SliderBar.__index = SliderBar
 
 function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.textLeft = textLeft
@@ -1044,11 +1044,11 @@ function SliderBar:draw()
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
 	if self.value ~= oldValue then
-		if not self._parent:clickedInBounds( self.bounds ) then
+		if not self._gui:clickedInBounds( self.bounds ) then
 			self.value = oldValue
 			return
 		end
-		self._parent:checkScrolling()
+		self._gui:checkScrolling()
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -1071,7 +1071,7 @@ ProgressBar.__index = ProgressBar
 
 function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.textLeft = textLeft
@@ -1108,7 +1108,7 @@ function ProgressBar:draw()
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 	
     if self.value ~= oldValue then
-		if not self._parent:clickedInBounds( self.bounds ) then
+		if not self._gui:clickedInBounds( self.bounds ) then
 			self.value = oldValue
 			return
 		end
@@ -1134,7 +1134,7 @@ StatusBar.__index = StatusBar
 
 function StatusBar:new( bounds, text, styles, tooltip )
 	local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
 	object.bounds = bounds:clone()
 	object.text = text
@@ -1168,7 +1168,7 @@ DummyRec.__index = DummyRec
 
 function DummyRec:new( bounds, text, styles, tooltip )
 	local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -1202,7 +1202,7 @@ Grid.__index = Grid
 
 function Grid:new( bounds, text, spacing, subdivs, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -1252,7 +1252,7 @@ ListView.__index = ListView
 
 function ListView:new( bounds, text, scrollIndex, active, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -1283,7 +1283,7 @@ function ListView:draw()
 	_, self.scrollIndex, self.active = RL.GuiListView( self.bounds, self.text, self.scrollIndex, self.active )
 
 	if self.scrollIndex ~= oldScrollIndex then
-		self._parent:checkScrolling()
+		self._gui:checkScrolling()
 	end
 	if oldActive ~= self.active and self.callback ~= nil then
 		self.callback( self )
@@ -1303,7 +1303,7 @@ ListViewEx.__index = ListViewEx
 
 function ListViewEx:new( bounds, text, scrollIndex, active, focus, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -1335,7 +1335,7 @@ function ListViewEx:draw()
 	_, self.scrollIndex, self.active, self.focus = RL.GuiListViewEx( self.bounds, self.text, self.scrollIndex, self.active, self.focus )
 
 	if self.scrollIndex ~= oldScrollIndex then
-		self._parent:checkScrolling()
+		self._gui:checkScrolling()
 	end
 	if oldActive ~= self.active and self.callback ~= nil then
 		self.callback( self )
@@ -1355,7 +1355,7 @@ MessageBox.__index = MessageBox
 
 function MessageBox:new( bounds, title, message, buttons, callback, grabCallback, dragCallback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.title = title
@@ -1380,13 +1380,13 @@ function MessageBox:getItem( id )
 end
 
 function MessageBox:update()
-	return self._parent:drag( self )
+	return self._gui:drag( self )
 end
 
 function MessageBox:draw()
 	self.buttonIndex = RL.GuiMessageBox( self.bounds, self.title, self.message, self.buttons )
 
-	if 0 <= self.buttonIndex and self.callback ~= nil and self._parent:clickedInBounds( self.bounds ) then
+	if 0 <= self.buttonIndex and self.callback ~= nil and self._gui:clickedInBounds( self.bounds ) then
 		self.callback( self )
 	end
 end
@@ -1404,7 +1404,7 @@ TextInputBox.__index = TextInputBox
 
 function TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callback, grabCallback, dragCallback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.title = title
@@ -1432,13 +1432,13 @@ function TextInputBox:getItem( id )
 end
 
 function TextInputBox:update()
-	return self._parent:drag( self )
+	return self._gui:drag( self )
 end
 
 function TextInputBox:draw()
 	self.buttonIndex, self.text, self.secretViewActive = RL.GuiTextInputBox( self.bounds, self.title, self.message, self.buttons, self.text, self.textMaxSize, self.secretViewActive )
 
-	if 0 <= self.buttonIndex and self.callback ~= nil and self._parent:clickedInBounds( self.bounds ) then
+	if 0 <= self.buttonIndex and self.callback ~= nil and self._gui:clickedInBounds( self.bounds ) then
 		self.callback( self )
 	end
 end
@@ -1456,7 +1456,7 @@ ColorPicker.__index = ColorPicker
 
 function ColorPicker:new( bounds, text, color, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -1496,11 +1496,11 @@ function ColorPicker:draw()
 	self.color = Color:new( color )
 
 	if self.color ~= oldColor then
-		if not self._parent:clickedInBounds( self.focusBounds ) then
+		if not self._gui:clickedInBounds( self.focusBounds ) then
 			self.color = oldColor
 			return
 		end
-		self._parent:checkScrolling()
+		self._gui:checkScrolling()
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -1522,7 +1522,7 @@ ColorPanel.__index = ColorPanel
 
 function ColorPanel:new( bounds, text, color, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -1548,7 +1548,7 @@ function ColorPanel:draw()
 	self.color = Color:new( color )
 
 	if oldColor ~= self.color then
-		if not self._parent:clickedInBounds( self.bounds ) then
+		if not self._gui:clickedInBounds( self.bounds ) then
 			self.color = oldColor
 			return
 		end
@@ -1572,7 +1572,7 @@ ColorBarAlpha.__index = ColorBarAlpha
 
 function ColorBarAlpha:new( bounds, text, alpha, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -1596,11 +1596,11 @@ function ColorBarAlpha:draw()
 	_, self.alpha = RL.GuiColorBarAlpha( self.bounds, self.text, self.alpha )
 
 	if self.alpha ~= oldAlpha then
-		if not self._parent:clickedInBounds( self.bounds ) then
+		if not self._gui:clickedInBounds( self.bounds ) then
 			self.alpha = oldAlpha
 			return
 		end
-		self._parent:checkScrolling()
+		self._gui:checkScrolling()
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -1621,7 +1621,7 @@ ColorBarHue.__index = ColorBarHue
 
 function ColorBarHue:new( bounds, text, value, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -1645,11 +1645,11 @@ function ColorBarHue:draw()
 	_, self.value = RL.GuiColorBarHue( self.bounds, self.text, self.value )
 
 	if self.value ~= oldValue then
-		if not self._parent:clickedInBounds( self.bounds ) then
+		if not self._gui:clickedInBounds( self.bounds ) then
 			self.value = oldValue
 			return
 		end
-		self._parent:checkScrolling()
+		self._gui:checkScrolling()
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -1670,7 +1670,7 @@ GuiScrollBar.__index = GuiScrollBar
 
 function GuiScrollBar:new( bounds, value, minValue, maxValue, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.value = value
@@ -1696,11 +1696,11 @@ function GuiScrollBar:draw()
 	self.value = RL.GuiScrollBar( self.bounds, self.value, self.minValue, self.maxValue )
 
 	if self.value ~= oldValue then
-		if not self._parent:clickedInBounds( self.bounds ) then
+		if not self._gui:clickedInBounds( self.bounds ) then
 			self.value = oldValue
 			return
 		end
-		self._parent:checkScrolling()
+		self._gui:checkScrolling()
 
 		if self.callback ~= nil then
 			self.callback( self )
@@ -1764,7 +1764,7 @@ function Raygui:update()
 		self:drag( self.dragging )
 		return
 	end
-	-- Set mouse ofset if gui is for example embedded to some control.
+	-- Set mouse offset if gui is for example embedded to some control.
 	RL.SetMouseOffset( self.mouseOffset )
 
 	if RL.IsMouseButtonPressed( RL.MOUSE_BUTTON_LEFT ) then
@@ -2012,7 +2012,7 @@ end
 -- Control add functions.
 
 function Raygui:addControl( control )
-	control._parent = self
+	control._gui = self
 	-- self:applyStyles( control )
 	self:drawControl( control )
 	table.insert( self.controls, control )

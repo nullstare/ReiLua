@@ -34,6 +34,7 @@ DETAILED CHANGES:
 	- ADDED: Raygui lib tooltip.
 	- ADDED: Round.
 	- ADDED: PubSub lib.
+	- ADDED: Raygui lib tree view.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

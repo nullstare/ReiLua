@@ -3,7 +3,7 @@ SpriteButton.__index = SpriteButton
 
 function SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, callback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
     object.bounds = bounds:clone()
     object.text = text
@@ -21,12 +21,11 @@ function SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, c
 end
 
 function SpriteButton:update()
-	-- print( self.tooltip )
     return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function SpriteButton:draw()
-	if RL.IsMouseButtonDown( RL.MOUSE_BUTTON_LEFT ) and self:update() and not RL.GuiIsLocked() and not self._parent.scrolling then
+	if RL.IsMouseButtonDown( RL.MOUSE_BUTTON_LEFT ) and self:update() and not RL.GuiIsLocked() and not self._gui.scrolling then
 		RL.DrawTextureNPatchRepeat( self.buttonTexture, self.nPatchPressed, self.bounds, { 0, 0 }, 0.0, RL.WHITE )
 	else
 		RL.DrawTextureNPatchRepeat( self.buttonTexture, self.nPatchNormal, self.bounds, { 0, 0 }, 0.0, RL.WHITE )
@@ -34,7 +33,7 @@ function SpriteButton:draw()
 
 	local result = RL.GuiLabelButton( self.bounds, self.text )
 
-    if result == 1 and self.callback ~= nil and self._parent:clickedInBounds( self.bounds ) then
+    if result == 1 and self.callback ~= nil and self._gui:clickedInBounds( self.bounds ) then
 		self.callback( self )
     end
 end

@@ -1,25 +1,15 @@
 local PropertyList = {}
 PropertyList.__index = PropertyList
 
-local RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT = 24
-
 function PropertyList:new( bounds, text, callback, grabCallback, dragCallback, styles, tooltip )
     local object = setmetatable( {}, self )
-	object._parent = nil
+	object._gui = nil
 
-	local scrollBarWidth = RL.GuiGetStyle( RL.LISTVIEW, RL.SCROLLBAR_WIDTH )
-	local borderWidth = RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_WIDTH )
 	object.padding = 4 -- Content edges.
 	object.spacing = 4 -- Between controls.
 
     object.bounds = bounds:clone()
     object.text = text
-    object.content = Rect:new( 
-		0,
-		RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT,
-		bounds.width - scrollBarWidth - object.padding * 2 - borderWidth * 2,
-		bounds.height - scrollBarWidth - object.padding * 2 - borderWidth * 2
-	)
     object.scroll = Vec2:new()
 	object.view = Rect:new()
     object.callback = callback
@@ -31,19 +21,17 @@ function PropertyList:new( bounds, text, callback, grabCallback, dragCallback, s
 	object.gui = Raygui:new() -- Contains full independent gui system.
 	object.controls = {}
 
-	-- Set initial view.
-	local _, _, view = RL.GuiScrollPanel( object.bounds, object.text, object.content, object.scroll, object.view )
-	object.view = Rect:new( view )
-
-	object.gui.view = Rect:new( 0, 0, object.view.width, object.view.height )
-	object.framebufferSize = Vec2:new( object.bounds.width, object.bounds.height - RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT )
-	object.framebuffer = RL.LoadRenderTexture( object.framebufferSize )
+	-- Set in setSize.
+	object.framebufferSize = nil
+	object.framebuffer = nil
+	object.defaultControlSize = nil
 
 	object.visible = true
 	object.disabled = false
 	object.draggable = true
 	object.mouseScale = 1 -- Set this if drawing in different size to render texture for example.
-	object.defaultControlSize = Vec2:new( object.content.width, 22 )
+
+	object:setSize( Vec2:new( object.bounds.width, object.bounds.height ) )
 
 	object._forceCheckScroll = false
 	object._posY = 0 -- In control list update.
@@ -61,7 +49,22 @@ local function getControlBounds( control )
 	return control.viewBounds or control.focusBounds or control.bounds
 end
 
+local function setGroupText( text, active )
+	if active then
+		return RL.GuiIconText( 120, text )
+	else
+		return RL.GuiIconText( 119, text )
+	end
+end
+
 function PropertyList:updateControl( control )
+	if control._defaultWidth then
+		control.bounds.width = self:getDefaultBounds().width
+	end
+	if control._defaultHeight then
+		control.bounds.height = self:getDefaultBounds().height
+	end
+
 	if control.visible then
 		control:setPosition( Vec2:new( control.bounds.x, self._posY ) )
 		local bounds = getControlBounds( control )
@@ -82,6 +85,8 @@ function PropertyList:updateControl( control )
 
 			self:updateControl( groupControl )
 		end
+
+		control.text = setGroupText( control.text:sub( 6 ), control.active ) -- Sub skips icon.
 	end
 	self.gui:set2Back( control )
 end
@@ -106,8 +111,11 @@ end
 function PropertyList:addControl( control, group, noYAdvance )
 	control._noYAdvance = noYAdvance
 
-	if control.bounds.width == 0 or control.bounds.height == 0 then
-		control.bounds = self:getDefaultBounds()
+	if control.bounds.width == 0 then
+		control._defaultWidth = true -- Set defaultWidth on updateControl.
+	end
+	if control.bounds.height == 0 then
+		control._defaultHeight = true -- Set defaultHeight on updateControl.
 	end
 	if control.bounds.x == 0 then
 		control.bounds.x = self.padding
@@ -121,14 +129,6 @@ function PropertyList:addControl( control, group, noYAdvance )
 
 	self:updateContent()
 	return control
-end
-
-local function setGroupText( text, active )
-	if active then
-		return RL.GuiIconText( 120, text )
-	else
-		return RL.GuiIconText( 119, text )
-	end
 end
 
 function PropertyList:addGroup( name, active, group )
@@ -148,6 +148,8 @@ function PropertyList:addGroup( name, active, group )
 		}
 	)
 	control._controls = {} -- Prefix _ to try to prevent clashing with control definition.
+	control._defaultWidth = true -- Set defaultWidth on updateControl.
+	control._defaultHeight = true -- Set defaultHeight on updateControl.
 
 	if group ~= nil then
 		table.insert( group._controls, control )
@@ -160,7 +162,7 @@ function PropertyList:addGroup( name, active, group )
 end
 
 function PropertyList:update()
-	if not RL.CheckCollisionRecs( self.view, RL.GetMousePosition() ) then
+	if not self.view:checkCollisionPoint( RL.GetMousePosition() ) then
 		self.gui.locked = true
 	else
 		self.gui.locked = false
@@ -174,7 +176,7 @@ function PropertyList:update()
 		self.gui:draw()
 	RL.EndTextureMode()
 
-    return self._parent:drag( self )
+    return self._gui:drag( self )
 end
 
 function PropertyList:draw()
@@ -185,7 +187,7 @@ function PropertyList:draw()
 
 	if self.scroll ~= oldScroll or self._forceCheckScroll then
 		if not self._forceCheckScroll then
-			self._parent:checkScrolling()
+			self._gui:checkScrolling()
 		end
 		self._forceCheckScroll = false
 
@@ -216,6 +218,35 @@ function PropertyList:setPosition( pos )
 	self.bounds.y = pos.y
 
 	self:updateMouseOffset()
+end
+
+function PropertyList:setSize( size )
+	self.bounds.width = size.x
+	self.bounds.height = size.y
+
+	local scrollBarWidth = RL.GuiGetStyle( RL.LISTVIEW, RL.SCROLLBAR_WIDTH )
+	local borderWidth = RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_WIDTH )
+
+	self.content = Rect:new( 
+		0,
+		self.gui.RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT,
+		self.bounds.width - scrollBarWidth - self.padding * 2 - borderWidth * 2,
+		self.bounds.height - scrollBarWidth - self.padding * 2 - borderWidth * 2
+	)
+	self.defaultControlSize = Vec2:new( self.content.width, 22 )
+
+	local _, _, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
+	self.view = Rect:new( view )
+
+	self.gui.view = Rect:new( 0, 0, self.view.width, self.view.height )
+	self.framebufferSize = Vec2:new( self.bounds.width, self.bounds.height - self.gui.RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT )
+
+	if self.framebuffer ~= nil and not RL.IsGCUnloadEnabled() then
+		RL.UnloadRenderTexture( self.framebuffer )
+	end
+	self.framebuffer = RL.LoadRenderTexture( self.framebufferSize )
+
+	self:updateContent()
 end
 
 function PropertyList:register( gui )

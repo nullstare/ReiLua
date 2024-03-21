@@ -37,6 +37,8 @@ function TreeView:new( bounds, text, callbacks, styles, tooltip )
 	object.visible = true
 	object.disabled = false
 	object.draggable = true
+	object.allowMove = true
+	object.allowMultiselect = true
 
 	object.mouseScale = 1 -- Set this if drawing in different size to render texture for example.
 	object.selectedItems = {}
@@ -191,7 +193,7 @@ function TreeView:itemSelect( item )
 
 	local moveItems = {}
 
-	if self._movingItem ~= self.MOVE_ITEM_NONE then
+	if self.allowMove and self._movingItem ~= self.MOVE_ITEM_NONE then
 
 		for i = #self.selectedItems, 1, -1 do
 			local moveItem = self.selectedItems[i]
@@ -244,10 +246,12 @@ function TreeView:itemSelect( item )
 
 	local mode = self.SINGLE_SELECT
 	
-	if RL.IsKeyDown( RL.KEY_LEFT_CONTROL ) or RL.IsKeyDown( RL.KEY_RIGHT_CONTROL ) then
-		mode = self.MULTI_SELECT
-	elseif RL.IsKeyDown( RL.KEY_LEFT_SHIFT ) or RL.IsKeyDown( RL.KEY_RIGHT_SHIFT ) then
-		mode = self.RANGE_SELECT
+	if self.allowMultiselect then
+		if RL.IsKeyDown( RL.KEY_LEFT_CONTROL ) or RL.IsKeyDown( RL.KEY_RIGHT_CONTROL ) then
+			mode = self.MULTI_SELECT
+		elseif RL.IsKeyDown( RL.KEY_LEFT_SHIFT ) or RL.IsKeyDown( RL.KEY_RIGHT_SHIFT ) then
+			mode = self.RANGE_SELECT
+		end
 	end
 
 	if self._lastActiveItem ~= nil then
@@ -298,7 +302,7 @@ function TreeView:update()
 		
 		self.gui:draw()
 
-		if RL.IsMouseButtonDown( RL.MOUSE_BUTTON_LEFT ) and self._clickedItem ~= nil
+		if self.allowMove and RL.IsMouseButtonDown( RL.MOUSE_BUTTON_LEFT ) and self._clickedItem ~= nil
 		and not mouseInClickedItem and 0 < self.gui.focused then
 			local focusBounds = self.gui.controls[ self.gui.focused ].bounds
 			local relY = ( guiMousePos.y - focusBounds.y ) / focusBounds.height

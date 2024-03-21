@@ -197,7 +197,6 @@ function TreeView:itemSelect( item )
 
 		for i = #self.selectedItems, 1, -1 do
 			local moveItem = self.selectedItems[i]
-			-- print( moveItem.text, "moveItem._id", moveItem._id, item.text, "item._id", item._id )
 
 			if moveItem ~= item and not self:isChild( moveItem, item ) then
 				local parentControls = self.controls
@@ -206,13 +205,7 @@ function TreeView:itemSelect( item )
 					parentControls = moveItem._parent.controls
 				end
 
-				local pos = #self.selectedItems - i + 1
-
-				if moveItem._parent == item._parent and moveItem._childId < item._childId then
-					pos = 1
-				end
-
-				table.insert( moveItems, pos, table.remove( parentControls, moveItem._childId ) )
+				table.insert( moveItems, table.remove( parentControls, moveItem._childId ) )
 			end
 			
 			moveItem.active = false
@@ -228,7 +221,7 @@ function TreeView:itemSelect( item )
 			local offset = 0
 
 			if moveItem._parent == item._parent and moveItem._childId < item._childId then
-				offset = -1
+				offset = -#moveItems
 			end
 
 			if self._movingItem == self.MOVE_ITEM_IN then
@@ -270,7 +263,7 @@ function TreeView:itemSelect( item )
 	end
 
 	if self.callback ~= nil then
-		self.callback( self.selectedItems )
+		-- self.callback( self.selectedItems )
 	end
 end
 

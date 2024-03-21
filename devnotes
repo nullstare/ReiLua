@@ -3,8 +3,7 @@ Current {
 
 Backlog {
 	* Raygui
-		* Icon enums.
-		* Set callbacks to single table?
+		* Set callbacks to single table.
 	* Raygui lib
 		* Check if could remove flickering from changing draw order by making queue for order
 		changing and only change them after everything is drawn.
@@ -20,7 +19,6 @@ Backlog {
 		* Improve Dungeon crawler example by generating custom mesh instead of drawing 3D quads.
 		* Platformer example physics update for true framerate independence.
 	* Android support
-	* Godot scene importer lib.
 }
 
 Bugs {

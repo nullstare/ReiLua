@@ -249,7 +249,6 @@ end
 local function addTreeView()
 	TreeView = Gui:TreeView(
 		Rect:new( 600, 20, 256, 328 ),
-		-- Rect:new( 600, 20, 256, 600 ),
 		"Tree View",
 		function( controls ) selected( controls ) end, -- Callback.
 		function( self ) Gui:set2Top( self ) end, -- Grab callback.

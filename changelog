@@ -5,6 +5,7 @@ KEY CHANGES:
 	- CHANGE: Process renamed to update to be more inline with naming of raylib and common convention.
 	- ADDED: apiScanner.lua for searching unimplemented functions from raylib.
 	- ADDED Automation events.
+	- CHANGE: Raygui lib callbacks to single table.
 
 DETAILED CHANGES:
 	- ADDED: GetBufferElementSize and GetBufferLength.

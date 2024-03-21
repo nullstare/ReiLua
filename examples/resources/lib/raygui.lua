@@ -52,15 +52,13 @@ end
 local WindowBox = {}
 WindowBox.__index = WindowBox
 
-function WindowBox:new( bounds, text, callback, grabCallback, dragCallback, styles, tooltip )
+function WindowBox:new( bounds, text, callbacks, styles, tooltip )
 	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-	object.callback = callback
-	object.grabCallback = grabCallback
-	object.dragCallback = dragCallback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.callbacks = callbacks -- close, grab, drag.
 	
 	object.visible = true
 	object.disabled = false
@@ -80,10 +78,10 @@ function WindowBox:draw()
 
 	if result == 1 then
 		-- //TODO Could add self._gui:clickedInBounds( closeButtonBounds )
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.close ~= nil then
+			self.callbacks.close( self )
 		end
-    end
+	end
 end
 
 function WindowBox:setPosition( pos )
@@ -97,11 +95,11 @@ local GroupBox = {}
 GroupBox.__index = GroupBox
 
 function GroupBox:new( bounds, text, styles, tooltip )
-    local object = setmetatable( {}, self )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
+	object.bounds = bounds:clone()
+	object.text = text
 	object.styles = styles
 	object.tooltip = tooltip
 	
@@ -112,7 +110,7 @@ function GroupBox:new( bounds, text, styles, tooltip )
 end
 
 function GroupBox:update()
-    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function GroupBox:draw()
@@ -131,11 +129,11 @@ local Line = {}
 Line.__index = Line
 
 function Line:new( bounds, text, styles, tooltip )
-    local object = setmetatable( {}, self )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
+	object.bounds = bounds:clone()
+	object.text = text
 	
 	object.visible = true
 	object.disabled = false
@@ -146,7 +144,7 @@ function Line:new( bounds, text, styles, tooltip )
 end
 
 function Line:update()
-    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function Line:draw()
@@ -164,14 +162,13 @@ end
 local Panel = {}
 Panel.__index = Panel
 
-function Panel:new( bounds, text, grabCallback, dragCallback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function Panel:new( bounds, text, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-	object.grabCallback = grabCallback
-	object.dragCallback = dragCallback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.callbacks = callbacks -- grab, drag.
 	
 	object.visible = true
 	object.disabled = false
@@ -183,7 +180,7 @@ function Panel:new( bounds, text, grabCallback, dragCallback, styles, tooltip )
 end
 
 function Panel:update()
-    return self._gui:drag( self )
+	return self._gui:drag( self )
 end
 
 function Panel:draw()
@@ -201,15 +198,14 @@ end
 local GuiTabBar = {}
 GuiTabBar.__index = GuiTabBar
 
-function GuiTabBar:new( bounds, text, active, callback, closeCallback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function GuiTabBar:new( bounds, text, active, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.active = active
-	object.callback = callback
-	object.closeCallback = closeCallback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.active = active
+	object.callbacks = callbacks -- select, close, grab, drag.
 	
 	object.visible = true
 	object.disabled = false
@@ -220,7 +216,7 @@ function GuiTabBar:new( bounds, text, active, callback, closeCallback, styles, t
 end
 
 function GuiTabBar:update()
-    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function GuiTabBar:draw()
@@ -235,12 +231,12 @@ function GuiTabBar:draw()
 			return
 		end
 
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.select ~= nil then
+		self.callbacks.select( self )
 		end
 	end
-	if 0 <= result and self.closeCallback ~= nil and self._gui:clickedInBounds( self.bounds ) then
-		self.closeCallback( self, result )
+	if 0 <= result and self.callbacks.close ~= nil and self._gui:clickedInBounds( self.bounds ) then
+		self.callbacks.close( self, result )
 	end
 end
 
@@ -255,18 +251,16 @@ end
 local ScrollPanel = {}
 ScrollPanel.__index = ScrollPanel
 
-function ScrollPanel:new( bounds, text, content, scroll, callback, grabCallback, dragCallback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function ScrollPanel:new( bounds, text, content, scroll, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.content = content:clone()
-    object.scroll = scroll:clone()
+	object.bounds = bounds:clone()
+	object.text = text
+	object.content = content:clone()
+	object.scroll = scroll:clone()
 	object.view = Rect:new()
-    object.callback = callback
-	object.grabCallback = grabCallback
-	object.dragCallback = dragCallback
+	object.callbacks = callbacks -- scroll, grab, drag.
 	
 	object.visible = true
 	object.disabled = false
@@ -278,7 +272,7 @@ function ScrollPanel:new( bounds, text, content, scroll, callback, grabCallback,
 end
 
 function ScrollPanel:update()
-    return self._gui:drag( self )
+	return self._gui:drag( self )
 end
 
 function ScrollPanel:draw()
@@ -290,8 +284,8 @@ function ScrollPanel:draw()
 	if self.scroll ~= oldScroll then
 		self._gui:checkScrolling()
 
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.scroll ~= nil then
+			self.callbacks.scroll( self )
 		end
 	end
 end
@@ -311,11 +305,11 @@ local Label = {}
 Label.__index = Label
 
 function Label:new( bounds, text, styles, tooltip )
-    local object = setmetatable( {}, self )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
+	object.bounds = bounds:clone()
+	object.text = text
 	
 	object.visible = true
 	object.disabled = false
@@ -326,11 +320,11 @@ function Label:new( bounds, text, styles, tooltip )
 end
 
 function Label:update()
-    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function Label:draw()
-    RL.GuiLabel( self.bounds, self.text )
+	RL.GuiLabel( self.bounds, self.text )
 end
 
 function Label:setPosition( pos )
@@ -344,13 +338,13 @@ end
 local Button = {}
 Button.__index = Button
 
-function Button:new( bounds, text, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function Button:new( bounds, text, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.callback = callback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.callbacks = callbacks -- pressed.
 	
 	object.visible = true
 	object.disabled = false
@@ -361,15 +355,15 @@ function Button:new( bounds, text, callback, styles, tooltip )
 end
 
 function Button:update()
-    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function Button:draw()
-    local result = RL.GuiButton( self.bounds, self.text )
+	local result = RL.GuiButton( self.bounds, self.text )
 
-    if result == 1 and self.callback ~= nil and self._gui:clickedInBounds( self.bounds ) then
-        self.callback( self )
-    end
+	if result == 1 and self.callbacks.pressed ~= nil and self._gui:clickedInBounds( self.bounds ) then
+		self.callbacks.pressed( self )
+	end
 end
 
 function Button:setPosition( pos )
@@ -383,13 +377,13 @@ end
 local LabelButton = {}
 LabelButton.__index = LabelButton
 
-function LabelButton:new( bounds, text, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function LabelButton:new( bounds, text, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.callback = callback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.callbacks = callbacks -- pressed.
 	
 	object.visible = true
 	object.disabled = false
@@ -400,15 +394,15 @@ function LabelButton:new( bounds, text, callback, styles, tooltip )
 end
 
 function LabelButton:update()
-    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function LabelButton:draw()
-    local result = RL.GuiLabelButton( self.bounds, self.text )
+	local result = RL.GuiLabelButton( self.bounds, self.text )
 
-    if result == 1 and self.callback ~= nil and self._gui:clickedInBounds( self.bounds ) then
-        self.callback( self )
-    end
+	if result == 1 and self.callbacks.pressed ~= nil and self._gui:clickedInBounds( self.bounds ) then
+		self.callbacks.pressed( self )
+	end
 end
 
 function LabelButton:setPosition( pos )
@@ -422,14 +416,14 @@ end
 local Toggle = {}
 Toggle.__index = Toggle
 
-function Toggle:new( bounds, text, active, callback, styles, tooltip )
+function Toggle:new( bounds, text, active, callbacks, styles, tooltip )
 	local object = setmetatable( {}, self )
 	object._gui = nil
 
 	object.bounds = bounds:clone()
 	object.text = text
 	object.active = active
-	object.callback = callback
+	object.callbacks = callbacks -- pressed.
 	
 	object.visible = true
 	object.disabled = false
@@ -440,24 +434,24 @@ function Toggle:new( bounds, text, active, callback, styles, tooltip )
 end
 
 function Toggle:update()
-    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function Toggle:draw()
-    local oldActive = self.active
+	local oldActive = self.active
 
 	_, self.active = RL.GuiToggle( self.bounds, self.text, self.active )
 
-    if self.active ~= oldActive then
+	if self.active ~= oldActive then
 		if not self._gui:clickedInBounds( self.bounds ) then
 			self.active = oldActive
 			return
 		end
 
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.pressed ~= nil then
+			self.callbacks.pressed( self )
 		end
-    end
+	end
 end
 
 function Toggle:setPosition( pos )
@@ -471,14 +465,14 @@ end
 local ToggleGroup = {}
 ToggleGroup.__index = ToggleGroup
 
-function ToggleGroup:new( bounds, text, active, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function ToggleGroup:new( bounds, text, active, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.active = active
-    object.callback = callback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.active = active
+	object.callbacks = callbacks -- select.
 	
 	object.visible = true
 	object.disabled = false
@@ -486,15 +480,15 @@ function ToggleGroup:new( bounds, text, active, callback, styles, tooltip )
 	object.viewBounds = bounds:clone()
 	object.styles = styles
 	object.tooltip = tooltip
-    object:updateFocusBounds()
+	object:updateFocusBounds()
 
 	return object
 end
 
 function ToggleGroup:setText( text )
-    self.text = text
+	self.text = text
 
-    self:updateFocusBounds()
+	self:updateFocusBounds()
 end
 
 function ToggleGroup:getItem( id )
@@ -538,11 +532,11 @@ function ToggleGroup:update()
 end
 
 function ToggleGroup:draw()
-    local oldActive = self.active
+	local oldActive = self.active
 
 	_, self.active = RL.GuiToggleGroup( self.bounds, self.text, self.active )
 
-    if self.active ~= oldActive then
+	if self.active ~= oldActive then
 		local inBounds = false
 	
 		for _, bounds in ipairs( self.focusBounds ) do
@@ -557,10 +551,10 @@ function ToggleGroup:draw()
 			return
 		end
 
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.select ~= nil then
+			self.callbacks.select( self )
 		end
-    end
+	end
 end
 
 function ToggleGroup:setPosition( pos )
@@ -576,19 +570,19 @@ end
 local CheckBox = {}
 CheckBox.__index = CheckBox
 
-function CheckBox:new( bounds, text, checked, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function CheckBox:new( bounds, text, checked, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.checked = checked
-    object.callback = callback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.checked = checked
+	object.callbacks = callbacks -- pressed.
 	
 	object.visible = true
 	object.disabled = false
 	object.textBounds = Rect:new()
-    object.focusBounds = bounds:clone()
+	object.focusBounds = bounds:clone()
 	
 	object._focusBoundsOffset = Vec2:new() -- Used in set position.
 	object.styles = styles
@@ -598,11 +592,11 @@ function CheckBox:new( bounds, text, checked, callback, styles, tooltip )
 end
 
 function CheckBox:update()
-    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.focusBounds )
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.focusBounds )
 end
 
 function CheckBox:draw()
-    local oldChecked = self.checked
+	local oldChecked = self.checked
 	local textBounds = nil
 
 	_, self.checked, textBounds = RL.GuiCheckBox( self.bounds, self.text, self.checked )
@@ -610,15 +604,15 @@ function CheckBox:draw()
 	self.focusBounds = self.bounds:fit( self.textBounds )
 	self._focusBoundsOffset:set( self.focusBounds.x - self.bounds.x, self.focusBounds.y - self.bounds.y )
 
-    if self.checked ~= oldChecked then
+	if self.checked ~= oldChecked then
 		if not self._gui:clickedInBounds( self.focusBounds ) then
 			self.checked = oldChecked
 		end
 
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.pressed ~= nil then
+			self.callbacks.pressed( self )
 		end
-    end
+	end
 end
 
 function CheckBox:setPosition( pos )
@@ -634,14 +628,14 @@ end
 local ComboBox = {}
 ComboBox.__index = ComboBox
 
-function ComboBox:new( bounds, text, active, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function ComboBox:new( bounds, text, active, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.active = active
-    object.callback = callback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.active = active
+	object.callbacks = callbacks -- select.
 	
 	object.visible = true
 	object.disabled = false
@@ -652,24 +646,24 @@ function ComboBox:new( bounds, text, active, callback, styles, tooltip )
 end
 
 function ComboBox:update()
-    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function ComboBox:draw()
-    local oldActive = self.active
+	local oldActive = self.active
 
 	_, self.active = RL.GuiComboBox( self.bounds, self.text, self.active )
 
-    if self.active ~= oldActive then
+	if self.active ~= oldActive then
 		if not self._gui:clickedInBounds( self.bounds ) then
 			self.active = oldActive
 			return
 		end
 
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.select ~= nil then
+			self.callbacks.select( self )
 		end
-    end
+	end
 end
 
 function ComboBox:setPosition( pos )
@@ -683,15 +677,15 @@ end
 local DropdownBox = {}
 DropdownBox.__index = DropdownBox
 
-function DropdownBox:new( bounds, text, active, editMode, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function DropdownBox:new( bounds, text, active, editMode, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.active = active
-    object.editMode = editMode
-    object.callback = callback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.active = active
+	object.editMode = editMode
+	object.callbacks = callbacks -- select.
 	
 	object.visible = true
 	object.disabled = false
@@ -730,13 +724,13 @@ function DropdownBox:draw()
 
 	result, self.active = RL.GuiDropdownBox( self.bounds, self.text, self.active, self.editMode )
 
-    if result == 1 then
+	if result == 1 then
 		self.editMode = not self.editMode
 
-		if not self.editMode and self.callback ~= nil then
-			self.callback( self )
+		if not self.editMode and self.callbacks.select ~= nil then
+			self.callbacks.select( self )
 		end
-    end
+	end
 end
 
 function DropdownBox:setPosition( pos )
@@ -750,7 +744,7 @@ end
 local Spinner = {}
 Spinner.__index = Spinner
 
-function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callback, styles, tooltip )
+function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callbacks, styles, tooltip )
 	local object = setmetatable( {}, self )
 	object._gui = nil
 	
@@ -760,7 +754,7 @@ function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callbac
 	object.minValue = minValue
 	object.maxValue = maxValue
 	object.editMode = editMode
-	object.callback = callback
+	object.callbacks = callbacks -- edit.
 	
 	object.visible = true
 	object.disabled = false
@@ -775,7 +769,7 @@ function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callbac
 end
 
 function Spinner:setText( text )
-    self.text = text
+	self.text = text
 end
 
 function Spinner:update()
@@ -792,18 +786,18 @@ function Spinner:draw()
 	self.viewBounds = self.bounds:fit( self.textBounds )
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
-    if result == 1 then
+	if result == 1 then
 		self._gui:editMode( self.editMode )
 		self.editMode = not self.editMode
-    end
+	end
 	if self.value ~= oldValue then
 		if not self._gui:clickedInBounds( self.bounds ) then
 			self.value = oldValue
 			return
 		end
 
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.edit ~= nil then
+			self.callbacks.edit( self )
 		end
 	end
 end
@@ -821,8 +815,8 @@ end
 local ValueBox = {}
 ValueBox.__index = ValueBox
 
-function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 	
 	object.bounds = bounds:clone()
@@ -831,7 +825,7 @@ function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callba
 	object.minValue = minValue
 	object.maxValue = maxValue
 	object.editMode = editMode
-	object.callback = callback
+	object.callbacks = callbacks -- edit.
 	
 	object.visible = true
 	object.disabled = false
@@ -863,12 +857,12 @@ function ValueBox:draw()
 	self.viewBounds = self.bounds:fit( self.textBounds )
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
-    if result == 1 then
+	if result == 1 then
 		self._gui:editMode( self.editMode )
 		self.editMode = not self.editMode
-    end
-	if self.value ~= oldValue and self.callback ~= nil then
-		self.callback( self )
+	end
+	if self.value ~= oldValue and self.callbacks.edit ~= nil then
+		self.callbacks.edit( self )
 	end
 end
 
@@ -885,15 +879,15 @@ end
 local TextBox = {}
 TextBox.__index = TextBox
 
-function TextBox:new( bounds, text, textSize, editMode, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function TextBox:new( bounds, text, textSize, editMode, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.textSize = textSize
-    object.editMode = editMode
-    object.callback = callback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.textSize = textSize
+	object.editMode = editMode
+	object.callbacks = callbacks -- edit.
 	-- Option for preventing text to be drawn outside bounds.
 	object.scissorMode = false
 	object.visible = true
@@ -920,14 +914,14 @@ function TextBox:draw()
 	if self.scissorMode then
 		RL.EndScissorMode()
 	end
-    if result == 1 then
+	if result == 1 then
 		self._gui:editMode( self.editMode )
 		self.editMode = not self.editMode
 
-		if not self.editMode and self.callback ~= nil then
-			self.callback( self )
+		if not self.editMode and self.callbacks.edit ~= nil then
+			self.callbacks.edit( self )
 		end
-    end
+	end
 end
 
 function TextBox:setPosition( pos )
@@ -941,8 +935,8 @@ end
 local Slider = {}
 Slider.__index = Slider
 
-function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 	
 	object.bounds = bounds:clone()
@@ -951,8 +945,8 @@ function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, cal
 	object.value = value
 	object.minValue = minValue
 	object.maxValue = maxValue
-	object.callback = callback
-	
+	object.callbacks = callbacks -- edit.
+
 	object.visible = true
 	object.disabled = false
 	object.textLeftBounds = Rect:new()
@@ -979,17 +973,17 @@ function Slider:draw()
 	self.viewBounds = self.bounds:fit( self.textLeftBounds ):fit( self.textRightBounds )
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
-    if self.value ~= oldValue then
+	if self.value ~= oldValue then
 		if not self._gui:clickedInBounds( self.bounds ) then
 			self.value = oldValue
 			return
 		end
 		self._gui:checkScrolling()
 
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.edit ~= nil then
+			self.callbacks.edit( self )
 		end
-    end
+	end
 end
 
 function Slider:setPosition( pos )
@@ -1005,17 +999,17 @@ end
 local SliderBar = {}
 SliderBar.__index = SliderBar
 
-function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.textLeft = textLeft
-    object.textRight = textRight
-    object.value = value
-    object.minValue = minValue
-    object.maxValue = maxValue
-    object.callback = callback
+	object.bounds = bounds:clone()
+	object.textLeft = textLeft
+	object.textRight = textRight
+	object.value = value
+	object.minValue = minValue
+	object.maxValue = maxValue
+	object.callbacks = callbacks -- edit.
 	
 	object.visible = true
 	object.disabled = false
@@ -1050,8 +1044,8 @@ function SliderBar:draw()
 		end
 		self._gui:checkScrolling()
 
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.edit ~= nil then
+			self.callbacks.edit( self )
 		end
 	end
 end
@@ -1069,17 +1063,17 @@ end
 local ProgressBar = {}
 ProgressBar.__index = ProgressBar
 
-function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.textLeft = textLeft
-    object.textRight = textRight
-    object.value = value
-    object.minValue = minValue
-    object.maxValue = maxValue
-    object.callback = callback
+	object.bounds = bounds:clone()
+	object.textLeft = textLeft
+	object.textRight = textRight
+	object.value = value
+	object.minValue = minValue
+	object.maxValue = maxValue
+	object.callbacks = callbacks -- edit.
 	
 	object.visible = true
 	object.disabled = false
@@ -1107,16 +1101,16 @@ function ProgressBar:draw()
 	self.viewBounds = self.bounds:fit( self.textLeftBounds ):fit( self.textRightBounds )
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 	
-    if self.value ~= oldValue then
+	if self.value ~= oldValue then
 		if not self._gui:clickedInBounds( self.bounds ) then
 			self.value = oldValue
 			return
 		end
 
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.edit ~= nil then
+			self.callbacks.edit( self )
 		end
-    end
+	end
 end
 
 function ProgressBar:setPosition( pos )
@@ -1170,8 +1164,8 @@ function DummyRec:new( bounds, text, styles, tooltip )
 	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
+	object.bounds = bounds:clone()
+	object.text = text
 	
 	object.visible = true
 	object.disabled = false
@@ -1200,15 +1194,15 @@ end
 local Grid = {}
 Grid.__index = Grid
 
-function Grid:new( bounds, text, spacing, subdivs, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function Grid:new( bounds, text, spacing, subdivs, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.spacing = spacing
-    object.subdivs = subdivs
-	object.callback = callback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.spacing = spacing
+	object.subdivs = subdivs
+	object.callbacks = callbacks -- cellChange.
 	
 	object.mouseCell = Vec2:new()
 	object.visible = true
@@ -1230,8 +1224,8 @@ function Grid:draw()
 	_, mouseCell = RL.GuiGrid( self.bounds, self.text, self.spacing, self.subdivs, self.mouseCell )
 	self.mouseCell:set( mouseCell )
 
-	if oldCell ~= self.mouseCell and self.callback ~= nil then
-		self.callback( self )
+	if oldCell ~= self.mouseCell and self.callbacks.cellChange ~= nil then
+		self.callbacks.cellChange( self )
 	end
 end
 
@@ -1250,15 +1244,15 @@ end
 local ListView = {}
 ListView.__index = ListView
 
-function ListView:new( bounds, text, scrollIndex, active, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function ListView:new( bounds, text, scrollIndex, active, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.scrollIndex = scrollIndex
-    object.active = active
-	object.callback = callback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.scrollIndex = scrollIndex
+	object.active = active
+	object.callbacks = callbacks -- select.
 	
 	object.visible = true
 	object.disabled = false
@@ -1285,8 +1279,8 @@ function ListView:draw()
 	if self.scrollIndex ~= oldScrollIndex then
 		self._gui:checkScrolling()
 	end
-	if oldActive ~= self.active and self.callback ~= nil then
-		self.callback( self )
+	if oldActive ~= self.active and self.callbacks.select ~= nil then
+		self.callbacks.select( self )
 	end
 end
 
@@ -1301,16 +1295,16 @@ end
 local ListViewEx = {}
 ListViewEx.__index = ListViewEx
 
-function ListViewEx:new( bounds, text, scrollIndex, active, focus, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function ListViewEx:new( bounds, text, scrollIndex, active, focus, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.scrollIndex = scrollIndex
-    object.active = active
-    object.focus = focus
-	object.callback = callback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.scrollIndex = scrollIndex
+	object.active = active
+	object.focus = focus
+	object.callbacks = callbacks -- select.
 	
 	object.visible = true
 	object.disabled = false
@@ -1337,8 +1331,8 @@ function ListViewEx:draw()
 	if self.scrollIndex ~= oldScrollIndex then
 		self._gui:checkScrolling()
 	end
-	if oldActive ~= self.active and self.callback ~= nil then
-		self.callback( self )
+	if oldActive ~= self.active and self.callbacks.select ~= nil then
+		self.callbacks.select( self )
 	end
 end
 
@@ -1353,17 +1347,15 @@ end
 local MessageBox = {}
 MessageBox.__index = MessageBox
 
-function MessageBox:new( bounds, title, message, buttons, callback, grabCallback, dragCallback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function MessageBox:new( bounds, title, message, buttons, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.title = title
-    object.message = message
-    object.buttons = buttons
-	object.callback = callback
-	object.grabCallback = grabCallback
-	object.dragCallback = dragCallback
+	object.bounds = bounds:clone()
+	object.title = title
+	object.message = message
+	object.buttons = buttons
+	object.callbacks = callbacks -- pressed, grab, drag.
 	
 	object.buttonIndex = -1
 	object.visible = true
@@ -1386,8 +1378,8 @@ end
 function MessageBox:draw()
 	self.buttonIndex = RL.GuiMessageBox( self.bounds, self.title, self.message, self.buttons )
 
-	if 0 <= self.buttonIndex and self.callback ~= nil and self._gui:clickedInBounds( self.bounds ) then
-		self.callback( self )
+	if 0 <= self.buttonIndex and self.callbacks.pressed ~= nil and self._gui:clickedInBounds( self.bounds ) then
+		self.callbacks.pressed( self )
 	end
 end
 
@@ -1402,20 +1394,18 @@ end
 local TextInputBox = {}
 TextInputBox.__index = TextInputBox
 
-function TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callback, grabCallback, dragCallback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.title = title
-    object.message = message
-    object.buttons = buttons
-    object.text = text
-    object.textMaxSize = textMaxSize
-    object.secretViewActive = secretViewActive
-	object.callback = callback
-	object.grabCallback = grabCallback
-	object.dragCallback = dragCallback
+	object.bounds = bounds:clone()
+	object.title = title
+	object.message = message
+	object.buttons = buttons
+	object.text = text
+	object.textMaxSize = textMaxSize
+	object.secretViewActive = secretViewActive
+	object.callbacks = callbacks -- pressed, grab, drag.
 	
 	object.buttonIndex = -1
 	object.visible = true
@@ -1438,8 +1428,8 @@ end
 function TextInputBox:draw()
 	self.buttonIndex, self.text, self.secretViewActive = RL.GuiTextInputBox( self.bounds, self.title, self.message, self.buttons, self.text, self.textMaxSize, self.secretViewActive )
 
-	if 0 <= self.buttonIndex and self.callback ~= nil and self._gui:clickedInBounds( self.bounds ) then
-		self.callback( self )
+	if 0 <= self.buttonIndex and self.callbacks.pressed ~= nil and self._gui:clickedInBounds( self.bounds ) then
+		self.callbacks.pressed( self )
 	end
 end
 
@@ -1454,14 +1444,14 @@ end
 local ColorPicker = {}
 ColorPicker.__index = ColorPicker
 
-function ColorPicker:new( bounds, text, color, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function ColorPicker:new( bounds, text, color, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.color = color
-	object.callback = callback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.color = color
+	object.callbacks = callbacks -- edit.
 	
 	object.visible = true
 	object.disabled = false
@@ -1502,8 +1492,8 @@ function ColorPicker:draw()
 		end
 		self._gui:checkScrolling()
 
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.edit ~= nil then
+			self.callbacks.edit( self )
 		end
 	end
 end
@@ -1520,14 +1510,14 @@ end
 local ColorPanel = {}
 ColorPanel.__index = ColorPanel
 
-function ColorPanel:new( bounds, text, color, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function ColorPanel:new( bounds, text, color, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.color = color
-	object.callback = callback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.color = color
+	object.callbacks = callbacks -- edit.
 	
 	object.visible = true
 	object.disabled = false
@@ -1553,8 +1543,8 @@ function ColorPanel:draw()
 			return
 		end
 
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.edit ~= nil then
+			self.callbacks.edit( self )
 		end
 	end
 end
@@ -1570,14 +1560,14 @@ end
 local ColorBarAlpha = {}
 ColorBarAlpha.__index = ColorBarAlpha
 
-function ColorBarAlpha:new( bounds, text, alpha, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function ColorBarAlpha:new( bounds, text, alpha, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.alpha = alpha
-	object.callback = callback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.alpha = alpha
+	object.callbacks = callbacks -- edit.
 	
 	object.visible = true
 	object.disabled = false
@@ -1602,8 +1592,8 @@ function ColorBarAlpha:draw()
 		end
 		self._gui:checkScrolling()
 
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.edit ~= nil then
+			self.callbacks.edit( self )
 		end
 	end
 end
@@ -1619,14 +1609,14 @@ end
 local ColorBarHue = {}
 ColorBarHue.__index = ColorBarHue
 
-function ColorBarHue:new( bounds, text, value, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function ColorBarHue:new( bounds, text, value, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.value = value
-	object.callback = callback
+	object.bounds = bounds:clone()
+	object.text = text
+	object.value = value
+	object.callbacks = callbacks -- edit.
 	
 	object.visible = true
 	object.disabled = false
@@ -1651,8 +1641,8 @@ function ColorBarHue:draw()
 		end
 		self._gui:checkScrolling()
 
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.edit ~= nil then
+			self.callbacks.edit( self )
 		end
 	end
 end
@@ -1668,15 +1658,15 @@ end
 local GuiScrollBar = {}
 GuiScrollBar.__index = GuiScrollBar
 
-function GuiScrollBar:new( bounds, value, minValue, maxValue, callback, styles, tooltip )
-    local object = setmetatable( {}, self )
+function GuiScrollBar:new( bounds, value, minValue, maxValue, callbacks, styles, tooltip )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.value = value
-    object.minValue = minValue
-    object.maxValue = maxValue
-	object.callback = callback
+	object.bounds = bounds:clone()
+	object.value = value
+	object.minValue = minValue
+	object.maxValue = maxValue
+	object.callbacks = callbacks -- edit.
 	
 	object.visible = true
 	object.disabled = false
@@ -1702,8 +1692,8 @@ function GuiScrollBar:draw()
 		end
 		self._gui:checkScrolling()
 
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.edit ~= nil then
+			self.callbacks.edit( self )
 		end
 	end
 end
@@ -1818,8 +1808,8 @@ function Raygui:drag( control )
 	and mouseOver and mousePos.y - control.bounds.y <= self.RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT then
 		self.grabPos = mousePos - Vec2:new( control.bounds.x, control.bounds.y )
 
-		if control.grabCallback ~= nil then
-			control.grabCallback( control )
+		if control.callbacks.grab ~= nil then
+			control.callbacks.grab( control )
 		end
 		self.dragging = control
 	end
@@ -1830,12 +1820,12 @@ function Raygui:drag( control )
 		end
 		control:setPosition( mousePos - self.grabPos )
 
-		if control.dragCallback ~= nil then
-			control.dragCallback( control )
+		if control.callbacks.drag ~= nil then
+			control.callbacks.drag( control )
 		end
 	end
 
-    return mouseOver
+	return mouseOver
 end
 
 -- Add property before current draw that we can then return them.
@@ -1960,8 +1950,8 @@ function Raygui:editMode( editMode )
 			if control.editMode then
 				control.editMode = false
 	
-				if control.callback ~= nil then
-					control.callback( control )
+				if control.callbacks.edit ~= nil then
+					control.callbacks.edit( control )
 				end
 			end
 		end
@@ -2013,7 +2003,6 @@ end
 
 function Raygui:addControl( control )
 	control._gui = self
-	-- self:applyStyles( control )
 	self:drawControl( control )
 	table.insert( self.controls, control )
 	return control
@@ -2025,13 +2014,11 @@ end
 
 ---@param bounds Rectangle
 ---@param text string
----@param callback function|nil
----@param grabCallback function|nil
----@param dragCallback function|nil
+---@param callbacks table close, grab, drag.
 ---@param styles table|nil
 ---@return table WindowBox
-function Raygui:WindowBox( bounds, text, callback, grabCallback, dragCallback, styles, tooltip )
-	return self:addControl( WindowBox:new( bounds, text, callback, grabCallback, dragCallback, styles, tooltip ) )
+function Raygui:WindowBox( bounds, text, callbacks, styles, tooltip )
+	return self:addControl( WindowBox:new( bounds, text, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
@@ -2052,36 +2039,32 @@ end
 
 ---@param bounds Rectangle
 ---@param text string
----@param grabCallback function|nil
----@param dragCallback function|nil
+---@param callbacks table grab, drag.
 ---@param styles table|nil
 ---@return table Panel
-function Raygui:Panel( bounds, text, grabCallback, dragCallback, styles, tooltip )
-	return self:addControl( Panel:new( bounds, text, grabCallback, dragCallback, styles, tooltip ) )
+function Raygui:Panel( bounds, text, callbacks, styles, tooltip )
+	return self:addControl( Panel:new( bounds, text, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
----@param active boolean
----@param callback function|nil
----@param closeCallback function|nil
+---@param active integer
+---@param callbacks table select, close, grab, drag.
 ---@param styles table|nil
 ---@return table GuiTabBar
-function Raygui:GuiTabBar( bounds, text, active, callback, closeCallback, styles, tooltip )
-	return self:addControl( GuiTabBar:new( bounds, text, active, callback, closeCallback, styles, tooltip ) )
+function Raygui:GuiTabBar( bounds, text, active, callbacks, styles, tooltip )
+	return self:addControl( GuiTabBar:new( bounds, text, active, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
 ---@param content Rectangle
 ---@param scroll Vector2
----@param callback function|nil
----@param grabCallback function|nil
----@param dragCallback function|nil
+---@param callbacks table scroll, grab, drag.
 ---@param styles table|nil
 ---@return table ScrollPanel
-function Raygui:ScrollPanel( bounds, text, content, scroll, callback, grabCallback, dragCallback, styles, tooltip )
-	return self:addControl( ScrollPanel:new( bounds, text, content, scroll, callback, grabCallback, dragCallback, styles, tooltip ) )
+function Raygui:ScrollPanel( bounds, text, content, scroll, callbacks, styles, tooltip )
+	return self:addControl( ScrollPanel:new( bounds, text, content, scroll, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
@@ -2094,71 +2077,71 @@ end
 
 ---@param bounds Rectangle
 ---@param text string
----@param callback function|nil
+---@param callbacks table pressed.
 ---@param styles table|nil
 ---@return table Button
-function Raygui:Button( bounds, text, callback, styles, tooltip )
-	return self:addControl( Button:new( bounds, text, callback, styles, tooltip ) )
+function Raygui:Button( bounds, text, callbacks, styles, tooltip )
+	return self:addControl( Button:new( bounds, text, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
----@param callback function|nil
+---@param callbacks table pressed.
 ---@param styles table|nil
 ---@return table LabelButton
-function Raygui:LabelButton( bounds, text, callback, styles, tooltip )
-	return self:addControl( LabelButton:new( bounds, text, callback, styles, tooltip ) )
+function Raygui:LabelButton( bounds, text, callbacks, styles, tooltip )
+	return self:addControl( LabelButton:new( bounds, text, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
 ---@param active boolean
----@param callback function|nil
+---@param callbacks table pressed.
 ---@param styles table|nil
 ---@return table Toggle
-function Raygui:Toggle( bounds, text, active, callback, styles, tooltip )
-	return self:addControl( Toggle:new( bounds, text, active, callback, styles, tooltip ) )
+function Raygui:Toggle( bounds, text, active, callbacks, styles, tooltip )
+	return self:addControl( Toggle:new( bounds, text, active, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
 ---@param active integer
----@param callback function|nil
+---@param callbacks table select.
 ---@param styles table|nil
 ---@return table ToggleGroup
-function Raygui:ToggleGroup( bounds, text, active, callback, styles, tooltip )
-	return self:addControl( ToggleGroup:new( bounds, text, active, callback, styles, tooltip ) )
+function Raygui:ToggleGroup( bounds, text, active, callbacks, styles, tooltip )
+	return self:addControl( ToggleGroup:new( bounds, text, active, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
 ---@param checked boolean
----@param callback function|nil
+---@param callbacks table pressed.
 ---@param styles table|nil
 ---@return table CheckBox
-function Raygui:CheckBox( bounds, text, checked, callback, styles, tooltip )
-	return self:addControl( CheckBox:new( bounds, text, checked, callback, styles, tooltip ) )
+function Raygui:CheckBox( bounds, text, checked, callbacks, styles, tooltip )
+	return self:addControl( CheckBox:new( bounds, text, checked, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
 ---@param active integer
----@param callback function|nil
+---@param callbacks table select.
 ---@param styles table|nil
 ---@return table ComboBox
-function Raygui:ComboBox( bounds, text, active, callback, styles, tooltip )
-	return self:addControl( ComboBox:new( bounds, text, active, callback, styles, tooltip ) )
+function Raygui:ComboBox( bounds, text, active, callbacks, styles, tooltip )
+	return self:addControl( ComboBox:new( bounds, text, active, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
 ---@param active integer
 ---@param editMode boolean
----@param callback function|nil
+---@param callbacks table select.
 ---@param styles table|nil
 ---@return table DropdownBox
-function Raygui:DropdownBox( bounds, text, active, editMode, callback, styles, tooltip )
-	return self:addControl( DropdownBox:new( bounds, text, active, editMode, callback, styles, tooltip ) )
+function Raygui:DropdownBox( bounds, text, active, editMode, callbacks, styles, tooltip )
+	return self:addControl( DropdownBox:new( bounds, text, active, editMode, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
@@ -2167,11 +2150,11 @@ end
 ---@param minValue integer
 ---@param maxValue integer
 ---@param editMode boolean
----@param callback function|nil
+---@param callbacks table edit.
 ---@param styles table|nil
 ---@return table Spinner
-function Raygui:Spinner( bounds, text, value, minValue, maxValue, editMode, callback, styles, tooltip )
-	return self:addControl( Spinner:new( bounds, text, value, minValue, maxValue, editMode, callback, styles, tooltip ) )
+function Raygui:Spinner( bounds, text, value, minValue, maxValue, editMode, callbacks, styles, tooltip )
+	return self:addControl( Spinner:new( bounds, text, value, minValue, maxValue, editMode, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
@@ -2180,22 +2163,22 @@ end
 ---@param minValue integer
 ---@param maxValue integer
 ---@param editMode boolean
----@param callback function|nil
+---@param callbacks table edit.
 ---@param styles table|nil
 ---@return table ValueBox
-function Raygui:ValueBox( bounds, text, value, minValue, maxValue, editMode, callback, styles, tooltip )
-	return self:addControl( ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callback, styles, tooltip ) )
+function Raygui:ValueBox( bounds, text, value, minValue, maxValue, editMode, callbacks, styles, tooltip )
+	return self:addControl( ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
 ---@param textSize integer
 ---@param editMode boolean
----@param callback function|nil
+---@param callbacks table edit.
 ---@param styles table|nil
 ---@return table TextBox
-function Raygui:TextBox( bounds, text, textSize, editMode, callback, styles, tooltip )
-	return self:addControl( TextBox:new( bounds, text, textSize, editMode, callback, styles, tooltip ) )
+function Raygui:TextBox( bounds, text, textSize, editMode, callbacks, styles, tooltip )
+	return self:addControl( TextBox:new( bounds, text, textSize, editMode, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
@@ -2204,11 +2187,11 @@ end
 ---@param value number
 ---@param minValue number
 ---@param maxValue number
----@param callback function|nil
+---@param callbacks table edit.
 ---@param styles table|nil
 ---@return table Slider
-function Raygui:Slider( bounds, textLeft, textRight, value, minValue, maxValue, callback, styles, tooltip )
-	return self:addControl( Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, styles, tooltip ) )
+function Raygui:Slider( bounds, textLeft, textRight, value, minValue, maxValue, callbacks, styles, tooltip )
+	return self:addControl( Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
@@ -2217,11 +2200,11 @@ end
 ---@param value number
 ---@param minValue number
 ---@param maxValue number
----@param callback function|nil
+---@param callbacks table edit.
 ---@param styles table|nil
 ---@return table SliderBar
-function Raygui:SliderBar( bounds, textLeft, textRight, value, minValue, maxValue, callback, styles, tooltip )
-	return self:addControl( SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, styles, tooltip ) )
+function Raygui:SliderBar( bounds, textLeft, textRight, value, minValue, maxValue, callbacks, styles, tooltip )
+	return self:addControl( SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
@@ -2230,11 +2213,11 @@ end
 ---@param value number
 ---@param minValue number
 ---@param maxValue number
----@param callback function|nil
+---@param callbacks table edit.
 ---@param styles table|nil
 ---@return table ProgressBar
-function Raygui:ProgressBar( bounds, textLeft, textRight, value, minValue, maxValue, callback, styles, tooltip )
-	return self:addControl( ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callback, styles, tooltip ) )
+function Raygui:ProgressBar( bounds, textLeft, textRight, value, minValue, maxValue, callbacks, styles, tooltip )
+	return self:addControl( ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
@@ -2257,22 +2240,22 @@ end
 ---@param text string
 ---@param spacing number
 ---@param subdivs integer
----@param callback function|nil
+---@param callbacks table cellChange.
 ---@param styles table|nil
 ---@return table Grid
-function Raygui:Grid( bounds, text, spacing, subdivs, callback, styles, tooltip )
-	return self:addControl( Grid:new( bounds, text, spacing, subdivs, callback, styles, tooltip ) )
+function Raygui:Grid( bounds, text, spacing, subdivs, callbacks, styles, tooltip )
+	return self:addControl( Grid:new( bounds, text, spacing, subdivs, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
 ---@param scrollIndex integer
 ---@param active integer
----@param callback function|nil
+---@param callbacks table select.
 ---@param styles table|nil
 ---@return table ListView
-function Raygui:ListView( bounds, text, scrollIndex, active, callback, styles, tooltip )
-	return self:addControl( ListView:new( bounds, text, scrollIndex, active, callback, styles, tooltip ) )
+function Raygui:ListView( bounds, text, scrollIndex, active, callbacks, styles, tooltip )
+	return self:addControl( ListView:new( bounds, text, scrollIndex, active, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
@@ -2280,24 +2263,22 @@ end
 ---@param scrollIndex integer
 ---@param active integer
 ---@param focus integer
----@param callback function|nil
+---@param callbacks table select.
 ---@param styles table|nil
 ---@return table ListViewEx
-function Raygui:ListViewEx( bounds, text, scrollIndex, active, focus, callback, styles, tooltip )
-	return self:addControl( ListViewEx:new( bounds, text, scrollIndex, active, focus, callback, styles, tooltip ) )
+function Raygui:ListViewEx( bounds, text, scrollIndex, active, focus, callbacks, styles, tooltip )
+	return self:addControl( ListViewEx:new( bounds, text, scrollIndex, active, focus, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param title string
 ---@param message string
 ---@param buttons string
----@param callback function|nil
----@param grabCallback function|nil
----@param dragCallback function|nil
+---@param callbacks table pressed, grab, drag.
 ---@param styles table|nil
 ---@return table MessageBox
-function Raygui:MessageBox( bounds, title, message, buttons, callback, grabCallback, dragCallback, styles, tooltip )
-	return self:addControl( MessageBox:new( bounds, title, message, buttons, callback, grabCallback, dragCallback, styles, tooltip ) )
+function Raygui:MessageBox( bounds, title, message, buttons, callbacks, styles, tooltip )
+	return self:addControl( MessageBox:new( bounds, title, message, buttons, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
@@ -2307,64 +2288,62 @@ end
 ---@param text string
 ---@param textMaxSize integer
 ---@param secretViewActive boolean
----@param callback function|nil
----@param grabCallback function|nil
----@param dragCallback function|nil
+---@param callbacks table pressed, grab, drag.
 ---@param styles table|nil
 ---@return table TextInputBox
-function Raygui:TextInputBox( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callback, grabCallback, dragCallback, styles, tooltip )
-	return self:addControl( TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callback, grabCallback, dragCallback, styles, tooltip ) )
+function Raygui:TextInputBox( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callbacks, styles, tooltip )
+	return self:addControl( TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
 ---@param color Color
----@param callback function|nil
+---@param callbacks table edit.
 ---@param styles table|nil
 ---@return table ColorPicker
-function Raygui:ColorPicker( bounds, text, color, callback, styles, tooltip )
-	return self:addControl( ColorPicker:new( bounds, text, color, callback, styles, tooltip ) )
+function Raygui:ColorPicker( bounds, text, color, callbacks, styles, tooltip )
+	return self:addControl( ColorPicker:new( bounds, text, color, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
 ---@param color Color
----@param callback function|nil
+---@param callbacks table edit.
 ---@param styles table|nil
 ---@return table ColorPanel
-function Raygui:ColorPanel( bounds, text, color, callback, styles, tooltip )
-	return self:addControl( ColorPanel:new( bounds, text, color, callback, styles, tooltip ) )
+function Raygui:ColorPanel( bounds, text, color, callbacks, styles, tooltip )
+	return self:addControl( ColorPanel:new( bounds, text, color, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
 ---@param alpha number
----@param callback function|nil
+---@param callbacks table edit.
 ---@param styles table|nil
 ---@return table ColorBarAlpha
-function Raygui:ColorBarAlpha( bounds, text, alpha, callback, styles, tooltip )
-	return self:addControl( ColorBarAlpha:new( bounds, text, alpha, callback, styles, tooltip ) )
+function Raygui:ColorBarAlpha( bounds, text, alpha, callbacks, styles, tooltip )
+	return self:addControl( ColorBarAlpha:new( bounds, text, alpha, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param text string
 ---@param value number
----@param callback function|nil
+---@param callbacks table edit.
 ---@param styles table|nil
 ---@return table ColorBarHue
-function Raygui:ColorBarHue( bounds, text, value, callback, styles, tooltip )
-	return self:addControl( ColorBarHue:new( bounds, text, value, callback, styles, tooltip ) )
+function Raygui:ColorBarHue( bounds, text, value, callbacks, styles, tooltip )
+	return self:addControl( ColorBarHue:new( bounds, text, value, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param value integer
 ---@param minValue integer
 ---@param maxValue integer
----@param callback function|nil
+---@param callbacks table edit.
 ---@param styles table|nil
 ---@return table ColorBarHue
-function Raygui:GuiScrollBar( bounds, value, minValue, maxValue, callback, styles, tooltip )
-	return self:addControl( GuiScrollBar:new( bounds, value, minValue, maxValue, callback, styles, tooltip ) )
+function Raygui:GuiScrollBar( bounds, value, minValue, maxValue, callbacks, styles, tooltip )
+	return self:addControl( GuiScrollBar:new( bounds, value, minValue, maxValue, callbacks, styles, tooltip ) )
 end
 
 return Raygui

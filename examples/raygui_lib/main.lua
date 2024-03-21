@@ -63,12 +63,16 @@ function RL.init()
 		Rect:new( 68, 16, 64, 32 ),
 		"Cat\nDog",
 		0,
-		function( self ) print( self:getItem( self.active ) ) end
+		{ -- Callbacks.
+			select = function( self ) print( self:getItem( self.active ) ) end
+		}
 	)
 	local button = Gui:Button(
 		Rect:new( 245, 188, 64, 32 ),
 		"Dog",
-		function() toggleGroup:setText( "Dog;Cat\nEagle" ) end,
+		{ -- Callbacks.
+			pressed = function() toggleGroup:setText( "Dog;Cat\nEagle" ) end
+		},
 		{
 			properties = {
 				{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
@@ -82,25 +86,30 @@ function RL.init()
 		Rect:new( 116, 128, 20, 20 ),
 		"Visible",
 		toggleGroup.visible,
-		function( self ) toggleGroup.visible = self.checked end
+		{ -- Callbacks.
+			pressed = function( self ) toggleGroup.visible = self.checked end
+		}
 	)
 	local toggle = Gui:Toggle(
 		Rect:new( 32, 160, 100, 32 ),
 		"Toggle",
 		false,
-		nil
+		{} -- Callbacks.
 	)
 	local combobox = Gui:ComboBox(
 		Rect:new( 64, 256, 128, 32 ),
 		"Dog\nCow\nDonkey",
-		0
+		0,
+		{} -- Callbacks.
 	)
 	local dropdownbox = Gui:DropdownBox(
 		Rect:new( 256, 128, 128, 32 ),
 		"Dog\nGiraffe\nLion\nHorse",
 		0,
 		false,
-		function( self ) print( self:getItem( self.active ) ) end
+		{ -- Callbacks.
+			select = function( self ) print( self:getItem( self.active ) ) end
+		}
 	)
 	local spinner = Gui:Spinner(
 		Rect:new( 464, 256, 128, 32 ),
@@ -109,7 +118,9 @@ function RL.init()
 		0,
 		10,
 		false,
-		function( self ) print( "Spinner value changed to "..self.value ) end
+		{ -- Callbacks.
+			edit = function( self ) print( "Spinner value changed to "..self.value ) end
+		}
 	)
 	local valuebox = Gui:ValueBox(
 		Rect:new( 464, 316, 128, 32 ),
@@ -118,21 +129,28 @@ function RL.init()
 		0,
 		100,
 		false,
-		function( self ) print( "ValueBox value changed to "..self.value ) end
+		{ -- Callbacks.
+			edit = function( self ) print( "ValueBox value changed to "..self.value ) end
+		}
 	)
 	local textbox = Gui:TextBox(
 		Rect:new( 32, 316, 256, 32 ),
 		"Name",
 		32,
 		false,
-		function( self ) print( "Set text "..self.text ) end
+		{ -- Callbacks.
+			edit = function( self ) print( "Set text "..self.text ) end,
+			-- editMode = function( self ) print( "Entered edit mode" ) end
+		}
 	)
 	local textbox2 = Gui:TextBox(
 		Rect:new( 32, 380, 256, 32 ),
 		"Name",
 		32,
 		false,
-		function( self ) print( "Set text "..self.text ) end
+		{ -- Callbacks.
+			edit = function( self ) print( "Set text 2 "..self.text ) end
+		}
 	)
 	local slider = Gui:Slider(
 		Rect:new( 50, 500, 256, 32 ),
@@ -141,8 +159,10 @@ function RL.init()
 		0,
 		0,
 		100,
-		function( self ) print( "Changed value "..self.value ) end,
-		{
+		{ -- Callbacks.
+			edit = function( self ) print( "Changed value "..self.value ) end,
+		},
+		{ -- Styles.
 			texture = { texture = texture, rect = textureRect },
 		}
 	)
@@ -153,7 +173,9 @@ function RL.init()
 		0,
 		0,
 		100,
-		function( self ) print( "Changed value "..self.value ) end
+		{ -- Callbacks.
+			edit = function( self ) print( "Changed value "..self.value ) end
+		}
 	)
 	local progressbar = Gui:ProgressBar(
 		Rect:new( 50, 600, 256, 32 ),
@@ -162,7 +184,9 @@ function RL.init()
 		20,
 		0,
 		100,
-		function( self ) print( "Changed value "..self.value ) end
+		{ -- Callbacks.
+			edit = function( self ) print( "Changed value "..self.value ) end
+		}
 	)
 	local statusbar = Gui:StatusBar(
 		Rect:new( 50, 650, 256, 32 ),
@@ -176,17 +200,17 @@ function RL.init()
 		Rect:new( 400, 400, 256, 256 ),
 		"Grid",
 		32,
-		2
+		2,
+		{} -- Callbacks.
 	)
 	windowbox = Gui:WindowBox(
 		Rect:new( 720, 250, 256, 256 ),
 		"WindowBox",
-		-- Close callback.
-		function( self ) self.visible = false end,
-		-- Grab callback.
-		function( self ) Gui:set2Top( self ) end,
-		nil,
-		{
+		{ -- Callbacks.
+			close = function( self ) self.visible = false end,
+			grab = function( self ) Gui:set2Top( self ) end,
+		},
+		{ -- Styles.
 			properties = {
 				{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
 			},
@@ -205,10 +229,10 @@ function RL.init()
 	local panel = Gui:Panel(
 		Rect:new( 400, 64, 256, 128 ),
 		"Panel",
-		-- Grab callback.
-		function( self ) Gui:set2Top( self ) end,
-		nil,
-		{
+		{ -- Callbacks.
+			grab = function( self ) Gui:set2Top( self ) end
+		},
+		{ -- Styles.
 			properties = {
 				{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.MAGENTA ) },
 				{ RL.DEFAULT, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_CENTER },
@@ -220,25 +244,28 @@ function RL.init()
 		Rect:new( 700, 520, 700, 32 ),
 		"Cat;Dog;Horse;Cow;Dog;Horse;Cow",
 		0,
-		nil,
-		closeTab
+		{ -- Callbacks.
+			close = closeTab
+		}
 	)
 	local scrollpanel = Gui:ScrollPanel(
 		Rect:new( 800, 64, 256, 256 ),
 		"ScrollPanel",
 		Rect:new( 0, 0, 300, 600 ),
 		Vec2:new( 0, 0 ),
-		-- Callback.
-		function( self ) print( self.scroll ) end,
-		-- Grab callback.
-		function( self ) Gui:set2Top( self ) end
+		{ -- Callbacks.
+			scroll = function( self ) print( self.scroll ) end,
+			grab = function( self ) Gui:set2Top( self ) end
+		}
 	)
 	local listview = Gui:ListView(
 		Rect:new( 1100, 64, 128, 128 ),
 		"Cat;Dog;Horse;Cow;Pig;Eagle;Lion",
 		0,
 		0,
-		function( self ) print( self:getItem( self.active ) ) end
+		{ -- Callbacks.
+			select = function( self ) print( self:getItem( self.active ) ) end
+		}
 	)
 	local listviewex = Gui:ListViewEx(
 		Rect:new( 1300, 64, 128, 128 ),
@@ -246,8 +273,10 @@ function RL.init()
 		0,
 		0,
 		0,
-		function( self ) print( self:getItem( self.active ) ) end,
-		{
+		{ -- Callbacks.
+			select = function( self ) print( self:getItem( self.active ) ) end
+		},
+		{ -- Styles.
 			properties = {
 				{ RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) },
 				{ RL.DEFAULT, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.ORANGE ) },
@@ -261,17 +290,18 @@ function RL.init()
 		"Title",
 		"Should we disable\nwindow box?",
 		"No;Yes",
-		function( self )
-			if 0 < self.buttonIndex then
-				if self.buttonIndex == 1 then
-					windowbox.disabled = false
-				elseif self.buttonIndex == 2 then
-					windowbox.disabled = true
+		{ -- Callbacks.
+			pressed = function( self )
+				if 0 < self.buttonIndex then
+					if self.buttonIndex == 1 then
+						windowbox.disabled = false
+					elseif self.buttonIndex == 2 then
+						windowbox.disabled = true
+					end
 				end
-			end
-		end,
-		-- Grab callback.
-		function( self ) Gui:set2Top( self ) end
+			end,
+			grab = function( self ) Gui:set2Top( self ) end
+		}
 	)
 	local textinputbox = Gui:TextInputBox(
 		Rect:new( 1100, 300, 300, 128 ),
@@ -281,40 +311,47 @@ function RL.init()
 		"Text",
 		8,
 		false,
-		function( self )
-			if 0 < self.buttonIndex then
-				print( "You pressed "..self:getItem( self.buttonIndex ) )
-			end
-		end,
-		-- Grab callback.
-		function( self ) Gui:set2Top( self ) end
+		{ -- Callbacks.
+			pressed = function( self )
+				if 0 < self.buttonIndex then
+					print( "You pressed "..self:getItem( self.buttonIndex ) )
+				end
+			end,
+			grab = function( self ) Gui:set2Top( self ) end
+		}
 	)
 	local colorpicker = Gui:ColorPicker(
 		Rect:new( 1500, 32, 128, 128 ),
 		"Color Picker",
-		Color:new()
+		Color:new(),
+		{} -- Callbacks.
 	)
 	local colorpanel = Gui:ColorPanel(
 		Rect:new( 1700, 32, 128, 128 ),
 		"Color Panel",
-		Color:new()
+		Color:new(),
+		{} -- Callbacks.
 	)
 	local colorbaralpha = Gui:ColorBarAlpha(
 		Rect:new( 1700, 180, 128, 20 ),
 		"Color Panel",
-		1.0
+		1.0,
+		{} -- Callbacks.
 	)
 	local colorbarhue = Gui:ColorBarHue(
 		Rect:new( 1840, 32, 20, 128 ),
 		"Color Panel",
-		1.0
+		1.0,
+		{} -- Callbacks.
 	)
 	local scrollbar = Gui:GuiScrollBar(
 		Rect:new( 50, 760, 256, 16 ),
 		0,
 		0,
 		256,
-		function( self ) print( "Scrollbar value: ", self.value ) end
+		{ -- Callbacks.
+			scroll = function( self ) print( "Scrollbar value: ", self.value ) end
+		} 
 	)
 end
 

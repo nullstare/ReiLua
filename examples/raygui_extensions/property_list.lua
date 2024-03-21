@@ -1,7 +1,7 @@
 local PropertyList = {}
 PropertyList.__index = PropertyList
 
-function PropertyList:new( bounds, text, callback, grabCallback, dragCallback, styles, tooltip )
+function PropertyList:new( bounds, text, callbacks, styles, tooltip )
     local object = setmetatable( {}, self )
 	object._gui = nil
 
@@ -12,9 +12,7 @@ function PropertyList:new( bounds, text, callback, grabCallback, dragCallback, s
     object.text = text
     object.scroll = Vec2:new()
 	object.view = Rect:new()
-    object.callback = callback
-	object.grabCallback = grabCallback
-	object.dragCallback = dragCallback
+    object.callbacks = callbacks -- scroll, grab, drag.
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -140,8 +138,10 @@ function PropertyList:addGroup( name, active, group )
 		self:getDefaultBounds(),
 		setGroupText( name, active ),
 		active,
-		function( this ) this.text = setGroupText( name, this.active ) self:updateContent() end,
-		{
+		{ -- Callbacks.
+			pressed = function( this ) this.text = setGroupText( name, this.active ) self:updateContent() end,
+		},
+		{ -- Styles.
 			properties = {
 				{ RL.TOGGLE, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT }
 			}
@@ -194,8 +194,8 @@ function PropertyList:draw()
 		self:updateMouseOffset()
 		self.gui.view:set( -self.scroll.x, -self.scroll.y, self.view.width, self.view.height )
 
-		if self.callback ~= nil then
-			self.callback( self )
+		if self.callbacks.scroll ~= nil then
+			self.callbacks.scroll( self )
 		end
 	end
 
@@ -250,8 +250,8 @@ function PropertyList:setSize( size )
 end
 
 function PropertyList:register( gui )
-	function gui:PropertyList( bounds, text, callback, grabCallback, dragCallback, styles, tooltip )
-		return self:addControl( PropertyList:new( bounds, text, callback, grabCallback, dragCallback, styles, tooltip ) )
+	function gui:PropertyList( bounds, text, callbacks, styles, tooltip )
+		return self:addControl( PropertyList:new( bounds, text, callbacks, styles, tooltip ) )
 	end
 end
 

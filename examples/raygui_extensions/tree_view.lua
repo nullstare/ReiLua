@@ -10,7 +10,7 @@ TreeView.MOVE_ITEM_IN = 1
 TreeView.MOVE_ITEM_UP = 2
 TreeView.MOVE_ITEM_DOWN = 3
 
-function TreeView:new( bounds, text, callback, grabCallback, dragCallback, styles, tooltip )
+function TreeView:new( bounds, text, callbacks, styles, tooltip )
     local object = setmetatable( {}, self )
 	object._gui = nil
 
@@ -22,9 +22,7 @@ function TreeView:new( bounds, text, callback, grabCallback, dragCallback, style
     object.text = text
     object.scroll = Vec2:new()
 	object.view = Rect:new()
-    object.callback = callback
-	object.grabCallback = grabCallback
-	object.dragCallback = dragCallback
+    object.callbacks = callbacks -- select, grab, drag.
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -132,7 +130,7 @@ function TreeView:addItem( name, group )
 		name,
 		{ -- Callbacks.
 			open = function( this ) self:updateContent() end,
-			toggle = function( this ) self:itemSelect( this ) end,
+			select = function( this ) self:itemSelect( this ) end,
 		},
 		{ -- Styles.
 			properties = {
@@ -262,8 +260,8 @@ function TreeView:itemSelect( item )
 		self._lastActiveItem = item -- Old clicked.
 	end
 
-	if self.callback ~= nil then
-		-- self.callback( self.selectedItems )
+	if self.callbacks.select ~= nil then
+		self.callbacks.select( self.selectedItems )
 	end
 end
 
@@ -399,8 +397,8 @@ function TreeView:setSize( size )
 end
 
 function TreeView:register( gui )
-	function gui:TreeView( bounds, text, callback, grabCallback, dragCallback, styles, tooltip )
-		return self:addControl( TreeView:new( bounds, text, callback, grabCallback, dragCallback, styles, tooltip ) )
+	function gui:TreeView( bounds, text, callbacks, styles, tooltip )
+		return self:addControl( TreeView:new( bounds, text, callbacks, styles, tooltip ) )
 	end
 end
 

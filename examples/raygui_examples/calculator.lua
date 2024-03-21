@@ -16,12 +16,11 @@ function Calculator:new( pos )
     object.window = Gui:WindowBox(
 		Rect:new( pos.x, pos.y, 188, 216 ),
 		"Calculator",
-		-- Close callback.
-		function() object:setVisible( false ) end,
-		-- Grab callback.
-		function() object:set2Top() end,
-		-- Drag callback.
-		function( self ) object:setPosition( Vec2:new( self.bounds.x, self.bounds.y ) ) end
+		{ -- Callbacks.
+			close = function() object:setVisible( false ) end,
+			grab = function() object:set2Top() end,
+			drag = function( self ) object:setPosition( Vec2:new( self.bounds.x, self.bounds.y ) ) end
+		}
 	)
 	object.display = Gui:Label(
 		Rect:new( 0, 0, 180, 20 ),
@@ -31,22 +30,22 @@ function Calculator:new( pos )
 	object.buttons = {}
 
 	local buttons = {
-		{ "7", function() object:addNumber( 7 ) end },
-		{ "8", function() object:addNumber( 8 ) end },
-		{ "9", function() object:addNumber( 9 ) end },
-		{ "/", function() object:addOperation( self.OPERATIONS.DIV ) end },
-		{ "4", function() object:addNumber( 4 ) end },
-		{ "5", function() object:addNumber( 5 ) end },
-		{ "6", function() object:addNumber( 6 ) end },
-		{ "*", function() object:addOperation( self.OPERATIONS.MUL ) end },
-		{ "1", function() object:addNumber( 1 ) end },
-		{ "2", function() object:addNumber( 2 ) end },
-		{ "3", function() object:addNumber( 3 ) end },
-		{ "-", function() object:addOperation( self.OPERATIONS.SUB ) end },
-		{ "0", function() object:addNumber( 0 ) end },
-		{ "C", function() object:addOperation( self.OPERATIONS.CLEAR ) end },
-		{ "=", function() object:addOperation( self.OPERATIONS.EQUAL ) end },
-		{ "+", function() object:addOperation( self.OPERATIONS.ADD ) end },
+		{ "7", { pressed = function() object:addNumber( 7 ) end } },
+		{ "8", { pressed = function() object:addNumber( 8 ) end } },
+		{ "9", { pressed = function() object:addNumber( 9 ) end } },
+		{ "/", { pressed = function() object:addOperation( self.OPERATIONS.DIV ) end } },
+		{ "4", { pressed = function() object:addNumber( 4 ) end } },
+		{ "5", { pressed = function() object:addNumber( 5 ) end } },
+		{ "6", { pressed = function() object:addNumber( 6 ) end } },
+		{ "*", { pressed = function() object:addOperation( self.OPERATIONS.MUL ) end } },
+		{ "1", { pressed = function() object:addNumber( 1 ) end } },
+		{ "2", { pressed = function() object:addNumber( 2 ) end } },
+		{ "3", { pressed = function() object:addNumber( 3 ) end } },
+		{ "-", { pressed = function() object:addOperation( self.OPERATIONS.SUB ) end } },
+		{ "0", { pressed = function() object:addNumber( 0 ) end } },
+		{ "C", { pressed = function() object:addOperation( self.OPERATIONS.CLEAR ) end } },
+		{ "=", { pressed = function() object:addOperation( self.OPERATIONS.EQUAL ) end } },
+		{ "+", { pressed = function() object:addOperation( self.OPERATIONS.ADD ) end } },
 	}
 	local rowCount = 4
 	local buttonRect = Rect:new( 5, 64, 40, 32 )

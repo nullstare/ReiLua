@@ -9,7 +9,7 @@ function TreeItem:new( bounds, text, callbacks, styles, tooltip )
 
 	object.bounds = bounds:clone()
 	object.text = text
-	object.callbacks = callbacks -- toggle, open.
+	object.callbacks = callbacks -- select, open.
 
 	object.controls = {}
 	
@@ -68,8 +68,8 @@ function TreeItem:draw()
 	local oldActive = self.active
 	_, self.active = RL.GuiToggle( toggleRect, self.text, self.active )
 
-	if self.callbacks.toggle and oldActive ~= self.active then
-		self.callbacks.toggle( self )
+	if self.callbacks.select and oldActive ~= self.active then
+		self.callbacks.select( self )
 	end
 
 	if hasContainer then

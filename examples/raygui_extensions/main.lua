@@ -55,13 +55,13 @@ local function addSpriteButtons()
 	local buttonSize = Vec2:new( 216, 32 )
 	local bounds = Rect:new( winSize.x / 2 - buttonSize.x / 2, 200, 216, 32 )
 	local gap = buttonSize.y + 2
-	addButton( bounds, "Start New Game", function() print( "New Game!" ) end )
+	addButton( bounds, "Start New Game", { pressed = function() print( "New Game!" ) end } )
 	bounds.y = bounds.y + gap
-	addButton( bounds, "Load Game", function() print( "Load Game!" ) end )
+	addButton( bounds, "Load Game", { pressed = function() print( "Load Game!" ) end } )
 	bounds.y = bounds.y + gap
-	addButton( bounds, "Options", function() print( "Options!" ) end )
+	addButton( bounds, "Options", { pressed = function() print( "Options!" ) end } )
 	bounds.y = bounds.y + gap
-	addButton( bounds, "Quit", function() RL.CloseWindow() end )
+	addButton( bounds, "Quit", { pressed = function() RL.CloseWindow() end } )
 end
 
 local function getTextValue( text )
@@ -74,10 +74,10 @@ local function addPropertyList()
 	PropertyList = Gui:PropertyList(
 		Rect:new( 20, 20, 256, 328 ),
 		"Property List",
-		nil, -- Callback.
-		function( self ) Gui:set2Top( self ) end, -- Grab callback.
-		nil, -- Drag callback.
-		{
+		{ -- Callbacks.
+			grab = function( self ) Gui:set2Top( self ) end,
+		},
+		{ -- Styles.
 			properties = {
 				-- { RL.SCROLLBAR, RL.ARROWS_VISIBLE, RL.ARROWS_VISIBLE },
 				{ RL.LISTVIEW, RL.BORDER_COLOR_FOCUSED, RL.GuiGetStyle( RL.LISTVIEW, RL.BORDER_COLOR_NORMAL ) },
@@ -106,11 +106,13 @@ local function addPropertyList()
 		cat.dest.x,
 		32,
 		false,
-		function( self )
-			self.value = getTextValue( self.text )
-			self.text = tostring( self.value )
-			cat.dest.x = self.value
-		end,
+		{ -- Callbacks.
+			edit = function( self )
+				self.value = getTextValue( self.text )
+				self.text = tostring( self.value )
+				cat.dest.x = self.value
+			end
+		},
 		nil,
 		"Position X"
 	), transformGroup, true )
@@ -119,11 +121,13 @@ local function addPropertyList()
 		cat.dest.y,
 		32,
 		false,
-		function( self )
-			self.value = getTextValue( self.text )
-			self.text = tostring( self.value )
-			cat.dest.y = self.value
-		end,
+		{ -- Callbacks.
+			edit = function( self )
+				self.value = getTextValue( self.text )
+				self.text = tostring( self.value )
+				cat.dest.y = self.value
+			end
+		},
 		nil,
 		"Position Y"
 	), transformGroup )
@@ -137,11 +141,13 @@ local function addPropertyList()
 		cat.dest.x,
 		32,
 		false,
-		function( self )
-			self.value = getTextValue( self.text )
-			self.text = tostring( self.value )
-			cat.origin.x = self.value
-		end,
+		{ -- Callbacks.
+			edit = function( self )
+				self.value = getTextValue( self.text )
+				self.text = tostring( self.value )
+				cat.origin.x = self.value
+			end
+		},
 		nil,
 		"Origin X"
 	), transformGroup, true )
@@ -150,11 +156,13 @@ local function addPropertyList()
 		cat.dest.y,
 		32,
 		false,
-		function( self )
-			self.value = getTextValue( self.text )
-			self.text = tostring( self.value )
-			cat.origin.y = self.value
-		end,
+		{ -- Callbacks.
+			edit = function( self )
+				self.value = getTextValue( self.text )
+				self.text = tostring( self.value )
+				cat.origin.y = self.value
+			end
+		},
 		nil,
 		"Origin Y"
 	), transformGroup )
@@ -166,11 +174,13 @@ local function addPropertyList()
 		0,
 		0,
 		360,
-		function( self )
-			self.value = Util.round( self.value )
-			cat.rotation = self.value
-			self.textRight = self.value
-		end,
+		{ -- Callbacks.
+			edit = function( self )
+				self.value = Util.round( self.value )
+				cat.rotation = self.value
+				self.textRight = self.value
+			end
+		},
 		nil,
 		"Rotation angle"
 	), transformGroup )
@@ -179,7 +189,9 @@ local function addPropertyList()
 		Rect:new( 0, 0, 20, 20 ),
 		"Flipped",
 		cat.flipped,
-		function( self ) cat.flipped = self.checked end,
+		{ -- Callbacks.
+			pressed = function( self ) cat.flipped = self.checked end
+		},
 		nil,
 		"Flips the image"
 	), transformGroup )
@@ -192,7 +204,9 @@ local function addPropertyList()
 		Rect:new( 0, 0, 20, 20 ),
 		"Visible",
 		cat.visible,
-		function( self ) cat.visible = self.checked end,
+		{ -- Callbacks.
+			pressed = function( self ) cat.visible = self.checked end
+		},
 		{
 			properties = {
 				{ RL.CHECKBOX, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_RIGHT },
@@ -206,7 +220,9 @@ local function addPropertyList()
 		Rect:new( 0, 0, 128, 128 ),
 		"Color Picker",
 		Color:new(),
-		function( self ) cat.tint = self.color end
+		{ -- Callbacks.
+			edit = function( self ) cat.tint = self.color end
+		}
 	), tintGroup )
 
 	PropertyList:addControl( PropertyList.gui:Line(
@@ -219,7 +235,9 @@ local function addPropertyList()
 		"Dog\nGiraffe\nLion\nHorse",
 		0,
 		false,
-		function( self ) print( self:getItem( self.active ) ) end
+		{ -- Callbacks.
+			select = function( self ) print( self:getItem( self.active ) ) end
+		}
 	) )
 
 	local test = PropertyList:addGroup( "Test", false )
@@ -229,7 +247,9 @@ local function addPropertyList()
 			Rect:new( 128, 0, 20, 20 ),
 			i.."_Visible",
 			false,
-			function( self ) print( "Checked" ) end,
+			{ -- Callbacks.
+				pressed = function( self ) print( "Checked" ) end
+			},
 			{
 				properties = {
 					-- { RL.CHECKBOX, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT },
@@ -250,10 +270,11 @@ local function addTreeView()
 	TreeView = Gui:TreeView(
 		Rect:new( 600, 20, 256, 328 ),
 		"Tree View",
-		function( controls ) selected( controls ) end, -- Callback.
-		function( self ) Gui:set2Top( self ) end, -- Grab callback.
-		nil, -- Drag callback.
-		{
+		{ -- Callbacks.
+			select = function( controls ) selected( controls ) end,
+			grab = function( self ) Gui:set2Top( self ) end,
+		},
+		{ -- Styles.
 			properties = {
 				-- { RL.SCROLLBAR, RL.ARROWS_VISIBLE, RL.ARROWS_VISIBLE },
 				{ RL.LISTVIEW, RL.BORDER_COLOR_FOCUSED, RL.GuiGetStyle( RL.LISTVIEW, RL.BORDER_COLOR_NORMAL ) },

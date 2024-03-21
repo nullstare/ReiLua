@@ -1,7 +1,7 @@
 local SpriteButton = {}
 SpriteButton.__index = SpriteButton
 
-function SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, callback, styles, tooltip )
+function SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, callbacks, styles, tooltip )
     local object = setmetatable( {}, self )
 	object._gui = nil
 
@@ -10,7 +10,7 @@ function SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, c
 	object.buttonTexture = texture
 	object.nPatchNormal = nPatchNormal
 	object.nPatchPressed = nPatchPressed
-    object.callback = callback
+    object.callbacks = callbacks -- pressed.
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -33,8 +33,8 @@ function SpriteButton:draw()
 
 	local result = RL.GuiLabelButton( self.bounds, self.text )
 
-    if result == 1 and self.callback ~= nil and self._gui:clickedInBounds( self.bounds ) then
-		self.callback( self )
+    if result == 1 and self.callbacks.pressed ~= nil and self._gui:clickedInBounds( self.bounds ) then
+		self.callbacks.pressed( self )
     end
 end
 
@@ -44,8 +44,8 @@ function SpriteButton:setPosition( pos )
 end
 
 function SpriteButton:register( gui )
-	function gui:SpriteButton( bounds, text, texture, nPatchNormal, nPatchPressed, callback, styles, tooltip )
-		return self:addControl( SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, callback, styles, tooltip ) )
+	function gui:SpriteButton( bounds, text, texture, nPatchNormal, nPatchPressed, callbacks, styles, tooltip )
+		return self:addControl( SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, callbacks, styles, tooltip ) )
 	end
 end
 

@@ -2,8 +2,6 @@ Current {
 }
 
 Backlog {
-	* Raygui
-		* File browser.
 	* Raygui lib
 		* Check if could remove flickering from changing draw order by making queue for order
 		changing and only change them after everything is drawn.

@@ -27,6 +27,7 @@ function PropertyList:new( bounds, text, callbacks, styles, tooltip )
 	object.visible = true
 	object.disabled = false
 	object.draggable = true
+	object.defaultControlHeight = 22
 	object.mouseScale = 1 -- Set this if drawing in different size to render texture for example.
 
 	object:setSize( Vec2:new( object.bounds.width, object.bounds.height ) )
@@ -143,7 +144,7 @@ function PropertyList:addGroup( name, active, group )
 		},
 		{ -- Styles.
 			properties = {
-				{ RL.TOGGLE, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT }
+				{ RL.TOGGLE, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT },
 			}
 		}
 	)
@@ -233,7 +234,7 @@ function PropertyList:setSize( size )
 		self.bounds.width - scrollBarWidth - self.padding * 2 - borderWidth * 2,
 		self.bounds.height - scrollBarWidth - self.padding * 2 - borderWidth * 2
 	)
-	self.defaultControlSize = Vec2:new( self.content.width, 22 )
+	self.defaultControlSize = Vec2:new( self.content.width, self.defaultControlHeight )
 
 	local _, _, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
 	self.view = Rect:new( view )

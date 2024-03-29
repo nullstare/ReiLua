@@ -3990,7 +3990,7 @@ End scissor mode
 
 ---
 
-> shader = RL.LoadShader( string vsFileName, string fsFileName )
+> shader = RL.LoadShader( string|nil vsFileName, string|nil fsFileName )
 
 Load shader from files and bind default locations.
 NOTE: Set nil if no shader
@@ -4000,7 +4000,7 @@ NOTE: Set nil if no shader
 
 ---
 
-> shader = RL.LoadShaderFromMemory( string vsCode, string fsCode )
+> shader = RL.LoadShaderFromMemory( string|nil vsCode, string|nil fsCode )
 
 Load shader from code strings and bind default locations
 NOTE: Set nil if no shader
@@ -4444,7 +4444,7 @@ Load directory filepaths
 
 ---
 
-> fileNames = RL.LoadDirectoryFilesEx( string basePath, string filter, bool scanSubdirs )
+> fileNames = RL.LoadDirectoryFilesEx( string basePath, string|nil filter, bool scanSubdirs )
 
 Load directory filepaths with extension filtering and recursive directory scan
 

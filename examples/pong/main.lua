@@ -1,5 +1,3 @@
--- Pong example using Vector2 library.
-
 package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
 Vec2 = require "vector2"
@@ -9,8 +7,8 @@ local winSize = Vec2:new( 800, 600 )
 local monitor = 0
 
 -- Constants.
-local PLAYER_SPEED = 300
-local BALL_SPEED = 330
+local PLAYER_SPEED = 300 -- Pixels per second.
+local BALL_SPEED = 330 -- Pixels per second.
 
 -- Game objects.
 local playerLeft = {
@@ -42,7 +40,7 @@ local function reset()
 	-- Short for if math random result 1, set BALL_SPEED otherwise set -BALL_SPEED.
 	-- Could be replaced by normal if statement for easier readability.
 	ball.vel.x = math.random( 0, 1 ) == 1 and BALL_SPEED or -BALL_SPEED
-	-- Start slow.
+	-- Start easy.
 	ball.vel.y = 0
 end
 

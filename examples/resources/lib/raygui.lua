@@ -787,7 +787,7 @@ function Spinner:draw()
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
 	if result == 1 then
-		self._gui:editMode( self.editMode )
+		self._gui:editMode( self )
 		self.editMode = not self.editMode
 	end
 	if self.value ~= oldValue then
@@ -858,7 +858,7 @@ function ValueBox:draw()
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
 	if result == 1 then
-		self._gui:editMode( self.editMode )
+		self._gui:editMode( self )
 		self.editMode = not self.editMode
 	end
 	if self.value ~= oldValue and self.callbacks.edit ~= nil then
@@ -915,7 +915,7 @@ function TextBox:draw()
 		RL.EndScissorMode()
 	end
 	if result == 1 then
-		self._gui:editMode( self.editMode )
+		self._gui:editMode( self )
 		self.editMode = not self.editMode
 
 		if not self.editMode and self.callbacks.edit ~= nil then
@@ -1721,6 +1721,7 @@ function Raygui:new()
 	object.grabPos = Vec2:new()
 	object.scrolling = false
 	object.textEdit = false
+	object.textEditControl = nil
 	object.defaultTexture = RL.GetTextureDefault()
 	object.defaultRect = Rect:new( 0, 0, 1, 1 ) -- For texture.
 	object.defaultFont = RL.GuiGetFont()
@@ -1874,6 +1875,13 @@ function Raygui:draw()
 			self.scrolling = false
 		end
 	end
+
+	local oldTextEditText = "" -- For checking if text has changed so we can call input callback.
+
+	if self.textEdit then
+		oldTextEditText = self.textEditControl.text
+	end
+
 	-- Set mouse offset if gui is for example embedded to some control.
 	RL.SetMouseOffset( self.mouseOffset )
 
@@ -1896,6 +1904,9 @@ function Raygui:draw()
 	if self.tooltip.text ~= nil and self.controls[ self.tooltip.focused ]:update()
 	and self.tooltip.delay <= self.tooltip.timer then
 		self:drawTooltip()
+	end
+	if self.textEdit and oldTextEditText ~= self.textEditControl.text and self.textEditControl.callbacks.textEdit ~= nil then
+		self.textEditControl.callbacks.textEdit( self.textEditControl )
 	end
 
 	RL.GuiUnlock()
@@ -1944,19 +1955,21 @@ function Raygui:remove( control )
 	end
 end
 
-function Raygui:editMode( editMode )
-	if not editMode then
-		for _, control in ipairs( self.controls ) do
-			if control.editMode then
-				control.editMode = false
-	
-				if control.callbacks.edit ~= nil then
-					control.callbacks.edit( control )
-				end
-			end
+function Raygui:editMode( control )
+	if self.textEditControl ~= nil and not control.editMode then
+		self.textEditControl.editMode = false
+
+		if self.textEditControl.callbacks.edit ~= nil then
+			self.textEditControl.callbacks.edit( self.textEditControl )
 		end
 	end
-	self.textEdit = not editMode
+	self.textEdit = not control.editMode
+
+	if self.textEdit then
+		self.textEditControl = control
+	else
+		self.textEditControl = nil
+	end
 end
 
 function Raygui:drawControl( control )
@@ -2016,6 +2029,7 @@ end
 ---@param text string
 ---@param callbacks table close, grab, drag.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table WindowBox
 function Raygui:WindowBox( bounds, text, callbacks, styles, tooltip )
 	return self:addControl( WindowBox:new( bounds, text, callbacks, styles, tooltip ) )
@@ -2024,6 +2038,7 @@ end
 ---@param bounds Rectangle
 ---@param text string
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table GroupBox
 function Raygui:GroupBox( bounds, text, styles, tooltip )
 	return self:addControl( GroupBox:new( bounds, text, styles, tooltip ) )
@@ -2032,6 +2047,7 @@ end
 ---@param bounds Rectangle
 ---@param text string
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table Line
 function Raygui:Line( bounds, text, styles, tooltip )
 	return self:addControl( Line:new( bounds, text, styles, tooltip ) )
@@ -2041,6 +2057,7 @@ end
 ---@param text string
 ---@param callbacks table grab, drag.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table Panel
 function Raygui:Panel( bounds, text, callbacks, styles, tooltip )
 	return self:addControl( Panel:new( bounds, text, callbacks, styles, tooltip ) )
@@ -2051,6 +2068,7 @@ end
 ---@param active integer
 ---@param callbacks table select, close, grab, drag.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table GuiTabBar
 function Raygui:GuiTabBar( bounds, text, active, callbacks, styles, tooltip )
 	return self:addControl( GuiTabBar:new( bounds, text, active, callbacks, styles, tooltip ) )
@@ -2062,6 +2080,7 @@ end
 ---@param scroll Vector2
 ---@param callbacks table scroll, grab, drag.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table ScrollPanel
 function Raygui:ScrollPanel( bounds, text, content, scroll, callbacks, styles, tooltip )
 	return self:addControl( ScrollPanel:new( bounds, text, content, scroll, callbacks, styles, tooltip ) )
@@ -2070,6 +2089,7 @@ end
 ---@param bounds Rectangle
 ---@param text string
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table Label
 function Raygui:Label( bounds, text, styles, tooltip )
 	return self:addControl( Label:new( bounds, text, styles, tooltip ) )
@@ -2079,6 +2099,7 @@ end
 ---@param text string
 ---@param callbacks table pressed.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table Button
 function Raygui:Button( bounds, text, callbacks, styles, tooltip )
 	return self:addControl( Button:new( bounds, text, callbacks, styles, tooltip ) )
@@ -2088,6 +2109,7 @@ end
 ---@param text string
 ---@param callbacks table pressed.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table LabelButton
 function Raygui:LabelButton( bounds, text, callbacks, styles, tooltip )
 	return self:addControl( LabelButton:new( bounds, text, callbacks, styles, tooltip ) )
@@ -2098,6 +2120,7 @@ end
 ---@param active boolean
 ---@param callbacks table pressed.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table Toggle
 function Raygui:Toggle( bounds, text, active, callbacks, styles, tooltip )
 	return self:addControl( Toggle:new( bounds, text, active, callbacks, styles, tooltip ) )
@@ -2108,6 +2131,7 @@ end
 ---@param active integer
 ---@param callbacks table select.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table ToggleGroup
 function Raygui:ToggleGroup( bounds, text, active, callbacks, styles, tooltip )
 	return self:addControl( ToggleGroup:new( bounds, text, active, callbacks, styles, tooltip ) )
@@ -2118,6 +2142,7 @@ end
 ---@param checked boolean
 ---@param callbacks table pressed.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table CheckBox
 function Raygui:CheckBox( bounds, text, checked, callbacks, styles, tooltip )
 	return self:addControl( CheckBox:new( bounds, text, checked, callbacks, styles, tooltip ) )
@@ -2128,6 +2153,7 @@ end
 ---@param active integer
 ---@param callbacks table select.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table ComboBox
 function Raygui:ComboBox( bounds, text, active, callbacks, styles, tooltip )
 	return self:addControl( ComboBox:new( bounds, text, active, callbacks, styles, tooltip ) )
@@ -2139,6 +2165,7 @@ end
 ---@param editMode boolean
 ---@param callbacks table select.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table DropdownBox
 function Raygui:DropdownBox( bounds, text, active, editMode, callbacks, styles, tooltip )
 	return self:addControl( DropdownBox:new( bounds, text, active, editMode, callbacks, styles, tooltip ) )
@@ -2152,6 +2179,7 @@ end
 ---@param editMode boolean
 ---@param callbacks table edit.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table Spinner
 function Raygui:Spinner( bounds, text, value, minValue, maxValue, editMode, callbacks, styles, tooltip )
 	return self:addControl( Spinner:new( bounds, text, value, minValue, maxValue, editMode, callbacks, styles, tooltip ) )
@@ -2165,6 +2193,7 @@ end
 ---@param editMode boolean
 ---@param callbacks table edit.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table ValueBox
 function Raygui:ValueBox( bounds, text, value, minValue, maxValue, editMode, callbacks, styles, tooltip )
 	return self:addControl( ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callbacks, styles, tooltip ) )
@@ -2176,6 +2205,7 @@ end
 ---@param editMode boolean
 ---@param callbacks table edit.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table TextBox
 function Raygui:TextBox( bounds, text, textSize, editMode, callbacks, styles, tooltip )
 	return self:addControl( TextBox:new( bounds, text, textSize, editMode, callbacks, styles, tooltip ) )
@@ -2189,6 +2219,7 @@ end
 ---@param maxValue number
 ---@param callbacks table edit.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table Slider
 function Raygui:Slider( bounds, textLeft, textRight, value, minValue, maxValue, callbacks, styles, tooltip )
 	return self:addControl( Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, callbacks, styles, tooltip ) )
@@ -2202,6 +2233,7 @@ end
 ---@param maxValue number
 ---@param callbacks table edit.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table SliderBar
 function Raygui:SliderBar( bounds, textLeft, textRight, value, minValue, maxValue, callbacks, styles, tooltip )
 	return self:addControl( SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callbacks, styles, tooltip ) )
@@ -2215,6 +2247,7 @@ end
 ---@param maxValue number
 ---@param callbacks table edit.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table ProgressBar
 function Raygui:ProgressBar( bounds, textLeft, textRight, value, minValue, maxValue, callbacks, styles, tooltip )
 	return self:addControl( ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue, callbacks, styles, tooltip ) )
@@ -2223,6 +2256,7 @@ end
 ---@param bounds Rectangle
 ---@param text string
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table StatusBar
 function Raygui:StatusBar( bounds, text, styles, tooltip )
 	return self:addControl( StatusBar:new( bounds, text, styles, tooltip ) )
@@ -2231,6 +2265,7 @@ end
 ---@param bounds Rectangle
 ---@param text string
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table DummyRec
 function Raygui:DummyRec( bounds, text, styles, tooltip )
 	return self:addControl( DummyRec:new( bounds, text, styles, tooltip ) )
@@ -2242,6 +2277,7 @@ end
 ---@param subdivs integer
 ---@param callbacks table cellChange.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table Grid
 function Raygui:Grid( bounds, text, spacing, subdivs, callbacks, styles, tooltip )
 	return self:addControl( Grid:new( bounds, text, spacing, subdivs, callbacks, styles, tooltip ) )
@@ -2253,6 +2289,7 @@ end
 ---@param active integer
 ---@param callbacks table select.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table ListView
 function Raygui:ListView( bounds, text, scrollIndex, active, callbacks, styles, tooltip )
 	return self:addControl( ListView:new( bounds, text, scrollIndex, active, callbacks, styles, tooltip ) )
@@ -2265,6 +2302,7 @@ end
 ---@param focus integer
 ---@param callbacks table select.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table ListViewEx
 function Raygui:ListViewEx( bounds, text, scrollIndex, active, focus, callbacks, styles, tooltip )
 	return self:addControl( ListViewEx:new( bounds, text, scrollIndex, active, focus, callbacks, styles, tooltip ) )
@@ -2276,6 +2314,7 @@ end
 ---@param buttons string
 ---@param callbacks table pressed, grab, drag.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table MessageBox
 function Raygui:MessageBox( bounds, title, message, buttons, callbacks, styles, tooltip )
 	return self:addControl( MessageBox:new( bounds, title, message, buttons, callbacks, styles, tooltip ) )
@@ -2290,6 +2329,7 @@ end
 ---@param secretViewActive boolean
 ---@param callbacks table pressed, grab, drag.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table TextInputBox
 function Raygui:TextInputBox( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callbacks, styles, tooltip )
 	return self:addControl( TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callbacks, styles, tooltip ) )
@@ -2300,6 +2340,7 @@ end
 ---@param color Color
 ---@param callbacks table edit.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table ColorPicker
 function Raygui:ColorPicker( bounds, text, color, callbacks, styles, tooltip )
 	return self:addControl( ColorPicker:new( bounds, text, color, callbacks, styles, tooltip ) )
@@ -2310,6 +2351,7 @@ end
 ---@param color Color
 ---@param callbacks table edit.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table ColorPanel
 function Raygui:ColorPanel( bounds, text, color, callbacks, styles, tooltip )
 	return self:addControl( ColorPanel:new( bounds, text, color, callbacks, styles, tooltip ) )
@@ -2320,6 +2362,7 @@ end
 ---@param alpha number
 ---@param callbacks table edit.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table ColorBarAlpha
 function Raygui:ColorBarAlpha( bounds, text, alpha, callbacks, styles, tooltip )
 	return self:addControl( ColorBarAlpha:new( bounds, text, alpha, callbacks, styles, tooltip ) )
@@ -2330,6 +2373,7 @@ end
 ---@param value number
 ---@param callbacks table edit.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table ColorBarHue
 function Raygui:ColorBarHue( bounds, text, value, callbacks, styles, tooltip )
 	return self:addControl( ColorBarHue:new( bounds, text, value, callbacks, styles, tooltip ) )
@@ -2341,6 +2385,7 @@ end
 ---@param maxValue integer
 ---@param callbacks table edit.
 ---@param styles table|nil
+---@param tooltip string|nil
 ---@return table ColorBarHue
 function Raygui:GuiScrollBar( bounds, value, minValue, maxValue, callbacks, styles, tooltip )
 	return self:addControl( GuiScrollBar:new( bounds, value, minValue, maxValue, callbacks, styles, tooltip ) )

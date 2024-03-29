@@ -19,7 +19,7 @@ function Calculator:new( pos )
 		{ -- Callbacks.
 			close = function() object:setVisible( false ) end,
 			grab = function() object:set2Top() end,
-			drag = function( self ) object:setPosition( Vec2:new( self.bounds.x, self.bounds.y ) ) end
+			drag = function( this ) object:setPosition( Vec2:new( this.bounds.x, this.bounds.y ) ) end
 		}
 	)
 	object.display = Gui:Label(

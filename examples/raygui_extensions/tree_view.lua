@@ -39,8 +39,9 @@ function TreeView:new( bounds, text, callbacks, styles, tooltip )
 	object.draggable = true
 	object.allowMove = true
 	object.allowMultiselect = true
-
+	object.defaultControlHeight = 22
 	object.mouseScale = 1 -- Set this if drawing in different size to render texture for example.
+
 	object.selectedItems = {}
 
 	object:setSize( Vec2:new( object.bounds.width, object.bounds.height ) )
@@ -161,14 +162,12 @@ function TreeView:checkItem( controls, item, mode )
 		if 0 < #control.controls then
 			self:checkItem( control.controls, item, mode )
 		end
-		if mode == self.RANGE_SELECT then
-			if self._idRange[1] <= control._id and control._id <= self._idRange[2] then
-				control.active = true
-			end
+		if mode == self.RANGE_SELECT and control.visible
+		and self._idRange[1] <= control._id and control._id <= self._idRange[2] then
+			control.active = true
 		end
 		if control.active then
 			table.insert( self.selectedItems, control )
-			-- table.insert( self.selectedItems, 1, control )
 		end
 	end
 end
@@ -245,7 +244,7 @@ function TreeView:itemSelect( item )
 	-- Item select.
 
 	local mode = self.SINGLE_SELECT
-	
+
 	if self.allowMultiselect then
 		if RL.IsKeyDown( RL.KEY_LEFT_CONTROL ) or RL.IsKeyDown( RL.KEY_RIGHT_CONTROL ) then
 			mode = self.MULTI_SELECT
@@ -384,7 +383,7 @@ function TreeView:setSize( size )
 		self.bounds.width - scrollBarWidth - self.padding * 2 - borderWidth * 2,
 		self.bounds.height - scrollBarWidth - self.padding * 2 - borderWidth * 2
 	)
-	self.defaultControlSize = Vec2:new( self.content.width, 22 )
+	self.defaultControlSize = Vec2:new( self.content.width, self.defaultControlHeight )
 
 	local _, _, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
 	self.view = Rect:new( view )

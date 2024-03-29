@@ -1,18 +1,28 @@
 package.path = package.path..";"..RL.GetBasePath().."?.lua"
 package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
-
 Util = require( "utillib" )
 Rect = require( "rectangle" )
 Vec2 = require( "vector2" )
 Color = require( "color" )
 Raygui = require( "raygui" )
 Calculator = require( "calculator" )
+FileBrowser = require( "file_browser" )
 
 Gui = Raygui:new()
 
+local showAllButton = nil
 local calculator = nil
-local calculator2 = nil
+local fileBrowser = nil
+
+local function loadFile( path )
+	print( "Load file: "..path )
+end
+
+local function showAll()
+	calculator:setVisible( true )
+	fileBrowser:setVisible( true )
+end
 
 function RL.init()
 	local monitor = 0
@@ -29,8 +39,22 @@ function RL.init()
 	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_SIZE, 20 )
 	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_SPACING, 4 )
 
+	RL.GuiLoadStyle( RL.GetBasePath().."../resources/styles/style_dark.rgs" )
+
+	showAllButton = Gui:Button(
+		Rect:new( 0, 0, 108, 28 ),
+		"Show All",
+		{ -- callbacks.
+			pressed = function() showAll() end
+		}
+	)
+
 	calculator = Calculator:new( Vec2:new( 32, 32 ) )
-	calculator2 = Calculator:new( Vec2:new( 64, 65 ) )
+	fileBrowser = FileBrowser:new(
+		Vec2:new( 250, 100 )
+	)
+
+	fileBrowser:popup( fileBrowser.MODES.OPEN, RL.GetBasePath(), loadFile )
 end
 
 function RL.update( delta )

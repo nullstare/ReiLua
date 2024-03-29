@@ -33,11 +33,26 @@ local function getParamType( param )
 	elseif param == "int" then return "integer"
 	elseif param == "string" then return "string"
 	elseif param == "bool" then return "boolean"
-	elseif param == "bool" then return "boolean"
+	elseif param == "nil" then return "nil"
 	elseif param:sub( #param - 1, #param ) == "{}" then return "table"
 	else 
 		return "any"
 	end
+end
+
+local function getParam( param )
+	local text = ""
+	local params = split( param, "|" )
+
+	for i, p in ipairs( params ) do
+		text = text..getParamType( p )
+
+		if i < #params then
+			text = text.."|"
+		end
+	end
+
+	return text
 end
 
 local function parseFunction( line )
@@ -52,7 +67,8 @@ local function parseFunction( line )
 		local sepPar = split( par, " " )
 		parStr = parStr..sepPar[2]
 		str = str.."---@param "..sepPar[2].." "
-		str = str..getParamType( sepPar[1] ).."\n"
+		-- str = str..getParamType( sepPar[1] ).."\n"
+		str = str..getParam( sepPar[1] ).."\n"
 
 		if i < #parameters then
 			parStr = parStr..", "

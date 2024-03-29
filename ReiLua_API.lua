@@ -1552,8 +1552,8 @@ function  RL.EndScissorMode() end
 ---NOTE: Set nil if no shader
 ---- Failure return nil
 ---- Success return Shader
----@param vsFileName string
----@param fsFileName string
+---@param vsFileName string|nil
+---@param fsFileName string|nil
 ---@return any shader 
 function RL.LoadShader( vsFileName, fsFileName ) end
 
@@ -1561,8 +1561,8 @@ function RL.LoadShader( vsFileName, fsFileName ) end
 ---NOTE: Set nil if no shader
 ---- Failure return nil
 ---- Success return Shader
----@param vsCode string
----@param fsCode string
+---@param vsCode string|nil
+---@param fsCode string|nil
 ---@return any shader 
 function RL.LoadShaderFromMemory( vsCode, fsCode ) end
 
@@ -1917,7 +1917,7 @@ function RL.LoadDirectoryFiles( dirPath ) end
 ---Load directory filepaths with extension filtering and recursive directory scan
 ---- Success return string{}
 ---@param basePath string
----@param filter string
+---@param filter string|nil
 ---@param scanSubdirs boolean
 ---@return any fileNames 
 function RL.LoadDirectoryFilesEx( basePath, filter, scanSubdirs ) end
@@ -1982,7 +1982,7 @@ function RL.DecodeDataBase64( data ) end
 
 ---Load automation events list from file, nil for empty list, capacity = MAX_AUTOMATION_EVENTS
 ---- Success return AutomationEventList
----@param fileName any
+---@param fileName string|nil
 ---@return any eventList 
 function RL.LoadAutomationEventList( fileName ) end
 

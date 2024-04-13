@@ -1086,7 +1086,7 @@ int ltextGetCodepointCount( lua_State* L ) {
 }
 
 /*
-> codepoint, codepointSize = RL.GetCodepoint( string text )
+> codepoint, codepointSize = RL.GetCodepoint( string text, int position )
 
 Get codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 
@@ -1094,6 +1094,9 @@ Get codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 */
 int ltextGetCodepoint( lua_State* L ) {
 	const char* text = luaL_checkstring( L, 1 );
+	int position = luaL_checkinteger( L, 2 );
+
+	text += position;
 
 	int codepointSize = 0;
 	lua_pushinteger( L, GetCodepoint( text, &codepointSize ) );
@@ -1103,7 +1106,7 @@ int ltextGetCodepoint( lua_State* L ) {
 }
 
 /*
-> codepoint, codepointSize = RL.GetCodepointNext( string text )
+> codepoint, codepointSize = RL.GetCodepointNext( string text, int position )
 
 Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 
@@ -1111,6 +1114,9 @@ Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 */
 int ltextGetCodepointNext( lua_State* L ) {
 	const char* text = luaL_checkstring( L, 1 );
+	int position = luaL_checkinteger( L, 2 );
+
+	text += position;
 
 	int codepointSize = 0;
 	lua_pushinteger( L, GetCodepointNext( text, &codepointSize ) );
@@ -1120,7 +1126,7 @@ int ltextGetCodepointNext( lua_State* L ) {
 }
 
 /*
-> codepoint, codepointSize = RL.GetCodepointPrevious( string text )
+> codepoint, codepointSize = RL.GetCodepointPrevious( string text, int position )
 
 Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 
@@ -1128,6 +1134,9 @@ Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failu
 */
 int ltextGetCodepointPrevious( lua_State* L ) {
 	const char* text = luaL_checkstring( L, 1 );
+	int position = luaL_checkinteger( L, 2 );
+
+	text += position;
 
 	int codepointSize = 0;
 	lua_pushinteger( L, GetCodepointPrevious( text, &codepointSize ) );

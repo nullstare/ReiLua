@@ -4151,23 +4151,26 @@ function RL.GetCodepointCount( text ) end
 ---Get codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 ---- Success return int, int
 ---@param text string
+---@param position integer
 ---@return any codepoint
 ---@return any codepointSize 
-function RL.GetCodepoint( text ) end
+function RL.GetCodepoint( text, position ) end
 
 ---Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 ---- Success return int, int
 ---@param text string
+---@param position integer
 ---@return any codepoint
 ---@return any codepointSize 
-function RL.GetCodepointNext( text ) end
+function RL.GetCodepointNext( text, position ) end
 
 ---Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 ---- Success return int, int
 ---@param text string
+---@param position integer
 ---@return any codepoint
 ---@return any codepointSize 
-function RL.GetCodepointPrevious( text ) end
+function RL.GetCodepointPrevious( text, position ) end
 
 ---Encode one codepoint into UTF-8 byte array
 ---- Success return string

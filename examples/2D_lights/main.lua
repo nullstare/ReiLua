@@ -12,6 +12,8 @@ local LIGHTRENDER_SIZE = 1024 -- Maxinum light size.
 local SHADOW_FOV = 45 -- Camera fov for shadow rendering.
 local WALL_MESH_HEIGHT = math.tan( RL.DEG2RAD * ( 90 - SHADOW_FOV / 2 ) ) * LIGHTRENDER_SIZE / TILE_SIZE_PX / 2
 
+print( "WALL_MESH_HEIGHT", WALL_MESH_HEIGHT )
+
 local monitor = 0
 local monitorPos = Vector2:new( RL.GetMonitorPosition( monitor ) )
 local monitorSize = Vector2:new( RL.GetMonitorSize( monitor ) )
@@ -24,7 +26,7 @@ local lightTexSize = Vector2:new()
 local framebuffer = nil
 local lightMap = nil -- Final image of all lights.
 local lightRender = nil -- RenderTexture for individual light and shadow rendering.
-local ambientLight = Color:new( 40, 40, 40, 255 )
+local ambientLight = Color:new( 40, 40, 40 )
 local wallSegs = {}
 local shadowMesh = nil
 local lights = {}
@@ -131,10 +133,10 @@ function RL.init()
 	RL.rlDisableBackfaceCulling()
 end
 
--- Process.
+-- Update.
 
 function RL.update( delta )
-	lights[1].pos = Vector2:new( RL.GetMousePosition() )
+	lights[1].pos:set( RL.GetMousePosition() )
 end
 
 -- Drawing.

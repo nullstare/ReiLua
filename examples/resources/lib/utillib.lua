@@ -7,7 +7,8 @@ end
 
 local utillib = {}
 
-function utillib.tableClone( org )
+-- Does not work with dictionaries.
+function utillib.arrayClone( org )
 	return { table.unpack( org ) }
 end
 

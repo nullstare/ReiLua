@@ -17,8 +17,8 @@ option( LUA_EVENTS "Enable Lua event callbacks (RL.event)." off )
 enum_option( PLATFORM "Desktop;Desktop_SDL;Web" "Platform to build for." )
 
 if( NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES )
-    set( CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE )
-    set_property( CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo" )
+	set( CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE )
+	set_property( CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo" )
 endif()
 
 file( GLOB SOURCES src/*.c )
@@ -45,7 +45,7 @@ if( PLATFORM STREQUAL "Web" )
 	# Try "-s USE_PTHREADS" if not getting pixel perfect rendering.
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY" )
 	# set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY -s FORCE_FILESYSTEM=1" )
-  	set( CMAKE_EXECUTABLE_SUFFIX ".html" ) # This line is used to set your executable to build with the emscripten html template so that you can directly open it.
+	set( CMAKE_EXECUTABLE_SUFFIX ".html" ) # This line is used to set your executable to build with the emscripten html template so that you can directly open it.
 	set( resources_dir "resources@/" ) # Sets resources as root for the virtual file system.
 	set_target_properties( ${PROJECT_NAME} PROPERTIES LINK_FLAGS "--preload-file ${resources_dir}" )
 else() # Desktop

@@ -22,7 +22,7 @@ FileBrowser.FILE_ICONS = {
 }
 
 function FileBrowser:new( pos )
-    local object = setmetatable( {}, FileBrowser )
+	local object = setmetatable( {}, FileBrowser )
 	
 	object.padding = 4
 	object.spacing = 4
@@ -34,7 +34,7 @@ function FileBrowser:new( pos )
 	local textButtonSize = Vec2:new( 72, 28 )
 
 	-- Window.
-    object.window = Gui:WindowBox(
+	object.window = Gui:WindowBox(
 		Rect:new( pos.x, pos.y, winSize.x, winSize.y ),
 		"File Browser",
 		{ -- callbacks.
@@ -182,13 +182,17 @@ function FileBrowser:new( pos )
 	return object
 end
 
-function FileBrowser:popup( mode, path, callback )
+function FileBrowser:popup( mode, path, callback, filters )
 	self:setPath( path )
 	self.mode = mode
 
 	if self.mode == self.MODES.OPEN then
 		self.okButton.text = "Open"
 		self.callbacks.ok = callback
+	end
+
+	if filters ~= nil then
+		self.filterDropdown.text = "All\n"..filters
 	end
 
 	self:setVisible( true )
@@ -266,7 +270,7 @@ function FileBrowser:updateList()
 
 			-- Search.
 			if self.searchText == "" or ( 0 < #self.searchText
-			and self.searchText:lower() == record.name:sub( 1, #self.searchText ):lower() ) then
+			and -1 < RL.TextFindIndex( record.name:lower(), self.searchText:lower() ) ) then
 				table.insert( self.files, record )
 			end
 		end
@@ -351,7 +355,6 @@ function FileBrowser:setFilter()
 	end
 
 	self:updateList()
-	print( "self.filter", self.filter )
 end
 
 function FileBrowser:setPosition( pos )

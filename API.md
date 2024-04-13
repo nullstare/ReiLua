@@ -6864,7 +6864,7 @@ Get total number of codepoints in a UTF-8 encoded string
 
 ---
 
-> codepoint, codepointSize = RL.GetCodepoint( string text )
+> codepoint, codepointSize = RL.GetCodepoint( string text, int position )
 
 Get codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 
@@ -6872,7 +6872,7 @@ Get codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 
 ---
 
-> codepoint, codepointSize = RL.GetCodepointNext( string text )
+> codepoint, codepointSize = RL.GetCodepointNext( string text, int position )
 
 Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 
@@ -6880,7 +6880,7 @@ Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 
 ---
 
-> codepoint, codepointSize = RL.GetCodepointPrevious( string text )
+> codepoint, codepointSize = RL.GetCodepointPrevious( string text, int position )
 
 Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 

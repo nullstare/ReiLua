@@ -11,9 +11,9 @@ Calculator.OPERATIONS = {
 }
 
 function Calculator:new( pos )
-    local object = setmetatable( {}, Calculator )
+	local object = setmetatable( {}, Calculator )
 
-    object.window = Gui:WindowBox(
+	object.window = Gui:WindowBox(
 		Rect:new( pos.x, pos.y, 188, 216 ),
 		"Calculator",
 		{ -- Callbacks.

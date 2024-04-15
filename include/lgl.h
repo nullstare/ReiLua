@@ -1,5 +1,7 @@
 #pragma once
 
+/* Rendering. */
+int lglClear( lua_State* L );
 /* Frame Buffers. */
 int lglBlitFramebuffer( lua_State* L );
 /* State Management. */

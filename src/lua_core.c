@@ -2298,6 +2298,8 @@ void luaRegister() {
 	assingGlobalFunction( "rlSetMatrixViewOffsetStereo", lrlglSetMatrixViewOffsetStereo );
 
 	/* OpenGL */
+		/* Rendering. */
+	assingGlobalFunction( "glClear", lglClear );
 		/* Frame Buffers. */
 	assingGlobalFunction( "glBlitFramebuffer", lglBlitFramebuffer );
 		/* State Management. */

@@ -5,6 +5,23 @@
 #include "lgl.h"
 
 /*
+## OpenGL - Rendering
+*/
+
+/*
+> RL.glClear( int mask )
+
+Clear buffers to preset values
+*/
+int lglClear( lua_State* L ) {
+	unsigned int mask = luaL_checkinteger( L, 1 );
+
+	glClear( mask );
+
+	return 0;
+}
+
+/*
 ## OpenGL - Frame Buffers
 */
 

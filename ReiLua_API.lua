@@ -7588,6 +7588,13 @@ function  RL.rlSetMatrixProjectionStereo( right, left ) end
 ---@return any RL.rlSetMatrixViewOffsetStereo
 function  RL.rlSetMatrixViewOffsetStereo( right, left ) end
 
+-- OpenGL - Rendering
+
+---Clear buffers to preset values
+---@param mask integer
+---@return any RL.glClear
+function  RL.glClear( mask ) end
+
 -- OpenGL - Frame Buffers
 
 ---Copy a block of pixels from one framebuffer object to another.

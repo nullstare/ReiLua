@@ -10789,6 +10789,16 @@ Set eyes view offsets matrices for stereo rendering
 
 ---
 
+## OpenGL - Rendering
+
+---
+
+> RL.glClear( int mask )
+
+Clear buffers to preset values
+
+---
+
 ## OpenGL - Frame Buffers
 
 ---

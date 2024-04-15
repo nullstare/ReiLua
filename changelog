@@ -39,7 +39,7 @@ DETAILED CHANGES:
 	- ADDED: Raygui lib tree view.
 	- ADDED: Raygui lib examples file browser.
 	- CHANGE: Position argument added for GetCodepoint, GetCodepointNext and GetCodepointPrevious.
-	- ADDED glEnable, glDisable and glGetString.
+	- ADDED glEnable, glDisable, glGetString and glClear.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

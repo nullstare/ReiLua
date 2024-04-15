@@ -3337,7 +3337,7 @@ Framebuffer texture attachment type: renderbuffer
 ---
 
 
-## Defines - OpenGL
+## Defines - OpenGL Bitfield mask
 > GL_COLOR_BUFFER_BIT = 16384
 
 ---
@@ -3350,6 +3350,8 @@ Framebuffer texture attachment type: renderbuffer
 
 ---
 
+
+## Defines - OpenGL Texture parameter
 > GL_NEAREST = 9728
 
 ---
@@ -3359,7 +3361,209 @@ Framebuffer texture attachment type: renderbuffer
 ---
 
 
-## Defines - CBuffer Data types
+## Defines - OpenGL Capability
+> GL_BLEND = 3042
+
+If enabled, blend the computed fragment color values with the values in the color buffers. See glBlendFunc
+
+---
+
+> GL_CULL_FACE = 2884
+
+If enabled, cull polygons based on their winding in window coordinates. See glCullFace
+
+---
+
+> GL_DEPTH_TEST = 2929
+
+If enabled, do depth comparisons and update the depth buffer. Note that even if the depth buffer exists and the depth mask is non-zero, the depth buffer is not updated if the depth test is disabled. See glDepthFunc and glDepthRangef
+
+---
+
+> GL_DITHER = 3024
+
+If enabled, dither color components or indices before they are written to the color buffer
+
+---
+
+> GL_POLYGON_OFFSET_FILL = 32823
+
+If enabled, an offset is added to depth values of a polygon's fragments produced by rasterization. See glPolygonOffset
+
+---
+
+> GL_SAMPLE_ALPHA_TO_COVERAGE = 32926
+
+If enabled, compute a temporary coverage value where each bit is determined by the alpha value at the corresponding sample location. The temporary coverage value is then ANDed with the fragment coverage value
+
+---
+
+> GL_SAMPLE_COVERAGE = 32928
+
+If enabled, the fragment's coverage is ANDed with the temporary coverage value. If GL_SAMPLE_COVERAGE_INVERT is set to GL_TRUE, invert the coverage value. See glSampleCoverage
+
+---
+
+> GL_SCISSOR_TEST = 3089
+
+If enabled, discard fragments that are outside the scissor rectangle. See glScissor
+
+---
+
+> GL_STENCIL_TEST = 2960
+
+If enabled, do stencil testing and update the stencil buffer. See glStencilFunc and glStencilOp
+
+---
+
+
+## Defines - OpenGL Test function
+> GL_NEVER = 512
+
+Always fails
+
+---
+
+> GL_LESS = 513
+
+Passes if ( ref & mask ) < ( stencil & mask )
+
+---
+
+> GL_LEQUAL = 515
+
+Passes if ( ref & mask ) <= ( stencil & mask )
+
+---
+
+> GL_GREATER = 516
+
+Passes if ( ref & mask ) > ( stencil & mask )
+
+---
+
+> GL_GEQUAL = 518
+
+Passes if ( ref & mask ) >= ( stencil & mask )
+
+---
+
+> GL_EQUAL = 514
+
+Passes if ( ref & mask ) = ( stencil & mask )
+
+---
+
+> GL_NOTEQUAL = 517
+
+Passes if ( ref & mask ) != ( stencil & mask )
+
+---
+
+> GL_ALWAYS = 519
+
+Always passes
+
+---
+
+
+## Defines - OpenGL Face
+> GL_FRONT = 1028
+
+---
+
+> GL_BACK = 1029
+
+---
+
+> GL_FRONT_AND_BACK = 1032
+
+---
+
+
+## Defines - OpenGL Stencil test
+> GL_KEEP = 7680
+
+Keeps the current value
+
+---
+
+> GL_ZERO = 0
+
+Sets the stencil buffer value to 0
+
+---
+
+> GL_REPLACE = 7681
+
+Sets the stencil buffer value to ref, as specified by glStencilFunc
+
+---
+
+> GL_INCR = 7682
+
+Increments the current stencil buffer value. Clamps to the maximum representable unsigned value
+
+---
+
+> GL_INCR_WRAP = 34055
+
+Increments the current stencil buffer value. Wraps stencil buffer value to zero when incrementing the maximum representable unsigned value
+
+---
+
+> GL_DECR = 7683
+
+Decrements the current stencil buffer value. Clamps to 0
+
+---
+
+> GL_DECR_WRAP = 34056
+
+Decrements the current stencil buffer value. Wraps stencil buffer value to the maximum representable unsigned value when decrementing a stencil buffer value of zero
+
+---
+
+> GL_INVERT = 5386
+
+Bitwise inverts the current stencil buffer value
+
+---
+
+
+## Defines - OpenGL Connection
+> GL_VENDOR = 7936
+
+Returns the company responsible for this GL implementation. This name does not change from release to release
+
+---
+
+> GL_RENDERER = 7937
+
+Returns the name of the renderer. This name is typically specific to a particular configuration of a hardware platform. It does not change from release to release
+
+---
+
+> GL_VERSION = 7938
+
+Returns a version or release number of the form OpenGLES
+
+---
+
+> GL_SHADING_LANGUAGE_VERSION = 35724
+
+Returns a version or release number for the shading language of the form OpenGLESGLSLES
+
+---
+
+> GL_EXTENSIONS = 7939
+
+Returns a space-separated list of supported extensions to GL
+
+---
+
+
+## Defines - CBuffer Data type
 > BUFFER_UNSIGNED_CHAR = 0
 
 C type unsigned char
@@ -10585,14 +10789,78 @@ Set eyes view offsets matrices for stereo rendering
 
 ---
 
-## OpenGL - Framebuffer management
+## OpenGL - Frame Buffers
 
 ---
 
 > RL.glBlitFramebuffer( RenderTexture srcTex, RenderTexture dstTex, Rectangle srcRect, Rectangle dstRect, int mask, int filter )
 
 Copy a block of pixels from one framebuffer object to another.
-Use -1 RenderTexture for window framebuffer
+Use nil RenderTexture for window framebuffer
+
+---
+
+## OpenGL - State Management
+
+---
+
+> RL.glEnable( int cap )
+
+Enable server-side GL capabilities
+
+---
+
+> RL.glDisable( int cap )
+
+Disable server-side GL capabilities
+
+---
+
+> RL.glStencilFunc( int func, int ref, int mask )
+
+Set front and back function and reference value for stencil testing
+
+---
+
+> RL.glStencilFuncSeparate( int face, int func, int ref, int mask )
+
+Set front and/or back function and reference value for stencil testing
+
+---
+
+> RL.glStencilMask( int mask )
+
+Control the front and back writing of individual bits in the stencil planes
+
+---
+
+> RL.glStencilMaskSeparate( int face, int mask )
+
+Control the front and/or back writing of individual bits in the stencil planes
+
+---
+
+> RL.glStencilOp( int sfail, int dpfail, int dppass )
+
+Set front and back stencil test actions
+
+---
+
+> RL.glStencilOpSeparate( int face, int sfail, int dpfail, int dppass )
+
+Set front and back stencil test actions
+
+---
+
+## OpenGL - Utility
+
+---
+
+> connection = RL.glGetString( int name, int|nil index )
+
+Return a string describing the current GL connection. GL_EXTENSIONS returns the extension string supported by the implementation at index
+
+- Success return string
 
 ---
 

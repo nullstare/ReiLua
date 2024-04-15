@@ -1156,15 +1156,96 @@ RL.RL_ATTACHMENT_RENDERBUFFER=200
 RL.RL_CULL_FACE_FRONT=0
 RL.RL_CULL_FACE_BACK=1
 
--- Defines - OpenGL
+-- Defines - OpenGL Bitfield mask
 
 RL.GL_COLOR_BUFFER_BIT=16384
 RL.GL_DEPTH_BUFFER_BIT=256
 RL.GL_STENCIL_BUFFER_BIT=1024
+
+-- Defines - OpenGL Texture parameter
+
 RL.GL_NEAREST=9728
 RL.GL_LINEAR=9729
 
--- Defines - CBuffer Data types
+-- Defines - OpenGL Capability
+
+---If enabled, blend the computed fragment color values with the values in the color buffers. See glBlendFunc
+RL.GL_BLEND=3042
+---If enabled, cull polygons based on their winding in window coordinates. See glCullFace
+RL.GL_CULL_FACE=2884
+---If enabled, do depth comparisons and update the depth buffer. Note that even if the depth buffer exists and the depth mask is non-zero, the depth buffer is not updated if the depth test is disabled. See glDepthFunc and glDepthRangef
+RL.GL_DEPTH_TEST=2929
+---If enabled, dither color components or indices before they are written to the color buffer
+RL.GL_DITHER=3024
+---If enabled, an offset is added to depth values of a polygon's fragments produced by rasterization. See glPolygonOffset
+RL.GL_POLYGON_OFFSET_FILL=32823
+---If enabled, compute a temporary coverage value where each bit is determined by the alpha value at the corresponding sample location. The temporary coverage value is then ANDed with the fragment coverage value
+RL.GL_SAMPLE_ALPHA_TO_COVERAGE=32926
+---If enabled, the fragment's coverage is ANDed with the temporary coverage value. If GL_SAMPLE_COVERAGE_INVERT is set to GL_TRUE, invert the coverage value. See glSampleCoverage
+RL.GL_SAMPLE_COVERAGE=32928
+---If enabled, discard fragments that are outside the scissor rectangle. See glScissor
+RL.GL_SCISSOR_TEST=3089
+---If enabled, do stencil testing and update the stencil buffer. See glStencilFunc and glStencilOp
+RL.GL_STENCIL_TEST=2960
+
+-- Defines - OpenGL Test function
+
+---Always fails
+RL.GL_NEVER=512
+---Passes if ( ref & mask ) < ( stencil & mask )
+RL.GL_LESS=513
+---Passes if ( ref & mask ) <= ( stencil & mask )
+RL.GL_LEQUAL=515
+---Passes if ( ref & mask ) > ( stencil & mask )
+RL.GL_GREATER=516
+---Passes if ( ref & mask ) >= ( stencil & mask )
+RL.GL_GEQUAL=518
+---Passes if ( ref & mask ) = ( stencil & mask )
+RL.GL_EQUAL=514
+---Passes if ( ref & mask ) != ( stencil & mask )
+RL.GL_NOTEQUAL=517
+---Always passes
+RL.GL_ALWAYS=519
+
+-- Defines - OpenGL Face
+
+RL.GL_FRONT=1028
+RL.GL_BACK=1029
+RL.GL_FRONT_AND_BACK=1032
+
+-- Defines - OpenGL Stencil test
+
+---Keeps the current value
+RL.GL_KEEP=7680
+---Sets the stencil buffer value to 0
+RL.GL_ZERO=0
+---Sets the stencil buffer value to ref, as specified by glStencilFunc
+RL.GL_REPLACE=7681
+---Increments the current stencil buffer value. Clamps to the maximum representable unsigned value
+RL.GL_INCR=7682
+---Increments the current stencil buffer value. Wraps stencil buffer value to zero when incrementing the maximum representable unsigned value
+RL.GL_INCR_WRAP=34055
+---Decrements the current stencil buffer value. Clamps to 0
+RL.GL_DECR=7683
+---Decrements the current stencil buffer value. Wraps stencil buffer value to the maximum representable unsigned value when decrementing a stencil buffer value of zero
+RL.GL_DECR_WRAP=34056
+---Bitwise inverts the current stencil buffer value
+RL.GL_INVERT=5386
+
+-- Defines - OpenGL Connection
+
+---Returns the company responsible for this GL implementation. This name does not change from release to release
+RL.GL_VENDOR=7936
+---Returns the name of the renderer. This name is typically specific to a particular configuration of a hardware platform. It does not change from release to release
+RL.GL_RENDERER=7937
+---Returns a version or release number of the form OpenGLES
+RL.GL_VERSION=7938
+---Returns a version or release number for the shading language of the form OpenGLESGLSLES
+RL.GL_SHADING_LANGUAGE_VERSION=35724
+---Returns a space-separated list of supported extensions to GL
+RL.GL_EXTENSIONS=7939
+
+-- Defines - CBuffer Data type
 
 ---C type unsigned char
 RL.BUFFER_UNSIGNED_CHAR=0
@@ -7507,10 +7588,10 @@ function  RL.rlSetMatrixProjectionStereo( right, left ) end
 ---@return any RL.rlSetMatrixViewOffsetStereo
 function  RL.rlSetMatrixViewOffsetStereo( right, left ) end
 
--- OpenGL - Framebuffer management
+-- OpenGL - Frame Buffers
 
 ---Copy a block of pixels from one framebuffer object to another.
----Use -1 RenderTexture for window framebuffer
+---Use nil RenderTexture for window framebuffer
 ---@param srcTex any
 ---@param dstTex any
 ---@param srcRect table
@@ -7519,6 +7600,68 @@ function  RL.rlSetMatrixViewOffsetStereo( right, left ) end
 ---@param filter integer
 ---@return any RL.glBlitFramebuffer
 function  RL.glBlitFramebuffer( srcTex, dstTex, srcRect, dstRect, mask, filter ) end
+
+-- OpenGL - State Management
+
+---Enable server-side GL capabilities
+---@param cap integer
+---@return any RL.glEnable
+function  RL.glEnable( cap ) end
+
+---Disable server-side GL capabilities
+---@param cap integer
+---@return any RL.glDisable
+function  RL.glDisable( cap ) end
+
+---Set front and back function and reference value for stencil testing
+---@param func integer
+---@param ref integer
+---@param mask integer
+---@return any RL.glStencilFunc
+function  RL.glStencilFunc( func, ref, mask ) end
+
+---Set front and/or back function and reference value for stencil testing
+---@param face integer
+---@param func integer
+---@param ref integer
+---@param mask integer
+---@return any RL.glStencilFuncSeparate
+function  RL.glStencilFuncSeparate( face, func, ref, mask ) end
+
+---Control the front and back writing of individual bits in the stencil planes
+---@param mask integer
+---@return any RL.glStencilMask
+function  RL.glStencilMask( mask ) end
+
+---Control the front and/or back writing of individual bits in the stencil planes
+---@param face integer
+---@param mask integer
+---@return any RL.glStencilMaskSeparate
+function  RL.glStencilMaskSeparate( face, mask ) end
+
+---Set front and back stencil test actions
+---@param sfail integer
+---@param dpfail integer
+---@param dppass integer
+---@return any RL.glStencilOp
+function  RL.glStencilOp( sfail, dpfail, dppass ) end
+
+---Set front and back stencil test actions
+---@param face integer
+---@param sfail integer
+---@param dpfail integer
+---@param dppass integer
+---@return any RL.glStencilOpSeparate
+function  RL.glStencilOpSeparate( face, sfail, dpfail, dppass ) end
+
+-- OpenGL - Utility
+
+---Return a string describing the current GL connection. GL_EXTENSIONS returns the extension string supported by the implementation at index
+---- Success return string
+---@param name integer
+---@param index integer|nil
+---@return any connection 
+function RL.glGetString( name, index ) end
 
 -- Easings - Linear Easing functions
 

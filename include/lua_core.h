@@ -104,3 +104,4 @@ void uluaPushAutomationEvent( lua_State* L, AutomationEvent event );
 void uluaPushAutomationEventList( lua_State* L, AutomationEventList eventList );
 /* Utils. */
 int uluaGetTableLen( lua_State* L, int index );
+bool uluaIsNil( lua_State* L, int index );

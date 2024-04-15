@@ -968,13 +968,52 @@ static void defineGlobals() {
 	/* RLGL CullMode */
 	assignGlobalInt( RL_CULL_FACE_FRONT, "RL_CULL_FACE_FRONT" );
 	assignGlobalInt( RL_CULL_FACE_BACK, "RL_CULL_FACE_BACK" );
-	/* OpenGL */
+	/* OpenGL Bitfield mask */
 	assignGlobalInt( GL_COLOR_BUFFER_BIT, "GL_COLOR_BUFFER_BIT" );
 	assignGlobalInt( GL_DEPTH_BUFFER_BIT, "GL_DEPTH_BUFFER_BIT" );
 	assignGlobalInt( GL_STENCIL_BUFFER_BIT, "GL_STENCIL_BUFFER_BIT" );
+	/* OpenGL Texture parameter */
 	assignGlobalInt( GL_NEAREST, "GL_NEAREST" );
 	assignGlobalInt( GL_LINEAR, "GL_LINEAR" );
-	/* CBuffer Data types */
+	/* OpenGL Capability */
+	assignGlobalInt( GL_BLEND, "GL_BLEND" ); // If enabled, blend the computed fragment color values with the values in the color buffers. See glBlendFunc
+	assignGlobalInt( GL_CULL_FACE, "GL_CULL_FACE" ); // If enabled, cull polygons based on their winding in window coordinates. See glCullFace
+	assignGlobalInt( GL_DEPTH_TEST, "GL_DEPTH_TEST" ); // If enabled, do depth comparisons and update the depth buffer. Note that even if the depth buffer exists and the depth mask is non-zero, the depth buffer is not updated if the depth test is disabled. See glDepthFunc and glDepthRangef
+	assignGlobalInt( GL_DITHER, "GL_DITHER" ); // If enabled, dither color components or indices before they are written to the color buffer
+	assignGlobalInt( GL_POLYGON_OFFSET_FILL, "GL_POLYGON_OFFSET_FILL" ); // If enabled, an offset is added to depth values of a polygon's fragments produced by rasterization. See glPolygonOffset
+	assignGlobalInt( GL_SAMPLE_ALPHA_TO_COVERAGE, "GL_SAMPLE_ALPHA_TO_COVERAGE" ); // If enabled, compute a temporary coverage value where each bit is determined by the alpha value at the corresponding sample location. The temporary coverage value is then ANDed with the fragment coverage value
+	assignGlobalInt( GL_SAMPLE_COVERAGE, "GL_SAMPLE_COVERAGE" ); // If enabled, the fragment's coverage is ANDed with the temporary coverage value. If GL_SAMPLE_COVERAGE_INVERT is set to GL_TRUE, invert the coverage value. See glSampleCoverage
+	assignGlobalInt( GL_SCISSOR_TEST, "GL_SCISSOR_TEST" ); // If enabled, discard fragments that are outside the scissor rectangle. See glScissor
+	assignGlobalInt( GL_STENCIL_TEST, "GL_STENCIL_TEST" ); // If enabled, do stencil testing and update the stencil buffer. See glStencilFunc and glStencilOp
+	/* OpenGL Test function */
+	assignGlobalInt( GL_NEVER, "GL_NEVER" ); // Always fails
+	assignGlobalInt( GL_LESS, "GL_LESS" ); // Passes if ( ref & mask ) < ( stencil & mask )
+	assignGlobalInt( GL_LEQUAL, "GL_LEQUAL" ); // Passes if ( ref & mask ) <= ( stencil & mask )
+	assignGlobalInt( GL_GREATER, "GL_GREATER" ); // Passes if ( ref & mask ) > ( stencil & mask )
+	assignGlobalInt( GL_GEQUAL, "GL_GEQUAL" ); // Passes if ( ref & mask ) >= ( stencil & mask )
+	assignGlobalInt( GL_EQUAL, "GL_EQUAL" ); // Passes if ( ref & mask ) = ( stencil & mask )
+	assignGlobalInt( GL_NOTEQUAL, "GL_NOTEQUAL" ); // Passes if ( ref & mask ) != ( stencil & mask )
+	assignGlobalInt( GL_ALWAYS, "GL_ALWAYS" ); // Always passes
+	/* OpenGL Face */
+	assignGlobalInt( GL_FRONT, "GL_FRONT" );
+	assignGlobalInt( GL_BACK, "GL_BACK" );
+	assignGlobalInt( GL_FRONT_AND_BACK, "GL_FRONT_AND_BACK" );
+	/* OpenGL Stencil test */
+	assignGlobalInt( GL_KEEP, "GL_KEEP" ); // Keeps the current value
+	assignGlobalInt( GL_ZERO, "GL_ZERO" ); // Sets the stencil buffer value to 0
+	assignGlobalInt( GL_REPLACE, "GL_REPLACE" ); // Sets the stencil buffer value to ref, as specified by glStencilFunc
+	assignGlobalInt( GL_INCR, "GL_INCR" ); // Increments the current stencil buffer value. Clamps to the maximum representable unsigned value
+	assignGlobalInt( GL_INCR_WRAP, "GL_INCR_WRAP" ); // Increments the current stencil buffer value. Wraps stencil buffer value to zero when incrementing the maximum representable unsigned value
+	assignGlobalInt( GL_DECR, "GL_DECR" ); // Decrements the current stencil buffer value. Clamps to 0
+	assignGlobalInt( GL_DECR_WRAP, "GL_DECR_WRAP" ); // Decrements the current stencil buffer value. Wraps stencil buffer value to the maximum representable unsigned value when decrementing a stencil buffer value of zero
+	assignGlobalInt( GL_INVERT, "GL_INVERT" ); // Bitwise inverts the current stencil buffer value
+	/* OpenGL Connection */
+	assignGlobalInt( GL_VENDOR, "GL_VENDOR" ); // Returns the company responsible for this GL implementation. This name does not change from release to release
+	assignGlobalInt( GL_RENDERER, "GL_RENDERER" ); // Returns the name of the renderer. This name is typically specific to a particular configuration of a hardware platform. It does not change from release to release
+	assignGlobalInt( GL_VERSION, "GL_VERSION" ); // Returns a version or release number of the form OpenGLES
+	assignGlobalInt( GL_SHADING_LANGUAGE_VERSION, "GL_SHADING_LANGUAGE_VERSION" ); // Returns a version or release number for the shading language of the form OpenGLESGLSLES
+	assignGlobalInt( GL_EXTENSIONS, "GL_EXTENSIONS" ); // Returns a space-separated list of supported extensions to GL
+	/* CBuffer Data type */
 	assignGlobalInt( BUFFER_UNSIGNED_CHAR, "BUFFER_UNSIGNED_CHAR" ); // C type unsigned char
 	assignGlobalInt( BUFFER_UNSIGNED_SHORT, "BUFFER_UNSIGNED_SHORT" ); // C type unsigned short
 	assignGlobalInt( BUFFER_UNSIGNED_INT, "BUFFER_UNSIGNED_INT" ); // C type unsigned int
@@ -2259,8 +2298,19 @@ void luaRegister() {
 	assingGlobalFunction( "rlSetMatrixViewOffsetStereo", lrlglSetMatrixViewOffsetStereo );
 
 	/* OpenGL */
-		/* Framebuffer management. */
+		/* Frame Buffers. */
 	assingGlobalFunction( "glBlitFramebuffer", lglBlitFramebuffer );
+		/* State Management. */
+	assingGlobalFunction( "glEnable", lglEnable );
+	assingGlobalFunction( "glDisable", lglDisable );
+	assingGlobalFunction( "glStencilFunc", lglStencilFunc );
+	assingGlobalFunction( "glStencilFuncSeparate", lglStencilFuncSeparate );
+	assingGlobalFunction( "glStencilMask", lglStencilMask );
+	assingGlobalFunction( "glStencilMaskSeparate", lglStencilMaskSeparate );
+	assingGlobalFunction( "glStencilOp", lglStencilOp );
+	assingGlobalFunction( "glStencilOpSeparate", lglStencilOpSeparate );
+		/* Utility. */
+	assingGlobalFunction( "glGetString", lglGetString );
 
 	/* Easings */
 		/* Linear Easing functions. */
@@ -3300,4 +3350,9 @@ int uluaGetTableLen( lua_State* L, int index ) {
         lua_pop( L, 1 );
     }
     return i;
+}
+
+/* Accepts no arg and nil. */
+bool uluaIsNil( lua_State* L, int index ) {
+	return lua_type( L, index ) <= 0; /* -1 is no arg(nil) and 0 is nil. */
 }

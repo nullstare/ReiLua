@@ -6,6 +6,7 @@ KEY CHANGES:
 	- ADDED: apiScanner.lua for searching unimplemented functions from raylib.
 	- ADDED Automation events.
 	- CHANGE: Raygui lib callbacks to single table.
+	- ADDED OpenGL Stencil management functions.
 
 DETAILED CHANGES:
 	- ADDED: GetBufferElementSize and GetBufferLength.
@@ -38,6 +39,7 @@ DETAILED CHANGES:
 	- ADDED: Raygui lib tree view.
 	- ADDED: Raygui lib examples file browser.
 	- CHANGE: Position argument added for GetCodepoint, GetCodepointNext and GetCodepointPrevious.
+	- ADDED glEnable, glDisable and glGetString.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

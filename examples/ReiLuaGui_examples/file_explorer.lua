@@ -20,7 +20,7 @@ function FileExplorer:new( pos )
 		padding = 10,
 		onClicked = function()
 			object:set2Top()
-			object.dragPos = Vec2:new( RL.GetMousePosition() ) - Vec2:new( object.handle.bounds.x, object.handle.bounds.y )
+			object.dragPos = Vec2:newT( RL.GetMousePosition() ) - Vec2:new( object.handle.bounds.x, object.handle.bounds.y )
 			Gui.heldCallback = function() object:drag() end
 		end,
 	} )
@@ -30,7 +30,7 @@ function FileExplorer:new( pos )
 		texture = BgrTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
-		color = Color:new( RL.LIGHTGRAY ),
+		color = Color:newT( RL.LIGHTGRAY ),
 	} ) )
 
 	object.handle:add( Gui.texture:new( {
@@ -38,7 +38,7 @@ function FileExplorer:new( pos )
 		texture = BorderTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
-		color = Color:new( RL.LIGHTGRAY ),
+		color = Color:newT( RL.LIGHTGRAY ),
 		nPatchInfo = { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = RL.NPATCH_NINE_PATCH },
 	} ) )
 
@@ -51,8 +51,8 @@ function FileExplorer:new( pos )
 		onClicked = function()
 			object:setVisible( false )
 		end,
-		onMouseOver = function( self ) self.items[1].color = Color:new( RL.WHITE ) end,
-		notMouseOver = function( self ) self.items[1].color = Color:new( RL.BLACK ) end,
+		onMouseOver = function( self ) self.items[1].color = Color:newT( RL.WHITE ) end,
+		notMouseOver = function( self ) self.items[1].color = Color:newT( RL.BLACK ) end,
 	} )
 
 	object.closeButton:add( Gui.texture:new( {
@@ -73,7 +73,7 @@ function FileExplorer:new( pos )
 		texture = BgrTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
-		color = Color:new( RL.GRAY ),
+		color = Color:newT( RL.GRAY ),
 	} ) )
 
 	object.panel:add( Gui.texture:new( {
@@ -81,7 +81,7 @@ function FileExplorer:new( pos )
 		texture = BorderTexture,
 		HAling = Gui.ALING.CENTER,
 		VAling = Gui.ALING.CENTER,
-		color = Color:new( RL.LIGHTGRAY ),
+		color = Color:newT( RL.LIGHTGRAY ),
 		nPatchInfo = { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = RL.NPATCH_NINE_PATCH },
 	} ) )
 
@@ -90,7 +90,7 @@ function FileExplorer:new( pos )
 	object.pathBox = Gui.element:new( {
 		bounds = Rect:new( 0, 0, object.windowRect.width - 16 - 64, object.HANDLE_HIGHT ),
 		drawBounds = true,
-		color = Color:new( RL.WHITE ),
+		color = Color:newT( RL.WHITE ),
 		-- onClicked = function() Gui.setInputFocus( object.pathBox ) end,
 		-- inputFocus = function() object.pathBox.color = Color:new( BLUE ) end,
 		-- inputUnfocus = function() object.pathBox.color = Color:new( WHITE ) end,
@@ -103,8 +103,8 @@ function FileExplorer:new( pos )
 	object.backButton = Gui.element:new( {
 		bounds = Rect:new( 0, 0, 56, object.HANDLE_HIGHT ),
 		drawBounds = true,
-		onMouseOver = function( self ) self.color = Color:new( RL.WHITE ) end,
-		notMouseOver = function( self ) self.color = Color:new( RL.LIGHTGRAY ) end,
+		onMouseOver = function( self ) self.color = Color:newT( RL.WHITE ) end,
+		notMouseOver = function( self ) self.color = Color:newT( RL.LIGHTGRAY ) end,
 		onClicked = function() object:backDir() end,
 	} )
 
@@ -112,7 +112,7 @@ function FileExplorer:new( pos )
 		bounds = Rect:new( 0, 0, object.HANDLE_HIGHT, object.HANDLE_HIGHT ),
 		texture = BackTexture,
 		HAling = Gui.ALING.CENTER,
-		color = Color:new( RL.BLACK )
+		color = Color:newT( RL.BLACK )
 	} ) )
 
 	-- Files.
@@ -130,7 +130,7 @@ function FileExplorer:new( pos )
 	object.fileName = Gui.element:new( {
 		bounds = Rect:new( 0, 0, object.windowRect.width - 16 - 70, object.HANDLE_HIGHT ),
 		drawBounds = true,
-		color = Color:new( RL.WHITE ),
+		color = Color:newT( RL.WHITE ),
 	} )
 
 	object.fileName:add( Gui.text:new( { text = "", maxTextLen = 32, allowLineBreak = false, VAling = Gui.ALING.CENTER } ) )
@@ -140,10 +140,10 @@ function FileExplorer:new( pos )
 	object.openButton = Gui.element:new( {
 		bounds = Rect:new( 0, 0, 64, object.HANDLE_HIGHT ),
 		drawBounds = true,
-		color = Color:new( RL.WHITE ),
+		color = Color:newT( RL.WHITE ),
 		onClicked = function() object:openFile() end,
-		onMouseOver = function( self ) self.color = Color:new( RL.WHITE ) end,
-		notMouseOver = function( self ) self.color = Color:new( RL.LIGHTGRAY ) end,
+		onMouseOver = function( self ) self.color = Color:newT( RL.WHITE ) end,
+		notMouseOver = function( self ) self.color = Color:newT( RL.LIGHTGRAY ) end,
 	} )
 
 	object.openButton:add( Gui.text:new( { text = "Open", VAling = Gui.ALING.CENTER, HAling = Gui.ALING.CENTER } ) )
@@ -257,14 +257,14 @@ function FileExplorer:addFileToList( file, texture, color, func )
 		bounds = Rect:new( 0, 0, 20, 20 ),
 		texture = texture,
 		VAling = Gui.ALING.CENTER,
-		color = Color:new( color ),
+		color = Color:newT( color ),
 	} ) )
 
 	element.bounds.width = element.items[1].bounds.width + element.padding + element.items[2].bounds.width
 end
 
 function FileExplorer:drag()
-	local mousePos = Vec2:new( RL.GetMousePosition() )
+	local mousePos = Vec2:newT( RL.GetMousePosition() )
 	local winPos = Vec2:new( self.handle.bounds.x, self.handle.bounds.y )
 
 	self:setPosition( mousePos - self.dragPos )

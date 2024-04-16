@@ -61,15 +61,15 @@ function Camera3D:setProjection( projection )
 end
 
 function Camera3D:getPosition()
-	return Vec3:new( RL.GetCamera3DPosition( self.camera ) )
+	return Vec3:newT( RL.GetCamera3DPosition( self.camera ) )
 end
 
 function Camera3D:getTarget()
-	return Vec3:new( RL.GetCamera3DTarget( self.camera ) )
+	return Vec3:newT( RL.GetCamera3DTarget( self.camera ) )
 end
 
 function Camera3D:getUp()
-	return Vec3:new( RL.GetCamera3DUp( self.camera ) )
+	return Vec3:newT( RL.GetCamera3DUp( self.camera ) )
 end
 
 function Camera3D:getFoyv()
@@ -82,18 +82,18 @@ end
 
 --- Returns the cameras forward vector ( normalized )
 function Camera3D:getForward()
-	return Vec3:new( RL.GetCamera3DForward( self.camera ) )
+	return Vec3:newT( RL.GetCamera3DForward( self.camera ) )
 end
 
 --- Returns the cameras up vector ( normalized ) Note: The up vector might not be perpendicular to the forward vector
 function Camera3D:getUpward()
-	return Vec3:new( RL.GetCamera3DUpNormalized( self.camera ) )
+	return Vec3:newT( RL.GetCamera3DUpNormalized( self.camera ) )
 end
 
 function Camera3D:update( delta )
 	if self.mode == self.MODES.FREE then
 		if RL.IsMouseButtonDown( RL.MOUSE_BUTTON_MIDDLE ) then
-			local mouseDelta = Vec2:new( RL.GetMouseDelta() )
+			local mouseDelta = Vec2:newT( RL.GetMouseDelta() )
 
 			if RL.IsKeyDown( self.KEYS.PAN ) then
 				mouseDelta = mouseDelta:scale( self.MOUSE_MOVE_SPEED * delta )
@@ -116,13 +116,13 @@ function Camera3D:update( delta )
 			RL.Camera3DMoveToTarget( self.camera, self.ZOOM_AMOUNT * self:getTargetDistance() * -mouseScroll )
 		end
 	elseif self.mode == self.MODES.FIRST_PERSON then
-		local mouseDelta = Vec2:new( RL.GetMouseDelta() )
+		local mouseDelta = Vec2:newT( RL.GetMouseDelta() )
 
 		mouseDelta = mouseDelta:scale( self.TURN_SPEED * delta )
 
 		RL.Camera3DYaw( self.camera, -mouseDelta.x, false )
 		RL.Camera3DPitch( self.camera, -mouseDelta.y, false, false, false )
-		RL.SetMousePosition( Vec2:new( RL.GetScreenSize() ):scale( 0.5 ) )
+		RL.SetMousePosition( Vec2:newT( RL.GetScreenSize() ):scale( 0.5 ) )
 
 		local distance = self.KEYBOARD_MOVE_SPEED * delta
 

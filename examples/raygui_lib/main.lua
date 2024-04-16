@@ -323,13 +323,13 @@ function RL.init()
 	local colorpicker = Gui:ColorPicker(
 		Rect:new( 1500, 32, 128, 128 ),
 		"Color Picker",
-		Color:new(),
+		Color:new( 255, 255, 255, 255 ),
 		{} -- Callbacks.
 	)
 	local colorpanel = Gui:ColorPanel(
 		Rect:new( 1700, 32, 128, 128 ),
 		"Color Panel",
-		Color:new(),
+		Color:new( 255, 255, 255, 255 ),
 		{} -- Callbacks.
 	)
 	local colorbaralpha = Gui:ColorBarAlpha(

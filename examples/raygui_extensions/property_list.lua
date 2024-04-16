@@ -10,8 +10,8 @@ function PropertyList:new( bounds, text, callbacks, styles, tooltip )
 
     object.bounds = bounds:clone()
     object.text = text
-    object.scroll = Vec2:new()
-	object.view = Rect:new()
+    object.scroll = Vec2:new( 0, 0 )
+	object.view = Rect:new( 0, 0, 0, 0 )
     object.callbacks = callbacks -- scroll, grab, drag.
 	object.styles = styles
 	object.tooltip = tooltip
@@ -183,8 +183,8 @@ end
 function PropertyList:draw()
 	local oldScroll = self.scroll:clone()
 	local _, scroll, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
-	self.view:set( view )
-	self.scroll:set( scroll )
+	self.view:setT( view )
+	self.scroll:setT( scroll )
 
 	if self.scroll ~= oldScroll or self._forceCheckScroll then
 		if not self._forceCheckScroll then
@@ -237,7 +237,7 @@ function PropertyList:setSize( size )
 	self.defaultControlSize = Vec2:new( self.content.width, self.defaultControlHeight )
 
 	local _, _, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
-	self.view = Rect:new( view )
+	self.view = Rect:newT( view )
 
 	self.gui.view = Rect:new( 0, 0, self.view.width, self.view.height )
 	self.framebufferSize = Vec2:new( self.bounds.width, self.bounds.height - self.gui.RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT )

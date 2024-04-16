@@ -259,7 +259,7 @@ function ScrollPanel:new( bounds, text, content, scroll, callbacks, styles, tool
 	object.text = text
 	object.content = content:clone()
 	object.scroll = scroll:clone()
-	object.view = Rect:new()
+	object.view = Rect:new( 0, 0, 0, 0 )
 	object.callbacks = callbacks -- scroll, grab, drag.
 	
 	object.visible = true
@@ -278,8 +278,8 @@ end
 function ScrollPanel:draw()
 	local oldScroll = self.scroll:clone()
 	local _, scroll, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
-	self.view:set( view )
-	self.scroll:set( scroll )
+	self.view:setT( view )
+	self.scroll:setT( scroll )
 
 	if self.scroll ~= oldScroll then
 		self._gui:checkScrolling()
@@ -581,10 +581,10 @@ function CheckBox:new( bounds, text, checked, callbacks, styles, tooltip )
 	
 	object.visible = true
 	object.disabled = false
-	object.textBounds = Rect:new()
+	object.textBounds = Rect:new( 0, 0, 0, 0 )
 	object.focusBounds = bounds:clone()
 	
-	object._focusBoundsOffset = Vec2:new() -- Used in set position.
+	object._focusBoundsOffset = Vec2:new( 0, 0 ) -- Used in set position.
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -600,7 +600,7 @@ function CheckBox:draw()
 	local textBounds = nil
 
 	_, self.checked, textBounds = RL.GuiCheckBox( self.bounds, self.text, self.checked )
-	self.textBounds:set( textBounds )
+	self.textBounds:setT( textBounds )
 	self.focusBounds = self.bounds:fit( self.textBounds )
 	self._focusBoundsOffset:set( self.focusBounds.x - self.bounds.x, self.focusBounds.y - self.bounds.y )
 
@@ -758,10 +758,10 @@ function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callbac
 	
 	object.visible = true
 	object.disabled = false
-	object.textBounds = Rect:new()
+	object.textBounds = Rect:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
 	
-	object._viewBoundsOffset = Vec2:new()
+	object._viewBoundsOffset = Vec2:new( 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -782,7 +782,7 @@ function Spinner:draw()
 	local textBounds
 
 	result, self.value, textBounds = RL.GuiSpinner( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
-	self.textBounds:set( textBounds )
+	self.textBounds:setT( textBounds )
 	self.viewBounds = self.bounds:fit( self.textBounds )
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
@@ -829,10 +829,10 @@ function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callba
 	
 	object.visible = true
 	object.disabled = false
-	object.textBounds = Rect:new()
+	object.textBounds = Rect:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
 	
-	object._viewBoundsOffset = Vec2:new()
+	object._viewBoundsOffset = Vec2:new( 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -853,7 +853,7 @@ function ValueBox:draw()
 	local textBounds
 
 	result, self.value, textBounds = RL.GuiValueBox( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
-	self.textBounds:set( textBounds )
+	self.textBounds:setT( textBounds )
 	self.viewBounds = self.bounds:fit( self.textBounds )
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
@@ -949,11 +949,11 @@ function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, cal
 
 	object.visible = true
 	object.disabled = false
-	object.textLeftBounds = Rect:new()
-	object.textRightBounds = Rect:new()
+	object.textLeftBounds = Rect:new( 0, 0, 0, 0 )
+	object.textRightBounds = Rect:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
 	
-	object._viewBoundsOffset = Vec2:new()
+	object._viewBoundsOffset = Vec2:new( 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -968,8 +968,8 @@ function Slider:draw()
 	local oldValue, textLeftBounds, textRightBounds = self.value, nil, nil
 
 	_, self.value, textLeftBounds, textRightBounds = RL.GuiSlider( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
-	self.textLeftBounds:set( textLeftBounds )
-	self.textRightBounds:set( textRightBounds )
+	self.textLeftBounds:setT( textLeftBounds )
+	self.textRightBounds:setT( textRightBounds )
 	self.viewBounds = self.bounds:fit( self.textLeftBounds ):fit( self.textRightBounds )
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
@@ -1013,11 +1013,11 @@ function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, 
 	
 	object.visible = true
 	object.disabled = false
-	object.textLeftBounds = Rect:new()
-	object.textRightBounds = Rect:new()
+	object.textLeftBounds = Rect:new( 0, 0, 0, 0 )
+	object.textRightBounds = Rect:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
 	
-	object._viewBoundsOffset = Vec2:new()
+	object._viewBoundsOffset = Vec2:new( 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -1032,8 +1032,8 @@ function SliderBar:draw()
 	local oldValue, textLeftBounds, textRightBounds = self.value, nil, nil
 
 	_, self.value, textLeftBounds, textRightBounds = RL.GuiSliderBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
-	self.textLeftBounds:set( textLeftBounds )
-	self.textRightBounds:set( textRightBounds )
+	self.textLeftBounds:setT( textLeftBounds )
+	self.textRightBounds:setT( textRightBounds )
 	self.viewBounds = self.bounds:fit( self.textLeftBounds ):fit( self.textRightBounds )
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
@@ -1077,11 +1077,11 @@ function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue
 	
 	object.visible = true
 	object.disabled = false
-	object.textLeftBounds = Rect:new()
-	object.textRightBounds = Rect:new()
+	object.textLeftBounds = Rect:new( 0, 0, 0, 0 )
+	object.textRightBounds = Rect:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
 	
-	object._viewBoundsOffset = Vec2:new()
+	object._viewBoundsOffset = Vec2:new( 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -1096,8 +1096,8 @@ function ProgressBar:draw()
 	local oldValue, textLeftBounds, textRightBounds = self.value, nil, nil
 
 	_, self.value, textLeftBounds, textRightBounds = RL.GuiProgressBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
-	self.textLeftBounds:set( textLeftBounds )
-	self.textRightBounds:set( textRightBounds )
+	self.textLeftBounds:setT( textLeftBounds )
+	self.textRightBounds:setT( textRightBounds )
 	self.viewBounds = self.bounds:fit( self.textLeftBounds ):fit( self.textRightBounds )
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 	
@@ -1204,7 +1204,7 @@ function Grid:new( bounds, text, spacing, subdivs, callbacks, styles, tooltip )
 	object.subdivs = subdivs
 	object.callbacks = callbacks -- cellChange.
 	
-	object.mouseCell = Vec2:new()
+	object.mouseCell = Vec2:new( 0, 0 )
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -1222,7 +1222,7 @@ function Grid:draw()
 	local mouseCell = {}
 
 	_, mouseCell = RL.GuiGrid( self.bounds, self.text, self.spacing, self.subdivs, self.mouseCell )
-	self.mouseCell:set( mouseCell )
+	self.mouseCell:setT( mouseCell )
 
 	if oldCell ~= self.mouseCell and self.callbacks.cellChange ~= nil then
 		self.callbacks.cellChange( self )
@@ -1455,7 +1455,7 @@ function ColorPicker:new( bounds, text, color, callbacks, styles, tooltip )
 	
 	object.visible = true
 	object.disabled = false
-	object.focusBounds = Rect:new()
+	object.focusBounds = Rect:new( 0, 0, 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
 	
@@ -1483,7 +1483,7 @@ function ColorPicker:draw()
 	local oldColor = self.color:clone()
 	local _, color = RL.GuiColorPicker( self.bounds, self.text, self.color )
 
-	self.color = Color:new( color )
+	self.color = Color:newT( color )
 
 	if self.color ~= oldColor then
 		if not self._gui:clickedInBounds( self.focusBounds ) then
@@ -1535,7 +1535,7 @@ function ColorPanel:draw()
 	local oldColor = self.color:clone()
 	local _, color = RL.GuiColorPanel( self.bounds, self.text, self.color )
 
-	self.color = Color:new( color )
+	self.color = Color:newT( color )
 
 	if oldColor ~= self.color then
 		if not self._gui:clickedInBounds( self.bounds ) then
@@ -1718,15 +1718,15 @@ function Raygui:new()
 	object.controls = {}
 	object.focused = 0
 	object.dragging = nil
-	object.grabPos = Vec2:new()
+	object.grabPos = Vec2:new( 0, 0 )
 	object.scrolling = false
 	object.textEdit = false
 	object.textEditControl = nil
 	object.defaultTexture = RL.GetTextureDefault()
 	object.defaultRect = Rect:new( 0, 0, 1, 1 ) -- For texture.
 	object.defaultFont = RL.GuiGetFont()
-	object.mouseOffset = Vec2:new()
-	object.view = Rect:new() -- Active if larger than 0. Then only controls in view will be updated and drawn.
+	object.mouseOffset = Vec2:new( 0, 0 )
+	object.view = Rect:new( 0, 0, 0, 0 ) -- Active if larger than 0. Then only controls in view will be updated and drawn.
 	object.tooltip = {
 		text = nil,
 		offset = Vec2:new( 12, 24 ),
@@ -1759,7 +1759,7 @@ function Raygui:update()
 	RL.SetMouseOffset( self.mouseOffset )
 
 	if RL.IsMouseButtonPressed( RL.MOUSE_BUTTON_LEFT ) then
-		self._mousePressPos:set( RL.GetMousePosition() )
+		self._mousePressPos:setT( RL.GetMousePosition() )
 	end
 	-- Focused is 0 if not over any control.
 	self.focused = 0
@@ -1784,7 +1784,7 @@ function Raygui:update()
 						self.tooltip.timer = self.tooltip.timer + RL.GetFrameTime()
 					else
 						self.tooltip.text = control.tooltip
-						self.tooltip.position = Vec2:new( RL.GetMousePosition() ) + self.tooltip.offset
+						self.tooltip.position = Vec2:newT( RL.GetMousePosition() ) + self.tooltip.offset
 					end
 				end
 
@@ -1802,12 +1802,12 @@ function Raygui:update()
 end
 
 function Raygui:drag( control )
-	local mousePos = Vec2:new( RL.GetMousePosition() )
+	local mousePos = Vec2:tempT( RL.GetMousePosition() )
 	local mouseOver = RL.CheckCollisionPointRec( mousePos, control.bounds )
 
 	if not control.disabled and control.draggable and control ~= self.dragging and RL.IsMouseButtonPressed( RL.MOUSE_BUTTON_LEFT )
 	and mouseOver and mousePos.y - control.bounds.y <= self.RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT then
-		self.grabPos = mousePos - Vec2:new( control.bounds.x, control.bounds.y )
+		self.grabPos = mousePos - Vec2:temp( control.bounds.x, control.bounds.y )
 
 		if control.callbacks.grab ~= nil then
 			control.callbacks.grab( control )
@@ -1843,7 +1843,7 @@ function Raygui:_addLastProperty( property )
 end
 
 function Raygui:drawTooltip()
-	local textSize = Vec2:new( RL.MeasureTextEx(
+	local textSize = Vec2:tempT( RL.MeasureTextEx(
 		self.defaultFont,
 		self.tooltip.text,
 		RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SIZE ),
@@ -1853,11 +1853,11 @@ function Raygui:drawTooltip()
 	local view = self.view:clone()
 	-- If no view size, clamp to window size.
 	if view.width == 0 or view.height == 0 then
-		local screenSize = Vec2:new( RL.GetScreenSize() )
+		local screenSize = Vec2:tempT( RL.GetScreenSize() )
 		view.width = screenSize.x
 		view.height = screenSize.y
 	end
-	
+
 	RL.GuiDummyRec( tooltipRect:clampInside( view ), self.tooltip.text )
 end
 
@@ -1922,6 +1922,7 @@ function Raygui:checkScrolling()
 end
 
 function Raygui:clickedInBounds( bounds )
+	print( self._mousePressPos, bounds )
 	return RL.CheckCollisionPointRec( self._mousePressPos, bounds )
 end
 

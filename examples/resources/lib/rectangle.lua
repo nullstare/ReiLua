@@ -44,33 +44,33 @@ Rectangle.meta = {
 }
 
 function Rectangle:new( x, y, width, height )
-	if type( x ) == "table" then
-		x, y, width, height = table.unpack( x )
-	elseif type( x ) == "nil" then
-		x, y, width, height = 0, 0, 0, 0
-	end
-
 	local object = setmetatable( {}, Rectangle.meta )
 
-	object.x = x
-	object.y = y
-	object.width = width
-	object.height = height
+	object.x = x or 0
+	object.y = y or 0
+	object.width = width or 0
+	object.height = height or 0
 
-    return object
+	return object
+end
+
+function Rectangle:newT( t )
+	local object = setmetatable( {}, Rectangle.meta )
+
+	object.x, object.y, object.width, object.height = table.unpack( t )
+
+	return object
 end
 
 function Rectangle:set( x, y, width, height )
-	if type( x ) == "table" then
-		x, y, width, height = table.unpack( x )
-	elseif type( x ) == "nil" then
-		x, y, width, height = 0, 0, 0, 0
-	end
+	self.x = x or 0
+	self.y = y or 0
+	self.width = width or 0
+	self.height = height or 0
+end
 
-	self.x = x
-	self.y = y
-	self.width = width
-	self.height = height
+function Rectangle:setT( t )
+	self.x, self.y, self.width, self.height = table.unpack( t )
 end
 
 function Rectangle:arr()
@@ -151,6 +151,49 @@ end
 
 function Rectangle:getCollisionRec( rec )
 	return Rectangle:new( RL.GetCollisionRec( self, rec ) )
+end
+
+local TEMP_COUNT = 100
+local tempPool = {}
+local curTemp = 1
+
+for _ = 1, TEMP_COUNT do
+	table.insert( tempPool, Rectangle:new( 0, 0, 0, 0 ) )
+end
+
+-- Uses pre generated objects to avoid "slow" table generation.
+function Rectangle:temp( x, y, width, height )
+	local object = tempPool[ curTemp ]
+	curTemp = curTemp + 1
+
+	if TEMP_COUNT < curTemp then
+		curTemp = 1
+	end
+
+	object.x = x or 0
+	object.y = y or 0
+	object.width = width or 0
+	object.height = height or 0
+
+	return object
+end
+
+-- Uses pre generated objects to avoid "slow" table generation.
+function Rectangle:tempT( t )
+	local object = tempPool[ curTemp ]
+	curTemp = curTemp + 1
+
+	if TEMP_COUNT < curTemp then
+		curTemp = 1
+	end
+
+	object.x, object.y, object.width, object.height = table.unpack( t )
+
+	return object
+end
+
+function Rectangle:getTempId()
+	return curTemp
 end
 
 return Rectangle

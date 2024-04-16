@@ -51,8 +51,8 @@ local function initGui()
 			calculator:setVisible( true )
 			fileExplorer:setVisible( true )
 		end,
-		onMouseOver = function( self ) self.color = Color:new( RL.LIGHTGRAY ) end,
-		notMouseOver = function( self ) self.color = Color:new( RL.GRAY ) end,
+		onMouseOver = function( self ) self.color = Color:newT( RL.LIGHTGRAY ) end,
+		notMouseOver = function( self ) self.color = Color:newT( RL.GRAY ) end,
 	} )
 
 	showButton:add( Gui.text:new( { text = "Show", VAling = Gui.ALING.CENTER, HAling = Gui.ALING.CENTER } ) )
@@ -77,7 +77,7 @@ function RL.init()
 end
 
 function RL.update( delta )
-	Gui.update( Vec2:new( RL.GetMousePosition() ) )
+	Gui.update( Vec2:newT( RL.GetMousePosition() ) )
 end
 
 function RL.draw()

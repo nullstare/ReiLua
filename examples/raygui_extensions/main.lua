@@ -19,11 +19,11 @@ local buttonTexture = nil
 local winSize = Vec2:new( 1024, 720 )
 local cat = {
 	texture = nil,
-	source = Rect:new(),
-	dest = Rect:new(),
-	origin = Vec2:new(),
+	source = Rect:new( 0, 0, 0, 0 ),
+	dest = Rect:new( 0, 0, 0, 0 ),
+	origin = Vec2:new( 0, 0 ),
 	rotation = 0.0,
-	tint = Color:new( RL.WHITE ),
+	tint = Color:newT( RL.WHITE ),
 	visible = true,
 	flipped = false
 }
@@ -88,7 +88,7 @@ local function addPropertyList()
 	RL.GuiSetStyle( RL.SPINNER, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT )
 
 	PropertyList:addControl( PropertyList.gui:Line(
-		Rect:new(),
+		Rect:new( 0, 0, 0, 0 ),
 		"Cat Texture"
 	) )
 
@@ -98,7 +98,7 @@ local function addPropertyList()
 
 	-- Position.
 	PropertyList:addControl( PropertyList.gui:Label(
-		Rect:new(),
+		Rect:new( 0, 0, 0, 0 ),
 		"Position:"
 	), transformGroup )
 	PropertyList:addControl( PropertyList.gui:TextBox(
@@ -133,7 +133,7 @@ local function addPropertyList()
 	), transformGroup )
 	-- Origin.
 	PropertyList:addControl( PropertyList.gui:Label(
-		Rect:new(),
+		Rect:new( 0, 0, 0, 0 ),
 		"Origin:"
 	), transformGroup )
 	PropertyList:addControl( PropertyList.gui:TextBox(
@@ -219,19 +219,19 @@ local function addPropertyList()
 	PropertyList:addControl( PropertyList.gui:ColorPicker(
 		Rect:new( 0, 0, 128, 128 ),
 		"Color Picker",
-		Color:new(),
+		Color:new( 255, 255, 255, 255 ),
 		{ -- Callbacks.
 			edit = function( self ) cat.tint = self.color end
 		}
 	), tintGroup )
 
 	PropertyList:addControl( PropertyList.gui:Line(
-		Rect:new(),
+		Rect:new( 0, 0, 0, 0 ),
 		"Testing"
 	) )
 
 	PropertyList:addControl( PropertyList.gui:DropdownBox(
-		Rect:new(),
+		Rect:new( 0, 0, 0, 0 ),
 		"Dog\nGiraffe\nLion\nHorse",
 		0,
 		false,
@@ -298,8 +298,8 @@ end
 
 function RL.init()
 	local monitor = 0
-	local mPos = Vec2:new( RL.GetMonitorPosition( monitor ) )
-	local mSize = Vec2:new( RL.GetMonitorSize( monitor ) )
+	local mPos = Vec2:newT( RL.GetMonitorPosition( monitor ) )
+	local mSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
 
 	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
@@ -312,7 +312,7 @@ function RL.init()
 	-- RL.GuiSetStyle( RL.SPINNER, RL.TEXT_PADDING, 2 )
 
 	cat.texture = RL.LoadTexture( RL.GetBasePath().."../resources/images/cat.png" )
-	local texSize = Vec2:new( RL.GetTextureSize( cat.texture ) )
+	local texSize = Vec2:newT( RL.GetTextureSize( cat.texture ) )
 	cat.source:set( 0, 0, texSize.x, texSize.y )
 	cat.dest = cat.source:clone()
 

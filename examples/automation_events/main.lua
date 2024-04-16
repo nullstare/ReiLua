@@ -23,7 +23,7 @@ function RL.init()
 end
 
 function RL.update( delta )
-	local moveDir = Vec2:new()
+	local moveDir = Vec2:new( 0, 0 )
 
 	if RL.IsKeyDown( RL.KEY_RIGHT ) then
 		moveDir.x = 1

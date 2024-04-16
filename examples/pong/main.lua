@@ -54,8 +54,8 @@ end
 
 function RL.init()
 	-- Set window to center of monitor.
-	local mPos = Vec2:new( RL.GetMonitorPosition( monitor ) )
-	local mSize = Vec2:new( RL.GetMonitorSize( monitor ) )
+	local mPos = Vec2:newT( RL.GetMonitorPosition( monitor ) )
+	local mSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
 
 	RL.SetConfigFlags( RL.FLAG_VSYNC_HINT )
 	RL.SetWindowSize( winSize )
@@ -125,6 +125,6 @@ function RL.draw()
 
 	-- Draw score.
     RL.DrawText( tostring( playerLeft.score ), { 50, 10 }, 40, RL.WHITE )
-	local rightTextSize = Vec2:new( RL.MeasureTextEx( RL.GetFontDefault(), tostring( playerRight.score ), 40, 2 ) )
+	local rightTextSize = Vec2:newT( RL.MeasureTextEx( RL.GetFontDefault(), tostring( playerRight.score ), 40, 2 ) )
     RL.DrawText( tostring( playerRight.score ), { winSize.x - 50 - rightTextSize.x, 10 }, 40, RL.WHITE )
 end

@@ -15,8 +15,8 @@ local WALL_MESH_HEIGHT = math.tan( RL.DEG2RAD * ( 90 - SHADOW_FOV / 2 ) ) * LIGH
 print( "WALL_MESH_HEIGHT", WALL_MESH_HEIGHT )
 
 local monitor = 0
-local monitorPos = Vector2:new( RL.GetMonitorPosition( monitor ) )
-local monitorSize = Vector2:new( RL.GetMonitorSize( monitor ) )
+local monitorPos = Vector2:newT( RL.GetMonitorPosition( monitor ) )
+local monitorSize = Vector2:newT( RL.GetMonitorSize( monitor ) )
 local winScale = 1
 local winSize = Vector2:new( RESOLUTION.x * winScale, RESOLUTION.y * winScale )
 
@@ -31,6 +31,10 @@ local wallSegs = {}
 local shadowMesh = nil
 local lights = {}
 local camera = nil -- 3D camera for shadow rendering.
+
+local kissa = Color:new( 255, 255, 255 )
+
+print( "Kissa", kissa )
 
 -- Init.
 
@@ -98,19 +102,19 @@ function RL.init()
 	lightRender = RL.LoadRenderTexture( { LIGHTRENDER_SIZE, LIGHTRENDER_SIZE } )
 	tileTex = RL.LoadTexture( RL.GetBasePath().."../resources/images/tile.png" )
 	lightTex = RL.LoadTexture( RL.GetBasePath().."../resources/images/light.png" )
-	lightTexSize = Vector2:new( RL.GetTextureSize( lightTex ) )
+	lightTexSize = Vector2:newT( RL.GetTextureSize( lightTex ) )
 
 	RL.SetTextureFilter( tileTex, RL.TEXTURE_FILTER_TRILINEAR )
 	RL.SetTextureFilter( lightTex, RL.TEXTURE_FILTER_TRILINEAR )
 
 	createShadowMesh()
 
-	addLight( Vector2:new( 230, 480 ), Color:new( RL.ORANGE ), 512 )
-	addLight( Vector2:new( 600, 200 ), Color:new( RL.RED ), 512 )
-	addLight( Vector2:new( 384, 520 ), Color:new( RL.GREEN ), 400 )
-	addLight( Vector2:new( 880, 750 ), Color:new( RL.BLUE ), 300 )
-	addLight( Vector2:new( 800, 500 ), Color:new( RL.PURPLE ), 512 )
-	addLight( Vector2:new( 200, 760 ), Color:new( RL.WHITE ), 400 )
+	addLight( Vector2:new( 230, 480 ), Color:newT( RL.ORANGE ), 512 )
+	addLight( Vector2:new( 600, 200 ), Color:newT( RL.RED ), 512 )
+	addLight( Vector2:new( 384, 520 ), Color:newT( RL.GREEN ), 400 )
+	addLight( Vector2:new( 880, 750 ), Color:newT( RL.BLUE ), 300 )
+	addLight( Vector2:new( 800, 500 ), Color:newT( RL.PURPLE ), 512 )
+	addLight( Vector2:new( 200, 760 ), Color:newT( RL.WHITE ), 400 )
 
 	-- Stress test
 
@@ -136,7 +140,7 @@ end
 -- Update.
 
 function RL.update( delta )
-	lights[1].pos:set( RL.GetMousePosition() )
+	lights[1].pos:setT( RL.GetMousePosition() )
 end
 
 -- Drawing.

@@ -5,9 +5,9 @@ package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 Vec2 = require( "vector2" )
 
 local monitor = 0
-local mPos = Vec2:new( RL.GetMonitorPosition( monitor ) )
-local mSize = Vec2:new( RL.GetMonitorSize( monitor ) )
-local winSize = Vec2:new( RL.GetScreenSize() )
+local mPos = Vec2:newT( RL.GetMonitorPosition( monitor ) )
+local mSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
+local winSize = Vec2:newT( RL.GetScreenSize() )
 
 local polygon = {
 	texture = -1,
@@ -56,7 +56,7 @@ function RL.update( delta )
 	-- Update points rotation with an angle transform
 	-- NOTE: Base points position are not modified
 	for i = 1, #polygon.points do
-		polygon.positions[i] = Vec2:new( RL.Vector2Rotate( polygon.points[i], polygon.angle ) )
+		polygon.positions[i] = Vec2:newT( RL.Vector2Rotate( polygon.points[i], polygon.angle ) )
 	end
 end
 

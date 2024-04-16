@@ -10,8 +10,8 @@ local camera = {}
 local targetVisible = false
 
 function RL.init()
-	local mPos = Vec2:new( RL.GetMonitorPosition( monitor ) )
-	local mSize = Vec2:new( RL.GetMonitorSize( monitor ) )
+	local mPos = Vec2:newT( RL.GetMonitorPosition( monitor ) )
+	local mSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
 	local winSize = Vec2:new( 1028, 720 )
 
 	RL.SetWindowTitle( "Free Camera3D" )

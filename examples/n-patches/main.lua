@@ -21,7 +21,7 @@ function RL.init()
 end
 
 function RL.update( delta )
-	local mousePosition = Vec2:new( RL.GetMousePosition() )
+	local mousePosition = Vec2:newT( RL.GetMousePosition() )
 
     -- Resize the n-patch based on mouse position
 	dstRec.width = mousePosition.x - dstRec.x;

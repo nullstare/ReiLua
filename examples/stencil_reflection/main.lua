@@ -13,9 +13,9 @@ function RL.init()
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
 
-	local mPos = Vec2:new( RL.GetMonitorPosition( monitor ) )
-	local mSize = Vec2:new( RL.GetMonitorSize( monitor ) )
-	local winSize = Vec2:new( RL.GetScreenSize() )
+	local mPos = Vec2:newT( RL.GetMonitorPosition( monitor ) )
+	local mSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
+	local winSize = Vec2:newT( RL.GetScreenSize() )
 
 	RL.SetWindowPosition( { mPos.x + mSize.x / 2 - winSize.x / 2, mPos.y + mSize.y / 2 - winSize.y / 2 } )
 

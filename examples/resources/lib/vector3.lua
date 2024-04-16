@@ -44,31 +44,31 @@ local metatable = {
 }
 
 function Vector3:new( x, y, z )
-	if type( x ) == "table" then
-		x, y, z = table.unpack( x )
-	elseif type( x ) == "nil" then
-		x, y, z = 0, 0, 0
-	end
-
 	local object = setmetatable( {}, metatable )
 
-	object.x = x
-	object.y = y
-	object.z = z
+	object.x = x or 0
+	object.y = y or 0
+	object.z = z or 0
+
+	return object
+end
+
+function Vector3:newT( t )
+	local object = setmetatable( {}, metatable )
+
+	object.x, object.y, object.z = table.unpack( t )
 
 	return object
 end
 
 function Vector3:set( x, y, z )
-	if type( x ) == "table" then
-		x, y, z = table.unpack( x )
-	elseif type( x ) == "nil" then
-		x, y, z = 0, 0, 0
-	end
+	self.x = x or 0
+	self.y = y or 0
+	self.z = z or 0
+end
 
-	self.x = x
-	self.y = y
-	self.z = z
+function Vector3:setT( t )
+	self.x, self.y, self.z = table.unpack( t )
 end
 
 function Vector3:arr()
@@ -100,11 +100,11 @@ function Vector3:abs()
 end
 
 function Vector3:min( v2 )
-	return Vector3:new( RL.Vector3Min( self, v2 ) )
+	return Vector3:newT( RL.Vector3Min( self, v2 ) )
 end
 
 function Vector3:max( v2 )
-	return Vector3:new( RL.Vector3Max( self, v2 ) )
+	return Vector3:newT( RL.Vector3Max( self, v2 ) )
 end
 
 function Vector3:floor()
@@ -116,23 +116,23 @@ function Vector3:ceil()
 end
 
 function Vector3:addValue( value )
-	return Vector3:new( RL.Vector3AddValue( self, value ) )
+	return Vector3:newT( RL.Vector3AddValue( self, value ) )
 end
 
 function Vector3:subValue( value )
-	return Vector3:new( RL.Vector3SubtractValue( self, value ) )
+	return Vector3:newT( RL.Vector3SubtractValue( self, value ) )
 end
 
 function Vector3:scale( scalar )
-	return Vector3:new( RL.Vector3Scale( self, scalar ) )
+	return Vector3:newT( RL.Vector3Scale( self, scalar ) )
 end
 
 function Vector3:cross( v2 )
-	return Vector3:new( RL.Vector3CrossProduct( self, v2 ) )
+	return Vector3:newT( RL.Vector3CrossProduct( self, v2 ) )
 end
 
 function Vector3:perpendicular()
-	return Vector3:new( RL.Vector3Perpendicular( self ) )
+	return Vector3:newT( RL.Vector3Perpendicular( self ) )
 end
 
 function Vector3:length()
@@ -160,11 +160,11 @@ function Vector3:angle( v2 )
 end
 
 function Vector3:negate()
-	return Vector3:new( RL.Vector3Negate( self ) )
+	return Vector3:newT( RL.Vector3Negate( self ) )
 end
 
 function Vector3:normalize()
-	return Vector3:new( RL.Vector3Normalize( self ) )
+	return Vector3:newT( RL.Vector3Normalize( self ) )
 end
 
 function Vector3:orthoNormalize( v2 )
@@ -173,35 +173,35 @@ function Vector3:orthoNormalize( v2 )
 end
 
 function Vector3:transform( mat )
-	return Vector3:new( RL.Vector3Transform( self, mat ) )
+	return Vector3:newT( RL.Vector3Transform( self, mat ) )
 end
 
 function Vector3:rotateByQuaternion( q )
-	return Vector3:new( RL.Vector3RotateByQuaternion( self, q ) )
+	return Vector3:newT( RL.Vector3RotateByQuaternion( self, q ) )
 end
 
 function Vector3:rotateByAxisAngle( axis, angle )
-	return Vector3:new( RL.Vector3RotateByAxisAngle( self, axis, angle ) )
+	return Vector3:newT( RL.Vector3RotateByAxisAngle( self, axis, angle ) )
 end
 
 function Vector3:lerp( v2, value )
-	return Vector3:new( RL.Vector3Lerp( self, v2, value ) )
+	return Vector3:newT( RL.Vector3Lerp( self, v2, value ) )
 end
 
 function Vector3:reflect( normal )
-	return Vector3:new( RL.Vector3Reflect( self, normal ) )
+	return Vector3:newT( RL.Vector3Reflect( self, normal ) )
 end
 
 function Vector3:invert()
-	return Vector3:new( RL.Vector3Invert( self ) )
+	return Vector3:newT( RL.Vector3Invert( self ) )
 end
 
 function Vector3:clamp( min, max )
-	return Vector3:new( RL.Vector3Clamp( self, min, max ) )
+	return Vector3:newT( RL.Vector3Clamp( self, min, max ) )
 end
 
 function Vector3:clampValue( min, max )
-	return Vector3:new( RL.Vector3ClampValue( self, min, max ) )
+	return Vector3:newT( RL.Vector3ClampValue( self, min, max ) )
 end
 
 function Vector3:equals( v2 )
@@ -230,6 +230,48 @@ function Vector3:divEq( v2 )
 	self.x = self.x / v2.x
 	self.y = self.y / v2.y
 	self.z = self.z / v2.z
+end
+
+local TEMP_COUNT = 100
+local tempPool = {}
+local curTemp = 1
+
+for _ = 1, TEMP_COUNT do
+	table.insert( tempPool, Vector3:new( 0, 0, 0 ) )
+end
+
+-- Uses pre generated objects to avoid "slow" table generation.
+function Vector3:temp( x, y, z )
+	local object = tempPool[ curTemp ]
+	curTemp = curTemp + 1
+
+	if TEMP_COUNT < curTemp then
+		curTemp = 1
+	end
+
+	object.x = x or 0
+	object.y = y or 0
+	object.z = z or 0
+
+	return object
+end
+
+-- Uses pre generated objects to avoid "slow" table generation.
+function Vector3:tempT( t )
+	local object = tempPool[ curTemp ]
+	curTemp = curTemp + 1
+
+	if TEMP_COUNT < curTemp then
+		curTemp = 1
+	end
+
+	object.x, object.y, object.z = table.unpack( t )
+
+	return object
+end
+
+function Vector3:getTempId()
+	return curTemp
 end
 
 return Vector3

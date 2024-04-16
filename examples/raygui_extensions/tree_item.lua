@@ -42,7 +42,7 @@ function TreeItem:setOpenIcon()
 end
 
 function TreeItem:draw()
-	local buttonRect = Rect:new()
+	local buttonRect = Rect:new( 0, 0, 0, 0 )
 	local hasContainer = 0 < #self.controls
 	local lineCol = RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.LINE_COLOR ) )
 

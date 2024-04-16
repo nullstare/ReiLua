@@ -81,8 +81,8 @@ local function createMap()
 end
 
 function RL.init()
-	local monitorPos = Vec2:new( RL.GetMonitorPosition( monitor ) )
-	local monitorSize = Vec2:new( RL.GetMonitorSize( monitor ) )
+	local monitorPos = Vec2:newT( RL.GetMonitorPosition( monitor ) )
+	local monitorSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
 
 	RL.SetWindowTitle( "Platformer" )
 	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
@@ -223,7 +223,7 @@ end
 
 function RL.update( delta )
 	if RL.IsWindowResized() then
-		winSize:set( RL.GetScreenSize() )
+		winSize:setT( RL.GetScreenSize() )
 	end
 
 	playerMovement( delta )

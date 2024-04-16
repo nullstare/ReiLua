@@ -224,7 +224,7 @@ function Text:new( set )
 	object.text = setProperty( set, "text", "" )
 	object.fontSize = setProperty( set, "fontSize", Gui.fontSize )
 	object.spacing = setProperty( set, "spacing", Gui.spacing )
-	object.color = setProperty( set, "color", Color:new( RL.BLACK ) )
+	object.color = setProperty( set, "color", Color:newT( RL.BLACK ) )
 	object.maxTextLen = setProperty( set, "maxTextLen", nil )
 	object.allowLineBreak = setProperty( set, "allowLineBreak", false )
 
@@ -243,7 +243,7 @@ function Text:set( text )
 		self.text = text
 	end
 
-	local textSize = Vec2:new( RL.MeasureTextEx( self.font, self.text, self.fontSize, self.spacing ) )
+	local textSize = Vec2:newT( RL.MeasureTextEx( self.font, self.text, self.fontSize, self.spacing ) )
 
 	self.bounds.width = textSize.x
 	self.bounds.height = textSize.y
@@ -273,7 +273,7 @@ function Texture:new( set )
 	object.source = setProperty( set, "source", Rect:new( 0, 0, 0, 0 ) )
 	object.origin = setProperty( set, "origin", Vec2:new( 0, 0 ) )
 	object.rotation = setProperty( set, "rotation", 0 )
-	object.color = setProperty( set, "color", Color:new( RL.WHITE ) )
+	object.color = setProperty( set, "color", Color:newT( RL.WHITE ) )
 	object.nPatchInfo = setProperty( set, "nPatchInfo", nil )
 
 	object.visible = setProperty( set, "visible", true )
@@ -289,7 +289,7 @@ function Texture:set( texture )
 		return
 	end
 
-	local texSize = Vec2:new( RL.GetTextureSize( texture ) )
+	local texSize = Vec2:newT( RL.GetTextureSize( texture ) )
 
 	if self.bounds.width == 0 or self.bounds.height == 0 then
 		self.bounds.width = texSize.x
@@ -349,7 +349,7 @@ function Shape:new( set )
 	object.roundness = setProperty( set, "roundness", 1 )
 	object.segments = setProperty( set, "segments", 4 )
 
-	object.color = setProperty( set, "color", Color:new( RL.WHITE ) )
+	object.color = setProperty( set, "color", Color:newT( RL.WHITE ) )
 
 	object.visible = setProperty( set, "visible", true )
 	object._parent = nil
@@ -418,7 +418,7 @@ function Element:new( set )
 	object.visible = setProperty( set, "visible", true )
 	object.disabled = setProperty( set, "disabled", false )
 	object.drawBounds = setProperty( set, "drawBounds", false )
-	object.color = setProperty( set, "color", Color:new( RL.GRAY ) )
+	object.color = setProperty( set, "color", Color:newT( RL.GRAY ) )
 
 	object.items = {}
 
@@ -488,7 +488,7 @@ function Element:draw()
 	local usedScissor = false
 
 	if self._visibilityBounds ~= nil then
-		local rect = Rect:new( RL.GetCollisionRec( self.bounds, self._visibilityBounds ) )
+		local rect = Rect:newT( RL.GetCollisionRec( self.bounds, self._visibilityBounds ) )
 
 		-- Use scissor mode only on partyally visible.
 		if rect.width == 0 and rect.height == 0 then
@@ -547,7 +547,7 @@ function Container:new( set )
 	object.showScrollbar = setProperty( set, "showScrollbar", false )
 	object.scrollbarWidth = setProperty( set, "scrollbarWidth", Gui.scrollbarWidth )
 	object.scrollAmount = setProperty( set, "scrollAmount", Gui.scrollAmount ) -- When using mouse scroll.
-	object.color = setProperty( set, "color", Color:new( RL.WHITE ) )
+	object.color = setProperty( set, "color", Color:newT( RL.WHITE ) )
 	object.drawBounds = setProperty( set, "drawBounds", false )
 	object.drawScrollRect = setProperty( set, "drawScrollRect", false )
 	-- For grid container. Do not set both.
@@ -691,7 +691,7 @@ function Container:update()
 			self._VScrollbar = Element:new( {
 				padding = 0,
 				drawBounds = true,
-				color = Color:new( RL.GRAY ),
+				color = Color:newT( RL.GRAY ),
 				onClicked = function() Gui.heldCallback = function() self:mouseScroll( Vec2:new( 0, 1 ) ) end end,
 			} )
 
@@ -700,7 +700,7 @@ function Container:update()
 				VAling = Gui.ALING.NONE,
 				bounds = Rect:new( 0, 0, 0, 0 ),
 				shape = Gui.SHAPE.RECTANGLE_ROUNDED,
-				color = Color:new( RL.LIGHTGRAY ),
+				color = Color:newT( RL.LIGHTGRAY ),
 			} ) )
 		end
 
@@ -708,7 +708,7 @@ function Container:update()
 			self._HScrollbar = Element:new( {
 				padding = 0,
 				drawBounds = true,
-				color = Color:new( RL.GRAY ),
+				color = Color:newT( RL.GRAY ),
 				onClicked = function() Gui.heldCallback = function() self:mouseScroll( Vec2:new( 1, 0 ) ) end end,
 			} )
 
@@ -717,7 +717,7 @@ function Container:update()
 				VAling = Gui.ALING.CENTER,
 				bounds = Rect:new( 0, 0, 0, 0 ),
 				shape = Gui.SHAPE.RECTANGLE_ROUNDED,
-				color = Color:new( RL.LIGHTGRAY ),
+				color = Color:newT( RL.LIGHTGRAY ),
 			} ) )
 		end
 	end

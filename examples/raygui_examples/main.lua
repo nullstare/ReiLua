@@ -26,8 +26,8 @@ end
 
 function RL.init()
 	local monitor = 0
-	local mPos = Vec2:new( RL.GetMonitorPosition( monitor ) )
-	local mSize = Vec2:new( RL.GetMonitorSize( monitor ) )
+	local mPos = Vec2:newT( RL.GetMonitorPosition( monitor ) )
+	local mSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
 	local winSize = Vec2:new( 1024, 800 )
 
 	RL.SetWindowTitle( "Raygui examples" )

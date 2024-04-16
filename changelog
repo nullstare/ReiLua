@@ -7,6 +7,8 @@ KEY CHANGES:
 	- ADDED Automation events.
 	- CHANGE: Raygui lib callbacks to single table.
 	- ADDED OpenGL Stencil management functions.
+	- CHANGE: Object libraries like Vector2 optimizations. Separated table argument style for new and set methods.
+	Option for pre generated temp objects. There was a lot of overhead on old new method.
 
 DETAILED CHANGES:
 	- ADDED: GetBufferElementSize and GetBufferLength.
@@ -40,6 +42,7 @@ DETAILED CHANGES:
 	- ADDED: Raygui lib examples file browser.
 	- CHANGE: Position argument added for GetCodepoint, GetCodepointNext and GetCodepointPrevious.
 	- ADDED glEnable, glDisable, glGetString and glClear.
+	- ADDED Stencil reflection example.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

@@ -11,6 +11,7 @@ local metatable = {
 	end,
 	__add = function( v1, v2 )
 		return Vector2:new( v1.x + v2.x, v1.y + v2.y )
+		-- return Vector2:newOld( v1.x + v2.x, v1.y + v2.y )
 	end,
 	__sub = function( v1, v2 )
 		return Vector2:new( v1.x - v2.x, v1.y - v2.y )
@@ -42,27 +43,29 @@ local metatable = {
 }
 
 function Vector2:new( x, y )
-	if type( x ) == "table" then
-		x, y = table.unpack( x )
-	elseif type( x ) == "nil" then
-		x, y = 0, 0
-	end
-
 	local object = setmetatable( {}, metatable )
 
-	object.x = x
-	object.y = y
+	object.x = x or 0
+	object.y = y or 0
+
+	return object
+end
+
+function Vector2:newT( t )
+	local object = setmetatable( {}, metatable )
+
+	object.x, object.y = table.unpack( t )
 
 	return object
 end
 
 function Vector2:set( x, y )
-	if type( x ) == "table" then
-		x, y = table.unpack( x )
-	end
+	self.x = x or 0
+	self.y = y or 0
+end
 
-	self.x = x
-	self.y = y
+function Vector2:setT( t )
+	self.x, self.y = table.unpack( t )
 end
 
 function Vector2:arr()
@@ -98,11 +101,11 @@ function Vector2:ceil()
 end
 
 function Vector2:addValue( value )
-	return Vector2:new( RL.Vector2AddValue( self, value ) )
+	return Vector2:newT( RL.Vector2AddValue( self, value ) )
 end
 
 function Vector2:subValue( value )
-	return Vector2:new( RL.Vector2SubtractValue( self, value ) )
+	return Vector2:newT( RL.Vector2SubtractValue( self, value ) )
 end
 
 function Vector2:length()
@@ -138,43 +141,43 @@ function Vector2:atan2()
 end
 
 function Vector2:scale( scale )
-	return Vector2:new( RL.Vector2Scale( self, scale ) )
+	return Vector2:newT( RL.Vector2Scale( self, scale ) )
 end
 
 function Vector2:normalize()
-	return Vector2:new( RL.Vector2Normalize( self ) )
+	return Vector2:newT( RL.Vector2Normalize( self ) )
 end
 
 function Vector2:transform( mat )
-	return Vector2:new( RL.Vector2Transform( self, mat ) )
+	return Vector2:newT( RL.Vector2Transform( self, mat ) )
 end
 
 function Vector2:lerp( v2, value )
-	return Vector2:new( RL.Vector2Lerp( self, v2, value ) )
+	return Vector2:newT( RL.Vector2Lerp( self, v2, value ) )
 end
 
 function Vector2:reflect( normal )
-	return Vector2:new( RL.Vector2Reflect( self, normal ) )
+	return Vector2:newT( RL.Vector2Reflect( self, normal ) )
 end
 
 function Vector2:rotate( angle )
-	return Vector2:new( RL.Vector2Rotate( self, angle ) )
+	return Vector2:newT( RL.Vector2Rotate( self, angle ) )
 end
 
 function Vector2:moveTowards( target, maxDistance )
-	return Vector2:new( RL.Vector2MoveTowards( self, target, maxDistance ) )
+	return Vector2:newT( RL.Vector2MoveTowards( self, target, maxDistance ) )
 end
 
 function Vector2:invert()
-	return Vector2:new( RL.Vector2Invert( self ) )
+	return Vector2:newT( RL.Vector2Invert( self ) )
 end
 
 function Vector2:clamp( min, max )
-	return Vector2:new( RL.Vector2Clamp( self, min, max ) )
+	return Vector2:newT( RL.Vector2Clamp( self, min, max ) )
 end
 
 function Vector2:clampValue( min, max )
-	return Vector2:new( RL.Vector2ClampValue( self, min, max ) )
+	return Vector2:newT( RL.Vector2ClampValue( self, min, max ) )
 end
 
 function Vector2:equals( v2 )
@@ -199,6 +202,47 @@ end
 function Vector2:divEq( v2 )
 	self.x = self.x / v2.x
 	self.y = self.y / v2.y
+end
+
+local TEMP_COUNT = 100
+local tempPool = {}
+local curTemp = 1
+
+for _ = 1, TEMP_COUNT do
+	table.insert( tempPool, Vector2:new( 0, 0 ) )
+end
+
+-- Uses pre generated objects to avoid "slow" table generation.
+function Vector2:temp( x, y )
+	local object = tempPool[ curTemp ]
+	curTemp = curTemp + 1
+
+	if TEMP_COUNT < curTemp then
+		curTemp = 1
+	end
+
+	object.x = x or 0
+	object.y = y or 0
+
+	return object
+end
+
+-- Uses pre generated objects to avoid "slow" table generation.
+function Vector2:tempT( t )
+	local object = tempPool[ curTemp ]
+	curTemp = curTemp + 1
+
+	if TEMP_COUNT < curTemp then
+		curTemp = 1
+	end
+
+	object.x, object.y = table.unpack( t )
+
+	return object
+end
+
+function Vector2:getTempId()
+	return curTemp
 end
 
 return Vector2

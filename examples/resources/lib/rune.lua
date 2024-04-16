@@ -21,27 +21,15 @@ local metatable = {
 }
 
 function Rune:new( string )
-	if type( string ) == "table" then
-		string = RL.LoadUTF8( string )
-	elseif type( string ) == "nil" then
-		string = ""
-	end
-
 	local object = setmetatable( {}, metatable )
 
-	object.string = string
+	object.string = string or ""
 
 	return object
 end
 
 function Rune:set( string )
-	if type( string ) == "table" then
-		string = RL.LoadUTF8( string )
-	elseif type( string ) == "nil" then
-		string = ""
-	end
-
-	self.string = string
+	self.string = string or ""
 end
 
 function Rune:clone()
@@ -57,12 +45,12 @@ function Rune:getCodepoints()
 end
 
 function Rune:getCodepoint( index )
-	local codepoint = RL.GetCodepoint( self:sub( index, index ) )
+	local codepoint = RL.GetCodepoint( self.string, index )
 	return codepoint
 end
 
 function Rune:getCodepointSize( index )
-	local _, codepointSize = RL.GetCodepoint( self:sub( index, index ) )
+	local _, codepointSize = RL.GetCodepoint( self.string, index )
 	return codepointSize
 end
 

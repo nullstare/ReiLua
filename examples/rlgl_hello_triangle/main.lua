@@ -12,7 +12,7 @@ local triangle = {
 	texture = {
 		id = -1,
 		data = nil,
-		size = Vec2:new(),
+		size = Vec2:new( 0, 0 ),
 		mipmaps = 0,
 		format = 0,
 	},
@@ -60,7 +60,7 @@ local function loadTexture( path )
 	local image = RL.LoadImage( path )
 
 	triangle.texture.data = RL.GetImageData( image )
-	triangle.texture.size = Vec2:new( RL.GetImageSize( image ) )
+	triangle.texture.size = Vec2:newT( RL.GetImageSize( image ) )
 	triangle.texture.format = RL.GetImageFormat( image )
 	triangle.texture.mipmaps = RL.GetImageMipmaps( image )
 
@@ -131,8 +131,8 @@ local function createTriangle()
 end
 
 function RL.init()
-	local monitorPos = Vec2:new( RL.GetMonitorPosition( monitor ) )
-	local monitorSize = Vec2:new( RL.GetMonitorSize( monitor ) )
+	local monitorPos = Vec2:newT( RL.GetMonitorPosition( monitor ) )
+	local monitorSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
 
 	RL.SetWindowTitle( "RLGL Hello Triangle" )
 	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )

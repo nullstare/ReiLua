@@ -13,8 +13,8 @@ local STATE = { TITLE = 0, GAME = 1, OVER = 2 } -- Enum.
 -- Resources
 local framebuffer = nil
 local monitor = 0
-local monitorPos = Vec2:new( RL.GetMonitorPosition( monitor ) )
-local monitorSize = Vec2:new( RL.GetMonitorSize( monitor ) )
+local monitorPos = Vec2:newT( RL.GetMonitorPosition( monitor ) )
+local monitorSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
 local winScale = 6
 local winSize = Vec2:new( RESOLUTION.x * winScale, RESOLUTION.y * winScale )
 local gameState = STATE.GAME
@@ -248,6 +248,4 @@ function RL.draw()
 		0.0,
 		RL.WHITE
 	)
-
-	RL.DrawFPS( { 20, 20 } )
 end

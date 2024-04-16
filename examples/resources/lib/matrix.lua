@@ -50,30 +50,14 @@ Matrix.meta = {
 function Matrix:new( m )
 	local object = setmetatable( {}, Matrix.meta )
 
-	if type( m ) == "table" then
-		object.m = deepCopy( m )
-	else
-		object.m = RL.MatrixIdentity()
-	end
+	object.m = deepCopy( m )
 
 	return object
 end
 
 function Matrix:set( m )
-	if type( m ) == "table" then
-		self.m = deepCopy( m )
-	else
-		self.m = RL.MatrixIdentity()
-	end
+	self.m = deepCopy( m )
 end
-
--- function Matrix:arr()
--- 	return self.m
--- end
-
--- function Matrix:unpack()
--- 	return self.m
--- end
 
 function Matrix:clone()
 	return Matrix:new( self )

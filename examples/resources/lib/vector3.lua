@@ -61,6 +61,16 @@ function Vector3:newT( t )
 	return object
 end
 
+function Vector3:newV( v )
+	local object = setmetatable( {}, metatable )
+
+	object.x = v.x
+	object.y = v.y
+	object.z = v.z
+
+	return object
+end
+
 function Vector3:set( x, y, z )
 	self.x = x or 0
 	self.y = y or 0
@@ -69,6 +79,12 @@ end
 
 function Vector3:setT( t )
 	self.x, self.y, self.z = table.unpack( t )
+end
+
+function Vector3:setV( v )
+	self.x = v.x
+	self.y = v.y
+	self.z = v.z
 end
 
 function Vector3:arr()
@@ -232,6 +248,8 @@ function Vector3:divEq( v2 )
 	self.z = self.z / v2.z
 end
 
+-- Temp pre generated objects to avoid "slow" table generation.
+
 local TEMP_COUNT = 100
 local tempPool = {}
 local curTemp = 1
@@ -240,7 +258,6 @@ for _ = 1, TEMP_COUNT do
 	table.insert( tempPool, Vector3:new( 0, 0, 0 ) )
 end
 
--- Uses pre generated objects to avoid "slow" table generation.
 function Vector3:temp( x, y, z )
 	local object = tempPool[ curTemp ]
 	curTemp = curTemp + 1
@@ -256,7 +273,6 @@ function Vector3:temp( x, y, z )
 	return object
 end
 
--- Uses pre generated objects to avoid "slow" table generation.
 function Vector3:tempT( t )
 	local object = tempPool[ curTemp ]
 	curTemp = curTemp + 1
@@ -266,6 +282,21 @@ function Vector3:tempT( t )
 	end
 
 	object.x, object.y, object.z = table.unpack( t )
+
+	return object
+end
+
+function Vector3:tempV( v )
+	local object = tempPool[ curTemp ]
+	curTemp = curTemp + 1
+
+	if TEMP_COUNT < curTemp then
+		curTemp = 1
+	end
+
+	object.x = v.x
+	object.y = v.y
+	object.z = v.z
 
 	return object
 end

@@ -62,6 +62,17 @@ function Rectangle:newT( t )
 	return object
 end
 
+function Rectangle:newR( r )
+	local object = setmetatable( {}, Rectangle.meta )
+
+	object.x = r.x
+	object.y = r.y
+	object.width = r.width
+	object.height = r.height
+
+	return object
+end
+
 function Rectangle:set( x, y, width, height )
 	self.x = x or 0
 	self.y = y or 0
@@ -71,6 +82,13 @@ end
 
 function Rectangle:setT( t )
 	self.x, self.y, self.width, self.height = table.unpack( t )
+end
+
+function Rectangle:setR( r )
+	self.x = r.x
+	self.y = r.y
+	self.width = r.width
+	self.height = r.height
 end
 
 function Rectangle:arr()
@@ -153,6 +171,8 @@ function Rectangle:getCollisionRec( rec )
 	return Rectangle:new( RL.GetCollisionRec( self, rec ) )
 end
 
+-- Temp pre generated objects to avoid "slow" table generation.
+
 local TEMP_COUNT = 100
 local tempPool = {}
 local curTemp = 1
@@ -161,7 +181,6 @@ for _ = 1, TEMP_COUNT do
 	table.insert( tempPool, Rectangle:new( 0, 0, 0, 0 ) )
 end
 
--- Uses pre generated objects to avoid "slow" table generation.
 function Rectangle:temp( x, y, width, height )
 	local object = tempPool[ curTemp ]
 	curTemp = curTemp + 1
@@ -178,7 +197,6 @@ function Rectangle:temp( x, y, width, height )
 	return object
 end
 
--- Uses pre generated objects to avoid "slow" table generation.
 function Rectangle:tempT( t )
 	local object = tempPool[ curTemp ]
 	curTemp = curTemp + 1
@@ -188,6 +206,22 @@ function Rectangle:tempT( t )
 	end
 
 	object.x, object.y, object.width, object.height = table.unpack( t )
+
+	return object
+end
+
+function Rectangle:tempR( r )
+	local object = tempPool[ curTemp ]
+	curTemp = curTemp + 1
+
+	if TEMP_COUNT < curTemp then
+		curTemp = 1
+	end
+
+	object.x = r.x
+	object.y = r.y
+	object.width = r.width
+	object.height = r.height
 
 	return object
 end

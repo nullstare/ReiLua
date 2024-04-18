@@ -57,6 +57,17 @@ function Quaternion:newT( t )
 	return object
 end
 
+function Quaternion:newQ( q )
+	local object = setmetatable( {}, metatable )
+
+	object.x = q.x
+	object.y = q.y
+	object.z = q.z
+	object.w = q.w
+
+	return object
+end
+
 function Quaternion:set( x, y, z, w )
 	self.x = x or 0
 	self.y = y or 0
@@ -66,6 +77,13 @@ end
 
 function Quaternion:setT( t )
 	self.x, self.y, self.z, self.w = table.unpack( t )
+end
+
+function Quaternion:setQ( q )
+	self.x = q.x
+	self.y = q.y
+	self.z = q.z
+	self.w = q.w
 end
 
 function Quaternion:arr()
@@ -153,6 +171,8 @@ function Quaternion:transform( mat )
 	return Quaternion:newT( RL.QuaternionTransform( self, mat ) )
 end
 
+-- Temp pre generated objects to avoid "slow" table generation.
+
 local TEMP_COUNT = 100
 local tempPool = {}
 local curTemp = 1
@@ -161,7 +181,6 @@ for _ = 1, TEMP_COUNT do
 	table.insert( tempPool, Quaternion:new( 0, 0, 0, 1 ) )
 end
 
--- Uses pre generated objects to avoid "slow" table generation.
 function Quaternion:temp( x, y, z, w )
 	local object = tempPool[ curTemp ]
 	curTemp = curTemp + 1
@@ -178,7 +197,6 @@ function Quaternion:temp( x, y, z, w )
 	return object
 end
 
--- Uses pre generated objects to avoid "slow" table generation.
 function Quaternion:tempT( t )
 	local object = tempPool[ curTemp ]
 	curTemp = curTemp + 1
@@ -188,6 +206,22 @@ function Quaternion:tempT( t )
 	end
 
 	object.x, object.y, object.z, object.w = table.unpack( t )
+
+	return object
+end
+
+function Quaternion:tempQ( q )
+	local object = tempPool[ curTemp ]
+	curTemp = curTemp + 1
+
+	if TEMP_COUNT < curTemp then
+		curTemp = 1
+	end
+
+	object.x = q.x
+	object.y = q.y
+	object.z = q.z
+	object.w = q.w
 
 	return object
 end

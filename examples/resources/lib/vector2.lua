@@ -11,7 +11,6 @@ local metatable = {
 	end,
 	__add = function( v1, v2 )
 		return Vector2:new( v1.x + v2.x, v1.y + v2.y )
-		-- return Vector2:newOld( v1.x + v2.x, v1.y + v2.y )
 	end,
 	__sub = function( v1, v2 )
 		return Vector2:new( v1.x - v2.x, v1.y - v2.y )
@@ -59,6 +58,16 @@ function Vector2:newT( t )
 	return object
 end
 
+function Vector2:newV( v )
+	local object = setmetatable( {}, metatable )
+
+	object.x = v.x
+	object.y = v.y
+
+	return object
+end
+
+
 function Vector2:set( x, y )
 	self.x = x or 0
 	self.y = y or 0
@@ -66,6 +75,11 @@ end
 
 function Vector2:setT( t )
 	self.x, self.y = table.unpack( t )
+end
+
+function Vector2:setV( v )
+	self.x = v.x
+	self.y = v.y
 end
 
 function Vector2:arr()
@@ -204,6 +218,8 @@ function Vector2:divEq( v2 )
 	self.y = self.y / v2.y
 end
 
+-- Temp pre generated objects to avoid "slow" table generation.
+
 local TEMP_COUNT = 100
 local tempPool = {}
 local curTemp = 1
@@ -212,7 +228,6 @@ for _ = 1, TEMP_COUNT do
 	table.insert( tempPool, Vector2:new( 0, 0 ) )
 end
 
--- Uses pre generated objects to avoid "slow" table generation.
 function Vector2:temp( x, y )
 	local object = tempPool[ curTemp ]
 	curTemp = curTemp + 1
@@ -227,7 +242,6 @@ function Vector2:temp( x, y )
 	return object
 end
 
--- Uses pre generated objects to avoid "slow" table generation.
 function Vector2:tempT( t )
 	local object = tempPool[ curTemp ]
 	curTemp = curTemp + 1
@@ -237,6 +251,20 @@ function Vector2:tempT( t )
 	end
 
 	object.x, object.y = table.unpack( t )
+
+	return object
+end
+
+function Vector2:tempV( v )
+	local object = tempPool[ curTemp ]
+	curTemp = curTemp + 1
+
+	if TEMP_COUNT < curTemp then
+		curTemp = 1
+	end
+
+	object.x = v.x
+	object.y = v.y
 
 	return object
 end

@@ -65,6 +65,17 @@ function Color:newT( t )
 	return object
 end
 
+function Color:newC( c )
+	local object = setmetatable( {}, metatable )
+
+	object.r = c.r
+	object.g = c.g
+	object.b = c.b
+	object.a = c.a
+
+	return object
+end
+
 function Color:set( r, g, b, a )
 	self.r = r or 255
 	self.g = g or 255
@@ -74,6 +85,13 @@ end
 
 function Color:setT( t )
 	self.r, self.g, self.b, self.a = table.unpack( t )
+end
+
+function Color:setC( c )
+	self.r = c.r
+	self.g = c.g
+	self.b = c.b
+	self.a = c.a
 end
 
 function Color:arr()
@@ -145,6 +163,8 @@ function Color:lerp( color, amount )
 	)
 end
 
+-- Temp pre generated objects to avoid "slow" table generation.
+
 local TEMP_COUNT = 100
 local tempPool = {}
 local curTemp = 1
@@ -153,7 +173,6 @@ for _ = 1, TEMP_COUNT do
 	table.insert( tempPool, Color:new( 255, 255, 255, 255 ) )
 end
 
--- Uses pre generated objects to avoid "slow" table generation.
 function Color:temp( r, g, b, a )
 	local object = tempPool[ curTemp ]
 	curTemp = curTemp + 1
@@ -170,7 +189,6 @@ function Color:temp( r, g, b, a )
 	return object
 end
 
--- Uses pre generated objects to avoid "slow" table generation.
 function Color:tempT( t )
 	local object = tempPool[ curTemp ]
 	curTemp = curTemp + 1
@@ -180,6 +198,22 @@ function Color:tempT( t )
 	end
 
 	object.r, object.g, object.b, object.a = table.unpack( t )
+
+	return object
+end
+
+function Color:tempC( c )
+	local object = tempPool[ curTemp ]
+	curTemp = curTemp + 1
+
+	if TEMP_COUNT < curTemp then
+		curTemp = 1
+	end
+
+	object.r = c.r
+	object.g = c.g
+	object.b = c.b
+	object.a = c.a
 
 	return object
 end

@@ -104,14 +104,14 @@ end
 
 local function tileCollision( entity )
 	local vPos = entity.pos + entity.vel -- Future pos with current vel.
-	local vRect = entity.colRect:clone()
+	local vRect = Rect:tempR( entity.colRect )
 	local tinyGap = 0.001 -- Tiny gap between collisionRect and tile to prevent getting stuck on all seams.
 
 	-- Move test rect to predicted position.
 	vRect.x = vPos.x - vRect.width / 2
 
 	-- Tile range where collision box is affecting.
-	local tileRect = Rect:new(
+	local tileRect = Rect:temp(
 		math.floor( vRect.x / TILE_SIZE ),
 		math.floor( vRect.y / TILE_SIZE ),
 		math.floor( ( vRect.x + vRect.width ) / TILE_SIZE ),
@@ -120,7 +120,7 @@ local function tileCollision( entity )
 
 	for y = tileRect.y, tileRect.height do
 		if 0 < entity.vel.x then
-			if isTileWall( Vec2:new( tileRect.width, y ) ) then
+			if isTileWall( Vec2:temp( tileRect.width, y ) ) then
 				-- Use new_x to push out of tile.
 				local new_x = tileRect.width * TILE_SIZE - ( entity.colRect.x + entity.colRect.width )
 
@@ -129,7 +129,7 @@ local function tileCollision( entity )
 				break
 			end
 		elseif entity.vel.x < 0 then
-			if isTileWall( Vec2:new( tileRect.x, y ) ) then
+			if isTileWall( Vec2:temp( tileRect.x, y ) ) then
 				local new_x = ( tileRect.x * TILE_SIZE + TILE_SIZE ) - entity.colRect.x
 				entity.vel.x = new_x + tinyGap
 
@@ -151,7 +151,7 @@ local function tileCollision( entity )
 
 	for x = tileRect.x, tileRect.width do
 		if 0 < entity.vel.y then
-			if isTileWall( Vec2:new( x, tileRect.height ) ) then
+			if isTileWall( Vec2:temp( x, tileRect.height ) ) then
 				local new_y = tileRect.height * TILE_SIZE - ( entity.colRect.y + entity.colRect.height )
 				-- math.max prevents bounce when hitting right on the corner.
 				entity.vel.y = math.max( new_y - tinyGap, 0 )
@@ -160,7 +160,7 @@ local function tileCollision( entity )
 				break
 			end
 		elseif entity.vel.y < 0 then
-			if isTileWall( Vec2:new( x, tileRect.y ) ) then
+			if isTileWall( Vec2:temp( x, tileRect.y ) ) then
 				local new_y = ( tileRect.y * TILE_SIZE + TILE_SIZE ) - entity.colRect.y
 				entity.vel.y = new_y + tinyGap
 
@@ -207,7 +207,6 @@ local function playerMovement( delta )
 	end
 
 	player.vel.x = Util.clamp( player.vel.x, -PLAYER_MAXSPEED, PLAYER_MAXSPEED )
-
 	player.vel.y = player.vel.y + GRAVITY * delta
 
 	-- Drop from platform.
@@ -216,7 +215,7 @@ local function playerMovement( delta )
 	end
 
 	tileCollision( player )
-	player.pos = player.pos + player.vel
+	player.pos:addEq( player.vel )
 	player.colRect.x = player.pos.x - player.colRect.width / 2
 	player.colRect.y = player.pos.y - player.colRect.height
 end
@@ -235,7 +234,7 @@ local function drawMap()
 	for x = 1, tilemap.size.x do
 		for y = 1, tilemap.size.y do
 			local tile = tilemap.tiles[x][y]
-			local pos = Vec2:new( x - 1, y - 1 )
+			local pos = Vec2:temp( x - 1, y - 1 )
 
 			if 0 < tile then
 				RL.DrawTextureRec( tex, tilemap.tileRects[ tile ], { pos.x * TILE_SIZE, pos.y * TILE_SIZE }, RL.WHITE )
@@ -272,7 +271,7 @@ local function drawPlayer()
 	-- Draw rect.
 
 	local src = player.frames[ player.curFrame ]:clone()
-	local dst = Rect:new(
+	local dst = Rect:temp(
 		player.pos.x - src.width / 2,
 		player.pos.y - src.height,
 		src.width,

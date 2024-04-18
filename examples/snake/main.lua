@@ -57,7 +57,7 @@ local function setApplePos()
 
 	while search do
 		search = false
-		applePos = Vec2:new( math.random( 0, LEVEL_SIZE - 1 ), math.random( 0, LEVEL_SIZE - 1 ) )
+		applePos:set( math.random( 0, LEVEL_SIZE - 1 ), math.random( 0, LEVEL_SIZE - 1 ) )
 
 		for _, seg in ipairs( snake.segments ) do
 			search = applePos == seg.pos
@@ -99,16 +99,16 @@ local function moveSnake()
 	-- Move body.
 	for i, seg in ipairs( snake.segments ) do
 		if i < #snake.segments then
-			seg.pos = snake.segments[ i+1 ].pos:clone()
-			seg.heading = snake.segments[ i+1 ].heading:clone()
+			seg.pos:setV( snake.segments[ i+1 ].pos )
+			seg.heading:setV( snake.segments[ i+1 ].heading )
 		else
-			seg.pos = snake.headPos:clone()
-			seg.heading = snake.heading:clone()
+			seg.pos:setV( snake.headPos )
+			seg.heading:setV( snake.heading )
 		end
 	end
 	-- Move head.
-	snake.heading = Vec2:new( snake.control.x, snake.control.y )
-	snake.headPos = Vec2:new( snake.headPos.x + snake.heading.x, snake.headPos.y + snake.heading.y )
+	snake.heading:set( snake.control.x, snake.control.y )
+	snake.headPos:set( snake.headPos.x + snake.heading.x, snake.headPos.y + snake.heading.y )
 
 	-- Check appple eating.
 	if snake.headPos == applePos then
@@ -133,13 +133,13 @@ function RL.update( delta )
 	if gameState == STATE.GAME then -- Run game.
 		-- Controls.
 		if RL.IsKeyPressed( RL.KEY_RIGHT ) and 0 <= snake.heading.x then
-			snake.control = Vec2:new( 1, 0 )
+			snake.control:set( 1, 0 )
 		elseif RL.IsKeyPressed( RL.KEY_LEFT ) and snake.heading.x <= 0 then
-			snake.control = Vec2:new( -1, 0 )
+			snake.control:set( -1, 0 )
 		elseif RL.IsKeyPressed( RL.KEY_DOWN ) and 0 <= snake.heading.y then
-			snake.control = Vec2:new( 0, 1 )
+			snake.control:set( 0, 1 )
 		elseif RL.IsKeyPressed( RL.KEY_UP ) and snake.heading.y <= 0 then
-			snake.control = Vec2:new( 0, -1 )
+			snake.control:set( 0, -1 )
 		end
 
 		moveTimer = moveTimer - gameSpeed * delta
@@ -167,16 +167,16 @@ end
 --[[ Check if next segment is on left side. There are more mathematically elegant solution to this, but there is
 only four possibilities so we can just check them all. ]]--
 local function onLeft( this, nextSeg )
-	return ( this == Vec2:new( 0, -1 ) and nextSeg == Vec2:new( -1, 0 ) )
-		or ( this == Vec2:new( -1, 0 ) and nextSeg == Vec2:new( 0, 1 ) )
-		or ( this == Vec2:new( 0, 1 ) and nextSeg == Vec2:new( 1, 0 ) )
-		or ( this == Vec2:new( 1, 0 ) and nextSeg == Vec2:new( 0, -1 ) )
+	return ( this == Vec2:temp( 0, -1 ) and nextSeg == Vec2:temp( -1, 0 ) )
+		or ( this == Vec2:temp( -1, 0 ) and nextSeg == Vec2:temp( 0, 1 ) )
+		or ( this == Vec2:temp( 0, 1 ) and nextSeg == Vec2:temp( 1, 0 ) )
+		or ( this == Vec2:temp( 1, 0 ) and nextSeg == Vec2:temp( 0, -1 ) )
 end
 
 local function drawSnake()
 	for i, seg in ipairs( snake.segments ) do
 		local angle = seg.heading:atan2()
-		local source = Rect:new( 16, 0, 8, 8 )
+		local source = Rect:temp( 16, 0, 8, 8 )
 
 		if i == 1 then -- Tail segment. Yes tail is actually the 'first' segment.
 			source.x = 8

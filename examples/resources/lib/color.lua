@@ -175,11 +175,8 @@ end
 
 function Color:temp( r, g, b, a )
 	local object = tempPool[ curTemp ]
-	curTemp = curTemp + 1
 
-	if TEMP_COUNT < curTemp then
-		curTemp = 1
-	end
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
 
 	object.r = r or 255
 	object.g = g or 255
@@ -191,11 +188,8 @@ end
 
 function Color:tempT( t )
 	local object = tempPool[ curTemp ]
-	curTemp = curTemp + 1
 
-	if TEMP_COUNT < curTemp then
-		curTemp = 1
-	end
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
 
 	object.r, object.g, object.b, object.a = table.unpack( t )
 
@@ -204,11 +198,8 @@ end
 
 function Color:tempC( c )
 	local object = tempPool[ curTemp ]
-	curTemp = curTemp + 1
 
-	if TEMP_COUNT < curTemp then
-		curTemp = 1
-	end
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
 
 	object.r = c.r
 	object.g = c.g

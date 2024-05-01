@@ -13,6 +13,7 @@
 #include "lrlgl.h"
 #include "lgl.h"
 #include "reasings.h"
+#include "bitwiseOp.h"
 
 #ifdef PLATFORM_DESKTOP
 	#include "platforms/core_desktop.c"
@@ -1933,6 +1934,7 @@ void luaRegister() {
 	/* Math. */
 		/* Utils. */
 	assingGlobalFunction( "Round", lmathRound );
+	assingGlobalFunction( "Sign", lmathSign );
 	assingGlobalFunction( "Clamp", lmathClamp );
 	assingGlobalFunction( "Lerp", lmathLerp );
 	assingGlobalFunction( "Normalize", lmathNormalize );
@@ -2349,6 +2351,18 @@ void luaRegister() {
 	assingGlobalFunction( "EaseElasticIn", leasingsEaseElasticIn );
 	assingGlobalFunction( "EaseElasticOut", leasingsEaseElasticOut );
 	assingGlobalFunction( "EaseElasticInOut", leasingsEaseElasticInOut );
+
+	/* Bitwise Operations */
+		/* Arithmetic. */
+	assingGlobalFunction( "BitAnd", lbitAnd );
+	assingGlobalFunction( "BitOr", lbitOr );
+	assingGlobalFunction( "BitXor", lbitXor );
+	assingGlobalFunction( "BitNot", lbitNot );
+	assingGlobalFunction( "BitShiftLeft", lbitShiftLeft );
+	assingGlobalFunction( "BitShiftRight", lbitShiftRight );
+	assingGlobalFunction( "BitSet", lbitSet );
+	assingGlobalFunction( "BitGet", lbitGet );
+	assingGlobalFunction( "BitToggle", lbitToggle );
 
 	lua_pop( L, -1 );
 }

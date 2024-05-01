@@ -183,11 +183,8 @@ end
 
 function Quaternion:temp( x, y, z, w )
 	local object = tempPool[ curTemp ]
-	curTemp = curTemp + 1
 
-	if TEMP_COUNT < curTemp then
-		curTemp = 1
-	end
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
 
 	object.x = x or 0
 	object.y = y or 0
@@ -199,11 +196,8 @@ end
 
 function Quaternion:tempT( t )
 	local object = tempPool[ curTemp ]
-	curTemp = curTemp + 1
 
-	if TEMP_COUNT < curTemp then
-		curTemp = 1
-	end
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
 
 	object.x, object.y, object.z, object.w = table.unpack( t )
 
@@ -212,11 +206,8 @@ end
 
 function Quaternion:tempQ( q )
 	local object = tempPool[ curTemp ]
-	curTemp = curTemp + 1
 
-	if TEMP_COUNT < curTemp then
-		curTemp = 1
-	end
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
 
 	object.x = q.x
 	object.y = q.y

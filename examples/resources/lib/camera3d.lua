@@ -1,6 +1,5 @@
-Util = require( "utillib" )
-Vec2 = require( "vector2" )
-Vec3 = require( "vector3" )
+local Vec2 = require( "vector2" )
+local Vec3 = require( "vector3" )
 
 Camera3D = {}
 Camera3D.meta = {
@@ -17,6 +16,8 @@ Camera3D.KEYS = {
 	BACKWARD = RL.KEY_S,
 	RIGHT = RL.KEY_D,
 	LEFT = RL.KEY_A,
+	UP = RL.KEY_R,
+	DOWN = RL.KEY_F,
 	PAN = RL.KEY_LEFT_SHIFT,
 	FAST = RL.KEY_LEFT_SHIFT,
 }
@@ -91,17 +92,19 @@ function Camera3D:getUpward()
 end
 
 function Camera3D:update( delta )
+	delta = 1 / 60 -- Hack for framerate independance.
+
 	if self.mode == self.MODES.FREE then
 		if RL.IsMouseButtonDown( RL.MOUSE_BUTTON_MIDDLE ) then
 			local mouseDelta = Vec2:newT( RL.GetMouseDelta() )
-
+			
 			if RL.IsKeyDown( self.KEYS.PAN ) then
 				mouseDelta = mouseDelta:scale( self.MOUSE_MOVE_SPEED * delta )
 				local forward = RL.GetCamera3DForward( self.camera )[2]
 
 				RL.Camera3DMoveRight( self.camera, -mouseDelta.x, true )
-				RL.Camera3DMoveUp( self.camera, mouseDelta.y * -( ( 1 - math.abs( forward ) ) * Util.sign( forward ) ) )
-				RL.Camera3DMoveForward( self.camera, mouseDelta.y * math.abs( forward ), true )
+				RL.Camera3DMoveUp( self.camera, mouseDelta.y * ( 1 - math.abs( forward ) ) )
+				RL.Camera3DMoveForward( self.camera, mouseDelta.y * -forward, true )
 			else
 				mouseDelta = mouseDelta:scale( self.TURN_SPEED * delta )
 
@@ -125,6 +128,7 @@ function Camera3D:update( delta )
 		RL.SetMousePosition( Vec2:newT( RL.GetScreenSize() ):scale( 0.5 ) )
 
 		local distance = self.KEYBOARD_MOVE_SPEED * delta
+		local forward = RL.GetCamera3DForward( self.camera )[2]
 
 		if RL.IsKeyDown( self.KEYS.FAST ) then
 			distance = distance * self.KEYBOARD_MOVE_SPEED_MULTI
@@ -140,6 +144,14 @@ function Camera3D:update( delta )
 			RL.Camera3DMoveRight( self.camera, distance, true )
 		elseif RL.IsKeyDown( self.KEYS.LEFT ) then
 			RL.Camera3DMoveRight( self.camera, -distance, true )
+		end
+
+		if RL.IsKeyDown( self.KEYS.UP ) then
+			RL.Camera3DMoveUp( self.camera, distance * ( 1 - math.abs( forward ) ) )
+			RL.Camera3DMoveForward( self.camera, distance * -forward, true )
+		elseif RL.IsKeyDown( self.KEYS.DOWN ) then
+			RL.Camera3DMoveUp( self.camera, -distance * ( 1 - math.abs( forward ) ) )
+			RL.Camera3DMoveForward( self.camera, -distance * -forward, true )
 		end
 	elseif self.mode == self.MODES.ORBITAL then
 		RL.Camera3DYaw( self.camera, self.ORBITAL_SPEED * delta, true )

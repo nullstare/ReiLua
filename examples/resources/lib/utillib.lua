@@ -7,11 +7,6 @@ end
 
 local utillib = {}
 
--- Does not work with dictionaries.
-function utillib.arrayClone( org )
-	return { table.unpack( org ) }
-end
-
 function utillib.deepCopy( orig )
     local copy
 
@@ -156,7 +151,8 @@ function utillib.colorLerp( a, b, f )
 	return {
 		utillib.round( utillib.lerp( a[1], b[1], f ) ),
 		utillib.round( utillib.lerp( a[2], b[2], f ) ),
-		utillib.round( utillib.lerp( a[3], b[3], f ) ) }
+		utillib.round( utillib.lerp( a[3], b[3], f ) )
+	}
 end
 
 -- Move secuence of elements inside table.
@@ -174,6 +170,17 @@ end
 
 function utillib.randomFloat( min, max )
 	return min + math.random() * ( max - min );
+end
+
+function utillib.printBin( v )
+	for i = 31, 0, -1 do
+		if RL.BitGet( v, i ) then
+			io.write( "1" )
+		else
+			io.write( "0" )
+		end
+	end
+	print()
 end
 
 return utillib

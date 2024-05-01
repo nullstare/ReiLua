@@ -47,8 +47,8 @@ function Vector3:new( x, y, z )
 	local object = setmetatable( {}, metatable )
 
 	object.x = x or 0
-	object.y = y or 0
-	object.z = z or 0
+	object.y = y or object.x
+	object.z = z or object.y
 
 	return object
 end
@@ -73,8 +73,8 @@ end
 
 function Vector3:set( x, y, z )
 	self.x = x or 0
-	self.y = y or 0
-	self.z = z or 0
+	self.y = y or self.x
+	self.z = z or self.y
 end
 
 function Vector3:setT( t )
@@ -260,26 +260,20 @@ end
 
 function Vector3:temp( x, y, z )
 	local object = tempPool[ curTemp ]
-	curTemp = curTemp + 1
 
-	if TEMP_COUNT < curTemp then
-		curTemp = 1
-	end
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
 
 	object.x = x or 0
-	object.y = y or 0
-	object.z = z or 0
+	object.y = y or object.x
+	object.z = z or object.y
 
 	return object
 end
 
 function Vector3:tempT( t )
 	local object = tempPool[ curTemp ]
-	curTemp = curTemp + 1
 
-	if TEMP_COUNT < curTemp then
-		curTemp = 1
-	end
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
 
 	object.x, object.y, object.z = table.unpack( t )
 
@@ -288,11 +282,8 @@ end
 
 function Vector3:tempV( v )
 	local object = tempPool[ curTemp ]
-	curTemp = curTemp + 1
 
-	if TEMP_COUNT < curTemp then
-		curTemp = 1
-	end
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
 
 	object.x = v.x
 	object.y = v.y

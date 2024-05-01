@@ -47,9 +47,9 @@ function Rectangle:new( x, y, width, height )
 	local object = setmetatable( {}, Rectangle.meta )
 
 	object.x = x or 0
-	object.y = y or 0
+	object.y = y or object.x
 	object.width = width or 0
-	object.height = height or 0
+	object.height = height or object.width
 
 	return object
 end
@@ -75,9 +75,9 @@ end
 
 function Rectangle:set( x, y, width, height )
 	self.x = x or 0
-	self.y = y or 0
+	self.y = y or self.x
 	self.width = width or 0
-	self.height = height or 0
+	self.height = height or self.width
 end
 
 function Rectangle:setT( t )
@@ -183,27 +183,21 @@ end
 
 function Rectangle:temp( x, y, width, height )
 	local object = tempPool[ curTemp ]
-	curTemp = curTemp + 1
 
-	if TEMP_COUNT < curTemp then
-		curTemp = 1
-	end
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
 
 	object.x = x or 0
-	object.y = y or 0
+	object.y = y or object.x
 	object.width = width or 0
-	object.height = height or 0
+	object.height = height or object.width
 
 	return object
 end
 
 function Rectangle:tempT( t )
 	local object = tempPool[ curTemp ]
-	curTemp = curTemp + 1
 
-	if TEMP_COUNT < curTemp then
-		curTemp = 1
-	end
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
 
 	object.x, object.y, object.width, object.height = table.unpack( t )
 
@@ -212,11 +206,8 @@ end
 
 function Rectangle:tempR( r )
 	local object = tempPool[ curTemp ]
-	curTemp = curTemp + 1
 
-	if TEMP_COUNT < curTemp then
-		curTemp = 1
-	end
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
 
 	object.x = r.x
 	object.y = r.y

@@ -31,6 +31,21 @@ int lmathRound( lua_State* L ) {
 }
 
 /*
+> result = RL.Sign( float value )
+
+Sign of value
+
+- Success return int
+*/
+int lmathSign( lua_State* L ) {
+	float value = luaL_checknumber( L, 1 );
+
+	lua_pushinteger( L, 0 <= value ? 1 : -1 );
+
+	return 1;
+}
+
+/*
 > result = RL.Clamp( float value, float min, float max )
 
 Clamp float value

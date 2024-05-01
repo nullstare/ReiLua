@@ -5,6 +5,7 @@ int imax( int a, int b );
 
 /* Utils. */
 int lmathRound( lua_State* L );
+int lmathSign( lua_State* L );
 int lmathClamp( lua_State* L );
 int lmathLerp( lua_State* L );
 int lmathNormalize( lua_State* L );

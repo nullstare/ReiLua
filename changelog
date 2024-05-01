@@ -41,8 +41,11 @@ DETAILED CHANGES:
 	- ADDED: Raygui lib tree view.
 	- ADDED: Raygui lib examples file browser.
 	- CHANGE: Position argument added for GetCodepoint, GetCodepointNext and GetCodepointPrevious.
-	- ADDED glEnable, glDisable, glGetString and glClear.
-	- ADDED Stencil reflection example.
+	- ADDED: glEnable, glDisable, glGetString and glClear.
+	- ADDED: Stencil reflection example.
+	- ADDED: Math Sign.
+	- FIXED: Camera3D lib Fix up down movement invertion when looking up
+	- ADDED: Bitwise operations for cross Lua compatibility.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

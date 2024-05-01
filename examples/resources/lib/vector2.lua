@@ -45,7 +45,7 @@ function Vector2:new( x, y )
 	local object = setmetatable( {}, metatable )
 
 	object.x = x or 0
-	object.y = y or 0
+	object.y = y or object.x
 
 	return object
 end
@@ -70,7 +70,7 @@ end
 
 function Vector2:set( x, y )
 	self.x = x or 0
-	self.y = y or 0
+	self.y = y or self.x
 end
 
 function Vector2:setT( t )
@@ -230,25 +230,19 @@ end
 
 function Vector2:temp( x, y )
 	local object = tempPool[ curTemp ]
-	curTemp = curTemp + 1
 
-	if TEMP_COUNT < curTemp then
-		curTemp = 1
-	end
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
 
 	object.x = x or 0
-	object.y = y or 0
+	object.y = y or object.x
 
 	return object
 end
 
 function Vector2:tempT( t )
 	local object = tempPool[ curTemp ]
-	curTemp = curTemp + 1
 
-	if TEMP_COUNT < curTemp then
-		curTemp = 1
-	end
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
 
 	object.x, object.y = table.unpack( t )
 
@@ -257,11 +251,8 @@ end
 
 function Vector2:tempV( v )
 	local object = tempPool[ curTemp ]
-	curTemp = curTemp + 1
 
-	if TEMP_COUNT < curTemp then
-		curTemp = 1
-	end
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
 
 	object.x = v.x
 	object.y = v.y

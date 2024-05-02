@@ -5389,6 +5389,12 @@ function RL.GetMusicTimePlayed( music ) end
 ---@return any result 
 function RL.Round( value ) end
 
+---Sign of value
+---- Success return int
+---@param value number
+---@return any result 
+function RL.Sign( value ) end
+
 ---Clamp float value
 ---- Success return float
 ---@param value number

@@ -8301,6 +8301,14 @@ Round float value
 
 ---
 
+> result = RL.Sign( float value )
+
+Sign of value
+
+- Success return int
+
+---
+
 > result = RL.Clamp( float value, float min, float max )
 
 Clamp float value

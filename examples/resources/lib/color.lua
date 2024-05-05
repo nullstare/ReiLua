@@ -29,9 +29,6 @@ local metatable = {
 	__pow = function( c, v )
 		return Color:new( c.r ^ v, c.g ^ v, c.b ^ v, c.a ^ v )
 	end,
-	__idiv = function( c, v )
-		return Color:new( c.r // v, c.g // v, c.b // v, c.a // v )
-	end,
 	__len = function()
 		return 4
 	end,

@@ -3,23 +3,20 @@ if table.unpack == nil then
 	table.unpack = unpack
 end
 
-local function deepCopy( orig )
-    local copy
+local function copyMatrix( orig )
+	local copy = RL.MatrixIdentity()
 
-    if type( orig ) == "table" then
-        copy = {}
+	if orig ~= nil then
+		for y = 1, 4 do
+			for x = 1, 4 do
+				if orig[x][y] ~= nil then
+					copy[x][y] = orig[x][y]
+				end
+			end
+		end
+	end
 
-        for origKey, origValue in next, orig, nil do
-			-- If object has clone method, use that.
-			copy[ deepCopy( origKey ) ] = deepCopy( origValue )
-        end
-
-        -- setmetatable( copy, utillib.deepCopy( getmetatable( orig ) ) )
-    else -- number, string, boolean, etc.
-        copy = orig
-    end
-
-    return copy
+	return copy
 end
 
 local Matrix = {}
@@ -50,17 +47,17 @@ Matrix.meta = {
 function Matrix:new( m )
 	local object = setmetatable( {}, Matrix.meta )
 
-	object.m = deepCopy( m )
+	object.m = copyMatrix( m )
 
 	return object
 end
 
 function Matrix:set( m )
-	self.m = deepCopy( m )
+	self.m = copyMatrix( m )
 end
 
 function Matrix:clone()
-	return Matrix:new( self )
+	return Matrix:new( self.m )
 end
 
 function Matrix:determinant()

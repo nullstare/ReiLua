@@ -3919,7 +3919,7 @@ function RL.LoadFont( fileName ) end
 ---- Success return Font
 ---@param fileName string
 ---@param fontSize integer
----@param codepoints table
+---@param codepoints table|nil
 ---@return any font 
 function RL.LoadFontEx( fileName, fontSize, codepoints ) end
 

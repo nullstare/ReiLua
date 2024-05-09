@@ -211,7 +211,7 @@ int ltextLoadFont( lua_State* L ) {
 }
 
 /*
-> font = RL.LoadFontEx( string fileName, int fontSize, int{} codepoints )
+> font = RL.LoadFontEx( string fileName, int fontSize, int{}|nil codepoints )
 
 Load font from file with extended parameters, use NULL for codepoints to load the default character set
 

@@ -19,7 +19,7 @@ bool stateInit( int argn, const char** argc, const char* exePath ) {
 	state->logLevelInvalid = LOG_ERROR;
 	state->gcUnload = true;
 
-    InitWindow( state->resolution.x, state->resolution.y, "ReiLua" );
+	InitWindow( state->resolution.x, state->resolution.y, "ReiLua" );
 
 	if ( !IsWindowReady() ) {
 		state->hasWindow = false;

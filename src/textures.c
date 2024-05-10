@@ -817,7 +817,7 @@ int ltexturesLoadImageColors( lua_State* L ) {
 
 	for ( int i = 0; i < colorCount; ++i ) {
 		uluaPushColor( L, colors[i] );
-    	lua_rawseti( L, -2, i + 1 );
+		lua_rawseti( L, -2, i + 1 );
 	}
 	UnloadImageColors( colors );
 
@@ -842,7 +842,7 @@ int ltexturesLoadImagePalette( lua_State* L ) {
 
 	for ( int i = 0; i < colorCount; ++i ) {
 		uluaPushColor( L, colors[i] );
-    	lua_rawseti( L, -2, i + 1 );
+		lua_rawseti( L, -2, i + 1 );
 	}
 	UnloadImagePalette( colors );
 
@@ -1251,9 +1251,9 @@ int ltexturesLoadRenderTextureFromData( lua_State* L ) {
 	RenderTexture renTexture = { 0 };
 
 	int t = 1;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
-    while ( lua_next( L, t ) != 0 ) {
+	while ( lua_next( L, t ) != 0 ) {
 		if ( strcmp( "id", (char*)lua_tostring( L, -2 ) ) == 0 ) {
 			renTexture.id = (unsigned int)luaL_checkinteger( L, -1 );
 		}
@@ -1265,8 +1265,8 @@ int ltexturesLoadRenderTextureFromData( lua_State* L ) {
 			Texture* depth = uluaGetTexture( L, -1 );
 			renTexture.depth = *depth;
 		}
-        lua_pop( L, 1 );
-    }
+		lua_pop( L, 1 );
+	}
 	uluaPushRenderTexture( L, renTexture );
 
 	return 1;

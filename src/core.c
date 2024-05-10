@@ -1073,16 +1073,16 @@ int lcoreSetShaderValueV( lua_State* L ) {
 
 	/* t = values index. */
 	int t = 3, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-        if ( lua_isnumber( L, -1 ) ) {
+		if ( lua_isnumber( L, -1 ) ) {
 			floats[i] = lua_tonumber( L, -1 );
 			ints[i] = lua_tointeger( L, -1 );
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
+		}
+		i++;
+		lua_pop( L, 1 );
+	}
 	lua_pop( L, 1 );
 	/* Read values end. */
 
@@ -1370,7 +1370,7 @@ int lcoreLoadRandomSequence( lua_State* L ) {
 
 	for ( int i = 0; i < count; i++ ) {
 		lua_pushinteger( L, sequence[i] );
-    	lua_rawseti( L, -2, i + 1 );
+		lua_rawseti( L, -2, i + 1 );
 	}
 	UnloadRandomSequence( sequence );
 
@@ -1753,7 +1753,7 @@ int lcoreLoadDirectoryFiles( lua_State* L ) {
 
 	for ( int i = 0; i < files.count; ++i ) {
 		lua_pushstring( L, files.paths[i] );
-    	lua_rawseti( L, -2, i+1 );
+		lua_rawseti( L, -2, i+1 );
 	}
 	UnloadDirectoryFiles( files );
 
@@ -1781,7 +1781,7 @@ int lcoreLoadDirectoryFilesEx( lua_State* L ) {
 
 	for ( int i = 0; i < files.count; ++i ) {
 		lua_pushstring( L, files.paths[i] );
-    	lua_rawseti( L, -2, i+1 );
+		lua_rawseti( L, -2, i+1 );
 	}
 	UnloadDirectoryFiles( files );
 
@@ -3204,9 +3204,9 @@ int lcoreCamera3DYaw( lua_State* L ) {
 > RL.Camera3DPitch( camera3D camera, float angle, bool lockView, bool rotateAroundTarget, bool rotateUp )
 
 Rotates the camera around it's right vector, pitch is "looking up and down"
- - lockView prevents camera overrotation (aka "somersaults")
- - rotateAroundTarget defines if rotation is around target or around it's position
- - rotateUp rotates the up direction as well (typically only usefull in CAMERA_FREE)
+- lockView prevents camera overrotation (aka "somersaults")
+- rotateAroundTarget defines if rotation is around target or around it's position
+- rotateUp rotates the up direction as well (typically only usefull in CAMERA_FREE)
 NOTE: angle must be provided in radians
 */
 int lcoreCamera3DPitch( lua_State* L ) {

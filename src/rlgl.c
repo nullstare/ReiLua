@@ -1726,17 +1726,17 @@ int lrlglSetShader( lua_State* L ) {
 	unsigned int id = (unsigned int)luaL_checkinteger( L, 1 );
 
 	int t = 2, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-        if ( lua_isnumber( L, -1 ) ) {
+		if ( lua_isnumber( L, -1 ) ) {
 			if ( i < RL_MAX_SHADER_LOCATIONS ) {
 				state->RLGLcurrentShaderLocs[i] = lua_tointeger( L, -1 );
 			}
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
+		}
+		i++;
+		lua_pop( L, 1 );
+	}
 	rlSetShader( id, state->RLGLcurrentShaderLocs );
 
 	return 0;

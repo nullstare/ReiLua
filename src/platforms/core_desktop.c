@@ -110,7 +110,7 @@ static void windowSizeEvent( GLFWwindow* window, int width, int height ) {
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "event" );
 
-    if ( lua_isfunction( L, -1 ) ) {
+	if ( lua_isfunction( L, -1 ) ) {
 		lua_createtable( L, 3, 0 );
 		lua_pushinteger( L, GLFW_WINDOW_SIZE_EVENT );
 		lua_setfield( L, -2, "type" );
@@ -119,11 +119,11 @@ static void windowSizeEvent( GLFWwindow* window, int width, int height ) {
 		lua_pushinteger( L, height );
 		lua_setfield( L, -2, "height" );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-        }
-    }
+		}
+	}
 	lua_pop( L, -1 );
 }
 
@@ -146,18 +146,18 @@ static void windowMaximizeEvent( GLFWwindow* window, int maximized ) {
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "event" );
 
-    if ( lua_isfunction( L, -1 ) ) {
+	if ( lua_isfunction( L, -1 ) ) {
 		lua_createtable( L, 2, 0 );
 		lua_pushinteger( L, GLFW_WINDOW_MAXIMIZE_EVENT );
 		lua_setfield( L, -2, "type" );
 		lua_pushinteger( L, maximized );
 		lua_setfield( L, -2, "maximized" );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-        }
-    }
+		}
+	}
 	lua_pop( L, -1 );
 }
 
@@ -180,18 +180,18 @@ static void windowIconyfyEvent( GLFWwindow* window, int iconified ) {
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "event" );
 
-    if ( lua_isfunction( L, -1 ) ) {
+	if ( lua_isfunction( L, -1 ) ) {
 		lua_createtable( L, 2, 0 );
 		lua_pushinteger( L, GLFW_WINDOW_ICONYFY_EVENT );
 		lua_setfield( L, -2, "type" );
 		lua_pushinteger( L, iconified );
 		lua_setfield( L, -2, "iconified" );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-        }
-    }
+		}
+	}
 	lua_pop( L, -1 );
 }
 
@@ -212,18 +212,18 @@ static void windowFocusEvent( GLFWwindow* window, int focused ) {
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "event" );
 
-    if ( lua_isfunction( L, -1 ) ) {
+	if ( lua_isfunction( L, -1 ) ) {
 		lua_createtable( L, 2, 0 );
 		lua_pushinteger( L, GLFW_WINDOW_FOCUS_EVENT );
 		lua_setfield( L, -2, "type" );
 		lua_pushinteger( L, focused );
 		lua_setfield( L, -2, "focused" );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-        }
-    }
+		}
+	}
 	lua_pop( L, -1 );
 }
 
@@ -244,7 +244,7 @@ static void windowDropEvent( GLFWwindow* window, int count, const char** paths )
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "event" );
 
-    if ( lua_isfunction( L, -1 ) ) {
+	if ( lua_isfunction( L, -1 ) ) {
 		lua_createtable( L, 3, 0 );
 		lua_pushinteger( L, GLFW_WINDOW_DROP_EVENT );
 		lua_setfield( L, -2, "type" );
@@ -259,11 +259,11 @@ static void windowDropEvent( GLFWwindow* window, int count, const char** paths )
 		}
 		lua_setfield( L, -2, "paths" );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-        }
-    }
+		}
+	}
 	lua_pop( L, -1 );
 }
 
@@ -288,7 +288,7 @@ static void keyInputEvent( GLFWwindow* window, int key, int scancode, int action
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "event" );
 
-    if ( lua_isfunction( L, -1 ) ) {
+	if ( lua_isfunction( L, -1 ) ) {
 		lua_createtable( L, 5, 0 );
 		lua_pushinteger( L, GLFW_KEY_EVENT );
 		lua_setfield( L, -2, "type" );
@@ -301,11 +301,11 @@ static void keyInputEvent( GLFWwindow* window, int key, int scancode, int action
 		lua_pushinteger( L, mods );
 		lua_setfield( L, -2, "mods" );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-        }
-    }
+		}
+	}
 	lua_pop( L, -1 );
 }
 
@@ -326,18 +326,18 @@ static void charInputEvent( GLFWwindow* window, unsigned int key ) {
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "event" );
 
-    if ( lua_isfunction( L, -1 ) ) {
+	if ( lua_isfunction( L, -1 ) ) {
 		lua_createtable( L, 2, 0 );
 		lua_pushinteger( L, GLFW_CHAR_EVENT );
 		lua_setfield( L, -2, "type" );
 		lua_pushinteger( L, key );
 		lua_setfield( L, -2, "key" );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-        }
-    }
+		}
+	}
 	lua_pop( L, -1 );
 }
 
@@ -358,7 +358,7 @@ static void mouseButtonInputEvent( GLFWwindow* window, int button, int action, i
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "event" );
 
-    if ( lua_isfunction( L, -1 ) ) {
+	if ( lua_isfunction( L, -1 ) ) {
 		lua_createtable( L, 4, 0 );
 		lua_pushinteger( L, GLFW_MOUSE_BUTTON_EVENT );
 		lua_setfield( L, -2, "type" );
@@ -369,11 +369,11 @@ static void mouseButtonInputEvent( GLFWwindow* window, int button, int action, i
 		lua_pushinteger( L, mods );
 		lua_setfield( L, -2, "mods" );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-        }
-    }
+		}
+	}
 	lua_pop( L, -1 );
 }
 
@@ -394,7 +394,7 @@ static void mouseCursorPosInputEvent( GLFWwindow* window, double x, double y ) {
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "event" );
 
-    if ( lua_isfunction( L, -1 ) ) {
+	if ( lua_isfunction( L, -1 ) ) {
 		lua_createtable( L, 3, 0 );
 		lua_pushinteger( L, GLFW_MOUSE_CURSOR_POS_EVENT );
 		lua_setfield( L, -2, "type" );
@@ -403,11 +403,11 @@ static void mouseCursorPosInputEvent( GLFWwindow* window, double x, double y ) {
 		lua_pushnumber( L, y );
 		lua_setfield( L, -2, "y" );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-        }
-    }
+		}
+	}
 	lua_pop( L, -1 );
 }
 
@@ -428,7 +428,7 @@ static void mouseScrollInputEvent( GLFWwindow* window, double xoffset, double yo
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "event" );
 
-    if ( lua_isfunction( L, -1 ) ) {
+	if ( lua_isfunction( L, -1 ) ) {
 		lua_createtable( L, 3, 0 );
 		lua_pushinteger( L, GLFW_MOUSE_SCROLL_EVENT );
 		lua_setfield( L, -2, "type" );
@@ -437,11 +437,11 @@ static void mouseScrollInputEvent( GLFWwindow* window, double xoffset, double yo
 		lua_pushnumber( L, yoffset );
 		lua_setfield( L, -2, "yoffset" );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-        }
-    }
+		}
+	}
 	lua_pop( L, -1 );
 }
 
@@ -462,18 +462,18 @@ static void cursorEnterInputEvent( GLFWwindow* window, int enter ) {
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "event" );
 
-    if ( lua_isfunction( L, -1 ) ) {
+	if ( lua_isfunction( L, -1 ) ) {
 		lua_createtable( L, 2, 0 );
 		lua_pushinteger( L, GLFW_CURSOR_ENTER_EVENT );
 		lua_setfield( L, -2, "type" );
 		lua_pushinteger( L, enter );
 		lua_setfield( L, -2, "enter" );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-        }
-    }
+		}
+	}
 	lua_pop( L, -1 );
 }
 
@@ -496,7 +496,7 @@ static void joystickEvent( int jid, int event ) {
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "event" );
 
-    if ( lua_isfunction( L, -1 ) ) {
+	if ( lua_isfunction( L, -1 ) ) {
 		lua_createtable( L, 3, 0 );
 		lua_pushinteger( L, GLFW_JOYSTICK_EVENT );
 		lua_setfield( L, -2, "type" );
@@ -505,11 +505,11 @@ static void joystickEvent( int jid, int event ) {
 		lua_pushinteger( L, event );
 		lua_setfield( L, -2, "event" );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-        }
-    }
+		}
+	}
 	lua_pop( L, -1 );
 }
 
@@ -528,7 +528,7 @@ static void penTabletDataEvent( double x, double y, double z, double pressure, d
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "event" );
 
-    if ( lua_isfunction( L, -1 ) ) {
+	if ( lua_isfunction( L, -1 ) ) {
 		lua_createtable( L, 8, 0 );
 		lua_pushinteger( L, GLFW_PEN_TABLET_DATA_EVENT );
 		lua_setfield( L, -2, "type" );
@@ -547,11 +547,11 @@ static void penTabletDataEvent( double x, double y, double z, double pressure, d
 		lua_pushnumber( L, roll );
 		lua_setfield( L, -2, "roll" );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-        }
-    }
+		}
+	}
 	lua_pop( L, -1 );
 }
 
@@ -570,18 +570,18 @@ static void penTabletCursorEvent( unsigned int identifier ) {
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "event" );
 
-    if ( lua_isfunction( L, -1 ) ) {
+	if ( lua_isfunction( L, -1 ) ) {
 		lua_createtable( L, 2, 0 );
 		lua_pushinteger( L, GLFW_PEN_TABLET_CURSOR_EVENT );
 		lua_setfield( L, -2, "type" );
 		lua_pushinteger( L, identifier );
 		lua_setfield( L, -2, "identifier" );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-        }
-    }
+		}
+	}
 	lua_pop( L, -1 );
 }
 
@@ -600,18 +600,18 @@ static void penTabletProximityEvent( int proxState ) {
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "event" );
 
-    if ( lua_isfunction( L, -1 ) ) {
+	if ( lua_isfunction( L, -1 ) ) {
 		lua_createtable( L, 2, 0 );
 		lua_pushinteger( L, GLFW_PEN_TABLET_PROXIMITY_EVENT );
 		lua_setfield( L, -2, "type" );
 		lua_pushinteger( L, proxState );
 		lua_setfield( L, -2, "state" );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-        }
-    }
+		}
+	}
 	lua_pop( L, -1 );
 }
 

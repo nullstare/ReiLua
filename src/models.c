@@ -11,99 +11,99 @@ void unloadMaterial( Material* material ) {
 }
 
 void DrawBillboardProNoRatio( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint ) {
-    // NOTE: Billboard size will maintain source rectangle aspect ratio, size will represent billboard width
-    // Vector2 sizeRatio = { size.x*(float)source.width/source.height, size.y };
-    Vector2 sizeRatio = { size.x, size.y };
+	// NOTE: Billboard size will maintain source rectangle aspect ratio, size will represent billboard width
+	// Vector2 sizeRatio = { size.x*(float)source.width/source.height, size.y };
+	Vector2 sizeRatio = { size.x, size.y };
 
-    Matrix matView = MatrixLookAt(camera.position, camera.target, camera.up);
+	Matrix matView = MatrixLookAt(camera.position, camera.target, camera.up);
 
-    Vector3 right = { matView.m0, matView.m4, matView.m8 };
-    //Vector3 up = { matView.m1, matView.m5, matView.m9 };
+	Vector3 right = { matView.m0, matView.m4, matView.m8 };
+	//Vector3 up = { matView.m1, matView.m5, matView.m9 };
 
-    Vector3 rightScaled = Vector3Scale(right, sizeRatio.x/2);
-    Vector3 upScaled = Vector3Scale(up, sizeRatio.y/2);
+	Vector3 rightScaled = Vector3Scale(right, sizeRatio.x/2);
+	Vector3 upScaled = Vector3Scale(up, sizeRatio.y/2);
 
-    Vector3 p1 = Vector3Add(rightScaled, upScaled);
-    Vector3 p2 = Vector3Subtract(rightScaled, upScaled);
+	Vector3 p1 = Vector3Add(rightScaled, upScaled);
+	Vector3 p2 = Vector3Subtract(rightScaled, upScaled);
 
-    Vector3 topLeft = Vector3Scale(p2, -1);
-    Vector3 topRight = p1;
-    Vector3 bottomRight = p2;
-    Vector3 bottomLeft = Vector3Scale(p1, -1);
+	Vector3 topLeft = Vector3Scale(p2, -1);
+	Vector3 topRight = p1;
+	Vector3 bottomRight = p2;
+	Vector3 bottomLeft = Vector3Scale(p1, -1);
 
-    if (rotation != 0.0f)
-    {
-        float sinRotation = sinf(rotation*DEG2RAD);
-        float cosRotation = cosf(rotation*DEG2RAD);
+	if (rotation != 0.0f)
+	{
+		float sinRotation = sinf(rotation*DEG2RAD);
+		float cosRotation = cosf(rotation*DEG2RAD);
 
-        // NOTE: (-1, 1) is the range where origin.x, origin.y is inside the texture
-        float rotateAboutX = sizeRatio.x*origin.x/2;
-        float rotateAboutY = sizeRatio.y*origin.y/2;
+		// NOTE: (-1, 1) is the range where origin.x, origin.y is inside the texture
+		float rotateAboutX = sizeRatio.x*origin.x/2;
+		float rotateAboutY = sizeRatio.y*origin.y/2;
 
-        float xtvalue, ytvalue;
-        float rotatedX, rotatedY;
+		float xtvalue, ytvalue;
+		float rotatedX, rotatedY;
 
-        xtvalue = Vector3DotProduct(right, topLeft) - rotateAboutX; // Project points to x and y coordinates on the billboard plane
-        ytvalue = Vector3DotProduct(up, topLeft) - rotateAboutY;
-        rotatedX = xtvalue*cosRotation - ytvalue*sinRotation + rotateAboutX; // Rotate about the point origin
-        rotatedY = xtvalue*sinRotation + ytvalue*cosRotation + rotateAboutY;
-        topLeft = Vector3Add(Vector3Scale(up, rotatedY), Vector3Scale(right, rotatedX)); // Translate back to cartesian coordinates
+		xtvalue = Vector3DotProduct(right, topLeft) - rotateAboutX; // Project points to x and y coordinates on the billboard plane
+		ytvalue = Vector3DotProduct(up, topLeft) - rotateAboutY;
+		rotatedX = xtvalue*cosRotation - ytvalue*sinRotation + rotateAboutX; // Rotate about the point origin
+		rotatedY = xtvalue*sinRotation + ytvalue*cosRotation + rotateAboutY;
+		topLeft = Vector3Add(Vector3Scale(up, rotatedY), Vector3Scale(right, rotatedX)); // Translate back to cartesian coordinates
 
-        xtvalue = Vector3DotProduct(right, topRight) - rotateAboutX;
-        ytvalue = Vector3DotProduct(up, topRight) - rotateAboutY;
-        rotatedX = xtvalue*cosRotation - ytvalue*sinRotation + rotateAboutX;
-        rotatedY = xtvalue*sinRotation + ytvalue*cosRotation + rotateAboutY;
-        topRight = Vector3Add(Vector3Scale(up, rotatedY), Vector3Scale(right, rotatedX));
+		xtvalue = Vector3DotProduct(right, topRight) - rotateAboutX;
+		ytvalue = Vector3DotProduct(up, topRight) - rotateAboutY;
+		rotatedX = xtvalue*cosRotation - ytvalue*sinRotation + rotateAboutX;
+		rotatedY = xtvalue*sinRotation + ytvalue*cosRotation + rotateAboutY;
+		topRight = Vector3Add(Vector3Scale(up, rotatedY), Vector3Scale(right, rotatedX));
 
-        xtvalue = Vector3DotProduct(right, bottomRight) - rotateAboutX;
-        ytvalue = Vector3DotProduct(up, bottomRight) - rotateAboutY;
-        rotatedX = xtvalue*cosRotation - ytvalue*sinRotation + rotateAboutX;
-        rotatedY = xtvalue*sinRotation + ytvalue*cosRotation + rotateAboutY;
-        bottomRight = Vector3Add(Vector3Scale(up, rotatedY), Vector3Scale(right, rotatedX));
+		xtvalue = Vector3DotProduct(right, bottomRight) - rotateAboutX;
+		ytvalue = Vector3DotProduct(up, bottomRight) - rotateAboutY;
+		rotatedX = xtvalue*cosRotation - ytvalue*sinRotation + rotateAboutX;
+		rotatedY = xtvalue*sinRotation + ytvalue*cosRotation + rotateAboutY;
+		bottomRight = Vector3Add(Vector3Scale(up, rotatedY), Vector3Scale(right, rotatedX));
 
-        xtvalue = Vector3DotProduct(right, bottomLeft)-rotateAboutX;
-        ytvalue = Vector3DotProduct(up, bottomLeft)-rotateAboutY;
-        rotatedX = xtvalue*cosRotation - ytvalue*sinRotation + rotateAboutX;
-        rotatedY = xtvalue*sinRotation + ytvalue*cosRotation + rotateAboutY;
-        bottomLeft = Vector3Add(Vector3Scale(up, rotatedY), Vector3Scale(right, rotatedX));
-    }
+		xtvalue = Vector3DotProduct(right, bottomLeft)-rotateAboutX;
+		ytvalue = Vector3DotProduct(up, bottomLeft)-rotateAboutY;
+		rotatedX = xtvalue*cosRotation - ytvalue*sinRotation + rotateAboutX;
+		rotatedY = xtvalue*sinRotation + ytvalue*cosRotation + rotateAboutY;
+		bottomLeft = Vector3Add(Vector3Scale(up, rotatedY), Vector3Scale(right, rotatedX));
+	}
 
-    // Translate points to the draw center (position)
-    topLeft = Vector3Add(topLeft, position);
-    topRight = Vector3Add(topRight, position);
-    bottomRight = Vector3Add(bottomRight, position);
-    bottomLeft = Vector3Add(bottomLeft, position);
+	// Translate points to the draw center (position)
+	topLeft = Vector3Add(topLeft, position);
+	topRight = Vector3Add(topRight, position);
+	bottomRight = Vector3Add(bottomRight, position);
+	bottomLeft = Vector3Add(bottomLeft, position);
 
-    rlSetTexture(texture.id);
+	rlSetTexture(texture.id);
 
-    rlBegin(RL_QUADS);
-        rlColor4ub(tint.r, tint.g, tint.b, tint.a);
+	rlBegin(RL_QUADS);
+		rlColor4ub(tint.r, tint.g, tint.b, tint.a);
 
-        // Bottom-left corner for texture and quad
-        rlTexCoord2f((float)source.x/texture.width, (float)source.y/texture.height);
-        rlVertex3f(topLeft.x, topLeft.y, topLeft.z);
+		// Bottom-left corner for texture and quad
+		rlTexCoord2f((float)source.x/texture.width, (float)source.y/texture.height);
+		rlVertex3f(topLeft.x, topLeft.y, topLeft.z);
 
-        // Top-left corner for texture and quad
-        rlTexCoord2f((float)source.x/texture.width, (float)(source.y + source.height)/texture.height);
-        rlVertex3f(bottomLeft.x, bottomLeft.y, bottomLeft.z);
+		// Top-left corner for texture and quad
+		rlTexCoord2f((float)source.x/texture.width, (float)(source.y + source.height)/texture.height);
+		rlVertex3f(bottomLeft.x, bottomLeft.y, bottomLeft.z);
 
-        // Top-right corner for texture and quad
-        rlTexCoord2f((float)(source.x + source.width)/texture.width, (float)(source.y + source.height)/texture.height);
-        rlVertex3f(bottomRight.x, bottomRight.y, bottomRight.z);
+		// Top-right corner for texture and quad
+		rlTexCoord2f((float)(source.x + source.width)/texture.width, (float)(source.y + source.height)/texture.height);
+		rlVertex3f(bottomRight.x, bottomRight.y, bottomRight.z);
 
-        // Bottom-right corner for texture and quad
-        rlTexCoord2f((float)(source.x + source.width)/texture.width, (float)source.y/texture.height);
-        rlVertex3f(topRight.x, topRight.y, topRight.z);
-    rlEnd();
+		// Bottom-right corner for texture and quad
+		rlTexCoord2f((float)(source.x + source.width)/texture.width, (float)source.y/texture.height);
+		rlVertex3f(topRight.x, topRight.y, topRight.z);
+	rlEnd();
 
-    rlSetTexture(0);
+	rlSetTexture(0);
 }
 
 void DrawBillboardRecNoRatio( Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Color tint ) {
-    // NOTE: Billboard locked on axis-Y
-    Vector3 up = { 0.0f, 1.0f, 0.0f };
+	// NOTE: Billboard locked on axis-Y
+	Vector3 up = { 0.0f, 1.0f, 0.0f };
 
-    DrawBillboardProNoRatio(camera, texture, source, position, up, size, Vector2Zero(), 0.0f, tint);
+	DrawBillboardProNoRatio(camera, texture, source, position, up, size, Vector2Zero(), 0.0f, tint);
 }
 
 /*
@@ -184,15 +184,15 @@ int lmodelsDrawTriangleStrip3D( lua_State* L ) {
 	Vector3 points[ pointCount ];
 
 	int t = 1, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-        if ( lua_istable( L, -1 ) ) {
+		if ( lua_istable( L, -1 ) ) {
 			points[i] = uluaGetVector3( L, lua_gettop( L ) );
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
+		}
+		i++;
+		lua_pop( L, 1 );
+	}
 	DrawTriangleStrip3D( points, pointCount, color );
 
 	return 0;
@@ -412,43 +412,43 @@ int lmodelDrawQuad3DTexture( lua_State* L ) {
 	Vector3 vertices[4] = { 0 };
 
 	int t = 2, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-        if ( lua_istable( L, -1 ) && i < 4 ) {
+		if ( lua_istable( L, -1 ) && i < 4 ) {
 			vertices[i] = uluaGetVector3( L, lua_gettop( L ) );
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
+		}
+		i++;
+		lua_pop( L, 1 );
+	}
 
 	/* TexCoords. */
 	Vector2 texcoords[4] = { 0 };
 
 	t = 3, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-        if ( lua_istable( L, -1 ) && i < 4 ) {
+		if ( lua_istable( L, -1 ) && i < 4 ) {
 			texcoords[i] = uluaGetVector2( L, lua_gettop( L ) );
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
+		}
+		i++;
+		lua_pop( L, 1 );
+	}
 
 	/* Colors. */
 	Color colors[4] = { 0 };
 
 	t = 4, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-        if ( lua_istable( L, -1 ) && i < 4 ) {
+		if ( lua_istable( L, -1 ) && i < 4 ) {
 			colors[i] = uluaGetColor( L, lua_gettop( L ) );
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
+		}
+		i++;
+		lua_pop( L, 1 );
+	}
 
 	//TODO Normals. maybe something like Vector3Normalize(Vector3CrossProduct(Vector3Subtract(vB, vA), Vector3Subtract(vC, vA)));
 
@@ -459,7 +459,7 @@ int lmodelDrawQuad3DTexture( lua_State* L ) {
 	rlBegin( RL_QUADS );
 		for ( i = 0; i < 4; ++i ) {
 			rlTexCoord2f( texcoords[i].x, texcoords[i].y );
-        	rlColor4ub( colors[i].r, colors[i].g, colors[i].b, colors[i].a );
+			rlColor4ub( colors[i].r, colors[i].g, colors[i].b, colors[i].a );
 			rlVertex3f( vertices[i].x, vertices[i].y, vertices[i].z );
 		}
 	rlEnd();
@@ -1170,15 +1170,15 @@ int lmodelsDrawMeshInstanced( lua_State* L ) {
 	Matrix transforms[ instances ];
 
 	int t = 3, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-        if ( lua_istable( L, -1 ) ) {
+		if ( lua_istable( L, -1 ) ) {
 			transforms[i] = uluaGetMatrix( L, lua_gettop( L ) );
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
+		}
+		i++;
+		lua_pop( L, 1 );
+	}
 	DrawMeshInstanced( *mesh, *material, transforms, instances );
 
 	return 0;
@@ -2151,16 +2151,16 @@ Unload animation table data
 */
 int lmodelsUnloadModelAnimations( lua_State* L ) {
 	int t = 1, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-        if ( lua_isuserdata( L, -1 ) ) {
+		if ( lua_isuserdata( L, -1 ) ) {
 			ModelAnimation* animation = uluaGetModelAnimation( L, lua_gettop( L ) );
 			UnloadModelAnimation( *animation );
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
+		}
+		i++;
+		lua_pop( L, 1 );
+	}
 	return 0;
 }
 

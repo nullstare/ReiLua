@@ -65,6 +65,7 @@ int lmodelsSetMeshColor( lua_State* L );
 int lmodelsExportMesh( lua_State* L );
 int lmodelsGetMeshBoundingBox( lua_State* L );
 int lmodelsGenMeshTangents( lua_State* L );
+int lmodelsGetMeshData( lua_State* L );
 /* Mesh generation functions. */
 int lmodelsGenMeshPoly( lua_State* L );
 int lmodelsGenMeshPlane( lua_State* L );

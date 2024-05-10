@@ -4738,6 +4738,12 @@ function RL.GetMeshBoundingBox( mesh ) end
 ---@return any RL.GenMeshTangents
 function  RL.GenMeshTangents( mesh ) end
 
+---Get mesh data as table.
+---- Success return Mesh{}
+---@param mesh any
+---@return any meshData 
+function RL.GetMeshData( mesh ) end
+
 -- Models - Mesh generation functions
 
 ---Generate polygonal mesh

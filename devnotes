@@ -20,7 +20,7 @@ Backlog {
 }
 
 Bugs {
-	* glfwSet*Callback functions segfault on Windows. Should keep Lua events off.
+	* glfwSet*Callback functions segfault on Windows. Should keep Lua events off for now.
 }
 
 Needs Testing {

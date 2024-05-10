@@ -32,10 +32,6 @@ local shadowMesh = nil
 local lights = {}
 local camera = nil -- 3D camera for shadow rendering.
 
-local kissa = Color:new( 255, 255, 255 )
-
-print( "Kissa", kissa )
-
 -- Init.
 
 local function addLight( pos, color, radius )

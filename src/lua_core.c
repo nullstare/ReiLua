@@ -1034,16 +1034,16 @@ static void logCustom( int logLevel, const char* text, va_list args ) {
 
 	vsprintf( string, text, args );
 
-    switch ( logLevel ) {
-        case LOG_ALL: sprintf( msg, "ALL: %s", string ); break;
-        case LOG_TRACE: sprintf( msg, "TRACE: %s", string ); break;
-        case LOG_DEBUG: sprintf( msg, "DEBUG: %s", string ); break;
-        case LOG_INFO: sprintf( msg, "INFO: %s", string ); break;
-        case LOG_WARNING: sprintf( msg, "WARNING: %s", string ); break;
-        case LOG_ERROR: sprintf( msg, "ERROR: %s", string ); break;
-        case LOG_FATAL: sprintf( msg, "FATAL: %s", string ); break;
-        default: break;
-    }
+	switch ( logLevel ) {
+		case LOG_ALL: sprintf( msg, "ALL: %s", string ); break;
+		case LOG_TRACE: sprintf( msg, "TRACE: %s", string ); break;
+		case LOG_DEBUG: sprintf( msg, "DEBUG: %s", string ); break;
+		case LOG_INFO: sprintf( msg, "INFO: %s", string ); break;
+		case LOG_WARNING: sprintf( msg, "WARNING: %s", string ); break;
+		case LOG_ERROR: sprintf( msg, "ERROR: %s", string ); break;
+		case LOG_FATAL: sprintf( msg, "FATAL: %s", string ); break;
+		default: break;
+	}
 	printf( "%s\n", msg );
 
 	/* Call Lua log function if exists. */
@@ -1076,7 +1076,7 @@ bool luaInit( int argn, const char** argc ) {
 	state->luaState = luaL_newstate();
 	lua_State* L = state->luaState;
 
-    luaL_openlibs( L );
+	luaL_openlibs( L );
 
 	if ( L == NULL ) {
 		TraceLog( LOG_WARNING, "%s", "Failed to init Lua" );
@@ -1166,7 +1166,7 @@ bool luaCallMain() {
 		snprintf( path, STRING_LEN, "%smain", state->exePath );
 	}
 #endif
-    luaL_dofile( L, path );
+	luaL_dofile( L, path );
 
 	/* Check errors in main.lua */
 	if ( lua_tostring( state->luaState, -1 ) ) {
@@ -1190,8 +1190,8 @@ bool luaCallMain() {
 	//TODO Should this be removed?
 	else {
 		TraceLog( LOG_ERROR, "%s", "No Lua init found!" );
-        return false;
-    }
+		return false;
+	}
 	lua_pop( L, -1 );
 
 	return state->run;
@@ -1202,7 +1202,7 @@ void luaCallUpdate() {
 #if defined PLATFORM_DESKTOP_SDL && defined LUA_EVENTS
 	platformSendEvents();
 #endif
-    lua_State* L = state->luaState;
+	lua_State* L = state->luaState;
 
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop(L);
@@ -1210,16 +1210,16 @@ void luaCallUpdate() {
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "update" );
 
-    if ( lua_isfunction( L, -1 ) ) {
-        lua_pushnumber( L, GetFrameTime() );
+	if ( lua_isfunction( L, -1 ) ) {
+		lua_pushnumber( L, GetFrameTime() );
 
-        if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
 			lua_pop( L, -1 );
- 	    	return;
-        }
-    }
+			return;
+		}
+	}
 	lua_pop( L, -1 );
 }
 
@@ -1231,16 +1231,16 @@ void luaCallDraw() {
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "draw" );
 
-    if ( lua_isfunction( L, -1 ) ) {
+	if ( lua_isfunction( L, -1 ) ) {
 		BeginDrawing();
 
-        if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
+		if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
- 	    	return;
-        }
+			return;
+		}
 		EndDrawing();
-    }
+	}
 	lua_pop( L, -1 );
 }
 
@@ -1252,13 +1252,13 @@ void luaCallExit() {
 	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "exit" );
 
-    if ( lua_isfunction( L, -1 ) ) {
-        if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
+	if ( lua_isfunction( L, -1 ) ) {
+		if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
- 	    	return;
-        }
-    }
+			return;
+		}
+	}
 	lua_pop( L, -1 );
 }
 
@@ -1761,6 +1761,7 @@ void luaRegister() {
 	assingGlobalFunction( "ExportMesh", lmodelsExportMesh );
 	assingGlobalFunction( "GetMeshBoundingBox", lmodelsGetMeshBoundingBox );
 	assingGlobalFunction( "GenMeshTangents", lmodelsGenMeshTangents );
+	assingGlobalFunction( "GetMeshData", lmodelsGetMeshData );
 		/* Mesh generation functions. */
 	assingGlobalFunction( "GenMeshPoly", lmodelsGenMeshPoly );
 	assingGlobalFunction( "GenMeshPlane", lmodelsGenMeshPlane );
@@ -2377,10 +2378,10 @@ bool uluaGetBoolean( lua_State* L, int index ) {
 
 Color uluaGetColor( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
-    Color color = { 0, 0, 0, 255 };
+	Color color = { 0, 0, 0, 255 };
 
 	int t = index, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
 		if ( lua_isnumber( L, -1 ) ) {
@@ -2419,18 +2420,18 @@ Color uluaGetColor( lua_State* L, int index ) {
 			i++;
 			lua_pop( L, 1 );
 		}
-    }
-    return color;
+	}
+	return color;
 }
 
 Vector2 uluaGetVector2( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
-    Vector2 vector = { 0.0f, 0.0f };
+	Vector2 vector = { 0.0f, 0.0f };
 
 	int t = index, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
-    while ( lua_next( L, t ) != 0 ) {
+	while ( lua_next( L, t ) != 0 ) {
 		if ( lua_isnumber( L, -1 ) ) {
 			if ( lua_isnumber( L, -2 ) ) {
 				switch ( i ) {
@@ -2455,19 +2456,19 @@ Vector2 uluaGetVector2( lua_State* L, int index ) {
 			i++;
 			lua_pop( L, 1 );
 		}
-    }
-    return vector;
+	}
+	return vector;
 }
 
 Vector3 uluaGetVector3( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
-    Vector3 vector = { 0.0f, 0.0f, 0.0f };
+	Vector3 vector = { 0.0f, 0.0f, 0.0f };
 
 	int t = index, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
-    while ( lua_next( L, t ) != 0 ) {
-        if ( lua_isnumber( L, -1 ) ) {
+	while ( lua_next( L, t ) != 0 ) {
+		if ( lua_isnumber( L, -1 ) ) {
 			if ( lua_isnumber( L, -2 ) ) {
 				switch ( i ) {
 					case 0:
@@ -2494,22 +2495,22 @@ Vector3 uluaGetVector3( lua_State* L, int index ) {
 					vector.z = lua_tonumber( L, -1 );
 				}
 			}
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
-    return vector;
+		}
+		i++;
+		lua_pop( L, 1 );
+	}
+	return vector;
 }
 
 Vector4 uluaGetVector4( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
-    Vector4 vector = { 0.0f, 0.0f, 0.0f, 0.0f };
+	Vector4 vector = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	int t = index, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
-    while ( lua_next( L, t ) != 0 ) {
-        if ( lua_isnumber( L, -1 ) ) {
+	while ( lua_next( L, t ) != 0 ) {
+		if ( lua_isnumber( L, -1 ) ) {
 			if ( lua_isnumber( L, -2 ) ) {
 				switch ( i ) {
 					case 0:
@@ -2542,22 +2543,22 @@ Vector4 uluaGetVector4( lua_State* L, int index ) {
 					vector.w = lua_tonumber( L, -1 );
 				}
 			}
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
-    return vector;
+		}
+		i++;
+		lua_pop( L, 1 );
+	}
+	return vector;
 }
 
 Rectangle uluaGetRectangle( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
-    Rectangle rect = { 0.0f, 0.0f, 0.0f, 0.0f };
+	Rectangle rect = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	int t = index, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
-        if ( lua_isnumber( L, -1 ) ) {
+		if ( lua_isnumber( L, -1 ) ) {
 			if ( lua_isnumber( L, -2 ) ) {
 				switch ( i ) {
 					case 0:
@@ -2590,22 +2591,22 @@ Rectangle uluaGetRectangle( lua_State* L, int index ) {
 					rect.height = lua_tonumber( L, -1 );
 				}
 			}
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
-    return rect;
+		}
+		i++;
+		lua_pop( L, 1 );
+	}
+	return rect;
 }
 
 Quaternion uluaGetQuaternion( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
-    Quaternion quaternion = { 0.0f, 0.0f, 0.0f, 0.0f };
+	Quaternion quaternion = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	int t = index, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
-    while ( lua_next( L, t ) != 0 ) {
-        if ( lua_isnumber( L, -1 ) ) {
+	while ( lua_next( L, t ) != 0 ) {
+		if ( lua_isnumber( L, -1 ) ) {
 			if ( lua_isnumber( L, -2 ) ) {
 				switch ( i ) {
 					case 0:
@@ -2638,11 +2639,11 @@ Quaternion uluaGetQuaternion( lua_State* L, int index ) {
 					quaternion.w = lua_tonumber( L, -1 );
 				}
 			}
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
-    return quaternion;
+		}
+		i++;
+		lua_pop( L, 1 );
+	}
+	return quaternion;
 }
 
 Matrix uluaGetMatrix( lua_State* L, int index ) {
@@ -2651,10 +2652,10 @@ Matrix uluaGetMatrix( lua_State* L, int index ) {
 	float m[4][4];
 
 	int t = index, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
-    while ( lua_next( L, t ) != 0 ) {
-        if ( lua_istable( L, -1 ) ) {
+	while ( lua_next( L, t ) != 0 ) {
+		if ( lua_istable( L, -1 ) ) {
 			int t2 = lua_gettop( L ), j = 0;
 			lua_pushnil( L );
 
@@ -2678,10 +2679,10 @@ Matrix uluaGetMatrix( lua_State* L, int index ) {
 				j++;
 				lua_pop( L, 1 );
 			}
-        }
-        i++;
-        lua_pop( L, 1 );
-    }
+		}
+		i++;
+		lua_pop( L, 1 );
+	}
 	matrix.m0 = m[0][0]; 	matrix.m1 = m[0][1]; 	matrix.m2 = m[0][2]; 	matrix.m3 = m[0][3];
 	matrix.m4 = m[1][0]; 	matrix.m5 = m[1][1]; 	matrix.m6 = m[1][2]; 	matrix.m7 = m[1][3];
 	matrix.m8 = m[2][0]; 	matrix.m9 = m[2][1]; 	matrix.m10 = m[2][2]; 	matrix.m11 = m[2][3];
@@ -2695,7 +2696,7 @@ BoundingBox uluaGetBoundingBox( lua_State* L, int index ) {
 	BoundingBox box = { .min = { 0.0, 0.0, 0.0 }, .max = { 0.0, 0.0, 0.0 } };
 
 	int t = index, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
 		if ( lua_istable( L, -1 ) ) {
@@ -2722,7 +2723,7 @@ BoundingBox uluaGetBoundingBox( lua_State* L, int index ) {
 			i++;
 			lua_pop( L, 1 );
 		}
-    }
+	}
 	return box;
 }
 
@@ -2767,7 +2768,7 @@ NPatchInfo uluaGetNPatchInfo( lua_State* L, int index ) {
 	NPatchInfo npatch = { .source = { 0.0, 0.0, 0.0, 0.0 }, .left = 0, .top = 0, .right = 0, .bottom = 0, .layout = NPATCH_NINE_PATCH };
 
 	int t = index, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
 		/* Do not check type since there should be table and ints. */
@@ -2817,7 +2818,7 @@ NPatchInfo uluaGetNPatchInfo( lua_State* L, int index ) {
 		}
 		i++;
 		lua_pop( L, 1 );
-    }
+	}
 	return npatch;
 }
 
@@ -2826,7 +2827,7 @@ BoneInfo uluaGetBoneInfo( lua_State* L, int index ) {
 	BoneInfo bone = { 0 };
 
 	int t = index, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
 		/* Do not check type since there should be table and ints. */
@@ -2854,7 +2855,7 @@ BoneInfo uluaGetBoneInfo( lua_State* L, int index ) {
 			i++;
 			lua_pop( L, 1 );
 		}
-    }
+	}
 	return bone;
 }
 
@@ -2863,7 +2864,7 @@ Transform uluaGetTransform( lua_State* L, int index ) {
 	Transform transform = { 0 };
 
 	int t = index, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
 		/* Do not check type since there should be table and ints. */
@@ -2897,7 +2898,7 @@ Transform uluaGetTransform( lua_State* L, int index ) {
 			i++;
 			lua_pop( L, 1 );
 		}
-    }
+	}
 	return transform;
 }
 
@@ -3045,32 +3046,32 @@ AutomationEventList* uluaGetAutomationEventList( lua_State* L, int index ) {
 
 void uluaPushColor( lua_State* L, Color color ) {
 	lua_createtable( L, 3, 0 );
-    lua_pushnumber( L, color.r );
-    lua_rawseti( L, -2, 1 );
-    lua_pushnumber( L, color.g );
-    lua_rawseti( L, -2, 2 );
-    lua_pushnumber( L, color.b );
-    lua_rawseti( L, -2, 3 );
-    lua_pushnumber( L, color.a );
-    lua_rawseti( L, -2, 4 );
+	lua_pushnumber( L, color.r );
+	lua_rawseti( L, -2, 1 );
+	lua_pushnumber( L, color.g );
+	lua_rawseti( L, -2, 2 );
+	lua_pushnumber( L, color.b );
+	lua_rawseti( L, -2, 3 );
+	lua_pushnumber( L, color.a );
+	lua_rawseti( L, -2, 4 );
 }
 
 void uluaPushVector2( lua_State* L, Vector2 vector ) {
 	lua_createtable( L, 2, 0 );
-    lua_pushnumber( L, vector.x );
-    lua_rawseti( L, -2, 1 );
-    lua_pushnumber( L, vector.y );
-    lua_rawseti( L, -2, 2 );
+	lua_pushnumber( L, vector.x );
+	lua_rawseti( L, -2, 1 );
+	lua_pushnumber( L, vector.y );
+	lua_rawseti( L, -2, 2 );
 }
 
 void uluaPushVector3( lua_State* L, Vector3 vector ) {
 	lua_createtable( L, 3, 0 );
-    lua_pushnumber( L, vector.x );
-    lua_rawseti( L, -2, 1 );
-    lua_pushnumber( L, vector.y );
-    lua_rawseti( L, -2, 2 );
-    lua_pushnumber( L, vector.z );
-    lua_rawseti( L, -2, 3 );
+	lua_pushnumber( L, vector.x );
+	lua_rawseti( L, -2, 1 );
+	lua_pushnumber( L, vector.y );
+	lua_rawseti( L, -2, 2 );	
+	lua_pushnumber( L, vector.z );
+	lua_rawseti( L, -2, 3 );
 }
 
 void uluaPushVector4( lua_State* L, Vector4 vector ) {
@@ -3359,13 +3360,13 @@ void uluaPushAutomationEventList( lua_State* L, AutomationEventList eventList ) 
 int uluaGetTableLen( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	int t = index, i = 0;
-    lua_pushnil( L );
+	lua_pushnil( L );
 
-    while ( lua_next( L, t ) != 0 ) {
-        i++;
-        lua_pop( L, 1 );
-    }
-    return i;
+	while ( lua_next( L, t ) != 0 ) {
+		i++;
+		lua_pop( L, 1 );
+	}
+	return i;
 }
 
 /* Accepts no arg and nil. */

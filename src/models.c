@@ -1261,6 +1261,139 @@ int lmodelsGenMeshTangents( lua_State* L ) {
 }
 
 /*
+> meshData = RL.GetMeshData( Mesh mesh )
+
+Get mesh data as table.
+
+- Success return Mesh{}
+*/
+int lmodelsGetMeshData( lua_State* L ) {
+	Mesh* mesh = uluaGetMesh( L, 1 );
+
+	lua_createtable( L, 2, 0 );
+
+	/* Vertices. */
+
+	if ( mesh->vertices != NULL ) {
+		lua_createtable( L, mesh->vertexCount, 0 );
+
+		for ( int i = 0; i < mesh->vertexCount; i++ ) {
+			lua_createtable( L, 3, 0 );
+			lua_pushnumber( L, mesh->vertices[i * 3 + 0] );
+			lua_rawseti( L, -2, 1 );
+			lua_pushnumber( L, mesh->vertices[i * 3 + 1] );
+			lua_rawseti( L, -2, 2 );
+			lua_pushnumber( L, mesh->vertices[i * 3 + 2] );
+			lua_rawseti( L, -2, 3 );
+			lua_rawseti( L, -2, i + 1 );
+		}
+		lua_setfield( L, -2, "vertices" );
+	}
+
+	/* Texcoords. */
+
+	if ( mesh->texcoords != NULL ) {
+		lua_createtable( L, mesh->vertexCount, 0 );
+
+		for ( int i = 0; i < mesh->vertexCount; i++ ) {
+			lua_createtable( L, 2, 0 );
+			lua_pushnumber( L, mesh->texcoords[i * 2 + 0] );
+			lua_rawseti( L, -2, 1 );
+			lua_pushnumber( L, mesh->texcoords[i * 2 + 1] );
+			lua_rawseti( L, -2, 2 );
+			lua_rawseti( L, -2, i + 1 );
+		}
+		lua_setfield( L, -2, "texcoords" );
+	}
+
+	if ( mesh->texcoords2 != NULL ) {
+		lua_createtable( L, mesh->vertexCount, 0 );
+
+		for ( int i = 0; i < mesh->vertexCount; i++ ) {
+			lua_createtable( L, 2, 0 );
+			lua_pushnumber( L, mesh->texcoords2[i * 2 + 0] );
+			lua_rawseti( L, -2, 1 );
+			lua_pushnumber( L, mesh->texcoords2[i * 2 + 1] );
+			lua_rawseti( L, -2, 2 );
+			lua_rawseti( L, -2, i + 1 );
+		}
+		lua_setfield( L, -2, "texcoords2" );
+	}
+
+	/* Normals. */
+
+	if ( mesh->normals != NULL ) {
+		lua_createtable( L, mesh->vertexCount, 0 );
+
+		for ( int i = 0; i < mesh->vertexCount; i++ ) {
+			lua_createtable( L, 3, 0 );
+			lua_pushnumber( L, mesh->normals[i * 3 + 0] );
+			lua_rawseti( L, -2, 1 );
+			lua_pushnumber( L, mesh->normals[i * 3 + 1] );
+			lua_rawseti( L, -2, 2 );
+			lua_pushnumber( L, mesh->normals[i * 3 + 2] );
+			lua_rawseti( L, -2, 3 );
+			lua_rawseti( L, -2, i + 1 );
+		}
+		lua_setfield( L, -2, "normals" );
+	}
+
+	/* Tangents. */
+
+	if ( mesh->tangents != NULL ) {
+		lua_createtable( L, mesh->vertexCount, 0 );
+
+		for ( int i = 0; i < mesh->vertexCount; i++ ) {
+			lua_createtable( L, 4, 0 );
+			lua_pushnumber( L, mesh->tangents[i * 4 + 0] );
+			lua_rawseti( L, -2, 1 );
+			lua_pushnumber( L, mesh->tangents[i * 4 + 1] );
+			lua_rawseti( L, -2, 2 );
+			lua_pushnumber( L, mesh->tangents[i * 4 + 2] );
+			lua_rawseti( L, -2, 3 );
+			lua_pushnumber( L, mesh->tangents[i * 4 + 3] );
+			lua_rawseti( L, -2, 4 );
+			lua_rawseti( L, -2, i + 1 );
+		}
+		lua_setfield( L, -2, "tangents" );
+	}
+
+	/* Colors. */
+
+	if ( mesh->colors != NULL ) {
+		lua_createtable( L, mesh->vertexCount, 0 );
+
+		for ( int i = 0; i < mesh->vertexCount; i++ ) {
+			lua_createtable( L, 4, 0 );
+			lua_pushinteger( L, mesh->colors[i * 4 + 0] );
+			lua_rawseti( L, -2, 1 );
+			lua_pushinteger( L, mesh->colors[i * 4 + 1] );
+			lua_rawseti( L, -2, 2 );
+			lua_pushinteger( L, mesh->colors[i * 4 + 2] );
+			lua_rawseti( L, -2, 3 );
+			lua_pushinteger( L, mesh->colors[i * 4 + 3] );
+			lua_rawseti( L, -2, 4 );
+			lua_rawseti( L, -2, i + 1 );
+		}
+		lua_setfield( L, -2, "colors" );
+	}
+
+	/* Indices. */
+
+	if ( mesh->indices != NULL ) {
+		lua_createtable( L, mesh->triangleCount * 3, 0 );
+
+		for ( int i = 0; i < mesh->triangleCount * 3; i++ ) {
+			lua_pushinteger( L, mesh->indices[i] );
+			lua_rawseti( L, -2, i + 1 );
+		}
+		lua_setfield( L, -2, "indices" );
+	}
+
+	return 1;
+}
+
+/*
 ## Models - Mesh generation functions
 */
 
@@ -1461,6 +1594,7 @@ int lmodelsGenMeshCustom( lua_State* L ) {
 	bool dynamic = uluaGetBoolean( L, 2 );
 
 	Mesh mesh = { 0 };
+	int indiceCount = 0;
 
 	int t = 1;
 	lua_pushnil( L );
@@ -1584,6 +1718,7 @@ int lmodelsGenMeshCustom( lua_State* L ) {
 		}
 		else if ( strcmp( "indices", (char*)lua_tostring( L, -2 ) ) == 0 && lua_istable( L, -1 ) ) {
 			size_t len = uluaGetTableLen( L, lua_gettop( L ) );
+			indiceCount = len;
 
 			mesh.indices = (unsigned short*)MemAlloc( len * sizeof(unsigned short) );
 
@@ -1599,6 +1734,12 @@ int lmodelsGenMeshCustom( lua_State* L ) {
 		}
 		lua_pop( L, 1 );
 	}
+
+	/* We have to set this here since it's not known if vertices or indices are set first. */
+	if ( 0 < indiceCount ) {
+		mesh.triangleCount = indiceCount / 3;
+	}
+
 	UploadMesh( &mesh, dynamic );
 	uluaPushMesh( L, mesh );
 
@@ -2099,7 +2240,7 @@ int lmodelsSetModelAnimationName( lua_State* L ) {
 
 	strncpy( animation->name, name, 32 );
 
-	return 1;
+	return 0;
 }
 
 /*

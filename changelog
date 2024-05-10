@@ -44,8 +44,10 @@ DETAILED CHANGES:
 	- ADDED: glEnable, glDisable, glGetString and glClear.
 	- ADDED: Stencil reflection example.
 	- ADDED: Math Sign.
-	- FIXED: Camera3D lib Fix up down movement invertion when looking up
+	- FIXED: Camera3D lib Fix up down movement invertion when looking up.
 	- ADDED: Bitwise operations for cross Lua compatibility.
+	- ADDED: GetMeshData.
+	- FIXED: GenMeshCustom indices wasn't changing triangleCount.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

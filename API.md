@@ -7548,6 +7548,14 @@ Compute mesh tangents
 
 ---
 
+> meshData = RL.GetMeshData( Mesh mesh )
+
+Get mesh data as table.
+
+- Success return Mesh{}
+
+---
+
 ## Models - Mesh generation functions
 
 ---

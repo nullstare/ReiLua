@@ -1591,7 +1591,7 @@ Return game directory (where main.lua is located)
 - Success return string
 */
 int lcoreGetBasePath( lua_State* L ) {
-	lua_pushstring( L, state->exePath );
+	lua_pushstring( L, state->basePath );
 
 	return 1;
 }

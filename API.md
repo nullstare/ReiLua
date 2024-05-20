@@ -5385,9 +5385,9 @@ Note: angle must be provided in radians
 > RL.Camera3DPitch( camera3D camera, float angle, bool lockView, bool rotateAroundTarget, bool rotateUp )
 
 Rotates the camera around it's right vector, pitch is "looking up and down"
- - lockView prevents camera overrotation (aka "somersaults")
- - rotateAroundTarget defines if rotation is around target or around it's position
- - rotateUp rotates the up direction as well (typically only usefull in CAMERA_FREE)
+- lockView prevents camera overrotation (aka "somersaults")
+- rotateAroundTarget defines if rotation is around target or around it's position
+- rotateUp rotates the up direction as well (typically only usefull in CAMERA_FREE)
 NOTE: angle must be provided in radians
 
 ---

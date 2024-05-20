@@ -6,11 +6,11 @@
 
 State* state;
 
-bool stateInit( int argn, const char** argc, const char* exePath ) {
+bool stateInit( int argn, const char** argc, const char* basePath ) {
 	state = malloc( sizeof( State ) );
 
-	state->exePath = malloc( STRING_LEN * sizeof( char ) );
-	strncpy( state->exePath, exePath, STRING_LEN - 1 );
+	state->basePath = malloc( STRING_LEN * sizeof( char ) );
+	strncpy( state->basePath, basePath, STRING_LEN - 1 );
 
 	state->hasWindow = true;
 	state->run = true;
@@ -65,7 +65,7 @@ void stateFree() {
 #ifdef PLATFORM_DESKTOP_SDL
 	free( state->SDL_eventQueue );
 #endif
-	free( state->exePath );
+	free( state->basePath );
 	free( state->RLGLcurrentShaderLocs );
 	free( state );
 }

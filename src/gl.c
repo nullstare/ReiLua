@@ -32,7 +32,7 @@ Copy a block of pixels from one framebuffer object to another.
 Use nil RenderTexture for window framebuffer
 */
 int lglBlitFramebuffer( lua_State* L ) {
-// #if defined( PLATFORM_DESKTOP ) || defined( PLATFORM_DESKTOP_SDL )
+#if defined( PLATFORM_DESKTOP ) || defined( PLATFORM_DESKTOP_SDL )
 	if ( !( lua_isuserdata( L, 1 ) || lua_isnil( L, 1 ) ) || !( lua_isuserdata( L, 2 ) || lua_isnil( L, 2 ) ) ) {
 		TraceLog( state->logLevelInvalid, "%s", "Argument needs to be RenderTexture or nil" );
 		lua_pushnil( L );
@@ -70,7 +70,7 @@ int lglBlitFramebuffer( lua_State* L ) {
 	glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
 
 	return 1;
-// #endif
+#endif
 }
 
 /*

@@ -9,6 +9,7 @@ KEY CHANGES:
 	- ADDED OpenGL Stencil management functions.
 	- CHANGE: Object libraries like Vector2 optimizations. Separated table argument style for new and set methods.
 	Option for pre generated temp objects. There was a lot of overhead on old new method.
+	- CHANGE: Use GetApplicationDirectory instead of GetWorkingDirectory for basePath if no path argument given.
 
 DETAILED CHANGES:
 	- ADDED: GetBufferElementSize and GetBufferLength.

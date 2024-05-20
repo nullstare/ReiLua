@@ -20,7 +20,7 @@ inline static void printVersion() {
 }
 
 int main( int argn, const char** argc ) {
-	char exePath[ STRING_LEN ] = { '\0' };
+	char basePath[ STRING_LEN ] = { '\0' };
 	bool interpret_mode = false;
 
 	if ( 1 < argn ) {
@@ -36,15 +36,16 @@ int main( int argn, const char** argc ) {
 			interpret_mode = true;
 
 			if ( 2 < argn ) {
-				sprintf( exePath, "%s/%s", GetWorkingDirectory(), argc[2] );
+				sprintf( basePath, "%s/%s", GetWorkingDirectory(), argc[2] );
 			}
 		}
 		else{
-			sprintf( exePath, "%s/%s", GetWorkingDirectory(), argc[1] );
+			sprintf( basePath, "%s/%s", GetWorkingDirectory(), argc[1] );
 		}
 	}
+	/* If no argument given, assume main.lua is in exe directory. */
 	else {
-		sprintf( exePath, "%s/", GetWorkingDirectory() );
+		sprintf( basePath, "%s", GetApplicationDirectory() );
 	}
 
 	if ( interpret_mode ) {
@@ -54,7 +55,7 @@ int main( int argn, const char** argc ) {
 		lua_pushcfunction( L, luaTraceback );
 		int tracebackidx = lua_gettop( L );
 
-		luaL_loadfile( L, exePath );
+		luaL_loadfile( L, basePath );
 
 		if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
@@ -63,7 +64,7 @@ int main( int argn, const char** argc ) {
 	}
 	else {
 		printVersion();
-		stateInit( argn, argc, exePath );
+		stateInit( argn, argc, basePath );
 		state->run = luaCallMain();
 
 		while ( state->run ) {

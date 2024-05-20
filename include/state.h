@@ -5,7 +5,7 @@
 #endif
 
 typedef struct {
-	char* exePath;
+	char* basePath;
 	bool hasWindow;
 	bool run;
 	bool gcUnload;
@@ -45,6 +45,6 @@ typedef struct {
 
 extern State* state;
 
-bool stateInit( int argn, const char** argc, const char* exePath );
+bool stateInit( int argn, const char** argc, const char* basePath );
 void stateInitInterpret( int argn, const char** argc );
 void stateFree();

@@ -1160,10 +1160,10 @@ bool luaCallMain() {
 		snprintf( path, STRING_LEN, "main" );
 	}
 #else
-	snprintf( path, STRING_LEN, "%smain.lua", state->exePath );
+	snprintf( path, STRING_LEN, "%smain.lua", state->basePath );
 	/* Alternatively look for main. Could be precompiled binary file. */
 	if ( !FileExists( path ) ) {
-		snprintf( path, STRING_LEN, "%smain", state->exePath );
+		snprintf( path, STRING_LEN, "%smain", state->basePath );
 	}
 #endif
 	luaL_dofile( L, path );

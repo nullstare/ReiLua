@@ -1491,6 +1491,31 @@ int lcoreSetGCUnload( lua_State* L ) {
 }
 
 /*
+> platform = RL.GetPlatform()
+
+Get platform. Returns "Windows", "Linux", "FreeBSD", "OpenBSD", "Apple" or "Emscripten"
+
+- Success return string
+*/
+int lcoreGetPlatform( lua_State* L ) {
+#if defined( _WIN32 )
+	lua_pushstring( L, "Windows" );
+#elif defined( __linux__ )
+	lua_pushstring( L, "Linux" );
+#elif defined( __FreeBSD__ )
+	lua_pushstring( L, "FreeBSD" );
+#elif defined( __OpenBSD__ )
+	lua_pushstring( L, "OpenBSD" );
+#elif defined( __APPLE__ )
+	lua_pushstring( L, "Apple" );
+#elif defined( __EMSCRIPTEN__ )
+	lua_pushstring( L, "Emscripten" );
+#endif
+
+	return 1;
+}
+
+/*
 ## Core - Files management functions
 */
 

@@ -1378,6 +1378,7 @@ void luaRegister() {
 	assingGlobalFunction( "OpenURL", lcoreOpenURL );
 	assingGlobalFunction( "IsGCUnloadEnabled", lcoreIsGCUnloadEnabled );
 	assingGlobalFunction( "SetGCUnload", lcoreSetGCUnload );
+	assingGlobalFunction( "GetPlatform", lcoreGetPlatform );
 		/* Files management functions. */
 	assingGlobalFunction( "LoadFileData", lcoreLoadFileData );
 	assingGlobalFunction( "SaveFileData", lcoreSaveFileData );

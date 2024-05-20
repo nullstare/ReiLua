@@ -4496,6 +4496,14 @@ Set Lua garbage collection to unload object data
 
 ---
 
+> platform = RL.GetPlatform()
+
+Get platform. Returns "Windows", "Linux", "FreeBSD", "OpenBSD", "Apple" or "Emscripten"
+
+- Success return string
+
+---
+
 ## Core - Files management functions
 
 ---

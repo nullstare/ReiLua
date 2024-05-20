@@ -1882,6 +1882,11 @@ function RL.IsGCUnloadEnabled() end
 ---@return any RL.SetGCUnload
 function  RL.SetGCUnload( enabled ) end
 
+---Get platform. Returns "Windows", "Linux", "FreeBSD", "OpenBSD", "Apple" or "Emscripten"
+---- Success return string
+---@return any platform 
+function RL.GetPlatform() end
+
 -- Core - Files management functions
 
 ---Load file data as byte array (read). Buffer type is BUFFER_UNSIGNED_CHAR

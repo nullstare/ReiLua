@@ -49,6 +49,7 @@ DETAILED CHANGES:
 	- ADDED: Bitwise operations for cross Lua compatibility.
 	- ADDED: GetMeshData.
 	- FIXED: GenMeshCustom indices wasn't changing triangleCount.
+	- ADDED: GetPlatform.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

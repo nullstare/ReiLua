@@ -87,6 +87,10 @@ function Vector3:setV( v )
 	self.z = v.z
 end
 
+function Vector3:serialize()
+	return "Vector3:new("..self.x..","..self.y..","..self.z..")"
+end
+
 function Vector3:arr()
 	return { self.x, self.y, self.z }
 end
@@ -121,6 +125,10 @@ end
 
 function Vector3:max( v2 )
 	return Vector3:newT( RL.Vector3Max( self, v2 ) )
+end
+
+function Vector3:round()
+	return Vector3:new( RL.Round( self.x ), RL.Round( self.y ), RL.Round( self.z ) )
 end
 
 function Vector3:floor()

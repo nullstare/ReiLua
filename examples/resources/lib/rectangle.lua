@@ -6,7 +6,7 @@ end
 local Vector2 = require( "vector2" )
 
 local Rectangle = {}
-Rectangle.meta = {
+local metatable = {
 	__index = Rectangle,
 	__tostring = function( r )
 		return "{"..tostring( r.x )..", "..tostring( r.y )..", "..tostring( r.width )..", "..tostring( r.height ).."}"
@@ -44,7 +44,7 @@ Rectangle.meta = {
 }
 
 function Rectangle:new( x, y, width, height )
-	local object = setmetatable( {}, Rectangle.meta )
+	local object = setmetatable( {}, metatable )
 
 	object.x = x or 0
 	object.y = y or object.x
@@ -55,7 +55,7 @@ function Rectangle:new( x, y, width, height )
 end
 
 function Rectangle:newT( t )
-	local object = setmetatable( {}, Rectangle.meta )
+	local object = setmetatable( {}, metatable )
 
 	object.x, object.y, object.width, object.height = table.unpack( t )
 
@@ -63,7 +63,7 @@ function Rectangle:newT( t )
 end
 
 function Rectangle:newR( r )
-	local object = setmetatable( {}, Rectangle.meta )
+	local object = setmetatable( {}, metatable )
 
 	object.x = r.x
 	object.y = r.y
@@ -89,6 +89,10 @@ function Rectangle:setR( r )
 	self.y = r.y
 	self.width = r.width
 	self.height = r.height
+end
+
+function Rectangle:serialize()
+	return "Rectangle:new("..self.x..","..self.y..","..self.width..","..self.height..")"
 end
 
 function Rectangle:arr()

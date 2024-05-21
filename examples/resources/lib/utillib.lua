@@ -132,7 +132,7 @@ function utillib.toBoolean( v )
 	return false
 end
 
-function utillib.bool2Number( bool )
+function utillib.boolToNumber( bool )
 	return bool and 1 or 0
 end
 

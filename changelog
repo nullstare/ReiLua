@@ -50,6 +50,7 @@ DETAILED CHANGES:
 	- ADDED: GetMeshData.
 	- FIXED: GenMeshCustom indices wasn't changing triangleCount.
 	- ADDED: GetPlatform.
+	- ADDED: Object lib serialization.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

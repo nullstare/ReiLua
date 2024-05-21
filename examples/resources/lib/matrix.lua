@@ -20,7 +20,7 @@ local function copyMatrix( orig )
 end
 
 local Matrix = {}
-Matrix.meta = {
+local metatable = {
 	__index = Matrix,
 	__tostring = function( m )
 		return "{\n"
@@ -45,7 +45,7 @@ Matrix.meta = {
 }
 
 function Matrix:new( m )
-	local object = setmetatable( {}, Matrix.meta )
+	local object = setmetatable( {}, metatable )
 
 	object.m = copyMatrix( m )
 
@@ -54,6 +54,28 @@ end
 
 function Matrix:set( m )
 	self.m = copyMatrix( m )
+end
+
+function Matrix:serialize()
+	local str = { "Matrix:new({" }
+
+	for i, row in ipairs( self.m ) do
+		table.insert( str, "{" )
+
+		for c, v in ipairs( row ) do
+			table.insert( str, v )
+			if c < 4 then
+				table.insert( str, "," )
+			end
+		end
+		table.insert( str, "}" )
+		if i < 4 then
+			table.insert( str, "," )
+		end
+	end
+	table.insert( str, "})" )
+
+	return table.concat( str )
 end
 
 function Matrix:clone()

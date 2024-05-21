@@ -91,6 +91,10 @@ function Color:setC( c )
 	self.a = c.a
 end
 
+function Color:serialize()
+	return "Color:new("..self.r..","..self.g..","..self.b..","..self.a..")"
+end
+
 function Color:arr()
 	return { self.r, self.g, self.b, self.a }
 end

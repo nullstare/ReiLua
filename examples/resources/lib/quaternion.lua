@@ -86,6 +86,10 @@ function Quaternion:setQ( q )
 	self.w = q.w
 end
 
+function Quaternion:serialize()
+	return "Quaternion:new("..self.x..","..self.y..","..self.z..","..self.w..")"
+end
+
 function Quaternion:arr()
 	return { self.x, self.y, self.z, self.w }
 end

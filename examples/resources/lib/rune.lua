@@ -32,6 +32,10 @@ function Rune:set( string )
 	self.string = string or ""
 end
 
+function Rune:serialize()
+	return "Rune:new("..self.string..")"
+end
+
 function Rune:clone()
 	return Rune:new( self.string )
 end

@@ -67,7 +67,6 @@ function Vector2:newV( v )
 	return object
 end
 
-
 function Vector2:set( x, y )
 	self.x = x or 0
 	self.y = y or self.x
@@ -80,6 +79,10 @@ end
 function Vector2:setV( v )
 	self.x = v.x
 	self.y = v.y
+end
+
+function Vector2:serialize()
+	return "Vector2:new("..self.x..","..self.y..")"
 end
 
 function Vector2:arr()
@@ -104,6 +107,10 @@ end
 
 function Vector2:max( v2 )
 	return Vector2:new( math.max( self.x, v2.x ), math.max( self.y, v2.y ) )
+end
+
+function Vector2:round()
+	return Vector2:new( RL.Round( self.x ), RL.Round( self.y ) )
 end
 
 function Vector2:floor()

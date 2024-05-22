@@ -2405,16 +2405,16 @@ Color uluaGetColor( lua_State* L, int index ) {
 				}
 			}
 			else if ( lua_isstring( L, -2 ) ) {
-				if ( strcmp( "r", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				if ( TextIsEqual( "r", lua_tostring( L, -2 ) ) ) {
 					color.r = (uint8_t)lua_tointeger( L, -1 );
 				}
-				else if ( strcmp( "g", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "g", lua_tostring( L, -2 ) ) ) {
 					color.g = (uint8_t)lua_tointeger( L, -1 );
 				}
-				else if ( strcmp( "b", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "b", lua_tostring( L, -2 ) ) ) {
 					color.b = (uint8_t)lua_tointeger( L, -1 );
 				}
-				else if ( strcmp( "a", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "a", lua_tostring( L, -2 ) ) ) {
 					color.a = (uint8_t)lua_tointeger( L, -1 );
 				}
 			}
@@ -2447,10 +2447,10 @@ Vector2 uluaGetVector2( lua_State* L, int index ) {
 				}
 			}
 			else if ( lua_isstring( L, -2 ) ) {
-				if ( strcmp( "x", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				if ( TextIsEqual( "x", lua_tostring( L, -2 ) ) ) {
 					vector.x = lua_tonumber( L, -1 );
 				}
-				else if ( strcmp( "y", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "y", lua_tostring( L, -2 ) ) ) {
 					vector.y = lua_tonumber( L, -1 );
 				}
 			}
@@ -2486,13 +2486,13 @@ Vector3 uluaGetVector3( lua_State* L, int index ) {
 				}
 			}
 			else if ( lua_isstring( L, -2 ) ) {
-				if ( strcmp( "x", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				if ( TextIsEqual( "x", lua_tostring( L, -2 ) ) ) {
 					vector.x = lua_tonumber( L, -1 );
 				}
-				else if ( strcmp( "y", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "y", lua_tostring( L, -2 ) ) ) {
 					vector.y = lua_tonumber( L, -1 );
 				}
-				else if ( strcmp( "z", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "z", lua_tostring( L, -2 ) ) ) {
 					vector.z = lua_tonumber( L, -1 );
 				}
 			}
@@ -2531,16 +2531,16 @@ Vector4 uluaGetVector4( lua_State* L, int index ) {
 				}
 			}
 			else if ( lua_isstring( L, -2 ) ) {
-				if ( strcmp( "x", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				if ( TextIsEqual( "x", lua_tostring( L, -2 ) ) ) {
 					vector.x = lua_tonumber( L, -1 );
 				}
-				else if ( strcmp( "y", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "y", lua_tostring( L, -2 ) ) ) {
 					vector.y = lua_tonumber( L, -1 );
 				}
-				else if ( strcmp( "z", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "z", lua_tostring( L, -2 ) ) ) {
 					vector.z = lua_tonumber( L, -1 );
 				}
-				else if ( strcmp( "w", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "w", lua_tostring( L, -2 ) ) ) {
 					vector.w = lua_tonumber( L, -1 );
 				}
 			}
@@ -2579,16 +2579,16 @@ Rectangle uluaGetRectangle( lua_State* L, int index ) {
 				}
 			}
 			else if ( lua_isstring( L, -2 ) ) {
-				if ( strcmp( "x", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				if ( TextIsEqual( "x", lua_tostring( L, -2 ) ) ) {
 					rect.x = lua_tonumber( L, -1 );
 				}
-				else if ( strcmp( "y", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "y", lua_tostring( L, -2 ) ) ) {
 					rect.y = lua_tonumber( L, -1 );
 				}
-				else if ( strcmp( "width", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "width", lua_tostring( L, -2 ) ) ) {
 					rect.width = lua_tonumber( L, -1 );
 				}
-				else if ( strcmp( "height", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "height", lua_tostring( L, -2 ) ) ) {
 					rect.height = lua_tonumber( L, -1 );
 				}
 			}
@@ -2627,16 +2627,16 @@ Quaternion uluaGetQuaternion( lua_State* L, int index ) {
 				}
 			}
 			else if ( lua_isstring( L, -2 ) ) {
-				if ( strcmp( "x", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				if ( TextIsEqual( "x", lua_tostring( L, -2 ) ) ) {
 					quaternion.x = lua_tonumber( L, -1 );
 				}
-				else if ( strcmp( "y", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "y", lua_tostring( L, -2 ) ) ) {
 					quaternion.y = lua_tonumber( L, -1 );
 				}
-				else if ( strcmp( "z", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "z", lua_tostring( L, -2 ) ) ) {
 					quaternion.z = lua_tonumber( L, -1 );
 				}
-				else if ( strcmp( "w", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "w", lua_tostring( L, -2 ) ) ) {
 					quaternion.w = lua_tonumber( L, -1 );
 				}
 			}
@@ -2714,10 +2714,10 @@ BoundingBox uluaGetBoundingBox( lua_State* L, int index ) {
 				}
 			}
 			else if ( lua_isstring( L, -2 ) ) {
-				if ( strcmp( "min", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				if ( TextIsEqual( "min", lua_tostring( L, -2 ) ) ) {
 					box.min = uluaGetVector3( L, lua_gettop( L ) );
 				}
-				else if ( strcmp( "max", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "max", lua_tostring( L, -2 ) ) ) {
 					box.max = uluaGetVector3( L, lua_gettop( L ) );
 				}
 			}
@@ -2750,10 +2750,10 @@ Ray uluaGetRay( lua_State* L, int index ) {
 				}
 			}
 			else if ( lua_isstring( L, -2 ) ) {
-				if ( strcmp( "position", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				if ( TextIsEqual( "position", lua_tostring( L, -2 ) ) ) {
 					ray.position = uluaGetVector3( L, lua_gettop( L ) );
 				}
-				else if ( strcmp( "direction", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "direction", lua_tostring( L, -2 ) ) ) {
 					ray.direction = uluaGetVector3( L, lua_gettop( L ) );
 				}
 			}
@@ -2798,22 +2798,22 @@ NPatchInfo uluaGetNPatchInfo( lua_State* L, int index ) {
 			}
 		}
 		else if ( lua_isstring( L, -2 ) ) {
-			if ( strcmp( "source", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			if ( TextIsEqual( "source", lua_tostring( L, -2 ) ) ) {
 				npatch.source = uluaGetRectangle( L, lua_gettop( L ) );
 			}
-			else if ( strcmp( "left", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			else if ( TextIsEqual( "left", lua_tostring( L, -2 ) ) ) {
 				npatch.left = lua_tointeger( L, -1 );
 			}
-			else if ( strcmp( "top", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			else if ( TextIsEqual( "top", lua_tostring( L, -2 ) ) ) {
 				npatch.top = lua_tointeger( L, -1 );
 			}
-			else if ( strcmp( "right", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			else if ( TextIsEqual( "right", lua_tostring( L, -2 ) ) ) {
 				npatch.right = lua_tointeger( L, -1 );
 			}
-			else if ( strcmp( "bottom", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			else if ( TextIsEqual( "bottom", lua_tostring( L, -2 ) ) ) {
 				npatch.bottom = lua_tointeger( L, -1 );
 			}
-			else if ( strcmp( "layout", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+			else if ( TextIsEqual( "layout", lua_tostring( L, -2 ) ) ) {
 				npatch.layout = lua_tointeger( L, -1 );
 			}
 		}
@@ -2846,10 +2846,10 @@ BoneInfo uluaGetBoneInfo( lua_State* L, int index ) {
 		}
 		else if ( lua_istable( L, -1 ) ) {
 			if ( lua_isstring( L, -2 ) ) {
-				if ( strcmp( "name", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				if ( TextIsEqual( "name", lua_tostring( L, -2 ) ) ) {
 					strncpy( bone.name, lua_tostring( L, lua_gettop( L ) ), 32 );
 				}
-				else if ( strcmp( "parent", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "parent", lua_tostring( L, -2 ) ) ) {
 					bone.parent = lua_tointeger( L, -1 );
 				}
 			}
@@ -2886,13 +2886,13 @@ Transform uluaGetTransform( lua_State* L, int index ) {
 		}
 		else if ( lua_istable( L, -1 ) ) {
 			if ( lua_isstring( L, -2 ) ) {
-				if ( strcmp( "translation", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				if ( TextIsEqual( "translation", lua_tostring( L, -2 ) ) ) {
 					transform.translation = uluaGetVector3( L, lua_gettop( L ) );
 				}
-				else if ( strcmp( "rotation", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "rotation", lua_tostring( L, -2 ) ) ) {
 					transform.rotation = uluaGetQuaternion( L, lua_gettop( L ) );
 				}
-				else if ( strcmp( "scale", (char*)lua_tostring( L, -2 ) ) == 0 ) {
+				else if ( TextIsEqual( "scale", lua_tostring( L, -2 ) ) ) {
 					transform.scale = uluaGetVector3( L, lua_gettop( L ) );
 				}
 			}
@@ -2904,143 +2904,503 @@ Transform uluaGetTransform( lua_State* L, int index ) {
 }
 
 Buffer* uluaGetBuffer( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (Buffer*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "buffer", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (Buffer*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "Buffer" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "Buffer" );
 	}
-	return luaL_checkudata( L, index, "Buffer" );
 }
 
 Image* uluaGetImage( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (Image*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "image", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (Image*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "Image" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "Image" );
 	}
-	return luaL_checkudata( L, index, "Image" );
 }
 
 Texture* uluaGetTexture( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (Texture*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "texture", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (Texture*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "Texture" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "Texture" );
 	}
-	return luaL_checkudata( L, index, "Texture" );
 }
 
 RenderTexture* uluaGetRenderTexture( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (RenderTexture*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "renderTexture", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (RenderTexture*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "RenderTexture" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "RenderTexture" );
 	}
-	return luaL_checkudata( L, index, "RenderTexture" );
 }
 
 Shader* uluaGetShader( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (Shader*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "shader", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (Shader*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "Shader" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "Shader" );
 	}
-	return luaL_checkudata( L, index, "Shader" );
 }
 
 Mesh* uluaGetMesh( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (Mesh*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "mesh", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (Mesh*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "Mesh" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "Mesh" );
 	}
-	return luaL_checkudata( L, index, "Mesh" );
 }
 
 Camera2D* uluaGetCamera2D( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (Camera2D*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "camera2D", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (Camera2D*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "Camera2D" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "Camera2D" );
 	}
-	return luaL_checkudata( L, index, "Camera2D" );
 }
 
 Camera3D* uluaGetCamera3D( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (Camera3D*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "camera3D", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (Camera3D*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "Camera3D" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "Camera3D" );
 	}
-	return luaL_checkudata( L, index, "Camera3D" );
 }
 
 Font* uluaGetFont( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (Font*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "font", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (Font*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "Font" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "Font" );
 	}
-	return luaL_checkudata( L, index, "Font" );
 }
 
 GlyphInfo* uluaGetGlyphInfo( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (GlyphInfo*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "glyphInfo", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (GlyphInfo*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "GlyphInfo" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "GlyphInfo" );
 	}
-	return luaL_checkudata( L, index, "GlyphInfo" );
 }
 
 Wave* uluaGetWave( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (Wave*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "wave", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (Wave*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "Wave" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "Wave" );
 	}
-	return luaL_checkudata( L, index, "Wave" );
 }
 
 Sound* uluaGetSound( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (Sound*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "sound", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (Sound*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "Sound" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "Sound" );
 	}
-	return luaL_checkudata( L, index, "Sound" );
 }
 
 Music* uluaGetMusic( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (Music*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "music", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (Music*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "Music" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "Music" );
 	}
-	return luaL_checkudata( L, index, "Music" );
 }
 
 Light* uluaGetLight( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (Light*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "light", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (Light*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "Light" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "Light" );
 	}
-	return luaL_checkudata( L, index, "Light" );
 }
 
 Material* uluaGetMaterial( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (Material*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "material", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (Material*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "Material" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "Material" );
 	}
-	return luaL_checkudata( L, index, "Material" );
 }
 
 Model* uluaGetModel( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (Model*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "model", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (Model*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "Model" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "Model" );
 	}
-	return luaL_checkudata( L, index, "Model" );
 }
 
 ModelAnimation* uluaGetModelAnimation( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (ModelAnimation*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "modelAnimation", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (ModelAnimation*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "ModelAnimation" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "ModelAnimation" );
 	}
-	return luaL_checkudata( L, index, "ModelAnimation" );
 }
 
 rlRenderBatch* uluaGetRLRenderBatch( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (rlRenderBatch*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "rlRenderBatch", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (rlRenderBatch*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "rlRenderBatch" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "rlRenderBatch" );
 	}
-	return luaL_checkudata( L, index, "rlRenderBatch" );
 }
 
 AutomationEvent* uluaGetAutomationEvent( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (AutomationEvent*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "automationEvent", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (AutomationEvent*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "AutomationEvent" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "AutomationEvent" );
 	}
-	return luaL_checkudata( L, index, "AutomationEvent" );
 }
 
 AutomationEventList* uluaGetAutomationEventList( lua_State* L, int index ) {
-	if ( lua_islightuserdata( L, index ) ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
 		return (AutomationEventList*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "automationEventList", lua_tostring( L, -2 ) ) ) {
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					return (AutomationEventList*)lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					return luaL_checkudata( L, lua_gettop( L ), "AutomationEventList" );
+				}
+			}
+			i++;
+			lua_pop( L, 1 );
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "AutomationEventList" );
 	}
-	return luaL_checkudata( L, index, "AutomationEventList" );
 }
 
 /* Push types. */

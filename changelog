@@ -10,6 +10,7 @@ KEY CHANGES:
 	- CHANGE: Object libraries like Vector2 optimizations. Separated table argument style for new and set methods.
 	Option for pre generated temp objects. There was a lot of overhead on old new method.
 	- CHANGE: Use GetApplicationDirectory instead of GetWorkingDirectory for basePath if no path argument given.
+	- ADDED Userdata objects can be passed in table. Useful on wrapper libraries. Name should be in camelCase.
 
 DETAILED CHANGES:
 	- ADDED: GetBufferElementSize and GetBufferLength.

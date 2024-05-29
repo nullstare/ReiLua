@@ -1106,6 +1106,7 @@ int lcoreUnloadShader( lua_State* L ) {
 	Shader* shader = uluaGetShader( L, 1 );
 
 	UnloadShader( *shader );
+	memset( shader, 0, sizeof( Shader ) );
 
 	return 0;
 }
@@ -2010,6 +2011,7 @@ int lcoreUnloadAutomationEventList( lua_State* L ) {
 	AutomationEventList* list = uluaGetAutomationEventList( L, 1 );
 
 	UnloadAutomationEventList( list );
+	memset( list, 0, sizeof( AutomationEventList ) );
 
 	return 0;
 }
@@ -3479,6 +3481,7 @@ int lcoreUnloadBuffer( lua_State* L ) {
 	Buffer* buffer = uluaGetBuffer( L, 1 );
 
 	unloadBuffer( buffer );
+	memset( buffer, 0, sizeof( Buffer ) );
 
 	return 0;
 }

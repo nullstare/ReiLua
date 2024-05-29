@@ -212,6 +212,7 @@ int laudioUnloadWave( lua_State* L ) {
 	Wave* wave = uluaGetWave( L, 1 );
 
 	UnloadWave( *wave );
+	memset( wave, 0, sizeof( Wave ) );
 
 	return 0;
 }
@@ -225,6 +226,7 @@ int laudioUnloadSound( lua_State* L ) {
 	Sound* sound = uluaGetSound( L, 1 );
 
 	UnloadSound( *sound );
+	memset( sound, 0, sizeof( Sound ) );
 
 	return 0;
 }
@@ -238,6 +240,7 @@ int laudioUnloadSoundAlias( lua_State* L ) {
 	Sound* alias = uluaGetSound( L, 1 );
 
 	UnloadSoundAlias( *alias );
+	memset( alias, 0, sizeof( Sound ) );
 
 	return 0;
 }
@@ -517,6 +520,7 @@ int laudioUnloadMusicStream( lua_State* L ) {
 	Music* music = uluaGetMusic( L, 1 );
 
 	UnloadMusicStream( *music );
+	memset( music, 0, sizeof( Music ) );
 
 	return 0;
 }

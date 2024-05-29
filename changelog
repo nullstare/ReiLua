@@ -52,6 +52,7 @@ DETAILED CHANGES:
 	- FIXED: GenMeshCustom indices wasn't changing triangleCount.
 	- ADDED: GetPlatform.
 	- ADDED: Object lib serialization.
+	- ADDED: Unload functions clear object to 0 so they would not be ready in Is*Ready.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

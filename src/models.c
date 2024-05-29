@@ -559,6 +559,7 @@ int lmodelsUnloadModel( lua_State* L ) {
 	Model* model = uluaGetModel( L, 1 );
 
 	UnloadModel( *model );
+	memset( model, 0, sizeof( Model ) );
 
 	return 0;
 }
@@ -1137,6 +1138,7 @@ int lmodelsUnloadMesh( lua_State* L ) {
 	Mesh* mesh = uluaGetMesh( L, 1 );
 
 	UnloadMesh( *mesh );
+	memset( mesh, 0, sizeof( Mesh ) );
 
 	return 0;
 }
@@ -1906,6 +1908,7 @@ int lmodelsUnloadMaterial( lua_State* L ) {
 
 	/* Custom UnloadMaterial since we don't want to free Shaders or Textures. */
 	unloadMaterial( material );
+	memset( material, 0, sizeof( Material ) );
 
 	// UnloadMaterial( *material );
 
@@ -2140,6 +2143,7 @@ int lmodelsUnloadModelAnimation( lua_State* L ) {
 	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
 
 	UnloadModelAnimation( *animation );
+	memset( animation, 0, sizeof( ModelAnimation ) );
 
 	return 0;
 }
@@ -2157,6 +2161,7 @@ int lmodelsUnloadModelAnimations( lua_State* L ) {
 		if ( lua_isuserdata( L, -1 ) ) {
 			ModelAnimation* animation = uluaGetModelAnimation( L, lua_gettop( L ) );
 			UnloadModelAnimation( *animation );
+			memset( animation, 0, sizeof( ModelAnimation ) );
 		}
 		i++;
 		lua_pop( L, 1 );

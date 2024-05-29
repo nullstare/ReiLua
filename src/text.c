@@ -448,6 +448,7 @@ int ltextUnloadFont( lua_State* L ) {
 	Font* font = uluaGetFont( L, 1 );
 
 	UnloadFont( *font );
+	memset( font, 0, sizeof( Font ) );
 
 	return 0;
 }

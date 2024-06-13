@@ -18,6 +18,7 @@ bool stateInit( int argn, const char** argc, const char* basePath ) {
 	state->luaState = NULL;
 	state->logLevelInvalid = LOG_ERROR;
 	state->gcUnload = true;
+	state->lineSpacing = 15;
 
 	InitWindow( state->resolution.x, state->resolution.y, "ReiLua" );
 

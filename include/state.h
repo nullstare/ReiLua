@@ -9,6 +9,7 @@ typedef struct {
 	bool hasWindow;
 	bool run;
 	bool gcUnload;
+	int lineSpacing; /* We need to store copy here since raylib has it in static. */
 	lua_State* luaState;
 	Vector2 resolution;
 	int logLevelInvalid;

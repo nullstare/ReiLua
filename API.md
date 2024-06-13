@@ -6866,7 +6866,7 @@ Draw text using font inside rectangle limits. Return character id from mouse pos
 
 ---
 
-> mouseCharId = RL.DrawTextBoxedTinted( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tints, Color backTints )
+> mouseCharId = RL.DrawTextBoxedTinted( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tints{}, Color backTints{} )
 
 Draw text using font inside rectangle limits with support for tint and background tint for each character. Return character id from mouse position (default -1)
 
@@ -6878,9 +6878,17 @@ Draw text using font inside rectangle limits with support for tint and backgroun
 
 ---
 
-> size = RL.SetTextLineSpacing( int spacing )
+> RL.SetTextLineSpacing( int spacing )
 
 Set vertical line spacing when drawing with line-breaks
+
+---
+
+> spacing = RL.GetTextLineSpacing()
+
+Get vertical line spacing when drawing with line-breaks
+
+- Success return int
 
 ---
 

@@ -53,6 +53,8 @@ DETAILED CHANGES:
 	- ADDED: GetPlatform.
 	- ADDED: Object lib serialization.
 	- ADDED: Unload functions clear object to 0 so they would not be ready in Is*Ready.
+	- CHANGE: DrawTextBoxed uses lineSpacing.
+	- ADDED: GetTextLineSpacing.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

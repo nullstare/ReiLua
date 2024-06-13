@@ -4064,17 +4064,22 @@ function RL.DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint ) 
 ---@param fontSize number
 ---@param spacing number
 ---@param wordWrap boolean
----@param tints table
----@param backTints table
+---@param tints{} table
+---@param backTints{} table
 ---@return any mouseCharId 
-function RL.DrawTextBoxedTinted( font, text, rec, fontSize, spacing, wordWrap, tints, backTints ) end
+function RL.DrawTextBoxedTinted( font, text, rec, fontSize, spacing, wordWrap, tints{}, backTints{} ) end
 
 -- Text - Text font info functions
 
 ---Set vertical line spacing when drawing with line-breaks
 ---@param spacing integer
----@return any size 
-function RL.SetTextLineSpacing( spacing ) end
+---@return any RL.SetTextLineSpacing
+function  RL.SetTextLineSpacing( spacing ) end
+
+---Get vertical line spacing when drawing with line-breaks
+---- Success return int
+---@return any spacing 
+function RL.GetTextLineSpacing() end
 
 ---Measure string width for default font
 ---- Success return int

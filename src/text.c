@@ -12,14 +12,14 @@ void unloadGlyphInfo( GlyphInfo* glyph ) {
 
 // Draw text using font inside rectangle limits
 static int DrawTextBoxed( Font font, const char* text, Rectangle rec, float fontSize, float spacing,
-bool wordWrap, Color* tints, int tintCount, Color* backTints, int backTintCount )
-{
+bool wordWrap, Color* tints, int tintCount, Color* backTints, int backTintCount ) {
 	int length = TextLength(text);  // Total length in bytes of the text, scanned by codepoints in loop
 
 	float textOffsetY = 0;          // Offset between lines (on line break '\n')
 	float textOffsetX = 0.0f;       // Offset X to next character to draw
 
 	float scaleFactor = fontSize/(float)font.baseSize;     // Character rectangle scaling factor
+	int lineSpacing = state->lineSpacing;
 
 	// Word/character wrapping mechanism variables
 	enum { MEASURE_STATE = 0, DRAW_STATE = 1 };
@@ -103,7 +103,8 @@ bool wordWrap, Color* tints, int tintCount, Color* backTints, int backTintCount 
 			{
 				if (!wordWrap)
 				{
-					textOffsetY += (font.baseSize + font.baseSize/2)*scaleFactor;
+					// textOffsetY += (font.baseSize + font.baseSize/2)*scaleFactor;
+					textOffsetY += lineSpacing;
 					textOffsetX = 0;
 				}
 			}
@@ -111,7 +112,8 @@ bool wordWrap, Color* tints, int tintCount, Color* backTints, int backTintCount 
 			{
 				if (!wordWrap && ((textOffsetX + glyphWidth) > rec.width))
 				{
-					textOffsetY += (font.baseSize + font.baseSize/2)*scaleFactor;
+					// textOffsetY += (font.baseSize + font.baseSize/2)*scaleFactor;
+					textOffsetY += lineSpacing;
 					textOffsetX = 0;
 				}
 
@@ -144,7 +146,8 @@ bool wordWrap, Color* tints, int tintCount, Color* backTints, int backTintCount 
 
 			if (wordWrap && (i == endLine))
 			{
-				textOffsetY += (font.baseSize + font.baseSize/2)*scaleFactor;
+				// textOffsetY += (font.baseSize + font.baseSize/2)*scaleFactor;
+				textOffsetY += lineSpacing;
 				textOffsetX = 0;
 				startLine = endLine;
 				endLine = -1;
@@ -606,7 +609,7 @@ int ltextDrawTextBoxed( lua_State* L ) {
 }
 
 /*
-> mouseCharId = RL.DrawTextBoxedTinted( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tints, Color backTints )
+> mouseCharId = RL.DrawTextBoxedTinted( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tints{}, Color backTints{} )
 
 Draw text using font inside rectangle limits with support for tint and background tint for each character. Return character id from mouse position (default -1)
 
@@ -653,14 +656,26 @@ int ltextDrawTextBoxedTinted( lua_State* L ) {
 */
 
 /*
-> size = RL.SetTextLineSpacing( int spacing )
+> RL.SetTextLineSpacing( int spacing )
 
 Set vertical line spacing when drawing with line-breaks
 */
 int ltextSetTextLineSpacing( lua_State* L ) {
 	int spacing = luaL_checkinteger( L, 1 );
 
+	state->lineSpacing = spacing;
 	SetTextLineSpacing( spacing );
+}
+
+/*
+> spacing = RL.GetTextLineSpacing()
+
+Get vertical line spacing when drawing with line-breaks
+
+- Success return int
+*/
+int ltextGetTextLineSpacing( lua_State* L ) {
+	lua_pushinteger( L, state->lineSpacing );
 }
 
 /*

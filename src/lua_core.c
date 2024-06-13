@@ -1841,6 +1841,7 @@ void luaRegister() {
 	assingGlobalFunction( "DrawTextBoxedTinted", ltextDrawTextBoxedTinted );
 		/* Text font info functions. */
 	assingGlobalFunction( "SetTextLineSpacing", ltextSetTextLineSpacing );
+	assingGlobalFunction( "GetTextLineSpacing", ltextGetTextLineSpacing );
 	assingGlobalFunction( "MeasureText", ltextMeasureText );
 	assingGlobalFunction( "MeasureTextEx", ltextMeasureTextEx );
 	assingGlobalFunction( "GetGlyphIndex", ltextGetGlyphIndex );

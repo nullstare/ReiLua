@@ -1838,7 +1838,7 @@ void luaRegister() {
 	assingGlobalFunction( "DrawTextCodepoint", ltextDrawTextCodepoint );
 	assingGlobalFunction( "DrawTextCodepoints", ltextDrawTextCodepoints );
 	assingGlobalFunction( "DrawTextBoxed", ltextDrawTextBoxed );
-	assingGlobalFunction( "DrawTextBoxedTinted", ltextDrawTextBoxedTinted );
+	assingGlobalFunction( "DrawTextBoxedEx", ltextDrawTextBoxedEx );
 		/* Text font info functions. */
 	assingGlobalFunction( "SetTextLineSpacing", ltextSetTextLineSpacing );
 	assingGlobalFunction( "GetTextLineSpacing", ltextGetTextLineSpacing );

@@ -8,158 +8,82 @@ void unloadGlyphInfo( GlyphInfo* glyph ) {
 	UnloadImage( glyph->image );
 }
 
-// DrawTextBoxed is modified DrawTextBoxedSelectable from raylib [text] example - Rectangle bounds
+static float measureWord( Font font, char* text, float fontSize, float spacing ) {
+	if ( text == NULL ) {
+		return 0.0;
+	}
+	int i = 0;
+	/* Find white scape and set it to null. */
+	for ( ; text[i] != '\0' && text[i] != ' ' && text[i] != '\n' && text[i] != '\t'; i++ ) {}
+	/* Replace whitespace with NULL for measuring. */
+	char letter = text[i];
+	text[i] = '\0';
+	Vector2 size = MeasureTextEx( font, text, fontSize, spacing );
+	text[i] = letter;
 
-// Draw text using font inside rectangle limits
-static int DrawTextBoxed( Font font, const char* text, Rectangle rec, float fontSize, float spacing,
-bool wordWrap, Color* tints, int tintCount, Color* backTints, int backTintCount ) {
-	int length = TextLength(text);  // Total length in bytes of the text, scanned by codepoints in loop
+	return size.x;
+}
 
-	float textOffsetY = 0;          // Offset between lines (on line break '\n')
-	float textOffsetX = 0.0f;       // Offset X to next character to draw
-
-	float scaleFactor = fontSize/(float)font.baseSize;     // Character rectangle scaling factor
+static int DrawTextBoxed( Font font, char* text, Rectangle rec, float fontSize,
+float spacing, bool wordWrap, Color tint, Vector2* textOffset, bool getMouseChar ) {
 	int lineSpacing = state->lineSpacing;
 
-	// Word/character wrapping mechanism variables
-	enum { MEASURE_STATE = 0, DRAW_STATE = 1 };
-	int state = wordWrap ? MEASURE_STATE : DRAW_STATE;
+	if ( rec.width <= 0 || rec.height <= ( textOffset->y + lineSpacing ) ) {
+		return 0;
+	}
 
-	int startLine = -1;         // Index where to begin drawing (where a line begins)
-	int endLine = -1;           // Index where to stop drawing (where a line ends)
-	int lastk = -1;             // Holds last value of the character position
-	Color tint = BLACK;
-	Color backTint = BLANK;
+	int len = TextLength( text );
+	float scaleFactor = fontSize / font.baseSize;
+	float wordWidth = 0.0;
+	bool measure = true;
 	Vector2 mousePos = GetMousePosition();
-	int mouseChar = -1;
+	int mouseChar = 0;
 
-	for ( int i = 0, k = 0; i < length; i++, k++)
-	{
-		if ( i < tintCount ) {
-			tint = tints[i];
-		}
-		if ( i < backTintCount ) {
-			backTint = backTints[i];
-		}
-		// Get next codepoint from byte string and glyph index in font
+	for ( int i = 0; i < len; ) {
 		int codepointByteCount = 0;
-		int codepoint = GetCodepoint(&text[i], &codepointByteCount);
-		int index = GetGlyphIndex(font, codepoint);
+		int codepoint = GetCodepointNext( &text[i], &codepointByteCount );
+		int index = GetGlyphIndex( font, codepoint );
 
-		// NOTE: Normally we exit the decoding sequence as soon as a bad byte is found (and return 0x3f)
-		// but we need to draw all of the bad bytes using the '?' symbol moving one byte
-		if (codepoint == 0x3f) codepointByteCount = 1;
-		i += (codepointByteCount - 1);
+		float codepointWidth = font.glyphs[ index ].advanceX == 0
+			? (float)font.recs[ index ].width * scaleFactor + spacing
+			: (float)font.glyphs[ index ].advanceX * scaleFactor + spacing;
 
-		float glyphWidth = 0;
-		if (codepoint != '\n')
-		{
-			glyphWidth = (font.glyphs[index].advanceX == 0) ? font.recs[index].width*scaleFactor : font.glyphs[index].advanceX*scaleFactor;
+		if ( wordWrap && ( wordWidth < rec.width ) ) {
+			if ( measure && codepoint != ' ' ) {
+				wordWidth = measureWord( font, &text[i], fontSize, spacing );
+				measure = false;
 
-			if (i + 1 < length) glyphWidth = glyphWidth + spacing;
-		}
-
-		// NOTE: When wordWrap is ON we first measure how much of the text we can draw before going outside of the rec container
-		// We store this info in startLine and endLine, then we change states, draw the text between those two variables
-		// and change states again and again recursively until the end of the text (or until we get outside of the container).
-		// When wordWrap is OFF we don't need the measure state so we go to the drawing state immediately
-		// and begin drawing on the next line before we can get outside the container.
-		if (state == MEASURE_STATE)
-		{
-			// TODO: There are multiple types of spaces in UNICODE, maybe it's a good idea to add support for more
-			// Ref: http://jkorpela.fi/chars/spaces.html
-			if ((codepoint == ' ') || (codepoint == '\t') || (codepoint == '\n')) endLine = i;
-
-			if ((textOffsetX + glyphWidth) > rec.width)
-			{
-				endLine = (endLine < 1)? i : endLine;
-				if (i == endLine) endLine -= codepointByteCount;
-				if ((startLine + codepointByteCount) == endLine) endLine = (i - codepointByteCount);
-
-				state = !state;
+				if ( rec.width < ( textOffset->x + wordWidth ) ) {
+					textOffset->x = 0;
+					textOffset->y += lineSpacing;
+				}
 			}
-			else if ((i + 1) == length)
-			{
-				endLine = i;
-				state = !state;
-			}
-			else if (codepoint == '\n') state = !state;
-
-			if (state == DRAW_STATE)
-			{
-				textOffsetX = 0;
-				i = startLine;
-				glyphWidth = 0;
-
-				// Save character position when we switch states
-				int tmp = lastk;
-				lastk = k - 1;
-				k = tmp;
+			else if ( codepoint == ' ' || codepoint == '\n' || codepoint == '\t' ) {
+				measure = true;
 			}
 		}
-		else
-		{
-			if (codepoint == '\n')
-			{
-				if (!wordWrap)
-				{
-					// textOffsetY += (font.baseSize + font.baseSize/2)*scaleFactor;
-					textOffsetY += lineSpacing;
-					textOffsetX = 0;
-				}
-			}
-			else
-			{
-				if (!wordWrap && ((textOffsetX + glyphWidth) > rec.width))
-				{
-					// textOffsetY += (font.baseSize + font.baseSize/2)*scaleFactor;
-					textOffsetY += lineSpacing;
-					textOffsetX = 0;
-				}
-
-				// When text overflows rectangle height limit, just stop drawing
-				if ((textOffsetY + font.baseSize*scaleFactor) > rec.height) break;
-
-				// Draw selection background
-				// bool isGlyphSelected = false;
-				// if ((selectStart >= 0) && (k >= selectStart) && (k < (selectStart + selectLength)))
-				// {
-				//     DrawRectangleRec((Rectangle){ rec.x + textOffsetX - 1, rec.y + textOffsetY, glyphWidth, (float)font.baseSize*scaleFactor }, selectBackTint);
-				//     isGlyphSelected = true;
-				// }
-
-				if ( CheckCollisionPointRec( mousePos, (Rectangle){ rec.x + textOffsetX - 1, rec.y + textOffsetY, glyphWidth, (float)font.baseSize*scaleFactor } ) ) {
-					mouseChar = i;
-				}
-
-				if ( 0 < backTint.a ) {
-					DrawRectangleRec((Rectangle){ rec.x + textOffsetX - 1, rec.y + textOffsetY, glyphWidth, (float)font.baseSize*scaleFactor }, backTint);
-				}
-
-				// Draw current character glyph
-				if ((codepoint != ' ') && (codepoint != '\t'))
-				{
-					// DrawTextCodepoint(font, codepoint, (Vector2){ rec.x + textOffsetX, rec.y + textOffsetY }, fontSize, isGlyphSelected? selectTint : tint);
-					DrawTextCodepoint( font, codepoint, (Vector2){ rec.x + textOffsetX, rec.y + textOffsetY }, fontSize, tint );
-				}
-			}
-
-			if (wordWrap && (i == endLine))
-			{
-				// textOffsetY += (font.baseSize + font.baseSize/2)*scaleFactor;
-				textOffsetY += lineSpacing;
-				textOffsetX = 0;
-				startLine = endLine;
-				endLine = -1;
-				glyphWidth = 0;
-				// selectStart += lastk - k;
-				k = lastk;
-
-				state = !state;
+		else {
+			if ( rec.width < ( textOffset->x + codepointWidth ) ) {
+				textOffset->x = 0;
+				textOffset->y += lineSpacing;
 			}
 		}
 
-		if ((textOffsetX != 0) || (codepoint != ' ')) textOffsetX += glyphWidth;  // avoid leading spaces
+		if ( rec.height < ( textOffset->y + lineSpacing ) ) {
+			break;
+		}
+
+		if ( codepoint != '\n' && !( textOffset->x == 0 && codepoint == ' ' ) && codepointWidth < rec.width ) {
+			DrawTextCodepoint( font, codepoint, (Vector2){ rec.x + textOffset->x, rec.y + textOffset->y }, fontSize, tint );
+
+			if ( getMouseChar && CheckCollisionPointRec( mousePos, (Rectangle){ rec.x + textOffset->x - 1, rec.y + textOffset->y, codepointWidth, (float)font.baseSize * scaleFactor } ) ) {
+				mouseChar = i + 1;
+			}
+
+			textOffset->x += codepointWidth;
+		}
+
+		i += codepointByteCount;
 	}
 	return mouseChar;
 }
@@ -588,67 +512,48 @@ int ltextDrawTextCodepoints( lua_State* L ) {
 }
 
 /*
-> mouseCharId = RL.DrawTextBoxed(Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint )
+> RL.DrawTextBoxed(Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint )
 
-Draw text using font inside rectangle limits. Return character id from mouse position (default -1). Function from raylib [text] example - Rectangle bounds.
-
-- Success return int
+Draw text using font inside rectangle limits.
 */
 int ltextDrawTextBoxed( lua_State* L ) {
 	Font* font = uluaGetFont( L, 1 );
-	const char* text = luaL_checkstring( L, 2 );
+	char* text = (char*)luaL_checkstring( L, 2 );
 	Rectangle rec = uluaGetRectangle( L, 3 );
 	float fontSize = luaL_checknumber( L, 4 );
 	float spacing = luaL_checknumber( L, 5 );
 	bool wordWrap = uluaGetBoolean( L, 6 );
 	Color tint = uluaGetColor( L, 7 );
+	Vector2 textOffset = { 0, 0 };
+	
+	DrawTextBoxed( *font, text, rec, fontSize, spacing, wordWrap, tint, &textOffset, false );
 
-	lua_pushinteger( L, DrawTextBoxed( *font, text, rec, fontSize, spacing, wordWrap, &tint, 1, NULL, 0 ) );
-
-	return 1;
+	return 0;
 }
 
 /*
-> mouseCharId = RL.DrawTextBoxedTinted( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tints{}, Color backTints{} )
+> mouseCharId, textOffset = RL.DrawTextBoxedEx( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, Vector2 textOffset )
 
-Draw text using font inside rectangle limits with support for tint and background tint for each character. Return character id from mouse position (default -1)
+Draw text using font inside rectangle limits. Return character id from mouse position (default 0).
+textOffset can be used to set start position inside rectangle. Usefull to pass from previous
+DrawTextBoxedEx for continuous text.
 
-- Success return int
+- Success return int, Vector2
 */
-int ltextDrawTextBoxedTinted( lua_State* L ) {
+int ltextDrawTextBoxedEx( lua_State* L ) {
 	Font* font = uluaGetFont( L, 1 );
-	const char* text = luaL_checkstring( L, 2 );
+	char* text = (char*)luaL_checkstring( L, 2 );
 	Rectangle rec = uluaGetRectangle( L, 3 );
 	float fontSize = luaL_checknumber( L, 4 );
 	float spacing = luaL_checknumber( L, 5 );
 	bool wordWrap = uluaGetBoolean( L, 6 );
-	int tintCount = uluaGetTableLen( L, 7 );
-	int backTintCount = uluaGetTableLen( L, 8 );
+	Color tint = uluaGetColor( L, 7 );
+	Vector2 textOffset = uluaGetVector2( L, 8 );
 
-	Color tints[ tintCount ];
-	Color backTints[ backTintCount ];
+	lua_pushinteger( L, DrawTextBoxed( *font, text, rec, fontSize, spacing, wordWrap, tint, &textOffset, true ) );
+	uluaPushVector2( L, textOffset );
 
-	/* Tints. */
-	int t = 7, i = 0;
-	lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-		tints[i] = uluaGetColor( L, lua_gettop( L ) );
-		i++;
-		lua_pop( L, 1 );
-	}
-	/* Back tints. */
-	t = 8; i = 0;
-	lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-		backTints[i] = uluaGetColor( L, lua_gettop( L ) );
-		i++;
-		lua_pop( L, 1 );
-	}
-	lua_pushinteger( L, DrawTextBoxed( *font, text, rec, fontSize, spacing, wordWrap, tints, tintCount, backTints, backTintCount ) );
-
-	return 1;
+	return 2;
 }
 
 /*

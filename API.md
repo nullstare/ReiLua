@@ -6858,19 +6858,19 @@ Draw multiple character (codepoint)
 
 ---
 
-> mouseCharId = RL.DrawTextBoxed(Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint )
+> RL.DrawTextBoxed(Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint )
 
-Draw text using font inside rectangle limits. Return character id from mouse position (default -1). Function from raylib [text] example - Rectangle bounds.
-
-- Success return int
+Draw text using font inside rectangle limits.
 
 ---
 
-> mouseCharId = RL.DrawTextBoxedTinted( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tints{}, Color backTints{} )
+> mouseCharId, textOffset = RL.DrawTextBoxedEx( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, Vector2 textOffset )
 
-Draw text using font inside rectangle limits with support for tint and background tint for each character. Return character id from mouse position (default -1)
+Draw text using font inside rectangle limits. Return character id from mouse position (default 0).
+textOffset can be used to set start position inside rectangle. Usefull to pass from previous
+DrawTextBoxedEx for continuous text.
 
-- Success return int
+- Success return int, Vector2
 
 ---
 

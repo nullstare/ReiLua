@@ -55,6 +55,8 @@ DETAILED CHANGES:
 	- ADDED: Unload functions clear object to 0 so they would not be ready in Is*Ready.
 	- CHANGE: DrawTextBoxed uses lineSpacing.
 	- ADDED: GetTextLineSpacing.
+	- REMOVED: DrawTextBoxedTinted. DrawTextBoxedEx can do same with much more efficiently.
+	- ADDED: DrawTextBoxedEx.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

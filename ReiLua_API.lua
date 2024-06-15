@@ -4044,8 +4044,7 @@ function  RL.DrawTextCodepoint( font, codepoint, position, fontSize, tint ) end
 ---@return any RL.DrawTextCodepoints
 function  RL.DrawTextCodepoints( font, codepoints, position, fontSize, spacing, tint ) end
 
----Draw text using font inside rectangle limits. Return character id from mouse position (default -1). Function from raylib [text] example - Rectangle bounds.
----- Success return int
+---Draw text using font inside rectangle limits.
 ---@param font any
 ---@param text string
 ---@param rec table
@@ -4053,21 +4052,24 @@ function  RL.DrawTextCodepoints( font, codepoints, position, fontSize, spacing, 
 ---@param spacing number
 ---@param wordWrap boolean
 ---@param tint table
----@return any mouseCharId 
-function RL.DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint ) end
+---@return any RL.DrawTextBoxed
+function  RL.DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint ) end
 
----Draw text using font inside rectangle limits with support for tint and background tint for each character. Return character id from mouse position (default -1)
----- Success return int
+---Draw text using font inside rectangle limits. Return character id from mouse position (default 0).
+---textOffset can be used to set start position inside rectangle. Usefull to pass from previous
+---DrawTextBoxedEx for continuous text.
+---- Success return int, Vector2
 ---@param font any
 ---@param text string
 ---@param rec table
 ---@param fontSize number
 ---@param spacing number
 ---@param wordWrap boolean
----@param tints{} table
----@param backTints{} table
----@return any mouseCharId 
-function RL.DrawTextBoxedTinted( font, text, rec, fontSize, spacing, wordWrap, tints{}, backTints{} ) end
+---@param tint table
+---@param textOffset table
+---@return any mouseCharId
+---@return any textOffset 
+function RL.DrawTextBoxedEx( font, text, rec, fontSize, spacing, wordWrap, tint, textOffset ) end
 
 -- Text - Text font info functions
 

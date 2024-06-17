@@ -574,6 +574,8 @@ int ltextSetTextLineSpacing( lua_State* L ) {
 
 	state->lineSpacing = spacing;
 	SetTextLineSpacing( spacing );
+
+	return 0;
 }
 
 /*
@@ -585,6 +587,8 @@ Get vertical line spacing when drawing with line-breaks
 */
 int ltextGetTextLineSpacing( lua_State* L ) {
 	lua_pushinteger( L, state->lineSpacing );
+
+	return 1;
 }
 
 /*

@@ -48,7 +48,11 @@ float spacing, bool wordWrap, Color tint, Vector2* textOffset, bool getMouseChar
 			? (float)font.recs[ index ].width * scaleFactor + spacing
 			: (float)font.glyphs[ index ].advanceX * scaleFactor + spacing;
 
-		if ( wordWrap && ( wordWidth < rec.width ) ) {
+		if ( codepoint == '\n' ) {
+			textOffset->x = 0;
+			textOffset->y += lineSpacing;
+		}
+		else if ( wordWrap && ( wordWidth < rec.width ) ) {
 			if ( measure && codepoint != ' ' ) {
 				wordWidth = measureWord( font, &text[i], fontSize, spacing );
 				measure = false;

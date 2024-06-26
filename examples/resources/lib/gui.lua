@@ -95,11 +95,11 @@ function Gui.delete( cell )
 	end
 end
 
-function Gui.set2Top( cell )
+function Gui.setToTop( cell )
 	Util.tableMove( Gui._cells, Gui.getId( cell ), 1, #Gui._cells )
 end
 
-function Gui.set2Back( cell )
+function Gui.setToBack( cell )
 	Util.tableMove( Gui._cells, Gui.getId( cell ), 1, 1 )
 end
 
@@ -518,12 +518,12 @@ function Element:delete()
 	Gui.delete( self )
 end
 
-function Element:set2Top()
-	Gui.set2Top( self )
+function Element:setToTop()
+	Gui.setToTop( self )
 end
 
-function Element:set2Back()
-	Gui.set2Back( self )
+function Element:setToBack()
+	Gui.setToBack( self )
 end
 
 -- Container.
@@ -820,34 +820,34 @@ function Container:clear()
 	self.cells = {}
 end
 
-function Container:set2Top()
-	Gui.set2Top( self )
+function Container:setToTop()
+	Gui.setToTop( self )
 
 	for _, cell in ipairs( self.cells ) do
-		cell:set2Top()
+		cell:setToTop()
 	end
 
 	if self._VScrollbar ~= nil then
-		Gui.set2Top( self._VScrollbar )
+		Gui.setToTop( self._VScrollbar )
 	end
 	if self._HScrollbar ~= nil then
-		Gui.set2Top( self._HScrollbar )
+		Gui.setToTop( self._HScrollbar )
 	end
 end
 
-function Container:set2Back()
+function Container:setToBack()
 	if self._VScrollbar ~= nil then
-		Gui.set2Back( self._VScrollbar )
+		Gui.setToBack( self._VScrollbar )
 	end
 	if self._HScrollbar ~= nil then
-		Gui.set2Back( self._HScrollbar )
+		Gui.setToBack( self._HScrollbar )
 	end
 
 	for _, cell in ipairs( self.cells ) do
-		cell:set2Back()
+		cell:setToBack()
 	end
 
-	Gui.set2Back( self )
+	Gui.setToBack( self )
 end
 
 function Container:draw()

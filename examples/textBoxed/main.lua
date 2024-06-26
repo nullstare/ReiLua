@@ -3,6 +3,7 @@ local spacing = 1
 local rect = { 100, 64, 200, 200 }
 local wordwrap = true
 local linkColor = RL.BLUE
+local limitHeight = true
 local mouseCharId = 0
 local textOffset = { 0, 0 }
 
@@ -34,21 +35,21 @@ function RL.draw()
 
 	mouseCharId, textOffset = RL.DrawTextBoxedEx(
 		RL.GetFontDefault(),
-		"You can change the size of the box by pressing right mouse and toggle the wordwrap by pressing space. First we will write some text before the hyperlink to show that it is indeed is as powerful feature as adverticed.",
+		"\tYou can change the size of the box by pressing right mouse and toggle the wordwrap by pressing space. First we will write some text before the hyperlink to show that it is indeed is as powerful feature as adverticed.",
 		rect,
-		textSize, spacing, wordwrap, RL.RED, { 0, 0 }
+		textSize, spacing, wordwrap, RL.RED, limitHeight, { 0, 0 }
 	)
 	mouseCharId, textOffset = RL.DrawTextBoxedEx(
 		RL.GetFontDefault(),
 		" Hyperlink.",
 		rect,
-		textSize, spacing, wordwrap, linkColor, textOffset
+		textSize, spacing, wordwrap, linkColor, limitHeight, textOffset
 	)
 	RL.DrawTextBoxedEx(
 		RL.GetFontDefault(),
 		" Then we demonstrate this further by writin more text after the link. Isn't this just amazing! Don't forget to press left mouse to print text to your console when hovering mouse over the hyperlink.",
 		rect,
-		textSize, spacing, wordwrap, RL.RED, textOffset
+		textSize, spacing, wordwrap, RL.RED, limitHeight, textOffset
 	)
 
 	if 0 < mouseCharId then
@@ -57,4 +58,3 @@ function RL.draw()
 		linkColor = RL.BLUE
 	end
 end
-

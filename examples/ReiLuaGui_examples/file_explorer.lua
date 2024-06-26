@@ -19,7 +19,7 @@ function FileExplorer:new( pos )
 		bounds = Rect:new( 0, 0, object.windowRect.width, object.HANDLE_HIGHT ),
 		padding = 10,
 		onClicked = function()
-			object:set2Top()
+			object:setToTop()
 			object.dragPos = Vec2:newT( RL.GetMousePosition() ) - Vec2:new( object.handle.bounds.x, object.handle.bounds.y )
 			Gui.heldCallback = function() object:drag() end
 		end,
@@ -305,15 +305,15 @@ function FileExplorer:setVisible( visible )
 	self.files:update()
 end
 
-function FileExplorer:set2Top()
-	self.panel:set2Top()
-	self.handle:set2Top()
-	self.closeButton:set2Top()
-	self.pathBox:set2Top()
-	self.backButton:set2Top()
-	self.files:set2Top()
-	self.fileName:set2Top()
-	self.openButton:set2Top()
+function FileExplorer:setToTop()
+	self.panel:setToTop()
+	self.handle:setToTop()
+	self.closeButton:setToTop()
+	self.pathBox:setToTop()
+	self.backButton:setToTop()
+	self.files:setToTop()
+	self.fileName:setToTop()
+	self.openButton:setToTop()
 end
 
 return FileExplorer

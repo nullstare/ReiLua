@@ -75,7 +75,7 @@ local function addPropertyList()
 		Rect:new( 20, 20, 256, 328 ),
 		"Property List",
 		{ -- Callbacks.
-			grab = function( self ) Gui:set2Top( self ) end,
+			grab = function( self ) Gui:setToTop( self ) end,
 		},
 		{ -- Styles.
 			properties = {
@@ -272,7 +272,7 @@ local function addTreeView()
 		"Tree View",
 		{ -- Callbacks.
 			select = function( controls ) selected( controls ) end,
-			grab = function( self ) Gui:set2Top( self ) end,
+			grab = function( self ) Gui:setToTop( self ) end,
 		},
 		{ -- Styles.
 			properties = {

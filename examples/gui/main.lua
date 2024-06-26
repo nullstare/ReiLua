@@ -21,6 +21,8 @@ local guiTabBarActive = 0
 local colorPickerHSV = { 0, 0, 0 }
 local colorPanelHSV = { 0, 0, 0 }
 
+local value = 0
+
 function RL.init()
 	local monitor = 0
 	local mPos = RL.GetMonitorPosition( monitor )
@@ -121,4 +123,6 @@ function RL.draw()
 
 	_, colorPickerHSV = RL.GuiColorPickerHSV( { 1024, 20, 150, 150 }, "GuiColorPuckerHSV", colorPickerHSV )
 	_, colorPanelHSV =  RL.GuiColorPanelHSV( { 1230, 20, 150, 150 }, "GuiColorPuckerHSV", colorPanelHSV )
+
+	value = RL.GuiScrollBar( { 0, 0, 10, 200 }, value, 0, 100 )
 end

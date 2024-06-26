@@ -4045,6 +4045,7 @@ function  RL.DrawTextCodepoint( font, codepoint, position, fontSize, tint ) end
 function  RL.DrawTextCodepoints( font, codepoints, position, fontSize, spacing, tint ) end
 
 ---Draw text using font inside rectangle limits.
+---- Success return int, Vector2
 ---@param font any
 ---@param text string
 ---@param rec table
@@ -4052,8 +4053,10 @@ function  RL.DrawTextCodepoints( font, codepoints, position, fontSize, spacing, 
 ---@param spacing number
 ---@param wordWrap boolean
 ---@param tint table
----@return any RL.DrawTextBoxed
-function  RL.DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint ) end
+---@param limitHeight boolean
+---@return any mouseCharId
+---@return any textOffset 
+function RL.DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint, limitHeight ) end
 
 ---Draw text using font inside rectangle limits. Return character id from mouse position (default 0).
 ---textOffset can be used to set start position inside rectangle. Usefull to pass from previous
@@ -4066,10 +4069,11 @@ function  RL.DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint )
 ---@param spacing number
 ---@param wordWrap boolean
 ---@param tint table
+---@param limitHeight boolean
 ---@param textOffset table
 ---@return any mouseCharId
 ---@return any textOffset 
-function RL.DrawTextBoxedEx( font, text, rec, fontSize, spacing, wordWrap, tint, textOffset ) end
+function RL.DrawTextBoxedEx( font, text, rec, fontSize, spacing, wordWrap, tint, limitHeight, textOffset ) end
 
 -- Text - Text font info functions
 

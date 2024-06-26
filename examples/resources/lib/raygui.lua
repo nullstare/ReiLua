@@ -1922,11 +1922,10 @@ function Raygui:checkScrolling()
 end
 
 function Raygui:clickedInBounds( bounds )
-	print( self._mousePressPos, bounds )
 	return RL.CheckCollisionPointRec( self._mousePressPos, bounds )
 end
 
-function Raygui:set2Top( control )
+function Raygui:setToTop( control )
 	for i, curControl in ipairs( self.controls ) do
 		if control == curControl then
 			Util.tableMove( self.controls, i, 1, #self.controls )
@@ -1936,7 +1935,7 @@ function Raygui:set2Top( control )
 	end
 end
 
-function Raygui:set2Back( control )
+function Raygui:setToBack( control )
 	for i, curControl in ipairs( self.controls ) do
 		if control == curControl then
 			Util.tableMove( self.controls, i, 1, 1 )

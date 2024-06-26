@@ -208,7 +208,7 @@ function RL.init()
 		"WindowBox",
 		{ -- Callbacks.
 			close = function( self ) self.visible = false end,
-			grab = function( self ) Gui:set2Top( self ) end,
+			grab = function( self ) Gui:setToTop( self ) end,
 		},
 		{ -- Styles.
 			properties = {
@@ -230,7 +230,7 @@ function RL.init()
 		Rect:new( 400, 64, 256, 128 ),
 		"Panel",
 		{ -- Callbacks.
-			grab = function( self ) Gui:set2Top( self ) end
+			grab = function( self ) Gui:setToTop( self ) end
 		},
 		{ -- Styles.
 			properties = {
@@ -255,7 +255,7 @@ function RL.init()
 		Vec2:new( 0, 0 ),
 		{ -- Callbacks.
 			scroll = function( self ) print( self.scroll ) end,
-			grab = function( self ) Gui:set2Top( self ) end
+			grab = function( self ) Gui:setToTop( self ) end
 		}
 	)
 	local listview = Gui:ListView(
@@ -300,7 +300,7 @@ function RL.init()
 					end
 				end
 			end,
-			grab = function( self ) Gui:set2Top( self ) end
+			grab = function( self ) Gui:setToTop( self ) end
 		}
 	)
 	local textinputbox = Gui:TextInputBox(
@@ -317,7 +317,7 @@ function RL.init()
 					print( "You pressed "..self:getItem( self.buttonIndex ) )
 				end
 			end,
-			grab = function( self ) Gui:set2Top( self ) end
+			grab = function( self ) Gui:setToTop( self ) end
 		}
 	)
 	local colorpicker = Gui:ColorPicker(

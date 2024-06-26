@@ -87,7 +87,7 @@ function PropertyList:updateControl( control )
 
 		control.text = setGroupText( control.text:sub( 6 ), control.active ) -- Sub skips icon.
 	end
-	self.gui:set2Back( control )
+	self.gui:setToBack( control )
 end
 
 function PropertyList:updateContent()

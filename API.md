@@ -6858,13 +6858,15 @@ Draw multiple character (codepoint)
 
 ---
 
-> RL.DrawTextBoxed(Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint )
+> mouseCharId, textOffset = RL.DrawTextBoxed(Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, bool limitHeight )
 
 Draw text using font inside rectangle limits.
 
+- Success return int, Vector2
+
 ---
 
-> mouseCharId, textOffset = RL.DrawTextBoxedEx( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, Vector2 textOffset )
+> mouseCharId, textOffset = RL.DrawTextBoxedEx( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2 textOffset )
 
 Draw text using font inside rectangle limits. Return character id from mouse position (default 0).
 textOffset can be used to set start position inside rectangle. Usefull to pass from previous

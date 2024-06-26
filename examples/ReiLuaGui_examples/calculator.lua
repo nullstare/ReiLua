@@ -19,7 +19,7 @@ function Calculator:new( pos )
 		bounds = Rect:new( 0, 0, object.windowRect.width, object.HANDLE_HIGHT ),
 		padding = 10,
 		onClicked = function()
-			object:set2Top()
+			object:setToTop()
 			object.dragPos = Vec2:newT( RL.GetMousePosition() ) - Vec2:new( object.handle.bounds.x, object.handle.bounds.y )
 			Gui.heldCallback = function() object:drag() end
 		end,
@@ -186,16 +186,16 @@ function Calculator:setVisible( visible )
 	end
 end
 
-function Calculator:set2Top()
-	self.panel:set2Top()
+function Calculator:setToTop()
+	self.panel:setToTop()
 
 	for _, button in ipairs( self.buttons ) do
-		button:set2Top()
+		button:setToTop()
 	end
 
-	self.handle:set2Top()
-	self.closeButton:set2Top()
-	self.display:set2Top()
+	self.handle:setToTop()
+	self.closeButton:setToTop()
+	self.display:setToTop()
 end
 
 function Calculator:addValue( value )

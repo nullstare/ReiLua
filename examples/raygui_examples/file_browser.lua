@@ -39,7 +39,7 @@ function FileBrowser:new( pos )
 		"File Browser",
 		{ -- callbacks.
 			close = function() object:setVisible( false ) end,
-			grab = function() object:set2Top() end,
+			grab = function() object:setToTop() end,
 			drag = function( this ) object:setPosition( Vec2:new( this.bounds.x, this.bounds.y ) ) end
 		}
 	)
@@ -363,11 +363,11 @@ function FileBrowser:setPosition( pos )
 	end
 end
 
-function FileBrowser:set2Top()
-	Gui:set2Top( self.window )
+function FileBrowser:setToTop()
+	Gui:setToTop( self.window )
 
 	for _, control in ipairs( self.controls ) do
-		Gui:set2Top( control )
+		Gui:setToTop( control )
 	end
 end
 

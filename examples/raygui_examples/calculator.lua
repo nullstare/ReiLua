@@ -18,7 +18,7 @@ function Calculator:new( pos )
 		"Calculator",
 		{ -- Callbacks.
 			close = function() object:setVisible( false ) end,
-			grab = function() object:set2Top() end,
+			grab = function() object:setToTop() end,
 			drag = function( this ) object:setPosition( Vec2:new( this.bounds.x, this.bounds.y ) ) end
 		}
 	)
@@ -137,12 +137,12 @@ function Calculator:setPosition( pos )
 	end
 end
 
-function Calculator:set2Top()
-	Gui:set2Top( self.window )
-	Gui:set2Top( self.display )
+function Calculator:setToTop()
+	Gui:setToTop( self.window )
+	Gui:setToTop( self.display )
 
 	for _, button in ipairs( self.buttons ) do
-		Gui:set2Top( button )
+		Gui:setToTop( button )
 	end
 end
 

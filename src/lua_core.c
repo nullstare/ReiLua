@@ -2082,6 +2082,7 @@ void luaRegister() {
 	assingGlobalFunction( "GuiIconText", lguiGuiIconText );
 	assingGlobalFunction( "GuiSetIconScale", lguiGuiSetIconScale );
 	assingGlobalFunction( "GuiGetIcons", lguiGuiGetIcons );
+	assingGlobalFunction( "GuiSetIcons", lguiGuiSetIcons );
 	assingGlobalFunction( "GuiLoadIcons", lguiGuiLoadIcons );
 	assingGlobalFunction( "GuiDrawIcon", lguiGuiDrawIcon );
 		/* Container/separator controls, useful for controls organization. */

@@ -6328,10 +6328,17 @@ function RL.GuiIconText( iconId, text ) end
 ---@return any RL.GuiSetIconScale
 function  RL.GuiSetIconScale( scale ) end
 
----Get raygui icons data pointer
----- Success return int
----@return any icons 
+---Get raygui icons data in buffer. guiIcons size is by default: 256*(16*16/32) = 2048*4 = 8192 bytes = 8 KB
+---- Success return Buffer
+---@return any iconsBuffer 
 function RL.GuiGetIcons() end
+
+---Set raygui icons data in buffer. guiIcons size is by default: 256*(16*16/32) = 2048*4 = 8192 bytes = 8 KB
+---- Failure return false
+---- Success return true
+---@param iconBuffer any
+---@return any success 
+function RL.GuiSetIcons( iconBuffer ) end
 
 ---Load raygui icons file (.rgi) into internal icons data
 ---- Failure return nil

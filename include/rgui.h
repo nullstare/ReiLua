@@ -26,6 +26,7 @@ int lguiGuiSetTooltip( lua_State* L );
 int lguiGuiIconText( lua_State* L );
 int lguiGuiSetIconScale( lua_State* L );
 int lguiGuiGetIcons( lua_State* L );
+int lguiGuiSetIcons( lua_State* L );
 int lguiGuiLoadIcons( lua_State* L );
 int lguiGuiDrawIcon( lua_State* L );
 /* Container/separator controls, useful for controls organization. */

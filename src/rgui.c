@@ -2,6 +2,7 @@
 #include "state.h"
 #include "rgui.h"
 #include "lua_core.h"
+#include "rmath.h"
 
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
@@ -286,14 +287,48 @@ int lguiGuiSetIconScale( lua_State* L ) {
 }
 
 /*
-> icons = RL.GuiGetIcons()
+> iconsBuffer = RL.GuiGetIcons()
 
-Get raygui icons data pointer
+Get raygui icons data in buffer. guiIcons size is by default: 256*(16*16/32) = 2048*4 = 8192 bytes = 8 KB
 
-- Success return int
+- Success return Buffer
 */
 int lguiGuiGetIcons( lua_State* L ) {
-	lua_pushinteger( L, *GuiGetIcons() );
+	const unsigned int dataSize = RAYGUI_ICON_MAX_ICONS * RAYGUI_ICON_DATA_ELEMENTS * sizeof( unsigned int );
+
+	Buffer buffer = {
+		.type = BUFFER_UNSIGNED_INT,
+		.size = dataSize * sizeof( unsigned int ),
+		.data = malloc( dataSize * sizeof( unsigned int ) )
+	};
+	memcpy( buffer.data, GuiGetIcons(), dataSize );
+
+	uluaPushBuffer( L, buffer );	
+
+	return 1;
+}
+
+/*
+> success = RL.GuiSetIcons( Buffer iconBuffer )
+
+Set raygui icons data in buffer. guiIcons size is by default: 256*(16*16/32) = 2048*4 = 8192 bytes = 8 KB
+
+- Failure return false
+- Success return true
+*/
+int lguiGuiSetIcons( lua_State* L ) {
+	Buffer* buffer = uluaGetBuffer( L, 1 );
+
+	if ( buffer->type != BUFFER_UNSIGNED_INT ) {
+		TraceLog( state->logLevelInvalid, "Buffer type must be BUFFER_UNSIGNED_INT" );
+		lua_pushboolean( L, false );
+
+		return 1;
+	}
+	const unsigned int dataSize = RAYGUI_ICON_MAX_ICONS * RAYGUI_ICON_DATA_ELEMENTS * sizeof( unsigned int );
+	memcpy( GuiGetIcons(), buffer->data, imin( dataSize, buffer->size ) );
+
+	lua_pushboolean( L, true );
 
 	return 1;
 }

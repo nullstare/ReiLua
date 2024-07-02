@@ -9414,11 +9414,20 @@ Set icon scale (1 by default)
 
 ---
 
-> icons = RL.GuiGetIcons()
+> iconsBuffer = RL.GuiGetIcons()
 
-Get raygui icons data pointer
+Get raygui icons data in buffer. guiIcons size is by default: 256*(16*16/32) = 2048*4 = 8192 bytes = 8 KB
 
-- Success return int
+- Success return Buffer
+
+---
+
+> success = RL.GuiSetIcons( Buffer iconBuffer )
+
+Set raygui icons data in buffer. guiIcons size is by default: 256*(16*16/32) = 2048*4 = 8192 bytes = 8 KB
+
+- Failure return false
+- Success return true
 
 ---
 

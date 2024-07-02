@@ -1455,6 +1455,8 @@ void luaRegister() {
 	assingGlobalFunction( "SetMousePosition", lcoreSetMousePosition );
 	assingGlobalFunction( "SetMouseOffset", lcoreSetMouseOffset );
 	assingGlobalFunction( "SetMouseScale", lcoreSetMouseScale );
+	assingGlobalFunction( "GetMouseOffset", lcoreGetMouseOffset );
+	assingGlobalFunction( "GetMouseScale", lcoreGetMouseScale );
 	assingGlobalFunction( "GetMouseWheelMove", lcoreGetMouseWheelMove );
 	assingGlobalFunction( "GetMouseWheelMoveV", lcoreGetMouseWheelMoveV );
 	assingGlobalFunction( "SetMouseCursor", lcoreSetMouseCursor );

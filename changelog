@@ -60,6 +60,7 @@ DETAILED CHANGES:
 	- CHANGE: Naming of gui functions set2Top and set2Back to setToTop and setToBack.
 	- FIXED: GuiGetIcons was returning just first int. Now returns a Buffer.
 	- ADDED: GuiSetIcons.
+	- ADDED: GetMouseOffset and GetMouseScale.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

@@ -5066,6 +5066,22 @@ Set mouse scaling
 
 ---
 
+> offset = RL.GetMouseOffset()
+
+Get mouse offset
+
+- Success return Vector2
+
+---
+
+> scale = RL.GetMouseScale()
+
+Get mouse scale
+
+- Success return Vector2
+
+---
+
 > movement = RL.GetMouseWheelMove()
 
 Get mouse wheel movement for X or Y, whichever is larger

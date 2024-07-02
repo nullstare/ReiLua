@@ -2585,6 +2585,7 @@ int lcoreSetMouseOffset( lua_State* L ) {
 	Vector2 offset = uluaGetVector2( L, 1 );
 
 	SetMouseOffset( offset.x, offset.y );
+	state->mouseOffset = offset;
 
 	return 0;
 }
@@ -2598,8 +2599,35 @@ int lcoreSetMouseScale( lua_State* L ) {
 	Vector2 scale = uluaGetVector2( L, 1 );
 
 	SetMouseScale( scale.x, scale.y );
+	state->mouseScale = scale;
 
 	return 0;
+}
+
+/*
+> offset = RL.GetMouseOffset()
+
+Get mouse offset
+
+- Success return Vector2
+*/
+int lcoreGetMouseOffset( lua_State* L ) {
+	uluaPushVector2( L, state->mouseOffset );
+
+	return 1;
+}
+
+/*
+> scale = RL.GetMouseScale()
+
+Get mouse scale
+
+- Success return Vector2
+*/
+int lcoreGetMouseScale( lua_State* L ) {
+	uluaPushVector2( L, state->mouseScale );
+
+	return 1;
 }
 
 /*

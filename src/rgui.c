@@ -303,7 +303,7 @@ int lguiGuiGetIcons( lua_State* L ) {
 	};
 	memcpy( buffer.data, GuiGetIcons(), dataSize );
 
-	uluaPushBuffer( L, buffer );	
+	uluaPushBuffer( L, buffer );
 
 	return 1;
 }

@@ -10,6 +10,8 @@ typedef struct {
 	bool run;
 	bool gcUnload;
 	int lineSpacing; /* We need to store copy here since raylib has it in static. */
+	Vector2 mouseOffset;
+	Vector2 mouseScale;
 	lua_State* luaState;
 	Vector2 resolution;
 	int logLevelInvalid;

@@ -2309,6 +2309,16 @@ function  RL.SetMouseOffset( offset ) end
 ---@return any RL.SetMouseScale
 function  RL.SetMouseScale( scale ) end
 
+---Get mouse offset
+---- Success return Vector2
+---@return any offset 
+function RL.GetMouseOffset() end
+
+---Get mouse scale
+---- Success return Vector2
+---@return any scale 
+function RL.GetMouseScale() end
+
 ---Get mouse wheel movement for X or Y, whichever is larger
 ---- Success return float
 ---@return any movement 

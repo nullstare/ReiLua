@@ -193,6 +193,8 @@ int lcoreGetMouseDelta( lua_State* L );
 int lcoreSetMousePosition( lua_State* L );
 int lcoreSetMouseOffset( lua_State* L );
 int lcoreSetMouseScale( lua_State* L );
+int lcoreGetMouseOffset( lua_State* L );
+int lcoreGetMouseScale( lua_State* L );
 int lcoreGetMouseWheelMove( lua_State* L );
 int lcoreGetMouseWheelMoveV( lua_State* L );
 int lcoreSetMouseCursor( lua_State* L );

@@ -3,7 +3,7 @@ if table.unpack == nil then
 	table.unpack = unpack
 end
 
-local Vector3 = require( "vector3" )
+local Vector3 = Vector3 or require( "vector3" )
 
 local BoundingBox = {}
 local metatable = {

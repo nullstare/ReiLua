@@ -19,6 +19,8 @@ bool stateInit( int argn, const char** argc, const char* basePath ) {
 	state->logLevelInvalid = LOG_ERROR;
 	state->gcUnload = true;
 	state->lineSpacing = 15;
+	state->mouseOffset = (Vector2){ 0, 0 };
+	state->mouseScale = (Vector2){ 1, 1 };
 
 	InitWindow( state->resolution.x, state->resolution.y, "ReiLua" );
 

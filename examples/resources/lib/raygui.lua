@@ -1,9 +1,9 @@
 -- Wrapper for raygui.
 
-local Util = require( "utillib" )
-local Rect = require( "rectangle" )
-local Vec2 = require( "vector2" )
-local Color = require( "color" )
+local Util = Util or require( "utillib" )
+local Rectangle = Rectangle or require( "rectangle" )
+local Vector2 = Vector2 or require( "vector2" )
+local Color = Color or require( "color" )
 
 local function getItemCount( text )
 	local count, rowItemCounts = 1, { 1 }
@@ -259,7 +259,7 @@ function ScrollPanel:new( bounds, text, content, scroll, callbacks, styles, tool
 	object.text = text
 	object.content = content:clone()
 	object.scroll = scroll:clone()
-	object.view = Rect:new( 0, 0, 0, 0 )
+	object.view = Rectangle:new( 0, 0, 0, 0 )
 	object.callbacks = callbacks -- scroll, grab, drag.
 	
 	object.visible = true
@@ -507,8 +507,8 @@ function ToggleGroup:updateFocusBounds()
 
 	for y, rowItemCount in ipairs( rowItemCounts ) do
 		for x = 1, rowItemCount do
-			local pos = Vec2:new( x - 1, y - 1 )
-			local focusBound = Rect:new(
+			local pos = Vector2:new( x - 1, y - 1 )
+			local focusBound = Rectangle:new(
 				self.bounds.x + pos.x * ( self.bounds.width + RL.GuiGetStyle( RL.TOGGLE, RL.GROUP_PADDING ) ),
 				self.bounds.y + pos.y * ( self.bounds.height + RL.GuiGetStyle( RL.TOGGLE, RL.GROUP_PADDING ) ),
 				self.bounds.width,
@@ -581,10 +581,10 @@ function CheckBox:new( bounds, text, checked, callbacks, styles, tooltip )
 	
 	object.visible = true
 	object.disabled = false
-	object.textBounds = Rect:new( 0, 0, 0, 0 )
+	object.textBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.focusBounds = bounds:clone()
 	
-	object._focusBoundsOffset = Vec2:new( 0, 0 ) -- Used in set position.
+	object._focusBoundsOffset = Vector2:new( 0, 0 ) -- Used in set position.
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -758,10 +758,10 @@ function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callbac
 	
 	object.visible = true
 	object.disabled = false
-	object.textBounds = Rect:new( 0, 0, 0, 0 )
+	object.textBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
 	
-	object._viewBoundsOffset = Vec2:new( 0, 0 )
+	object._viewBoundsOffset = Vector2:new( 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -829,10 +829,10 @@ function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callba
 	
 	object.visible = true
 	object.disabled = false
-	object.textBounds = Rect:new( 0, 0, 0, 0 )
+	object.textBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
 	
-	object._viewBoundsOffset = Vec2:new( 0, 0 )
+	object._viewBoundsOffset = Vector2:new( 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -949,11 +949,11 @@ function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, cal
 
 	object.visible = true
 	object.disabled = false
-	object.textLeftBounds = Rect:new( 0, 0, 0, 0 )
-	object.textRightBounds = Rect:new( 0, 0, 0, 0 )
+	object.textLeftBounds = Rectangle:new( 0, 0, 0, 0 )
+	object.textRightBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
 	
-	object._viewBoundsOffset = Vec2:new( 0, 0 )
+	object._viewBoundsOffset = Vector2:new( 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -1013,11 +1013,11 @@ function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, 
 	
 	object.visible = true
 	object.disabled = false
-	object.textLeftBounds = Rect:new( 0, 0, 0, 0 )
-	object.textRightBounds = Rect:new( 0, 0, 0, 0 )
+	object.textLeftBounds = Rectangle:new( 0, 0, 0, 0 )
+	object.textRightBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
 	
-	object._viewBoundsOffset = Vec2:new( 0, 0 )
+	object._viewBoundsOffset = Vector2:new( 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -1077,11 +1077,11 @@ function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue
 	
 	object.visible = true
 	object.disabled = false
-	object.textLeftBounds = Rect:new( 0, 0, 0, 0 )
-	object.textRightBounds = Rect:new( 0, 0, 0, 0 )
+	object.textLeftBounds = Rectangle:new( 0, 0, 0, 0 )
+	object.textRightBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
 	
-	object._viewBoundsOffset = Vec2:new( 0, 0 )
+	object._viewBoundsOffset = Vector2:new( 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -1204,7 +1204,7 @@ function Grid:new( bounds, text, spacing, subdivs, callbacks, styles, tooltip )
 	object.subdivs = subdivs
 	object.callbacks = callbacks -- cellChange.
 	
-	object.mouseCell = Vec2:new( 0, 0 )
+	object.mouseCell = Vector2:new( 0, 0 )
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -1455,7 +1455,7 @@ function ColorPicker:new( bounds, text, color, callbacks, styles, tooltip )
 	
 	object.visible = true
 	object.disabled = false
-	object.focusBounds = Rect:new( 0, 0, 0, 0 )
+	object.focusBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
 	
@@ -1470,7 +1470,7 @@ function ColorPicker:update()
 end
 
 function ColorPicker:updateFocusBounds()
-	local boundsHue = Rect:new(
+	local boundsHue = Rectangle:new(
 		self.bounds.x + self.bounds.width + RL.GuiGetStyle( RL.COLORPICKER, RL.HUEBAR_PADDING ),
 		self.bounds.y,
 		RL.GuiGetStyle( RL.COLORPICKER, RL.HUEBAR_WIDTH ),
@@ -1718,25 +1718,25 @@ function Raygui:new()
 	object.controls = {}
 	object.focused = 0
 	object.dragging = nil
-	object.grabPos = Vec2:new( 0, 0 )
+	object.grabPos = Vector2:new( 0, 0 )
 	object.scrolling = false
 	object.textEdit = false
 	object.textEditControl = nil
 	object.defaultTexture = RL.GetTextureDefault()
-	object.defaultRect = Rect:new( 0, 0, 1, 1 ) -- For texture.
+	object.defaultRect = Rectangle:new( 0, 0, 1, 1 ) -- For texture.
 	object.defaultFont = RL.GuiGetFont()
-	object.mouseOffset = Vec2:new( 0, 0 )
-	object.view = Rect:new( 0, 0, 0, 0 ) -- Active if larger than 0. Then only controls in view will be updated and drawn.
+	object.mouseOffset = Vector2:new( 0, 0 )
+	object.view = Rectangle:new( 0, 0, 0, 0 ) -- Active if larger than 0. Then only controls in view will be updated and drawn.
 	object.tooltip = {
 		text = nil,
-		offset = Vec2:new( 12, 24 ),
+		offset = Vector2:new( 12, 24 ),
 		delay = 0.5,
 		timer = 0.0,
 		focused = 0
 	}
 
 	object._lastProperties = {}
-	object._mousePressPos = Vec2:new( -1, -1 ) -- Use to check if release and check are inside bounds.
+	object._mousePressPos = Vector2:new( -1, -1 ) -- Use to check if release and check are inside bounds.
 
 	return object
 end
@@ -1784,7 +1784,7 @@ function Raygui:update()
 						self.tooltip.timer = self.tooltip.timer + RL.GetFrameTime()
 					else
 						self.tooltip.text = control.tooltip
-						self.tooltip.position = Vec2:newT( RL.GetMousePosition() ) + self.tooltip.offset
+						self.tooltip.position = Vector2:newT( RL.GetMousePosition() ) + self.tooltip.offset
 					end
 				end
 
@@ -1802,12 +1802,12 @@ function Raygui:update()
 end
 
 function Raygui:drag( control )
-	local mousePos = Vec2:tempT( RL.GetMousePosition() )
+	local mousePos = Vector2:tempT( RL.GetMousePosition() )
 	local mouseOver = RL.CheckCollisionPointRec( mousePos, control.bounds )
 
 	if not control.disabled and control.draggable and control ~= self.dragging and RL.IsMouseButtonPressed( RL.MOUSE_BUTTON_LEFT )
 	and mouseOver and mousePos.y - control.bounds.y <= self.RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT then
-		self.grabPos = mousePos - Vec2:temp( control.bounds.x, control.bounds.y )
+		self.grabPos = mousePos - Vector2:temp( control.bounds.x, control.bounds.y )
 
 		if control.callbacks.grab ~= nil then
 			control.callbacks.grab( control )
@@ -1843,17 +1843,17 @@ function Raygui:_addLastProperty( property )
 end
 
 function Raygui:drawTooltip()
-	local textSize = Vec2:tempT( RL.MeasureTextEx(
+	local textSize = Vector2:tempT( RL.MeasureTextEx(
 		self.defaultFont,
 		self.tooltip.text,
 		RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SIZE ),
 		RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING )
 	) )
-	local tooltipRect = Rect:new( self.tooltip.position.x, self.tooltip.position.y, textSize.x, textSize.y )
+	local tooltipRect = Rectangle:new( self.tooltip.position.x, self.tooltip.position.y, textSize.x, textSize.y )
 	local view = self.view:clone()
 	-- If no view size, clamp to window size.
 	if view.width == 0 or view.height == 0 then
-		local screenSize = Vec2:tempT( RL.GetScreenSize() )
+		local screenSize = Vector2:tempT( RL.GetScreenSize() )
 		view.width = screenSize.x
 		view.height = screenSize.y
 	end

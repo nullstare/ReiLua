@@ -3,8 +3,8 @@ if table.unpack == nil then
 	table.unpack = unpack
 end
 
-local Vector3 = require( "vector3" )
-local Matrix = require( "matrix" )
+local Vector3 = Vector3 or require( "vector3" )
+local Matrix = Matrix or require( "matrix" )
 
 local Quaternion = {}
 local metatable = {

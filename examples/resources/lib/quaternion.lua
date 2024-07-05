@@ -31,7 +31,7 @@ local metatable = {
 		return 4
 	end,
 	__eq = function( q1, q2 )
-		return RL.QuaternionEquals( q1, q2 ) == 1
+		return RL.QuaternionEquals( q1, q2 )
 	end,
 	__concat = function( a, b )
 		return tostring( a )..tostring( b )

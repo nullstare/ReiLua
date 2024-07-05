@@ -59,7 +59,7 @@ function WindowBox:new( bounds, text, callbacks, styles, tooltip )
 	object.bounds = bounds:clone()
 	object.text = text
 	object.callbacks = callbacks -- close, grab, drag.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.draggable = true
@@ -102,7 +102,7 @@ function GroupBox:new( bounds, text, styles, tooltip )
 	object.text = text
 	object.styles = styles
 	object.tooltip = tooltip
-	
+
 	object.visible = true
 	object.disabled = false
 
@@ -134,7 +134,7 @@ function Line:new( bounds, text, styles, tooltip )
 
 	object.bounds = bounds:clone()
 	object.text = text
-	
+
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -169,7 +169,7 @@ function Panel:new( bounds, text, callbacks, styles, tooltip )
 	object.bounds = bounds:clone()
 	object.text = text
 	object.callbacks = callbacks -- grab, drag.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.draggable = true
@@ -206,7 +206,7 @@ function GuiTabBar:new( bounds, text, active, callbacks, styles, tooltip )
 	object.text = text
 	object.active = active
 	object.callbacks = callbacks -- select, close, grab, drag.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -261,7 +261,7 @@ function ScrollPanel:new( bounds, text, content, scroll, callbacks, styles, tool
 	object.scroll = scroll:clone()
 	object.view = Rectangle:new( 0, 0, 0, 0 )
 	object.callbacks = callbacks -- scroll, grab, drag.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.draggable = true
@@ -310,7 +310,7 @@ function Label:new( bounds, text, styles, tooltip )
 
 	object.bounds = bounds:clone()
 	object.text = text
-	
+
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -345,7 +345,7 @@ function Button:new( bounds, text, callbacks, styles, tooltip )
 	object.bounds = bounds:clone()
 	object.text = text
 	object.callbacks = callbacks -- pressed.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -384,7 +384,7 @@ function LabelButton:new( bounds, text, callbacks, styles, tooltip )
 	object.bounds = bounds:clone()
 	object.text = text
 	object.callbacks = callbacks -- pressed.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -424,7 +424,7 @@ function Toggle:new( bounds, text, active, callbacks, styles, tooltip )
 	object.text = text
 	object.active = active
 	object.callbacks = callbacks -- pressed.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -473,7 +473,7 @@ function ToggleGroup:new( bounds, text, active, callbacks, styles, tooltip )
 	object.text = text
 	object.active = active
 	object.callbacks = callbacks -- select.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.focusBounds = {}
@@ -538,7 +538,7 @@ function ToggleGroup:draw()
 
 	if self.active ~= oldActive then
 		local inBounds = false
-	
+
 		for _, bounds in ipairs( self.focusBounds ) do
 			if self._gui:clickedInBounds( bounds ) then
 				inBounds = true
@@ -578,12 +578,12 @@ function CheckBox:new( bounds, text, checked, callbacks, styles, tooltip )
 	object.text = text
 	object.checked = checked
 	object.callbacks = callbacks -- pressed.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.textBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.focusBounds = bounds:clone()
-	
+
 	object._focusBoundsOffset = Vector2:new( 0, 0 ) -- Used in set position.
 	object.styles = styles
 	object.tooltip = tooltip
@@ -636,7 +636,7 @@ function ComboBox:new( bounds, text, active, callbacks, styles, tooltip )
 	object.text = text
 	object.active = active
 	object.callbacks = callbacks -- select.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -686,7 +686,7 @@ function DropdownBox:new( bounds, text, active, editMode, callbacks, styles, too
 	object.active = active
 	object.editMode = editMode
 	object.callbacks = callbacks -- select.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.editModeBounds = bounds:clone()
@@ -747,7 +747,7 @@ Spinner.__index = Spinner
 function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callbacks, styles, tooltip )
 	local object = setmetatable( {}, self )
 	object._gui = nil
-	
+
 	object.bounds = bounds:clone()
 	object.text = text
 	object.value = value
@@ -755,12 +755,12 @@ function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callbac
 	object.maxValue = maxValue
 	object.editMode = editMode
 	object.callbacks = callbacks -- edit.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.textBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
-	
+
 	object._viewBoundsOffset = Vector2:new( 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
@@ -818,7 +818,7 @@ ValueBox.__index = ValueBox
 function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callbacks, styles, tooltip )
 	local object = setmetatable( {}, self )
 	object._gui = nil
-	
+
 	object.bounds = bounds:clone()
 	object.text = text
 	object.value = value
@@ -826,12 +826,12 @@ function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callba
 	object.maxValue = maxValue
 	object.editMode = editMode
 	object.callbacks = callbacks -- edit.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.textBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
-	
+
 	object._viewBoundsOffset = Vector2:new( 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
@@ -938,7 +938,7 @@ Slider.__index = Slider
 function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, callbacks, styles, tooltip )
 	local object = setmetatable( {}, self )
 	object._gui = nil
-	
+
 	object.bounds = bounds:clone()
 	object.textLeft = textLeft
 	object.textRight = textRight
@@ -952,7 +952,7 @@ function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, cal
 	object.textLeftBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.textRightBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
-	
+
 	object._viewBoundsOffset = Vector2:new( 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
@@ -1010,13 +1010,13 @@ function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, 
 	object.minValue = minValue
 	object.maxValue = maxValue
 	object.callbacks = callbacks -- edit.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.textLeftBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.textRightBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
-	
+
 	object._viewBoundsOffset = Vector2:new( 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
@@ -1074,13 +1074,13 @@ function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue
 	object.minValue = minValue
 	object.maxValue = maxValue
 	object.callbacks = callbacks -- edit.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.textLeftBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.textRightBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
-	
+
 	object._viewBoundsOffset = Vector2:new( 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
@@ -1100,7 +1100,7 @@ function ProgressBar:draw()
 	self.textRightBounds:setT( textRightBounds )
 	self.viewBounds = self.bounds:fit( self.textLeftBounds ):fit( self.textRightBounds )
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
-	
+
 	if self.value ~= oldValue then
 		if not self._gui:clickedInBounds( self.bounds ) then
 			self.value = oldValue
@@ -1132,7 +1132,7 @@ function StatusBar:new( bounds, text, styles, tooltip )
 
 	object.bounds = bounds:clone()
 	object.text = text
-	
+
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -1166,7 +1166,7 @@ function DummyRec:new( bounds, text, styles, tooltip )
 
 	object.bounds = bounds:clone()
 	object.text = text
-	
+
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -1203,7 +1203,7 @@ function Grid:new( bounds, text, spacing, subdivs, callbacks, styles, tooltip )
 	object.spacing = spacing
 	object.subdivs = subdivs
 	object.callbacks = callbacks -- cellChange.
-	
+
 	object.mouseCell = Vector2:new( 0, 0 )
 	object.visible = true
 	object.disabled = false
@@ -1253,7 +1253,7 @@ function ListView:new( bounds, text, scrollIndex, active, callbacks, styles, too
 	object.scrollIndex = scrollIndex
 	object.active = active
 	object.callbacks = callbacks -- select.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -1305,7 +1305,7 @@ function ListViewEx:new( bounds, text, scrollIndex, active, focus, callbacks, st
 	object.active = active
 	object.focus = focus
 	object.callbacks = callbacks -- select.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -1356,7 +1356,7 @@ function MessageBox:new( bounds, title, message, buttons, callbacks, styles, too
 	object.message = message
 	object.buttons = buttons
 	object.callbacks = callbacks -- pressed, grab, drag.
-	
+
 	object.buttonIndex = -1
 	object.visible = true
 	object.disabled = false
@@ -1406,7 +1406,7 @@ function TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, s
 	object.textMaxSize = textMaxSize
 	object.secretViewActive = secretViewActive
 	object.callbacks = callbacks -- pressed, grab, drag.
-	
+
 	object.buttonIndex = -1
 	object.visible = true
 	object.disabled = false
@@ -1452,13 +1452,13 @@ function ColorPicker:new( bounds, text, color, callbacks, styles, tooltip )
 	object.text = text
 	object.color = color
 	object.callbacks = callbacks -- edit.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.focusBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.styles = styles
 	object.tooltip = tooltip
-	
+
 	object:updateFocusBounds()
 
 	return object
@@ -1518,7 +1518,7 @@ function ColorPanel:new( bounds, text, color, callbacks, styles, tooltip )
 	object.text = text
 	object.color = color
 	object.callbacks = callbacks -- edit.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -1568,7 +1568,7 @@ function ColorBarAlpha:new( bounds, text, alpha, callbacks, styles, tooltip )
 	object.text = text
 	object.alpha = alpha
 	object.callbacks = callbacks -- edit.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -1617,7 +1617,7 @@ function ColorBarHue:new( bounds, text, value, callbacks, styles, tooltip )
 	object.text = text
 	object.value = value
 	object.callbacks = callbacks -- edit.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -1667,7 +1667,7 @@ function GuiScrollBar:new( bounds, value, minValue, maxValue, callbacks, styles,
 	object.minValue = minValue
 	object.maxValue = maxValue
 	object.callbacks = callbacks -- edit.
-	
+
 	object.visible = true
 	object.disabled = false
 	object.styles = styles
@@ -1726,6 +1726,7 @@ function Raygui:new()
 	object.defaultRect = Rectangle:new( 0, 0, 1, 1 ) -- For texture.
 	object.defaultFont = RL.GuiGetFont()
 	object.mouseOffset = Vector2:new( 0, 0 )
+	object.mouseScale = Vector2:new( 1, 1 )
 	object.view = Rectangle:new( 0, 0, 0, 0 ) -- Active if larger than 0. Then only controls in view will be updated and drawn.
 	object.tooltip = {
 		text = nil,
@@ -1756,7 +1757,10 @@ function Raygui:update()
 		return
 	end
 	-- Set mouse offset if gui is for example embedded to some control.
+	local mouseOffset = RL.GetMouseOffset()
+	local mouseScale = RL.GetMouseScale()
 	RL.SetMouseOffset( self.mouseOffset )
+	RL.SetMouseScale( self.mouseScale )
 
 	if RL.IsMouseButtonPressed( RL.MOUSE_BUTTON_LEFT ) then
 		self._mousePressPos:setT( RL.GetMousePosition() )
@@ -1771,15 +1775,15 @@ function Raygui:update()
 		if control.visible and control.update ~= nil and self:inView( control ) then
 			if control:update() then
 				self.focused = i
-				
+
 				if i ~= self.tooltip.focused then
 					self.tooltip.focused = -1 -- Note that we don't want it to be 0, same as self.focus.
 					self.tooltip.timer = 0.0
 				end
-				
+
 				if control.tooltip ~= nil then
 					self.tooltip.focused = i
-					
+
 					if self.tooltip.timer < self.tooltip.delay then
 						self.tooltip.timer = self.tooltip.timer + RL.GetFrameTime()
 					else
@@ -1798,7 +1802,8 @@ function Raygui:update()
 		self.tooltip.timer = 0.0
 	end
 
-	RL.SetMouseOffset( { 0, 0 } )
+	RL.SetMouseOffset( mouseOffset )
+	RL.SetMouseScale( mouseScale )
 end
 
 function Raygui:drag( control )
@@ -1883,7 +1888,10 @@ function Raygui:draw()
 	end
 
 	-- Set mouse offset if gui is for example embedded to some control.
+	local mouseOffset = RL.GetMouseOffset()
+	local mouseScale = RL.GetMouseScale()
 	RL.SetMouseOffset( self.mouseOffset )
+	RL.SetMouseScale( self.mouseScale )
 
 	for i, control in ipairs( self.controls ) do
 		if not self.locked and not self.disabled and i == self.focused then
@@ -1911,7 +1919,8 @@ function Raygui:draw()
 
 	RL.GuiUnlock()
 	RL.GuiEnable()
-	RL.SetMouseOffset( { 0, 0 } )
+	RL.SetMouseOffset( mouseOffset )
+	RL.SetMouseScale( mouseScale )
 end
 
 function Raygui:checkScrolling()

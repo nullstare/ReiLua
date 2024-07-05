@@ -1897,7 +1897,7 @@ Returns hexadecimal value for a Color
 int ltexturesColorToInt( lua_State* L ) {
 	Color color = uluaGetColor( L, 1 );
 
-	lua_pushinteger( L, ColorToInt( color ) );
+	lua_pushinteger( L, (unsigned int)ColorToInt( color ) );
 
 	return 1;
 }

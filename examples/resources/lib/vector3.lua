@@ -36,7 +36,7 @@ local metatable = {
 		return 3
 	end,
 	__eq = function( v1, v2 )
-		return RL.Vector3Equals( v1, v2 ) == 1
+		return RL.Vector3Equals( v1, v2 )
 	end,
 	__concat = function( a, b )
 		return tostring( a )..tostring( b )

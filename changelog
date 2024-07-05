@@ -61,6 +61,8 @@ DETAILED CHANGES:
 	- FIXED: GuiGetIcons was returning just first int. Now returns a Buffer.
 	- ADDED: GuiSetIcons.
 	- ADDED: GetMouseOffset and GetMouseScale.
+	- CHANGE: Raymath *Equals functions return bool instead of int.
+	- FIXED: ColorToInt cast to unsigned int.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

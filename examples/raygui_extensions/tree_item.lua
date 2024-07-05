@@ -42,7 +42,7 @@ function TreeItem:setOpenIcon()
 end
 
 function TreeItem:draw()
-	local buttonRect = Rect:new( 0, 0, 0, 0 )
+	local buttonRect = Rectangle:new( 0, 0, 0, 0 )
 	local hasContainer = 0 < #self.controls
 	local lineCol = RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.LINE_COLOR ) )
 
@@ -59,7 +59,7 @@ function TreeItem:draw()
 		}, lineCol )
 	end
 
-	local toggleRect = Rect:new( 
+	local toggleRect = Rectangle:new( 
 		self.bounds.x + buttonRect.width,
 		self.bounds.y,
 		self.bounds.width - buttonRect.width,

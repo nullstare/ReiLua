@@ -8395,7 +8395,7 @@ Wrap input value from min to max
 
 Check whether two given floats are almost equal
 
-- Success return int
+- Success return bool
 
 ---
 
@@ -8619,7 +8619,7 @@ Clamp the magnitude of the vector between two min and max values
 
 Check whether two given vectors are almost equal
 
-- Success return int
+- Success return bool
 
 ---
 
@@ -8907,7 +8907,7 @@ Clamp the magnitude of the vector between two values
 
 Check whether two given vectors are almost equal
 
-- Success return int
+- Success return bool
 
 ---
 
@@ -9275,7 +9275,7 @@ Transform a quaternion given a transformation matrix
 
 Check whether two given quaternions are almost equal
 
-- Success return int
+- Success return bool
 
 ---
 

@@ -2,10 +2,9 @@ package.path = package.path..";"..RL.GetBasePath().."?.lua"
 package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
 Util = require( "utillib" )
-Rect = require( "rectangle" )
-Vec2 = require( "vector2" )
+Vector2 = require( "vector2" )
 Color = require( "color" )
-Rect = require( "rectangle" )
+Rectangle = require( "rectangle" )
 Raygui = require( "raygui" )
 
 require( "sprite_button" ):register( Raygui )
@@ -16,12 +15,12 @@ require( "tree_item" ):register( Raygui )
 Gui = Raygui:new()
 
 local buttonTexture = nil
-local winSize = Vec2:new( 1024, 720 )
+local winSize = Vector2:new( 1024, 720 )
 local cat = {
 	texture = nil,
-	source = Rect:new( 0, 0, 0, 0 ),
-	dest = Rect:new( 0, 0, 0, 0 ),
-	origin = Vec2:new( 0, 0 ),
+	source = Rectangle:new( 0, 0, 0, 0 ),
+	dest = Rectangle:new( 0, 0, 0, 0 ),
+	origin = Vector2:new( 0, 0 ),
 	rotation = 0.0,
 	tint = Color:newT( RL.WHITE ),
 	visible = true,
@@ -52,8 +51,8 @@ end
 local function addSpriteButtons()
 	buttonTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/button.png" )
 	
-	local buttonSize = Vec2:new( 216, 32 )
-	local bounds = Rect:new( winSize.x / 2 - buttonSize.x / 2, 200, 216, 32 )
+	local buttonSize = Vector2:new( 216, 32 )
+	local bounds = Rectangle:new( winSize.x / 2 - buttonSize.x / 2, 200, 216, 32 )
 	local gap = buttonSize.y + 2
 	addButton( bounds, "Start New Game", { pressed = function() print( "New Game!" ) end } )
 	bounds.y = bounds.y + gap
@@ -72,7 +71,7 @@ end
 
 local function addPropertyList()
 	PropertyList = Gui:PropertyList(
-		Rect:new( 20, 20, 256, 328 ),
+		Rectangle:new( 20, 20, 256, 328 ),
 		"Property List",
 		{ -- Callbacks.
 			grab = function( self ) Gui:setToTop( self ) end,
@@ -88,7 +87,7 @@ local function addPropertyList()
 	RL.GuiSetStyle( RL.SPINNER, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT )
 
 	PropertyList:addControl( PropertyList.gui:Line(
-		Rect:new( 0, 0, 0, 0 ),
+		Rectangle:new( 0, 0, 0, 0 ),
 		"Cat Texture"
 	) )
 
@@ -98,11 +97,11 @@ local function addPropertyList()
 
 	-- Position.
 	PropertyList:addControl( PropertyList.gui:Label(
-		Rect:new( 0, 0, 0, 0 ),
+		Rectangle:new( 0, 0, 0, 0 ),
 		"Position:"
 	), transformGroup )
 	PropertyList:addControl( PropertyList.gui:TextBox(
-		Rect:new( 0, 0, 64, 22 ),
+		Rectangle:new( 0, 0, 64, 22 ),
 		cat.dest.x,
 		32,
 		false,
@@ -117,7 +116,7 @@ local function addPropertyList()
 		"Position X"
 	), transformGroup, true )
 	PropertyList:addControl( PropertyList.gui:TextBox(
-		Rect:new( 74, 0, 64, 22 ),
+		Rectangle:new( 74, 0, 64, 22 ),
 		cat.dest.y,
 		32,
 		false,
@@ -133,11 +132,11 @@ local function addPropertyList()
 	), transformGroup )
 	-- Origin.
 	PropertyList:addControl( PropertyList.gui:Label(
-		Rect:new( 0, 0, 0, 0 ),
+		Rectangle:new( 0, 0, 0, 0 ),
 		"Origin:"
 	), transformGroup )
 	PropertyList:addControl( PropertyList.gui:TextBox(
-		Rect:new( 0, 0, 64, 22 ),
+		Rectangle:new( 0, 0, 64, 22 ),
 		cat.dest.x,
 		32,
 		false,
@@ -152,7 +151,7 @@ local function addPropertyList()
 		"Origin X"
 	), transformGroup, true )
 	PropertyList:addControl( PropertyList.gui:TextBox(
-		Rect:new( 74, 0, 64, 22 ),
+		Rectangle:new( 74, 0, 64, 22 ),
 		cat.dest.y,
 		32,
 		false,
@@ -168,7 +167,7 @@ local function addPropertyList()
 	), transformGroup )
 	-- Rotation.
 	PropertyList:addControl( PropertyList.gui:Slider(
-		Rect:new( 60, 0, PropertyList.defaultControlSize.x - 150, 22 ),
+		Rectangle:new( 60, 0, PropertyList.defaultControlSize.x - 150, 22 ),
 		"Rotation",
 		"0",
 		0,
@@ -186,7 +185,7 @@ local function addPropertyList()
 	), transformGroup )
 	-- Flipped.
 	PropertyList:addControl( PropertyList.gui:CheckBox(
-		Rect:new( 0, 0, 20, 20 ),
+		Rectangle:new( 0, 0, 20, 20 ),
 		"Flipped",
 		cat.flipped,
 		{ -- Callbacks.
@@ -201,7 +200,7 @@ local function addPropertyList()
 	local visibilityGroup = PropertyList:addGroup( "Visibility", false )
 
 	PropertyList:addControl( PropertyList.gui:CheckBox(
-		Rect:new( 0, 0, 20, 20 ),
+		Rectangle:new( 0, 0, 20, 20 ),
 		"Visible",
 		cat.visible,
 		{ -- Callbacks.
@@ -217,7 +216,7 @@ local function addPropertyList()
 	local tintGroup = PropertyList:addGroup( "Tint", false, visibilityGroup )
 
 	PropertyList:addControl( PropertyList.gui:ColorPicker(
-		Rect:new( 0, 0, 128, 128 ),
+		Rectangle:new( 0, 0, 128, 128 ),
 		"Color Picker",
 		Color:new( 255, 255, 255, 255 ),
 		{ -- Callbacks.
@@ -226,12 +225,12 @@ local function addPropertyList()
 	), tintGroup )
 
 	PropertyList:addControl( PropertyList.gui:Line(
-		Rect:new( 0, 0, 0, 0 ),
+		Rectangle:new( 0, 0, 0, 0 ),
 		"Testing"
 	) )
 
 	PropertyList:addControl( PropertyList.gui:DropdownBox(
-		Rect:new( 0, 0, 0, 0 ),
+		Rectangle:new( 0, 0, 0, 0 ),
 		"Dog\nGiraffe\nLion\nHorse",
 		0,
 		false,
@@ -244,7 +243,7 @@ local function addPropertyList()
 
 	for i = 1, 5 do
 		PropertyList:addControl( PropertyList.gui:CheckBox(
-			Rect:new( 128, 0, 20, 20 ),
+			Rectangle:new( 128, 0, 20, 20 ),
 			i.."_Visible",
 			false,
 			{ -- Callbacks.
@@ -268,7 +267,7 @@ end
 
 local function addTreeView()
 	TreeView = Gui:TreeView(
-		Rect:new( 600, 20, 256, 328 ),
+		Rectangle:new( 600, 20, 256, 328 ),
 		"Tree View",
 		{ -- Callbacks.
 			select = function( controls ) selected( controls ) end,
@@ -298,8 +297,8 @@ end
 
 function RL.init()
 	local monitor = 0
-	local mPos = Vec2:newT( RL.GetMonitorPosition( monitor ) )
-	local mSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
+	local mPos = Vector2:newT( RL.GetMonitorPosition( monitor ) )
+	local mSize = Vector2:newT( RL.GetMonitorSize( monitor ) )
 
 	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
@@ -312,7 +311,7 @@ function RL.init()
 	-- RL.GuiSetStyle( RL.SPINNER, RL.TEXT_PADDING, 2 )
 
 	cat.texture = RL.LoadTexture( RL.GetBasePath().."../resources/images/cat.png" )
-	local texSize = Vec2:newT( RL.GetTextureSize( cat.texture ) )
+	local texSize = Vector2:newT( RL.GetTextureSize( cat.texture ) )
 	cat.source:set( 0, 0, texSize.x, texSize.y )
 	cat.dest = cat.source:clone()
 

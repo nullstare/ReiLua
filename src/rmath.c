@@ -137,13 +137,13 @@ int lmathWrap( lua_State* L ) {
 
 Check whether two given floats are almost equal
 
-- Success return int
+- Success return bool
 */
 int lmathFloatEquals( lua_State* L ) {
 	float x = luaL_checknumber( L, 1 );
 	float y = luaL_checknumber( L, 2 );
 
-	lua_pushinteger( L, FloatEquals( x, y ) );
+	lua_pushboolean( L, FloatEquals( x, y ) == 1 );
 
 	return 1;
 }
@@ -570,13 +570,13 @@ int lmathVector2ClampValue( lua_State* L ) {
 
 Check whether two given vectors are almost equal
 
-- Success return int
+- Success return bool
 */
 int lmathVector2Equals( lua_State* L ) {
 	Vector2 v1 = uluaGetVector2( L, 1 );
 	Vector2 v2 = uluaGetVector2( L, 2 );
 
-	lua_pushinteger( L, Vector2Equals( v1, v2 ) );
+	lua_pushboolean( L, Vector2Equals( v1, v2 ) == 1 );
 
 	return 1;
 }
@@ -1136,13 +1136,13 @@ int lmathVector3ClampValue( lua_State* L ) {
 
 Check whether two given vectors are almost equal
 
-- Success return int
+- Success return bool
 */
 int lmathVector3Equals( lua_State* L ) {
 	Vector3 v1 = uluaGetVector3( L, 1 );
 	Vector3 v2 = uluaGetVector3( L, 2 );
 
-	lua_pushinteger( L, Vector3Equals( v1, v2 ) );
+	lua_pushboolean( L, Vector3Equals( v1, v2 ) == 1 );
 
 	return 1;
 }
@@ -1853,13 +1853,13 @@ int lmathQuaternionTransform( lua_State* L ) {
 
 Check whether two given quaternions are almost equal
 
-- Success return int
+- Success return bool
 */
 int lmathQuaternionEquals( lua_State* L ) {
 	Quaternion q1 = uluaGetQuaternion( L, 1 );
 	Quaternion q2 = uluaGetQuaternion( L, 2 );
 
-	lua_pushinteger( L, QuaternionEquals( q1, q2 ) );
+	lua_pushboolean( L, QuaternionEquals( q1, q2 ) == 1 );
 
 	return 1;
 }

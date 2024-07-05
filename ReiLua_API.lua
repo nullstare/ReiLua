@@ -5470,7 +5470,7 @@ function RL.Remap( value, inputStart, inputEnd, outputStart, outputEnd ) end
 function RL.Wrap( value, min, max ) end
 
 ---Check whether two given floats are almost equal
----- Success return int
+---- Success return bool
 ---@param x number
 ---@param y number
 ---@return any result 
@@ -5660,7 +5660,7 @@ function RL.Vector2Clamp( v, min, max ) end
 function RL.Vector2ClampValue( v, min, max ) end
 
 ---Check whether two given vectors are almost equal
----- Success return int
+---- Success return bool
 ---@param v1 table
 ---@param v2 table
 ---@return any result 
@@ -5909,7 +5909,7 @@ function RL.Vector3Clamp( v, min, max ) end
 function RL.Vector3ClampValue( v, min, max ) end
 
 ---Check whether two given vectors are almost equal
----- Success return int
+---- Success return bool
 ---@param v1 table
 ---@param v2 table
 ---@return any result 
@@ -6224,7 +6224,7 @@ function RL.QuaternionToEuler( q ) end
 function RL.QuaternionTransform( q, mat ) end
 
 ---Check whether two given quaternions are almost equal
----- Success return int
+---- Success return bool
 ---@param q1 table
 ---@param q2 table
 ---@return any result 

@@ -10,8 +10,8 @@ function PropertyList:new( bounds, text, callbacks, styles, tooltip )
 
     object.bounds = bounds:clone()
     object.text = text
-    object.scroll = Vec2:new( 0, 0 )
-	object.view = Rect:new( 0, 0, 0, 0 )
+    object.scroll = Vector2:new( 0, 0 )
+	object.view = Rectangle:new( 0, 0, 0, 0 )
     object.callbacks = callbacks -- scroll, grab, drag.
 	object.styles = styles
 	object.tooltip = tooltip
@@ -28,9 +28,8 @@ function PropertyList:new( bounds, text, callbacks, styles, tooltip )
 	object.disabled = false
 	object.draggable = true
 	object.defaultControlHeight = 22
-	object.mouseScale = 1 -- Set this if drawing in different size to render texture for example.
 
-	object:setSize( Vec2:new( object.bounds.width, object.bounds.height ) )
+	object:setSize( Vector2:new( object.bounds.width, object.bounds.height ) )
 
 	object._forceCheckScroll = false
 	object._posY = 0 -- In control list update.
@@ -41,7 +40,7 @@ function PropertyList:new( bounds, text, callbacks, styles, tooltip )
 end
 
 function PropertyList:getDefaultBounds()
-	return Rect:new( self.padding, self.padding, self.defaultControlSize.x, self.defaultControlSize.y )
+	return Rectangle:new( self.padding, self.padding, self.defaultControlSize.x, self.defaultControlSize.y )
 end
 
 local function getControlBounds( control )
@@ -65,7 +64,7 @@ function PropertyList:updateControl( control )
 	end
 
 	if control.visible then
-		control:setPosition( Vec2:new( control.bounds.x, self._posY ) )
+		control:setPosition( Vector2:new( control.bounds.x, self._posY ) )
 		local bounds = getControlBounds( control )
 
 		if not control._noYAdvance then
@@ -206,18 +205,26 @@ function PropertyList:draw()
 		{ math.floor( self.view.x ), math.floor( self.view.y ), self.view.width, self.view.height },
 		{ 0, 0 },
 		0.0,
-		RL.WHITE 
+		RL.WHITE
 	)
 end
 
 function PropertyList:updateMouseOffset()
-	self.gui.mouseOffset = Vec2:new( -self.view.x - self.scroll.x, -self.view.y - self.scroll.y ):scale( self.mouseScale )
+	if self._gui then
+		self.gui.mouseScale = self._gui.mouseScale
+		local mouseScale = Vector2:temp( 1, 1 ) / self.gui.mouseScale
+
+		self.gui.mouseOffset = self._gui.mouseOffset + ( -Vector2:temp( self.view.x, self.view.y ) - self.scroll ) * mouseScale
+	end
 end
 
 function PropertyList:setPosition( pos )
 	self.bounds.x = pos.x
 	self.bounds.y = pos.y
 
+	if self.visible then
+		self:draw() -- Update self.view.
+	end
 	self:updateMouseOffset()
 end
 
@@ -228,19 +235,19 @@ function PropertyList:setSize( size )
 	local scrollBarWidth = RL.GuiGetStyle( RL.LISTVIEW, RL.SCROLLBAR_WIDTH )
 	local borderWidth = RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_WIDTH )
 
-	self.content = Rect:new( 
+	self.content = Rectangle:new(
 		0,
 		self.gui.RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT,
 		self.bounds.width - scrollBarWidth - self.padding * 2 - borderWidth * 2,
 		self.bounds.height - scrollBarWidth - self.padding * 2 - borderWidth * 2
 	)
-	self.defaultControlSize = Vec2:new( self.content.width, self.defaultControlHeight )
+	self.defaultControlSize = Vector2:new( self.content.width, self.defaultControlHeight )
 
 	local _, _, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
-	self.view = Rect:newT( view )
+	self.view = Rectangle:newT( view )
 
-	self.gui.view = Rect:new( 0, 0, self.view.width, self.view.height )
-	self.framebufferSize = Vec2:new( self.bounds.width, self.bounds.height - self.gui.RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT )
+	self.gui.view = Rectangle:new( 0, 0, self.view.width, self.view.height )
+	self.framebufferSize = Vector2:new( self.bounds.width, self.bounds.height - self.gui.RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT )
 
 	if self.framebuffer ~= nil and not RL.IsGCUnloadEnabled() then
 		RL.UnloadRenderTexture( self.framebuffer )

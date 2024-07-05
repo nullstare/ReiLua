@@ -33,10 +33,10 @@ local metatable = {
 		return 4
 	end,
 	__eq = function( c1, c2 )
-		return math.floor( c1.r ) == math.floor( c2.r )
-		and math.floor( c1.g ) == math.floor( c2.g )
-		and math.floor( c1.b ) == math.floor( c2.b )
-		and math.floor( c1.a ) == math.floor( c2.a )
+		return RL.FloatEquals( c1.r, c2.r )
+		and RL.FloatEquals( c1.g, c2.g )
+		and RL.FloatEquals( c1.b, c2.b )
+		and RL.FloatEquals( c1.a, c2.a )
 	end,
 	__concat = function( a, b )
 		return tostring( a )..tostring( b )
@@ -161,6 +161,15 @@ function Color:lerp( color, amount )
 		RL.Lerp( self.g, color.g, amount ),
 		RL.Lerp( self.b, color.b, amount ),
 		RL.Lerp( self.a, color.a, amount )
+	)
+end
+
+function Color:round()
+	return Color:new(
+		RL.Round( self.r ),
+		RL.Round( self.g ),
+		RL.Round( self.b ),
+		RL.Round( self.a )
 	)
 end
 

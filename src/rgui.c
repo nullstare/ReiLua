@@ -7,6 +7,15 @@
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 
+inline char* getTextOrNil( lua_State* L, int index ) {
+	char* text = NULL;
+
+	if ( lua_isstring( L, index ) ) {
+		text = (char*)lua_tostring( L, index );
+	}
+	return text;
+}
+
 /*
 ## Gui - Global gui state control functions
 */
@@ -254,7 +263,7 @@ int lguiGuiSetTooltip( lua_State* L ) {
 */
 
 /*
-> text = RL.GuiIconText( int iconId, string text )
+> text = RL.GuiIconText( int iconId, string|nil text )
 
 Get text with icon id prepended (if supported)
 
@@ -262,13 +271,9 @@ Get text with icon id prepended (if supported)
 */
 int lguiGuiIconText( lua_State* L ) {
 	int iconId = luaL_checkinteger( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 
-	if ( TextIsEqual( luaL_checkstring( L, 2 ), "" ) ) {
-		lua_pushstring( L, GuiIconText( iconId, NULL ) );
-	}
-	else {
-		lua_pushstring( L, GuiIconText( iconId, luaL_checkstring( L, 2 ) ) );
-	}
+	lua_pushstring( L, GuiIconText( iconId, text ) );
 
 	return 1;
 }
@@ -386,7 +391,7 @@ int lguiGuiDrawIcon( lua_State* L ) {
 */
 
 /*
-> result = RL.GuiWindowBox( Rectangle bounds, string title )
+> result = RL.GuiWindowBox( Rectangle bounds, string|nil title )
 
 Window Box control, shows a window that can be closed
 
@@ -394,14 +399,15 @@ Window Box control, shows a window that can be closed
 */
 int lguiGuiWindowBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* title = getTextOrNil( L, 2 );
 
-	lua_pushinteger( L, GuiWindowBox( bounds, luaL_checkstring( L, 2 ) ) );
+	lua_pushinteger( L, GuiWindowBox( bounds, title ) );
 
 	return 1;
 }
 
 /*
-> result = RL.GuiGroupBox( Rectangle bounds, string text )
+> result = RL.GuiGroupBox( Rectangle bounds, string|nil text )
 
 Group Box control with text name
 
@@ -409,14 +415,15 @@ Group Box control with text name
 */
 int lguiGuiGroupBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 
-	lua_pushinteger( L, GuiGroupBox( bounds, luaL_checkstring( L, 2 ) ) );
+	lua_pushinteger( L, GuiGroupBox( bounds, text ) );
 
 	return 1;
 }
 
 /*
-> result = RL.GuiLine( Rectangle bounds, string text )
+> result = RL.GuiLine( Rectangle bounds, string|nil text )
 
 Line separator control, could contain text
 
@@ -424,14 +431,15 @@ Line separator control, could contain text
 */
 int lguiGuiLine( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 
-	lua_pushinteger( L, GuiLine( bounds, luaL_checkstring( L, 2 ) ) );
+	lua_pushinteger( L, GuiLine( bounds, text ) );
 
 	return 1;
 }
 
 /*
-> result = RL.GuiPanel( Rectangle bounds, string text )
+> result = RL.GuiPanel( Rectangle bounds, string|nil text )
 
 Panel control, useful to group controls
 
@@ -439,8 +447,9 @@ Panel control, useful to group controls
 */
 int lguiGuiPanel( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 
-	lua_pushinteger( L, GuiPanel( bounds, luaL_checkstring( L, 2 ) ) );
+	lua_pushinteger( L, GuiPanel( bounds, text ) );
 
 	return 1;
 }
@@ -466,7 +475,7 @@ int lguiGuiTabBar( lua_State* L ) {
 }
 
 /*
-> result, scroll, view = RL.GuiScrollPanel( Rectangle bounds, string text, Rectangle content, Vector2 scroll, Rectangle view )
+> result, scroll, view = RL.GuiScrollPanel( Rectangle bounds, string|nil text, Rectangle content, Vector2 scroll, Rectangle view )
 
 Scroll Panel control
 
@@ -474,11 +483,12 @@ Scroll Panel control
 */
 int lguiGuiScrollPanel( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 	Rectangle content = uluaGetRectangle( L, 3 );
 	Vector2 scroll = uluaGetVector2( L, 4 );
 	Rectangle view = uluaGetRectangle( L, 5 );
 
-	lua_pushinteger( L, GuiScrollPanel( bounds, luaL_checkstring( L, 2 ), content, &scroll, &view ) );
+	lua_pushinteger( L, GuiScrollPanel( bounds, text, content, &scroll, &view ) );
 	uluaPushVector2( L, scroll );
 	uluaPushRectangle( L, view );
 
@@ -490,7 +500,7 @@ int lguiGuiScrollPanel( lua_State* L ) {
 */
 
 /*
-> result = RL.GuiLabel( Rectangle bounds, string text )
+> result = RL.GuiLabel( Rectangle bounds, string|nil text )
 
 Label control, shows text
 
@@ -498,14 +508,15 @@ Label control, shows text
 */
 int lguiGuiLabel( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 
-	lua_pushinteger( L, GuiLabel( bounds, luaL_checkstring( L, 2 ) ) );
+	lua_pushinteger( L, GuiLabel( bounds, text ) );
 
 	return 1;
 }
 
 /*
-> result = RL.GuiButton( Rectangle bounds, string text )
+> result = RL.GuiButton( Rectangle bounds, string|nil text )
 
 Button control, returns true when clicked
 
@@ -513,14 +524,15 @@ Button control, returns true when clicked
 */
 int lguiGuiButton( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 
-	lua_pushinteger( L, GuiButton( bounds, luaL_checkstring( L, 2 ) ) );
+	lua_pushinteger( L, GuiButton( bounds, text ) );
 
 	return 1;
 }
 
 /*
-> result = RL.GuiLabelButton( Rectangle bounds, string text )
+> result = RL.GuiLabelButton( Rectangle bounds, string|nil text )
 
 Label button control, show true when clicked
 
@@ -528,14 +540,15 @@ Label button control, show true when clicked
 */
 int lguiGuiLabelButton( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 
-	lua_pushinteger( L, GuiLabelButton( bounds, luaL_checkstring( L, 2 ) ) );
+	lua_pushinteger( L, GuiLabelButton( bounds, text ) );
 
 	return 1;
 }
 
 /*
-> result, active = RL.GuiToggle( Rectangle bounds, string text, bool active )
+> result, active = RL.GuiToggle( Rectangle bounds, string|nil text, bool active )
 
 Toggle Button control, returns true when active
 
@@ -543,16 +556,17 @@ Toggle Button control, returns true when active
 */
 int lguiGuiToggle( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 	bool active = uluaGetBoolean( L, 3 );
 
-	lua_pushinteger( L, GuiToggle( bounds, luaL_checkstring( L, 2 ), &active ) );
+	lua_pushinteger( L, GuiToggle( bounds, text, &active ) );
 	lua_pushboolean( L, active );
 
 	return 2;
 }
 
 /*
-> result, active = RL.GuiToggleGroup( Rectangle bounds, string text, int active )
+> result, active = RL.GuiToggleGroup( Rectangle bounds, string|nil text, int active )
 
 Toggle Group control, returns active toggle index
 
@@ -560,16 +574,17 @@ Toggle Group control, returns active toggle index
 */
 int lguiGuiToggleGroup( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 	int active = luaL_checkinteger( L, 3 );
 
-	lua_pushinteger( L, GuiToggleGroup( bounds, luaL_checkstring( L, 2 ), &active ) );
+	lua_pushinteger( L, GuiToggleGroup( bounds, text, &active ) );
 	lua_pushinteger( L, active );
 
 	return 2;
 }
 
 /*
-> result, active = RL.GuiToggleSlider( Rectangle bounds, string text, int active )
+> result, active = RL.GuiToggleSlider( Rectangle bounds, string|nil text, int active )
 
 Toggle Slider control, returns true when clicked
 
@@ -577,16 +592,17 @@ Toggle Slider control, returns true when clicked
 */
 int lguiGuiToggleSlider( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 	int active = luaL_checkinteger( L, 3 );
 
-	lua_pushinteger( L, GuiToggleSlider( bounds, luaL_checkstring( L, 2 ), &active ) );
+	lua_pushinteger( L, GuiToggleSlider( bounds, text, &active ) );
 	lua_pushinteger( L, active );
 
 	return 2;
 }
 
 /*
-> result, checked, textBounds = RL.GuiCheckBox( Rectangle bounds, string text, bool checked )
+> result, checked, textBounds = RL.GuiCheckBox( Rectangle bounds, string|nil text, bool checked )
 
 Check Box control, returns true when active
 
@@ -594,10 +610,11 @@ Check Box control, returns true when active
 */
 int lguiGuiCheckBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 	bool checked = uluaGetBoolean( L, 3 );
 
 	Rectangle textBounds = {};
-	lua_pushinteger( L, GuiCheckBox( bounds, luaL_checkstring( L, 2 ), &checked, &textBounds ) );
+	lua_pushinteger( L, GuiCheckBox( bounds, text, &checked, &textBounds ) );
 	lua_pushboolean( L, checked );
 	uluaPushRectangle( L, textBounds );
 
@@ -605,7 +622,7 @@ int lguiGuiCheckBox( lua_State* L ) {
 }
 
 /*
-> result, active = RL.GuiComboBox( Rectangle bounds, string text, int active )
+> result, active = RL.GuiComboBox( Rectangle bounds, string|nil text, int active )
 
 Combo Box control, returns selected item index
 
@@ -613,9 +630,10 @@ Combo Box control, returns selected item index
 */
 int lguiGuiComboBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 	int active = luaL_checkinteger( L, 3 );
 
-	lua_pushinteger( L, GuiComboBox( bounds, luaL_checkstring( L, 2 ), &active ) );
+	lua_pushinteger( L, GuiComboBox( bounds, text, &active ) );
 	lua_pushinteger( L, active );
 
 	return 2;
@@ -630,17 +648,18 @@ Dropdown Box control, returns selected item
 */
 int lguiGuiDropdownBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	const char* text = luaL_checkstring( L, 2 );
 	int active = luaL_checkinteger( L, 3 );
 	bool editMode = uluaGetBoolean( L, 4 );
 
-	lua_pushinteger( L, GuiDropdownBox( bounds, luaL_checkstring( L, 2 ), &active, editMode ) );
+	lua_pushinteger( L, GuiDropdownBox( bounds, text, &active, editMode ) );
 	lua_pushinteger( L, active );
 
 	return 2;
 }
 
 /*
-> result, value, textBounds = RL.GuiSpinner( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )
+> result, value, textBounds = RL.GuiSpinner( Rectangle bounds, string|nil text, int value, int minValue, int maxValue, bool editMode )
 
 Spinner control, returns selected value
 
@@ -648,13 +667,14 @@ Spinner control, returns selected value
 */
 int lguiGuiSpinner( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 	int value = luaL_checkinteger( L, 3 );
 	int minValue = luaL_checkinteger( L, 4 );
 	int maxValue = luaL_checkinteger( L, 5 );
 	bool editMode = uluaGetBoolean( L, 6 );
 
 	Rectangle textBounds = { 0 };
-	lua_pushinteger( L, GuiSpinner( bounds, luaL_checkstring( L, 2 ), &value, minValue, maxValue, editMode, &textBounds ) );
+	lua_pushinteger( L, GuiSpinner( bounds, text, &value, minValue, maxValue, editMode, &textBounds ) );
 	lua_pushinteger( L, value );
 	uluaPushRectangle( L, textBounds );
 
@@ -662,7 +682,7 @@ int lguiGuiSpinner( lua_State* L ) {
 }
 
 /*
-> result, value, textBounds = RL.GuiValueBox( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )
+> result, value, textBounds = RL.GuiValueBox( Rectangle bounds, string|nil text, int value, int minValue, int maxValue, bool editMode )
 
 Value Box control, updates input text with numbers
 
@@ -670,13 +690,14 @@ Value Box control, updates input text with numbers
 */
 int lguiGuiValueBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 	int value = luaL_checkinteger( L, 3 );
 	int minValue = luaL_checkinteger( L, 4 );
 	int maxValue = luaL_checkinteger( L, 5 );
 	bool editMode = uluaGetBoolean( L, 6 );
 
 	Rectangle textBounds = { 0 };
-	lua_pushinteger( L, GuiValueBox( bounds, luaL_checkstring( L, 2 ), &value, minValue, maxValue, editMode, &textBounds ) );
+	lua_pushinteger( L, GuiValueBox( bounds, text, &value, minValue, maxValue, editMode, &textBounds ) );
 	lua_pushinteger( L, value );
 	uluaPushRectangle( L, textBounds );
 
@@ -704,7 +725,7 @@ int lguiGuiTextBox( lua_State* L ) {
 }
 
 /*
-> result, value, textLeftBounds, textRightBounds = RL.GuiSlider( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
+> result, value, textLeftBounds, textRightBounds = RL.GuiSlider( Rectangle bounds, string|nil textLeft, string|nil textRight, float value, float minValue, float maxValue )
 
 Slider control, returns selected value
 
@@ -712,13 +733,15 @@ Slider control, returns selected value
 */
 int lguiGuiSlider( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* textLeft = getTextOrNil( L, 2 );
+	char* textRight = getTextOrNil( L, 3 );
 	float value = luaL_checknumber( L, 4 );
 	float minValue = luaL_checknumber( L, 5 );
 	float maxValue = luaL_checknumber( L, 6 );
 
 	Rectangle textLeftBounds = { 0 };
 	Rectangle textRightBounds = { 0 };
-	lua_pushinteger( L, GuiSlider( bounds, luaL_checkstring( L, 2 ), luaL_checkstring( L, 3 ), &value, minValue, maxValue, &textLeftBounds, &textRightBounds ) );
+	lua_pushinteger( L, GuiSlider( bounds, textLeft, textRight, &value, minValue, maxValue, &textLeftBounds, &textRightBounds ) );
 	lua_pushnumber( L, value );
 	uluaPushRectangle( L, textLeftBounds );
 	uluaPushRectangle( L, textRightBounds );
@@ -727,7 +750,7 @@ int lguiGuiSlider( lua_State* L ) {
 }
 
 /*
-> result, value, textLeftBounds, textRightBounds = RL.GuiSliderBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
+> result, value, textLeftBounds, textRightBounds = RL.GuiSliderBar( Rectangle bounds, string|nil textLeft, string|nil textRight, float value, float minValue, float maxValue )
 
 Slider Bar control, returns selected value
 
@@ -735,13 +758,15 @@ Slider Bar control, returns selected value
 */
 int lguiGuiSliderBar( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* textLeft = getTextOrNil( L, 2 );
+	char* textRight = getTextOrNil( L, 3 );
 	float value = luaL_checknumber( L, 4 );
 	float minValue = luaL_checknumber( L, 5 );
 	float maxValue = luaL_checknumber( L, 6 );
 
 	Rectangle textLeftBounds = { 0 };
 	Rectangle textRightBounds = { 0 };
-	lua_pushinteger( L, GuiSliderBar( bounds, luaL_checkstring( L, 2 ), luaL_checkstring( L, 3 ), &value, minValue, maxValue, &textLeftBounds, &textRightBounds ) );
+	lua_pushinteger( L, GuiSliderBar( bounds, textLeft, textRight, &value, minValue, maxValue, &textLeftBounds, &textRightBounds ) );
 	lua_pushnumber( L, value );
 	uluaPushRectangle( L, textLeftBounds );
 	uluaPushRectangle( L, textRightBounds );
@@ -750,7 +775,7 @@ int lguiGuiSliderBar( lua_State* L ) {
 }
 
 /*
-> result, value, textLeftBounds, textRightBounds = RL.GuiProgressBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
+> result, value, textLeftBounds, textRightBounds = RL.GuiProgressBar( Rectangle bounds, string|nil textLeft, string|nil textRight, float value, float minValue, float maxValue )
 
 Progress Bar control, shows current progress value
 
@@ -758,13 +783,15 @@ Progress Bar control, shows current progress value
 */
 int lguiGuiProgressBar( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* textLeft = getTextOrNil( L, 2 );
+	char* textRight = getTextOrNil( L, 3 );
 	float value = luaL_checknumber( L, 4 );
 	float minValue = luaL_checknumber( L, 5 );
 	float maxValue = luaL_checknumber( L, 6 );
 
 	Rectangle textLeftBounds = { 0 };
 	Rectangle textRightBounds = { 0 };
-	lua_pushinteger( L, GuiProgressBar( bounds, luaL_checkstring( L, 2 ), luaL_checkstring( L, 3 ), &value, minValue, maxValue, &textLeftBounds, &textRightBounds ) );
+	lua_pushinteger( L, GuiProgressBar( bounds, textLeft, textRight, &value, minValue, maxValue, &textLeftBounds, &textRightBounds ) );
 	lua_pushnumber( L, value );
 	uluaPushRectangle( L, textLeftBounds );
 	uluaPushRectangle( L, textRightBounds );
@@ -773,7 +800,7 @@ int lguiGuiProgressBar( lua_State* L ) {
 }
 
 /*
-> result = RL.GuiStatusBar( Rectangle bounds, string text )
+> result = RL.GuiStatusBar( Rectangle bounds, string|nil text )
 
 Status Bar control, shows info text
 
@@ -781,14 +808,15 @@ Status Bar control, shows info text
 */
 int lguiGuiStatusBar( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 
-	lua_pushinteger( L, GuiStatusBar( bounds, luaL_checkstring( L, 2 ) ) );
+	lua_pushinteger( L, GuiStatusBar( bounds, text ) );
 
 	return 1;
 }
 
 /*
-> result = RL.GuiDummyRec( Rectangle bounds, string text )
+> result = RL.GuiDummyRec( Rectangle bounds, string|nil text )
 
 Dummy control for placeholders
 
@@ -796,14 +824,15 @@ Dummy control for placeholders
 */
 int lguiGuiDummyRec( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 
-	lua_pushinteger( L, GuiDummyRec( bounds, luaL_checkstring( L, 2 ) ) );
+	lua_pushinteger( L, GuiDummyRec( bounds, text ) );
 
 	return 1;
 }
 
 /*
-> result, mouseCell = RL.GuiGrid( Rectangle bounds, string text, float spacing, int subdivs, Vector2 mouseCell )
+> result, mouseCell = RL.GuiGrid( Rectangle bounds, string|nil text, float spacing, int subdivs, Vector2 mouseCell )
 
 Grid control, returns mouse cell position
 
@@ -811,11 +840,12 @@ Grid control, returns mouse cell position
 */
 int lguiGuiGrid( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 	float spacing = luaL_checknumber( L, 3 );
 	int subdivs = luaL_checkinteger( L, 4 );
 	Vector2 mouseCell = uluaGetVector2( L, 5 );
 
-	lua_pushinteger( L, GuiGrid( bounds, luaL_checkstring( L, 2 ), spacing, subdivs, &mouseCell ) );
+	lua_pushinteger( L, GuiGrid( bounds, text, spacing, subdivs, &mouseCell ) );
 	uluaPushVector2( L, mouseCell );
 
 	return 2;
@@ -844,7 +874,7 @@ int lguiGuiScrollBar( lua_State* L ) {
 */
 
 /*
-> result, scrollIndex, active = RL.GuiListView( Rectangle bounds, string text, int scrollIndex, int active )
+> result, scrollIndex, active = RL.GuiListView( Rectangle bounds, string|nil text, int scrollIndex, int active )
 
 List View control, returns selected list item index
 
@@ -852,10 +882,11 @@ List View control, returns selected list item index
 */
 int lguiGuiListView( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 	int scrollIndex = luaL_checkinteger( L, 3 );
 	int active = luaL_checkinteger( L, 4 );
 
-	lua_pushinteger( L, GuiListView( bounds, luaL_checkstring( L, 2 ), &scrollIndex, &active ) );
+	lua_pushinteger( L, GuiListView( bounds, text, &scrollIndex, &active ) );
 	lua_pushinteger( L, scrollIndex );
 	lua_pushinteger( L, active );
 
@@ -871,14 +902,15 @@ List View with extended parameters
 */
 int lguiGuiListViewEx( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	const char* text = luaL_checkstring( L, 2 );
 	int scrollIndex = luaL_checkinteger( L, 3 );
 	int active = luaL_checkinteger( L, 4 );
 	int focus = luaL_checkinteger( L, 5 );
 
 	int count = 0;
-	const char** text = TextSplit( luaL_checkstring( L, 2 ), ';', &count );
+	const char** textSplits = TextSplit( text, ';', &count );
 
-	lua_pushinteger( L, GuiListViewEx( bounds, text, count, &scrollIndex, &active, &focus ) );
+	lua_pushinteger( L, GuiListViewEx( bounds, textSplits, count, &scrollIndex, &active, &focus ) );
 	lua_pushinteger( L, scrollIndex );
 	lua_pushinteger( L, active );
 	lua_pushinteger( L, focus );
@@ -887,7 +919,7 @@ int lguiGuiListViewEx( lua_State* L ) {
 }
 
 /*
-> result = RL.GuiMessageBox( Rectangle bounds, string title, string message, string buttons )
+> result = RL.GuiMessageBox( Rectangle bounds, string|nil title, string message, string buttons )
 
 Message Box control, displays a message
 
@@ -895,8 +927,11 @@ Message Box control, displays a message
 */
 int lguiGuiMessageBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* title = getTextOrNil( L, 2 );
+	const char* message = luaL_checkstring( L, 3 );
+	const char* buttons = luaL_checkstring( L, 4 );
 
-	lua_pushinteger( L, GuiMessageBox( bounds, luaL_checkstring( L, 2 ), luaL_checkstring( L, 3 ), luaL_checkstring( L, 4 ) ) );
+	lua_pushinteger( L, GuiMessageBox( bounds, title, message, buttons ) );
 
 	return 1;
 }
@@ -926,7 +961,7 @@ int lguiGuiTextInputBox( lua_State* L ) {
 }
 
 /*
-> result, color = RL.GuiColorPicker( Rectangle bounds, string text, Color color )
+> result, color = RL.GuiColorPicker( Rectangle bounds, string|nil text, Color color )
 
 Color Picker control (multiple color controls)
 
@@ -934,16 +969,17 @@ Color Picker control (multiple color controls)
 */
 int lguiGuiColorPicker( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 	Color color = uluaGetColor( L, 3 );
 
-	lua_pushinteger( L, GuiColorPicker( bounds, luaL_checkstring( L, 2 ), &color ) );
+	lua_pushinteger( L, GuiColorPicker( bounds, text, &color ) );
 	uluaPushColor( L, color );
 
 	return 2;
 }
 
 /*
-> result, color = RL.GuiColorPanel( Rectangle bounds, string text, Color color )
+> result, color = RL.GuiColorPanel( Rectangle bounds, string|nil text, Color color )
 
 Color Panel control
 
@@ -951,16 +987,17 @@ Color Panel control
 */
 int lguiGuiColorPanel( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 	Color color = uluaGetColor( L, 3 );
 
-	lua_pushinteger( L, GuiColorPanel( bounds, luaL_checkstring( L, 2 ), &color ) );
+	lua_pushinteger( L, GuiColorPanel( bounds, text, &color ) );
 	uluaPushColor( L, color );
 
 	return 2;
 }
 
 /*
-> result, alpha = RL.GuiColorBarAlpha( Rectangle bounds, string text, float alpha )
+> result, alpha = RL.GuiColorBarAlpha( Rectangle bounds, string|nil text, float alpha )
 
 Color Bar Alpha control
 
@@ -968,16 +1005,17 @@ Color Bar Alpha control
 */
 int lguiGuiColorBarAlpha( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 	float alpha = luaL_checknumber( L, 3 );
 
-	lua_pushinteger( L, GuiColorBarAlpha( bounds, luaL_checkstring( L, 2 ), &alpha ) );
+	lua_pushinteger( L, GuiColorBarAlpha( bounds, text, &alpha ) );
 	lua_pushnumber( L, alpha );
 
 	return 2;
 }
 
 /*
-> result, value = RL.GuiColorBarHue( Rectangle bounds, string text, float value )
+> result, value = RL.GuiColorBarHue( Rectangle bounds, string|nil text, float value )
 
 Color Bar Hue control
 
@@ -985,16 +1023,17 @@ Color Bar Hue control
 */
 int lguiGuiColorBarHue( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 	float value = luaL_checknumber( L, 3 );
 
-	lua_pushinteger( L, GuiColorBarHue( bounds, luaL_checkstring( L, 2 ), &value ) );
+	lua_pushinteger( L, GuiColorBarHue( bounds, text, &value ) );
 	lua_pushnumber( L, value );
 
 	return 2;
 }
 
 /*
-> result, colorHsv = RL.GuiColorPickerHSV( Rectangle bounds, string text, Vector3 colorHsv )
+> result, colorHsv = RL.GuiColorPickerHSV( Rectangle bounds, string|nil text, Vector3 colorHsv )
 
 Color Picker control that avoids conversion to RGB on each call (multiple color controls)
 
@@ -1002,16 +1041,17 @@ Color Picker control that avoids conversion to RGB on each call (multiple color 
 */
 int lguiGuiColorPickerHSV( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 	Vector3 colorHsv = uluaGetVector3( L, 3 );
 
-	lua_pushinteger( L, GuiColorPickerHSV( bounds, luaL_checkstring( L, 2 ), &colorHsv ) );
+	lua_pushinteger( L, GuiColorPickerHSV( bounds, text, &colorHsv ) );
 	uluaPushVector3( L, colorHsv );
 
 	return 2;
 }
 
 /*
-> result, colorHsv = RL.GuiColorPanelHSV( Rectangle bounds, string text, Vector3 colorHsv )
+> result, colorHsv = RL.GuiColorPanelHSV( Rectangle bounds, string|nil text, Vector3 colorHsv )
 
 Color Panel control that returns HSV color value, used by GuiColorPickerHSV()
 
@@ -1019,9 +1059,10 @@ Color Panel control that returns HSV color value, used by GuiColorPickerHSV()
 */
 int lguiGuiColorPanelHSV( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
 	Vector3 colorHsv = uluaGetVector3( L, 3 );
 
-	lua_pushinteger( L, GuiColorPanelHSV( bounds, luaL_checkstring( L, 2 ), &colorHsv ) );
+	lua_pushinteger( L, GuiColorPanelHSV( bounds, text, &colorHsv ) );
 	uluaPushVector3( L, colorHsv );
 
 	return 2;

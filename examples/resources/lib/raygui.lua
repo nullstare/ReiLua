@@ -2035,17 +2035,17 @@ end
 ---@alias Color table
 
 ---@param bounds Rectangle
----@param text string
+---@param title string|nil
 ---@param callbacks table close, grab, drag.
 ---@param styles table|nil
 ---@param tooltip string|nil
 ---@return table WindowBox
-function Raygui:WindowBox( bounds, text, callbacks, styles, tooltip )
-	return self:addControl( WindowBox:new( bounds, text, callbacks, styles, tooltip ) )
+function Raygui:WindowBox( bounds, title, callbacks, styles, tooltip )
+	return self:addControl( WindowBox:new( bounds, title, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param styles table|nil
 ---@param tooltip string|nil
 ---@return table GroupBox
@@ -2054,7 +2054,7 @@ function Raygui:GroupBox( bounds, text, styles, tooltip )
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param styles table|nil
 ---@param tooltip string|nil
 ---@return table Line
@@ -2063,7 +2063,7 @@ function Raygui:Line( bounds, text, styles, tooltip )
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param callbacks table grab, drag.
 ---@param styles table|nil
 ---@param tooltip string|nil
@@ -2073,7 +2073,7 @@ function Raygui:Panel( bounds, text, callbacks, styles, tooltip )
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param active integer
 ---@param callbacks table select, close, grab, drag.
 ---@param styles table|nil
@@ -2084,7 +2084,7 @@ function Raygui:GuiTabBar( bounds, text, active, callbacks, styles, tooltip )
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param content Rectangle
 ---@param scroll Vector2
 ---@param callbacks table scroll, grab, drag.
@@ -2096,7 +2096,7 @@ function Raygui:ScrollPanel( bounds, text, content, scroll, callbacks, styles, t
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param styles table|nil
 ---@param tooltip string|nil
 ---@return table Label
@@ -2105,7 +2105,7 @@ function Raygui:Label( bounds, text, styles, tooltip )
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param callbacks table pressed.
 ---@param styles table|nil
 ---@param tooltip string|nil
@@ -2115,7 +2115,7 @@ function Raygui:Button( bounds, text, callbacks, styles, tooltip )
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param callbacks table pressed.
 ---@param styles table|nil
 ---@param tooltip string|nil
@@ -2125,7 +2125,7 @@ function Raygui:LabelButton( bounds, text, callbacks, styles, tooltip )
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param active boolean
 ---@param callbacks table pressed.
 ---@param styles table|nil
@@ -2136,7 +2136,7 @@ function Raygui:Toggle( bounds, text, active, callbacks, styles, tooltip )
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param active integer
 ---@param callbacks table select.
 ---@param styles table|nil
@@ -2147,7 +2147,7 @@ function Raygui:ToggleGroup( bounds, text, active, callbacks, styles, tooltip )
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param checked boolean
 ---@param callbacks table pressed.
 ---@param styles table|nil
@@ -2158,7 +2158,7 @@ function Raygui:CheckBox( bounds, text, checked, callbacks, styles, tooltip )
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param active integer
 ---@param callbacks table select.
 ---@param styles table|nil
@@ -2181,7 +2181,7 @@ function Raygui:DropdownBox( bounds, text, active, editMode, callbacks, styles, 
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param value integer
 ---@param minValue integer
 ---@param maxValue integer
@@ -2195,7 +2195,7 @@ function Raygui:Spinner( bounds, text, value, minValue, maxValue, editMode, call
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param value integer
 ---@param minValue integer
 ---@param maxValue integer
@@ -2263,7 +2263,7 @@ function Raygui:ProgressBar( bounds, textLeft, textRight, value, minValue, maxVa
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param styles table|nil
 ---@param tooltip string|nil
 ---@return table StatusBar
@@ -2272,7 +2272,7 @@ function Raygui:StatusBar( bounds, text, styles, tooltip )
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param styles table|nil
 ---@param tooltip string|nil
 ---@return table DummyRec
@@ -2281,7 +2281,7 @@ function Raygui:DummyRec( bounds, text, styles, tooltip )
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param spacing number
 ---@param subdivs integer
 ---@param callbacks table cellChange.
@@ -2293,7 +2293,7 @@ function Raygui:Grid( bounds, text, spacing, subdivs, callbacks, styles, tooltip
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param scrollIndex integer
 ---@param active integer
 ---@param callbacks table select.
@@ -2345,7 +2345,7 @@ function Raygui:TextInputBox( bounds, title, message, buttons, text, textMaxSize
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param color Color
 ---@param callbacks table edit.
 ---@param styles table|nil
@@ -2356,7 +2356,7 @@ function Raygui:ColorPicker( bounds, text, color, callbacks, styles, tooltip )
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param color Color
 ---@param callbacks table edit.
 ---@param styles table|nil
@@ -2367,7 +2367,7 @@ function Raygui:ColorPanel( bounds, text, color, callbacks, styles, tooltip )
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param alpha number
 ---@param callbacks table edit.
 ---@param styles table|nil
@@ -2378,7 +2378,7 @@ function Raygui:ColorBarAlpha( bounds, text, alpha, callbacks, styles, tooltip )
 end
 
 ---@param bounds Rectangle
----@param text string
+---@param text string|nil
 ---@param value number
 ---@param callbacks table edit.
 ---@param styles table|nil

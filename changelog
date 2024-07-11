@@ -63,6 +63,7 @@ DETAILED CHANGES:
 	- ADDED: GetMouseOffset and GetMouseScale.
 	- CHANGE: Raymath *Equals functions return bool instead of int.
 	- FIXED: ColorToInt cast to unsigned int.
+	- ADDED: Many Gui controls accept now nil for text.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

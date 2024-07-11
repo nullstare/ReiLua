@@ -20,12 +20,12 @@ int imax( int a, int b ) {
 
 Round float value
 
-- Success return float
+- Success return int
 */
 int lmathRound( lua_State* L ) {
 	float value = luaL_checknumber( L, 1 );
 	
-	lua_pushnumber( L, round( value ) );
+	lua_pushinteger( L, round( value ) );
 
 	return 1;
 }
@@ -1749,7 +1749,7 @@ int lmathQuaternionFromMatrix( lua_State* L ) {
 /*
 > result = RL.QuaternionToMatrix( Quaternion q )
 
-Get a quaternion for a given rotation matrix
+Get a matrix for a given quaternion
 
 - Success return Matrix
 */

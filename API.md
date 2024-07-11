@@ -8339,7 +8339,7 @@ Get current music time played (in seconds)
 
 Round float value
 
-- Success return float
+- Success return int
 
 ---
 
@@ -9222,7 +9222,7 @@ Get a quaternion for a given rotation matrix
 
 > result = RL.QuaternionToMatrix( Quaternion q )
 
-Get a quaternion for a given rotation matrix
+Get a matrix for a given quaternion
 
 - Success return Matrix
 
@@ -9416,7 +9416,7 @@ Set tooltip string
 
 ---
 
-> text = RL.GuiIconText( int iconId, string text )
+> text = RL.GuiIconText( int iconId, string|nil text )
 
 Get text with icon id prepended (if supported)
 
@@ -9466,7 +9466,7 @@ Draw icon
 
 ---
 
-> result = RL.GuiWindowBox( Rectangle bounds, string title )
+> result = RL.GuiWindowBox( Rectangle bounds, string|nil title )
 
 Window Box control, shows a window that can be closed
 
@@ -9474,7 +9474,7 @@ Window Box control, shows a window that can be closed
 
 ---
 
-> result = RL.GuiGroupBox( Rectangle bounds, string text )
+> result = RL.GuiGroupBox( Rectangle bounds, string|nil text )
 
 Group Box control with text name
 
@@ -9482,7 +9482,7 @@ Group Box control with text name
 
 ---
 
-> result = RL.GuiLine( Rectangle bounds, string text )
+> result = RL.GuiLine( Rectangle bounds, string|nil text )
 
 Line separator control, could contain text
 
@@ -9490,7 +9490,7 @@ Line separator control, could contain text
 
 ---
 
-> result = RL.GuiPanel( Rectangle bounds, string text )
+> result = RL.GuiPanel( Rectangle bounds, string|nil text )
 
 Panel control, useful to group controls
 
@@ -9506,7 +9506,7 @@ Tab Bar control, returns TAB to be closed or -1
 
 ---
 
-> result, scroll, view = RL.GuiScrollPanel( Rectangle bounds, string text, Rectangle content, Vector2 scroll, Rectangle view )
+> result, scroll, view = RL.GuiScrollPanel( Rectangle bounds, string|nil text, Rectangle content, Vector2 scroll, Rectangle view )
 
 Scroll Panel control
 
@@ -9518,7 +9518,7 @@ Scroll Panel control
 
 ---
 
-> result = RL.GuiLabel( Rectangle bounds, string text )
+> result = RL.GuiLabel( Rectangle bounds, string|nil text )
 
 Label control, shows text
 
@@ -9526,7 +9526,7 @@ Label control, shows text
 
 ---
 
-> result = RL.GuiButton( Rectangle bounds, string text )
+> result = RL.GuiButton( Rectangle bounds, string|nil text )
 
 Button control, returns true when clicked
 
@@ -9534,7 +9534,7 @@ Button control, returns true when clicked
 
 ---
 
-> result = RL.GuiLabelButton( Rectangle bounds, string text )
+> result = RL.GuiLabelButton( Rectangle bounds, string|nil text )
 
 Label button control, show true when clicked
 
@@ -9542,7 +9542,7 @@ Label button control, show true when clicked
 
 ---
 
-> result, active = RL.GuiToggle( Rectangle bounds, string text, bool active )
+> result, active = RL.GuiToggle( Rectangle bounds, string|nil text, bool active )
 
 Toggle Button control, returns true when active
 
@@ -9550,7 +9550,7 @@ Toggle Button control, returns true when active
 
 ---
 
-> result, active = RL.GuiToggleGroup( Rectangle bounds, string text, int active )
+> result, active = RL.GuiToggleGroup( Rectangle bounds, string|nil text, int active )
 
 Toggle Group control, returns active toggle index
 
@@ -9558,7 +9558,7 @@ Toggle Group control, returns active toggle index
 
 ---
 
-> result, active = RL.GuiToggleSlider( Rectangle bounds, string text, int active )
+> result, active = RL.GuiToggleSlider( Rectangle bounds, string|nil text, int active )
 
 Toggle Slider control, returns true when clicked
 
@@ -9566,7 +9566,7 @@ Toggle Slider control, returns true when clicked
 
 ---
 
-> result, checked, textBounds = RL.GuiCheckBox( Rectangle bounds, string text, bool checked )
+> result, checked, textBounds = RL.GuiCheckBox( Rectangle bounds, string|nil text, bool checked )
 
 Check Box control, returns true when active
 
@@ -9574,7 +9574,7 @@ Check Box control, returns true when active
 
 ---
 
-> result, active = RL.GuiComboBox( Rectangle bounds, string text, int active )
+> result, active = RL.GuiComboBox( Rectangle bounds, string|nil text, int active )
 
 Combo Box control, returns selected item index
 
@@ -9590,7 +9590,7 @@ Dropdown Box control, returns selected item
 
 ---
 
-> result, value, textBounds = RL.GuiSpinner( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )
+> result, value, textBounds = RL.GuiSpinner( Rectangle bounds, string|nil text, int value, int minValue, int maxValue, bool editMode )
 
 Spinner control, returns selected value
 
@@ -9598,7 +9598,7 @@ Spinner control, returns selected value
 
 ---
 
-> result, value, textBounds = RL.GuiValueBox( Rectangle bounds, string text, int value, int minValue, int maxValue, bool editMode )
+> result, value, textBounds = RL.GuiValueBox( Rectangle bounds, string|nil text, int value, int minValue, int maxValue, bool editMode )
 
 Value Box control, updates input text with numbers
 
@@ -9614,7 +9614,7 @@ Text Box control, updates input text
 
 ---
 
-> result, value, textLeftBounds, textRightBounds = RL.GuiSlider( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
+> result, value, textLeftBounds, textRightBounds = RL.GuiSlider( Rectangle bounds, string|nil textLeft, string|nil textRight, float value, float minValue, float maxValue )
 
 Slider control, returns selected value
 
@@ -9622,7 +9622,7 @@ Slider control, returns selected value
 
 ---
 
-> result, value, textLeftBounds, textRightBounds = RL.GuiSliderBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
+> result, value, textLeftBounds, textRightBounds = RL.GuiSliderBar( Rectangle bounds, string|nil textLeft, string|nil textRight, float value, float minValue, float maxValue )
 
 Slider Bar control, returns selected value
 
@@ -9630,7 +9630,7 @@ Slider Bar control, returns selected value
 
 ---
 
-> result, value, textLeftBounds, textRightBounds = RL.GuiProgressBar( Rectangle bounds, string textLeft, string textRight, float value, float minValue, float maxValue )
+> result, value, textLeftBounds, textRightBounds = RL.GuiProgressBar( Rectangle bounds, string|nil textLeft, string|nil textRight, float value, float minValue, float maxValue )
 
 Progress Bar control, shows current progress value
 
@@ -9638,7 +9638,7 @@ Progress Bar control, shows current progress value
 
 ---
 
-> result = RL.GuiStatusBar( Rectangle bounds, string text )
+> result = RL.GuiStatusBar( Rectangle bounds, string|nil text )
 
 Status Bar control, shows info text
 
@@ -9646,7 +9646,7 @@ Status Bar control, shows info text
 
 ---
 
-> result = RL.GuiDummyRec( Rectangle bounds, string text )
+> result = RL.GuiDummyRec( Rectangle bounds, string|nil text )
 
 Dummy control for placeholders
 
@@ -9654,7 +9654,7 @@ Dummy control for placeholders
 
 ---
 
-> result, mouseCell = RL.GuiGrid( Rectangle bounds, string text, float spacing, int subdivs, Vector2 mouseCell )
+> result, mouseCell = RL.GuiGrid( Rectangle bounds, string|nil text, float spacing, int subdivs, Vector2 mouseCell )
 
 Grid control, returns mouse cell position
 
@@ -9674,7 +9674,7 @@ Scroll bar control
 
 ---
 
-> result, scrollIndex, active = RL.GuiListView( Rectangle bounds, string text, int scrollIndex, int active )
+> result, scrollIndex, active = RL.GuiListView( Rectangle bounds, string|nil text, int scrollIndex, int active )
 
 List View control, returns selected list item index
 
@@ -9690,7 +9690,7 @@ List View with extended parameters
 
 ---
 
-> result = RL.GuiMessageBox( Rectangle bounds, string title, string message, string buttons )
+> result = RL.GuiMessageBox( Rectangle bounds, string|nil title, string message, string buttons )
 
 Message Box control, displays a message
 
@@ -9706,7 +9706,7 @@ Text Input Box control, ask for text, supports secret
 
 ---
 
-> result, color = RL.GuiColorPicker( Rectangle bounds, string text, Color color )
+> result, color = RL.GuiColorPicker( Rectangle bounds, string|nil text, Color color )
 
 Color Picker control (multiple color controls)
 
@@ -9714,7 +9714,7 @@ Color Picker control (multiple color controls)
 
 ---
 
-> result, color = RL.GuiColorPanel( Rectangle bounds, string text, Color color )
+> result, color = RL.GuiColorPanel( Rectangle bounds, string|nil text, Color color )
 
 Color Panel control
 
@@ -9722,7 +9722,7 @@ Color Panel control
 
 ---
 
-> result, alpha = RL.GuiColorBarAlpha( Rectangle bounds, string text, float alpha )
+> result, alpha = RL.GuiColorBarAlpha( Rectangle bounds, string|nil text, float alpha )
 
 Color Bar Alpha control
 
@@ -9730,7 +9730,7 @@ Color Bar Alpha control
 
 ---
 
-> result, value = RL.GuiColorBarHue( Rectangle bounds, string text, float value )
+> result, value = RL.GuiColorBarHue( Rectangle bounds, string|nil text, float value )
 
 Color Bar Hue control
 
@@ -9738,7 +9738,7 @@ Color Bar Hue control
 
 ---
 
-> result, colorHsv = RL.GuiColorPickerHSV( Rectangle bounds, string text, Vector3 colorHsv )
+> result, colorHsv = RL.GuiColorPickerHSV( Rectangle bounds, string|nil text, Vector3 colorHsv )
 
 Color Picker control that avoids conversion to RGB on each call (multiple color controls)
 
@@ -9746,7 +9746,7 @@ Color Picker control that avoids conversion to RGB on each call (multiple color 
 
 ---
 
-> result, colorHsv = RL.GuiColorPanelHSV( Rectangle bounds, string text, Vector3 colorHsv )
+> result, colorHsv = RL.GuiColorPanelHSV( Rectangle bounds, string|nil text, Vector3 colorHsv )
 
 Color Panel control that returns HSV color value, used by GuiColorPickerHSV()
 

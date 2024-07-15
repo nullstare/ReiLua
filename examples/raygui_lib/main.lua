@@ -245,7 +245,8 @@ function RL.init()
 		"Cat;Dog;Horse;Cow;Dog;Horse;Cow",
 		0,
 		{ -- Callbacks.
-			close = closeTab
+			close = closeTab,
+			select = function( self ) print( self:getItem( self.active ) ) end
 		}
 	)
 	local scrollpanel = Gui:ScrollPanel(

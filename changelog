@@ -64,6 +64,7 @@ DETAILED CHANGES:
 	- CHANGE: Raymath *Equals functions return bool instead of int.
 	- FIXED: ColorToInt cast to unsigned int.
 	- ADDED: Many Gui controls accept now nil for text.
+	- ADDED: Some raygui controls return 1 instead of 0 when pressed or scrolled.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

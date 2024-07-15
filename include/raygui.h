@@ -1775,6 +1775,7 @@ int GuiScrollPanel(Rectangle bounds, const char *text, Rectangle content, Vector
     Rectangle temp = { 0 };
     if (view == NULL) view = &temp;
 
+	Vector2 oldScroll = *scroll;
     Vector2 scrollPos = { 0.0f, 0.0f };
     if (scroll != NULL) scrollPos = *scroll;
 
@@ -1921,7 +1922,7 @@ int GuiScrollPanel(Rectangle bounds, const char *text, Rectangle content, Vector
 
     if (scroll != NULL) *scroll = scrollPos;
 
-    return result;
+    return !Vector2Equals( oldScroll, scrollPos );
 }
 
 // Label control
@@ -2035,6 +2036,7 @@ int GuiToggle(Rectangle bounds, const char *text, bool *active)
             {
                 state = STATE_NORMAL;
                 *active = !(*active);
+				result = 1;
             }
             else state = STATE_FOCUSED;
         }
@@ -2094,13 +2096,18 @@ int GuiToggleGroup(Rectangle bounds, const char *text, int *active)
         if (i == (*active))
         {
             toggle = true;
-            GuiToggle(bounds, items[i], &toggle);
+            if ( GuiToggle( bounds, items[i], &toggle ) ) {
+				result = 1;
+			}
         }
         else
         {
             toggle = false;
-            GuiToggle(bounds, items[i], &toggle);
-            if (toggle) *active = i;
+            GuiToggle( bounds, items[i], &toggle );
+            if (toggle) {
+				*active = i;
+				result = 1;
+			}
         }
 
         bounds.x += (bounds.width + GuiGetStyle(TOGGLE, GROUP_PADDING));
@@ -2221,7 +2228,10 @@ int GuiCheckBox(Rectangle bounds, const char *text, bool *checked, Rectangle *te
             if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) state = STATE_PRESSED;
             else state = STATE_FOCUSED;
 
-            if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) *checked = !(*checked);
+            if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
+				*checked = !(*checked);
+				result = 1;
+			}
         }
     }
     //--------------------------------------------------------------------
@@ -2280,6 +2290,7 @@ int GuiComboBox(Rectangle bounds, const char *text, int *active)
             {
                 *active += 1;
                 if (*active >= itemCount) *active = 0;      // Cyclic combobox
+				result = 1;
             }
 
             if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) state = STATE_PRESSED;
@@ -2969,6 +2980,7 @@ int GuiSliderPro(Rectangle bounds, const char *textLeft, const char *textRight, 
 
                     // Get equivalent value and slider position from mousePosition.x
                     *value = ((maxValue - minValue)*(mousePoint.x - (float)(bounds.x + sliderWidth/2)))/(float)(bounds.width - sliderWidth) + minValue;
+					result = 1;
                 }
             }
             else
@@ -3253,6 +3265,7 @@ int GuiListViewEx(Rectangle bounds, const char **text, int count, int *scrollInd
                     {
                         if (itemSelected == (startIndex + i)) itemSelected = -1;
                         else itemSelected = startIndex + i;
+						result = 1;
                     }
                     break;
                 }
@@ -3401,7 +3414,7 @@ int GuiColorPanel(Rectangle bounds, const char *text, Color *color)
                                  (unsigned char)(255.0f*rgb.y),
                                  (unsigned char)(255.0f*rgb.z),
                                  (unsigned char)(255.0f*(float)color->a/255.0f) };
-
+				result = 1;
             }
             else state = STATE_FOCUSED;
         }
@@ -3459,6 +3472,7 @@ int GuiColorBarAlpha(Rectangle bounds, const char *text, float *alpha)
                     *alpha = (mousePoint.x - bounds.x)/bounds.width;
                     if (*alpha <= 0.0f) *alpha = 0.0f;
                     if (*alpha >= 1.0f) *alpha = 1.0f;
+					result = 1;
                 }
             }
             else
@@ -3545,6 +3559,7 @@ int GuiColorBarHue(Rectangle bounds, const char *text, float *hue)
                     *hue = (mousePoint.y - bounds.y)*360/bounds.height;
                     if (*hue <= 0.0f) *hue = 0.0f;
                     if (*hue >= 359.0f) *hue = 359.0f;
+					result = 1;
                 }
             }
             else
@@ -3619,14 +3634,18 @@ int GuiColorPicker(Rectangle bounds, const char *text, Color *color)
     Color temp = { 200, 0, 0, 255 };
     if (color == NULL) color = &temp;
 
-    GuiColorPanel(bounds, NULL, color);
+    if ( GuiColorPanel(bounds, NULL, color) ) {
+		result = 1;
+	}
 
     Rectangle boundsHue = { (float)bounds.x + bounds.width + GuiGetStyle(COLORPICKER, HUEBAR_PADDING), (float)bounds.y, (float)GuiGetStyle(COLORPICKER, HUEBAR_WIDTH), (float)bounds.height };
     //Rectangle boundsAlpha = { bounds.x, bounds.y + bounds.height + GuiGetStyle(COLORPICKER, BARS_PADDING), bounds.width, GuiGetStyle(COLORPICKER, BARS_THICK) };
 
     Vector3 hsv = ConvertRGBtoHSV(RAYGUI_CLITERAL(Vector3){ (*color).r/255.0f, (*color).g/255.0f, (*color).b/255.0f });
 
-    GuiColorBarHue(boundsHue, NULL, &hsv.x);
+    if ( GuiColorBarHue(boundsHue, NULL, &hsv.x) ) {
+		result = 1;
+	}
 
     //color.a = (unsigned char)(GuiColorBarAlpha(boundsAlpha, (float)color.a/255.0f)*255.0f);
     Vector3 rgb = ConvertHSVtoRGB(hsv);
@@ -3656,11 +3675,15 @@ int GuiColorPickerHSV(Rectangle bounds, const char *text, Vector3 *colorHsv)
         colorHsv = &tempHsv;
     }
 
-    GuiColorPanelHSV(bounds, NULL, colorHsv);
+    if ( GuiColorPanelHSV(bounds, NULL, colorHsv) ) {
+		result = 1;
+	}
 
     const Rectangle boundsHue = { (float)bounds.x + bounds.width + GuiGetStyle(COLORPICKER, HUEBAR_PADDING), (float)bounds.y, (float)GuiGetStyle(COLORPICKER, HUEBAR_WIDTH), (float)bounds.height };
 
-    GuiColorBarHue(boundsHue, NULL, &colorHsv->x);
+    if ( GuiColorBarHue(boundsHue, NULL, &colorHsv->x) ) {
+		result = 1;
+	}
 
     return result;
 }
@@ -3707,6 +3730,7 @@ int GuiColorPanelHSV(Rectangle bounds, const char *text, Vector3 *colorHsv)
 
                 colorHsv->y = colorPick.x;
                 colorHsv->z = 1.0f - colorPick.y;
+				result = 1;
             }
             else state = STATE_FOCUSED;
         }
@@ -3908,6 +3932,7 @@ int GuiGrid(Rectangle bounds, const char *text, float spacing, int subdivs, Vect
             // NOTE: Cell values must be the upper left of the cell the mouse is in
             currentMouseCell.x = floorf((mousePoint.x - bounds.x)/spacing);
             currentMouseCell.y = floorf((mousePoint.y - bounds.y)/spacing);
+			result = 1;
         }
     }
     //--------------------------------------------------------------------

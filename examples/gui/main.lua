@@ -107,7 +107,7 @@ function RL.draw()
 
 	_, comboBoxActive = RL.GuiComboBox( { 5, 150, 80, 20 }, "One;Two;Three", comboBoxActive )
 
-	result, scrollPanel.scroll, scrollPanel.view = RL.GuiScrollPanel(
+	_, scrollPanel.scroll, scrollPanel.view = RL.GuiScrollPanel(
 		{ 64, 640, 320, 200 },
 		"Scroll panel",
 		{ 0, 0, 640, 400 },

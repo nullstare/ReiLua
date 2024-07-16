@@ -7,6 +7,7 @@ function PropertyList:new( bounds, text, callbacks, styles, tooltip )
 
 	object.padding = 4 -- Content edges.
 	object.spacing = 4 -- Between controls.
+	object.contentPadding = Vector2:new( 0, 0 ) -- Extra padding for content rect.
 
     object.bounds = bounds:clone()
     object.text = text
@@ -18,10 +19,9 @@ function PropertyList:new( bounds, text, callbacks, styles, tooltip )
 
 	object.gui = Raygui:new() -- Contains full independent gui system.
 	object.controls = {}
+	object.content = Rectangle:new()
 
 	-- Set in setSize.
-	object.framebufferSize = nil
-	object.framebuffer = nil
 	object.defaultControlSize = nil
 
 	object.visible = true
@@ -98,10 +98,11 @@ function PropertyList:updateContent()
 	for _, control in ipairs( self.controls ) do
 		self:updateControl( control )
 	end
-	self.content.x = 0
-	self.content.y = 0
-	self.content.height = self.content.height + self.padding + self.view.height - self.defaultControlSize.y - self.spacing
-	self.content.width = self.content.width + self.padding
+	self.content:set(
+		0, 0,
+		self.content.width + self.padding + self.contentPadding.y,
+		self.content.height + self.padding + self.contentPadding.x
+	)
 	self._forceCheckScroll = true
 end
 
@@ -170,22 +171,15 @@ function PropertyList:update()
 
 	self.gui:update()
 
-	RL.BeginTextureMode( self.framebuffer )
-		RL.ClearBackground( RL.BLANK )
-		RL.rlTranslatef( { self.scroll.x, self.scroll.y, 0 } )
-		self.gui:draw()
-	RL.EndTextureMode()
-
     return self._gui:drag( self )
 end
 
 function PropertyList:draw()
-	local oldScroll = self.scroll:clone()
-	local _, scroll, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
+	local result, scroll, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
 	self.view:setT( view )
 	self.scroll:setT( scroll )
 
-	if self.scroll ~= oldScroll or self._forceCheckScroll then
+	if 0 < result or self._forceCheckScroll then
 		if not self._forceCheckScroll then
 			self._gui:checkScrolling()
 		end
@@ -198,15 +192,15 @@ function PropertyList:draw()
 			self.callbacks.scroll( self )
 		end
 	end
+	-- Lock if this gui not focused.
+	self.gui.locked = not ( self._gui.controls[ self._gui.focused ] == self ) or self._gui.locked
 
-	RL.DrawTexturePro(
-		RL.GetRenderTextureTexture( self.framebuffer ),
-		{ 0, self.framebufferSize.y - self.view.height, self.view.width, -self.view.height },
-		{ math.floor( self.view.x ), math.floor( self.view.y ), self.view.width, self.view.height },
-		{ 0, 0 },
-		0.0,
-		RL.WHITE
-	)
+	RL.BeginScissorMode( self.view )
+		RL.rlPushMatrix()
+		RL.rlTranslatef( { RL.Round( self.view.x + self.scroll.x ), RL.Round( self.view.y + self.scroll.y ), 0 } )
+		self.gui:draw()
+		RL.rlPopMatrix()
+	RL.EndScissorMode()
 end
 
 function PropertyList:updateMouseOffset()
@@ -219,8 +213,8 @@ function PropertyList:updateMouseOffset()
 end
 
 function PropertyList:setPosition( pos )
-	self.bounds.x = pos.x
-	self.bounds.y = pos.y
+	self.bounds.x = RL.Round( pos.x )
+	self.bounds.y = RL.Round( pos.y )
 
 	if self.visible then
 		self:draw() -- Update self.view.
@@ -244,15 +238,9 @@ function PropertyList:setSize( size )
 	self.defaultControlSize = Vector2:new( self.content.width, self.defaultControlHeight )
 
 	local _, _, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
+
 	self.view = Rectangle:newT( view )
-
 	self.gui.view = Rectangle:new( 0, 0, self.view.width, self.view.height )
-	self.framebufferSize = Vector2:new( self.bounds.width, self.bounds.height - self.gui.RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT )
-
-	if self.framebuffer ~= nil and not RL.IsGCUnloadEnabled() then
-		RL.UnloadRenderTexture( self.framebuffer )
-	end
-	self.framebuffer = RL.LoadRenderTexture( self.framebufferSize )
 
 	self:updateContent()
 end

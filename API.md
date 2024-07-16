@@ -9606,7 +9606,7 @@ Value Box control, updates input text with numbers
 
 ---
 
-> result, text = RL.GuiTextBox( Rectangle bounds, string text, int textSize, bool editMode )
+> result, text = RL.GuiTextBox( Rectangle bounds, string text, int bufferSize, bool editMode )
 
 Text Box control, updates input text
 

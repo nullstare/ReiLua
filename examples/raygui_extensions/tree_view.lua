@@ -30,8 +30,8 @@ function TreeView:new( bounds, text, callbacks, styles, tooltip )
 	object.controls = {}
 
 	-- Set in setSize.
-	object.framebufferSize = nil
-	object.framebuffer = nil
+	-- object.framebufferSize = nil
+	-- object.framebuffer = nil
 	object.defaultControlSize = nil
 
 	object.visible = true
@@ -120,10 +120,11 @@ function TreeView:updateContent()
 		control._childId = i
 		self:updateControl( control )
 	end
-	self.content.x = 0
-	self.content.y = 0
-	self.content.height = self.content.height + self.padding
-	self.content.width = self.content.width + self.padding
+	self.content:set(
+		0, 0,
+		self.content.width + self.padding,
+		self.content.height + self.padding
+	)
 	self._forceCheckScroll = true
 end
 
@@ -269,8 +270,7 @@ function TreeView:itemSelect( item )
 end
 
 function TreeView:update()
-	local mousePos = Vector2:newT( RL.GetMousePosition() )
-	local guiMousePos = mousePos + self.gui.mouseOffset
+	local mousePos = Vector2:tempT( RL.GetMousePosition() )
 	local mouseInView = self.view:checkCollisionPoint( mousePos )
 
 	if not mouseInView then
@@ -280,6 +280,28 @@ function TreeView:update()
 	end
 
 	self.gui:update()
+
+    return self._gui:drag( self )
+end
+
+function TreeView:draw()
+	local result, scroll, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
+	self.view:setT( view )
+	self.scroll:setT( scroll )
+
+	if 0 < result or self._forceCheckScroll then
+		if not self._forceCheckScroll then
+			self._gui:checkScrolling()
+		end
+		self._forceCheckScroll = false
+
+		self:updateMouseOffset()
+		self.gui.view:set( -self.scroll.x, -self.scroll.y, self.view.width, self.view.height )
+	end
+
+	local mousePos = Vector2:tempT( RL.GetMousePosition() )
+	local guiMousePos = mousePos + self.gui.mouseOffset
+	local mouseInView = self.view:checkCollisionPoint( mousePos )
 
 	local mouseInClickedItem = false
 
@@ -295,10 +317,13 @@ function TreeView:update()
 		mouseInClickedItem = self._clickedItem.bounds:checkCollisionPoint( guiMousePos )
 	end
 
-	RL.BeginTextureMode( self.framebuffer )
-		RL.ClearBackground( RL.BLANK )
-		RL.rlTranslatef( { self.scroll.x, self.scroll.y, 0 } )
-		
+	-- Lock if this gui not focused.
+	self.gui.locked = not ( self._gui.controls[ self._gui.focused ] == self ) or self._gui.locked
+
+	RL.BeginScissorMode( self.view )
+		RL.rlPushMatrix()
+		RL.rlTranslatef( { RL.Round( self.view.x + self.scroll.x ), RL.Round( self.view.y + self.scroll.y ), 0 } )
+
 		self.gui:draw()
 
 		if self.allowMove and RL.IsMouseButtonDown( RL.MOUSE_BUTTON_LEFT ) and self._clickedItem ~= nil
@@ -328,35 +353,9 @@ function TreeView:update()
 			self._clickedItem = nil
 			self._movingItem = self.MOVE_ITEM_NONE
 		end
-	RL.EndTextureMode()
 
-    return self._gui:drag( self )
-end
-
-function TreeView:draw()
-	local oldScroll = self.scroll:clone()
-	local _, scroll, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
-	self.view:setT( view )
-	self.scroll:setT( scroll )
-
-	if self.scroll ~= oldScroll or self._forceCheckScroll then
-		if not self._forceCheckScroll then
-			self._gui:checkScrolling()
-		end
-		self._forceCheckScroll = false
-
-		self:updateMouseOffset()
-		self.gui.view:set( -self.scroll.x, -self.scroll.y, self.view.width, self.view.height )
-	end
-
-	RL.DrawTexturePro(
-		RL.GetRenderTextureTexture( self.framebuffer ),
-		{ 0, self.framebufferSize.y - self.view.height, self.view.width, -self.view.height },
-		{ math.floor( self.view.x ), math.floor( self.view.y ), self.view.width, self.view.height },
-		{ 0, 0 },
-		0.0,
-		RL.WHITE 
-	)
+		RL.rlPopMatrix()
+	RL.EndScissorMode()
 end
 
 function TreeView:updateMouseOffset()
@@ -386,15 +385,9 @@ function TreeView:setSize( size )
 	self.defaultControlSize = Vector2:new( self.content.width, self.defaultControlHeight )
 
 	local _, _, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
+
 	self.view = Rectangle:newT( view )
-
 	self.gui.view = Rectangle:new( 0, 0, self.view.width, self.view.height )
-	self.framebufferSize = Vector2:new( self.bounds.width, self.bounds.height - self.gui.RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT )
-
-	if self.framebuffer ~= nil and not RL.IsGCUnloadEnabled() then
-		RL.UnloadRenderTexture( self.framebuffer )
-	end
-	self.framebuffer = RL.LoadRenderTexture( self.framebufferSize )
 
 	self:updateContent()
 end

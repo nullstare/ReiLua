@@ -705,7 +705,7 @@ int lguiGuiValueBox( lua_State* L ) {
 }
 
 /*
-> result, text = RL.GuiTextBox( Rectangle bounds, string text, int textSize, bool editMode )
+> result, text = RL.GuiTextBox( Rectangle bounds, string text, int bufferSize, bool editMode )
 
 Text Box control, updates input text
 
@@ -713,12 +713,12 @@ Text Box control, updates input text
 */
 int lguiGuiTextBox( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
-	int textSize = luaL_checkinteger( L, 3 );
-	char text[ textSize + 1 ];
+	int bufferSize = luaL_checkinteger( L, 3 );
+	char text[ bufferSize + 1 ];
 	strcpy( text, luaL_checkstring( L, 2 ) );
 	bool editMode = uluaGetBoolean( L, 4 );
 
-	lua_pushinteger( L, GuiTextBox( bounds, text, textSize, editMode ) );
+	lua_pushinteger( L, GuiTextBox( bounds, text, bufferSize, editMode ) );
 	lua_pushstring( L, text );
 
 	return 2;

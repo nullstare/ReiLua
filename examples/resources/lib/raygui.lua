@@ -78,7 +78,7 @@ function WindowBox:draw()
 
 	if result == 1 then
 		-- //TODO Could add self._gui:clickedInBounds( closeButtonBounds )
-		if self.callbacks.close ~= nil then
+		if self.callbacks.close then
 			self.callbacks.close( self )
 		end
 	end
@@ -230,13 +230,13 @@ function GuiTabBar:draw()
 		if self._gui:clickedInBounds( self.bounds ) then
 			self.active = active
 
-			if self.callbacks.select ~= nil then
+			if self.callbacks.select then
 				self.callbacks.select( self )
 			end
 		end
 	end
 
-	if 0 <= result and self.callbacks.close ~= nil and self._gui:clickedInBounds( self.bounds ) then
+	if 0 <= result and self.callbacks.close and self._gui:clickedInBounds( self.bounds ) then
 		self.callbacks.close( self, result )
 	end
 end
@@ -284,7 +284,7 @@ function ScrollPanel:draw()
 	if 0 < result then
 		self._gui:checkScrolling()
 
-		if self.callbacks.scroll ~= nil then
+		if self.callbacks.scroll then
 			self.callbacks.scroll( self )
 		end
 	end
@@ -361,7 +361,7 @@ end
 function Button:draw()
 	local result = RL.GuiButton( self.bounds, self.text )
 
-	if result == 1 and self.callbacks.pressed ~= nil and self._gui:clickedInBounds( self.bounds ) then
+	if result == 1 and self.callbacks.pressed and self._gui:clickedInBounds( self.bounds ) then
 		self.callbacks.pressed( self )
 	end
 end
@@ -400,7 +400,7 @@ end
 function LabelButton:draw()
 	local result = RL.GuiLabelButton( self.bounds, self.text )
 
-	if result == 1 and self.callbacks.pressed ~= nil and self._gui:clickedInBounds( self.bounds ) then
+	if result == 1 and self.callbacks.pressed and self._gui:clickedInBounds( self.bounds ) then
 		self.callbacks.pressed( self )
 	end
 end
@@ -443,7 +443,7 @@ function Toggle:draw()
 	if 0 < result and self._gui:clickedInBounds( self.bounds ) then
 		self.active = active
 
-		if self.callbacks.pressed ~= nil then
+		if self.callbacks.pressed then
 			self.callbacks.pressed( self )
 		end
 	end
@@ -541,7 +541,7 @@ function ToggleGroup:draw()
 		if inBounds then
 			self.active = active
 
-			if self.callbacks.select ~= nil then
+			if self.callbacks.select then
 				self.callbacks.select( self )
 			end
 		end
@@ -596,7 +596,7 @@ function CheckBox:draw()
 		if self._gui:clickedInBounds( self.focusBounds ) then
 			self.checked = checked
 
-			if self.callbacks.pressed ~= nil then
+			if self.callbacks.pressed then
 				self.callbacks.pressed( self )
 			end
 		end
@@ -644,7 +644,7 @@ function ComboBox:draw()
 		if self._gui:clickedInBounds( self.bounds ) then
 			self.active = active
 
-			if self.callbacks.select ~= nil then
+			if self.callbacks.select then
 				self.callbacks.select( self )
 			end
 		end
@@ -711,9 +711,13 @@ function DropdownBox:draw()
 
 	if result == 1 then
 		self.editMode = not self.editMode
+		self:updateEditModeBounds()
 
-		if not self.editMode and self.callbacks.select ~= nil then
+		if not self.editMode and self.callbacks.select then
 			self.callbacks.select( self )
+		end
+		if self.callbacks.pressed then
+			self.callbacks.pressed( self )
 		end
 	end
 end
@@ -775,7 +779,7 @@ function Spinner:draw()
 		if self._gui:clickedInBounds( self.bounds ) then
 			self.value = value
 
-			if self.callbacks.edit ~= nil then
+			if self.callbacks.edit then
 				self.callbacks.edit( self )
 			end
 		end
@@ -842,7 +846,7 @@ function ValueBox:draw()
 		self._gui:editMode( self )
 		self.editMode = not self.editMode
 	end
-	if self.value ~= oldValue and self.callbacks.edit ~= nil then
+	if self.value ~= oldValue and self.callbacks.edit then
 		self.callbacks.edit( self )
 	end
 end
@@ -860,13 +864,13 @@ end
 local TextBox = {}
 TextBox.__index = TextBox
 
-function TextBox:new( bounds, text, textSize, editMode, callbacks, styles, tooltip )
+function TextBox:new( bounds, text, bufferSize, editMode, callbacks, styles, tooltip )
 	local object = setmetatable( {}, self )
 	object._gui = nil
 
 	object.bounds = bounds:clone()
 	object.text = text
-	object.textSize = textSize
+	object.bufferSize = bufferSize
 	object.editMode = editMode
 	object.callbacks = callbacks -- edit.
 	-- Option for preventing text to be drawn outside bounds.
@@ -890,7 +894,7 @@ function TextBox:draw()
 		RL.BeginScissorMode( self.bounds )
 	end
 
-	result, self.text = RL.GuiTextBox( self.bounds, self.text, self.textSize, self.editMode )
+	result, self.text = RL.GuiTextBox( self.bounds, self.text, self.bufferSize, self.editMode )
 
 	if self.scissorMode then
 		RL.EndScissorMode()
@@ -899,7 +903,7 @@ function TextBox:draw()
 		self._gui:editMode( self )
 		self.editMode = not self.editMode
 
-		if not self.editMode and self.callbacks.edit ~= nil then
+		if not self.editMode and self.callbacks.edit then
 			self.callbacks.edit( self )
 		end
 	end
@@ -957,7 +961,7 @@ function Slider:draw()
 			self._gui:checkScrolling()
 			self.value = value
 
-			if self.callbacks.edit ~= nil then
+			if self.callbacks.edit then
 				self.callbacks.edit( self )
 			end
 		end
@@ -1018,7 +1022,7 @@ function SliderBar:draw()
 			self._gui:checkScrolling()
 			self.value = value
 
-			if self.callbacks.edit ~= nil then
+			if self.callbacks.edit then
 				self.callbacks.edit( self )
 			end
 		end
@@ -1078,7 +1082,7 @@ function ProgressBar:draw()
 		if self._gui:clickedInBounds( self.bounds ) then
 			self.value = value
 
-			if self.callbacks.edit ~= nil then
+			if self.callbacks.edit then
 				self.callbacks.edit( self )
 			end
 		end
@@ -1193,7 +1197,7 @@ function Grid:draw()
 	local result, mouseCell = RL.GuiGrid( self.bounds, self.text, self.spacing, self.subdivs, self.mouseCell )
 	self.mouseCell:setT( mouseCell )
 
-	if 0 < result and self.callbacks.cellChange ~= nil then
+	if 0 < result and self.callbacks.cellChange then
 		self.callbacks.cellChange( self )
 	end
 end
@@ -1247,7 +1251,7 @@ function ListView:draw()
 	if self.scrollIndex ~= oldScrollIndex then
 		self._gui:checkScrolling()
 	end
-	if 0 < result and self.callbacks.select ~= nil then
+	if 0 < result and self.callbacks.select then
 		self.callbacks.select( self )
 	end
 end
@@ -1298,7 +1302,7 @@ function ListViewEx:draw()
 	if self.scrollIndex ~= oldScrollIndex then
 		self._gui:checkScrolling()
 	end
-	if 0 < result and self.callbacks.select ~= nil then
+	if 0 < result and self.callbacks.select then
 		self.callbacks.select( self )
 	end
 end
@@ -1345,7 +1349,7 @@ end
 function MessageBox:draw()
 	self.buttonIndex = RL.GuiMessageBox( self.bounds, self.title, self.message, self.buttons )
 
-	if 0 <= self.buttonIndex and self.callbacks.pressed ~= nil and self._gui:clickedInBounds( self.bounds ) then
+	if 0 <= self.buttonIndex and self.callbacks.pressed and self._gui:clickedInBounds( self.bounds ) then
 		self.callbacks.pressed( self )
 	end
 end
@@ -1395,7 +1399,7 @@ end
 function TextInputBox:draw()
 	self.buttonIndex, self.text, self.secretViewActive = RL.GuiTextInputBox( self.bounds, self.title, self.message, self.buttons, self.text, self.textMaxSize, self.secretViewActive )
 
-	if 0 <= self.buttonIndex and self.callbacks.pressed ~= nil and self._gui:clickedInBounds( self.bounds ) then
+	if 0 <= self.buttonIndex and self.callbacks.pressed and self._gui:clickedInBounds( self.bounds ) then
 		self.callbacks.pressed( self )
 	end
 end
@@ -1455,7 +1459,7 @@ function ColorPicker:draw()
 		end
 		self._gui:checkScrolling()
 
-		if self.callbacks.edit ~= nil then
+		if self.callbacks.edit then
 			self.callbacks.edit( self )
 		end
 	end
@@ -1501,7 +1505,7 @@ function ColorPanel:draw()
 		if self._gui:clickedInBounds( self.bounds ) then
 			self.color:setT( color )
 
-			if self.callbacks.edit ~= nil then
+			if self.callbacks.edit then
 				self.callbacks.edit( self )
 			end
 		end
@@ -1548,7 +1552,7 @@ function ColorBarAlpha:draw()
 			self._gui:checkScrolling()
 			self.alpha = alpha
 
-			if self.callbacks.edit ~= nil then
+			if self.callbacks.edit then
 				self.callbacks.edit( self )
 			end
 		end
@@ -1595,7 +1599,7 @@ function ColorBarHue:draw()
 			self._gui:checkScrolling()
 			self.value = value
 
-			if self.callbacks.edit ~= nil then
+			if self.callbacks.edit then
 				self.callbacks.edit( self )
 			end
 		end
@@ -1644,7 +1648,7 @@ function GuiScrollBar:draw()
 			self._gui:checkScrolling()
 			self.value = value
 
-			if self.callbacks.scroll ~= nil then
+			if self.callbacks.scroll then
 				self.callbacks.scroll( self )
 			end
 		end
@@ -1767,7 +1771,7 @@ function Raygui:drag( control )
 	and mouseOver and mousePos.y - control.bounds.y <= self.RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT then
 		self.grabPos = mousePos - Vector2:temp( control.bounds.x, control.bounds.y )
 
-		if control.callbacks.grab ~= nil then
+		if control.callbacks.grab then
 			control.callbacks.grab( control )
 		end
 		self.dragging = control
@@ -1779,7 +1783,7 @@ function Raygui:drag( control )
 		end
 		control:setPosition( mousePos - self.grabPos )
 
-		if control.callbacks.drag ~= nil then
+		if control.callbacks.drag then
 			control.callbacks.drag( control )
 		end
 	end
@@ -1914,6 +1918,12 @@ function Raygui:remove( control )
 
 			return
 		end
+	end
+end
+
+function Raygui:clear()
+	for _, control in ipairs( self.controls ) do
+		table.remove( control )
 	end
 end
 
@@ -2163,14 +2173,14 @@ end
 
 ---@param bounds Rectangle
 ---@param text string
----@param textSize integer
+---@param bufferSize integer
 ---@param editMode boolean
 ---@param callbacks table edit.
 ---@param styles table|nil
 ---@param tooltip string|nil
 ---@return table TextBox
-function Raygui:TextBox( bounds, text, textSize, editMode, callbacks, styles, tooltip )
-	return self:addControl( TextBox:new( bounds, text, textSize, editMode, callbacks, styles, tooltip ) )
+function Raygui:TextBox( bounds, text, bufferSize, editMode, callbacks, styles, tooltip )
+	return self:addControl( TextBox:new( bounds, text, bufferSize, editMode, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle

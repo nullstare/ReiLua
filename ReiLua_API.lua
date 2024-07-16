@@ -6526,11 +6526,11 @@ function RL.GuiValueBox( bounds, text, value, minValue, maxValue, editMode ) end
 ---- Success return int, string
 ---@param bounds table
 ---@param text string
----@param textSize integer
+---@param bufferSize integer
 ---@param editMode boolean
 ---@return any result
 ---@return any text 
-function RL.GuiTextBox( bounds, text, textSize, editMode ) end
+function RL.GuiTextBox( bounds, text, bufferSize, editMode ) end
 
 ---Slider control, returns selected value
 ---- Success return int, float, Rectangle, Rectangle

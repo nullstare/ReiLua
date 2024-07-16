@@ -497,6 +497,58 @@ int lmodelsDrawGrid( lua_State* L ) {
 }
 
 /*
+> RL.DrawGridEx( Vector2 slices, Vector2 spacing, Matrix transform, Color color, Vector2|nil divider, Color|nil dividerColor )
+
+Draw a grid with extended parameters. Optionally you can define divider with different color for every n slices
+*/
+int lmodelsDrawGridEx( lua_State* L ) {
+	Vector2 slices = uluaGetVector2( L, 1 );
+	Vector2 spacing = uluaGetVector2( L, 2 );
+	Matrix transform = uluaGetMatrix( L, 3 );
+	Color color = uluaGetColor( L, 4 );
+
+	Vector2 divider = { 0, 0 };
+	Color divColor = WHITE;
+
+	if ( !lua_isnil( L, 5 ) && !lua_isnone( L, 5 ) ) {
+		divider = uluaGetVector2( L, 5 );
+	}
+	if ( !lua_isnil( L, 6 ) && !lua_isnone( L, 6 ) ) {
+		divColor = uluaGetColor( L, 6 );
+	}
+
+	rlPushMatrix();
+		rlMultMatrixf( MatrixToFloat( transform ) );
+
+		rlBegin( RL_LINES );
+			for ( int x = 0; x < (int)slices.x + 1; x++ ) {
+				if ( 0 < x && x < slices.x && 0 < divider.x && x % (int)divider.x == 0 ) {
+					rlColor4ub( divColor.r, divColor.g, divColor.b, divColor.a );
+				}
+				else {
+					rlColor4ub( color.r, color.g, color.b, color.a );
+				}
+
+				rlVertex3f( spacing.x * x, 0, 0 );
+				rlVertex3f( spacing.x * x, 0, slices.y * spacing.y );
+			}
+			for ( int y = 0; y < (int)slices.y + 1; y++ ) {
+				if ( 0 < y && y < slices.y && 0 < divider.y && y % (int)divider.y == 0 ) {
+					rlColor4ub( divColor.r, divColor.g, divColor.b, divColor.a );
+				}
+				else {
+					rlColor4ub( color.r, color.g, color.b, color.a );
+				}
+				rlVertex3f( 0, 0, spacing.y * y );
+				rlVertex3f( slices.x * spacing.x, 0, spacing.y * y );
+			}
+		rlEnd();
+	rlPopMatrix();
+
+	return 0;
+}
+
+/*
 ## Models - Model management functions
 */
 

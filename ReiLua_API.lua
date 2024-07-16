@@ -4495,6 +4495,16 @@ function  RL.DrawRay( ray, color ) end
 ---@return any RL.DrawGrid
 function  RL.DrawGrid( slices, spacing ) end
 
+---Draw a grid with extended parameters. Optionally you can define divider with different color for every n slices
+---@param slices table
+---@param spacing table
+---@param transform table
+---@param color table
+---@param divider table|nil
+---@param dividerColor table|nil
+---@return any RL.DrawGridEx
+function  RL.DrawGridEx( slices, spacing, transform, color, divider, dividerColor ) end
+
 -- Models - Model management functions
 
 ---Load model from files (Meshes and materials)

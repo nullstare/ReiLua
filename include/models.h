@@ -27,6 +27,7 @@ int lmodelsDrawPlane( lua_State* L );
 int lmodelDrawQuad3DTexture( lua_State* L );
 int lmodelsDrawRay( lua_State* L );
 int lmodelsDrawGrid( lua_State* L );
+int lmodelsDrawGridEx( lua_State* L );
 /* Model management functions. */
 int lmodelsLoadModel( lua_State* L );
 int lmodelsLoadModelFromMesh( lua_State* L );

@@ -1726,6 +1726,7 @@ void luaRegister() {
 	assingGlobalFunction( "DrawQuad3DTexture", lmodelDrawQuad3DTexture );
 	assingGlobalFunction( "DrawRay", lmodelsDrawRay );
 	assingGlobalFunction( "DrawGrid", lmodelsDrawGrid );
+	assingGlobalFunction( "DrawGridEx", lmodelsDrawGridEx );
 		/* Model management functions. */
 	assingGlobalFunction( "LoadModel", lmodelsLoadModel );
 	assingGlobalFunction( "LoadModelFromMesh", lmodelsLoadModelFromMesh );

@@ -7310,6 +7310,12 @@ Draw a grid (Centered at ( 0, 0, 0 ))
 
 ---
 
+> RL.DrawGridEx( Vector2 slices, Vector2 spacing, Matrix transform, Color color, Vector2|nil divider, Color|nil dividerColor )
+
+Draw a grid with extended parameters. Optionally you can define divider with different color for every n slices
+
+---
+
 ## Models - Model management functions
 
 ---

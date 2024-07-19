@@ -3,7 +3,7 @@ if table.unpack == nil then
 	table.unpack = unpack
 end
 
-local Vector3 = Vector3 or require( "vector3" )
+local Vector3 = require( "vector3" )
 
 local BoundingBox = {}
 local metatable = {
@@ -11,6 +11,30 @@ local metatable = {
 	__tostring = function( b )
 		return "{{"..tostring( b.min.x )..", "..tostring( b.min.y )..", "..tostring( b.min.z ).."}, {"
 		..tostring( b.max.x )..", "..tostring( b.max.y )..", "..tostring( b.max.z ).."}}"
+	end,
+	-- __add = function( v1, v2 )
+	-- 	return Vector2:new( v1.x + v2.x, v1.y + v2.y )
+	-- end,
+	-- __sub = function( v1, v2 )
+	-- 	return Vector2:new( v1.x - v2.x, v1.y - v2.y )
+	-- end,
+	-- __mul = function( v1, v2 )
+	-- 	return Vector2:new( v1.x * v2.x, v1.y * v2.y )
+	-- end,
+	-- __div = function( v1, v2 )
+	-- 	return Vector2:new( v1.x / v2.x, v1.y / v2.y )
+	-- end,
+	-- __mod = function( v, value )
+	-- 	return Vector2:new( math.fmod( v.x, value ), math.fmod( v.y, value ) )
+	-- end,
+	-- __pow = function( v, value )
+	-- 	return Vector2:new( v.x ^ value, v.y ^ value )
+	-- end,
+	-- __unm = function( v )
+	-- 	return Vector2:new( -v.x, -v.y )
+	-- end,
+	__eq = function( b1, b2 )
+		return b1.min == b2.min and b1.max == b2.max
 	end,
 }
 
@@ -111,26 +135,103 @@ function BoundingBox:getPoints()
 	}
 end
 
+-- Assumes max is used as size.
 function BoundingBox:checkCollisionBox( b )
 	return RL.CheckCollisionBoxes( self:maxToPos(), b:maxToPos() )
 end
 
+-- Assumes max is used as size.
 function BoundingBox:checkCollisionSphere( center, radius )
 	return RL.CheckCollisionBoxSphere( self:maxToPos(), center, radius )
 end
 
+-- Assumes max is used as size.
+function BoundingBox:checkCollisionPoint( point )
+	local max = self.min + self.max
+
+	return self.min.x <= point.x
+	and self.min.y <= point.y
+	and self.min.z <= point.z
+	and point.x <= max.x
+	and point.y <= max.y
+	and point.z <= max.z
+end
+
+-- Assumes max is used as size.
 function BoundingBox:getRayCollision( ray )
 	return RL.GetRayCollisionBox( ray, self:maxToPos() )
 end
 
 -- Max to position from size.
 function BoundingBox:maxToPos()
-	return BoundingBox:new( self.min, self.min + self.max )
+	return BoundingBox:newV( self.min, self.min + self.max )
 end
 
 -- Max to size from position.
 function BoundingBox:maxToSize()
-	return BoundingBox:new( self.min, self.max - self.min )
+	return BoundingBox:newV( self.min, self.max - self.min )
+end
+
+-- Temp pre generated objects to avoid "slow" table generation.
+
+local TEMP_COUNT = 100
+local tempPool = {}
+local curTemp = 1
+
+for _ = 1, TEMP_COUNT do
+	table.insert( tempPool, BoundingBox:new( { 0, 0, 0 }, { 0, 0, 0 } ) )
+end
+
+--- Expects format { ... }, { ... }
+function BoundingBox:temp( min, max )
+	local object = tempPool[ curTemp ]
+
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
+
+	object.min = Vector3:tempT( min )
+	object.max = Vector3:tempT( max )
+
+	return object
+end
+
+--- Expects format { { ... }, { ... } }
+function BoundingBox:tempT( t )
+	local object = tempPool[ curTemp ]
+
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
+
+	object.min = Vector3:tempT( t[1] )
+	object.max = Vector3:tempT( t[2] )
+
+	return object
+end
+
+--- Expects format { Vector3, Vector3 }
+function BoundingBox:tempV( min, max )
+	local object = tempPool[ curTemp ]
+
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
+
+	object.min = Vector3:tempV( min )
+	object.max = Vector3:tempV( max )
+
+	return object
+end
+
+--- Expects format BoundingBox
+function BoundingBox:tempB( b )
+	local object = tempPool[ curTemp ]
+
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
+
+	object.min = Vector3:tempV( b.min )
+	object.max = Vector3:tempV( b.max )
+
+	return object
+end
+
+function BoundingBox:getTempId()
+	return curTemp
 end
 
 return BoundingBox

@@ -7,7 +7,7 @@
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 
-inline char* getTextOrNil( lua_State* L, int index ) {
+static inline char* getTextOrNil( lua_State* L, int index ) {
 	char* text = NULL;
 
 	if ( lua_isstring( L, index ) ) {

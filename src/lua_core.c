@@ -1819,6 +1819,7 @@ void luaRegister() {
 	assingGlobalFunction( "GetRayCollisionMesh", lmodelsGetRayCollisionMesh );
 	assingGlobalFunction( "GetRayCollisionTriangle", lmodelsGetRayCollisionTriangle );
 	assingGlobalFunction( "GetRayCollisionQuad", lmodelsGetRayCollisionQuad );
+	assingGlobalFunction( "GetRayBoxCells", lmodelsGetRayBoxCells );
 
 	/* Text. */
 		/* Font loading/unloading functions. */

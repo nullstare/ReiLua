@@ -2531,3 +2531,121 @@ int lmodelsGetRayCollisionQuad( lua_State* L ) {
 
 	return 1;
 }
+
+static inline Vector3 Vector3Floor( Vector3 v ) {
+	return (Vector3){ (float)floor( v.x ), (float)floor( v.y ), (float)floor( v.z ) };
+}
+
+static inline Vector3 Vector3Ceil( Vector3 v ) {
+	return (Vector3){ (float)ceil( v.x ), (float)ceil( v.y ), (float)ceil( v.z ) };
+}
+
+static inline bool isInsideBox( Vector3 position, BoundingBox box ) {
+	return box.min.x <= position.x && position.x <= box.max.x
+	&& box.min.y <= position.y && position.y <= box.max.y
+	&& box.min.z <= position.z && position.z <= box.max.z;
+}
+
+/*
+> cells = RL.GetRayBoxCells( Ray ray, BoundingBox box, Vector3 cellSize )
+
+Get cell positions inside box that intersect with the ray. Returns empty table if ray misses the box
+
+- Success return Vector3{}
+*/
+int lmodelsGetRayBoxCells( lua_State* L ) {
+	Ray ray = uluaGetRay( L, 1 );
+	BoundingBox box = uluaGetBoundingBox( L, 2 );
+	Vector3 cellSize = uluaGetVector3( L, 3 );
+
+	/* To avoid possible div by 0 later. */
+	ray.direction.x == 0.0f ? EPSILON : ray.direction.x;
+	ray.direction.y == 0.0f ? EPSILON : ray.direction.y;
+	ray.direction.z == 0.0f ? EPSILON : ray.direction.z;
+
+	Vector3 boxSize = Vector3Subtract( box.max, box.min );
+	Vector3 boxSizeCells = Vector3Ceil( Vector3Divide( boxSize, cellSize ) );
+	Vector3 cellPos = { -1, -1, -1 };
+	Vector3 localRayPos = { 0, 0, 0 };
+
+	/* If camera is inside the box. */
+	if ( isInsideBox( ray.position, box ) ) {
+		localRayPos = Vector3Subtract( ray.position, box.min );
+		/* Nudge position a bit to try to get if away from {0, 0, 0}. */
+		localRayPos = Vector3Add( localRayPos, Vector3Scale( ray.direction, 0.0001f ) );
+		cellPos = Vector3Floor( Vector3Divide( localRayPos, cellSize ) );
+	}
+	/* Else check ray to box to see where we start. */
+	else {
+		RayCollision rayCol = GetRayCollisionBox( ray, box );
+
+		if ( rayCol.hit ) {
+			localRayPos = Vector3Subtract( rayCol.point, box.min );
+			/* Nudge inside the box. */
+			localRayPos = Vector3Add( localRayPos, Vector3Scale( Vector3Negate( rayCol.normal ), 0.0001f ) );
+			cellPos = Vector3Floor( Vector3Divide( localRayPos, cellSize ) );
+		}
+	}
+	lua_newtable( L );
+
+	/* Find cells along the ray. */
+	if ( 0 <= cellPos.x ) {
+		uluaPushVector3( L, cellPos );
+		lua_rawseti( L, -2, 1 );
+
+		Vector3 signs = {
+			0.0f <= ray.direction.x ? 1.0f : -1.0f,
+			0.0f <= ray.direction.y ? 1.0f : -1.0f,
+			0.0f <= ray.direction.z ? 1.0f : -1.0f
+		};
+		/* We transform everything to absolute space to make this simpler. */
+		Vector3 absBounds = {
+			0.0f < signs.x ? boxSizeCells.x - cellPos.x : cellPos.x + 1.0f,
+			0.0f < signs.y ? boxSizeCells.y - cellPos.y : cellPos.y + 1.0f,
+			0.0f < signs.z ? boxSizeCells.z - cellPos.z : cellPos.z + 1.0f
+		};
+		Vector3 absDir = {
+			fabsf( ray.direction.x ),
+			fabsf( ray.direction.y ),
+			fabsf( ray.direction.z )
+		};
+		Vector3 absPos = {
+			0.0f < signs.x ? localRayPos.x - cellPos.x * cellSize.x : cellSize.x - ( localRayPos.x - cellPos.x * cellSize.x ),
+			0.0f < signs.y ? localRayPos.y - cellPos.y * cellSize.y : cellSize.y - ( localRayPos.y - cellPos.y * cellSize.y ),
+			0.0f < signs.z ? localRayPos.z - cellPos.z * cellSize.z : cellSize.z - ( localRayPos.z - cellPos.z * cellSize.z )
+		};
+		Vector3 absCell = { 0, 0, 0 };
+		int cellId = 2; /* We already added first so we will start at 2. */
+
+		while ( true ) {
+			/* Distance to adjacent cell. */
+			Vector3 cellDis = {
+				( cellSize.x - ( absPos.x - absCell.x * cellSize.x ) ) / absDir.x,
+				( cellSize.y - ( absPos.y - absCell.y * cellSize.y ) ) / absDir.y,
+				( cellSize.z - ( absPos.z - absCell.z * cellSize.z ) ) / absDir.z,
+			};
+			Vector3 move = {
+				cellDis.x <= cellDis.y && cellDis.x <= cellDis.z ? 1 : 0,
+				cellDis.y <= cellDis.x && cellDis.y <= cellDis.z ? 1 : 0,
+				cellDis.z <= cellDis.x && cellDis.z <= cellDis.y ? 1 : 0
+			};
+			/* Both relative and real cell pos needs to be moved. */
+			absCell = Vector3Add( absCell, move );
+			cellPos = Vector3Add( cellPos, Vector3Multiply( move, signs ) );
+
+			if ( absCell.x < absBounds.x && absCell.y < absBounds.y && absCell.z < absBounds.z ) {
+				absPos = Vector3Add( absPos, Vector3Scale( absDir, fmin( fmin( cellDis.x, cellDis.y ), cellDis.z ) ) );
+
+				uluaPushVector3( L, (Vector3){ round( cellPos.x ), round( cellPos.y ), round( cellPos.z ) } );
+				lua_rawseti( L, -2, cellId );
+
+				cellId++;
+			}
+			else {
+				break;
+			}
+		}
+	}
+
+	return 1;
+}

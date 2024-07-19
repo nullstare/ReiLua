@@ -7989,6 +7989,14 @@ Get collision info between ray and quad
 
 ---
 
+> cells = RL.GetRayBoxCells( Ray ray, BoundingBox box, Vector3 cellSize )
+
+Get cell positions inside box that intersect with the ray. Returns empty table if ray misses the box
+
+- Success return Vector3{}
+
+---
+
 ## Audio - Audio device management functions
 
 ---

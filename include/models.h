@@ -120,3 +120,4 @@ int lmodelsGetRayCollisionBox( lua_State* L );
 int lmodelsGetRayCollisionMesh( lua_State* L );
 int lmodelsGetRayCollisionTriangle( lua_State* L );
 int lmodelsGetRayCollisionQuad( lua_State* L );
+int lmodelsGetRayBoxCells( lua_State* L );

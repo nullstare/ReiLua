@@ -2,7 +2,7 @@
 #include "state.h"
 #include "lua_core.h"
 
-inline static void printVersion() {
+static inline void printVersion() {
 	if ( VERSION_DEV ) {
 		TraceLog( LOG_INFO, "ReiLua %d.%d.%d-Dev", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH );
 	}

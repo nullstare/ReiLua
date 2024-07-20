@@ -2547,11 +2547,11 @@ static inline bool isInsideBox( Vector3 position, BoundingBox box ) {
 }
 
 /*
-> cells = RL.GetRayBoxCells( Ray ray, BoundingBox box, Vector3 cellSize )
+> cells, exitPoint = RL.GetRayBoxCells( Ray ray, BoundingBox box, Vector3 cellSize )
 
-Get cell positions inside box that intersect with the ray. Returns empty table if ray misses the box
+Get cell positions inside box that intersect with the ray. Also returns ray exit point. Returns empty table if ray misses the box
 
-- Success return Vector3{}
+- Success return Vector3{}, RayCollision|nil
 */
 int lmodelsGetRayBoxCells( lua_State* L ) {
 	Ray ray = uluaGetRay( L, 1 );
@@ -2633,19 +2633,32 @@ int lmodelsGetRayBoxCells( lua_State* L ) {
 			absCell = Vector3Add( absCell, move );
 			cellPos = Vector3Add( cellPos, Vector3Multiply( move, signs ) );
 
-			if ( absCell.x < absBounds.x && absCell.y < absBounds.y && absCell.z < absBounds.z ) {
-				absPos = Vector3Add( absPos, Vector3Scale( absDir, fmin( fmin( cellDis.x, cellDis.y ), cellDis.z ) ) );
+			float rayMoveScale = fmin( fmin( cellDis.x, cellDis.y ), cellDis.z );
 
+			absPos = Vector3Add( absPos, Vector3Scale( absDir, rayMoveScale ) );
+			localRayPos = Vector3Add( localRayPos, Vector3Scale( ray.direction, rayMoveScale ) );
+
+			if ( absCell.x < absBounds.x && absCell.y < absBounds.y && absCell.z < absBounds.z ) {
 				uluaPushVector3( L, (Vector3){ round( cellPos.x ), round( cellPos.y ), round( cellPos.z ) } );
 				lua_rawseti( L, -2, cellId );
 
 				cellId++;
 			}
 			else {
-				break;
+				Vector3 exitPoint = Vector3Add( localRayPos, box.min );
+
+				uluaPushRayCollision( L, (RayCollision){
+					.hit = true,
+					.distance = Vector3Distance( ray.position, exitPoint ),
+					.point = exitPoint,
+					.normal = Vector3Multiply( move, Vector3Negate( signs ) )
+				} );
+
+				return 2;
 			}
 		}
 	}
+	lua_pushnil( L );
 
-	return 1;
+	return 2;
 }

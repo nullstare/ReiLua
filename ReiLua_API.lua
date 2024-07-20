@@ -5137,12 +5137,13 @@ function RL.GetRayCollisionTriangle( ray, p1, p2, p3 ) end
 ---@return any rayCollision 
 function RL.GetRayCollisionQuad( ray, p1, p2, p3, p4 ) end
 
----Get cell positions inside box that intersect with the ray. Returns empty table if ray misses the box
----- Success return Vector3{}
+---Get cell positions inside box that intersect with the ray. Also returns ray exit point. Returns empty table if ray misses the box
+---- Success return Vector3{}, RayCollision|nil
 ---@param ray any
 ---@param box any
 ---@param cellSize table
----@return any cells 
+---@return any cells
+---@return any exitPoint 
 function RL.GetRayBoxCells( ray, box, cellSize ) end
 
 -- Audio - Audio device management functions

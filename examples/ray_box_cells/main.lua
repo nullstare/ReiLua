@@ -16,6 +16,7 @@ local drawCellSize = cellSize:clone()
 local ray = nil
 local rayCol = nil
 local cells = {}
+local exitPoint = {}
 
 local guiMouseHover = false
 local spinnerEdit = {
@@ -64,7 +65,7 @@ function RL.update( delta )
 		ray = RL.GetMouseRay( RL.GetMousePosition(), camera.camera )
 		rayCol = box:getRayCollision( ray )
 
-		cells = RL.GetRayBoxCells( ray, box:maxToPos(), cellSize )
+		cells, exitPoint = RL.GetRayBoxCells( ray, box:maxToPos(), cellSize )
 		drawCellSize:setV( cellSize )
 	end
 end
@@ -95,11 +96,12 @@ function RL.draw()
 			RL.DrawRay( ray, RL.BLUE )
 			RL.DrawSphere( ray[1], 0.1, RL.GREEN )
 		end
-
 		if rayCol and rayCol.hit then
 			RL.DrawSphere( rayCol.point, 0.1, RL.RED )
 		end
-
+		if exitPoint.hit then
+			RL.DrawSphere( exitPoint.point, 0.1, RL.RED )
+		end
 		if cells then
 			for _, cell in ipairs( cells ) do
 				RL.DrawCubeWires( box.min + Vector3:tempT( cell ) * drawCellSize + drawCellSize:scale( 0.5 ), drawCellSize, RL.RED )

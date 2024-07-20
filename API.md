@@ -7989,11 +7989,11 @@ Get collision info between ray and quad
 
 ---
 
-> cells = RL.GetRayBoxCells( Ray ray, BoundingBox box, Vector3 cellSize )
+> cells, exitPoint = RL.GetRayBoxCells( Ray ray, BoundingBox box, Vector3 cellSize )
 
-Get cell positions inside box that intersect with the ray. Returns empty table if ray misses the box
+Get cell positions inside box that intersect with the ray. Also returns ray exit point. Returns empty table if ray misses the box
 
-- Success return Vector3{}
+- Success return Vector3{}, RayCollision|nil
 
 ---
 

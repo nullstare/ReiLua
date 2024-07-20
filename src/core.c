@@ -2532,7 +2532,9 @@ Check if a mouse button is NOT being pressed
 int lcoreIsMouseButtonUp( lua_State* L ) {
 	int button = luaL_checkinteger( L, 1 );
 
-	lua_pushboolean( L, IsMouseButtonUp( button ) );
+	/* IsMouseButtonUp is broken. Review when fixed in raylib. */
+	lua_pushboolean( L, !IsMouseButtonDown( button ) );
+	// lua_pushboolean( L, IsMouseButtonUp( button ) );
 
 	return 1;
 }

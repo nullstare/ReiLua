@@ -3,7 +3,7 @@ if table.unpack == nil then
 	table.unpack = unpack
 end
 
-local Vector3 = require( "vector3" )
+local Vector3 = Vector3 or require( "vector3" )
 
 local BoundingBox = {}
 local metatable = {
@@ -125,41 +125,35 @@ end
 function BoundingBox:getPoints()
 	return {
 		self.min:clone(),									-- Down back left.
-		Vector3:new( self.max.x, self.min.y, self.min.z ),		-- Down back right.
-		Vector3:new( self.min.x, self.min.y, self.max.z ),		-- Down front left.
-		Vector3:new( self.max.x, self.min.y, self.max.z ),		-- Down front right.
-		Vector3:new( self.min.x, self.max.y, self.min.z ),		-- Up back left.
-		Vector3:new( self.max.x, self.max.y, self.min.z ),		-- Up back right.
-		Vector3:new( self.min.x, self.max.y, self.max.z ),		-- Up front left.
+		Vector3:new( self.max.x, self.min.y, self.min.z ),	-- Down back right.
+		Vector3:new( self.min.x, self.min.y, self.max.z ),	-- Down front left.
+		Vector3:new( self.max.x, self.min.y, self.max.z ),	-- Down front right.
+		Vector3:new( self.min.x, self.max.y, self.min.z ),	-- Up back left.
+		Vector3:new( self.max.x, self.max.y, self.min.z ),	-- Up back right.
+		Vector3:new( self.min.x, self.max.y, self.max.z ),	-- Up front left.
 		self.max:clone(),									-- Up front right.
 	}
 end
 
--- Assumes max is used as size.
 function BoundingBox:checkCollisionBox( b )
-	return RL.CheckCollisionBoxes( self:maxToPos(), b:maxToPos() )
+	return RL.CheckCollisionBoxes( self, b )
 end
 
--- Assumes max is used as size.
 function BoundingBox:checkCollisionSphere( center, radius )
-	return RL.CheckCollisionBoxSphere( self:maxToPos(), center, radius )
+	return RL.CheckCollisionBoxSphere( self, center, radius )
 end
 
--- Assumes max is used as size.
 function BoundingBox:checkCollisionPoint( point )
-	local max = self.min + self.max
-
 	return self.min.x <= point.x
 	and self.min.y <= point.y
 	and self.min.z <= point.z
-	and point.x <= max.x
-	and point.y <= max.y
-	and point.z <= max.z
+	and point.x <= self.max.x
+	and point.y <= self.max.y
+	and point.z <= self.max.z
 end
 
--- Assumes max is used as size.
 function BoundingBox:getRayCollision( ray )
-	return RL.GetRayCollisionBox( ray, self:maxToPos() )
+	return RL.GetRayCollisionBox( ray, self )
 end
 
 -- Max to position from size.
@@ -170,6 +164,36 @@ end
 -- Max to size from position.
 function BoundingBox:maxToSize()
 	return BoundingBox:newV( self.min, self.max - self.min )
+end
+
+-- MAS stands for max as size. These functions handles max as size instead of position.
+
+function BoundingBox:checkCollisionBoxMASBox( b )
+	return RL.CheckCollisionBoxes( self:tempMaxToPos(), b )
+end
+
+function BoundingBox:checkCollisionBoxMAS( b )
+	return RL.CheckCollisionBoxes( self:tempMaxToPos(), b:tempMaxToPos() )
+end
+
+function BoundingBox:checkCollisionSphereMAS( center, radius )
+	return RL.CheckCollisionBoxSphere( self:tempMaxToPos(), center, radius )
+end
+
+function BoundingBox:checkCollisionPointMAS( point )
+	local max = self.min + self.max
+
+	return self.min.x <= point.x
+	and self.min.y <= point.y
+	and self.min.z <= point.z
+	and point.x <= max.x
+	and point.y <= max.y
+	and point.z <= max.z
+end
+
+function BoundingBox:getRayCollisionMAS( ray )
+	return RL.GetRayCollisionBox( ray, self:tempMaxToPos() )
+	-- return RL.GetRayCollisionBox( ray, self:maxToPos() )
 end
 
 -- Temp pre generated objects to avoid "slow" table generation.
@@ -228,6 +252,16 @@ function BoundingBox:tempB( b )
 	object.max = Vector3:tempV( b.max )
 
 	return object
+end
+
+-- Max to position from size.
+function BoundingBox:tempMaxToPos()
+	return BoundingBox:tempV( self.min, Vector3:tempT( RL.Vector3Add( self.min, self.max ) ) )
+end
+
+-- Max to size from position.
+function BoundingBox:tempMaxToSize()
+	return BoundingBox:tempV( self.min, Vector3:tempT( RL.Vector3Subtract( self.max, self.min ) ) )
 end
 
 function BoundingBox:getTempId()

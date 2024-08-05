@@ -15,12 +15,11 @@ out vec4 fragColor;
 
 // NOTE: Add here your custom variables
 
-void main()
-{
+void main() {
     // Send vertex attributes to fragment shader
     fragTexCoord = vertexTexCoord;
     fragColor = vertexColor;
 
     // Calculate final vertex position
-    gl_Position = mvp*vec4(vertexPosition, 1.0);
+    gl_Position = mvp * vec4( vertexPosition, 1.0 );
 }

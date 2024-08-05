@@ -116,6 +116,8 @@ https://github.com/raysan5/raylib
 
 https://github.com/lua/lua or https://github.com/LuaJIT/LuaJIT
 
+Note! Lua header files are from Lua 5.4.0, if you use different version be sure to replace them.
+
 ### Linux
 
 Compile Raylib and lua by following their instructions. They will compile to libraylib.a and liblua.a by default.

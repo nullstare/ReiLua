@@ -1729,7 +1729,7 @@ function Raygui:update()
 	for i = #self.controls, 1, -1 do
 		local control = self.controls[i]
 
-		if control.visible and control.update ~= nil and self:inView( control ) then
+		if control.visible and not control.noUpdate and control.update ~= nil and self:inView( control ) then
 			if control:update() then
 				self.focused = i
 

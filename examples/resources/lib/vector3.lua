@@ -3,8 +3,6 @@ if table.unpack == nil then
 	table.unpack = unpack
 end
 
-local Vector2 = Vector2 or require( "vector2" )
-
 local Vector3 = {}
 local metatable = {
 	__index = Vector3,
@@ -37,6 +35,12 @@ local metatable = {
 	end,
 	__eq = function( v1, v2 )
 		return RL.Vector3Equals( v1, v2 )
+	end,
+	__lt = function( v1, v2 )
+		return v1.x < v2.x and v1.y < v2.y and v1.z < v2.z
+	end,
+	__le = function( v1, v2 )
+		return v1.x <= v2.x and v1.y <= v2.y and v1.z <= v2.z
 	end,
 	__concat = function( a, b )
 		return tostring( a )..tostring( b )
@@ -230,6 +234,10 @@ end
 
 function Vector3:equals( v2 )
 	return RL.Vector3Equals( self, v2 )
+end
+
+function Vector3:sign()
+	return Vector3:new( RL.Sign( self.x ), RL.Sign( self.y ), RL.Sign( self.z ) )
 end
 
 function Vector3:addEq( v2 )

@@ -13,13 +13,12 @@ out vec4 finalColor;
 
 // NOTE: Add here your custom variables
 
-void main()
-{
+void main() {
     // Texel color fetching from texture sampler
-    vec4 texelColor = texture(texture0, fragTexCoord);
+    vec4 texelColor = texture( texture0, fragTexCoord );
 
     // NOTE: Implement here your fragment shader code
 
-    finalColor = texelColor*colDiffuse;
+    finalColor = texelColor * colDiffuse;
 }
 

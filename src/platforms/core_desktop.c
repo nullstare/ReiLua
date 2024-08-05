@@ -99,6 +99,7 @@ int lcoreGetKeyScancode( lua_State* L ) {
 Called when the window is resized. Type GLFW_WINDOW_SIZE_EVENT
 */
 static void windowSizeEvent( GLFWwindow* window, int width, int height ) {
+// GLFWwindowsizefun windowSizeEvent( GLFWwindow* window, int width, int height ) {
 	/* Pass through to raylib callback. */
 	state->raylibWindowSizeCallback( window, width, height );
 
@@ -617,7 +618,7 @@ static void penTabletProximityEvent( int proxState ) {
 
 static void platformRegisterEvents() {
 	/* Window events. */
-	state->raylibWindowSizeCallback = glfwSetWindowSizeCallback( GetWindowHandle(), windowSizeEvent );
+	state->raylibWindowSizeCallback = glfwSetWindowSizeCallback( GetWindowHandle(), (GLFWwindowsizefun)windowSizeEvent );
 #if !defined( PLATFORM_WEB )
 	state->raylibWindowMaximizeCallback = glfwSetWindowMaximizeCallback( GetWindowHandle(), windowMaximizeEvent );
 #endif
@@ -634,9 +635,9 @@ static void platformRegisterEvents() {
 	state->raylibCursorEnterCallback = glfwSetCursorEnterCallback( GetWindowHandle(), cursorEnterInputEvent );
 	state->raylibJoystickCallback = glfwSetJoystickCallback( joystickEvent );
 	/* NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445 */
-	// state->glfwtabletDataCallback = glfwSetPenTabletDataCallback( penTabletDataEvent );
-	// state->glfwtabletCursorCallback = glfwSetPenTabletCursorCallback( penTabletCursorEvent );
-	// state->glfwtabletProximityCallback = glfwSetPenTabletProximityCallback( penTabletProximityEvent );
+	// state->glfwTabletDataCallback = glfwSetPenTabletDataCallback( penTabletDataEvent );
+	// state->glfwTabletCursorCallback = glfwSetPenTabletCursorCallback( penTabletCursorEvent );
+	// state->glfwTabletProximityCallback = glfwSetPenTabletProximityCallback( penTabletProximityEvent );
 }
 
 void luaPlatformRegister() {

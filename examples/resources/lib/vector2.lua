@@ -36,6 +36,12 @@ local metatable = {
 	__eq = function( v1, v2 )
 		return RL.Vector2Equals( v1, v2 )
 	end,
+	__lt = function( v1, v2 )
+		return v1.x < v2.x and v1.y < v2.y
+	end,
+	__le = function( v1, v2 )
+		return v1.x <= v2.x and v1.y <= v2.y
+	end,
 	__concat = function( a, b )
 		return tostring( a )..tostring( b )
 	end,
@@ -203,6 +209,10 @@ end
 
 function Vector2:equals( v2 )
 	return RL.Vector2Equals( self, v2 )
+end
+
+function Vector2:sign()
+	return Vector2:new( RL.Sign( self.x ), RL.Sign( self.y ) )
 end
 
 function Vector2:addEq( v2 )

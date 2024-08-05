@@ -19,13 +19,15 @@ Backlog {
 		* Improve Dungeon crawler example by generating custom mesh instead of drawing 3D quads.
 		* Platformer example physics update for true framerate independence.
 	* Android support
-
-	* For raylib 5.5
-		* DrawBillboardPro BREAKING CHANGE.
 }
 
 Bugs {
 	* glfwSet*Callback functions segfault on Windows. Should keep Lua events off for now.
+}
+
+Notes {
+	* raylib 5.5
+		* DrawBillboardPro BREAKING CHANGE.
 }
 
 Needs Testing {

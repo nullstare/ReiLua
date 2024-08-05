@@ -67,6 +67,7 @@ DETAILED CHANGES:
 	- ADDED: Some raygui controls return 1 instead of 0 when pressed or scrolled.
 	- ADDED: DrawGridEx.
 	- ADDED: GetRayBoxCells.
+	- FIXED: GenImageColor color was also argument 1.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

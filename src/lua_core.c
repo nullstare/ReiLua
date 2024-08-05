@@ -755,6 +755,7 @@ static void defineGlobals() {
 	assignGlobalColor( RAYWHITE, "RAYWHITE" ); // My own White (raylib logo)
 	/* Math */
 	assignGlobalFloat( PI, "PI" ); // Pi
+	assignGlobalFloat( EPSILON, "EPSILON" ); // Epsilon
 	assignGlobalFloat( DEG2RAD, "DEG2RAD" ); // Degrees to radians
 	assignGlobalFloat( RAD2DEG, "RAD2DEG" ); // Radians to degrees
 	/* Gui control state */

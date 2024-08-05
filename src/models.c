@@ -2516,7 +2516,7 @@ int lmodelsGetRayCollisionTriangle( lua_State* L ) {
 /*
 > rayCollision = RL.GetRayCollisionQuad( Ray ray, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4 )
 
-Get collision info between ray and quad
+Get collision info between ray and quad. NOTE: The points are expected to be in counter-clockwise winding
 
 - Success return RayCollision
 */
@@ -2599,11 +2599,6 @@ int lmodelsGetRayBoxCells( lua_State* L ) {
 			0.0f <= ray.direction.z ? 1.0f : -1.0f
 		};
 		/* We transform everything to absolute space to make this simpler. */
-		Vector3 absBounds = {
-			0.0f < signs.x ? boxSizeCells.x - cellPos.x : cellPos.x + 1.0f,
-			0.0f < signs.y ? boxSizeCells.y - cellPos.y : cellPos.y + 1.0f,
-			0.0f < signs.z ? boxSizeCells.z - cellPos.z : cellPos.z + 1.0f
-		};
 		Vector3 absDir = {
 			fabsf( ray.direction.x ),
 			fabsf( ray.direction.y ),
@@ -2614,6 +2609,21 @@ int lmodelsGetRayBoxCells( lua_State* L ) {
 			0.0f < signs.y ? localRayPos.y - cellPos.y * cellSize.y : cellSize.y - ( localRayPos.y - cellPos.y * cellSize.y ),
 			0.0f < signs.z ? localRayPos.z - cellPos.z * cellSize.z : cellSize.z - ( localRayPos.z - cellPos.z * cellSize.z )
 		};
+		Vector3 absBounds = {
+			0.0f < signs.x ? boxSize.x - localRayPos.x : localRayPos.x,
+			0.0f < signs.y ? boxSize.y - localRayPos.y : localRayPos.y,
+			0.0f < signs.z ? boxSize.z - localRayPos.z : localRayPos.z
+		};
+		absBounds = Vector3Add( absBounds, absPos );
+
+		Vector3 exitDis = {
+			( absBounds.x - absPos.x ) / absDir.x,
+			( absBounds.y - absPos.y ) / absDir.y,
+			( absBounds.z - absPos.z ) / absDir.z
+		};
+		float exitScale = fmin( fmin( exitDis.x, exitDis.y ), exitDis.z );
+		Vector3 exitPoint = Vector3Add( Vector3Scale( ray.direction, exitScale ), Vector3Add( localRayPos, box.min ) );
+
 		Vector3 absCell = { 0, 0, 0 };
 		int cellId = 2; /* We already added first so we will start at 2. */
 
@@ -2636,17 +2646,14 @@ int lmodelsGetRayBoxCells( lua_State* L ) {
 			float rayMoveScale = fmin( fmin( cellDis.x, cellDis.y ), cellDis.z );
 
 			absPos = Vector3Add( absPos, Vector3Scale( absDir, rayMoveScale ) );
-			localRayPos = Vector3Add( localRayPos, Vector3Scale( ray.direction, rayMoveScale ) );
 
-			if ( absCell.x < absBounds.x && absCell.y < absBounds.y && absCell.z < absBounds.z ) {
+			if ( absPos.x < absBounds.x && absPos.y < absBounds.y && absPos.z < absBounds.z ) {
 				uluaPushVector3( L, (Vector3){ round( cellPos.x ), round( cellPos.y ), round( cellPos.z ) } );
 				lua_rawseti( L, -2, cellId );
 
 				cellId++;
 			}
 			else {
-				Vector3 exitPoint = Vector3Add( localRayPos, box.min );
-
 				uluaPushRayCollision( L, (RayCollision){
 					.hit = true,
 					.distance = Vector3Distance( ray.position, exitPoint ),

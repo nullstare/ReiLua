@@ -3,8 +3,6 @@ if table.unpack == nil then
 	table.unpack = unpack
 end
 
-local Vector3 = require( "vector3" )
-
 local Color = {}
 local metatable = {
 	__index = Color,
@@ -92,7 +90,7 @@ function Color:setC( c )
 end
 
 function Color:serialize()
-	return "Color:new("..self.r..","..self.g..","..self.b..","..self.a..")"
+	return "Color:new("..RL.Round( self.r )..","..RL.Round( self.g )..","..RL.Round( self.b )..","..RL.Round( self.a )..")"
 end
 
 function Color:arr()
@@ -156,12 +154,12 @@ function Color:alphaBlend( dst, src, tint )
 end
 
 function Color:lerp( color, amount )
-	return Color:new(
+	return Color:temp(
 		RL.Lerp( self.r, color.r, amount ),
 		RL.Lerp( self.g, color.g, amount ),
 		RL.Lerp( self.b, color.b, amount ),
 		RL.Lerp( self.a, color.a, amount )
-	)
+	):round()
 end
 
 function Color:round()
@@ -171,6 +169,10 @@ function Color:round()
 		RL.Round( self.b ),
 		RL.Round( self.a )
 	)
+end
+
+function Color:invert()
+	return Color:new( 255 - self.r, 255 - self.g, 255 - self.b, self.a )
 end
 
 -- Temp pre generated objects to avoid "slow" table generation.

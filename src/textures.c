@@ -255,7 +255,7 @@ Generate image: plain color
 */
 int ltexturesGenImageColor( lua_State* L ) {
 	Vector2 size = uluaGetVector2( L, 1 );
-	Color color = uluaGetColor( L, 1 );
+	Color color = uluaGetColor( L, 2 );
 
 	uluaPushImage( L, GenImageColor( size.x, size.y, color ) );
 

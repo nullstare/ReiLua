@@ -10,7 +10,8 @@ Cam3D = require( "camera3d" )
 local monitor = 0
 local camera = {}
 
-local box = BoundinBox:new( { -8, 0, -8 }, { 16, 16, 16 } )
+-- local box = BoundinBox:new( { -8, 0, -8 }, { 16, 16, 16 } )
+local box = BoundinBox:new( { -7, 1, -8 }, { 4, 1, 7 } )
 local cellSize = Vector3:new( 1, 1, 1 )
 local drawCellSize = cellSize:clone()
 local ray = nil
@@ -60,10 +61,9 @@ function RL.update( delta )
 
 	-- Raycast.
 
-	-- if not guiMouseHover then
 	if not guiMouseHover and RL.IsMouseButtonPressed( RL.MOUSE_BUTTON_LEFT ) then
 		ray = RL.GetMouseRay( RL.GetMousePosition(), camera.camera )
-		rayCol = box:getRayCollision( ray )
+		rayCol = box:getRayCollisionMAS( ray )
 
 		cells, exitPoint = RL.GetRayBoxCells( ray, box:maxToPos(), cellSize )
 		drawCellSize:setV( cellSize )
@@ -99,8 +99,8 @@ function RL.draw()
 		if rayCol and rayCol.hit then
 			RL.DrawSphere( rayCol.point, 0.1, RL.RED )
 		end
-		if exitPoint.hit then
-			RL.DrawSphere( exitPoint.point, 0.1, RL.RED )
+		if exitPoint and exitPoint.hit then
+			RL.DrawSphere( exitPoint.point, 0.1, RL.YELLOW )
 		end
 		if cells then
 			for _, cell in ipairs( cells ) do

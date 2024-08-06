@@ -10,8 +10,7 @@ Cam3D = require( "camera3d" )
 local monitor = 0
 local camera = {}
 
--- local box = BoundinBox:new( { -8, 0, -8 }, { 16, 16, 16 } )
-local box = BoundinBox:new( { -7, 1, -8 }, { 4, 1, 7 } )
+local box = BoundinBox:new( { -8, 0, -8 }, { 16, 16, 16 } )
 local cellSize = Vector3:new( 1, 1, 1 )
 local drawCellSize = cellSize:clone()
 local ray = nil
@@ -74,7 +73,7 @@ local function drawSpinner( axis, pos )
 	local result = 0
 	local bounds = Rectangle:temp( pos.x, pos.y, 96, 24 )
 
-	result, cellSize[ axis ] = RL.GuiSpinner( bounds, axis, cellSize[ axis ], 1, box.max[ axis ], spinnerEdit[ axis ] )
+	result, cellSize[ axis ] = RL.GuiSpinner( bounds, axis, cellSize[ axis ], 1, 16, spinnerEdit[ axis ] )
 
 	if result == 1 then
 		spinnerEdit[ axis ] = not spinnerEdit[ axis ]

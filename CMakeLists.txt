@@ -75,6 +75,8 @@ else() # Desktop
 	if( UNIX )
 		set( CMAKE_C_COMPILER "gcc" )
 
+		# set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall" )
+
 		if ( PLATFORM MATCHES "Desktop_SDL" )
 			include( FindPkgConfig )
 			pkg_search_module( SDL2 REQUIRED sdl2 )

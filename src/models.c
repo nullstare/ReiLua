@@ -2564,9 +2564,9 @@ int lmodelsGetRayBoxCells( lua_State* L ) {
 	ray.direction.z == 0.0f ? EPSILON : ray.direction.z;
 
 	Vector3 boxSize = Vector3Subtract( box.max, box.min );
-	Vector3 boxSizeCells = Vector3Ceil( Vector3Divide( boxSize, cellSize ) );
-	Vector3 cellPos = { -1, -1, -1 };
-	Vector3 localRayPos = { 0, 0, 0 };
+	// Vector3 boxSizeCells = Vector3Ceil( Vector3Divide( boxSize, cellSize ) );
+	Vector3 cellPos = { -1.0f, -1.0f, -1.0f };
+	Vector3 localRayPos = { 0.0f, 0.0f, 0.0f };
 
 	/* If camera is inside the box. */
 	if ( isInsideBox( ray.position, box ) ) {
@@ -2604,6 +2604,7 @@ int lmodelsGetRayBoxCells( lua_State* L ) {
 			fabsf( ray.direction.y ),
 			fabsf( ray.direction.z )
 		};
+		/* Relative to cell. */
 		Vector3 absPos = {
 			0.0f < signs.x ? localRayPos.x - cellPos.x * cellSize.x : cellSize.x - ( localRayPos.x - cellPos.x * cellSize.x ),
 			0.0f < signs.y ? localRayPos.y - cellPos.y * cellSize.y : cellSize.y - ( localRayPos.y - cellPos.y * cellSize.y ),
@@ -2623,6 +2624,11 @@ int lmodelsGetRayBoxCells( lua_State* L ) {
 		};
 		float exitScale = fmin( fmin( exitDis.x, exitDis.y ), exitDis.z );
 		Vector3 exitPoint = Vector3Add( Vector3Scale( ray.direction, exitScale ), Vector3Add( localRayPos, box.min ) );
+		Vector3 exitNormal = {
+			exitDis.x <= exitDis.y && exitDis.x <= exitDis.z ? -signs.x : 0,
+			exitDis.y <= exitDis.x && exitDis.y <= exitDis.z ? -signs.y : 0,
+			exitDis.z <= exitDis.x && exitDis.z <= exitDis.y ? -signs.z : 0
+		};
 
 		Vector3 absCell = { 0, 0, 0 };
 		int cellId = 2; /* We already added first so we will start at 2. */
@@ -2646,8 +2652,9 @@ int lmodelsGetRayBoxCells( lua_State* L ) {
 			float rayMoveScale = fmin( fmin( cellDis.x, cellDis.y ), cellDis.z );
 
 			absPos = Vector3Add( absPos, Vector3Scale( absDir, rayMoveScale ) );
+			Vector3 testPos = Vector3AddValue( absPos, EPSILON );
 
-			if ( absPos.x < absBounds.x && absPos.y < absBounds.y && absPos.z < absBounds.z ) {
+			if ( testPos.x < absBounds.x && testPos.y < absBounds.y && testPos.z < absBounds.z ) {
 				uluaPushVector3( L, (Vector3){ round( cellPos.x ), round( cellPos.y ), round( cellPos.z ) } );
 				lua_rawseti( L, -2, cellId );
 
@@ -2658,7 +2665,7 @@ int lmodelsGetRayBoxCells( lua_State* L ) {
 					.hit = true,
 					.distance = Vector3Distance( ray.position, exitPoint ),
 					.point = exitPoint,
-					.normal = Vector3Multiply( move, Vector3Negate( signs ) )
+					.normal = exitNormal
 				} );
 
 				return 2;

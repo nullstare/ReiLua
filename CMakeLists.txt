@@ -13,6 +13,7 @@ set( CMAKE_C_STANDARD 99 ) # Requires C99 standard
 option( SHARED "Build using dynamic libraries." off )
 option( LUAJIT "Use LuaJIT." off )
 option( LUA_EVENTS "Enable Lua event callbacks (RL.event)." off )
+option( DYNAMIC_SYMBOLS "Expose dynamic symbols with rdynamic." off )
 
 enum_option( PLATFORM "Desktop;Desktop_SDL;Web" "Platform to build for." )
 
@@ -36,6 +37,10 @@ endif()
 
 if( LUA_EVENTS )
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DLUA_EVENTS" )
+endif()
+
+if( DYNAMIC_SYMBOLS )
+	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -rdynamic" )
 endif()
 
 if( PLATFORM STREQUAL "Web" )
@@ -74,8 +79,6 @@ else() # Desktop
 
 	if( UNIX )
 		set( CMAKE_C_COMPILER "gcc" )
-
-		# set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall" )
 
 		if ( PLATFORM MATCHES "Desktop_SDL" )
 			include( FindPkgConfig )

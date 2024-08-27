@@ -739,6 +739,8 @@ RL.RAYWHITE={245,245,245,255}
 
 ---Pi
 RL.PI=3.1415927410126
+---Epsilon
+RL.EPSILON=9.9999999747524e-07
 ---Degrees to radians
 RL.DEG2RAD=0.017453292384744
 ---Radians to degrees
@@ -2630,13 +2632,21 @@ function  RL.UpdateCamera3DPro( camera, movement, rotation, zoom ) end
 ---@return any buffer 
 function RL.LoadBuffer( buffer, type ) end
 
+---Load formatted buffer with all values set to 'value'
+---- Success return Buffer
+---@param length integer
+---@param type integer
+---@param value integer
+---@return any buffer 
+function RL.LoadBufferFormatted( length, type, value ) end
+
 ---Read buffer data from binary file
 ---- Failure return nil
 ---- Success return Buffer
 ---@param path string
----@param int any
+---@param type integer
 ---@return any buffer 
-function RL.LoadBufferFromFile( path, int ) end
+function RL.LoadBufferFromFile( path, type ) end
 
 ---Read buffer data from string
 ---- Failure return nil
@@ -2649,6 +2659,22 @@ function RL.LoadBufferFromString( buffer ) end
 ---@param buffer any
 ---@return any RL.UnloadBuffer
 function  RL.UnloadBuffer( buffer ) end
+
+---Copy buffer data to another buffer. src element size is used for length
+---@param dst any
+---@param src any
+---@param posDst integer
+---@param posSrc integer
+---@param length integer
+---@return any RL.CopyBufferData
+function  RL.CopyBufferData( dst, src, posDst, posSrc, length ) end
+
+---Set buffer data value
+---@param buffer any
+---@param position integer
+---@param value any
+---@return any RL.SetBufferData
+function  RL.SetBufferData( buffer, position, value ) end
 
 ---Get buffer data as table in the format it was stored
 ---- Success return data{}
@@ -3909,11 +3935,10 @@ function RL.GetColor( hexValue ) end
 
 ---Get pixel data size in bytes for certain format
 ---- Success return int
----@param width integer
----@param height integer
+---@param size table
 ---@param format integer
 ---@return any size 
-function RL.GetPixelDataSize( width, height, format ) end
+function RL.GetPixelDataSize( size, format ) end
 
 -- Text - Font loading/unloading functions
 
@@ -5127,7 +5152,7 @@ function RL.GetRayCollisionMesh( ray, mesh, transform ) end
 ---@return any rayCollision 
 function RL.GetRayCollisionTriangle( ray, p1, p2, p3 ) end
 
----Get collision info between ray and quad
+---Get collision info between ray and quad. NOTE: The points are expected to be in counter-clockwise winding
 ---- Success return RayCollision
 ---@param ray any
 ---@param p1 table

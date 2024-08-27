@@ -1071,13 +1071,13 @@ int ltexturesImageDrawRectangleLines( lua_State* L ) {
 Draw a source image within a destination image (Tint applied to source)
 */
 int ltexturesImageDraw( lua_State* L ) {
-	Image* imageDstId = uluaGetImage( L, 1 );
-	Image* imageSrcId = uluaGetImage( L, 2 );
+	Image* imageDst = uluaGetImage( L, 1 );
+	Image* imageSrc = uluaGetImage( L, 2 );
 	Rectangle srcRec = uluaGetRectangle( L, 3 );
 	Rectangle dstRec = uluaGetRectangle( L, 4 );
 	Color tint = uluaGetColor( L, 5 );
 
-	ImageDraw( imageDstId, *imageSrcId, srcRec, dstRec, tint );
+	ImageDraw( imageDst, *imageSrc, srcRec, dstRec, tint );
 
 	return 0;
 }
@@ -2061,18 +2061,17 @@ int ltexturesGetColor( lua_State* L ) {
 }
 
 /*
-> size = RL.GetPixelDataSize( int width, int height, int format )
+> size = RL.GetPixelDataSize( Vector2 size, int format )
 
 Get pixel data size in bytes for certain format
 
 - Success return int
 */
 int ltexturesGetPixelDataSize( lua_State* L ) {
-	int width = luaL_checkinteger( L, 1 );
-	int height = luaL_checkinteger( L, 2 );
-	int format = luaL_checkinteger( L, 3 );
+	Vector2 size = uluaGetVector2( L, 1 );
+	int format = luaL_checkinteger( L, 2 );
 
-	lua_pushinteger( L, GetPixelDataSize( width, height, format ) );
+	lua_pushinteger( L, GetPixelDataSize( size.x, size.y, format ) );
 
 	return 1;
 }

@@ -1512,9 +1512,12 @@ void luaRegister() {
 	assingGlobalFunction( "UpdateCamera3DPro", lcoreUpdateCamera3DPro );
 		/* Buffer management functions. */
 	assingGlobalFunction( "LoadBuffer", lcoreLoadBuffer );
+	assingGlobalFunction( "LoadBufferFormatted", lcoreLoadBufferFormatted );
 	assingGlobalFunction( "LoadBufferFromFile", lcoreLoadBufferFromFile );
 	assingGlobalFunction( "LoadBufferFromString", lcoreLoadBufferFromString );
 	assingGlobalFunction( "UnloadBuffer", lcoreUnloadBuffer );
+	assingGlobalFunction( "CopyBufferData", lcoreCopyBufferData );
+	assingGlobalFunction( "SetBufferData", lcoreSetBufferData );
 	assingGlobalFunction( "GetBufferData", lcoreGetBufferData );
 	assingGlobalFunction( "GetBufferType", lcoreGetBufferType );
 	assingGlobalFunction( "GetBufferSize", lcoreGetBufferSize );

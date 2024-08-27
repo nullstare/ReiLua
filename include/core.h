@@ -249,9 +249,12 @@ int lcoreUpdateCamera3D( lua_State* L );
 int lcoreUpdateCamera3DPro( lua_State* L );
 /* Buffer management functions. */
 int lcoreLoadBuffer( lua_State* L );
+int lcoreLoadBufferFormatted( lua_State* L );
 int lcoreLoadBufferFromFile( lua_State* L );
 int lcoreLoadBufferFromString( lua_State* L );
 int lcoreUnloadBuffer( lua_State* L );
+int lcoreCopyBufferData( lua_State* L );
+int lcoreSetBufferData( lua_State* L );
 int lcoreGetBufferData( lua_State* L );
 int lcoreGetBufferType( lua_State* L );
 int lcoreGetBufferSize( lua_State* L );

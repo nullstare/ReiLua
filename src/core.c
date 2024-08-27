@@ -4,7 +4,7 @@
 #include "textures.h"
 #include "lua_core.h"
 
-static int getBufferElementSize( Buffer* buffer ) {
+static size_t getBufferElementSize( Buffer* buffer ) {
 	switch ( buffer->type ) {
 		case BUFFER_UNSIGNED_CHAR: return sizeof( unsigned char );
 		case BUFFER_UNSIGNED_SHORT: return sizeof( unsigned short );
@@ -2141,7 +2141,7 @@ int lcoreGetAutomationEvent( lua_State* L ) {
 		lua_pushlightuserdata( L, &list->events[ index ] );
 	}
 	else {
-		TraceLog( LOG_WARNING, "GetAutomationEvent index %d out of bounds", index );
+		TraceLog( state->logLevelInvalid, "GetAutomationEvent index %d out of bounds", index );
 		lua_pushnil( L );
 	}
 
@@ -3388,10 +3388,10 @@ int lcoreLoadBuffer( lua_State* L ) {
 	int t = 1;
 	int i = 0;
 	unsigned char* ucp = buffer.data;
-	unsigned short *usp = buffer.data;
+	unsigned short* usp = buffer.data;
 	unsigned int* uip = buffer.data;
 	char* cp = buffer.data;
-	short *sp = buffer.data;
+	short* sp = buffer.data;
 	int* ip = buffer.data;
 	float* fp = buffer.data;
 	double* dp = buffer.data;
@@ -3444,7 +3444,32 @@ int lcoreLoadBuffer( lua_State* L ) {
 }
 
 /*
-> buffer = RL.LoadBufferFromFile( string path, type int )
+> buffer = RL.LoadBufferFormatted( int length, int type, int value )
+
+Load formatted buffer with all values set to 'value'
+
+- Success return Buffer
+*/
+int lcoreLoadBufferFormatted( lua_State* L ) {
+	int len = luaL_checkinteger( L, 1 );
+	int type = luaL_checkinteger( L, 2 );
+	int value = luaL_checkinteger( L, 3 );
+
+	Buffer buffer = {
+		.type = type
+	};
+	buffer.size = len * getBufferElementSize( &buffer );
+	buffer.data = malloc( buffer.size );
+
+	memset( buffer.data, value, buffer.size );
+
+	uluaPushBuffer( L, buffer );
+
+	return 1;
+}
+
+/*
+> buffer = RL.LoadBufferFromFile( string path, int type )
 
 Read buffer data from binary file
 
@@ -3461,16 +3486,15 @@ int lcoreLoadBufferFromFile( lua_State* L ) {
 		.size = fileLen,
 		.data = malloc( fileLen )
 	};
-	size_t elementSize = getBufferElementSize( &buffer );
 	FILE* file;
 	file = fopen( path, "rb" );
 
 	if ( file == NULL ) {
-		TraceLog( LOG_WARNING, "Invalid file %s\n", path );
+		TraceLog( state->logLevelInvalid, "Invalid file %s\n", path );
 		lua_pushnil( L );
 		return 1;
 	}
-	fread( buffer.data, elementSize, buffer.size / elementSize, file );
+	fread( buffer.data, buffer.size, 1, file );
 	fclose( file );
 
 	uluaPushBuffer( L, buffer );
@@ -3512,6 +3536,92 @@ int lcoreUnloadBuffer( lua_State* L ) {
 
 	unloadBuffer( buffer );
 	memset( buffer, 0, sizeof( Buffer ) );
+
+	return 0;
+}
+
+/*
+> RL.CopyBufferData( Buffer dst, Buffer src, int posDst, int posSrc, int length )
+
+Copy buffer data to another buffer. src element size is used for length
+*/
+int lcoreCopyBufferData( lua_State* L ) {
+	Buffer* dst = uluaGetBuffer( L, 1 );
+	Buffer* src = uluaGetBuffer( L, 2 );
+	int posDst = luaL_checkinteger( L, 3 );
+	int posSrc = luaL_checkinteger( L, 4 );
+	int length = luaL_checkinteger( L, 5 );
+
+	void* dstP = dst->data + posDst * getBufferElementSize( dst );
+	void* srcP = src->data + posSrc * getBufferElementSize( src );
+	size_t size = length * getBufferElementSize( src );
+
+	/* Note that we use src element size for dst length. */
+	if ( posDst < 0 || dst->size < posDst * getBufferElementSize( dst ) + size ) {
+		TraceLog( state->logLevelInvalid, "CopyBufferData. posDst %d with length %d out of bounds", posDst, length );
+		return 0;
+	}
+	if ( posSrc < 0	|| src->size < posSrc * getBufferElementSize( src ) + size ) {
+		TraceLog( state->logLevelInvalid, "CopyBufferData. posSrc %d with length %d out of bounds", posSrc, length );
+		return 0;
+	}
+	memcpy( dstP, srcP, size );
+
+	return 0;
+}
+
+/*
+> RL.SetBufferData( Buffer buffer, int position, any value )
+
+Set buffer data value
+*/
+int lcoreSetBufferData( lua_State* L ) {
+	Buffer* buffer = uluaGetBuffer( L, 1 );
+	size_t position = luaL_checkinteger( L, 2 );
+
+	if ( position < 0 || buffer->size / getBufferElementSize( buffer ) <= position ) {
+		TraceLog( state->logLevelInvalid, "SetBufferData. position %d out of bounds", position );
+		return 0;
+	}
+	size_t offset = position * getBufferElementSize( buffer );
+
+	unsigned char* ucp = buffer->data + offset;
+	unsigned short* usp = buffer->data + offset;
+	unsigned int* uip = buffer->data + offset;
+	char* cp = buffer->data + offset;
+	short* sp = buffer->data + offset;
+	int* ip = buffer->data + offset;
+	float* fp = buffer->data + offset;
+	double* dp = buffer->data + offset;
+
+	switch ( buffer->type ) {
+		case BUFFER_UNSIGNED_CHAR:
+			*ucp = (unsigned char)lua_tointeger( L, -1 );
+			break;
+		case BUFFER_UNSIGNED_SHORT:
+			*usp = (unsigned short)lua_tointeger( L, -1 );
+			break;
+		case BUFFER_UNSIGNED_INT:
+			*uip = (unsigned int)lua_tointeger( L, -1 );
+			break;
+		case BUFFER_CHAR:
+			*cp = (char)lua_tointeger( L, -1 );
+			break;
+		case BUFFER_SHORT:
+			*sp = (short)lua_tointeger( L, -1 );
+			break;
+		case BUFFER_INT:
+			*ip = (int)lua_tointeger( L, -1 );
+			break;
+		case BUFFER_FLOAT:
+			*fp = (float)lua_tonumber( L, -1 );
+			break;
+		case BUFFER_DOUBLE:
+			*dp = (double)lua_tonumber( L, -1 );
+			break;
+		default:
+			break;
+	}
 
 	return 0;
 }
@@ -3696,11 +3806,10 @@ int lcoreExportBuffer( lua_State* L ) {
 	Buffer* buffer = uluaGetBuffer( L, 1 );
 	const char* path = luaL_checkstring( L, 2 );
 
-	size_t elementSize = getBufferElementSize( buffer );
 	FILE* file;
 	file = fopen( path, "wb" );
 
-	fwrite( buffer->data, elementSize, buffer->size / elementSize, file );
+	fwrite( buffer->data, buffer->size, 1, file );
 	fclose( file );
 
 	return 0;

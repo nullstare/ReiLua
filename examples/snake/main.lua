@@ -1,11 +1,11 @@
 package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
 Util = require( "utillib" )
-Vec2 = require( "vector2" )
-Rect = require( "rectangle" )
+Vector2 = require( "vector2" )
+Rectangle = require( "rectangle" )
 
 -- Defines
-local RESOLUTION = Vec2:new( 128, 128 )
+local RESOLUTION = Vector2:new( 128, 128 )
 local TILE_SIZE = 8
 local LEVEL_SIZE = RESOLUTION.x / TILE_SIZE
 local STATE = { TITLE = 0, GAME = 1, OVER = 2 } -- Enum.
@@ -13,10 +13,10 @@ local STATE = { TITLE = 0, GAME = 1, OVER = 2 } -- Enum.
 -- Resources
 local framebuffer = nil
 local monitor = 0
-local monitorPos = Vec2:newT( RL.GetMonitorPosition( monitor ) )
-local monitorSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
+local monitorPos = Vector2:newT( RL.GetMonitorPosition( monitor ) )
+local monitorSize = Vector2:newT( RL.GetMonitorSize( monitor ) )
 local winScale = 6
-local winSize = Vec2:new( RESOLUTION.x * winScale, RESOLUTION.y * winScale )
+local winSize = Vector2:new( RESOLUTION.x * winScale, RESOLUTION.y * winScale )
 local gameState = STATE.GAME
 local grassTexture = nil
 local snakeTexture = nil
@@ -28,10 +28,10 @@ local applePos = {}
 
 local function setSnake()
 	snake = {
-		heading = Vec2:new( 1, 0 ),
-		control = Vec2:new( 1, 0 ),
-		headPos = Vec2:new( LEVEL_SIZE / 2, LEVEL_SIZE / 2 ),
-		segments = {}, -- { pos Vec2, heading Vec2 }
+		heading = Vector2:new( 1, 0 ),
+		control = Vector2:new( 1, 0 ),
+		headPos = Vector2:new( LEVEL_SIZE / 2, LEVEL_SIZE / 2 ),
+		segments = {}, -- { pos Vector2, heading Vector2 }
 		grow = 2,
 	}
 end
@@ -52,7 +52,7 @@ local function addSegment()
 end
 
 local function setApplePos()
-	applePos = Vec2:new( math.random( 0, LEVEL_SIZE - 1 ), math.random( 0, LEVEL_SIZE - 1 ) )
+	applePos = Vector2:new( math.random( 0, LEVEL_SIZE - 1 ), math.random( 0, LEVEL_SIZE - 1 ) )
 	local search = true
 
 	while search do
@@ -167,16 +167,16 @@ end
 --[[ Check if next segment is on left side. There are more mathematically elegant solution to this, but there is
 only four possibilities so we can just check them all. ]]--
 local function onLeft( this, nextSeg )
-	return ( this == Vec2:temp( 0, -1 ) and nextSeg == Vec2:temp( -1, 0 ) )
-		or ( this == Vec2:temp( -1, 0 ) and nextSeg == Vec2:temp( 0, 1 ) )
-		or ( this == Vec2:temp( 0, 1 ) and nextSeg == Vec2:temp( 1, 0 ) )
-		or ( this == Vec2:temp( 1, 0 ) and nextSeg == Vec2:temp( 0, -1 ) )
+	return ( this == Vector2:temp( 0, -1 ) and nextSeg == Vector2:temp( -1, 0 ) )
+		or ( this == Vector2:temp( -1, 0 ) and nextSeg == Vector2:temp( 0, 1 ) )
+		or ( this == Vector2:temp( 0, 1 ) and nextSeg == Vector2:temp( 1, 0 ) )
+		or ( this == Vector2:temp( 1, 0 ) and nextSeg == Vector2:temp( 0, -1 ) )
 end
 
 local function drawSnake()
 	for i, seg in ipairs( snake.segments ) do
 		local angle = seg.heading:atan2()
-		local source = Rect:temp( 16, 0, 8, 8 )
+		local source = Rectangle:temp( 16, 0, 8, 8 )
 
 		if i == 1 then -- Tail segment. Yes tail is actually the 'first' segment.
 			source.x = 8

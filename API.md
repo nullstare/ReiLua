@@ -2286,6 +2286,12 @@ Pi
 
 ---
 
+> EPSILON = 9.9999999747524e-07
+
+Epsilon
+
+---
+
 > DEG2RAD = 0.017453292384744
 
 Degrees to radians
@@ -5464,7 +5470,15 @@ Load Buffer. Type should be one of the Buffer types. Empty buffer will set data 
 
 ---
 
-> buffer = RL.LoadBufferFromFile( string path, type int )
+> buffer = RL.LoadBufferFormatted( int length, int type, int value )
+
+Load formatted buffer with all values set to 'value'
+
+- Success return Buffer
+
+---
+
+> buffer = RL.LoadBufferFromFile( string path, int type )
 
 Read buffer data from binary file
 
@@ -5485,6 +5499,18 @@ Read buffer data from string
 > RL.UnloadBuffer( Buffer buffer )
 
 Unload buffer data
+
+---
+
+> RL.CopyBufferData( Buffer dst, Buffer src, int posDst, int posSrc, int length )
+
+Copy buffer data to another buffer. src element size is used for length
+
+---
+
+> RL.SetBufferData( Buffer buffer, int position, any value )
+
+Set buffer data value
 
 ---
 
@@ -6734,7 +6760,7 @@ Get Color structure from hexadecimal value
 
 ---
 
-> size = RL.GetPixelDataSize( int width, int height, int format )
+> size = RL.GetPixelDataSize( Vector2 size, int format )
 
 Get pixel data size in bytes for certain format
 
@@ -7983,7 +8009,7 @@ Get collision info between ray and triangle
 
 > rayCollision = RL.GetRayCollisionQuad( Ray ray, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4 )
 
-Get collision info between ray and quad
+Get collision info between ray and quad. NOTE: The points are expected to be in counter-clockwise winding
 
 - Success return RayCollision
 

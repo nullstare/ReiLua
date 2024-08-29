@@ -3746,13 +3746,13 @@ Get buffer as string
 int lcoreGetBufferAsString( lua_State* L ) {
 	Buffer* buffer = uluaGetBuffer( L, 1 );
 
-	size_t size = buffer->size * getBufferElementSize( buffer ) + 1;
-	char* str = malloc( size );
+	size_t size = buffer->size * getBufferElementSize( buffer );
+	char* str = malloc( size + 1 );
 
-	memset( str, 0, size );
-	memcpy( str, buffer->data, size - 1 );
+	memset( str, 0, size + 1 );
+	memcpy( str, buffer->data, size );
 
-	lua_pushstring( L, buffer->data );
+	lua_pushstring( L, str );
 
 	free( str );
 

@@ -2660,14 +2660,14 @@ function RL.LoadBufferFromString( buffer ) end
 ---@return any RL.UnloadBuffer
 function  RL.UnloadBuffer( buffer ) end
 
----Copy buffer data to another buffer. src element size is used for length
+---Copy buffer data to another buffer. Size is in bytes
 ---@param dst any
 ---@param src any
 ---@param posDst integer
 ---@param posSrc integer
----@param length integer
+---@param size integer
 ---@return any RL.CopyBufferData
-function  RL.CopyBufferData( dst, src, posDst, posSrc, length ) end
+function  RL.CopyBufferData( dst, src, posDst, posSrc, size ) end
 
 ---Set buffer data value
 ---@param buffer any

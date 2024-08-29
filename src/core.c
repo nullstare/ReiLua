@@ -3494,7 +3494,7 @@ int lcoreLoadBufferFromFile( lua_State* L ) {
 		lua_pushnil( L );
 		return 1;
 	}
-	fread( buffer.data, buffer.size, 1, file );
+	fread( buffer.data, 1, buffer.size, file );
 	fclose( file );
 
 	uluaPushBuffer( L, buffer );
@@ -3541,28 +3541,27 @@ int lcoreUnloadBuffer( lua_State* L ) {
 }
 
 /*
-> RL.CopyBufferData( Buffer dst, Buffer src, int posDst, int posSrc, int length )
+> RL.CopyBufferData( Buffer dst, Buffer src, int posDst, int posSrc, int size )
 
-Copy buffer data to another buffer. src element size is used for length
+Copy buffer data to another buffer. Size is in bytes
 */
 int lcoreCopyBufferData( lua_State* L ) {
 	Buffer* dst = uluaGetBuffer( L, 1 );
 	Buffer* src = uluaGetBuffer( L, 2 );
 	int posDst = luaL_checkinteger( L, 3 );
 	int posSrc = luaL_checkinteger( L, 4 );
-	int length = luaL_checkinteger( L, 5 );
+	int size = luaL_checkinteger( L, 5 );
 
 	void* dstP = dst->data + posDst * getBufferElementSize( dst );
 	void* srcP = src->data + posSrc * getBufferElementSize( src );
-	size_t size = length * getBufferElementSize( src );
 
 	/* Note that we use src element size for dst length. */
 	if ( posDst < 0 || dst->size < posDst * getBufferElementSize( dst ) + size ) {
-		TraceLog( state->logLevelInvalid, "CopyBufferData. posDst %d with length %d out of bounds", posDst, length );
+		TraceLog( state->logLevelInvalid, "CopyBufferData. posDst %d with size %d out of bounds", posDst, size );
 		return 0;
 	}
 	if ( posSrc < 0	|| src->size < posSrc * getBufferElementSize( src ) + size ) {
-		TraceLog( state->logLevelInvalid, "CopyBufferData. posSrc %d with length %d out of bounds", posSrc, length );
+		TraceLog( state->logLevelInvalid, "CopyBufferData. posSrc %d with size %d out of bounds", posSrc, size );
 		return 0;
 	}
 	memcpy( dstP, srcP, size );
@@ -3809,7 +3808,7 @@ int lcoreExportBuffer( lua_State* L ) {
 	FILE* file;
 	file = fopen( path, "wb" );
 
-	fwrite( buffer->data, buffer->size, 1, file );
+	fwrite( buffer->data, 1, buffer->size, file );
 	fclose( file );
 
 	return 0;

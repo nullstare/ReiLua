@@ -61,7 +61,7 @@ local function loadDataFile( path )
 
 	imgData.data = RL.LoadBufferFormatted( imageDataSize, RL.BUFFER_UNSIGNED_CHAR, 0 )
 
-	RL.CopyBufferData( imgData.data, buffer, 0, 4, imageDataSize / 4 )
+	RL.CopyBufferData( imgData.data, buffer, 0, 4, imageDataSize )
 
 	local image = RL.LoadImageFromData(
 		imgData.data,

@@ -5502,9 +5502,9 @@ Unload buffer data
 
 ---
 
-> RL.CopyBufferData( Buffer dst, Buffer src, int posDst, int posSrc, int length )
+> RL.CopyBufferData( Buffer dst, Buffer src, int posDst, int posSrc, int size )
 
-Copy buffer data to another buffer. src element size is used for length
+Copy buffer data to another buffer. Size is in bytes
 
 ---
 

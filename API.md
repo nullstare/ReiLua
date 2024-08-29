@@ -5522,6 +5522,14 @@ Get buffer data as table in the format it was stored
 
 ---
 
+> string = RL.GetBufferAsString( Buffer buffer )
+
+Get buffer as string
+
+- Success return string
+
+---
+
 > type = RL.GetBufferType( Buffer buffer )
 
 Get buffer type

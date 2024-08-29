@@ -2684,6 +2684,12 @@ function  RL.SetBufferData( buffer, position, value ) end
 ---@return any data 
 function RL.GetBufferData( buffer, position, length ) end
 
+---Get buffer as string
+---- Success return string
+---@param buffer any
+---@return any string 
+function RL.GetBufferAsString( buffer ) end
+
 ---Get buffer type
 ---- Success return int
 ---@param buffer any

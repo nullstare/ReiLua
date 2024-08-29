@@ -3737,6 +3737,29 @@ int lcoreGetBufferData( lua_State* L ) {
 }
 
 /*
+> string = RL.GetBufferAsString( Buffer buffer )
+
+Get buffer as string
+
+- Success return string
+*/
+int lcoreGetBufferAsString( lua_State* L ) {
+	Buffer* buffer = uluaGetBuffer( L, 1 );
+
+	size_t size = buffer->size * getBufferElementSize( buffer ) + 1;
+	char* str = malloc( size );
+
+	memset( str, 0, size );
+	memcpy( str, buffer->data, size - 1 );
+
+	lua_pushstring( L, buffer->data );
+
+	free( str );
+
+	return 1;
+}
+
+/*
 > type = RL.GetBufferType( Buffer buffer )
 
 Get buffer type

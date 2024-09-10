@@ -75,7 +75,7 @@ function PropertyList:updateControl( control )
 
 	if type( control._controls ) == "table" then
 		for _, groupControl in ipairs( control._controls ) do
-			groupControl.visible = control.active
+			groupControl.visible = control.active and control.visible
 			-- Deactivate any subgroups.
 			if not control.active and type( groupControl._controls ) == "table" then
 				groupControl.active = false

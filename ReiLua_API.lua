@@ -7333,13 +7333,13 @@ function  RL.rlUnloadVertexArray( vaoId ) end
 ---@return any RL.rlUnloadVertexBuffer
 function  RL.rlUnloadVertexBuffer( vboId ) end
 
----Set vertex attribute. NOTE: Pointer should be given in size of bytes
+---Set vertex attribute.
 ---@param index integer
 ---@param compSize integer
 ---@param type integer
 ---@param normalized boolean
 ---@param stride integer
----@param pointer integer
+---@param pointer any
 ---@return any RL.rlSetVertexAttribute
 function  RL.rlSetVertexAttribute( index, compSize, type, normalized, stride, pointer ) end
 

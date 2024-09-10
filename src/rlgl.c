@@ -1216,9 +1216,9 @@ int lrlglUnloadVertexBuffer( lua_State* L ) {
 }
 
 /*
-> RL.rlSetVertexAttribute( int index, int compSize, int type, bool normalized, int stride, int pointer )
+> RL.rlSetVertexAttribute( int index, int compSize, int type, bool normalized, int stride, buffer pointer )
 
-Set vertex attribute. NOTE: Pointer should be given in size of bytes
+Set vertex attribute.
 */
 int lrlglSetVertexAttribute( lua_State* L ) {
 	int index = luaL_checkinteger( L, 1 );
@@ -1226,9 +1226,9 @@ int lrlglSetVertexAttribute( lua_State* L ) {
 	int type = luaL_checkinteger( L, 3 );
 	bool normalized = uluaGetBoolean( L, 4 );
 	int stride = luaL_checkinteger( L, 5 );
-	int pointer = luaL_checkinteger( L, 6 );
+	Buffer* pointer = uluaGetBuffer( L, 6 );
 
-	rlSetVertexAttribute( index, compSize, type, normalized, stride, (void*)( pointer * sizeof( char ) ) );
+	rlSetVertexAttribute( index, compSize, type, normalized, stride, pointer->data );
 
 	return 0;
 }

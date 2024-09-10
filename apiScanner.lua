@@ -106,8 +106,6 @@ local raymath = {
 		MatrixToFloatV = "Can be replaced by Lua equivalent",
 	},
 	info = {
-		Vector3Project = "Will be added",
-		Vector3Reject = "Will be added",
 	},
 }
 local easings = {

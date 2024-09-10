@@ -2875,6 +2875,23 @@ int GuiValueBox(Rectangle bounds, const char *text, int *value, int minValue, in
                         keyCount++;
                         valueHasChanged = true;
                     }
+					else if ( key == 45 ) {
+						if ( 0 < strtol( textValue, NULL, 10 ) ) {
+                        	keyCount++;
+							for ( int i = keyCount; 0 < i; i-- ) {
+								textValue[i] = textValue[i-1];
+							}
+							textValue[0] = 45;
+						}
+						else {
+							for ( int i = 0; i < keyCount; i++ ) {
+								textValue[i] = textValue[i+1];
+							}
+							textValue[ keyCount ] = '\0';
+							keyCount--;
+						}
+						valueHasChanged = true;
+					}
                 }
             }
 
@@ -2889,7 +2906,8 @@ int GuiValueBox(Rectangle bounds, const char *text, int *value, int minValue, in
                 }
             }
 
-            if (valueHasChanged) *value = TextToInteger(textValue);
+            // if (valueHasChanged) *value = TextToInteger(textValue);
+            if (valueHasChanged) *value = strtol( textValue, NULL, 10 );
 
             // NOTE: We are not clamp values until user input finishes
             //if (*value > maxValue) *value = maxValue;

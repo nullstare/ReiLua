@@ -115,8 +115,8 @@ function RL.init()
 		Rect:new( 464, 256, 128, 32 ),
 		"Health",
 		0,
-		0,
-		10,
+		-100,
+		100,
 		false,
 		{ -- Callbacks.
 			edit = function( self ) print( "Spinner value changed to "..self.value ) end

@@ -71,6 +71,7 @@ DETAILED CHANGES:
 	- CHANGE: GetPixelDataSize takes Vector2 instead of width and height.
 	- ADDED: LoadBufferFormatted, SetBufferData and CopyBufferData. Compressed resource file example.
 	- ADDED: GetBufferAsString.
+	- FIXED: rlSetVertexAttribute takes pointer as Buffer.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

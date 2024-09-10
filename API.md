@@ -10520,9 +10520,9 @@ Unload vertex buffer (VBO)
 
 ---
 
-> RL.rlSetVertexAttribute( int index, int compSize, int type, bool normalized, int stride, int pointer )
+> RL.rlSetVertexAttribute( int index, int compSize, int type, bool normalized, int stride, buffer pointer )
 
-Set vertex attribute. NOTE: Pointer should be given in size of bytes
+Set vertex attribute.
 
 ---
 

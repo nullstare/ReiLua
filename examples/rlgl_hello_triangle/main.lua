@@ -1,18 +1,19 @@
 package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
 Util = require( "utillib" )
-Vec2 = require( "vector2" )
+Vector2 = require( "vector2" )
 
-local res = Vec2:new( 1024, 720 )
+local res = Vector2:new( 1024, 720 )
 local winScale = 1
 local winSize = res:scale( winScale )
 local monitor = 0
+local null = RL.LoadBuffer( {}, RL.BUFFER_UNSIGNED_CHAR );
 
 local triangle = {
 	texture = {
 		id = -1,
 		data = nil,
-		size = Vec2:new( 0, 0 ),
+		size = Vector2:new( 0, 0 ),
 		mipmaps = 0,
 		format = 0,
 	},
@@ -60,7 +61,7 @@ local function loadTexture( path )
 	local image = RL.LoadImage( path )
 
 	triangle.texture.data = RL.GetImageData( image )
-	triangle.texture.size = Vec2:newT( RL.GetImageSize( image ) )
+	triangle.texture.size = Vector2:newT( RL.GetImageSize( image ) )
 	triangle.texture.format = RL.GetImageFormat( image )
 	triangle.texture.mipmaps = RL.GetImageMipmaps( image )
 
@@ -96,7 +97,7 @@ local function createTriangle()
 		RL.BUFFER_FLOAT
 	)
 	triangle.vbos.positions = RL.rlLoadVertexBuffer( vertexBuffer, false )
-	RL.rlSetVertexAttribute( 0, 3, RL.RL_FLOAT, false, 0, 0 )
+	RL.rlSetVertexAttribute( 0, 3, RL.RL_FLOAT, false, 0, null )
 	RL.rlEnableVertexAttribute( 0 )
 
 	-- Colors.
@@ -109,7 +110,7 @@ local function createTriangle()
 		RL.BUFFER_FLOAT
 	)
 	triangle.vbos.colors = RL.rlLoadVertexBuffer( colors, false )
-	RL.rlSetVertexAttribute( 1, 4, RL.RL_FLOAT, false, 0, 0 )
+	RL.rlSetVertexAttribute( 1, 4, RL.RL_FLOAT, false, 0, null )
 	RL.rlEnableVertexAttribute( 1 )
 
 	-- Texcoords.
@@ -122,7 +123,7 @@ local function createTriangle()
 		RL.BUFFER_FLOAT
 	)
 	triangle.vbos.texcoors = RL.rlLoadVertexBuffer( texcoors, false )
-	RL.rlSetVertexAttribute( 2, 2, RL.RL_FLOAT, false, 0, 0 )
+	RL.rlSetVertexAttribute( 2, 2, RL.RL_FLOAT, false, 0, null )
 	RL.rlEnableVertexAttribute( 2 )
 
 	-- Disable.
@@ -131,8 +132,8 @@ local function createTriangle()
 end
 
 function RL.init()
-	local monitorPos = Vec2:newT( RL.GetMonitorPosition( monitor ) )
-	local monitorSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
+	local monitorPos = Vector2:newT( RL.GetMonitorPosition( monitor ) )
+	local monitorSize = Vector2:newT( RL.GetMonitorSize( monitor ) )
 
 	RL.SetWindowTitle( "RLGL Hello Triangle" )
 	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )

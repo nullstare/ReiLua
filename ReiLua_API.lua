@@ -944,7 +944,7 @@ RL.RL_MAX_SHADER_LOCATIONS=32
 ---Default projection matrix near cull distance
 RL.RL_CULL_DISTANCE_NEAR=0.01
 ---Default projection matrix far cull distance
-RL.RL_CULL_DISTANCE_FAR=1000.0
+RL.RL_CULL_DISTANCE_FAR=1000
 
 -- Defines - RLGL Texture parameters
 
@@ -4557,7 +4557,7 @@ function RL.LoadModelFromMesh( mesh ) end
 ---@return any isReady 
 function RL.IsModelReady( model ) end
 
----Unload model (including meshes) from memory (RAM and/or VRAM)
+---Unload model (meshes/materials) from memory (RAM and/or VRAM)
 ---@param model any
 ---@return any RL.UnloadModel
 function  RL.UnloadModel( model ) end
@@ -4936,10 +4936,11 @@ function RL.CreateMaterial( materialData ) end
 ---@return any isReady 
 function RL.IsMaterialReady( material ) end
 
----Unload material from GPU memory (VRAM)
+---Unload material from GPU memory (VRAM). Note! Use freeAll to unload shaders and textures
 ---@param material any
+---@param freeAll boolean
 ---@return any RL.UnloadMaterial
-function  RL.UnloadMaterial( material ) end
+function  RL.UnloadMaterial( material, freeAll ) end
 
 ---Set texture for a material map type (MATERIAL_MAP_ALBEDO, MATERIAL_MAP_METALNESS...)
 ---@param material any

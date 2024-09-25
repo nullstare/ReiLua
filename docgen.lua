@@ -330,11 +330,11 @@ for _, src in ipairs( sourceFiles ) do
 				elseif type( value ) == "table" then
 					-- All tables are colors.
 					apiFile:write( defineName.." = { "
-						..math.tointeger( value[1] )..", "..math.tointeger( value[2] )..", "
-						..math.tointeger( value[3] )..", "..math.tointeger( value[4] ).." }\n\n" )
+						..math.floor( value[1] )..", "..math.floor( value[2] )..", "
+						..math.floor( value[3] )..", "..math.floor( value[4] ).." }\n\n" )
 					luaApiFile:write( "RL."..defineName.."={"
-						..math.tointeger( value[1] )..","..math.tointeger( value[2] )..","
-						..math.tointeger( value[3] )..","..math.tointeger( value[4] ).."}\n" )
+						..math.floor( value[1] )..","..math.floor( value[2] )..","
+						..math.floor( value[3] )..","..math.floor( value[4] ).."}\n" )
 				else
 					apiFile:write( "> "..defineName.." = "..value.."\n\n" )
 					luaApiFile:write( "RL."..defineName.."="..value.."\n" )

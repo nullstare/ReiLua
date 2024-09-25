@@ -286,7 +286,7 @@ local function drawPlayer()
 end
 
 function RL.draw()
-	RL.ClearBackground( RL.RED )
+	RL.ClearBackground( RL.BLACK )
 
 	RL.BeginTextureMode( framebuffer )
 		drawMap()

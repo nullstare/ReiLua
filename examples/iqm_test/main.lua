@@ -43,7 +43,7 @@ function RL.init()
 	} )
 	model = RL.LoadModel( RL.GetBasePath().."../resources/iqm/monkey.iqm" )
 	-- Unload old material.
-	RL.UnloadMaterial( RL.GetModelMaterial( model, 0 ) )
+	RL.UnloadMaterial( RL.GetModelMaterial( model, 0 ), true )
 
 	RL.SetModelMaterial( model, 0, material )
 	animations = RL.LoadModelAnimations( RL.GetBasePath().."../resources/iqm/monkey.iqm" )

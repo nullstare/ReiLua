@@ -2782,7 +2782,7 @@ Default projection matrix near cull distance
 
 ---
 
-> RL_CULL_DISTANCE_FAR = 1000.0
+> RL_CULL_DISTANCE_FAR = 1000
 
 Default projection matrix far cull distance
 
@@ -7381,7 +7381,7 @@ Check if a model is ready
 
 > RL.UnloadModel( Model model )
 
-Unload model (including meshes) from memory (RAM and/or VRAM)
+Unload model (meshes/materials) from memory (RAM and/or VRAM)
 
 ---
 
@@ -7774,9 +7774,9 @@ Check if a material is ready
 
 ---
 
-> RL.UnloadMaterial( Material material )
+> RL.UnloadMaterial( Material material, bool freeAll )
 
-Unload material from GPU memory (VRAM)
+Unload material from GPU memory (VRAM). Note! Use freeAll to unload shaders and textures
 
 ---
 

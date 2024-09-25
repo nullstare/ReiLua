@@ -605,7 +605,7 @@ int lmodelsIsModelReady( lua_State* L ) {
 /*
 > RL.UnloadModel( Model model )
 
-Unload model (including meshes) from memory (RAM and/or VRAM)
+Unload model (meshes/materials) from memory (RAM and/or VRAM)
 */
 int lmodelsUnloadModel( lua_State* L ) {
 	Model* model = uluaGetModel( L, 1 );
@@ -1951,18 +1951,22 @@ int lmodelsIsMaterialReady( lua_State* L ) {
 }
 
 /*
-> RL.UnloadMaterial( Material material )
+> RL.UnloadMaterial( Material material, bool freeAll )
 
-Unload material from GPU memory (VRAM)
+Unload material from GPU memory (VRAM). Note! Use freeAll to unload shaders and textures
 */
 int lmodelsUnloadMaterial( lua_State* L ) {
 	Material* material = uluaGetMaterial( L, 1 );
+	bool freeAll = lua_toboolean( L, 2 );
 
-	/* Custom UnloadMaterial since we don't want to free Shaders or Textures. */
-	unloadMaterial( material );
+	if ( freeAll ) {
+		UnloadMaterial( *material );
+	}
+	/* Custom UnloadMaterial if we don't want to free Shaders or Textures. */
+	else {
+		unloadMaterial( material );
+	}
 	memset( material, 0, sizeof( Material ) );
-
-	// UnloadMaterial( *material );
 
 	return 0;
 }

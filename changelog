@@ -73,6 +73,7 @@ DETAILED CHANGES:
 	- ADDED: GetBufferAsString.
 	- FIXED: rlSetVertexAttribute takes pointer as Buffer.
 	- CHANGE: UnloadMaterial can also optionally free textures and shader.
+	- ADDED: FontCopy.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

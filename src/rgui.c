@@ -129,7 +129,8 @@ int lguiGuiSetFont( lua_State* L ) {
 	Font* font = uluaGetFont( L, 1 );
 
 	GuiSetFont( *font );
-	state->guiDefaultFont = GuiGetFont();
+	// state->guiFont = GuiGetFont();
+	state->guiFont = *font;
 
 	return 0;
 }
@@ -137,12 +138,12 @@ int lguiGuiSetFont( lua_State* L ) {
 /*
 > font = RL.GuiGetFont()
 
-Get gui custom font (global state). Return as lightuserdata
+Get gui font (global state). Return as lightuserdata
 
 - Success return Font
 */
 int lguiGuiGetFont( lua_State* L ) {
-	lua_pushlightuserdata( L, &state->guiDefaultFont );
+	lua_pushlightuserdata( L, &state->guiFont );
 
 	return 1;
 }
@@ -162,7 +163,6 @@ int lguiGuiSetStyle( lua_State* L ) {
 	int value = luaL_checkinteger( L, 3 );
 
 	GuiSetStyle( control, property, value );
-	state->guiDefaultFont = GuiGetFont();
 
 	return 0;
 }
@@ -198,11 +198,12 @@ Load style file over global style variable (.rgs)
 int lguiGuiLoadStyle( lua_State* L ) {
 	if ( FileExists( luaL_checkstring( L, 1 ) ) ) {
 		GuiLoadStyle( lua_tostring( L, 1 ) );
+		state->guiFont = GuiGetFont();
 		lua_pushboolean( L, true );
 
 		return 1;
 	}
-	state->guiDefaultFont = GuiGetFont();
+	// state->guiFont = GuiGetFont();
 	TraceLog( state->logLevelInvalid, "Invalid file '%s'", lua_tostring( L, 1 ) );
 	lua_pushnil( L );
 
@@ -216,7 +217,7 @@ Load style default over global style
 */
 int lguiGuiLoadStyleDefault( lua_State* L ) {
 	GuiLoadStyleDefault();
-	state->guiDefaultFont = GuiGetFont();
+	state->guiFont = GuiGetFont();
 
 	return 0;
 }

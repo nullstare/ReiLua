@@ -6830,6 +6830,14 @@ Load Font from data
 
 ---
 
+> font = RL.FontCopy( Font font )
+
+Load font copy as new userdata
+
+- Success return Font
+
+---
+
 > isReady = RL.IsFontReady( Font font )
 
 Check if a font is ready
@@ -9395,7 +9403,7 @@ Set gui custom font (global state)
 
 > font = RL.GuiGetFont()
 
-Get gui custom font (global state). Return as lightuserdata
+Get gui font (global state). Return as lightuserdata
 
 - Success return Font
 

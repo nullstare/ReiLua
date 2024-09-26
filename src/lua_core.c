@@ -1834,6 +1834,7 @@ void luaRegister() {
 	assingGlobalFunction( "LoadFontFromImage", ltextLoadFontFromImage );
 	assingGlobalFunction( "LoadFontFromMemory", ltextLoadFontFromMemory );
 	assingGlobalFunction( "LoadFontFromData", ltextLoadFontFromData );
+	assingGlobalFunction( "FontCopy", ltextFontCopy );
 	assingGlobalFunction( "IsFontReady", ltextIsFontReady );
 	assingGlobalFunction( "LoadFontData", ltextLoadFontData );
 	assingGlobalFunction( "GenImageFontAtlas", ltextGenImageFontAtlas );

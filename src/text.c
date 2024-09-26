@@ -280,6 +280,21 @@ int ltextLoadFontFromData( lua_State* L ) {
 }
 
 /*
+> font = RL.FontCopy( Font font )
+
+Load font copy as new userdata
+
+- Success return Font
+*/
+int ltextFontCopy( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
+
+	uluaPushFont( L, *font );
+
+	return 1;
+}
+
+/*
 > isReady = RL.IsFontReady( Font font )
 
 Check if a font is ready

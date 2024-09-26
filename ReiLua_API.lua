@@ -3992,6 +3992,12 @@ function RL.LoadFontFromMemory( fileType, fileData, fontSize, codepoints ) end
 ---@return any font 
 function RL.LoadFontFromData( fontData ) end
 
+---Load font copy as new userdata
+---- Success return Font
+---@param font any
+---@return any font 
+function RL.FontCopy( font ) end
+
 ---Check if a font is ready
 ---- Success return bool
 ---@param font any
@@ -6326,7 +6332,7 @@ function RL.GuiGetState() end
 ---@return any RL.GuiSetFont
 function  RL.GuiSetFont( font ) end
 
----Get gui custom font (global state). Return as lightuserdata
+---Get gui font (global state). Return as lightuserdata
 ---- Success return Font
 ---@return any font 
 function RL.GuiGetFont() end

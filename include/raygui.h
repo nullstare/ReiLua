@@ -671,6 +671,11 @@ RAYGUIAPI bool GuiIsLocked(void);                               // Check if gui 
 RAYGUIAPI void GuiSetAlpha(float alpha);                        // Set gui controls alpha (global state), alpha goes from 0.0f to 1.0f
 RAYGUIAPI void GuiSetState(int state);                          // Set gui state (global state)
 RAYGUIAPI int GuiGetState(void);                                // Get gui state (global state)
+/* Addition. */
+RAYGUIAPI void GuiSetSliderDragging(bool dragging);             // Set guiSliderDragging
+RAYGUIAPI bool GuiGetSliderDragging(void);                      // Get guiSliderDragging
+RAYGUIAPI void GuiSetSliderActive(Rectangle rect);              // Set guiSliderActive
+RAYGUIAPI Rectangle GuiGetSliderActive(void);                   // Get guiSliderActive
 
 // Font set/get functions
 RAYGUIAPI void GuiSetFont(Font font);                           // Set gui custom font (global state)
@@ -1514,6 +1519,26 @@ void GuiSetState(int state) { guiState = (GuiState)state; }
 
 // Get gui state (global state)
 int GuiGetState(void) { return guiState; }
+
+// Set guiSliderDragging
+void GuiSetSliderDragging( bool dragging ) {
+	guiSliderDragging = dragging;
+}
+
+// Get guiSliderDragging
+bool GuiGetSliderDragging( void ) {
+	return guiSliderDragging;
+}
+
+// Set guiSliderActive
+RAYGUIAPI void GuiSetSliderActive( Rectangle rect ) {
+	guiSliderActive = rect;
+}
+
+// Get guiSliderActive
+RAYGUIAPI Rectangle GuiGetSliderActive( void ) {
+	return guiSliderActive;
+}
 
 // Set custom gui font
 // NOTE: Font loading/unloading is external to raygui

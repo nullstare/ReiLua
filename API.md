@@ -9391,6 +9391,34 @@ Get gui state (global state)
 
 ---
 
+> RL.GuiSetSliderDragging()
+
+Set guiSliderDragging
+
+---
+
+> isSliderDragging = RL.GuiGetSliderDragging()
+
+Get guiSliderDragging
+
+- Success return bool
+
+---
+
+> RL.GuiSetSliderActive()
+
+Set guiSliderActive
+
+---
+
+> isSliderDragging = RL.GuiGetSliderActive()
+
+Get guiSliderActive
+
+- Success return Rectangle
+
+---
+
 ## Gui - Font set/get functions
 
 ---

@@ -9,6 +9,10 @@ int lguiGuiIsLocked( lua_State* L );
 int lguiGuiSetAlpha( lua_State* L );
 int lguiGuiSetState( lua_State* L );
 int lguiGuiGetState( lua_State* L );
+int lguiGuiSetSliderDragging( lua_State* L );
+int lguiGuiGetSliderDragging( lua_State* L );
+int lguiGuiSetSliderActive( lua_State* L );
+int lguiGuiGetSliderActive( lua_State* L );
 /* Font set/get functions. */
 int lguiGuiSetFont( lua_State* L );
 int lguiGuiGetFont( lua_State* L );

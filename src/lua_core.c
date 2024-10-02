@@ -2075,6 +2075,10 @@ void luaRegister() {
 	assingGlobalFunction( "GuiSetAlpha", lguiGuiSetAlpha );
 	assingGlobalFunction( "GuiSetState", lguiGuiSetState );
 	assingGlobalFunction( "GuiGetState", lguiGuiGetState );
+	assingGlobalFunction( "GuiSetSliderDragging", lguiGuiSetSliderDragging );
+	assingGlobalFunction( "GuiGetSliderDragging", lguiGuiGetSliderDragging );
+	assingGlobalFunction( "GuiSetSliderActive", lguiGuiSetSliderActive );
+	assingGlobalFunction( "GuiGetSliderActive", lguiGuiGetSliderActive );
 		/* Font set/get functions. */
 	assingGlobalFunction( "GuiSetFont", lguiGuiSetFont );
 	assingGlobalFunction( "GuiGetFont", lguiGuiGetFont );

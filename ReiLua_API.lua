@@ -6325,6 +6325,24 @@ function  RL.GuiSetState( state ) end
 ---@return any state 
 function RL.GuiGetState() end
 
+---Set guiSliderDragging
+---@return any RL.GuiSetSliderDragging
+function  RL.GuiSetSliderDragging() end
+
+---Get guiSliderDragging
+---- Success return bool
+---@return any isSliderDragging 
+function RL.GuiGetSliderDragging() end
+
+---Set guiSliderActive
+---@return any RL.GuiSetSliderActive
+function  RL.GuiSetSliderActive() end
+
+---Get guiSliderActive
+---- Success return Rectangle
+---@return any isSliderDragging 
+function RL.GuiGetSliderActive() end
+
 -- Gui - Font set/get functions
 
 ---Set gui custom font (global state)

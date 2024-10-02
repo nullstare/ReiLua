@@ -117,6 +117,58 @@ int lguiGuiGetState( lua_State* L ) {
 }
 
 /*
+> RL.GuiSetSliderDragging()
+
+Set guiSliderDragging
+*/
+int lguiGuiSetSliderDragging( lua_State* L ) {
+	bool dragging = lua_toboolean( L, 1 );
+
+	GuiSetSliderDragging( dragging );
+
+	return 0;
+}
+
+/*
+> isSliderDragging = RL.GuiGetSliderDragging()
+
+Get guiSliderDragging
+
+- Success return bool
+*/
+int lguiGuiGetSliderDragging( lua_State* L ) {
+	lua_pushboolean( L, GuiGetSliderDragging() );
+
+	return 1;
+}
+
+/*
+> RL.GuiSetSliderActive()
+
+Set guiSliderActive
+*/
+int lguiGuiSetSliderActive( lua_State* L ) {
+	Rectangle rect = uluaGetRectangle( L, 1 );
+
+	GuiSetSliderActive( rect );
+
+	return 0;
+}
+
+/*
+> isSliderDragging = RL.GuiGetSliderActive()
+
+Get guiSliderActive
+
+- Success return Rectangle
+*/
+int lguiGuiGetSliderActive( lua_State* L ) {
+	uluaPushRectangle( L, GuiGetSliderActive() );
+
+	return 1;
+}
+
+/*
 ## Gui - Font set/get functions
 */
 
@@ -203,7 +255,6 @@ int lguiGuiLoadStyle( lua_State* L ) {
 
 		return 1;
 	}
-	// state->guiFont = GuiGetFont();
 	TraceLog( state->logLevelInvalid, "Invalid file '%s'", lua_tostring( L, 1 ) );
 	lua_pushnil( L );
 

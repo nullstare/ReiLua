@@ -1819,6 +1819,8 @@ end
 function Raygui:draw()
 	if self.locked then
 		RL.GuiLock()
+	else
+		RL.GuiUnlock()
 	end
 	if self.disabled then
 		RL.GuiDisable()
@@ -1826,7 +1828,7 @@ function Raygui:draw()
 		RL.GuiEnable()
 	end
 	-- Drawing is done from back to front so we want to lock the ui on begin.
-	if not self.textEdit then
+	if not self.textEdit and not RL.GuiGetSliderDragging() then
 		RL.GuiLock()
 	end
 

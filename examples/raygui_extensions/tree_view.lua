@@ -46,7 +46,6 @@ function TreeView:new( bounds, text, callbacks, styles, tooltip )
 
 	object:setSize( Vector2:new( object.bounds.width, object.bounds.height ) )
 
-	object._forceCheckScroll = false
 	object._posY = 0 -- In control list update.
 	object._curDepth = 0 -- Current indentation.
 	object._curId = 0 -- Running number to give id's for controls.
@@ -125,7 +124,7 @@ function TreeView:updateContent()
 		self.content.width + self.padding,
 		self.content.height + self.padding
 	)
-	self._forceCheckScroll = true
+	self:updateMouseOffset()
 end
 
 function TreeView:addItem( name, group )
@@ -289,12 +288,7 @@ function TreeView:draw()
 	self.view:setT( view )
 	self.scroll:setT( scroll )
 
-	if 0 < result or self._forceCheckScroll then
-		if not self._forceCheckScroll then
-			self._gui:checkScrolling()
-		end
-		self._forceCheckScroll = false
-
+	if 0 < result then
 		self:updateMouseOffset()
 		self.gui.view:set( -self.scroll.x, -self.scroll.y, self.view.width, self.view.height )
 	end

@@ -42,6 +42,8 @@ local function addButton( bounds, text, callback )
 				{ RL.LABEL, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( { 84, 59, 22 } ) },
 				{ RL.LABEL, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( { 84/2, 59/2, 22/2 } ) },
 				{ RL.LABEL, RL.TEXT_COLOR_FOCUSED, RL.ColorToInt( RL.GREEN ) },
+				{ RL.BUTTON, RL.BASE_COLOR_PRESSED, RL.ColorToInt( RL.WHITE ) },
+				{ RL.BUTTON, RL.BASE_COLOR_NORMAL, RL.ColorToInt( RL.WHITE ) },
 			},
 		},
 		text
@@ -324,7 +326,7 @@ function RL.init()
 end
 
 function RL.update( delta )
-	Gui:update()
+	Gui:update( delta )
 end
 
 function RL.draw()

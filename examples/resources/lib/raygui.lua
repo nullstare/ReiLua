@@ -282,8 +282,6 @@ function ScrollPanel:draw()
 	self.scroll:setT( scroll )
 
 	if 0 < result then
-		self._gui:checkScrolling()
-
 		if self.callbacks.scroll then
 			self.callbacks.scroll( self )
 		end
@@ -958,7 +956,6 @@ function Slider:draw()
 
 	if 0 < result then
 		if self._gui:clickedInBounds( self.bounds ) then
-			self._gui:checkScrolling()
 			self.value = value
 
 			if self.callbacks.edit then
@@ -1019,7 +1016,6 @@ function SliderBar:draw()
 
 	if 0 < result then
 		if self._gui:clickedInBounds( self.bounds ) then
-			self._gui:checkScrolling()
 			self.value = value
 
 			if self.callbacks.edit then
@@ -1248,9 +1244,6 @@ function ListView:draw()
 
 	result, self.scrollIndex, self.active = RL.GuiListView( self.bounds, self.text, self.scrollIndex, self.active )
 
-	if self.scrollIndex ~= oldScrollIndex then
-		self._gui:checkScrolling()
-	end
 	if 0 < result and self.callbacks.select then
 		self.callbacks.select( self )
 	end
@@ -1299,9 +1292,6 @@ function ListViewEx:draw()
 
 	result, self.scrollIndex, self.active, self.focus = RL.GuiListViewEx( self.bounds, self.text, self.scrollIndex, self.active, self.focus )
 
-	if self.scrollIndex ~= oldScrollIndex then
-		self._gui:checkScrolling()
-	end
 	if 0 < result and self.callbacks.select then
 		self.callbacks.select( self )
 	end
@@ -1457,7 +1447,6 @@ function ColorPicker:draw()
 		if self._gui:clickedInBounds( self.focusBounds ) then
 			self.color = Color:newT( color )
 		end
-		self._gui:checkScrolling()
 
 		if self.callbacks.edit then
 			self.callbacks.edit( self )
@@ -1500,7 +1489,7 @@ end
 
 function ColorPanel:draw()
 	local result, color = RL.GuiColorPanel( self.bounds, self.text, self.color )
-	
+
 	if 0 < result then
 		if self._gui:clickedInBounds( self.bounds ) then
 			self.color:setT( color )
@@ -1549,7 +1538,6 @@ function ColorBarAlpha:draw()
 
 	if 0 < result then
 		if self._gui:clickedInBounds( self.bounds ) then
-			self._gui:checkScrolling()
 			self.alpha = alpha
 
 			if self.callbacks.edit then
@@ -1596,7 +1584,6 @@ function ColorBarHue:draw()
 
 	if 0 < result then
 		if self._gui:clickedInBounds( self.bounds ) then
-			self._gui:checkScrolling()
 			self.value = value
 
 			if self.callbacks.edit then
@@ -1645,7 +1632,6 @@ function GuiScrollBar:draw()
 
 	if self.value ~= value then
 		if self._gui:clickedInBounds( self.bounds ) then
-			self._gui:checkScrolling()
 			self.value = value
 
 			if self.callbacks.scroll then
@@ -1676,12 +1662,14 @@ function Raygui:new()
 	object.focused = 0
 	object.dragging = nil
 	object.grabPos = Vector2:new( 0, 0 )
-	object.scrolling = false
 	object.textEdit = false
 	object.textEditControl = nil
 	object.defaultTexture = RL.GetTextureDefault()
 	object.defaultRect = Rectangle:new( 0, 0, 1, 1 ) -- For texture.
-	object.defaultFont = RL.GuiGetFont()
+	object.defaultFont = {
+		font = RL.GuiGetFont(),
+		size = RL.GetFontBaseSize( RL.GuiGetFont() ),
+	}
 	object.mouseOffset = Vector2:new( 0, 0 )
 	object.mouseScale = Vector2:new( 1, 1 )
 	object.view = Rectangle:new( 0, 0, 0, 0 ) -- Active if larger than 0. Then only controls in view will be updated and drawn.
@@ -1692,7 +1680,6 @@ function Raygui:new()
 		timer = 0.0,
 		focused = 0
 	}
-
 	object._lastProperties = {}
 	object._mousePressPos = Vector2:new( -1, -1 ) -- Use to check if release and check are inside bounds.
 
@@ -1704,8 +1691,9 @@ function Raygui:inView( control )
 	return self.view.width == 0 or self.view.height == 0 or self.view:checkCollisionRec( control.viewBounds or control.focusBounds or control.bounds )
 end
 
-function Raygui:update()
+function Raygui:update( delta )
 	if self.disabled or self.locked then
+		self.focused = 0
 		return
 	end
 	-- If dragging, don't update control masking.
@@ -1730,7 +1718,7 @@ function Raygui:update()
 		local control = self.controls[i]
 
 		if control.visible and not control.noUpdate and control.update ~= nil and self:inView( control ) then
-			if control:update() then
+			if control:update( delta ) then
 				self.focused = i
 
 				if i ~= self.tooltip.focused then
@@ -1742,7 +1730,7 @@ function Raygui:update()
 					self.tooltip.focused = i
 
 					if self.tooltip.timer < self.tooltip.delay then
-						self.tooltip.timer = self.tooltip.timer + RL.GetFrameTime()
+						self.tooltip.timer = self.tooltip.timer + delta
 					else
 						self.tooltip.text = control.tooltip
 						self.tooltip.position = Vector2:newT( RL.GetMousePosition() ) + self.tooltip.offset
@@ -1806,12 +1794,17 @@ end
 
 function Raygui:drawTooltip()
 	local textSize = Vector2:tempT( RL.MeasureTextEx(
-		self.defaultFont,
+		self.defaultFont.font,
 		self.tooltip.text,
 		RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SIZE ),
 		RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING )
 	) )
-	local tooltipRect = Rectangle:new( self.tooltip.position.x, self.tooltip.position.y, textSize.x, textSize.y )
+	local tooltipRect = Rectangle:new(
+		RL.Round( self.tooltip.position.x ),
+		RL.Round( self.tooltip.position.y ),
+		textSize.x,
+		textSize.y
+	)
 	local view = self.view:clone()
 	-- If no view size, clamp to window size.
 	if view.width == 0 or view.height == 0 then
@@ -1829,13 +1822,12 @@ function Raygui:draw()
 	end
 	if self.disabled then
 		RL.GuiDisable()
+	else
+		RL.GuiEnable()
 	end
-	if not self.locked and not self.disabled then
-		if not self.scrolling and not self.textEdit then
-			RL.GuiLock()
-		elseif RL.IsMouseButtonReleased( RL.MOUSE_BUTTON_LEFT ) then
-			self.scrolling = false
-		end
+	-- Drawing is done from back to front so we want to lock the ui on begin.
+	if not self.textEdit then
+		RL.GuiLock()
 	end
 
 	local oldTextEditText = "" -- For checking if text has changed so we can call input callback.
@@ -1850,15 +1842,21 @@ function Raygui:draw()
 	RL.SetMouseOffset( self.mouseOffset )
 	RL.SetMouseScale( self.mouseScale )
 
+	if self.defaultFont.font ~= RL.GuiGetFont() then
+		RL.GuiSetFont( self.defaultFont.font )
+		RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_SIZE, self.defaultFont.size )
+	end
+
 	for i, control in ipairs( self.controls ) do
-		if not self.locked and not self.disabled and i == self.focused then
+		if not self.locked and not self.disabled
+		and i == self.focused and not control.locked then
 			RL.GuiUnlock()
 		end
 
 		if control.visible and control.draw ~= nil and self:inView( control ) then
 			if control.disabled then
 				RL.GuiDisable()
-			else
+			elseif not self.disabled then
 				RL.GuiEnable()
 			end
 
@@ -1866,25 +1864,18 @@ function Raygui:draw()
 		end
 	end
 
-	if self.tooltip.text ~= nil and self.controls[ self.tooltip.focused ]:update()
+	if not self.locked and not self.disabled and self.tooltip.text ~= nil
+	and self.controls[ self.tooltip.focused ]:update()
 	and self.tooltip.delay <= self.tooltip.timer then
 		self:drawTooltip()
 	end
+
 	if self.textEdit and oldTextEditText ~= self.textEditControl.text and self.textEditControl.callbacks.textEdit ~= nil then
 		self.textEditControl.callbacks.textEdit( self.textEditControl )
 	end
 
-	RL.GuiUnlock()
-	RL.GuiEnable()
 	RL.SetMouseOffset( mouseOffset )
 	RL.SetMouseScale( mouseScale )
-end
-
-function Raygui:checkScrolling()
-	-- Don't set if scrolling with mouse wheel.
-	if RL.GetMouseWheelMove() == 0.0 then
-		self.scrolling = true
-	end
 end
 
 function Raygui:clickedInBounds( bounds )
@@ -1918,6 +1909,25 @@ function Raygui:remove( control )
 
 			return
 		end
+	end
+end
+
+function Raygui:getId( control )
+	for i, curControl in ipairs( self.controls ) do
+		if control == curControl then
+			return i
+		end
+	end
+end
+
+function Raygui:setDefaultFont( font )
+	self.defaultFont.font = font
+	self.defaultFont.size = RL.GetFontBaseSize( font )
+end
+
+function Raygui:setProperties( properties )
+	for _, property in ipairs( properties ) do
+		RL.GuiSetStyle( property[1], property[2], property[3] )
 	end
 end
 
@@ -1978,7 +1988,7 @@ function Raygui:drawControl( control )
 			elseif name == "texture" then
 				RL.SetShapesTexture( self.defaultTexture, self.defaultRect )
 			elseif name == "font" then
-				RL.GuiSetFont( self.defaultFont )
+				RL.GuiSetFont( self.defaultFont.font )
 			end
 		end
 	end

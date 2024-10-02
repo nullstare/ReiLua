@@ -2,15 +2,15 @@ local SpriteButton = {}
 SpriteButton.__index = SpriteButton
 
 function SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, callbacks, styles, tooltip )
-    local object = setmetatable( {}, self )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
-    object.bounds = bounds:clone()
-    object.text = text
+	object.bounds = bounds:clone()
+	object.text = text
 	object.buttonTexture = texture
 	object.nPatchNormal = nPatchNormal
 	object.nPatchPressed = nPatchPressed
-    object.callbacks = callbacks -- pressed.
+	object.callbacks = callbacks -- pressed.
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -21,21 +21,28 @@ function SpriteButton:new( bounds, text, texture, nPatchNormal, nPatchPressed, c
 end
 
 function SpriteButton:update()
-    return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function SpriteButton:draw()
-	if RL.IsMouseButtonDown( RL.MOUSE_BUTTON_LEFT ) and self:update() and not RL.GuiIsLocked() and not self._gui.scrolling then
-		RL.DrawTextureNPatchRepeat( self.buttonTexture, self.nPatchPressed, self.bounds, { 0, 0 }, 0.0, RL.WHITE )
+	if RL.IsMouseButtonDown( RL.MOUSE_BUTTON_LEFT ) and self:update() and not RL.GuiIsLocked()
+	and not RL.GuiGetSliderDragging() then
+		RL.DrawTextureNPatchRepeat(
+			self.buttonTexture, self.nPatchPressed, self.bounds,
+			{ 0, 0 }, 0.0, RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.BASE_COLOR_PRESSED ) )
+		)
 	else
-		RL.DrawTextureNPatchRepeat( self.buttonTexture, self.nPatchNormal, self.bounds, { 0, 0 }, 0.0, RL.WHITE )
+		RL.DrawTextureNPatchRepeat(
+			self.buttonTexture, self.nPatchNormal, self.bounds,
+			{ 0, 0 }, 0.0, RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.BASE_COLOR_NORMAL ) )
+		)
 	end
 
 	local result = RL.GuiLabelButton( self.bounds, self.text )
 
-    if result == 1 and self.callbacks.pressed ~= nil and self._gui:clickedInBounds( self.bounds ) then
+	if result == 1 and self.callbacks.pressed ~= nil and self._gui:clickedInBounds( self.bounds ) then
 		self.callbacks.pressed( self )
-    end
+	end
 end
 
 function SpriteButton:setPosition( pos )

@@ -2,18 +2,18 @@ local PropertyList = {}
 PropertyList.__index = PropertyList
 
 function PropertyList:new( bounds, text, callbacks, styles, tooltip )
-    local object = setmetatable( {}, self )
+	local object = setmetatable( {}, self )
 	object._gui = nil
 
 	object.padding = 4 -- Content edges.
 	object.spacing = 4 -- Between controls.
 	object.contentPadding = Vector2:new( 0, 0 ) -- Extra padding for content rect.
 
-    object.bounds = bounds:clone()
-    object.text = text
-    object.scroll = Vector2:new( 0, 0 )
+	object.bounds = bounds:clone()
+	object.text = text
+	object.scroll = Vector2:new( 0, 0 )
 	object.view = Rectangle:new( 0, 0, 0, 0 )
-    object.callbacks = callbacks -- scroll, grab, drag.
+	object.callbacks = callbacks -- scroll, grab, drag.
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -31,7 +31,6 @@ function PropertyList:new( bounds, text, callbacks, styles, tooltip )
 
 	object:setSize( Vector2:new( object.bounds.width, object.bounds.height ) )
 
-	object._forceCheckScroll = false
 	object._posY = 0 -- In control list update.
 
 	object:updateMouseOffset()
@@ -103,7 +102,7 @@ function PropertyList:updateContent()
 		self.content.width + self.padding + self.contentPadding.y,
 		self.content.height + self.padding + self.contentPadding.x
 	)
-	self._forceCheckScroll = true
+	self:updateMouseOffset()
 end
 
 -- Leave control bounds size to 0 to use default. Optional group for parameter 2.
@@ -162,29 +161,25 @@ function PropertyList:addGroup( name, active, group )
 	return control
 end
 
-function PropertyList:update()
+function PropertyList:update( delta )
 	if not self.view:checkCollisionPoint( RL.GetMousePosition() ) then
 		self.gui.locked = true
 	else
 		self.gui.locked = false
 	end
 
-	self.gui:update()
+	self.gui:update( delta )
 
-    return self._gui:drag( self )
+	return self._gui:drag( self )
 end
 
 function PropertyList:draw()
-	local result, scroll, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
+	local oldScroll = Vector2:tempV( self.scroll )
+	local _, scroll, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
 	self.view:setT( view )
 	self.scroll:setT( scroll )
 
-	if 0 < result or self._forceCheckScroll then
-		if not self._forceCheckScroll then
-			self._gui:checkScrolling()
-		end
-		self._forceCheckScroll = false
-
+	if self.scroll ~= oldScroll then
 		self:updateMouseOffset()
 		self.gui.view:set( -self.scroll.x, -self.scroll.y, self.view.width, self.view.height )
 
@@ -238,8 +233,8 @@ function PropertyList:setSize( size )
 	self.defaultControlSize = Vector2:new( self.content.width, self.defaultControlHeight )
 
 	local _, _, view = RL.GuiScrollPanel( self.bounds, self.text, self.content, self.scroll, self.view )
-
 	self.view = Rectangle:newT( view )
+
 	self.gui.view = Rectangle:new( 0, 0, self.view.width, self.view.height )
 
 	self:updateContent()

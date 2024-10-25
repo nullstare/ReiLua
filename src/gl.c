@@ -78,6 +78,20 @@ int lglBlitFramebuffer( lua_State* L ) {
 */
 
 /*
+> RL.glDepthRange( float nearVal, float farVal )
+
+Specify mapping of depth values from normalized device coordinates to window coordinates
+*/
+int lglDepthRange( lua_State* L ) {
+	float nearVal = luaL_checknumber( L, 1 );
+	float farVal = luaL_checknumber( L, 2 );
+
+	glDepthRange( nearVal, farVal );
+
+	return 0;
+}
+
+/*
 > RL.glEnable( int cap )
 
 Enable server-side GL capabilities
@@ -99,6 +113,20 @@ int lglDisable( lua_State* L ) {
 	int cap = luaL_checkinteger( L, 1 );
 
 	glDisable( cap );
+
+	return 0;
+}
+
+/*
+> RL.glPolygonOffset( float factor, float units )
+
+Set the scale and units used to calculate depth values
+*/
+int lglPolygonOffset( lua_State* L ) {
+	float factor = luaL_checknumber( L, 1 );
+	float units = luaL_checknumber( L, 2 );
+
+	glPolygonOffset( factor, units );
 
 	return 0;
 }

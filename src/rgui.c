@@ -117,7 +117,7 @@ int lguiGuiGetState( lua_State* L ) {
 }
 
 /*
-> RL.GuiSetSliderDragging()
+> RL.GuiSetSliderDragging( bool dragging )
 
 Set guiSliderDragging
 */
@@ -143,7 +143,7 @@ int lguiGuiGetSliderDragging( lua_State* L ) {
 }
 
 /*
-> RL.GuiSetSliderActive()
+> RL.GuiSetSliderActive( Rectange rect )
 
 Set guiSliderActive
 */

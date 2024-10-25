@@ -5,8 +5,10 @@ int lglClear( lua_State* L );
 /* Frame Buffers. */
 int lglBlitFramebuffer( lua_State* L );
 /* State Management. */
+int lglDepthRange( lua_State* L );
 int lglEnable( lua_State* L );
 int lglDisable( lua_State* L );
+int lglPolygonOffset( lua_State* L );
 int lglStencilFunc( lua_State* L );
 int lglStencilFuncSeparate( lua_State* L );
 int lglStencilMask( lua_State* L );

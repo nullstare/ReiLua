@@ -983,6 +983,8 @@ static void defineGlobals() {
 	assignGlobalInt( GL_DEPTH_TEST, "GL_DEPTH_TEST" ); // If enabled, do depth comparisons and update the depth buffer. Note that even if the depth buffer exists and the depth mask is non-zero, the depth buffer is not updated if the depth test is disabled. See glDepthFunc and glDepthRangef
 	assignGlobalInt( GL_DITHER, "GL_DITHER" ); // If enabled, dither color components or indices before they are written to the color buffer
 	assignGlobalInt( GL_POLYGON_OFFSET_FILL, "GL_POLYGON_OFFSET_FILL" ); // If enabled, an offset is added to depth values of a polygon's fragments produced by rasterization. See glPolygonOffset
+	assignGlobalInt( GL_POLYGON_OFFSET_LINE, "GL_POLYGON_OFFSET_LINE" );
+	assignGlobalInt( GL_POLYGON_OFFSET_POINT, "GL_POLYGON_OFFSET_POINT" );
 	assignGlobalInt( GL_SAMPLE_ALPHA_TO_COVERAGE, "GL_SAMPLE_ALPHA_TO_COVERAGE" ); // If enabled, compute a temporary coverage value where each bit is determined by the alpha value at the corresponding sample location. The temporary coverage value is then ANDed with the fragment coverage value
 	assignGlobalInt( GL_SAMPLE_COVERAGE, "GL_SAMPLE_COVERAGE" ); // If enabled, the fragment's coverage is ANDed with the temporary coverage value. If GL_SAMPLE_COVERAGE_INVERT is set to GL_TRUE, invert the coverage value. See glSampleCoverage
 	assignGlobalInt( GL_SCISSOR_TEST, "GL_SCISSOR_TEST" ); // If enabled, discard fragments that are outside the scissor rectangle. See glScissor
@@ -2323,8 +2325,10 @@ void luaRegister() {
 		/* Frame Buffers. */
 	assingGlobalFunction( "glBlitFramebuffer", lglBlitFramebuffer );
 		/* State Management. */
+	assingGlobalFunction( "glDepthRange", lglDepthRange );
 	assingGlobalFunction( "glEnable", lglEnable );
 	assingGlobalFunction( "glDisable", lglDisable );
+	assingGlobalFunction( "glPolygonOffset", lglPolygonOffset );
 	assingGlobalFunction( "glStencilFunc", lglStencilFunc );
 	assingGlobalFunction( "glStencilFuncSeparate", lglStencilFuncSeparate );
 	assingGlobalFunction( "glStencilMask", lglStencilMask );

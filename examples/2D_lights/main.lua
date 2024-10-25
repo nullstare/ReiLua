@@ -100,8 +100,8 @@ function RL.init()
 	lightTex = RL.LoadTexture( RL.GetBasePath().."../resources/images/light.png" )
 	lightTexSize = Vector2:newT( RL.GetTextureSize( lightTex ) )
 
-	RL.SetTextureFilter( tileTex, RL.TEXTURE_FILTER_TRILINEAR )
-	RL.SetTextureFilter( lightTex, RL.TEXTURE_FILTER_TRILINEAR )
+	RL.SetTextureFilter( tileTex, RL.TEXTURE_FILTER_BILINEAR )
+	RL.SetTextureFilter( lightTex, RL.TEXTURE_FILTER_BILINEAR )
 
 	createShadowMesh()
 

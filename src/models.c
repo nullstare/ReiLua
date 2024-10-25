@@ -1317,7 +1317,7 @@ int lmodelsGenMeshTangents( lua_State* L ) {
 /*
 > meshData = RL.GetMeshData( Mesh mesh )
 
-Get mesh data as table.
+Get mesh vertex attributes data as table.
 
 - Success return Mesh{}
 */

@@ -1181,6 +1181,8 @@ RL.GL_DEPTH_TEST=2929
 RL.GL_DITHER=3024
 ---If enabled, an offset is added to depth values of a polygon's fragments produced by rasterization. See glPolygonOffset
 RL.GL_POLYGON_OFFSET_FILL=32823
+RL.GL_POLYGON_OFFSET_LINE=10754
+RL.GL_POLYGON_OFFSET_POINT=10753
 ---If enabled, compute a temporary coverage value where each bit is determined by the alpha value at the corresponding sample location. The temporary coverage value is then ANDed with the fragment coverage value
 RL.GL_SAMPLE_ALPHA_TO_COVERAGE=32926
 ---If enabled, the fragment's coverage is ANDed with the temporary coverage value. If GL_SAMPLE_COVERAGE_INVERT is set to GL_TRUE, invert the coverage value. See glSampleCoverage
@@ -4811,7 +4813,7 @@ function RL.GetMeshBoundingBox( mesh ) end
 ---@return any RL.GenMeshTangents
 function  RL.GenMeshTangents( mesh ) end
 
----Get mesh data as table.
+---Get mesh vertex attributes data as table.
 ---- Success return Mesh{}
 ---@param mesh any
 ---@return any meshData 
@@ -6326,8 +6328,9 @@ function  RL.GuiSetState( state ) end
 function RL.GuiGetState() end
 
 ---Set guiSliderDragging
+---@param dragging boolean
 ---@return any RL.GuiSetSliderDragging
-function  RL.GuiSetSliderDragging() end
+function  RL.GuiSetSliderDragging( dragging ) end
 
 ---Get guiSliderDragging
 ---- Success return bool
@@ -6335,8 +6338,9 @@ function  RL.GuiSetSliderDragging() end
 function RL.GuiGetSliderDragging() end
 
 ---Set guiSliderActive
+---@param rect any
 ---@return any RL.GuiSetSliderActive
-function  RL.GuiSetSliderActive() end
+function  RL.GuiSetSliderActive( rect ) end
 
 ---Get guiSliderActive
 ---- Success return Rectangle
@@ -7730,6 +7734,12 @@ function  RL.glBlitFramebuffer( srcTex, dstTex, srcRect, dstRect, mask, filter )
 
 -- OpenGL - State Management
 
+---Specify mapping of depth values from normalized device coordinates to window coordinates
+---@param nearVal number
+---@param farVal number
+---@return any RL.glDepthRange
+function  RL.glDepthRange( nearVal, farVal ) end
+
 ---Enable server-side GL capabilities
 ---@param cap integer
 ---@return any RL.glEnable
@@ -7739,6 +7749,12 @@ function  RL.glEnable( cap ) end
 ---@param cap integer
 ---@return any RL.glDisable
 function  RL.glDisable( cap ) end
+
+---Set the scale and units used to calculate depth values
+---@param factor number
+---@param units number
+---@return any RL.glPolygonOffset
+function  RL.glPolygonOffset( factor, units ) end
 
 ---Set front and back function and reference value for stencil testing
 ---@param func integer

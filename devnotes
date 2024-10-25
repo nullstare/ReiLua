@@ -17,6 +17,7 @@ Backlog {
 	* CBuffer
 		* Check endianess.
 
+	* SDL2 platform specific functions.
 	* Textures
 		* Try making atlas packer with stbrp_pack_rects.
 	* Examples
@@ -32,6 +33,8 @@ Bugs {
 Notes {
 	* raylib 5.5
 		* DrawBillboardPro BREAKING CHANGE.
+		* Some functions for data validation has been renamed from Is**Ready() to Is**Valid().
+
 }
 
 Needs Testing {

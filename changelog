@@ -75,6 +75,7 @@ DETAILED CHANGES:
 	- CHANGE: UnloadMaterial can also optionally free textures and shader.
 	- ADDED: FontCopy.
 	- ADDED: GuiSetSliderDragging, GuiGetSliderDragging, GuiSetSliderActive and GuiGetSliderActive.
+	- ADDED: glDepthRange and glPolygonOffset.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.7.0		Using Raylib 5.0 and Forked Raygui 4.0

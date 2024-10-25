@@ -3398,6 +3398,14 @@ If enabled, an offset is added to depth values of a polygon's fragments produced
 
 ---
 
+> GL_POLYGON_OFFSET_LINE = 10754
+
+---
+
+> GL_POLYGON_OFFSET_POINT = 10753
+
+---
+
 > GL_SAMPLE_ALPHA_TO_COVERAGE = 32926
 
 If enabled, compute a temporary coverage value where each bit is determined by the alpha value at the corresponding sample location. The temporary coverage value is then ANDed with the fragment coverage value
@@ -7632,7 +7640,7 @@ Compute mesh tangents
 
 > meshData = RL.GetMeshData( Mesh mesh )
 
-Get mesh data as table.
+Get mesh vertex attributes data as table.
 
 - Success return Mesh{}
 
@@ -9391,7 +9399,7 @@ Get gui state (global state)
 
 ---
 
-> RL.GuiSetSliderDragging()
+> RL.GuiSetSliderDragging( bool dragging )
 
 Set guiSliderDragging
 
@@ -9405,7 +9413,7 @@ Get guiSliderDragging
 
 ---
 
-> RL.GuiSetSliderActive()
+> RL.GuiSetSliderActive( Rectange rect )
 
 Set guiSliderActive
 
@@ -10957,6 +10965,12 @@ Use nil RenderTexture for window framebuffer
 
 ---
 
+> RL.glDepthRange( float nearVal, float farVal )
+
+Specify mapping of depth values from normalized device coordinates to window coordinates
+
+---
+
 > RL.glEnable( int cap )
 
 Enable server-side GL capabilities
@@ -10966,6 +10980,12 @@ Enable server-side GL capabilities
 > RL.glDisable( int cap )
 
 Disable server-side GL capabilities
+
+---
+
+> RL.glPolygonOffset( float factor, float units )
+
+Set the scale and units used to calculate depth values
 
 ---
 

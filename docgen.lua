@@ -371,6 +371,7 @@ sourceFiles = {
 	"rlgl",
 	"gl",
 	"easings",
+	"bitwiseOp",
 	"platforms/core_desktop",
 	-- "platforms/core_desktop_sdl",
 }

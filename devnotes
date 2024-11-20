@@ -2,6 +2,8 @@ Current {
 }
 
 Backlog {
+	* Symbols
+		* Expose symbols on Windows.
 	* Raygui
 		* ICON_ defines.
 	* Raygui lib
@@ -15,7 +17,7 @@ Backlog {
 	* Models
 		* Mesh bone weight management?
 	* CBuffer
-		* Check endianess.
+		* Swap endianess.
 
 	* SDL2 platform specific functions.
 	* Textures

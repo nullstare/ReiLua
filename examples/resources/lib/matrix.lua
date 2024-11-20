@@ -3,31 +3,15 @@ if table.unpack == nil then
 	table.unpack = unpack
 end
 
-local function copyMatrix( orig )
-	local copy = RL.MatrixIdentity()
-
-	if orig ~= nil then
-		for y = 1, 4 do
-			for x = 1, 4 do
-				if orig[x][y] ~= nil then
-					copy[x][y] = orig[x][y]
-				end
-			end
-		end
-	end
-
-	return copy
-end
-
 local Matrix = {}
 local metatable = {
 	__index = Matrix,
 	__tostring = function( m )
 		return "{\n"
-		.."  {"..m.m[1][1]..", "..m.m[1][2]..", "..m.m[1][3]..", "..m.m[1][4].."},\n"
-		.."  {"..m.m[2][1]..", "..m.m[2][2]..", "..m.m[2][3]..", "..m.m[2][4].."},\n"
-		.."  {"..m.m[3][1]..", "..m.m[3][2]..", "..m.m[3][3]..", "..m.m[3][4].."},\n"
-		.."  {"..m.m[3][1]..", "..m.m[3][2]..", "..m.m[3][3]..", "..m.m[3][4].."},\n"
+		.."  {"..m[1][1]..", "..m[1][2]..", "..m[1][3]..", "..m[1][4].."},\n"
+		.."  {"..m[2][1]..", "..m[2][2]..", "..m[2][3]..", "..m[2][4].."},\n"
+		.."  {"..m[3][1]..", "..m[3][2]..", "..m[3][3]..", "..m[3][4].."},\n"
+		.."  {"..m[4][1]..", "..m[4][2]..", "..m[4][3]..", "..m[4][4].."},\n"
 		.."}"
 	end,
 	__add = function( m1, m2 )
@@ -44,22 +28,40 @@ local metatable = {
 	end,
 }
 
+function Matrix:copyMatrix( orig )
+	if orig ~= nil then
+		for y = 1, 4 do
+			for x = 1, 4 do
+				if orig[x][y] ~= nil then
+					self[x][y] = orig[x][y]
+				end
+			end
+		end
+	end
+end
+
 function Matrix:new( m )
 	local object = setmetatable( {}, metatable )
 
-	object.m = copyMatrix( m )
+	-- Raylib style transposed matrix.
+	for x = 1, 4 do
+		object[x] = {}
+		for y = 1, 4 do
+			table.insert( object[x], m[x][y] )
+		end
+	end
 
 	return object
 end
 
 function Matrix:set( m )
-	self.m = copyMatrix( m )
+	self:copyMatrix( m )
 end
 
 function Matrix:serialize()
 	local str = { "Matrix:new({" }
 
-	for i, row in ipairs( self.m ) do
+	for i, row in ipairs( self ) do
 		table.insert( str, "{" )
 
 		for c, v in ipairs( row ) do
@@ -79,7 +81,7 @@ function Matrix:serialize()
 end
 
 function Matrix:clone()
-	return Matrix:new( self.m )
+	return Matrix:new( self )
 end
 
 function Matrix:determinant()
@@ -152,6 +154,30 @@ end
 
 function Matrix:lookAt( eye, target, up )
 	return Matrix:new( RL.MatrixLookAt( eye, target, up ) )
+end
+
+-- Temp pre generated objects to avoid "slow" table generation.
+
+local TEMP_COUNT = 100
+local tempPool = {}
+local curTemp = 1
+
+for _ = 1, TEMP_COUNT do
+	table.insert( tempPool, Matrix:new( RL.MatrixIdentity() ) )
+end
+
+function Matrix:temp( m )
+	local object = tempPool[ curTemp ]
+
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
+
+	object:copyMatrix( m )
+
+	return object
+end
+
+function Matrix:getTempId()
+	return curTemp
 end
 
 return Matrix

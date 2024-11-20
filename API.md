@@ -11273,6 +11273,82 @@ Ease elastic in out
 
 ---
 
+## Bitwise Operations - Arithmetic
+
+---
+
+> result = RL.BitAnd( int a, int b )
+
+Equivalent to a & b in C
+
+- Success return int
+
+---
+
+> result = RL.BitOr( int a, int b )
+
+Equivalent to a | b in C
+
+- Success return int
+
+---
+
+> result = RL.BitXor( int a, int b )
+
+Equivalent to a ^ b in C
+
+- Success return int
+
+---
+
+> result = RL.BitNot( int v )
+
+Equivalent to ~v in C
+
+- Success return int
+
+---
+
+> result = RL.BitShiftLeft( int v, int n )
+
+Equivalent to v << n in C
+
+- Success return int
+
+---
+
+> result = RL.BitShiftRight( int v, int n )
+
+Equivalent to v >> n in C
+
+- Success return int
+
+---
+
+> result = RL.BitSet( int v, int i, bool b )
+
+Set bit in index i to state b in value v
+
+- Success return int
+
+---
+
+> bit = RL.BitGet( int v, int i )
+
+Get bit in index i from value v
+
+- Success return bool
+
+---
+
+> result = RL.BitToggle( int v, int i )
+
+Toggle bit in index i in value v
+
+- Success return int
+
+---
+
 ## GLFW Core - Input-related functions: keyboard
 
 ---

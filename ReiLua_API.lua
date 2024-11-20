@@ -8049,6 +8049,71 @@ function RL.EaseElasticOut( t, b, c, d ) end
 ---@return any value 
 function RL.EaseElasticInOut( t, b, c, d ) end
 
+-- Bitwise Operations - Arithmetic
+
+---Equivalent to a & b in C
+---- Success return int
+---@param a integer
+---@param b integer
+---@return any result 
+function RL.BitAnd( a, b ) end
+
+---Equivalent to a | b in C
+---- Success return int
+---@param a integer
+---@param b integer
+---@return any result 
+function RL.BitOr( a, b ) end
+
+---Equivalent to a ^ b in C
+---- Success return int
+---@param a integer
+---@param b integer
+---@return any result 
+function RL.BitXor( a, b ) end
+
+---Equivalent to ~v in C
+---- Success return int
+---@param v integer
+---@return any result 
+function RL.BitNot( v ) end
+
+---Equivalent to v << n in C
+---- Success return int
+---@param v integer
+---@param n integer
+---@return any result 
+function RL.BitShiftLeft( v, n ) end
+
+---Equivalent to v >> n in C
+---- Success return int
+---@param v integer
+---@param n integer
+---@return any result 
+function RL.BitShiftRight( v, n ) end
+
+---Set bit in index i to state b in value v
+---- Success return int
+---@param v integer
+---@param i integer
+---@param b boolean
+---@return any result 
+function RL.BitSet( v, i, b ) end
+
+---Get bit in index i from value v
+---- Success return bool
+---@param v integer
+---@param i integer
+---@return any bit 
+function RL.BitGet( v, i ) end
+
+---Toggle bit in index i in value v
+---- Success return int
+---@param v integer
+---@param i integer
+---@return any result 
+function RL.BitToggle( v, i ) end
+
 -- GLFW Core - Input-related functions: keyboard
 
 ---This function returns the name of the specified printable key, encoded as UTF-8.

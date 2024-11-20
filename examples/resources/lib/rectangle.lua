@@ -2,7 +2,6 @@
 if table.unpack == nil then
 	table.unpack = unpack
 end
-
 local Vector2 = Vector2 or require( "vector2" )
 
 local Rectangle = {}
@@ -73,6 +72,17 @@ function Rectangle:newR( r )
 	return object
 end
 
+function Rectangle:newV( position, size )
+	local object = setmetatable( {}, metatable )
+
+	object.x = position.x
+	object.y = position.y
+	object.width = size.x
+	object.height = size.y
+
+	return object
+end
+
 function Rectangle:set( x, y, width, height )
 	self.x = x or 0
 	self.y = y or self.x
@@ -89,6 +99,13 @@ function Rectangle:setR( r )
 	self.y = r.y
 	self.width = r.width
 	self.height = r.height
+end
+
+function Rectangle:setV( position, size )
+	self.x = position.x
+	self.y = position.y
+	self.width = size.x
+	self.height = size.y
 end
 
 function Rectangle:serialize()
@@ -220,6 +237,20 @@ function Rectangle:tempR( r )
 
 	return object
 end
+
+function Rectangle:tempV( position, size )
+	local object = tempPool[ curTemp ]
+
+	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
+
+	object.x = position.x
+	object.y = position.y
+	object.width = size.x
+	object.height = size.y
+
+	return object
+end
+
 
 function Rectangle:getTempId()
 	return curTemp

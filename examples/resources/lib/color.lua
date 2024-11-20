@@ -3,6 +3,8 @@ if table.unpack == nil then
 	table.unpack = unpack
 end
 
+local Vector3 = Vector3 or require( "vector3" )
+
 local Color = {}
 local metatable = {
 	__index = Color,
@@ -45,8 +47,8 @@ function Color:new( r, g, b, a )
 	local object = setmetatable( {}, metatable )
 
 	object.r = r or 255
-	object.g = g or 255
-	object.b = b or 255
+	object.g = g or object.r
+	object.b = b or object.g
 	object.a = a or 255
 
 	return object
@@ -73,8 +75,8 @@ end
 
 function Color:set( r, g, b, a )
 	self.r = r or 255
-	self.g = g or 255
-	self.b = b or 255
+	self.g = g or self.r
+	self.b = b or self.g
 	self.a = a or 255
 end
 
@@ -171,6 +173,15 @@ function Color:round()
 	)
 end
 
+function Color:mix( c )
+	return Color:temp(
+		( self.r + c.r ) / 2,
+		( self.g + c.g ) / 2,
+		( self.b + c.b ) / 2,
+		( self.a + c.a ) / 2
+	):round()
+end
+
 function Color:invert()
 	return Color:new( 255 - self.r, 255 - self.g, 255 - self.b, self.a )
 end
@@ -191,8 +202,8 @@ function Color:temp( r, g, b, a )
 	curTemp = curTemp < TEMP_COUNT and curTemp + 1 or 1
 
 	object.r = r or 255
-	object.g = g or 255
-	object.b = b or 255
+	object.g = g or object.r
+	object.b = b or object.g
 	object.a = a or 255
 
 	return object

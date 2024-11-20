@@ -151,7 +151,7 @@ function Quaternion:fromMatrix( mat )
 end
 
 function Quaternion:toMatrix()
-	return Matrix:newT( RL.QuaternionToMatrix( self ) )
+	return Matrix:new( RL.QuaternionToMatrix( self ) )
 end
 
 function Quaternion:fromAxisAngle( axis, angle )

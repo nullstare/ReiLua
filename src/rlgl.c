@@ -1216,9 +1216,9 @@ int lrlglUnloadVertexBuffer( lua_State* L ) {
 }
 
 /*
-> RL.rlSetVertexAttribute( int index, int compSize, int type, bool normalized, int stride, buffer pointer )
+> RL.rlSetVertexAttribute( int index, int compSize, int type, bool normalized, int stride, int offset )
 
-Set vertex attribute.
+Set vertex attribute data configuration
 */
 int lrlglSetVertexAttribute( lua_State* L ) {
 	int index = luaL_checkinteger( L, 1 );
@@ -1226,9 +1226,9 @@ int lrlglSetVertexAttribute( lua_State* L ) {
 	int type = luaL_checkinteger( L, 3 );
 	bool normalized = uluaGetBoolean( L, 4 );
 	int stride = luaL_checkinteger( L, 5 );
-	Buffer* pointer = uluaGetBuffer( L, 6 );
+	int offset = luaL_checkinteger( L, 6 );
 
-	rlSetVertexAttribute( index, compSize, type, normalized, stride, pointer->data );
+	rlSetVertexAttribute( index, compSize, type, normalized, stride, offset );
 
 	return 0;
 }
@@ -1371,9 +1371,9 @@ int lrlglLoadTextureDepth( lua_State* L ) {
 }
 
 /*
-> id = RL.rlLoadTextureCubemap( Buffer data, int size, int format )
+> id = RL.rlLoadTextureCubemap( Buffer data, int size, int format, int mipmapCount )
 
-Load texture cubemap
+Load texture cubemap data
 
 - Success return int
 */
@@ -1381,8 +1381,9 @@ int lrlglLoadTextureCubemap( lua_State* L ) {
 	Buffer* data = uluaGetBuffer( L, 1 );
 	int size = luaL_checkinteger( L, 2 );
 	int format = luaL_checkinteger( L, 3 );
+	int mipmapCount = luaL_checkinteger( L, 4 );
 
-	lua_pushinteger( L, rlLoadTextureCubemap( data->data, size, format ) );
+	lua_pushinteger( L, rlLoadTextureCubemap( data->data, size, format, mipmapCount ) );
 
 	return 1;
 }
@@ -1523,16 +1524,14 @@ int lrlglReadScreenPixels( lua_State* L ) {
 */
 
 /*
-> fboId = RL.rlLoadFramebuffer( Vector2 size )
+> fboId = RL.rlLoadFramebuffer()
 
 Load an empty framebuffer
 
 - Success return int
 */
 int lrlglLoadFramebuffer( lua_State* L ) {
-	Vector2 size = uluaGetVector2( L, 1 );
-
-	lua_pushinteger( L, rlLoadFramebuffer( size.x, size.y ) );
+	lua_pushinteger( L, rlLoadFramebuffer() );
 
 	return 1;
 }

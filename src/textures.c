@@ -54,22 +54,6 @@ int ltexturesLoadImageRaw( lua_State* L ) {
 }
 
 /*
-> image = RL.LoadImageSvg( string fileNameOrString, Vector2 size )
-
-Load image from SVG file data or string with specified size
-
-- Success return Image
-*/
-int ltexturesLoadImageSvg( lua_State* L ) {
-	const char* fileNameOrString = luaL_checkstring( L, 1 );
-	Vector2 size = uluaGetVector2( L, 2 );
-
-	uluaPushImage( L, LoadImageSvg( fileNameOrString, (int)size.x, (int)size.y ) );
-
-	return 1;
-}
-
-/*
 > image, frameCount = RL.LoadImageAnim( string fileName )
 
 Load image sequence from file (frames appended to image.data). All frames are returned in RGBA format
@@ -165,16 +149,16 @@ int ltexturesLoadImageFromScreen( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsImageReady( Image image )
+> isReady = RL.IsImageValid( Image image )
 
-Check if an image is ready
+Check if an image is valid (data and parameters)
 
 - Success return bool
 */
-int ltextureIsImageReady( lua_State* L ) {
+int ltextureIsImageValid( lua_State* L ) {
 	Image* image = uluaGetImage( L, 1 );
 
-	lua_pushboolean( L, IsImageReady( *image ) );
+	lua_pushboolean( L, IsImageValid( *image ) );
 
 	return 1;
 }
@@ -1274,16 +1258,16 @@ int ltexturesLoadRenderTextureFromData( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsTextureReady( Texture texture )
+> isReady = RL.IsTextureValid( Texture texture )
 
-Check if a texture is ready
+Check if a texture is valid (loaded in GPU)
 
 - Success return bool
 */
-int ltexturesIsTextureReady( lua_State* L ) {
+int ltexturesIsTextureValid( lua_State* L ) {
 	Texture* texture = uluaGetTexture( L, 1 );
 
-	lua_pushboolean( L, IsTextureReady( *texture ) );
+	lua_pushboolean( L, IsTextureValid( *texture ) );
 
 	return 1;
 }
@@ -1303,16 +1287,16 @@ int ltextureUnloadTexture( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsRenderTextureReady( RenderTexture target )
+> isReady = RL.IsRenderTextureValid( RenderTexture target )
 
-Check if a render texture is ready
+Check if a render texture is valid (loaded in GPU)
 
 - Success return bool
 */
-int ltexturesIsRenderTextureReady( lua_State* L ) {
+int ltexturesIsRenderTextureValid( lua_State* L ) {
 	RenderTexture* target = uluaGetRenderTexture( L, 1 );
 
-	lua_pushboolean( L, IsRenderTextureReady( *target ) );
+	lua_pushboolean( L, IsRenderTextureValid( *target ) );
 
 	return 1;
 }

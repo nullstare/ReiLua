@@ -129,16 +129,16 @@ int laudioLoadWaveFromMemory( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsWaveReady( Wave wave )
+> isReady = RL.IsWaveValid( Wave wave )
 
-Checks if wave data is ready
+Checks if wave data is valid (data loaded and parameters)
 
 - Success return bool
 */
-int laudioIsWaveReady( lua_State* L ) {
+int laudioIsWaveValid( lua_State* L ) {
 	Wave* wave = uluaGetWave( L, 1 );
 
-	lua_pushboolean( L, IsWaveReady( *wave ) );
+	lua_pushboolean( L, IsWaveValid( *wave ) );
 
 	return 1;
 }
@@ -174,16 +174,16 @@ int laudioLoadSoundAlias( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsSoundReady( Sound sound )
+> isReady = RL.IsSoundValid( Sound sound )
 
-Checks if a sound is ready
+Checks if a sound is valid (data loaded and buffers initialized)
 
 - Success return bool
 */
-int laudioIsSoundReady( lua_State* L ) {
+int laudioIsSoundValid( lua_State* L ) {
 	Sound* sound = uluaGetSound( L, 1 );
 
-	lua_pushboolean( L, IsSoundReady( *sound ) );
+	lua_pushboolean( L, IsSoundValid( *sound ) );
 
 	return 1;
 }
@@ -497,16 +497,16 @@ int laudioLoadMusicStreamFromMemory( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsMusicReady( Music music )
+> isReady = RL.IsMusicValid( Music music )
 
-Checks if a music stream is ready
+Checks if a music stream is valid (context and buffers initialized)
 
 - Success return bool
 */
-int laudioIsMusicReady( lua_State* L ) {
+int laudioIsMusicValid( lua_State* L ) {
 	Music* music = uluaGetMusic( L, 1 );
 
-	lua_pushboolean( L, IsMusicReady( *music ) );
+	lua_pushboolean( L, IsMusicValid( *music ) );
 
 	return 1;
 }

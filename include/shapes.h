@@ -24,6 +24,7 @@ int lshapesDrawRectangleLines( lua_State* L );
 int lshapesDrawRectangleLinesEx( lua_State* L );
 int lshapesDrawRectangleRounded( lua_State* L );
 int lshapesDrawRectangleRoundedLines( lua_State* L );
+int lshapesDrawRectangleRoundedLinesEx( lua_State* L );
 int lshapesDrawTriangle( lua_State* L );
 int lshapesDrawTriangleLines( lua_State* L );
 int lshapesDrawTriangleFan( lua_State* L );

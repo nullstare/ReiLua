@@ -31,7 +31,7 @@ int lmodelsDrawGridEx( lua_State* L );
 /* Model management functions. */
 int lmodelsLoadModel( lua_State* L );
 int lmodelsLoadModelFromMesh( lua_State* L );
-int lmodelsIsModelReady( lua_State* L );
+int lmodelsIsModelValid( lua_State* L );
 int lmodelsUnloadModel( lua_State* L );
 int lmodelsGetModelBoundingBox( lua_State* L );
 int lmodelsSetModelTransform( lua_State* L );
@@ -85,7 +85,7 @@ int lmodelsLoadMaterials( lua_State* L );
 int lmodelsGetMaterialDefault( lua_State* L );
 int lmodelsLoadMaterialDefault( lua_State* L );
 int lmodelsCreateMaterial( lua_State* L );
-int lmodelsIsMaterialReady( lua_State* L );
+int lmodelsIsMaterialValid( lua_State* L );
 int lmodelsUnloadMaterial( lua_State* L );
 int lmodelsSetMaterialTexture( lua_State* L );
 int lmodelsSetMaterialColor( lua_State* L );

@@ -892,16 +892,16 @@ int lcoreLoadShaderFromMemory( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsShaderReady( Shader shader )
+> isReady = RL.IsShaderValid( Shader shader )
 
-Check if a shader is ready
+Check if a shader is valid (loaded on GPU)
 
 - Success return bool
 */
-int lcoreIsShaderReady( lua_State* L ) {
+int lcoreIsShaderValid( lua_State* L ) {
 	Shader* shader = uluaGetShader( L, 1 );
 
-	lua_pushboolean( L, IsShaderReady( *shader ) );
+	lua_pushboolean( L, IsShaderValid( *shader ) );
 
 	return 1;
 }
@@ -1116,47 +1116,34 @@ int lcoreUnloadShader( lua_State* L ) {
 */
 
 /*
-> ray = RL.GetMouseRay( Vector2 mousePosition, Camera3D camera )
+> ray = RL.GetScreenToWorldRay( Vector2 mousePosition, Camera3D camera )
 
-Get a ray trace from mouse position
+Get a ray trace from screen position (i.e mouse)
 
 - Success return Ray
 */
-int lcoreGetMouseRay( lua_State* L ) {
+int lcoreGetScreenToWorldRay( lua_State* L ) {
 	Vector2 mousePosition = uluaGetVector2( L, 1 );
 	Camera3D* camera = uluaGetCamera3D( L, 2 );
 
-	uluaPushRay( L, GetMouseRay( mousePosition, *camera ) );
+	uluaPushRay( L, GetScreenToWorldRay( mousePosition, *camera ) );
 
 	return 1;
 }
 
 /*
-> matrix = RL.GetCameraMatrix( Camera3D camera )
+> ray = RL.GetScreenToWorldRayEx( Vector2 mousePosition, Camera3D camera, Vector2 size )
 
-Get camera transform matrix (view matrix)
+Get a ray trace from screen position (i.e mouse) in a viewport
 
-- Success return Matrix
+- Success return Ray
 */
-int lcoreGetCameraMatrix( lua_State* L ) {
-	Camera3D* camera = uluaGetCamera3D( L, 1 );
+int lcoreGetScreenToWorldRayEx( lua_State* L ) {
+	Vector2 mousePosition = uluaGetVector2( L, 1 );
+	Camera3D* camera = uluaGetCamera3D( L, 2 );
+	Vector2 size = uluaGetVector2( L, 3 );
 
-	uluaPushMatrix( L, GetCameraMatrix( *camera ) );
-
-	return 1;
-}
-
-/*
-> matrix = RL.GetCameraMatrix2D( Camera2D camera )
-
-Get camera 2d transform matrix
-
-- Success return Matrix
-*/
-int lcoreGetCameraMatrix2D( lua_State* L ) {
-	Camera2D* camera = uluaGetCamera2D( L, 1 );
-
-	uluaPushMatrix( L, GetCameraMatrix2D( *camera ) );
+	uluaPushRay( L, GetScreenToWorldRayEx( mousePosition, *camera, (int)size.x, (int)size.y ) );
 
 	return 1;
 }
@@ -1222,6 +1209,36 @@ int lcoreGetScreenToWorld2D( lua_State* L ) {
 	Camera2D* camera = uluaGetCamera2D( L, 2 );
 
 	uluaPushVector2( L, GetScreenToWorld2D( position, *camera ) );
+
+	return 1;
+}
+
+/*
+> matrix = RL.GetCameraMatrix( Camera3D camera )
+
+Get camera transform matrix (view matrix)
+
+- Success return Matrix
+*/
+int lcoreGetCameraMatrix( lua_State* L ) {
+	Camera3D* camera = uluaGetCamera3D( L, 1 );
+
+	uluaPushMatrix( L, GetCameraMatrix( *camera ) );
+
+	return 1;
+}
+
+/*
+> matrix = RL.GetCameraMatrix2D( Camera2D camera )
+
+Get camera 2d transform matrix
+
+- Success return Matrix
+*/
+int lcoreGetCameraMatrix2D( lua_State* L ) {
+	Camera2D* camera = uluaGetCamera2D( L, 1 );
+
+	uluaPushMatrix( L, GetCameraMatrix2D( *camera ) );
 
 	return 1;
 }
@@ -2010,7 +2027,7 @@ Unload automation events list from file
 int lcoreUnloadAutomationEventList( lua_State* L ) {
 	AutomationEventList* list = uluaGetAutomationEventList( L, 1 );
 
-	UnloadAutomationEventList( list );
+	UnloadAutomationEventList( *list );
 	memset( list, 0, sizeof( AutomationEventList ) );
 
 	return 0;

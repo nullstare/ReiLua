@@ -10,7 +10,7 @@ Reilua means fair in finnish.
 
 ## Status
 
-ReiLua is WIP and some planned raylib functionality is still missing but it already has over 900. Current Raylib version 5.0.
+ReiLua is WIP and some planned raylib functionality is still missing but it already has over 900. Current Raylib version 5.5.
 
 Included submodules.
 
@@ -20,7 +20,7 @@ Included submodules.
 * Easings
 * RLGL
 
-List of some MISSING features that are planned to be included. For specific function, check API.
+List of some MISSING features that are planned to be included. For specific function, check API and apiScanner.lua.
 
 * Core
 	* VR stereo config functions for VR simulator
@@ -29,8 +29,6 @@ List of some MISSING features that are planned to be included. For specific func
 
 ## Roadmap
 
-* v0.8
-	* Thorough search for any missing raylib functions that should get implemented.
 * v0.9
 	* Move to raylib 5.5.
 

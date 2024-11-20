@@ -9,7 +9,7 @@ int ltextLoadFontFromImage( lua_State* L );
 int ltextLoadFontFromMemory( lua_State* L );
 int ltextLoadFontFromData( lua_State* L );
 int ltextFontCopy( lua_State* L );
-int ltextIsFontReady( lua_State* L );
+int ltextIsFontValid( lua_State* L );
 int ltextLoadFontData( lua_State* L );
 int ltextGenImageFontAtlas( lua_State* L );
 int ltextUnloadFont( lua_State* L );

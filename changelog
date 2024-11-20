@@ -1,4 +1,14 @@
 ------------------------------------------------------------------------
+Release:	ReiLua version 0.9.0		Using Raylib 5.5 and Forked Raygui 4.0
+------------------------------------------------------------------------
+KEY CHANGES:
+	- CHANGE: Switch to raylib 5.5.
+
+DETAILED CHANGES:
+	- CHANGE: Is*Ready to Is*Valid functions.
+	- CHANGE: GetScreenToWorldRay and GetScreenToWorldRayEx.
+
+------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0
 ------------------------------------------------------------------------
 KEY CHANGES:

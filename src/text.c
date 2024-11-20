@@ -295,16 +295,16 @@ int ltextFontCopy( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsFontReady( Font font )
+> isReady = RL.IsFontValid( Font font )
 
-Check if a font is ready
+Check if a font is valid (font data loaded, WARNING: GPU texture not checked)
 
 - Success return bool
 */
-int ltextIsFontReady( lua_State* L ) {
+int ltextIsFontValid( lua_State* L ) {
 	Font* font = uluaGetFont( L, 1 );
 
-	lua_pushboolean( L, IsFontReady( *font ) );
+	lua_pushboolean( L, IsFontValid( *font ) );
 
 	return 1;
 }

@@ -72,7 +72,7 @@ int lcoreEndScissorMode( lua_State* L );
 /* Shader management functions. */
 int lcoreLoadShader( lua_State* L );
 int lcoreLoadShaderFromMemory( lua_State* L );
-int lcoreIsShaderReady( lua_State* L );
+int lcoreIsShaderValid( lua_State* L );
 int lcoreGetShaderId( lua_State* L );
 int lcoreGetShaderLocation( lua_State* L );
 int lcoreGetShaderLocationAttrib( lua_State* L );
@@ -84,13 +84,14 @@ int lcoreSetShaderValue( lua_State* L );
 int lcoreSetShaderValueV( lua_State* L );
 int lcoreUnloadShader( lua_State* L );
 /* Screen-space-related functions. */
-int lcoreGetMouseRay( lua_State* L );
-int lcoreGetCameraMatrix( lua_State* L );
-int lcoreGetCameraMatrix2D( lua_State* L );
+int lcoreGetScreenToWorldRay( lua_State* L );
+int lcoreGetScreenToWorldRayEx( lua_State* L );
 int lcoreGetWorldToScreen( lua_State* L );
 int lcoreGetWorldToScreenEx( lua_State* L );
 int lcoreGetWorldToScreen2D( lua_State* L );
 int lcoreGetScreenToWorld2D( lua_State* L );
+int lcoreGetCameraMatrix( lua_State* L );
+int lcoreGetCameraMatrix2D( lua_State* L );
 /* Timing-related functions. */
 int lcoreSetTargetFPS( lua_State* L );
 int lcoreGetFrameTime( lua_State* L );

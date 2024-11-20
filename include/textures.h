@@ -3,13 +3,12 @@
 /* Image loading functions. */
 int ltexturesLoadImage( lua_State* L );
 int ltexturesLoadImageRaw( lua_State* L );
-int ltexturesLoadImageSvg( lua_State* L );
 int ltexturesLoadImageAnim( lua_State* L );
 int ltexturesLoadImageFromMemory( lua_State* L );
 int ltexturesLoadImageFromData( lua_State* L );
 int ltexturesLoadImageFromTexture( lua_State* L );
 int ltexturesLoadImageFromScreen( lua_State* L );
-int ltextureIsImageReady( lua_State* L );
+int ltextureIsImageValid( lua_State* L );
 int ltextureUnloadImage( lua_State* L );
 int ltexturesExportImage( lua_State* L );
 int ltexturesExportImageToMemory( lua_State* L );
@@ -81,9 +80,9 @@ int ltexturesLoadTextureCubemap( lua_State* L );
 int ltexturesLoadTextureFromData( lua_State* L );
 int ltexturesLoadRenderTexture( lua_State* L );
 int ltexturesLoadRenderTextureFromData( lua_State* L );
-int ltexturesIsTextureReady( lua_State* L );
+int ltexturesIsTextureValid( lua_State* L );
 int ltextureUnloadTexture( lua_State* L );
-int ltexturesIsRenderTextureReady( lua_State* L );
+int ltexturesIsRenderTextureValid( lua_State* L );
 int ltextureUnloadRenderTexture( lua_State* L );
 int ltexturesUpdateTexture( lua_State* L );
 int ltexturesUpdateTextureRec( lua_State* L );

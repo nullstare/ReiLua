@@ -1,4 +1,8 @@
 Current {
+	* Migrating to raylib 5.5.
+		* New core functions.
+		* New rlgl functions.
+		* New raymath functions.
 }
 
 Backlog {

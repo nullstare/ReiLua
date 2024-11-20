@@ -381,18 +381,34 @@ int lshapesDrawRectangleRounded( lua_State* L ) {
 }
 
 /*
-> RL.DrawRectangleRoundedLines( Rectangle rec, float roundness, int segments, int lineThick, Color color )
+> RL.DrawRectangleRoundedLines( Rectangle rec, float roundness, int segments, Color color )
 
-Draw rectangle with rounded edges outline
+Draw rectangle lines with rounded edges
 */
 int lshapesDrawRectangleRoundedLines( lua_State* L ) {
 	Rectangle rect = uluaGetRectangle( L, 1 );
 	float roundness = luaL_checknumber( L, 2 );
 	int segments = luaL_checkinteger( L, 3 );
-	int lineThick = luaL_checkinteger( L, 4 );
+	Color color = uluaGetColor( L, 4 );
+
+	DrawRectangleRoundedLines( rect, roundness, segments, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawRectangleRoundedLinesEx( Rectangle rec, float roundness, int segments, float lineThick, Color color )
+
+Draw rectangle with rounded edges outline
+*/
+int lshapesDrawRectangleRoundedLinesEx( lua_State* L ) {
+	Rectangle rect = uluaGetRectangle( L, 1 );
+	float roundness = luaL_checknumber( L, 2 );
+	int segments = luaL_checkinteger( L, 3 );
+	float lineThick = luaL_checknumber( L, 4 );
 	Color color = uluaGetColor( L, 5 );
 
-	DrawRectangleRoundedLines( rect, roundness, segments, lineThick, color );
+	DrawRectangleRoundedLinesEx( rect, roundness, segments, lineThick, color );
 
 	return 0;
 }

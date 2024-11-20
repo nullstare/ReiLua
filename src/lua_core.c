@@ -351,7 +351,7 @@ static void defineAutomationEvent() {
 static int gcAutomationEventList( lua_State* L ) {
 	if ( state->gcUnload ) {
 		AutomationEventList* automationEventList = luaL_checkudata( L, 1, "AutomationEventList" );
-		UnloadAutomationEventList( automationEventList );
+		UnloadAutomationEventList( *automationEventList );
 	}
 	return 0;
 }
@@ -687,7 +687,6 @@ static void defineGlobals() {
 	assignGlobalInt( CUBEMAP_LAYOUT_LINE_HORIZONTAL, "CUBEMAP_LAYOUT_LINE_HORIZONTAL" ); // Layout is defined by a horizontal line with faces
 	assignGlobalInt( CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR, "CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR" ); // Layout is defined by a 3x4 cross with cubemap faces
 	assignGlobalInt( CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE, "CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE" ); // Layout is defined by a 4x3 cross with cubemap faces
-	assignGlobalInt( CUBEMAP_LAYOUT_PANORAMA, "CUBEMAP_LAYOUT_PANORAMA" ); // Layout is defined by a panorama image (equirrectangular map)
 	/* Font type, defines generation method */
 	assignGlobalInt( FONT_DEFAULT, "FONT_DEFAULT" ); // Default font generation, anti-aliased
 	assignGlobalInt( FONT_BITMAP, "FONT_BITMAP" ); // Bitmap font generation, no anti-aliasing
@@ -1339,7 +1338,7 @@ void luaRegister() {
 		/* Shader management functions. */
 	assingGlobalFunction( "LoadShader", lcoreLoadShader );
 	assingGlobalFunction( "LoadShaderFromMemory", lcoreLoadShaderFromMemory );
-	assingGlobalFunction( "IsShaderReady", lcoreIsShaderReady );
+	assingGlobalFunction( "IsShaderValid", lcoreIsShaderValid );
 	assingGlobalFunction( "GetShaderId", lcoreGetShaderId );
 	assingGlobalFunction( "GetShaderLocation", lcoreGetShaderLocation );
 	assingGlobalFunction( "GetShaderLocationAttrib", lcoreGetShaderLocationAttrib );
@@ -1351,13 +1350,14 @@ void luaRegister() {
 	assingGlobalFunction( "SetShaderValueV", lcoreSetShaderValueV );
 	assingGlobalFunction( "UnloadShader", lcoreUnloadShader );
 		/* Screen-space-related functions. */
-	assingGlobalFunction( "GetMouseRay", lcoreGetMouseRay );
-	assingGlobalFunction( "GetCameraMatrix", lcoreGetCameraMatrix );
-	assingGlobalFunction( "GetCameraMatrix2D", lcoreGetCameraMatrix2D );
+	assingGlobalFunction( "GetScreenToWorldRay", lcoreGetScreenToWorldRay );
+	assingGlobalFunction( "GetScreenToWorldRayEx", lcoreGetScreenToWorldRayEx );
 	assingGlobalFunction( "GetWorldToScreen", lcoreGetWorldToScreen );
 	assingGlobalFunction( "GetWorldToScreenEx", lcoreGetWorldToScreenEx );
 	assingGlobalFunction( "GetWorldToScreen2D", lcoreGetWorldToScreen2D );
 	assingGlobalFunction( "GetScreenToWorld2D", lcoreGetScreenToWorld2D );
+	assingGlobalFunction( "GetCameraMatrix", lcoreGetCameraMatrix );
+	assingGlobalFunction( "GetCameraMatrix2D", lcoreGetCameraMatrix2D );
 		/* Timing-related functions. */
 	assingGlobalFunction( "SetTargetFPS", lcoreSetTargetFPS );
 	assingGlobalFunction( "GetFrameTime", lcoreGetFrameTime );
@@ -1553,6 +1553,7 @@ void luaRegister() {
 	assingGlobalFunction( "DrawRectangleLinesEx", lshapesDrawRectangleLinesEx );
 	assingGlobalFunction( "DrawRectangleRounded", lshapesDrawRectangleRounded );
 	assingGlobalFunction( "DrawRectangleRoundedLines", lshapesDrawRectangleRoundedLines );
+	assingGlobalFunction( "DrawRectangleRoundedLinesEx", lshapesDrawRectangleRoundedLinesEx );
 	assingGlobalFunction( "DrawTriangle", lshapesDrawTriangle );
 	assingGlobalFunction( "DrawTriangleLines", lshapesDrawTriangleLines );
 	assingGlobalFunction( "DrawTriangleFan", lshapesDrawTriangleFan );
@@ -1593,13 +1594,12 @@ void luaRegister() {
 		/* Image loading functions. */
 	assingGlobalFunction( "LoadImage", ltexturesLoadImage );
 	assingGlobalFunction( "LoadImageRaw", ltexturesLoadImageRaw );
-	assingGlobalFunction( "LoadImageSvg", ltexturesLoadImageSvg );
 	assingGlobalFunction( "LoadImageAnim", ltexturesLoadImageAnim );
 	assingGlobalFunction( "LoadImageFromMemory", ltexturesLoadImageFromMemory );
 	assingGlobalFunction( "LoadImageFromData", ltexturesLoadImageFromData );
 	assingGlobalFunction( "LoadImageFromTexture", ltexturesLoadImageFromTexture );
 	assingGlobalFunction( "LoadImageFromScreen", ltexturesLoadImageFromScreen );
-	assingGlobalFunction( "IsImageReady", ltextureIsImageReady );
+	assingGlobalFunction( "IsImageValid", ltextureIsImageValid );
 	assingGlobalFunction( "UnloadImage", ltextureUnloadImage );
 	assingGlobalFunction( "ExportImage", ltexturesExportImage );
 	assingGlobalFunction( "ExportImageToMemory", ltexturesExportImageToMemory );
@@ -1671,9 +1671,9 @@ void luaRegister() {
 	assingGlobalFunction( "LoadTextureFromData", ltexturesLoadTextureFromData );
 	assingGlobalFunction( "LoadRenderTexture", ltexturesLoadRenderTexture );
 	assingGlobalFunction( "LoadRenderTextureFromData", ltexturesLoadRenderTextureFromData );
-	assingGlobalFunction( "IsTextureReady", ltexturesIsTextureReady );
+	assingGlobalFunction( "IsTextureValid", ltexturesIsTextureValid );
 	assingGlobalFunction( "UnloadTexture", ltextureUnloadTexture );
-	assingGlobalFunction( "IsRenderTextureReady", ltexturesIsRenderTextureReady );
+	assingGlobalFunction( "IsRenderTextureValid", ltexturesIsRenderTextureValid );
 	assingGlobalFunction( "UnloadRenderTexture", ltextureUnloadRenderTexture );
 	assingGlobalFunction( "UpdateTexture", ltexturesUpdateTexture );
 	assingGlobalFunction( "UpdateTextureRec", ltexturesUpdateTextureRec );
@@ -1737,7 +1737,7 @@ void luaRegister() {
 		/* Model management functions. */
 	assingGlobalFunction( "LoadModel", lmodelsLoadModel );
 	assingGlobalFunction( "LoadModelFromMesh", lmodelsLoadModelFromMesh );
-	assingGlobalFunction( "IsModelReady", lmodelsIsModelReady );
+	assingGlobalFunction( "IsModelValid", lmodelsIsModelValid );
 	assingGlobalFunction( "UnloadModel", lmodelsUnloadModel );
 	assingGlobalFunction( "GetModelBoundingBox", lmodelsGetModelBoundingBox );
 	assingGlobalFunction( "SetModelTransform", lmodelsSetModelTransform );
@@ -1791,7 +1791,7 @@ void luaRegister() {
 	assingGlobalFunction( "GetMaterialDefault", lmodelsGetMaterialDefault );
 	assingGlobalFunction( "LoadMaterialDefault", lmodelsLoadMaterialDefault );
 	assingGlobalFunction( "CreateMaterial", lmodelsCreateMaterial );
-	assingGlobalFunction( "IsMaterialReady", lmodelsIsMaterialReady );
+	assingGlobalFunction( "IsMaterialValid", lmodelsIsMaterialValid );
 	assingGlobalFunction( "UnloadMaterial", lmodelsUnloadMaterial );
 	assingGlobalFunction( "SetMaterialTexture", lmodelsSetMaterialTexture );
 	assingGlobalFunction( "SetMaterialColor", lmodelsSetMaterialColor );
@@ -1837,7 +1837,7 @@ void luaRegister() {
 	assingGlobalFunction( "LoadFontFromMemory", ltextLoadFontFromMemory );
 	assingGlobalFunction( "LoadFontFromData", ltextLoadFontFromData );
 	assingGlobalFunction( "FontCopy", ltextFontCopy );
-	assingGlobalFunction( "IsFontReady", ltextIsFontReady );
+	assingGlobalFunction( "IsFontValid", ltextIsFontValid );
 	assingGlobalFunction( "LoadFontData", ltextLoadFontData );
 	assingGlobalFunction( "GenImageFontAtlas", ltextGenImageFontAtlas );
 	assingGlobalFunction( "UnloadFont", ltextUnloadFont );
@@ -1903,10 +1903,10 @@ void luaRegister() {
 	assingGlobalFunction( "LoadSound", laudioLoadSound );
 	assingGlobalFunction( "LoadWave", laudioLoadWave );
 	assingGlobalFunction( "LoadWaveFromMemory", laudioLoadWaveFromMemory );
-	assingGlobalFunction( "IsWaveReady", laudioIsWaveReady );
+	assingGlobalFunction( "IsWaveValid", laudioIsWaveValid );
 	assingGlobalFunction( "LoadSoundFromWave", laudioLoadSoundFromWave );
 	assingGlobalFunction( "LoadSoundAlias", laudioLoadSoundAlias );
-	assingGlobalFunction( "IsSoundReady", laudioIsSoundReady );
+	assingGlobalFunction( "IsSoundValid", laudioIsSoundValid );
 	assingGlobalFunction( "UpdateSound", laudioUpdateSound );
 	assingGlobalFunction( "UnloadWave", laudioUnloadWave );
 	assingGlobalFunction( "UnloadSound", laudioUnloadSound );
@@ -1929,7 +1929,7 @@ void luaRegister() {
 		/* Music management functions. */
 	assingGlobalFunction( "LoadMusicStream", laudioLoadMusicStream );
 	assingGlobalFunction( "LoadMusicStreamFromMemory", laudioLoadMusicStreamFromMemory );
-	assingGlobalFunction( "IsMusicReady", laudioIsMusicReady );
+	assingGlobalFunction( "IsMusicValid", laudioIsMusicValid );
 	assingGlobalFunction( "UnloadMusicStream", laudioUnloadMusicStream );
 	assingGlobalFunction( "PlayMusicStream", laudioPlayMusicStream );
 	assingGlobalFunction( "IsMusicStreamPlaying", laudioIsMusicStreamPlaying );

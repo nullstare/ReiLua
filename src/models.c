@@ -588,16 +588,16 @@ int lmodelsLoadModelFromMesh( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsModelReady( Model model )
+> isReady = RL.IsModelValid( Model model )
 
-Check if a model is ready
+Check if a model is valid (loaded in GPU, VAO/VBOs)
 
 - Success return bool
 */
-int lmodelsIsModelReady( lua_State* L ) {
+int lmodelsIsModelValid( lua_State* L ) {
 	Model* model = uluaGetModel( L, 1 );
 
-	lua_pushboolean( L, IsModelReady( *model ) );
+	lua_pushboolean( L, IsModelValid( *model ) );
 
 	return 1;
 }
@@ -1936,16 +1936,16 @@ int lmodelsCreateMaterial( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsMaterialReady( Material material )
+> isReady = RL.IsMaterialValid( Material material )
 
-Check if a material is ready
+Check if a material is valid (shader assigned, map textures loaded in GPU)
 
 - Success return bool
 */
-int lmodelsIsMaterialReady( lua_State* L ) {
+int lmodelsIsMaterialValid( lua_State* L ) {
 	Material* material = uluaGetMaterial( L, 1 );
 
-	lua_pushboolean( L, IsMaterialReady( *material ) );
+	lua_pushboolean( L, IsMaterialValid( *material ) );
 
 	return 1;
 }

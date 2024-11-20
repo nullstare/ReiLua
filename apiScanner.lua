@@ -59,6 +59,7 @@ local raylib = {
 		TextToUpper = "Can be replaced by Lua equivalent",
 		TextToLower = "Can be replaced by Lua equivalent",
 		TextToInteger = "Can be replaced by Lua equivalent",
+		TextToFloat = "Can be replaced by Lua equivalent",
 		DrawCubeV = "Replaced by DrawCube",
 		DrawCubeWiresV = "Replaced by DrawCubeWires",
 		UploadMesh = "Handled internally",
@@ -68,10 +69,6 @@ local raylib = {
 		SetPixelColor = "Not seen necessary",
 	},
 	info = {
-		GenMeshHemiSphere = "Will be added",
-		GenMeshCubicmap = "Will be added",
-		UpdateSound = "Will be added",
-		LoadWaveSamples = "Will be added",
 	}
 }
 local rlgl = {

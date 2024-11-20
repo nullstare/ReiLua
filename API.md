@@ -1076,7 +1076,7 @@ Key: Android back button
 
 ---
 
-> KEY_MENU = 82
+> KEY_MENU = 5
 
 Key: Android menu button
 
@@ -1907,12 +1907,6 @@ Layout is defined by a 3x4 cross with cubemap faces
 > CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE = 4
 
 Layout is defined by a 4x3 cross with cubemap faces
-
----
-
-> CUBEMAP_LAYOUT_PANORAMA = 5
-
-Layout is defined by a panorama image (equirrectangular map)
 
 ---
 
@@ -2782,7 +2776,7 @@ Default projection matrix near cull distance
 
 ---
 
-> RL_CULL_DISTANCE_FAR = 1000
+> RL_CULL_DISTANCE_FAR = 1000.0
 
 Default projection matrix far cull distance
 
@@ -4054,6 +4048,14 @@ Get clipboard text content
 
 ---
 
+> image = RL.GetClipboardImage()
+
+Get clipboard image content
+
+- Success return Image
+
+---
+
 > RL.EnableEventWaiting()
 
 Enable waiting for events on EndDrawing(), no automatic event polling
@@ -4228,9 +4230,9 @@ NOTE: Set nil if no shader
 
 ---
 
-> isReady = RL.IsShaderReady( Shader shader )
+> isReady = RL.IsShaderValid( Shader shader )
 
-Check if a shader is ready
+Check if a shader is valid (loaded on GPU)
 
 - Success return bool
 
@@ -4310,27 +4312,19 @@ Unload shader from GPU memory (VRAM)
 
 ---
 
-> ray = RL.GetMouseRay( Vector2 mousePosition, Camera3D camera )
+> ray = RL.GetScreenToWorldRay( Vector2 mousePosition, Camera3D camera )
 
-Get a ray trace from mouse position
+Get a ray trace from screen position (i.e mouse)
 
 - Success return Ray
 
 ---
 
-> matrix = RL.GetCameraMatrix( Camera3D camera )
+> ray = RL.GetScreenToWorldRayEx( Vector2 mousePosition, Camera3D camera, Vector2 size )
 
-Get camera transform matrix (view matrix)
+Get a ray trace from screen position (i.e mouse) in a viewport
 
-- Success return Matrix
-
----
-
-> matrix = RL.GetCameraMatrix2D( Camera2D camera )
-
-Get camera 2d transform matrix
-
-- Success return Matrix
+- Success return Ray
 
 ---
 
@@ -4363,6 +4357,22 @@ Get the screen space position for a 2d camera world space position
 Get the world space position for a 2d camera screen space position
 
 - Success return Vector2
+
+---
+
+> matrix = RL.GetCameraMatrix( Camera3D camera )
+
+Get camera transform matrix (view matrix)
+
+- Success return Matrix
+
+---
+
+> matrix = RL.GetCameraMatrix2D( Camera2D camera )
+
+Get camera 2d transform matrix
+
+- Success return Matrix
 
 ---
 
@@ -4662,19 +4672,11 @@ Get the directory of the running application (uses static string)
 
 ---
 
-> fileNames = RL.LoadDirectoryFiles( string dirPath )
+> success = RL.MakeDirectory( string dirPath )
 
-Load directory filepaths
+Create directories (including full path requested), returns 0 on success
 
-- Success return string{}
-
----
-
-> fileNames = RL.LoadDirectoryFilesEx( string basePath, string|nil filter, bool scanSubdirs )
-
-Load directory filepaths with extension filtering and recursive directory scan
-
-- Success return string{}
+- Success return int
 
 ---
 
@@ -4691,6 +4693,30 @@ Change working directory, return true on success
 Check if a given path is a file or a directory
 
 - Success return bool
+
+---
+
+> isValid = RL.IsFileNameValid( string fileName )
+
+Check if fileName is valid for the platform/OS
+
+- Success return bool
+
+---
+
+> fileNames = RL.LoadDirectoryFiles( string dirPath )
+
+Load directory filepaths
+
+- Success return string{}
+
+---
+
+> fileNames = RL.LoadDirectoryFilesEx( string basePath, string|nil filter, bool scanSubdirs )
+
+Load directory filepaths with extension filtering and recursive directory scan
+
+- Success return string{}
 
 ---
 
@@ -4751,6 +4777,33 @@ Encode data to Base64 string
 Decode Base64 string data
 
 - Success return string, int
+
+---
+
+> code = RL.ComputeCRC32( Buffer data )
+
+Compute CRC32 hash code. Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+
+- Failure return false
+- Success return int
+
+---
+
+> code = RL.ComputeMD5( Buffer data )
+
+Compute MD5 hash code, returns static int[4] (16 bytes). Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+
+- Failure return false
+- Success return int{4}
+
+---
+
+> code = RL.ComputeSHA1( Buffer data )
+
+Compute SHA1 hash code, returns static int[5] (20 bytes). Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+
+- Failure return false
+- Success return int{5}
 
 ---
 
@@ -5007,6 +5060,12 @@ Return axis movement value for a gamepad axis
 Set internal gamepad mappings (SDL_GameControllerDB)
 
 - Success return int
+
+---
+
+> RL.SetGamepadVibration( int gamepad, float leftMotor, float rightMotor, float duration )
+
+Set gamepad vibration for both motors (duration in seconds)
 
 ---
 
@@ -5588,6 +5647,22 @@ defining a font char white rectangle would allow drawing everything in a single 
 
 ---
 
+> texture = RL.GetShapesTexture()
+
+Get texture that is used for shapes drawing. Return as lightuserdata
+
+- Success return Texture
+
+---
+
+> source = RL.GetShapesTextureRectangle()
+
+Get texture source rectangle that is used for shapes drawing
+
+- Success return Rectangle
+
+---
+
 > RL.DrawPixel( Vector2 pos, Color color )
 
 Draw a pixel
@@ -5714,7 +5789,13 @@ Draw rectangle with rounded edges
 
 ---
 
-> RL.DrawRectangleRoundedLines( Rectangle rec, float roundness, int segments, int lineThick, Color color )
+> RL.DrawRectangleRoundedLines( Rectangle rec, float roundness, int segments, Color color )
+
+Draw rectangle lines with rounded edges
+
+---
+
+> RL.DrawRectangleRoundedLinesEx( Rectangle rec, float roundness, int segments, float lineThick, Color color )
 
 Draw rectangle with rounded edges outline
 
@@ -5898,6 +5979,14 @@ Check collision between circle and rectangle
 
 ---
 
+> collision = RL.CheckCollisionCircleLine( Vector2 center, float radius, Vector2 p1, Vector2 p2 )
+
+Check if circle collides with a line created betweeen two points [p1] and [p2]
+
+- Success return bool
+
+---
+
 > collision = RL.CheckCollisionPointRec( Vector2 point, Rectangle rec )
 
 Check if point is inside rectangle
@@ -5976,19 +6065,19 @@ Load image from RAW file data
 
 ---
 
-> image = RL.LoadImageSvg( string fileNameOrString, Vector2 size )
-
-Load image from SVG file data or string with specified size
-
-- Success return Image
-
----
-
 > image, frameCount = RL.LoadImageAnim( string fileName )
 
 Load image sequence from file (frames appended to image.data). All frames are returned in RGBA format
 
 - Failure return nil
+- Success return Image, int
+
+---
+
+> image, frameCount = RL.LoadImageAnimFromMemory( string fileType, Buffer fileData )
+
+Load image sequence from memory buffer. All frames are returned in RGBA format
+
 - Success return Image, int
 
 ---
@@ -6025,9 +6114,9 @@ Load image from screen buffer and (screenshot)
 
 ---
 
-> isReady = RL.IsImageReady( Image image )
+> isReady = RL.IsImageValid( Image image )
 
-Check if an image is ready
+Check if an image is valid (data and parameters)
 
 - Success return bool
 
@@ -6159,6 +6248,14 @@ Create an image from another image piece
 
 ---
 
+> image = RL.ImageFromChannel( Image image, int selectedChannel )
+
+Create an image from a selected channel of another image (GRAYSCALE)
+
+- Success return Image
+
+---
+
 > image = RL.ImageText( string text, int fontSize, Color tint )
 
 Create an image from text (default font)
@@ -6220,6 +6317,12 @@ Premultiply alpha channel
 > RL.ImageBlurGaussian( Image image, int blurSize )
 
 Apply Gaussian blur using a box blur approximation
+
+---
+
+> RL.ImageKernelConvolution( Image image, float{} kernel )
+
+Apply custom square convolution kernel to image
 
 ---
 
@@ -6403,9 +6506,15 @@ Draw pixel within an image
 
 ---
 
-> RL.ImageDrawLine( Image dst, Vector2 a, Vector2 b, Color color )
+> RL.ImageDrawLine( Image dst, Vector2 start, Vector2 end, Color color )
 
 Draw line within an image
+
+---
+
+> RL.ImageDrawLineEx( Image dst, Vector2 start, Vector2 end, int thick, Color color )
+
+Draw a line defining thickness within an image
 
 ---
 
@@ -6430,6 +6539,36 @@ Draw rectangle within an image
 > RL.ImageDrawRectangleLines( Image dst, Rectangle rec, int thick, Color color )
 
 Draw rectangle lines within an image
+
+---
+
+> RL.ImageDrawTriangle( Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color )
+
+Draw triangle within an image
+
+---
+
+> RL.ImageDrawTriangleEx( Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3 )
+
+Draw triangle with interpolated colors within an image
+
+---
+
+> RL.ImageDrawTriangleLines( Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color )
+
+Draw triangle outline within an image
+
+---
+
+> RL.ImageDrawTriangleFan( Image *dst, Vector2{} points, Color color )
+
+Draw a triangle fan defined by points within an image (first vertex is the center)
+
+---
+
+> RL.ImageDrawTriangleStrip( Image *dst, Vector2{} points, Color color )
+
+Draw a triangle strip defined by points within an image
 
 ---
 
@@ -6512,9 +6651,9 @@ Load RenderTexture from data (framebuffer)
 
 ---
 
-> isReady = RL.IsTextureReady( Texture texture )
+> isReady = RL.IsTextureValid( Texture texture )
 
-Check if a texture is ready
+Check if a texture is valid (loaded in GPU)
 
 - Success return bool
 
@@ -6526,9 +6665,9 @@ Unload texture from GPU memory (VRAM)
 
 ---
 
-> isReady = RL.IsRenderTextureReady( RenderTexture target )
+> isReady = RL.IsRenderTextureValid( RenderTexture target )
 
-Check if a render texture is ready
+Check if a render texture is valid (loaded in GPU)
 
 - Success return bool
 
@@ -6680,6 +6819,14 @@ Get depth buffer attachment texture. Returns as lightuserdata
 
 ---
 
+> isEqual = RL.ColorIsEqual( Color col1, Color col2 )
+
+Check if two colors are equal
+
+- Success return bool
+
+---
+
 > color = RL.Fade( Color color, float alpha )
 
 Returns color with alpha applied, alpha goes from 0.0f to 1.0f
@@ -6768,6 +6915,14 @@ Returns src alpha-blended into dst color with tint
 
 ---
 
+> color = RL.ColorLerp( Color color1, Color color2, float factor )
+
+Get color lerp interpolation between two colors, factor [0.0f..1.0f]
+
+- Success return Color
+
+---
+
 > color = RL.GetColor( int hexValue )
 
 Get Color structure from hexadecimal value
@@ -6846,9 +7001,9 @@ Load font copy as new userdata
 
 ---
 
-> isReady = RL.IsFontReady( Font font )
+> isReady = RL.IsFontValid( Font font )
 
-Check if a font is ready
+Check if a font is valid (font data loaded, WARNING: GPU texture not checked)
 
 - Success return bool
 
@@ -7236,6 +7391,22 @@ Get Pascal case notation version of provided string
 
 ---
 
+> text = RL.TextToSnake( string text )
+
+Get Snake case notation version of provided string
+
+- Success return string
+
+---
+
+> text = RL.TextToCamel( string text )
+
+Get Camel case notation version of provided string
+
+- Success return string
+
+---
+
 ## Models - Basic geometric 3D shapes drawing functions
 
 ---
@@ -7387,9 +7558,9 @@ Load model from generated mesh (Default material)
 
 ---
 
-> isReady = RL.IsModelReady( Model model )
+> isReady = RL.IsModelValid( Model model )
 
-Check if a model is ready
+Check if a model is valid (loaded in GPU, VAO/VBOs)
 
 - Success return bool
 
@@ -7553,6 +7724,18 @@ Draw a model wires (with texture if set) with extended parameters
 
 ---
 
+> RL.DrawModelPoints( Model model, Vector3 position, float scale, Color tint )
+
+Draw a model as points
+
+---
+
+> RL.DrawModelPointsEx( Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint )
+
+Draw a model as points with extended parameters
+
+---
+
 > RL.DrawBoundingBox( BoundingBox box, Color color )
 
 Draw bounding box (wires)
@@ -7619,6 +7802,14 @@ NOTE: Currently only works on custom mesh
 > success = RL.ExportMesh( Mesh mesh, string fileName )
 
 Export mesh data to file, returns true on success
+
+- Success return bool
+
+---
+
+> success = RL.ExportMeshAsCode( Mesh mesh, string fileName )
+
+Export mesh as code file (.h) defining multiple arrays of vertex attributes
 
 - Success return bool
 
@@ -7782,9 +7973,9 @@ Load material from table. See material table definition
 
 ---
 
-> isReady = RL.IsMaterialReady( Material material )
+> isReady = RL.IsMaterialValid( Material material )
 
-Check if a material is ready
+Check if a material is valid (shader assigned, map textures loaded in GPU)
 
 - Success return bool
 
@@ -7882,6 +8073,12 @@ Load model animations from file
 > RL.UpdateModelAnimation( Model model, ModelAnimation animation, int frame )
 
 Update model animation pose
+
+---
+
+> RL.UpdateModelAnimationBones( Model model, ModelAnimation animation, int frame )
+
+Update model animation mesh bone matrices (GPU skinning)
 
 ---
 
@@ -8115,9 +8312,9 @@ Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
 
 ---
 
-> isReady = RL.IsWaveReady( Wave wave )
+> isReady = RL.IsWaveValid( Wave wave )
 
-Checks if wave data is ready
+Checks if wave data is valid (data loaded and parameters)
 
 - Success return bool
 
@@ -8139,9 +8336,9 @@ Create a new sound that shares the same sample data as the source sound, does no
 
 ---
 
-> isReady = RL.IsSoundReady( Sound sound )
+> isReady = RL.IsSoundValid( Sound sound )
 
-Checks if a sound is ready
+Checks if a sound is valid (data loaded and buffers initialized)
 
 - Success return bool
 
@@ -8289,9 +8486,9 @@ Load music stream from data
 
 ---
 
-> isReady = RL.IsMusicReady( Music music )
+> isReady = RL.IsMusicValid( Music music )
 
-Checks if a music stream is ready
+Checks if a music stream is valid (context and buffers initialized)
 
 - Success return bool
 
@@ -10564,9 +10761,9 @@ Unload vertex buffer (VBO)
 
 ---
 
-> RL.rlSetVertexAttribute( int index, int compSize, int type, bool normalized, int stride, buffer pointer )
+> RL.rlSetVertexAttribute( int index, int compSize, int type, bool normalized, int stride, int offset )
 
-Set vertex attribute.
+Set vertex attribute data configuration
 
 ---
 
@@ -10626,9 +10823,9 @@ Load depth texture/renderbuffer (to be attached to fbo)
 
 ---
 
-> id = RL.rlLoadTextureCubemap( Buffer data, int size, int format )
+> id = RL.rlLoadTextureCubemap( Buffer data, int size, int format, int mipmapCount )
 
-Load texture cubemap
+Load texture cubemap data
 
 - Success return int
 
@@ -10690,7 +10887,7 @@ Read screen pixel data (color buffer)
 
 ---
 
-> fboId = RL.rlLoadFramebuffer( Vector2 size )
+> fboId = RL.rlLoadFramebuffer()
 
 Load an empty framebuffer
 

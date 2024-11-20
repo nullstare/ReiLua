@@ -78,6 +78,24 @@ int ltexturesLoadImageAnim( lua_State* L ) {
 }
 
 /*
+> image, frameCount = RL.LoadImageAnimFromMemory( string fileType, Buffer fileData )
+
+Load image sequence from memory buffer. All frames are returned in RGBA format
+
+- Success return Image, int
+*/
+int ltexturesLoadImageAnimFromMemory( lua_State* L ) {
+	const char* fileType = luaL_checkstring( L, 1 );
+	Buffer* buffer = uluaGetBuffer( L, 2 );
+
+	int frameCount = 0;
+	uluaPushImage( L, LoadImageAnimFromMemory( fileType, buffer->data, buffer->size, &frameCount ) );
+	lua_pushinteger( L, frameCount );
+
+	return 2;
+}
+
+/*
 > image, frameCount = RL.LoadImageFromMemory( string fileType, Buffer data )
 
 Load image from memory buffer, fileType refers to extension: i.e. '.png'
@@ -418,6 +436,22 @@ int ltexturesImageFromImage( lua_State* L ) {
 }
 
 /*
+> image = RL.ImageFromChannel( Image image, int selectedChannel )
+
+Create an image from a selected channel of another image (GRAYSCALE)
+
+- Success return Image
+*/
+int ltexturesImageFromChannel( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	int selectedChannel = luaL_checkinteger( L, 2 );
+
+	uluaPushImage( L, ImageFromChannel( *image, selectedChannel ) );
+
+	return 1;
+}
+
+/*
 > image = RL.ImageText( string text, int fontSize, Color tint )
 
 Create an image from text (default font)
@@ -561,6 +595,32 @@ int ltexturesImageBlurGaussian( lua_State* L ) {
 	int blurSize = luaL_checkinteger( L, 2 );
 
 	ImageBlurGaussian( image, blurSize );
+
+	return 0;
+}
+
+/*
+> RL.ImageKernelConvolution( Image image, float{} kernel )
+
+Apply custom square convolution kernel to image
+*/
+int ltexturesImageKernelConvolution( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+
+	int kernelSize = uluaGetTableLen( L, 2 );
+	float kernel[ kernelSize ];
+
+	int t = lua_gettop( L );
+	int i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		kernel[i] = lua_tonumber( L, -1 );
+		i++;
+		lua_pop( L, 1 );
+	}
+
+	ImageKernelConvolution( image, kernel, kernelSize );
 
 	return 0;
 }
@@ -971,7 +1031,7 @@ int ltexturesImageDrawPixel( lua_State* L ) {
 }
 
 /*
-> RL.ImageDrawLine( Image dst, Vector2 a, Vector2 b, Color color )
+> RL.ImageDrawLine( Image dst, Vector2 start, Vector2 end, Color color )
 
 Draw line within an image
 */
@@ -982,6 +1042,23 @@ int ltexturesImageDrawLine( lua_State* L ) {
 	Color color = uluaGetColor( L, 4 );
 
 	ImageDrawLineV( image, start, end, color );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawLineEx( Image dst, Vector2 start, Vector2 end, int thick, Color color )
+
+Draw a line defining thickness within an image
+*/
+int ltexturesImageDrawLineEx( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	Vector2 start = uluaGetVector2( L, 2 );
+	Vector2 end = uluaGetVector2( L, 3 );
+	int thick = luaL_checkinteger( L, 4 );
+	Color color = uluaGetColor( L, 5 );
+
+	ImageDrawLineEx( image, start, end, thick, color );
 
 	return 0;
 }
@@ -1045,6 +1122,93 @@ int ltexturesImageDrawRectangleLines( lua_State* L ) {
 	Color color = uluaGetColor( L, 4 );
 
 	ImageDrawRectangleLines( image, rec, thick, color );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawTriangle( Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color )
+
+Draw triangle within an image
+*/
+int ltexturesImageDrawTriangle( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	Vector2 v1 = uluaGetVector2( L, 2 );
+	Vector2 v2 = uluaGetVector2( L, 3 );
+	Vector2 v3 = uluaGetVector2( L, 4 );
+	Color color = uluaGetColor( L, 5 );
+
+	ImageDrawTriangle( image, v1, v2, v3, color );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawTriangleEx( Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3 )
+
+Draw triangle with interpolated colors within an image
+*/
+int ltexturesImageDrawTriangleEx( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	Vector2 v1 = uluaGetVector2( L, 2 );
+	Vector2 v2 = uluaGetVector2( L, 3 );
+	Vector2 v3 = uluaGetVector2( L, 4 );
+	Color c1 = uluaGetColor( L, 5 );
+	Color c2 = uluaGetColor( L, 6 );
+	Color c3 = uluaGetColor( L, 7 );
+
+	ImageDrawTriangleEx( image, v1, v2, v3, c1, c2, c3 );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawTriangleLines( Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color )
+
+Draw triangle outline within an image
+*/
+int ltexturesImageDrawTriangleLines( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	Vector2 v1 = uluaGetVector2( L, 2 );
+	Vector2 v2 = uluaGetVector2( L, 3 );
+	Vector2 v3 = uluaGetVector2( L, 4 );
+	Color color = uluaGetColor( L, 5 );
+
+	ImageDrawTriangleLines( image, v1, v2, v3, color );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawTriangleFan( Image *dst, Vector2{} points, Color color )
+
+Draw a triangle fan defined by points within an image (first vertex is the center)
+*/
+int ltexturesImageDrawTriangleFan( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	int pointCount = uluaGetTableLen( L, 2 );
+	Vector2 points[ pointCount ];
+	getVector2Array( L, 2, points );
+	Color color = uluaGetColor( L, 3 );
+
+	ImageDrawTriangleFan( image, points, pointCount, color );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawTriangleStrip( Image *dst, Vector2{} points, Color color )
+
+Draw a triangle strip defined by points within an image
+*/
+int ltexturesImageDrawTriangleStrip( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	int pointCount = uluaGetTableLen( L, 2 );
+	Vector2 points[ pointCount ];
+	getVector2Array( L, 2, points );
+	Color color = uluaGetColor( L, 3 );
+
+	ImageDrawTriangleStrip( image, points, pointCount, color );
 
 	return 0;
 }
@@ -1856,6 +2020,22 @@ int ltexturesGetRenderTextureDepthTexture( lua_State* L ) {
 */
 
 /*
+> isEqual = RL.ColorIsEqual( Color col1, Color col2 )
+
+Check if two colors are equal
+
+- Success return bool
+*/
+int ltexturesColorIsEqual( lua_State* L ) {
+	Color col1 = uluaGetColor( L, 1 );
+	Color col2 = uluaGetColor( L, 2 );
+
+	lua_pushboolean( L, ColorIsEqual( col1, col2 ) );
+
+	return 1;
+}
+
+/*
 > color = RL.Fade( Color color, float alpha )
 
 Returns color with alpha applied, alpha goes from 0.0f to 1.0f
@@ -2025,6 +2205,23 @@ int ltexturesColorAlphaBlend( lua_State* L ) {
 	Color tint = uluaGetColor( L, 3 );
 
 	uluaPushColor( L, ColorAlphaBlend( dst, src, tint ) );
+
+	return 1;
+}
+
+/*
+> color = RL.ColorLerp( Color color1, Color color2, float factor )
+
+Get color lerp interpolation between two colors, factor [0.0f..1.0f]
+
+- Success return Color
+*/
+int ltexturesColorLerp( lua_State* L ) {
+	Color color1 = uluaGetColor( L, 1 );
+	Color color2 = uluaGetColor( L, 2 );
+	float factor = luaL_checknumber( L, 3 );
+
+	uluaPushColor( L, ColorLerp( color1, color2, factor ) );
 
 	return 1;
 }

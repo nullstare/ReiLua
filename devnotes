@@ -39,7 +39,6 @@ Bugs {
 Notes {
 	* raylib 5.5
 		* DrawBillboardPro BREAKING CHANGE.
-		* Some functions for data validation has been renamed from Is**Ready() to Is**Valid().
 
 }
 

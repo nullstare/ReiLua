@@ -19,6 +19,7 @@ typedef struct {
 	Font guiFont;
 	Material defaultMaterial;
 	Texture defaultTexture;
+	Texture shapesTexture;
 	int* RLGLcurrentShaderLocs;
 	/* Events. */
 #ifdef PLATFORM_DESKTOP

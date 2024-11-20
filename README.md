@@ -10,7 +10,7 @@ Reilua means fair in finnish.
 
 ## Status
 
-ReiLua is WIP and some planned raylib functionality is still missing but it already has over 900. Current Raylib version 5.5.
+ReiLua is WIP and some planned raylib functionality is still missing but it already has over 1000 functions. Current Raylib version 5.5.
 
 Included submodules.
 

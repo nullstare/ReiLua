@@ -983,6 +983,40 @@ int lmodelsDrawModelWiresEx( lua_State* L ) {
 }
 
 /*
+> RL.DrawModelPoints( Model model, Vector3 position, float scale, Color tint )
+
+Draw a model as points
+*/
+int lmodelsDrawModelPoints( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
+	Vector3 position = uluaGetVector3( L, 2 );
+	float scale = luaL_checknumber( L, 3 );
+	Color tint = uluaGetColor( L, 4 );
+
+	DrawModelPoints( *model, position, scale, tint );
+
+	return 0;
+}
+
+/*
+> RL.DrawModelPointsEx( Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint )
+
+Draw a model as points with extended parameters
+*/
+int lmodelsDrawModelPointsEx( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
+	Vector3 position = uluaGetVector3( L, 2 );
+	Vector3 rotationAxis = uluaGetVector3( L, 3 );
+	float rotationAngle = luaL_checknumber( L, 4 );
+	Vector3 scale = uluaGetVector3( L, 5 );
+	Color tint = uluaGetColor( L, 6 );
+
+	DrawModelPointsEx( *model, position, rotationAxis, rotationAngle, scale, tint );
+
+	return 0;
+}
+
+/*
 > RL.DrawBoundingBox( BoundingBox box, Color color )
 
 Draw bounding box (wires)
@@ -1282,6 +1316,21 @@ int lmodelsExportMesh( lua_State* L ) {
 	Mesh* mesh = uluaGetMesh( L, 1 );
 
 	lua_pushboolean( L, ExportMesh( *mesh, luaL_checkstring( L, 2 ) ) );
+
+	return 1;
+}
+
+/*
+> success = RL.ExportMeshAsCode( Mesh mesh, string fileName )
+
+Export mesh as code file (.h) defining multiple arrays of vertex attributes
+
+- Success return bool
+*/
+int lmodelsExportMeshAsCode( lua_State* L ) {
+	Mesh* mesh = uluaGetMesh( L, 1 );
+
+	lua_pushboolean( L, ExportMeshAsCode( *mesh, luaL_checkstring( L, 2 ) ) );
 
 	return 1;
 }
@@ -2186,6 +2235,21 @@ int lmodelsUpdateModelAnimation( lua_State* L ) {
 	int frame = luaL_checkinteger( L, 3 );
 
 	UpdateModelAnimation( *model, *animation, frame );
+
+	return 0;
+}
+
+/*
+> RL.UpdateModelAnimationBones( Model model, ModelAnimation animation, int frame )
+
+Update model animation mesh bone matrices (GPU skinning)
+*/
+int lmodelsUpdateModelAnimationBones( lua_State* L ) {
+	Model* model = uluaGetModel( L, 1 );
+	ModelAnimation* animation = uluaGetModelAnimation( L, 2 );
+	int frame = luaL_checkinteger( L, 3 );
+
+	UpdateModelAnimationBones( *model, *animation, frame );
 
 	return 0;
 }

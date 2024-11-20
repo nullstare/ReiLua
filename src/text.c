@@ -1242,3 +1242,33 @@ int ltextTextToPascal( lua_State* L ) {
 
 	return 1;
 }
+
+/*
+> text = RL.TextToSnake( string text )
+
+Get Snake case notation version of provided string
+
+- Success return string
+*/
+int ltextTextToSnake( lua_State* L ) {
+	const char* text = luaL_checkstring( L, 1 );
+
+	lua_pushstring( L, TextToSnake( text ) );
+
+	return 1;
+}
+
+/*
+> text = RL.TextToCamel( string text )
+
+Get Camel case notation version of provided string
+
+- Success return string
+*/
+int ltextTextToCamel( lua_State* L ) {
+	const char* text = luaL_checkstring( L, 1 );
+
+	lua_pushstring( L, TextToCamel( text ) );
+
+	return 1;
+}

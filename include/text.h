@@ -63,3 +63,5 @@ int ltextTextInsert( lua_State* L );
 int ltextTextSplit( lua_State* L );
 int ltextTextFindIndex( lua_State* L );
 int ltextTextToPascal( lua_State* L );
+int ltextTextToSnake( lua_State* L );
+int ltextTextToCamel( lua_State* L );

@@ -16,7 +16,7 @@
 #include "bitwiseOp.h"
 
 #ifdef PLATFORM_DESKTOP
-	#include "platforms/core_desktop.c"
+	#include "platforms/core_desktop_glfw.c"
 #elif PLATFORM_DESKTOP_SDL
 	#include "platforms/core_desktop_sdl.c"
 #elif PLATFORM_WEB
@@ -1310,6 +1310,7 @@ void luaRegister() {
 	assingGlobalFunction( "GetMonitorName", lcoreGetMonitorName );
 	assingGlobalFunction( "SetClipboardText", lcoreSetClipboardText );
 	assingGlobalFunction( "GetClipboardText", lcoreGetClipboardText );
+	assingGlobalFunction( "GetClipboardImage", lcoreGetClipboardImage );
 	assingGlobalFunction( "EnableEventWaiting", lcoreEnableEventWaiting );
 	assingGlobalFunction( "DisableEventWaiting", lcoreDisableEventWaiting );
 		/* Cursor-related functions. */
@@ -1401,10 +1402,12 @@ void luaRegister() {
 	assingGlobalFunction( "GetPrevDirectoryPath", lcoreGetPrevDirectoryPath );
 	assingGlobalFunction( "GetWorkingDirectory", lcoreGetWorkingDirectory );
 	assingGlobalFunction( "GetApplicationDirectory", lcoreGetApplicationDirectory );
-	assingGlobalFunction( "LoadDirectoryFiles", lcoreLoadDirectoryFiles );
-	assingGlobalFunction( "LoadDirectoryFilesEx", lcoreLoadDirectoryFilesEx );
+	assingGlobalFunction( "MakeDirectory", lcoreMakeDirectory );
 	assingGlobalFunction( "ChangeDirectory", lcoreChangeDirectory );
 	assingGlobalFunction( "IsPathFile", lcoreIsPathFile );
+	assingGlobalFunction( "IsFileNameValid", lcoreIsFileNameValid );
+	assingGlobalFunction( "LoadDirectoryFiles", lcoreLoadDirectoryFiles );
+	assingGlobalFunction( "LoadDirectoryFilesEx", lcoreLoadDirectoryFilesEx );
 	assingGlobalFunction( "IsFileDropped", lcoreIsFileDropped );
 	assingGlobalFunction( "LoadDroppedFiles", lcoreLoadDroppedFiles );
 	assingGlobalFunction( "GetFileModTime", lcoreGetFileModTime );
@@ -1413,6 +1416,9 @@ void luaRegister() {
 	assingGlobalFunction( "DecompressData", lcoreDecompressData );
 	assingGlobalFunction( "EncodeDataBase64", lcoreEncodeDataBase64 );
 	assingGlobalFunction( "DecodeDataBase64", lcoreDecodeDataBase64 );
+	assingGlobalFunction( "ComputeCRC32", lcoreComputeCRC32 );
+	assingGlobalFunction( "ComputeMD5", lcoreComputeMD5 );
+	assingGlobalFunction( "ComputeSHA1", lcoreComputeSHA1 );
 		/* Automation events functionality. */
 	assingGlobalFunction( "LoadAutomationEventList", lcoreLoadAutomationEventList );
 	assingGlobalFunction( "UnloadAutomationEventList", lcoreUnloadAutomationEventList );
@@ -1448,6 +1454,7 @@ void luaRegister() {
 	assingGlobalFunction( "GetGamepadAxisCount", lcoreGetGamepadAxisCount );
 	assingGlobalFunction( "GetGamepadAxisMovement", lcoreGetGamepadAxisMovement );
 	assingGlobalFunction( "SetGamepadMappings", lcoreSetGamepadMappings );
+	assingGlobalFunction( "SetGamepadVibration", lcoreSetGamepadVibration );
 		/* Input-related functions: mouse. */
 	assingGlobalFunction( "IsMouseButtonPressed", lcoreIsMouseButtonPressed );
 	assingGlobalFunction( "IsMouseButtonDown", lcoreIsMouseButtonDown );
@@ -1531,6 +1538,8 @@ void luaRegister() {
 	/* Shapes. */
 		/* Basic shapes drawing functions. */
 	assingGlobalFunction( "SetShapesTexture", lshapesSetShapesTexture );
+	assingGlobalFunction( "GetShapesTexture", lshapesGetShapesTexture );
+	assingGlobalFunction( "GetShapesTextureRectangle", lshapesGetShapesTextureRectangle );
 	assingGlobalFunction( "DrawPixel", lshapesDrawPixel );
 	assingGlobalFunction( "DrawLine", lshapesDrawLine );
 	assingGlobalFunction( "DrawLineBezier", lshapesDrawLineBezier );
@@ -1582,6 +1591,7 @@ void luaRegister() {
 	assingGlobalFunction( "CheckCollisionRecs", lshapesCheckCollisionRecs );
 	assingGlobalFunction( "CheckCollisionCircles", lshapesCheckCollisionCircles );
 	assingGlobalFunction( "CheckCollisionCircleRec", lshapesCheckCollisionCircleRec );
+	assingGlobalFunction( "CheckCollisionCircleLine", lshapesCheckCollisionCircleLine );
 	assingGlobalFunction( "CheckCollisionPointRec", lshapesCheckCollisionPointRec );
 	assingGlobalFunction( "CheckCollisionPointCircle", lshapesCheckCollisionPointCircle );
 	assingGlobalFunction( "CheckCollisionPointTriangle", lshapesCheckCollisionPointTriangle );
@@ -1595,6 +1605,7 @@ void luaRegister() {
 	assingGlobalFunction( "LoadImage", ltexturesLoadImage );
 	assingGlobalFunction( "LoadImageRaw", ltexturesLoadImageRaw );
 	assingGlobalFunction( "LoadImageAnim", ltexturesLoadImageAnim );
+	assingGlobalFunction( "LoadImageAnimFromMemory", ltexturesLoadImageAnimFromMemory );
 	assingGlobalFunction( "LoadImageFromMemory", ltexturesLoadImageFromMemory );
 	assingGlobalFunction( "LoadImageFromData", ltexturesLoadImageFromData );
 	assingGlobalFunction( "LoadImageFromTexture", ltexturesLoadImageFromTexture );
@@ -1617,6 +1628,7 @@ void luaRegister() {
 		/* Image manipulation functions. */
 	assingGlobalFunction( "ImageCopy", ltexturesImageCopy );
 	assingGlobalFunction( "ImageFromImage", ltexturesImageFromImage );
+	assingGlobalFunction( "ImageFromChannel", ltexturesImageFromChannel );
 	assingGlobalFunction( "ImageText", ltexturesImageText );
 	assingGlobalFunction( "ImageTextEx", ltexturesImageTextEx );
 	assingGlobalFunction( "ImageFormat", ltexturesImageFormat );
@@ -1627,6 +1639,7 @@ void luaRegister() {
 	assingGlobalFunction( "ImageAlphaMask", ltexturesImageAlphaMask );
 	assingGlobalFunction( "ImageAlphaPremultiply", ltexturesImageAlphaPremultiply );
 	assingGlobalFunction( "ImageBlurGaussian", ltexturesImageBlurGaussian );
+	assingGlobalFunction( "ImageKernelConvolution", ltexturesImageKernelConvolution );
 	assingGlobalFunction( "ImageResize", ltexturesImageResize );
 	assingGlobalFunction( "ImageResizeNN", ltexturesImageResizeNN );
 	assingGlobalFunction( "ImageResizeCanvas", ltexturesImageResizeCanvas );
@@ -1656,10 +1669,16 @@ void luaRegister() {
 	assingGlobalFunction( "ImageClearBackground", ltexturesImageClearBackground );
 	assingGlobalFunction( "ImageDrawPixel", ltexturesImageDrawPixel );
 	assingGlobalFunction( "ImageDrawLine", ltexturesImageDrawLine );
+	assingGlobalFunction( "ImageDrawLineEx", ltexturesImageDrawLineEx );
 	assingGlobalFunction( "ImageDrawCircle", ltexturesImageDrawCircle );
 	assingGlobalFunction( "ImageDrawCircleLines", ltexturesImageDrawCircleLines );
 	assingGlobalFunction( "ImageDrawRectangle", ltexturesImageDrawRectangle );
 	assingGlobalFunction( "ImageDrawRectangleLines", ltexturesImageDrawRectangleLines );
+	assingGlobalFunction( "ImageDrawTriangle", ltexturesImageDrawTriangle );
+	assingGlobalFunction( "ImageDrawTriangleEx", ltexturesImageDrawTriangleEx );
+	assingGlobalFunction( "ImageDrawTriangleLines", ltexturesImageDrawTriangleLines );
+	assingGlobalFunction( "ImageDrawTriangleFan", ltexturesImageDrawTriangleFan );
+	assingGlobalFunction( "ImageDrawTriangleStrip", ltexturesImageDrawTriangleStrip );
 	assingGlobalFunction( "ImageDraw", ltexturesImageDraw );
 	assingGlobalFunction( "ImageDrawText", ltexturesImageDrawText );
 	assingGlobalFunction( "ImageDrawTextEx", ltexturesImageDrawTextEx );
@@ -1697,6 +1716,7 @@ void luaRegister() {
 	assingGlobalFunction( "GetRenderTextureTexture", ltexturesGetRenderTextureTexture );
 	assingGlobalFunction( "GetRenderTextureDepthTexture", ltexturesGetRenderTextureDepthTexture );
 		/* Color/pixel related functions */
+	assingGlobalFunction( "ColorIsEqual", ltexturesColorIsEqual );
 	assingGlobalFunction( "Fade", ltexturesFade );
 	assingGlobalFunction( "ColorToInt", ltexturesColorToInt );
 	assingGlobalFunction( "ColorNormalize", ltexturesColorNormalize );
@@ -1708,6 +1728,7 @@ void luaRegister() {
 	assingGlobalFunction( "ColorContrast", ltexturesColorContrast );
 	assingGlobalFunction( "ColorAlpha", ltexturesColorAlpha );
 	assingGlobalFunction( "ColorAlphaBlend", ltexturesColorAlphaBlend );
+	assingGlobalFunction( "ColorLerp", ltexturesColorLerp );
 	assingGlobalFunction( "GetColor", ltexturesGetColor );
 	assingGlobalFunction( "GetPixelDataSize", ltexturesGetPixelDataSize );
 
@@ -1759,6 +1780,8 @@ void luaRegister() {
 	assingGlobalFunction( "DrawModelEx", lmodelsDrawModelEx );
 	assingGlobalFunction( "DrawModelWires", lmodelsDrawModelWires );
 	assingGlobalFunction( "DrawModelWiresEx", lmodelsDrawModelWiresEx );
+	assingGlobalFunction( "DrawModelPoints", lmodelsDrawModelPoints );
+	assingGlobalFunction( "DrawModelPointsEx", lmodelsDrawModelPointsEx );
 	assingGlobalFunction( "DrawBoundingBox", lmodelsDrawBoundingBox );
 	assingGlobalFunction( "DrawBillboard", lmodelsDrawBillboard );
 	assingGlobalFunction( "DrawBillboardRec", lmodelsDrawBillboardRec );
@@ -1770,6 +1793,7 @@ void luaRegister() {
 	assingGlobalFunction( "DrawMeshInstanced", lmodelsDrawMeshInstanced );
 	assingGlobalFunction( "SetMeshColor", lmodelsSetMeshColor );
 	assingGlobalFunction( "ExportMesh", lmodelsExportMesh );
+	assingGlobalFunction( "ExportMeshAsCode", lmodelsExportMeshAsCode );
 	assingGlobalFunction( "GetMeshBoundingBox", lmodelsGetMeshBoundingBox );
 	assingGlobalFunction( "GenMeshTangents", lmodelsGenMeshTangents );
 	assingGlobalFunction( "GetMeshData", lmodelsGetMeshData );
@@ -1806,6 +1830,7 @@ void luaRegister() {
 		/* Model animations management functions. */
 	assingGlobalFunction( "LoadModelAnimations", lmodelsLoadModelAnimations );
 	assingGlobalFunction( "UpdateModelAnimation", lmodelsUpdateModelAnimation );
+	assingGlobalFunction( "UpdateModelAnimationBones", lmodelsUpdateModelAnimationBones );
 	assingGlobalFunction( "UnloadModelAnimation", lmodelsUnloadModelAnimation );
 	assingGlobalFunction( "UnloadModelAnimations", lmodelsUnloadModelAnimations );
 	assingGlobalFunction( "IsModelAnimationValid", lmodelsIsModelAnimationValid );
@@ -1891,6 +1916,8 @@ void luaRegister() {
 	assingGlobalFunction( "TextSplit", ltextTextSplit );
 	assingGlobalFunction( "TextFindIndex", ltextTextFindIndex );
 	assingGlobalFunction( "TextToPascal", ltextTextToPascal );
+	assingGlobalFunction( "TextToSnake", ltextTextToSnake );
+	assingGlobalFunction( "TextToCamel", ltextTextToCamel );
 
 	/* Audio. */
 		/* Audio device management functions. */
@@ -3420,6 +3447,17 @@ AutomationEventList* uluaGetAutomationEventList( lua_State* L, int index ) {
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
 		return luaL_checkudata( L, index, "AutomationEventList" );
+	}
+}
+
+void getVector2Array( lua_State* L, int index, Vector2 points[] ) {
+	int t = index, i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		points[i] = uluaGetVector2( L, lua_gettop( L ) );
+		i++;
+		lua_pop( L, 1 );
 	}
 }
 

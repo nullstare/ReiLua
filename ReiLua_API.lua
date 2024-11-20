@@ -290,7 +290,7 @@ RL.KEY_KP_EQUAL=336
 ---Key: Android back button
 RL.KEY_BACK=4
 ---Key: Android menu button
-RL.KEY_MENU=82
+RL.KEY_MENU=5
 ---Key: Android volume up button
 RL.KEY_VOLUME_UP=24
 ---Key: Android volume down button
@@ -595,8 +595,6 @@ RL.CUBEMAP_LAYOUT_LINE_HORIZONTAL=2
 RL.CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR=3
 ---Layout is defined by a 4x3 cross with cubemap faces
 RL.CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE=4
----Layout is defined by a panorama image (equirrectangular map)
-RL.CUBEMAP_LAYOUT_PANORAMA=5
 
 -- Defines - Font type, defines generation method
 
@@ -944,7 +942,7 @@ RL.RL_MAX_SHADER_LOCATIONS=32
 ---Default projection matrix near cull distance
 RL.RL_CULL_DISTANCE_NEAR=0.01
 ---Default projection matrix far cull distance
-RL.RL_CULL_DISTANCE_FAR=1000
+RL.RL_CULL_DISTANCE_FAR=1000.0
 
 -- Defines - RLGL Texture parameters
 
@@ -1526,6 +1524,11 @@ function  RL.SetClipboardText( text ) end
 ---@return any text 
 function RL.GetClipboardText() end
 
+---Get clipboard image content
+---- Success return Image
+---@return any image 
+function RL.GetClipboardImage() end
+
 ---Enable waiting for events on EndDrawing(), no automatic event polling
 ---@return any RL.EnableEventWaiting
 function  RL.EnableEventWaiting() end
@@ -1651,11 +1654,11 @@ function RL.LoadShader( vsFileName, fsFileName ) end
 ---@return any shader 
 function RL.LoadShaderFromMemory( vsCode, fsCode ) end
 
----Check if a shader is ready
+---Check if a shader is valid (loaded on GPU)
 ---- Success return bool
 ---@param shader any
 ---@return any isReady 
-function RL.IsShaderReady( shader ) end
+function RL.IsShaderValid( shader ) end
 
 ---Get shader program id
 ---- Success return int
@@ -1731,24 +1734,20 @@ function  RL.UnloadShader( shader ) end
 
 -- Core - Screen-space-related functions
 
----Get a ray trace from mouse position
+---Get a ray trace from screen position (i.e mouse)
 ---- Success return Ray
 ---@param mousePosition table
 ---@param camera any
 ---@return any ray 
-function RL.GetMouseRay( mousePosition, camera ) end
+function RL.GetScreenToWorldRay( mousePosition, camera ) end
 
----Get camera transform matrix (view matrix)
----- Success return Matrix
+---Get a ray trace from screen position (i.e mouse) in a viewport
+---- Success return Ray
+---@param mousePosition table
 ---@param camera any
----@return any matrix 
-function RL.GetCameraMatrix( camera ) end
-
----Get camera 2d transform matrix
----- Success return Matrix
----@param camera any
----@return any matrix 
-function RL.GetCameraMatrix2D( camera ) end
+---@param size table
+---@return any ray 
+function RL.GetScreenToWorldRayEx( mousePosition, camera, size ) end
 
 ---Get the screen space position for a 3d world space position
 ---- Success return Vector2
@@ -1778,6 +1777,18 @@ function RL.GetWorldToScreen2D( position, camera ) end
 ---@param camera any
 ---@return any position 
 function RL.GetScreenToWorld2D( position, camera ) end
+
+---Get camera transform matrix (view matrix)
+---- Success return Matrix
+---@param camera any
+---@return any matrix 
+function RL.GetCameraMatrix( camera ) end
+
+---Get camera 2d transform matrix
+---- Success return Matrix
+---@param camera any
+---@return any matrix 
+function RL.GetCameraMatrix2D( camera ) end
 
 -- Core - Timing-related functions
 
@@ -1998,6 +2009,30 @@ function RL.GetWorkingDirectory() end
 ---@return any directory 
 function RL.GetApplicationDirectory() end
 
+---Create directories (including full path requested), returns 0 on success
+---- Success return int
+---@param dirPath string
+---@return any success 
+function RL.MakeDirectory( dirPath ) end
+
+---Change working directory, return true on success
+---- Success return bool
+---@param directory string
+---@return any success 
+function RL.ChangeDirectory( directory ) end
+
+---Check if a given path is a file or a directory
+---- Success return bool
+---@param path string
+---@return any isFile 
+function RL.IsPathFile( path ) end
+
+---Check if fileName is valid for the platform/OS
+---- Success return bool
+---@param fileName string
+---@return any isValid 
+function RL.IsFileNameValid( fileName ) end
+
 ---Load directory filepaths
 ---- Success return string{}
 ---@param dirPath string
@@ -2011,18 +2046,6 @@ function RL.LoadDirectoryFiles( dirPath ) end
 ---@param scanSubdirs boolean
 ---@return any fileNames 
 function RL.LoadDirectoryFilesEx( basePath, filter, scanSubdirs ) end
-
----Change working directory, return true on success
----- Success return bool
----@param directory string
----@return any success 
-function RL.ChangeDirectory( directory ) end
-
----Check if a given path is a file or a directory
----- Success return bool
----@param path string
----@return any isFile 
-function RL.IsPathFile( path ) end
 
 ---Check if a file has been dropped into window
 ---- Success return bool
@@ -2067,6 +2090,27 @@ function RL.EncodeDataBase64( data ) end
 ---@return any decodedData
 ---@return any outputSize 
 function RL.DecodeDataBase64( data ) end
+
+---Compute CRC32 hash code. Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+---- Failure return false
+---- Success return int
+---@param data any
+---@return any code 
+function RL.ComputeCRC32( data ) end
+
+---Compute MD5 hash code, returns static int[4] (16 bytes). Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+---- Failure return false
+---- Success return int{4}
+---@param data any
+---@return any code 
+function RL.ComputeMD5( data ) end
+
+---Compute SHA1 hash code, returns static int[5] (20 bytes). Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+---- Failure return false
+---- Success return int{5}
+---@param data any
+---@return any code 
+function RL.ComputeSHA1( data ) end
 
 -- Core - Automation events functionality
 
@@ -2261,6 +2305,14 @@ function RL.GetGamepadAxisMovement( gamepad, axis ) end
 ---@param mappings string
 ---@return any result 
 function RL.SetGamepadMappings( mappings ) end
+
+---Set gamepad vibration for both motors (duration in seconds)
+---@param gamepad integer
+---@param leftMotor number
+---@param rightMotor number
+---@param duration number
+---@return any RL.SetGamepadVibration
+function  RL.SetGamepadVibration( gamepad, leftMotor, rightMotor, duration ) end
 
 -- Core - Input-related functions: mouse
 
@@ -2732,6 +2784,16 @@ function  RL.ExportBuffer( buffer, path ) end
 ---@return any RL.SetShapesTexture
 function  RL.SetShapesTexture( texture, source ) end
 
+---Get texture that is used for shapes drawing. Return as lightuserdata
+---- Success return Texture
+---@return any texture 
+function RL.GetShapesTexture() end
+
+---Get texture source rectangle that is used for shapes drawing
+---- Success return Rectangle
+---@return any source 
+function RL.GetShapesTextureRectangle() end
+
 ---Draw a pixel
 ---@param pos table
 ---@param color table
@@ -2898,14 +2960,22 @@ function  RL.DrawRectangleLinesEx( rec, lineThick, color ) end
 ---@return any RL.DrawRectangleRounded
 function  RL.DrawRectangleRounded( rec, roundness, segments, color ) end
 
+---Draw rectangle lines with rounded edges
+---@param rec table
+---@param roundness number
+---@param segments integer
+---@param color table
+---@return any RL.DrawRectangleRoundedLines
+function  RL.DrawRectangleRoundedLines( rec, roundness, segments, color ) end
+
 ---Draw rectangle with rounded edges outline
 ---@param rec table
 ---@param roundness number
 ---@param segments integer
----@param lineThick integer
+---@param lineThick number
 ---@param color table
----@return any RL.DrawRectangleRoundedLines
-function  RL.DrawRectangleRoundedLines( rec, roundness, segments, lineThick, color ) end
+---@return any RL.DrawRectangleRoundedLinesEx
+function  RL.DrawRectangleRoundedLinesEx( rec, roundness, segments, lineThick, color ) end
 
 ---Draw a color-filled triangle (Vertex in counter-clockwise order!)
 ---@param v1 table
@@ -3122,6 +3192,15 @@ function RL.CheckCollisionCircles( center1, radius1, center2, radius2 ) end
 ---@return any collision 
 function RL.CheckCollisionCircleRec( center, radius, rec ) end
 
+---Check if circle collides with a line created betweeen two points [p1] and [p2]
+---- Success return bool
+---@param center table
+---@param radius number
+---@param p1 table
+---@param p2 table
+---@return any collision 
+function RL.CheckCollisionCircleLine( center, radius, p1, p2 ) end
+
 ---Check if point is inside rectangle
 ---- Success return bool
 ---@param point table
@@ -3198,13 +3277,6 @@ function RL.LoadImage( fileName ) end
 ---@return any image 
 function RL.LoadImageRaw( fileName, size, format, headerSize ) end
 
----Load image from SVG file data or string with specified size
----- Success return Image
----@param fileNameOrString string
----@param size table
----@return any image 
-function RL.LoadImageSvg( fileNameOrString, size ) end
-
 ---Load image sequence from file (frames appended to image.data). All frames are returned in RGBA format
 ---- Failure return nil
 ---- Success return Image, int
@@ -3212,6 +3284,14 @@ function RL.LoadImageSvg( fileNameOrString, size ) end
 ---@return any image
 ---@return any frameCount 
 function RL.LoadImageAnim( fileName ) end
+
+---Load image sequence from memory buffer. All frames are returned in RGBA format
+---- Success return Image, int
+---@param fileType string
+---@param fileData any
+---@return any image
+---@return any frameCount 
+function RL.LoadImageAnimFromMemory( fileType, fileData ) end
 
 ---Load image from memory buffer, fileType refers to extension: i.e. '.png'
 ---- Success return Image
@@ -3242,11 +3322,11 @@ function RL.LoadImageFromTexture( texture ) end
 ---@return any image 
 function RL.LoadImageFromScreen() end
 
----Check if an image is ready
+---Check if an image is valid (data and parameters)
 ---- Success return bool
 ---@param image any
 ---@return any isReady 
-function RL.IsImageReady( image ) end
+function RL.IsImageValid( image ) end
 
 ---Unload image from CPU memory (RAM)
 ---@param image any
@@ -3363,6 +3443,13 @@ function RL.ImageCopy( image ) end
 ---@return any image 
 function RL.ImageFromImage( image, rec ) end
 
+---Create an image from a selected channel of another image (GRAYSCALE)
+---- Success return Image
+---@param image any
+---@param selectedChannel integer
+---@return any image 
+function RL.ImageFromChannel( image, selectedChannel ) end
+
 ---Create an image from text (default font)
 ---- Success return Image
 ---@param text string
@@ -3428,6 +3515,12 @@ function  RL.ImageAlphaPremultiply( image ) end
 ---@param blurSize integer
 ---@return any RL.ImageBlurGaussian
 function  RL.ImageBlurGaussian( image, blurSize ) end
+
+---Apply custom square convolution kernel to image
+---@param image any
+---@param kernel table
+---@return any RL.ImageKernelConvolution
+function  RL.ImageKernelConvolution( image, kernel ) end
 
 ---Resize image (Bicubic scaling algorithm)
 ---@param image any
@@ -3591,11 +3684,20 @@ function  RL.ImageDrawPixel( dst, position, color ) end
 
 ---Draw line within an image
 ---@param dst any
----@param a table
----@param b table
+---@param start table
+---@param end table
 ---@param color table
 ---@return any RL.ImageDrawLine
-function  RL.ImageDrawLine( dst, a, b, color ) end
+function  RL.ImageDrawLine( dst, start, end, color ) end
+
+---Draw a line defining thickness within an image
+---@param dst any
+---@param start table
+---@param end table
+---@param thick integer
+---@param color table
+---@return any RL.ImageDrawLineEx
+function  RL.ImageDrawLineEx( dst, start, end, thick, color ) end
 
 ---Draw circle within an image
 ---@param dst any
@@ -3627,6 +3729,49 @@ function  RL.ImageDrawRectangle( dst, rec, color ) end
 ---@param color table
 ---@return any RL.ImageDrawRectangleLines
 function  RL.ImageDrawRectangleLines( dst, rec, thick, color ) end
+
+---Draw triangle within an image
+---@param *dst any
+---@param v1 table
+---@param v2 table
+---@param v3 table
+---@param color table
+---@return any RL.ImageDrawTriangle
+function  RL.ImageDrawTriangle( *dst, v1, v2, v3, color ) end
+
+---Draw triangle with interpolated colors within an image
+---@param *dst any
+---@param v1 table
+---@param v2 table
+---@param v3 table
+---@param c1 table
+---@param c2 table
+---@param c3 table
+---@return any RL.ImageDrawTriangleEx
+function  RL.ImageDrawTriangleEx( *dst, v1, v2, v3, c1, c2, c3 ) end
+
+---Draw triangle outline within an image
+---@param *dst any
+---@param v1 table
+---@param v2 table
+---@param v3 table
+---@param color table
+---@return any RL.ImageDrawTriangleLines
+function  RL.ImageDrawTriangleLines( *dst, v1, v2, v3, color ) end
+
+---Draw a triangle fan defined by points within an image (first vertex is the center)
+---@param *dst any
+---@param points table
+---@param color table
+---@return any RL.ImageDrawTriangleFan
+function  RL.ImageDrawTriangleFan( *dst, points, color ) end
+
+---Draw a triangle strip defined by points within an image
+---@param *dst any
+---@param points table
+---@param color table
+---@return any RL.ImageDrawTriangleStrip
+function  RL.ImageDrawTriangleStrip( *dst, points, color ) end
 
 ---Draw a source image within a destination image (Tint applied to source)
 ---@param dst any
@@ -3702,22 +3847,22 @@ function RL.LoadRenderTexture( size ) end
 ---@return any renderTexture 
 function RL.LoadRenderTextureFromData( renderTextureData ) end
 
----Check if a texture is ready
+---Check if a texture is valid (loaded in GPU)
 ---- Success return bool
 ---@param texture any
 ---@return any isReady 
-function RL.IsTextureReady( texture ) end
+function RL.IsTextureValid( texture ) end
 
 ---Unload texture from GPU memory (VRAM)
 ---@param texture any
 ---@return any RL.UnloadTexture
 function  RL.UnloadTexture( texture ) end
 
----Check if a render texture is ready
+---Check if a render texture is valid (loaded in GPU)
 ---- Success return bool
 ---@param target any
 ---@return any isReady 
-function RL.IsRenderTextureReady( target ) end
+function RL.IsRenderTextureValid( target ) end
 
 ---Unload render texture from GPU memory (VRAM)
 ---@param target any
@@ -3860,6 +4005,13 @@ function RL.GetRenderTextureDepthTexture( renderTexture ) end
 
 -- Textures - Color/pixel related functions
 
+---Check if two colors are equal
+---- Success return bool
+---@param col1 table
+---@param col2 table
+---@return any isEqual 
+function RL.ColorIsEqual( col1, col2 ) end
+
 ---Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 ---- Success return Color
 ---@param color table
@@ -3935,6 +4087,14 @@ function RL.ColorAlpha( color, alpha ) end
 ---@return any color 
 function RL.ColorAlphaBlend( dst, src, tint ) end
 
+---Get color lerp interpolation between two colors, factor [0.0f..1.0f]
+---- Success return Color
+---@param color1 table
+---@param color2 table
+---@param factor number
+---@return any color 
+function RL.ColorLerp( color1, color2, factor ) end
+
 ---Get Color structure from hexadecimal value
 ---- Success return Color
 ---@param hexValue integer
@@ -4000,11 +4160,11 @@ function RL.LoadFontFromData( fontData ) end
 ---@return any font 
 function RL.FontCopy( font ) end
 
----Check if a font is ready
+---Check if a font is valid (font data loaded, WARNING: GPU texture not checked)
 ---- Success return bool
 ---@param font any
 ---@return any isReady 
-function RL.IsFontReady( font ) end
+function RL.IsFontValid( font ) end
 
 ---Load font data for further use. NOTE: fileData type should be unsigned char
 ---- Success return GlyphInfo{}
@@ -4370,6 +4530,18 @@ function RL.TextFindIndex( text, find ) end
 ---@return any text 
 function RL.TextToPascal( text ) end
 
+---Get Snake case notation version of provided string
+---- Success return string
+---@param text string
+---@return any text 
+function RL.TextToSnake( text ) end
+
+---Get Camel case notation version of provided string
+---- Success return string
+---@param text string
+---@return any text 
+function RL.TextToCamel( text ) end
+
 -- Models - Basic geometric 3D shapes drawing functions
 
 ---Draw a line in 3D world space
@@ -4559,11 +4731,11 @@ function RL.LoadModel( fileName ) end
 ---@return any model 
 function RL.LoadModelFromMesh( mesh ) end
 
----Check if a model is ready
+---Check if a model is valid (loaded in GPU, VAO/VBOs)
 ---- Success return bool
 ---@param model any
 ---@return any isReady 
-function RL.IsModelReady( model ) end
+function RL.IsModelValid( model ) end
 
 ---Unload model (meshes/materials) from memory (RAM and/or VRAM)
 ---@param model any
@@ -4719,6 +4891,24 @@ function  RL.DrawModelWires( model, position, scale, tint ) end
 ---@return any RL.DrawModelWiresEx
 function  RL.DrawModelWiresEx( model, position, rotationAxis, rotationAngle, scale, tint ) end
 
+---Draw a model as points
+---@param model any
+---@param position table
+---@param scale number
+---@param tint table
+---@return any RL.DrawModelPoints
+function  RL.DrawModelPoints( model, position, scale, tint ) end
+
+---Draw a model as points with extended parameters
+---@param model any
+---@param position table
+---@param rotationAxis table
+---@param rotationAngle number
+---@param scale table
+---@param tint table
+---@return any RL.DrawModelPointsEx
+function  RL.DrawModelPointsEx( model, position, rotationAxis, rotationAngle, scale, tint ) end
+
 ---Draw bounding box (wires)
 ---@param box any
 ---@param color table
@@ -4801,6 +4991,13 @@ function RL.SetMeshColor( mesh, color ) end
 ---@param fileName string
 ---@return any success 
 function RL.ExportMesh( mesh, fileName ) end
+
+---Export mesh as code file (.h) defining multiple arrays of vertex attributes
+---- Success return bool
+---@param mesh any
+---@param fileName string
+---@return any success 
+function RL.ExportMeshAsCode( mesh, fileName ) end
 
 ---Compute mesh bounding box limits
 ---- Success return BoundingBox
@@ -4938,11 +5135,11 @@ function RL.LoadMaterialDefault() end
 ---@return any material 
 function RL.CreateMaterial( materialData ) end
 
----Check if a material is ready
+---Check if a material is valid (shader assigned, map textures loaded in GPU)
 ---- Success return bool
 ---@param material any
 ---@return any isReady 
-function RL.IsMaterialReady( material ) end
+function RL.IsMaterialValid( material ) end
 
 ---Unload material from GPU memory (VRAM). Note! Use freeAll to unload shaders and textures
 ---@param material any
@@ -5031,6 +5228,13 @@ function RL.LoadModelAnimations( fileName ) end
 ---@param frame integer
 ---@return any RL.UpdateModelAnimation
 function  RL.UpdateModelAnimation( model, animation, frame ) end
+
+---Update model animation mesh bone matrices (GPU skinning)
+---@param model any
+---@param animation any
+---@param frame integer
+---@return any RL.UpdateModelAnimationBones
+function  RL.UpdateModelAnimationBones( model, animation, frame ) end
 
 ---Unload animation data
 ---@param animation any
@@ -5234,11 +5438,11 @@ function RL.LoadWave( fileName ) end
 ---@return any wave 
 function RL.LoadWaveFromMemory( fileType, data ) end
 
----Checks if wave data is ready
+---Checks if wave data is valid (data loaded and parameters)
 ---- Success return bool
 ---@param wave any
 ---@return any isReady 
-function RL.IsWaveReady( wave ) end
+function RL.IsWaveValid( wave ) end
 
 ---Load sound from wave data
 ---- Success return Sound
@@ -5252,11 +5456,11 @@ function RL.LoadSoundFromWave( wave ) end
 ---@return any sound 
 function RL.LoadSoundAlias( source ) end
 
----Checks if a sound is ready
+---Checks if a sound is valid (data loaded and buffers initialized)
 ---- Success return bool
 ---@param sound any
 ---@return any isReady 
-function RL.IsSoundReady( sound ) end
+function RL.IsSoundValid( sound ) end
 
 ---Update sound buffer with new data
 ---@param sound any
@@ -5382,11 +5586,11 @@ function RL.LoadMusicStream( fileName ) end
 ---@return any music 
 function RL.LoadMusicStreamFromMemory( fileType, data ) end
 
----Checks if a music stream is ready
+---Checks if a music stream is valid (context and buffers initialized)
 ---- Success return bool
 ---@param music any
 ---@return any isReady 
-function RL.IsMusicReady( music ) end
+function RL.IsMusicValid( music ) end
 
 ---Unload music stream
 ---@param music any
@@ -7362,15 +7566,15 @@ function  RL.rlUnloadVertexArray( vaoId ) end
 ---@return any RL.rlUnloadVertexBuffer
 function  RL.rlUnloadVertexBuffer( vboId ) end
 
----Set vertex attribute.
+---Set vertex attribute data configuration
 ---@param index integer
 ---@param compSize integer
 ---@param type integer
 ---@param normalized boolean
 ---@param stride integer
----@param pointer any
+---@param offset integer
 ---@return any RL.rlSetVertexAttribute
-function  RL.rlSetVertexAttribute( index, compSize, type, normalized, stride, pointer ) end
+function  RL.rlSetVertexAttribute( index, compSize, type, normalized, stride, offset ) end
 
 ---Set vertex attribute divisor
 ---@param index integer
@@ -7431,13 +7635,14 @@ function RL.rlLoadTexture( data, size, format, mipmapCount ) end
 ---@return any id 
 function RL.rlLoadTextureDepth( size, useRenderBuffer ) end
 
----Load texture cubemap
+---Load texture cubemap data
 ---- Success return int
 ---@param data any
 ---@param size integer
 ---@param format integer
+---@param mipmapCount integer
 ---@return any id 
-function RL.rlLoadTextureCubemap( data, size, format ) end
+function RL.rlLoadTextureCubemap( data, size, format, mipmapCount ) end
 
 ---Update GPU texture with new data
 ---@param id integer
@@ -7493,9 +7698,8 @@ function RL.rlReadScreenPixels( size ) end
 
 ---Load an empty framebuffer
 ---- Success return int
----@param size table
 ---@return any fboId 
-function RL.rlLoadFramebuffer( size ) end
+function RL.rlLoadFramebuffer() end
 
 ---Attach texture/renderbuffer to a framebuffer
 ---@param fboId integer

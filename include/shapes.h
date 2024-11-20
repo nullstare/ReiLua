@@ -2,6 +2,8 @@
 
 /* Basic shapes drawing functions. */
 int lshapesSetShapesTexture( lua_State* L );
+int lshapesGetShapesTexture( lua_State* L );
+int lshapesGetShapesTextureRectangle( lua_State* L );
 int lshapesDrawPixel( lua_State* L );
 int lshapesDrawLine( lua_State* L );
 int lshapesDrawLineBezier( lua_State* L );
@@ -53,6 +55,7 @@ int lshapesGetSplinePointBezierCubic( lua_State* L );
 int lshapesCheckCollisionRecs( lua_State* L );
 int lshapesCheckCollisionCircles( lua_State* L );
 int lshapesCheckCollisionCircleRec( lua_State* L );
+int lshapesCheckCollisionCircleLine( lua_State* L );
 int lshapesCheckCollisionPointRec( lua_State* L );
 int lshapesCheckCollisionPointCircle( lua_State* L );
 int lshapesCheckCollisionPointTriangle( lua_State* L );

@@ -47,7 +47,6 @@ Ray uluaGetRay( lua_State* L, int index );
 NPatchInfo uluaGetNPatchInfo( lua_State* L, int index );
 BoneInfo uluaGetBoneInfo( lua_State* L, int index );
 Transform uluaGetTransform( lua_State* L, int index );
-// AutomationEvent uluaGetAutomationEvent( lua_State* L, int index );
 Buffer* uluaGetBuffer( lua_State* L, int index );
 Image* uluaGetImage( lua_State* L, int index );
 Texture* uluaGetTexture( lua_State* L, int index );
@@ -68,6 +67,8 @@ ModelAnimation* uluaGetModelAnimation( lua_State* L, int index );
 rlRenderBatch* uluaGetRLRenderBatch( lua_State* L, int index );
 AutomationEvent* uluaGetAutomationEvent( lua_State* L, int index );
 AutomationEventList* uluaGetAutomationEventList( lua_State* L, int index );
+
+void getVector2Array( lua_State* L, int index, Vector2 points[] );
 /* Lua push types. */
 void uluaPushColor( lua_State* L, Color color );
 void uluaPushVector2( lua_State* L, Vector2 vector );

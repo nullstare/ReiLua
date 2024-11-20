@@ -278,7 +278,7 @@ end
 local definesCount = 0
 local sourceFiles = {
 	"lua_core",
-	"platforms/core_desktop",
+	"platforms/core_desktop_glfw",
 	-- "platforms/core_desktop_sdl",
 }
 
@@ -372,7 +372,7 @@ sourceFiles = {
 	"gl",
 	"easings",
 	"bitwiseOp",
-	"platforms/core_desktop",
+	"platforms/core_desktop_glfw",
 	-- "platforms/core_desktop_sdl",
 }
 

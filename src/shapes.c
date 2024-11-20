@@ -4,17 +4,6 @@
 #include "lua_core.h"
 #include "textures.h"
 
-static inline void getVector2Array( lua_State* L, int index, Vector2 points[] ) {
-	int t = index, i = 0;
-	lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-		points[i] = uluaGetVector2( L, lua_gettop( L ) );
-		i++;
-		lua_pop( L, 1 );
-	}
-}
-
 /*
 ## Shapes - Basic shapes drawing functions
 */
@@ -30,9 +19,37 @@ int lshapesSetShapesTexture( lua_State* L ) {
 	Texture* texture = uluaGetTexture( L, 1 );
 	Rectangle source = uluaGetRectangle( L, 2 );
 
+	state->shapesTexture = *texture;
+
 	SetShapesTexture( *texture, source );
 
 	return 0;
+}
+
+/*
+> texture = RL.GetShapesTexture()
+
+Get texture that is used for shapes drawing. Return as lightuserdata
+
+- Success return Texture
+*/
+int lshapesGetShapesTexture( lua_State* L ) {
+	lua_pushlightuserdata( L, &state->shapesTexture );
+
+	return 1;
+}
+
+/*
+> source = RL.GetShapesTextureRectangle()
+
+Get texture source rectangle that is used for shapes drawing
+
+- Success return Rectangle
+*/
+int lshapesGetShapesTextureRectangle( lua_State* L ) {
+	uluaPushRectangle( L, GetShapesTextureRectangle() );
+
+	return 1;
 }
 
 /*
@@ -870,6 +887,24 @@ int lshapesCheckCollisionCircleRec( lua_State* L ) {
 	Rectangle rec = uluaGetRectangle( L, 3 );
 
 	lua_pushboolean( L, CheckCollisionCircleRec( center, radius, rec ) );
+
+	return 1;
+}
+
+/*
+> collision = RL.CheckCollisionCircleLine( Vector2 center, float radius, Vector2 p1, Vector2 p2 )
+
+Check if circle collides with a line created betweeen two points [p1] and [p2]
+
+- Success return bool
+*/
+int lshapesCheckCollisionCircleLine( lua_State* L ) {
+	Vector2 center = uluaGetVector2( L, 1 );
+	float radius = luaL_checknumber( L, 2 );
+	Vector2 p1 = uluaGetVector2( L, 3 );
+	Vector2 p2 = uluaGetVector2( L, 4 );
+
+	lua_pushboolean( L, CheckCollisionCircleLine( center, radius, p1, p2 ) );
 
 	return 1;
 }

@@ -35,6 +35,7 @@ bool stateInit( int argn, const char** argc, const char* basePath ) {
 	state->guiFont = GuiGetFont();
 	state->defaultMaterial = LoadMaterialDefault();
 	state->defaultTexture = (Texture){ 1, 1, 1, 1, 7 };
+	state->shapesTexture = (Texture){ 1, 1, 1, 1, 7 };
 	state->RLGLcurrentShaderLocs = malloc( RL_MAX_SHADER_LOCATIONS * sizeof( int ) );
 	int* defaultShaderLocs = rlGetShaderLocsDefault();
 

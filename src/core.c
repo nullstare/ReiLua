@@ -560,6 +560,19 @@ int lcoreGetClipboardText( lua_State* L ) {
 }
 
 /*
+> image = RL.GetClipboardImage()
+
+Get clipboard image content
+
+- Success return Image
+*/
+int lcoreGetClipboardImage( lua_State* L ) {
+	uluaPushImage( L, GetClipboardImage() );
+
+	return 1;
+}
+
+/*
 > RL.EnableEventWaiting()
 
 Enable waiting for events on EndDrawing(), no automatic event polling
@@ -1783,6 +1796,60 @@ int lcoreGetApplicationDirectory( lua_State* L ) {
 }
 
 /*
+> success = RL.MakeDirectory( string dirPath )
+
+Create directories (including full path requested), returns 0 on success
+
+- Success return int
+*/
+int lcoreMakeDirectory( lua_State* L ) {
+	const char *dirPath = luaL_checkstring( L, 1 );
+
+	lua_pushinteger( L, MakeDirectory( dirPath ) );
+
+	return 1;
+}
+
+/*
+> success = RL.ChangeDirectory( string directory )
+
+Change working directory, return true on success
+
+- Success return bool
+*/
+int lcoreChangeDirectory( lua_State* L ) {
+	lua_pushboolean( L, ChangeDirectory( luaL_checkstring( L, 1 ) ) );
+
+	return 1;
+}
+
+/*
+> isFile = RL.IsPathFile( string path )
+
+Check if a given path is a file or a directory
+
+- Success return bool
+*/
+int lcoreIsPathFile( lua_State* L ) {
+	lua_pushboolean( L, IsPathFile( luaL_checkstring( L, 1 ) ) );
+
+	return 1;
+}
+
+/*
+> isValid = RL.IsFileNameValid( string fileName )
+
+Check if fileName is valid for the platform/OS
+
+- Success return bool
+*/
+int lcoreIsFileNameValid( lua_State* L ) {
+	lua_pushboolean( L, IsFileNameValid( luaL_checkstring( L, 1 ) ) );
+
+	return 1;
+}
+
+/*
 > fileNames = RL.LoadDirectoryFiles( string dirPath )
 
 Load directory filepaths
@@ -1827,32 +1894,6 @@ int lcoreLoadDirectoryFilesEx( lua_State* L ) {
 		lua_rawseti( L, -2, i+1 );
 	}
 	UnloadDirectoryFiles( files );
-
-	return 1;
-}
-
-/*
-> success = RL.ChangeDirectory( string directory )
-
-Change working directory, return true on success
-
-- Success return bool
-*/
-int lcoreChangeDirectory( lua_State* L ) {
-	lua_pushboolean( L, ChangeDirectory( luaL_checkstring( L, 1 ) ) );
-
-	return 1;
-}
-
-/*
-> isFile = RL.IsPathFile( string path )
-
-Check if a given path is a file or a directory
-
-- Success return bool
-*/
-int lcoreIsPathFile( lua_State* L ) {
-	lua_pushboolean( L, IsPathFile( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
 }
@@ -1995,6 +2036,81 @@ int lcoreDecodeDataBase64( lua_State* L ) {
 	free( decodedData );
 
 	return 2;
+}
+
+/*
+> code = RL.ComputeCRC32( Buffer data )
+
+Compute CRC32 hash code. Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+
+- Failure return false
+- Success return int
+*/
+int lcoreComputeCRC32( lua_State* L ) {
+	Buffer* buffer = uluaGetBuffer( L, 1 );
+
+	if ( buffer->type == BUFFER_UNSIGNED_CHAR ) {
+		lua_pushinteger( L, ComputeCRC32( buffer->data, buffer->size ) );
+	}
+	else {
+		lua_pushboolean( L, false );
+	}
+
+	return 1;
+}
+
+/*
+> code = RL.ComputeMD5( Buffer data )
+
+Compute MD5 hash code, returns static int[4] (16 bytes). Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+
+- Failure return false
+- Success return int{4}
+*/
+int lcoreComputeMD5( lua_State* L ) {
+	Buffer* buffer = uluaGetBuffer( L, 1 );
+
+	if ( buffer->type == BUFFER_UNSIGNED_CHAR ) {
+		unsigned int* code = ComputeMD5( buffer->data, buffer->size );
+		lua_createtable( L, 4, 0 );
+
+		for ( unsigned int i = 0; i < 4; i++ ) {
+			lua_pushinteger( L, code[i] );
+			lua_rawseti( L, -2, i + 1 );
+		}
+	}
+	else {
+		lua_pushboolean( L, false );
+	}
+
+	return 1;
+}
+
+/*
+> code = RL.ComputeSHA1( Buffer data )
+
+Compute SHA1 hash code, returns static int[5] (20 bytes). Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+
+- Failure return false
+- Success return int{5}
+*/
+int lcoreComputeSHA1( lua_State* L ) {
+	Buffer* buffer = uluaGetBuffer( L, 1 );
+
+	if ( buffer->type == BUFFER_UNSIGNED_CHAR ) {
+		unsigned int* code = ComputeSHA1( buffer->data, buffer->size );
+		lua_createtable( L, 5, 0 );
+
+		for ( unsigned int i = 0; i < 5; i++ ) {
+			lua_pushinteger( L, code[i] );
+			lua_rawseti( L, -2, i + 1 );
+		}
+	}
+	else {
+		lua_pushboolean( L, false );
+	}
+
+	return 1;
 }
 
 /*
@@ -2488,6 +2604,22 @@ int lcoreSetGamepadMappings( lua_State* L ) {
 	lua_pushnumber( L, SetGamepadMappings( mappings ) );
 
 	return 1;
+}
+
+/*
+> RL.SetGamepadVibration( int gamepad, float leftMotor, float rightMotor, float duration )
+
+Set gamepad vibration for both motors (duration in seconds)
+*/
+int lcoreSetGamepadVibration( lua_State* L ) {
+	int gamepad = luaL_checkinteger( L, 1 );
+	float leftMotor = luaL_checknumber( L, 2 );
+	float rightMotor = luaL_checknumber( L, 2 );
+	float duration = luaL_checknumber( L, 2 );
+
+	SetGamepadVibration( gamepad, leftMotor, rightMotor, duration );
+
+	return 0;
 }
 
 /*

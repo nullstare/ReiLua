@@ -7,6 +7,17 @@ KEY CHANGES:
 DETAILED CHANGES:
 	- CHANGE: Is*Ready to Is*Valid functions.
 	- CHANGE: GetScreenToWorldRay and GetScreenToWorldRayEx.
+	- ADDED: GetClipboardImage.
+	- ADDED: MakeDirectory and IsFileNameValid.
+	- ADDED: ComputeCRC32, ComputeMD5 and ComputeSHA1.
+	- ADDED: SetGamepadVibration.
+	- ADDED: GetShapesTexture and GetShapesTextureRectangle.
+	- ADDED: CheckCollisionCircleLine.
+	- ADDED: LoadImageAnimFromMemory, ImageFromChannel and ImageKernelConvolution.
+	- ADDED: ImageDrawLineEx and ImageDrawTriangle* functions.
+	- ADDED: ColorIsEqual and ColorLerp.
+	- ADDED: TextToSnake and TextToCamel.
+	- ADDED: DrawModelPoints, DrawModelPointsEx, ExportMeshAsCode and UpdateModelAnimationBones.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

@@ -40,7 +40,7 @@ end
 
 function RL.update( delta )
 	if RL.IsMouseButtonPressed( 0 ) then
-		ray = RL.GetMouseRay( RL.GetMousePosition(), camera )
+		ray = RL.GetScreenToWorldRay( RL.GetMousePosition(), camera )
 		ray_collision()
 	end
 end

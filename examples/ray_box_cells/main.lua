@@ -61,7 +61,7 @@ function RL.update( delta )
 	-- Raycast.
 
 	if not guiMouseHover and RL.IsMouseButtonPressed( RL.MOUSE_BUTTON_LEFT ) then
-		ray = RL.GetMouseRay( RL.GetMousePosition(), camera.camera )
+		ray = RL.GetScreenToWorldRay( RL.GetMousePosition(), camera.camera )
 		rayCol = box:getRayCollisionMAS( ray )
 
 		cells, exitPoint = RL.GetRayBoxCells( ray, box:maxToPos(), cellSize )

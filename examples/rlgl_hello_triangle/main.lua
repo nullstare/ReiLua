@@ -7,7 +7,6 @@ local res = Vector2:new( 1024, 720 )
 local winScale = 1
 local winSize = res:scale( winScale )
 local monitor = 0
-local null = RL.LoadBuffer( {}, RL.BUFFER_UNSIGNED_CHAR );
 
 local triangle = {
 	texture = {
@@ -97,7 +96,7 @@ local function createTriangle()
 		RL.BUFFER_FLOAT
 	)
 	triangle.vbos.positions = RL.rlLoadVertexBuffer( vertexBuffer, false )
-	RL.rlSetVertexAttribute( 0, 3, RL.RL_FLOAT, false, 0, null )
+	RL.rlSetVertexAttribute( 0, 3, RL.RL_FLOAT, false, 0, 0 )
 	RL.rlEnableVertexAttribute( 0 )
 
 	-- Colors.
@@ -110,7 +109,7 @@ local function createTriangle()
 		RL.BUFFER_FLOAT
 	)
 	triangle.vbos.colors = RL.rlLoadVertexBuffer( colors, false )
-	RL.rlSetVertexAttribute( 1, 4, RL.RL_FLOAT, false, 0, null )
+	RL.rlSetVertexAttribute( 1, 4, RL.RL_FLOAT, false, 0, 0 )
 	RL.rlEnableVertexAttribute( 1 )
 
 	-- Texcoords.
@@ -123,7 +122,7 @@ local function createTriangle()
 		RL.BUFFER_FLOAT
 	)
 	triangle.vbos.texcoors = RL.rlLoadVertexBuffer( texcoors, false )
-	RL.rlSetVertexAttribute( 2, 2, RL.RL_FLOAT, false, 0, null )
+	RL.rlSetVertexAttribute( 2, 2, RL.RL_FLOAT, false, 0, 0 )
 	RL.rlEnableVertexAttribute( 2 )
 
 	-- Disable.

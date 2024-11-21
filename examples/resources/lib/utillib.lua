@@ -59,7 +59,7 @@ function utillib.utf8Sub( s, i, j )
 
 	i = utf8.offset( s, i )
 	j = utf8.offset( s, j + 1 )
-	
+
 	if i and j then
 		return s:sub( i, j - 1 )
 	elseif i then
@@ -147,25 +147,23 @@ function utillib.printt( t )
 	print( "}" )
 end
 
-function utillib.colorLerp( a, b, f )
-	return {
-		utillib.round( utillib.lerp( a[1], b[1], f ) ),
-		utillib.round( utillib.lerp( a[2], b[2], f ) ),
-		utillib.round( utillib.lerp( a[3], b[3], f ) )
-	}
-end
-
 -- Move secuence of elements inside table.
 function utillib.tableMove( t, src, len, dest )
     local copy = table.move( t, src, src + len - 1, 1, {} )
 
     if src >= dest then
         table.move( t, dest, src - 1, dest + len )
-    else 
+    else
         table.move( t, src + len, dest + len - 1, src )
     end
 
     table.move( copy, 1, len, dest, t )
+end
+
+function utillib.reverseTable( t )
+	for i = 1, math.floor( #t / 2 ), 1 do
+        t[i], t[ #t - i + 1 ] = t[ #t - i + 1 ], t[i]
+    end
 end
 
 function utillib.randomFloat( min, max )
@@ -181,6 +179,26 @@ function utillib.printBin( v )
 		end
 	end
 	print()
+end
+
+function utillib.capitalize( str )
+	return string.format( "%s%s", str:sub( 1, 1 ):upper(), str:sub( 2, -1 ) )
+end
+
+function utillib.doString( str )
+	local func, err = load( str )
+
+	if func then
+		local success, result = pcall( func )
+
+		if success then
+			return result
+		else
+			RL.TraceLog( RL.LOG_WARNING, "Execution error: "..result )
+		end
+	else
+		RL.TraceLog( RL.LOG_WARNING, "Compilation error: "..err )
+	end
 end
 
 return utillib

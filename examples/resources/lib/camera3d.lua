@@ -92,8 +92,6 @@ function Camera3D:getUpward()
 end
 
 function Camera3D:update( delta )
-	delta = 1 / 60 -- Hack for framerate independance.
-
 	if self.mode == self.MODES.FREE then
 		if RL.IsMouseButtonDown( RL.MOUSE_BUTTON_MIDDLE ) then
 			local mouseDelta = Vector2:newT( RL.GetMouseDelta() )
@@ -109,7 +107,7 @@ function Camera3D:update( delta )
 				mouseDelta = mouseDelta:scale( self.TURN_SPEED * delta )
 
 				RL.Camera3DYaw( self.camera, -mouseDelta.x, true )
-				RL.Camera3DPitch( self.camera, -mouseDelta.y, false, true, false )
+				RL.Camera3DPitch( self.camera, -mouseDelta.y, true, true, false )
 			end
 		end
 
@@ -124,7 +122,7 @@ function Camera3D:update( delta )
 		mouseDelta = mouseDelta:scale( self.TURN_SPEED * delta )
 
 		RL.Camera3DYaw( self.camera, -mouseDelta.x, false )
-		RL.Camera3DPitch( self.camera, -mouseDelta.y, false, false, false )
+		RL.Camera3DPitch( self.camera, -mouseDelta.y, true, false, false )
 		RL.SetMousePosition( Vector2:newT( RL.GetScreenSize() ):scale( 0.5 ) )
 
 		local distance = self.KEYBOARD_MOVE_SPEED * delta

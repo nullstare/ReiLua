@@ -2005,12 +2005,15 @@ void luaRegister() {
 	assingGlobalFunction( "Vector2Transform", lmathVector2Transform );
 	assingGlobalFunction( "Vector2Lerp", lmathVector2Lerp );
 	assingGlobalFunction( "Vector2Reflect", lmathVector2Reflect );
+	assingGlobalFunction( "Vector2Min", lmathVector2Min );
+	assingGlobalFunction( "Vector2Max", lmathVector2Max );
 	assingGlobalFunction( "Vector2Rotate", lmathVector2Rotate );
 	assingGlobalFunction( "Vector2MoveTowards", lmathVector2MoveTowards );
 	assingGlobalFunction( "Vector2Invert", lmathVector2Invert );
 	assingGlobalFunction( "Vector2Clamp", lmathVector2Clamp );
 	assingGlobalFunction( "Vector2ClampValue", lmathVector2ClampValue );
 	assingGlobalFunction( "Vector2Equals", lmathVector2Equals );
+	assingGlobalFunction( "Vector2Refract", lmathVector2Refract );
 		/* Vector3. */
 	assingGlobalFunction( "Vector3Zero", lmathVector3Zero );
 	assingGlobalFunction( "Vector3One", lmathVector3One );
@@ -2037,7 +2040,9 @@ void luaRegister() {
 	assingGlobalFunction( "Vector3Transform", lmathVector3Transform );
 	assingGlobalFunction( "Vector3RotateByQuaternion", lmathVector3RotateByQuaternion );
 	assingGlobalFunction( "Vector3RotateByAxisAngle", lmathVector3RotateByAxisAngle );
+	assingGlobalFunction( "Vector3MoveTowards", lmathVector3MoveTowards );
 	assingGlobalFunction( "Vector3Lerp", lmathVector3Lerp );
+	assingGlobalFunction( "Vector3CubicHermite", lmathVector3CubicHermite );
 	assingGlobalFunction( "Vector3Reflect", lmathVector3Reflect );
 	assingGlobalFunction( "Vector3Min", lmathVector3Min );
 	assingGlobalFunction( "Vector3Max", lmathVector3Max );
@@ -2048,6 +2053,29 @@ void luaRegister() {
 	assingGlobalFunction( "Vector3ClampValue", lmathVector3ClampValue );
 	assingGlobalFunction( "Vector3Equals", lmathVector3Equals );
 	assingGlobalFunction( "Vector3Refract", lmathVector3Refract );
+		/* Vector4. */
+	assingGlobalFunction( "Vector4Zero", lmathVector4Zero );
+	assingGlobalFunction( "Vector4One", lmathVector4One );
+	assingGlobalFunction( "Vector4Add", lmathVector4Add );
+	assingGlobalFunction( "Vector4AddValue", lmathVector4AddValue );
+	assingGlobalFunction( "Vector4Subtract", lmathVector4Subtract );
+	assingGlobalFunction( "Vector4SubtractValue", lmathVector4SubtractValue );
+	assingGlobalFunction( "Vector4Length", lmathVector4Length );
+	assingGlobalFunction( "Vector4LengthSqr", lmathVector4LengthSqr );
+	assingGlobalFunction( "Vector4DotProduct", lmathVector4DotProduct );
+	assingGlobalFunction( "Vector4Distance", lmathVector4Distance );
+	assingGlobalFunction( "Vector4DistanceSqr", lmathVector4DistanceSqr );
+	assingGlobalFunction( "Vector4Scale", lmathVector4Scale );
+	assingGlobalFunction( "Vector4Multiply", lmathVector4Multiply );
+	assingGlobalFunction( "Vector4Negate", lmathVector4Negate );
+	assingGlobalFunction( "Vector4Divide", lmathVector4Divide );
+	assingGlobalFunction( "Vector4Normalize", lmathVector4Normalize );
+	assingGlobalFunction( "Vector4Min", lmathVector4Min );
+	assingGlobalFunction( "Vector4Max", lmathVector4Max );
+	assingGlobalFunction( "Vector4Lerp", lmathVector4Lerp );
+	assingGlobalFunction( "Vector4MoveTowards", lmathVector4MoveTowards );
+	assingGlobalFunction( "Vector4Invert", lmathVector4Invert );
+	assingGlobalFunction( "Vector4Equals", lmathVector4Equals );
 		/* Matrix. */
 	assingGlobalFunction( "MatrixDeterminant", lmathMatrixDeterminant );
 	assingGlobalFunction( "MatrixTrace", lmathMatrixTrace );
@@ -2069,6 +2097,7 @@ void luaRegister() {
 	assingGlobalFunction( "MatrixPerspective", lmathMatrixPerspective );
 	assingGlobalFunction( "MatrixOrtho", lmathMatrixOrtho );
 	assingGlobalFunction( "MatrixLookAt", lmathMatrixLookAt );
+	assingGlobalFunction( "MatrixDecompose", lmathMatrixDecompose );
 		/* Quaternion. */
 	assingGlobalFunction( "QuaternionAdd", lmathQuaternionAdd );
 	assingGlobalFunction( "QuaternionAddValue", lmathQuaternionAddValue );
@@ -2084,6 +2113,7 @@ void luaRegister() {
 	assingGlobalFunction( "QuaternionLerp", lmathQuaternionLerp );
 	assingGlobalFunction( "QuaternionNlerp", lmathQuaternionNlerp );
 	assingGlobalFunction( "QuaternionSlerp", lmathQuaternionSlerp );
+	assingGlobalFunction( "QuaternionCubicHermiteSpline", lmathQuaternionCubicHermiteSpline );
 	assingGlobalFunction( "QuaternionFromVector3ToVector3", lmathQuaternionFromVector3ToVector3 );
 	assingGlobalFunction( "QuaternionFromMatrix", lmathQuaternionFromMatrix );
 	assingGlobalFunction( "QuaternionToMatrix", lmathQuaternionToMatrix );

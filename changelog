@@ -20,6 +20,8 @@ DETAILED CHANGES:
 	- ADDED: DrawModelPoints, DrawModelPointsEx, ExportMeshAsCode and UpdateModelAnimationBones.
 	- ADDED: rlSetClipPlanes, rlGetCullDistanceNear, rlGetCullDistanceFar, rlGetActiveFramebuffer,
 	rlBindFramebuffer, rlColorMask and rlSetUniformMatrices.
+	- ADDED: Vector2Min, Vector2Max, Vector2Refract, Vector3MoveTowards, Vector3CubicHermite,
+	QuaternionCubicHermiteSpline, MatrixDecompose and Vector4* functions.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

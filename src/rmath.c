@@ -483,6 +483,38 @@ int lmathVector2Reflect( lua_State* L ) {
 }
 
 /*
+> result = RL.Vector2Min( Vector2 v1, Vector2 v2 )
+
+Get min value for each pair of components
+
+- Success return Vector2
+*/
+int lmathVector2Min( lua_State* L ) {
+	Vector2 v1 = uluaGetVector2( L, 1 );
+	Vector2 v2 = uluaGetVector2( L, 2 );
+
+	uluaPushVector2( L, Vector2Min( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector2Max( Vector2 v1, Vector2 v2 )
+
+Get max value for each pair of components
+
+- Success return Vector2
+*/
+int lmathVector2Max( lua_State* L ) {
+	Vector2 v1 = uluaGetVector2( L, 1 );
+	Vector2 v2 = uluaGetVector2( L, 2 );
+
+	uluaPushVector2( L, Vector2Max( v1, v2 ) );
+
+	return 1;
+}
+
+/*
 > result = RL.Vector2Rotate( Vector2 v, float angle )
 
 Rotate vector by angle
@@ -577,6 +609,27 @@ int lmathVector2Equals( lua_State* L ) {
 	Vector2 v2 = uluaGetVector2( L, 2 );
 
 	lua_pushboolean( L, Vector2Equals( v1, v2 ) == 1 );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector2Refract( Vector2 v, Vector2 n, float r )
+
+Compute the direction of a refracted ray
+v: normalized direction of the incoming ray
+n: normalized normal vector of the interface of two optical media
+r: ratio of the refractive index of the medium from where the ray comes
+   to the refractive index of the medium on the other side of the surface
+
+- Success return Vector2
+*/
+int lmathVector2Refract( lua_State* L ) {
+	Vector2 v = uluaGetVector2( L, 1 );
+	Vector2 n = uluaGetVector2( L, 2 );
+	float r = luaL_checknumber( L, 3 );
+
+	uluaPushVector2( L, Vector2Refract( v, n, r ) );
 
 	return 1;
 }
@@ -980,6 +1033,23 @@ int lmathVector3RotateByAxisAngle( lua_State* L ) {
 }
 
 /*
+> result = RL.Vector3MoveTowards( Vector3 v, Vector3 target, float maxDistance )
+
+Move Vector towards target
+
+- Success return Vector3
+*/
+int lmathVector3MoveTowards( lua_State* L ) {
+	Vector3 v = uluaGetVector3( L, 1 );
+	Vector3 target = uluaGetVector3( L, 2 );
+	float maxDistance = luaL_checknumber( L, 3 );
+
+	uluaPushVector3( L, Vector3MoveTowards( v, target, maxDistance ) );
+
+	return 1;
+}
+
+/*
 > result = RL.Vector3Lerp( Vector3 v1, Vector3 v2, float amount )
 
 Calculate linear interpolation between two vectors
@@ -992,6 +1062,26 @@ int lmathVector3Lerp( lua_State* L ) {
 	float amount = luaL_checknumber( L, 3 );
 
 	uluaPushVector3( L, Vector3Lerp( v1, v2, amount ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector3CubicHermite( Vector3 v1, Vector3 tangent1, Vector3 v2, Vector3 tangent2, float amount )
+
+Calculate cubic hermite interpolation between two vectors and their tangents
+as described in the GLTF 2.0 specification: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#interpolation-cubic
+
+- Success return Vector3
+*/
+int lmathVector3CubicHermite( lua_State* L ) {
+	Vector3 v1 = uluaGetVector3( L, 1 );
+	Vector3 tangent1 = uluaGetVector3( L, 2 );
+	Vector3 v2 = uluaGetVector3( L, 3 );
+	Vector3 tangent2 = uluaGetVector3( L, 4 );
+	float amount = luaL_checknumber( L, 5 );
+
+	uluaPushVector3( L, Vector3CubicHermite( v1, tangent1, v2, tangent2, amount ) );
 
 	return 1;
 }
@@ -1165,6 +1255,353 @@ int lmathVector3Refract( lua_State* L ) {
 	float r = luaL_checknumber( L, 3 );
 
 	uluaPushVector3( L, Vector3Refract( v, n, r ) );
+
+	return 1;
+}
+
+/*
+## Math - Vector4
+*/
+
+/*
+> result = RL.Vector4Zero()
+
+Vector with components value 0.0f
+
+- Success return Vector4
+*/
+int lmathVector4Zero( lua_State* L ) {
+	uluaPushVector4( L, Vector4Zero() );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4One()
+
+Vector with components value 1.0f
+
+- Success return Vector4
+*/
+int lmathVector4One( lua_State* L ) {
+	uluaPushVector4( L, Vector4One() );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4Add( Vector4 v1, Vector4 v2 )
+
+Add two vectors
+
+- Success return Vector4
+*/
+int lmathVector4Add( lua_State* L ) {
+	Vector4 v1 = uluaGetVector4( L, 1 );
+	Vector4 v2 = uluaGetVector4( L, 2 );
+
+	uluaPushVector4( L, Vector4Add( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4AddValue( Vector4 v, float add )
+
+Add vector and float value
+
+- Success return Vector4
+*/
+int lmathVector4AddValue( lua_State* L ) {
+	Vector4 v = uluaGetVector4( L, 1 );
+	float add = luaL_checknumber( L, 2 );
+
+	uluaPushVector4( L, Vector4AddValue( v, add ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4Subtract( Vector4 v1, Vector4 v2 )
+
+Subtract two vectors
+
+- Success return Vector4
+*/
+int lmathVector4Subtract( lua_State* L ) {
+	Vector4 v1 = uluaGetVector4( L, 1 );
+	Vector4 v2 = uluaGetVector4( L, 2 );
+
+	uluaPushVector4( L, Vector4Subtract( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4SubtractValue( Vector4 v, float sub )
+
+Subtract vector by float value
+
+- Success return Vector4
+*/
+int lmathVector4SubtractValue( lua_State* L ) {
+	Vector4 v = uluaGetVector4( L, 1 );
+	float sub = luaL_checknumber( L, 2 );
+
+	uluaPushVector4( L, Vector4SubtractValue( v, sub ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4Length( Vector4 v )
+
+Calculate vector length
+
+- Success return float
+*/
+int lmathVector4Length( lua_State* L ) {
+	Vector4 v = uluaGetVector4( L, 1 );
+
+	lua_pushnumber( L, Vector4Length( v ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4LengthSqr( Vector4 v )
+
+Calculate vector square length
+
+- Success return float
+*/
+int lmathVector4LengthSqr( lua_State* L ) {
+	Vector4 v = uluaGetVector4( L, 1 );
+
+	lua_pushnumber( L, Vector4LengthSqr( v ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4DotProduct( Vector4 v1, Vector4 v2 )
+
+Calculate two vectors dot product
+
+- Success return float
+*/
+int lmathVector4DotProduct( lua_State* L ) {
+	Vector4 v1 = uluaGetVector4( L, 1 );
+	Vector4 v2 = uluaGetVector4( L, 2 );
+
+	lua_pushnumber( L, Vector4DotProduct( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4Distance( Vector4 v1, Vector4 v2 )
+
+Calculate distance between two vectors
+
+- Success return float
+*/
+int lmathVector4Distance( lua_State* L ) {
+	Vector4 v1 = uluaGetVector4( L, 1 );
+	Vector4 v2 = uluaGetVector4( L, 2 );
+
+	lua_pushnumber( L, Vector4Distance( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4DistanceSqr( Vector4 v1, Vector4 v2 )
+
+Calculate square distance between two vectors
+
+- Success return float
+*/
+int lmathVector4DistanceSqr( lua_State* L ) {
+	Vector4 v1 = uluaGetVector4( L, 1 );
+	Vector4 v2 = uluaGetVector4( L, 2 );
+
+	lua_pushnumber( L, Vector4DistanceSqr( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4Scale( Vector4 v, float scalar )
+
+Multiply vector by scalar
+
+- Success return Vector4
+*/
+int lmathVector4Scale( lua_State* L ) {
+	Vector4 v = uluaGetVector4( L, 1 );
+	float scalar = luaL_checknumber( L, 2 );
+
+	uluaPushVector4( L, Vector4Scale( v, scalar ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4Multiply( Vector4 v1, Vector4 v2 )
+
+Multiply vector by vector
+
+- Success return Vector4
+*/
+int lmathVector4Multiply( lua_State* L ) {
+	Vector4 v1 = uluaGetVector4( L, 1 );
+	Vector4 v2 = uluaGetVector4( L, 2 );
+
+	uluaPushVector4( L, Vector4Multiply( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4Negate( Vector4 v )
+
+Negate provided vector (invert direction)
+
+- Success return Vector4
+*/
+int lmathVector4Negate( lua_State* L ) {
+	Vector4 v = uluaGetVector4( L, 1 );
+
+	uluaPushVector4( L, Vector4Negate( v ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4Divide( Vector4 v1, Vector4 v2 )
+
+Divide vector by vector
+
+- Success return Vector4
+*/
+int lmathVector4Divide( lua_State* L ) {
+	Vector4 v1 = uluaGetVector4( L, 1 );
+	Vector4 v2 = uluaGetVector4( L, 2 );
+
+	uluaPushVector4( L, Vector4Divide( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4Normalize( Vector4 v )
+
+Normalize provided vector
+
+- Success return Vector4
+*/
+int lmathVector4Normalize( lua_State* L ) {
+	Vector4 v = uluaGetVector4( L, 1 );
+
+	uluaPushVector4( L, Vector4Normalize( v ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4Min( Vector4 v1, Vector4 v2 )
+
+Get min value for each pair of components
+
+- Success return Vector4
+*/
+int lmathVector4Min( lua_State* L ) {
+	Vector4 v1 = uluaGetVector4( L, 1 );
+	Vector4 v2 = uluaGetVector4( L, 2 );
+
+	uluaPushVector4( L, Vector4Min( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4Max( Vector4 v1, Vector4 v2 )
+
+Get max value for each pair of components
+
+- Success return Vector4
+*/
+int lmathVector4Max( lua_State* L ) {
+	Vector4 v1 = uluaGetVector4( L, 1 );
+	Vector4 v2 = uluaGetVector4( L, 2 );
+
+	uluaPushVector4( L, Vector4Max( v1, v2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4Lerp( Vector4 v1, Vector4 v2, float amount )
+
+Calculate linear interpolation between two vectors
+
+- Success return Vector4
+*/
+int lmathVector4Lerp( lua_State* L ) {
+	Vector4 v1 = uluaGetVector4( L, 1 );
+	Vector4 v2 = uluaGetVector4( L, 2 );
+	float amount = luaL_checknumber( L, 3 );
+
+	uluaPushVector4( L, Vector4Lerp( v1, v2, amount ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4MoveTowards( Vector4 v, Vector4 target, float maxDistance )
+
+Move Vector towards target
+
+- Success return Vector4
+*/
+int lmathVector4MoveTowards( lua_State* L ) {
+	Vector4 v = uluaGetVector4( L, 1 );
+	Vector4 target = uluaGetVector4( L, 2 );
+	float maxDistance = luaL_checknumber( L, 3 );
+
+	uluaPushVector4( L, Vector4MoveTowards( v, target, maxDistance ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4Invert( Vector4 v )
+
+Invert the given vector
+
+- Success return Vector4
+*/
+int lmathVector4Invert( lua_State* L ) {
+	Vector4 v = uluaGetVector4( L, 1 );
+
+	uluaPushVector4( L, Vector4Invert( v ) );
+
+	return 1;
+}
+
+/*
+> result = RL.Vector4Equals( Vector4 v1, Vector4 v2 )
+
+Check whether two given vectors are almost equal
+
+- Success return bool
+*/
+int lmathVector4Equals( lua_State* L ) {
+	Vector4 v1 = uluaGetVector4( L, 1 );
+	Vector4 v2 = uluaGetVector4( L, 2 );
+
+	lua_pushboolean( L, Vector4Equals( v1, v2 ) == 1 );
 
 	return 1;
 }
@@ -1491,6 +1928,29 @@ int lmathMatrixLookAt( lua_State* L ) {
 }
 
 /*
+> translation, rotation, scale = RL.MatrixDecompose( Matrix mat )
+
+Decompose a transformation matrix into its rotational, translational and scaling components
+
+- Success return Vector3, Quaternion, Vector3
+*/
+int lmathMatrixDecompose( lua_State* L ) {
+	Matrix mat = uluaGetMatrix( L, 1 );
+
+	Vector3 translation = { 0 };
+	Quaternion rotation = { 0 };
+	Vector3 scale = { 0 };
+
+	MatrixDecompose( mat, &translation, &rotation, &scale );
+
+	uluaPushVector3( L, translation );
+	uluaPushQuaternion( L, rotation );
+	uluaPushVector3( L, scale );
+
+	return 3;
+}
+
+/*
 ## Math - Quaternion
 */
 
@@ -1711,6 +2171,26 @@ int lmathQuaternionSlerp( lua_State* L ) {
 	float amount = luaL_checknumber( L, 3 );
 
 	uluaPushQuaternion( L, QuaternionSlerp( q1, q2, amount ) );
+
+	return 1;
+}
+
+/*
+> result = RL.QuaternionCubicHermiteSpline( Quaternion q1, Quaternion outTangent1, Quaternion q2, Quaternion inTangent2, float t )
+
+Calculate quaternion cubic spline interpolation using Cubic Hermite Spline algorithm
+as described in the GLTF 2.0 specification: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#interpolation-cubic
+
+- Success return Quaternion
+*/
+int lmathQuaternionCubicHermiteSpline( lua_State* L ) {
+	Quaternion q1 = uluaGetQuaternion( L, 1 );
+	Quaternion outTangent1 = uluaGetQuaternion( L, 2 );
+	Quaternion q2 = uluaGetQuaternion( L, 3 );
+	Quaternion inTangent2 = uluaGetQuaternion( L, 4 );
+	float t = luaL_checknumber( L, 5 );
+
+	uluaPushQuaternion( L, QuaternionCubicHermiteSpline( q1, outTangent1, q2, inTangent2, t ) );
 
 	return 1;
 }

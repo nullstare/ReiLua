@@ -8835,6 +8835,22 @@ Calculate reflected vector to normal
 
 ---
 
+> result = RL.Vector2Min( Vector2 v1, Vector2 v2 )
+
+Get min value for each pair of components
+
+- Success return Vector2
+
+---
+
+> result = RL.Vector2Max( Vector2 v1, Vector2 v2 )
+
+Get max value for each pair of components
+
+- Success return Vector2
+
+---
+
 > result = RL.Vector2Rotate( Vector2 v, float angle )
 
 Rotate vector by angle
@@ -8881,6 +8897,18 @@ Clamp the magnitude of the vector between two min and max values
 Check whether two given vectors are almost equal
 
 - Success return bool
+
+---
+
+> result = RL.Vector2Refract( Vector2 v, Vector2 n, float r )
+
+Compute the direction of a refracted ray
+v: normalized direction of the incoming ray
+n: normalized normal vector of the interface of two optical media
+r: ratio of the refractive index of the medium from where the ray comes
+   to the refractive index of the medium on the other side of the surface
+
+- Success return Vector2
 
 ---
 
@@ -9089,9 +9117,26 @@ Rotates a vector around an axis
 
 ---
 
+> result = RL.Vector3MoveTowards( Vector3 v, Vector3 target, float maxDistance )
+
+Move Vector towards target
+
+- Success return Vector3
+
+---
+
 > result = RL.Vector3Lerp( Vector3 v1, Vector3 v2, float amount )
 
 Calculate linear interpolation between two vectors
+
+- Success return Vector3
+
+---
+
+> result = RL.Vector3CubicHermite( Vector3 v1, Vector3 tangent1, Vector3 v2, Vector3 tangent2, float amount )
+
+Calculate cubic hermite interpolation between two vectors and their tangents
+as described in the GLTF 2.0 specification: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#interpolation-cubic
 
 - Success return Vector3
 
@@ -9182,6 +9227,186 @@ from where the ray comes to the refractive index of the medium
 on the other side of the surface
 
 - Success return Vector3
+
+---
+
+## Math - Vector4
+
+---
+
+> result = RL.Vector4Zero()
+
+Vector with components value 0.0f
+
+- Success return Vector4
+
+---
+
+> result = RL.Vector4One()
+
+Vector with components value 1.0f
+
+- Success return Vector4
+
+---
+
+> result = RL.Vector4Add( Vector4 v1, Vector4 v2 )
+
+Add two vectors
+
+- Success return Vector4
+
+---
+
+> result = RL.Vector4AddValue( Vector4 v, float add )
+
+Add vector and float value
+
+- Success return Vector4
+
+---
+
+> result = RL.Vector4Subtract( Vector4 v1, Vector4 v2 )
+
+Subtract two vectors
+
+- Success return Vector4
+
+---
+
+> result = RL.Vector4SubtractValue( Vector4 v, float sub )
+
+Subtract vector by float value
+
+- Success return Vector4
+
+---
+
+> result = RL.Vector4Length( Vector4 v )
+
+Calculate vector length
+
+- Success return float
+
+---
+
+> result = RL.Vector4LengthSqr( Vector4 v )
+
+Calculate vector square length
+
+- Success return float
+
+---
+
+> result = RL.Vector4DotProduct( Vector4 v1, Vector4 v2 )
+
+Calculate two vectors dot product
+
+- Success return float
+
+---
+
+> result = RL.Vector4Distance( Vector4 v1, Vector4 v2 )
+
+Calculate distance between two vectors
+
+- Success return float
+
+---
+
+> result = RL.Vector4DistanceSqr( Vector4 v1, Vector4 v2 )
+
+Calculate square distance between two vectors
+
+- Success return float
+
+---
+
+> result = RL.Vector4Scale( Vector4 v, float scalar )
+
+Multiply vector by scalar
+
+- Success return Vector4
+
+---
+
+> result = RL.Vector4Multiply( Vector4 v1, Vector4 v2 )
+
+Multiply vector by vector
+
+- Success return Vector4
+
+---
+
+> result = RL.Vector4Negate( Vector4 v )
+
+Negate provided vector (invert direction)
+
+- Success return Vector4
+
+---
+
+> result = RL.Vector4Divide( Vector4 v1, Vector4 v2 )
+
+Divide vector by vector
+
+- Success return Vector4
+
+---
+
+> result = RL.Vector4Normalize( Vector4 v )
+
+Normalize provided vector
+
+- Success return Vector4
+
+---
+
+> result = RL.Vector4Min( Vector4 v1, Vector4 v2 )
+
+Get min value for each pair of components
+
+- Success return Vector4
+
+---
+
+> result = RL.Vector4Max( Vector4 v1, Vector4 v2 )
+
+Get max value for each pair of components
+
+- Success return Vector4
+
+---
+
+> result = RL.Vector4Lerp( Vector4 v1, Vector4 v2, float amount )
+
+Calculate linear interpolation between two vectors
+
+- Success return Vector4
+
+---
+
+> result = RL.Vector4MoveTowards( Vector4 v, Vector4 target, float maxDistance )
+
+Move Vector towards target
+
+- Success return Vector4
+
+---
+
+> result = RL.Vector4Invert( Vector4 v )
+
+Invert the given vector
+
+- Success return Vector4
+
+---
+
+> result = RL.Vector4Equals( Vector4 v1, Vector4 v2 )
+
+Check whether two given vectors are almost equal
+
+- Success return bool
 
 ---
 
@@ -9349,6 +9574,14 @@ Get camera look-at matrix (View matrix)
 
 ---
 
+> translation, rotation, scale = RL.MatrixDecompose( Matrix mat )
+
+Decompose a transformation matrix into its rotational, translational and scaling components
+
+- Success return Vector3, Quaternion, Vector3
+
+---
+
 ## Math - Quaternion
 
 ---
@@ -9460,6 +9693,15 @@ Calculate slerp-optimized interpolation between two quaternions
 > result = RL.QuaternionSlerp( Quaternion q1, Quaternion q2, float amount )
 
 Calculates spherical linear interpolation between two quaternions
+
+- Success return Quaternion
+
+---
+
+> result = RL.QuaternionCubicHermiteSpline( Quaternion q1, Quaternion outTangent1, Quaternion q2, Quaternion inTangent2, float t )
+
+Calculate quaternion cubic spline interpolation using Cubic Hermite Spline algorithm
+as described in the GLTF 2.0 specification: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#interpolation-cubic
 
 - Success return Quaternion
 
@@ -10202,6 +10444,28 @@ NOTE: We store current viewport dimensions
 
 ---
 
+> RL.rlSetClipPlanes( float nearPlane, float farPlane )
+
+Set clip planes distances
+
+---
+
+> distance = RL.rlGetCullDistanceNear()
+
+Get cull plane distance near
+
+- Success return float
+
+---
+
+> distance = RL.rlGetCullDistanceFar()
+
+Get cull plane distance far
+
+- Success return float
+
+---
+
 ## RLGL - Vertex level operations
 
 ---
@@ -10407,6 +10671,14 @@ Disable render texture (fbo), return to default framebuffer
 
 ---
 
+> framebuffer = RL.rlGetActiveFramebuffer()
+
+Get the currently active render texture (fbo), 0 for default framebuffer
+
+- Success return int
+
+---
+
 > RL.rlActiveDrawBuffers( int count )
 
 Activate multiple draw color buffers
@@ -10416,6 +10688,12 @@ Activate multiple draw color buffers
 > RL.rlBlitFramebuffer( Rectangle srcRect, Rectangle dstRect, int bufferMask )
 
 Blit active framebuffer to main framebuffer
+
+---
+
+> RL.rlBindFramebuffer( int target, int framebuffer )
+
+Bind framebuffer (FBO)
 
 ---
 
@@ -10468,6 +10746,12 @@ Enable backface culling
 > RL.rlDisableBackfaceCulling()
 
 Disable backface culling
+
+---
+
+> RL.rlColorMask( bool r, bool g, bool b, bool a )
+
+Color mask control
 
 ---
 
@@ -10974,6 +11258,12 @@ Set shader value uniform
 > RL.rlSetUniformMatrix( int locIndex, Matrix mat )
 
 Set shader value matrix
+
+---
+
+> RL.rlSetUniformMatrices( int locIndex, Matrix{} mat )
+
+Set shader value matrices
 
 ---
 

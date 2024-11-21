@@ -5884,6 +5884,20 @@ function RL.Vector2Lerp( v1, v2, amount ) end
 ---@return any result 
 function RL.Vector2Reflect( v, normal ) end
 
+---Get min value for each pair of components
+---- Success return Vector2
+---@param v1 table
+---@param v2 table
+---@return any result 
+function RL.Vector2Min( v1, v2 ) end
+
+---Get max value for each pair of components
+---- Success return Vector2
+---@param v1 table
+---@param v2 table
+---@return any result 
+function RL.Vector2Max( v1, v2 ) end
+
 ---Rotate vector by angle
 ---- Success return Vector2
 ---@param v table
@@ -5928,6 +5942,18 @@ function RL.Vector2ClampValue( v, min, max ) end
 ---@param v2 table
 ---@return any result 
 function RL.Vector2Equals( v1, v2 ) end
+
+---Compute the direction of a refracted ray
+---v: normalized direction of the incoming ray
+---n: normalized normal vector of the interface of two optical media
+---r: ratio of the refractive index of the medium from where the ray comes
+---   to the refractive index of the medium on the other side of the surface
+---- Success return Vector2
+---@param v table
+---@param n table
+---@param r number
+---@return any result 
+function RL.Vector2Refract( v, n, r ) end
 
 -- Math - Vector 3
 
@@ -6100,6 +6126,14 @@ function RL.Vector3RotateByQuaternion( v, q ) end
 ---@return any result 
 function RL.Vector3RotateByAxisAngle( v, axis, angle ) end
 
+---Move Vector towards target
+---- Success return Vector3
+---@param v table
+---@param target table
+---@param maxDistance number
+---@return any result 
+function RL.Vector3MoveTowards( v, target, maxDistance ) end
+
 ---Calculate linear interpolation between two vectors
 ---- Success return Vector3
 ---@param v1 table
@@ -6107,6 +6141,17 @@ function RL.Vector3RotateByAxisAngle( v, axis, angle ) end
 ---@param amount number
 ---@return any result 
 function RL.Vector3Lerp( v1, v2, amount ) end
+
+---Calculate cubic hermite interpolation between two vectors and their tangents
+---as described in the GLTF 2.0 specification: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#interpolation-cubic
+---- Success return Vector3
+---@param v1 table
+---@param tangent1 table
+---@param v2 table
+---@param tangent2 table
+---@param amount number
+---@return any result 
+function RL.Vector3CubicHermite( v1, tangent1, v2, tangent2, amount ) end
 
 ---Calculate reflected vector to normal
 ---- Success return Vector3
@@ -6190,6 +6235,155 @@ function RL.Vector3Equals( v1, v2 ) end
 ---@param r number
 ---@return any result 
 function RL.Vector3Refract( v, n, r ) end
+
+-- Math - Vector4
+
+---Vector with components value 0.0f
+---- Success return Vector4
+---@return any result 
+function RL.Vector4Zero() end
+
+---Vector with components value 1.0f
+---- Success return Vector4
+---@return any result 
+function RL.Vector4One() end
+
+---Add two vectors
+---- Success return Vector4
+---@param v1 table
+---@param v2 table
+---@return any result 
+function RL.Vector4Add( v1, v2 ) end
+
+---Add vector and float value
+---- Success return Vector4
+---@param v table
+---@param add number
+---@return any result 
+function RL.Vector4AddValue( v, add ) end
+
+---Subtract two vectors
+---- Success return Vector4
+---@param v1 table
+---@param v2 table
+---@return any result 
+function RL.Vector4Subtract( v1, v2 ) end
+
+---Subtract vector by float value
+---- Success return Vector4
+---@param v table
+---@param sub number
+---@return any result 
+function RL.Vector4SubtractValue( v, sub ) end
+
+---Calculate vector length
+---- Success return float
+---@param v table
+---@return any result 
+function RL.Vector4Length( v ) end
+
+---Calculate vector square length
+---- Success return float
+---@param v table
+---@return any result 
+function RL.Vector4LengthSqr( v ) end
+
+---Calculate two vectors dot product
+---- Success return float
+---@param v1 table
+---@param v2 table
+---@return any result 
+function RL.Vector4DotProduct( v1, v2 ) end
+
+---Calculate distance between two vectors
+---- Success return float
+---@param v1 table
+---@param v2 table
+---@return any result 
+function RL.Vector4Distance( v1, v2 ) end
+
+---Calculate square distance between two vectors
+---- Success return float
+---@param v1 table
+---@param v2 table
+---@return any result 
+function RL.Vector4DistanceSqr( v1, v2 ) end
+
+---Multiply vector by scalar
+---- Success return Vector4
+---@param v table
+---@param scalar number
+---@return any result 
+function RL.Vector4Scale( v, scalar ) end
+
+---Multiply vector by vector
+---- Success return Vector4
+---@param v1 table
+---@param v2 table
+---@return any result 
+function RL.Vector4Multiply( v1, v2 ) end
+
+---Negate provided vector (invert direction)
+---- Success return Vector4
+---@param v table
+---@return any result 
+function RL.Vector4Negate( v ) end
+
+---Divide vector by vector
+---- Success return Vector4
+---@param v1 table
+---@param v2 table
+---@return any result 
+function RL.Vector4Divide( v1, v2 ) end
+
+---Normalize provided vector
+---- Success return Vector4
+---@param v table
+---@return any result 
+function RL.Vector4Normalize( v ) end
+
+---Get min value for each pair of components
+---- Success return Vector4
+---@param v1 table
+---@param v2 table
+---@return any result 
+function RL.Vector4Min( v1, v2 ) end
+
+---Get max value for each pair of components
+---- Success return Vector4
+---@param v1 table
+---@param v2 table
+---@return any result 
+function RL.Vector4Max( v1, v2 ) end
+
+---Calculate linear interpolation between two vectors
+---- Success return Vector4
+---@param v1 table
+---@param v2 table
+---@param amount number
+---@return any result 
+function RL.Vector4Lerp( v1, v2, amount ) end
+
+---Move Vector towards target
+---- Success return Vector4
+---@param v table
+---@param target table
+---@param maxDistance number
+---@return any result 
+function RL.Vector4MoveTowards( v, target, maxDistance ) end
+
+---Invert the given vector
+---- Success return Vector4
+---@param v table
+---@return any result 
+function RL.Vector4Invert( v ) end
+
+---Check whether two given vectors are almost equal
+---- Success return bool
+---@param v1 table
+---@param v2 table
+---@return any result 
+function RL.Vector4Equals( v1, v2 ) end
 
 -- Math - Matrix
 
@@ -6331,6 +6525,14 @@ function RL.MatrixOrtho( left, right, bottom, top, near, far ) end
 ---@return any result 
 function RL.MatrixLookAt( eye, target, up ) end
 
+---Decompose a transformation matrix into its rotational, translational and scaling components
+---- Success return Vector3, Quaternion, Vector3
+---@param mat table
+---@return any translation
+---@return any rotation
+---@return any scale 
+function RL.MatrixDecompose( mat ) end
+
 -- Math - Quaternion
 
 ---Add two quaternions
@@ -6428,6 +6630,17 @@ function RL.QuaternionNlerp( q1, q2, amount ) end
 ---@param amount number
 ---@return any result 
 function RL.QuaternionSlerp( q1, q2, amount ) end
+
+---Calculate quaternion cubic spline interpolation using Cubic Hermite Spline algorithm
+---as described in the GLTF 2.0 specification: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#interpolation-cubic
+---- Success return Quaternion
+---@param q1 table
+---@param outTangent1 table
+---@param q2 table
+---@param inTangent2 table
+---@param t number
+---@return any result 
+function RL.QuaternionCubicHermiteSpline( q1, outTangent1, q2, inTangent2, t ) end
 
 ---Calculate quaternion based on the rotation from one vector to another
 ---- Success return Quaternion
@@ -7138,6 +7351,22 @@ function  RL.rlOrtho( left, right, bottom, top, znear, zfar ) end
 ---@return any RL.rlViewport
 function  RL.rlViewport( viewport ) end
 
+---Set clip planes distances
+---@param nearPlane number
+---@param farPlane number
+---@return any RL.rlSetClipPlanes
+function  RL.rlSetClipPlanes( nearPlane, farPlane ) end
+
+---Get cull plane distance near
+---- Success return float
+---@return any distance 
+function RL.rlGetCullDistanceNear() end
+
+---Get cull plane distance far
+---- Success return float
+---@return any distance 
+function RL.rlGetCullDistanceFar() end
+
 -- RLGL - Vertex level operations
 
 ---Initialize drawing mode (how to organize vertex)
@@ -7298,6 +7527,11 @@ function  RL.rlEnableFramebuffer( id ) end
 ---@return any RL.rlDisableFramebuffer
 function  RL.rlDisableFramebuffer() end
 
+---Get the currently active render texture (fbo), 0 for default framebuffer
+---- Success return int
+---@return any framebuffer 
+function RL.rlGetActiveFramebuffer() end
+
 ---Activate multiple draw color buffers
 ---@param count integer
 ---@return any RL.rlActiveDrawBuffers
@@ -7309,6 +7543,12 @@ function  RL.rlActiveDrawBuffers( count ) end
 ---@param bufferMask integer
 ---@return any RL.rlBlitFramebuffer
 function  RL.rlBlitFramebuffer( srcRect, dstRect, bufferMask ) end
+
+---Bind framebuffer (FBO)
+---@param target integer
+---@param framebuffer integer
+---@return any RL.rlBindFramebuffer
+function  RL.rlBindFramebuffer( target, framebuffer ) end
 
 -- RLGL - General render state
 
@@ -7343,6 +7583,14 @@ function  RL.rlEnableBackfaceCulling() end
 ---Disable backface culling
 ---@return any RL.rlDisableBackfaceCulling
 function  RL.rlDisableBackfaceCulling() end
+
+---Color mask control
+---@param r boolean
+---@param g boolean
+---@param b boolean
+---@param a boolean
+---@return any RL.rlColorMask
+function  RL.rlColorMask( r, g, b, a ) end
 
 ---Set face culling mode
 ---@param mode integer
@@ -7776,6 +8024,12 @@ function  RL.rlSetUniform( locIndex, value, uniformType, count ) end
 ---@param mat table
 ---@return any RL.rlSetUniformMatrix
 function  RL.rlSetUniformMatrix( locIndex, mat ) end
+
+---Set shader value matrices
+---@param locIndex integer
+---@param mat table
+---@return any RL.rlSetUniformMatrices
+function  RL.rlSetUniformMatrices( locIndex, mat ) end
 
 ---Set shader value sampler
 ---@param locIndex integer

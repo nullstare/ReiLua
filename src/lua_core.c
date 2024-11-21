@@ -2195,6 +2195,9 @@ void luaRegister() {
 	assingGlobalFunction( "rlFrustum", lrlglFrustum );
 	assingGlobalFunction( "rlOrtho", lrlglOrtho );
 	assingGlobalFunction( "rlViewport", lrlglViewport );
+	assingGlobalFunction( "rlSetClipPlanes", lrlglSetClipPlanes );
+	assingGlobalFunction( "rlGetCullDistanceNear", lrlglGetCullDistanceNear );
+	assingGlobalFunction( "rlGetCullDistanceFar", lrlglGetCullDistanceFar );
 		/* Vertex level operations. */
 	assingGlobalFunction( "rlBegin", lrlglBegin );
 	assingGlobalFunction( "rlEnd", lrlglEnd );
@@ -2232,8 +2235,10 @@ void luaRegister() {
 		/* Framebuffer state. */
 	assingGlobalFunction( "rlEnableFramebuffer", lrlglEnableFramebuffer );
 	assingGlobalFunction( "rlDisableFramebuffer", lrlglDisableFramebuffer );
+	assingGlobalFunction( "rlGetActiveFramebuffer", lrlglGetActiveFramebuffer );
 	assingGlobalFunction( "rlActiveDrawBuffers", lrlglActiveDrawBuffers );
 	assingGlobalFunction( "rlBlitFramebuffer", lrlglBlitFramebuffer );
+	assingGlobalFunction( "rlBindFramebuffer", lrlglBindFramebuffer );
 		/* General render state. */
 	assingGlobalFunction( "rlEnableColorBlend", lrlglEnableColorBlend );
 	assingGlobalFunction( "rlDisableColorBlend", lrlglDisableColorBlend );
@@ -2243,6 +2248,7 @@ void luaRegister() {
 	assingGlobalFunction( "rlDisableDepthMask", lrlglDisableDepthMask );
 	assingGlobalFunction( "rlEnableBackfaceCulling", lrlglEnableBackfaceCulling );
 	assingGlobalFunction( "rlDisableBackfaceCulling", lrlglDisableBackfaceCulling );
+	assingGlobalFunction( "rlColorMask", lrlglColorMask );
 	assingGlobalFunction( "rlSetCullFace", lrlglSetCullFace );
 	assingGlobalFunction( "rlEnableScissorTest", lrlglEnableScissorTest );
 	assingGlobalFunction( "rlDisableScissorTest", lrlglDisableScissorTest );
@@ -2320,6 +2326,7 @@ void luaRegister() {
 	assingGlobalFunction( "rlGetLocationAttrib", lrlglGetLocationAttrib );
 	assingGlobalFunction( "rlSetUniform", lrlglSetUniform );
 	assingGlobalFunction( "rlSetUniformMatrix", lrlglSetUniformMatrix );
+	assingGlobalFunction( "rlSetUniformMatrices", lrlglSetUniformMatrices );
 	assingGlobalFunction( "rlSetUniformSampler", lrlglSetUniformSampler );
 	assingGlobalFunction( "rlSetShader", lrlglSetShader );
 		/* Compute shader management */

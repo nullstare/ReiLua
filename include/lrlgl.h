@@ -12,6 +12,9 @@ int lrlglMultMatrixf( lua_State* L );
 int lrlglFrustum( lua_State* L );
 int lrlglOrtho( lua_State* L );
 int lrlglViewport( lua_State* L );
+int lrlglSetClipPlanes( lua_State* L );
+int lrlglGetCullDistanceNear( lua_State* L );
+int lrlglGetCullDistanceFar( lua_State* L );
 /* Vertex level operations */
 int lrlglBegin( lua_State* L );
 int lrlglEnd( lua_State* L );
@@ -49,8 +52,10 @@ int lrlglDisableShader( lua_State* L );
 /* Framebuffer state. */
 int lrlglEnableFramebuffer( lua_State* L );
 int lrlglDisableFramebuffer( lua_State* L );
+int lrlglGetActiveFramebuffer( lua_State* L );
 int lrlglActiveDrawBuffers( lua_State* L );
 int lrlglBlitFramebuffer( lua_State* L );
+int lrlglBindFramebuffer( lua_State* L );
 /* General render state. */
 int lrlglEnableColorBlend( lua_State* L );
 int lrlglDisableColorBlend( lua_State* L );
@@ -60,6 +65,7 @@ int lrlglEnableDepthMask( lua_State* L );
 int lrlglDisableDepthMask( lua_State* L );
 int lrlglEnableBackfaceCulling( lua_State* L );
 int lrlglDisableBackfaceCulling( lua_State* L );
+int lrlglColorMask( lua_State* L );
 int lrlglSetCullFace( lua_State* L );
 int lrlglEnableScissorTest( lua_State* L );
 int lrlglDisableScissorTest( lua_State* L );
@@ -137,6 +143,7 @@ int lrlglGetLocationUniform( lua_State* L );
 int lrlglGetLocationAttrib( lua_State* L );
 int lrlglSetUniform( lua_State* L );
 int lrlglSetUniformMatrix( lua_State* L );
+int lrlglSetUniformMatrices( lua_State* L );
 int lrlglSetUniformSampler( lua_State* L );
 int lrlglSetShader( lua_State* L );
 /* Compute shader management */

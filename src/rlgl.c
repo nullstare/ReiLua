@@ -161,6 +161,46 @@ int lrlglViewport( lua_State* L ) {
 }
 
 /*
+> RL.rlSetClipPlanes( float nearPlane, float farPlane )
+
+Set clip planes distances
+*/
+int lrlglSetClipPlanes( lua_State* L ) {
+	float nearPlane = luaL_checknumber( L, 1 );
+	float farPlane = luaL_checknumber( L, 2 );
+
+	rlSetClipPlanes( nearPlane, farPlane );
+
+	return 0;
+}
+
+/*
+> distance = RL.rlGetCullDistanceNear()
+
+Get cull plane distance near
+
+- Success return float
+*/
+int lrlglGetCullDistanceNear( lua_State* L ) {
+	lua_pushnumber( L, rlGetCullDistanceNear() );
+
+	return 1;
+}
+
+/*
+> distance = RL.rlGetCullDistanceFar()
+
+Get cull plane distance far
+
+- Success return float
+*/
+int lrlglGetCullDistanceFar( lua_State* L ) {
+	lua_pushnumber( L, rlGetCullDistanceFar() );
+
+	return 1;
+}
+
+/*
 ## RLGL - Vertex level operations
 */
 
@@ -545,6 +585,19 @@ int lrlglDisableFramebuffer( lua_State* L ) {
 }
 
 /*
+> framebuffer = RL.rlGetActiveFramebuffer()
+
+Get the currently active render texture (fbo), 0 for default framebuffer
+
+- Success return int
+*/
+int lrlglGetActiveFramebuffer( lua_State* L ) {
+	lua_pushnumber( L, rlGetActiveFramebuffer() );
+
+	return 1;
+}
+
+/*
 > RL.rlActiveDrawBuffers( int count )
 
 Activate multiple draw color buffers
@@ -566,6 +619,20 @@ int lrlglBlitFramebuffer( lua_State* L ) {
 	int bufferMask = luaL_checkinteger( L, 3 );
 
 	rlBlitFramebuffer( (int)src.x, (int)src.y, (int)src.width, (int)src.height, (int)dst.x, (int)dst.y, (int)dst.width, (int)dst.height, bufferMask );
+
+	return 0;
+}
+
+/*
+> RL.rlBindFramebuffer( int target, int framebuffer )
+
+Bind framebuffer (FBO)
+*/
+int lrlglBindFramebuffer( lua_State* L ) {
+	int target = luaL_checkinteger( L, 1 );
+	int framebuffer = luaL_checkinteger( L, 1 );
+
+	rlBindFramebuffer( target, framebuffer );
 
 	return 0;
 }
@@ -658,6 +725,22 @@ Disable backface culling
 */
 int lrlglDisableBackfaceCulling( lua_State* L ) {
 	rlDisableBackfaceCulling();
+
+	return 0;
+}
+
+/*
+> RL.rlColorMask( bool r, bool g, bool b, bool a )
+
+Color mask control
+*/
+int lrlglColorMask( lua_State* L ) {
+	bool r = uluaGetBoolean( L, 1 );
+	bool g = uluaGetBoolean( L, 1 );
+	bool b = uluaGetBoolean( L, 1 );
+	bool a = uluaGetBoolean( L, 1 );
+
+	rlColorMask( r, g, b, a );
 
 	return 0;
 }
@@ -1698,6 +1781,30 @@ int lrlglSetUniformMatrix( lua_State* L ) {
 	Matrix mat = uluaGetMatrix( L, 2 );
 
 	rlSetUniformMatrix( locIndex, mat );
+
+	return 0;
+}
+
+/*
+> RL.rlSetUniformMatrices( int locIndex, Matrix{} mat )
+
+Set shader value matrices
+*/
+int lrlglSetUniformMatrices( lua_State* L ) {
+	int locIndex = luaL_checkinteger( L, 1 );
+
+	int count = uluaGetTableLen( L, 2 );
+	Matrix mat[ count ];
+
+	int t = 2, i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		mat[i] = uluaGetMatrix( L, lua_gettop( L ) );
+		i++;
+		lua_pop( L, 1 );
+	}
+	rlSetUniformMatrices( locIndex, mat, count );
 
 	return 0;
 }

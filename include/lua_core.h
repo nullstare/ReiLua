@@ -26,7 +26,8 @@ void assingGlobalFunction( const char* name, int ( *functionPtr )( lua_State* ) 
 
 bool luaInit( int argn, const char** argc );
 int luaTraceback( lua_State* L );
-bool luaCallMain();
+void luaCallMain();
+void luaCallInit();
 void luaCallUpdate();
 void luaCallDraw();
 void luaCallExit();

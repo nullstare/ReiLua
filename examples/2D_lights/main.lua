@@ -15,8 +15,6 @@ local WALL_MESH_HEIGHT = math.tan( RL.DEG2RAD * ( 90 - SHADOW_FOV / 2 ) ) * LIGH
 print( "WALL_MESH_HEIGHT", WALL_MESH_HEIGHT )
 
 local monitor = 0
-local monitorPos = Vector2:newT( RL.GetMonitorPosition( monitor ) )
-local monitorSize = Vector2:newT( RL.GetMonitorSize( monitor ) )
 local winScale = 1
 local winSize = Vector2:new( RESOLUTION.x * winScale, RESOLUTION.y * winScale )
 
@@ -87,6 +85,9 @@ local function createShadowMesh()
 end
 
 function RL.init()
+	local monitorPos = Vector2:newT( RL.GetMonitorPosition( monitor ) )
+	local monitorSize = Vector2:newT( RL.GetMonitorSize( monitor ) )
+
 	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 	RL.SetWindowSize( winSize )

@@ -29,6 +29,21 @@ void unloadBuffer( Buffer* buffer ) {
 */
 
 /*
+> RL.InitWindow( Vector2 size, string title )
+
+Initialize window and OpenGL context. Note! Should be called only in RL.config.
+InitWindow will still be called automatically before RL.init
+*/
+int lcoreInitWindow( lua_State* L ) {
+	Vector2 size = uluaGetVector2( L, 1 );
+	const char* title = lua_tostring( L, 2 );
+
+	InitWindow( (int)size.x, (int)size.y, title );
+
+	return 0;
+}
+
+/*
 > RL.CloseWindow()
 
 Close window and unload OpenGL context and free all resources
@@ -176,7 +191,7 @@ int lcoreClearWindowState( lua_State* L ) {
 /*
 > RL.ToggleFullscreen()
 
-Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
+Toggle window state: fullscreen/windowed, resizes monitor to match window resolution
 */
 int lcoreToggleFullscreen( lua_State* L ) {
 	ToggleFullscreen();
@@ -187,7 +202,7 @@ int lcoreToggleFullscreen( lua_State* L ) {
 /*
 > RL.ToggleBorderlessWindowed()
 
-Toggle window state: borderless windowed (only PLATFORM_DESKTOP)
+Toggle window state: borderless windowed, resizes window to match monitor resolution
 */
 int lcoreToggleBorderlessWindowed( lua_State* L ) {
 	ToggleBorderlessWindowed();

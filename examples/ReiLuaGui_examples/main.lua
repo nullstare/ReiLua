@@ -10,33 +10,6 @@ Gui = require( "gui" )
 Calculator = require( "calculator" )
 FileExplorer = require( "file_explorer" )
 
--- Textures.
-
--- Note that textures are global.
-CancelTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/cancel.png" )
-BackTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/previous-button.png" )
-FolderTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/open-folder.png" )
-FilesTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/files.png" )
-BorderTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/ui_border.png" )
-BgrTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/ui_bgr.png" )
-
-RL.GenTextureMipmaps( CancelTexture )
-RL.GenTextureMipmaps( BackTexture )
-RL.GenTextureMipmaps( FolderTexture )
-RL.GenTextureMipmaps( FilesTexture )
-RL.GenTextureMipmaps( BorderTexture )
-RL.GenTextureMipmaps( BgrTexture )
-
-RL.SetTextureFilter( CancelTexture, RL.TEXTURE_FILTER_TRILINEAR )
-RL.SetTextureFilter( BackTexture, RL.TEXTURE_FILTER_TRILINEAR )
-RL.SetTextureFilter( FolderTexture, RL.TEXTURE_FILTER_TRILINEAR )
-RL.SetTextureFilter( FilesTexture, RL.TEXTURE_FILTER_TRILINEAR )
-RL.SetTextureFilter( BorderTexture, RL.TEXTURE_FILTER_TRILINEAR )
-RL.SetTextureFilter( BgrTexture, RL.TEXTURE_FILTER_TRILINEAR )
-
-RL.SetTextureWrap( BorderTexture, RL.TEXTURE_WRAP_REPEAT )
-RL.SetTextureWrap( BgrTexture, RL.TEXTURE_WRAP_REPEAT )
-
 -- End of calculator definition.
 
 local calculator = nil
@@ -72,6 +45,32 @@ function RL.init()
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 	RL.SetWindowSize( winSize )
 	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
+	-- Textures.
+
+	-- Note that textures are global.
+	CancelTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/cancel.png" )
+	BackTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/previous-button.png" )
+	FolderTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/open-folder.png" )
+	FilesTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/files.png" )
+	BorderTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/ui_border.png" )
+	BgrTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/ui_bgr.png" )
+
+	RL.GenTextureMipmaps( CancelTexture )
+	RL.GenTextureMipmaps( BackTexture )
+	RL.GenTextureMipmaps( FolderTexture )
+	RL.GenTextureMipmaps( FilesTexture )
+	RL.GenTextureMipmaps( BorderTexture )
+	RL.GenTextureMipmaps( BgrTexture )
+
+	RL.SetTextureFilter( CancelTexture, RL.TEXTURE_FILTER_TRILINEAR )
+	RL.SetTextureFilter( BackTexture, RL.TEXTURE_FILTER_TRILINEAR )
+	RL.SetTextureFilter( FolderTexture, RL.TEXTURE_FILTER_TRILINEAR )
+	RL.SetTextureFilter( FilesTexture, RL.TEXTURE_FILTER_TRILINEAR )
+	RL.SetTextureFilter( BorderTexture, RL.TEXTURE_FILTER_TRILINEAR )
+	RL.SetTextureFilter( BgrTexture, RL.TEXTURE_FILTER_TRILINEAR )
+
+	RL.SetTextureWrap( BorderTexture, RL.TEXTURE_WRAP_REPEAT )
+	RL.SetTextureWrap( BgrTexture, RL.TEXTURE_WRAP_REPEAT )
 
 	initGui()
 end

@@ -11,8 +11,8 @@ Gui = Raygui:new()
 local grid = {}
 local windowbox = {}
 local tabBar = {}
-local texture = RL.LoadTexture( RL.GetBasePath().."../resources/images/gradient.png" )
-local textureRect = Rect:new( 0, 0, RL.GetTextureSize( texture )[1], RL.GetTextureSize( texture )[2] )
+local texture = nil
+local textureRect = Rect:new()
 
 local function closeTab( self, id )
 	local splits = Util.split( tabBar.text, ";" )
@@ -54,6 +54,9 @@ function RL.init()
 	-- RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_COLOR_PRESSED, RL.ColorToInt( RL.GREEN ) )
 
 	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_LINE_SPACING, 20 )
+
+	texture = RL.LoadTexture( RL.GetBasePath().."../resources/images/gradient.png" )
+	textureRect = Rect:new( 0, 0, RL.GetTextureSize( texture )[1], RL.GetTextureSize( texture )[2] )
 
 	local label = Gui:Label(
 		Rect:new( 16, 16, 64, 32 ),

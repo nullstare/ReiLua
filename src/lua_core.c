@@ -1149,7 +1149,7 @@ int luaTraceback( lua_State* L ) {
 	return 1;
 }
 
-bool luaCallMain() {
+void luaCallMain() {
 	lua_State* L = state->luaState;
 
 	char path[ STRING_LEN ] = { '\0' };
@@ -1168,6 +1168,11 @@ bool luaCallMain() {
 		snprintf( path, STRING_LEN, "%smain", state->basePath );
 	}
 #endif
+	if ( !FileExists( path ) ) {
+		TraceLog( LOG_ERROR, "Cannot find file: %s\n", path );
+		state->run = false;
+		return;
+	}
 	luaL_dofile( L, path );
 
 	/* Check errors in main.lua */
@@ -1181,26 +1186,48 @@ bool luaCallMain() {
 	SetTraceLogCallback( logCustom );
 
 	lua_getglobal( L, "RL" );
+	lua_getfield( L, -1, "config" );
+
+	if ( lua_isfunction( L, -1 ) ) {
+		if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
+			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
+			state->run = false;
+			return;
+		}
+	}
+	lua_pop( L, -1 );
+	/* If InitWindow is not called in RL.config, call it here. */
+	if ( !IsWindowReady() ) {
+		InitWindow( 800, 600, "ReiLua" );
+	}
+	/* Set shader locs after we have window. */
+	if ( IsWindowReady() ) {
+		stateContextInit();
+	}
+	else {
+		state->run = false;
+	}
+}
+
+void luaCallInit() {
+	lua_State* L = state->luaState;
+	lua_pushcfunction( L, luaTraceback );
+	int tracebackidx = lua_gettop(L);
+	
+	lua_getglobal( L, "RL" );
 	lua_getfield( L, -1, "init" );
 
 	if ( lua_isfunction( L, -1 ) ) {
 		if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
-			return false;
+			state->run = false;
 		}
 	}
-	//TODO Should this be removed?
-	else {
-		TraceLog( LOG_ERROR, "%s", "No Lua init found!" );
-		return false;
-	}
 	lua_pop( L, -1 );
-
-	return state->run;
 }
 
-void luaCallUpdate() {
 
+void luaCallUpdate() {
 #if defined PLATFORM_DESKTOP_SDL && defined LUA_EVENTS
 	platformSendEvents();
 #endif
@@ -1218,8 +1245,6 @@ void luaCallUpdate() {
 		if ( lua_pcall( L, 1, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-			lua_pop( L, -1 );
-			return;
 		}
 	}
 	lua_pop( L, -1 );
@@ -1239,7 +1264,6 @@ void luaCallDraw() {
 		if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-			return;
 		}
 		EndDrawing();
 	}
@@ -1258,7 +1282,6 @@ void luaCallExit() {
 		if ( lua_pcall( L, 0, 0, tracebackidx ) != 0 ) {
 			TraceLog( LOG_ERROR, "Lua error: %s", lua_tostring( L, -1 ) );
 			state->run = false;
-			return;
 		}
 	}
 	lua_pop( L, -1 );
@@ -1270,6 +1293,7 @@ void luaRegister() {
 
 	/* Core. */
 		/* Window-related functions. */
+	assingGlobalFunction( "InitWindow", lcoreInitWindow );
 	assingGlobalFunction( "CloseWindow", lcoreCloseWindow );
 	assingGlobalFunction( "IsWindowReady", lcoreIsWindowReady );
 	assingGlobalFunction( "IsWindowFullscreen", lcoreIsWindowFullscreen );

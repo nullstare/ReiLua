@@ -6,14 +6,12 @@
 
 typedef struct {
 	char* basePath;
-	bool hasWindow;
 	bool run;
 	bool gcUnload;
 	int lineSpacing; /* We need to store copy here since raylib has it in static. */
 	Vector2 mouseOffset;
 	Vector2 mouseScale;
 	lua_State* luaState;
-	Vector2 resolution;
 	int logLevelInvalid;
 	Font defaultFont;
 	Font guiFont;
@@ -50,5 +48,6 @@ typedef struct {
 extern State* state;
 
 bool stateInit( int argn, const char** argc, const char* basePath );
+void stateContextInit();
 void stateInitInterpret( int argn, const char** argc );
 void stateFree();

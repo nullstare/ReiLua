@@ -1,5 +1,5 @@
-local camera = -1
-local sphereMesh = -1
+local camera = nil
+local sphereMesh = nil
 local ray = { { 0.5, 0, 4 }, { 0.1, 0, -1 } }
 local rayCol = {}
 

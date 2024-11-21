@@ -4,7 +4,7 @@ RL={}
 
 -- Functions.
 
----This function will be called first when 'main.lua' is found
+---This function will be called after window has been initialized. Should be used as the main init point.
 function RL.init() end
 ---This function will be called every frame during execution. It will get time duration from last frame on argument 'delta'
 ---@param delta number
@@ -20,6 +20,8 @@ function RL.event( event ) end
 function RL.log( logLevel, message ) end
 ---This function will be called on program close. Cleanup could be done here.
 function RL.exit() end
+---This function will be called before InitWindow. Note! Only place where you should call InitWindow manually. Doesn't have OpenGL context at this point.
+function RL.config() end
 
 -- Defines - System/Window config flags
 
@@ -1324,6 +1326,13 @@ RL.assignGlobalInt=nil
 RL.assignGlobalInt=nil
 -- Core - Window-related functions
 
+---Initialize window and OpenGL context. Note! Should be called only in RL.config.
+---InitWindow will still be called automatically before RL.init
+---@param size table
+---@param title string
+---@return any RL.InitWindow
+function  RL.InitWindow( size, title ) end
+
 ---Close window and unload OpenGL context and free all resources
 ---@return any RL.CloseWindow
 function  RL.CloseWindow() end
@@ -1380,11 +1389,11 @@ function  RL.SetWindowState( flag ) end
 ---@return any resized 
 function RL.ClearWindowState( flag ) end
 
----Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
+---Toggle window state: fullscreen/windowed, resizes monitor to match window resolution
 ---@return any RL.ToggleFullscreen
 function  RL.ToggleFullscreen() end
 
----Toggle window state: borderless windowed (only PLATFORM_DESKTOP)
+---Toggle window state: borderless windowed, resizes window to match monitor resolution
 ---@return any RL.ToggleBorderlessWindowed
 function  RL.ToggleBorderlessWindowed() end
 

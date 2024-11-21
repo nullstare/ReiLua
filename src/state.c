@@ -8,46 +8,36 @@ State* state;
 
 bool stateInit( int argn, const char** argc, const char* basePath ) {
 	state = malloc( sizeof( State ) );
-
 	state->basePath = malloc( STRING_LEN * sizeof( char ) );
 	strncpy( state->basePath, basePath, STRING_LEN - 1 );
-
-	state->hasWindow = true;
-	state->run = true;
-	state->resolution = (Vector2){ 800, 600 };
 	state->luaState = NULL;
+	state->run = luaInit( argn, argc );;
 	state->logLevelInvalid = LOG_ERROR;
 	state->gcUnload = true;
 	state->lineSpacing = 15;
 	state->mouseOffset = (Vector2){ 0, 0 };
 	state->mouseScale = (Vector2){ 1, 1 };
 
-	InitWindow( state->resolution.x, state->resolution.y, "ReiLua" );
+	return state->run;
+}
 
-	if ( !IsWindowReady() ) {
-		state->hasWindow = false;
-		state->run = false;
-	}
-	if ( state->run ) {
-		state->run = luaInit( argn, argc );
-	}
+/* Init after InitWindow. (When there is OpenGL context.) */
+void stateContextInit() {
 	state->defaultFont = GetFontDefault();
 	state->guiFont = GuiGetFont();
 	state->defaultMaterial = LoadMaterialDefault();
 	state->defaultTexture = (Texture){ 1, 1, 1, 1, 7 };
 	state->shapesTexture = (Texture){ 1, 1, 1, 1, 7 };
 	state->RLGLcurrentShaderLocs = malloc( RL_MAX_SHADER_LOCATIONS * sizeof( int ) );
+#ifdef PLATFORM_DESKTOP_SDL
+	state->SDL_eventQueue = malloc( PLATFORM_SDL_EVENT_QUEUE_LEN * sizeof( SDL_Event ) );
+	state->SDL_eventQueueLen = 0;
+#endif
 	int* defaultShaderLocs = rlGetShaderLocsDefault();
 
 	for ( int i = 0; i < RL_MAX_SHADER_LOCATIONS; i++ ) {
 		state->RLGLcurrentShaderLocs[i] = defaultShaderLocs[i];
 	}
-#ifdef PLATFORM_DESKTOP_SDL
-	state->SDL_eventQueue = malloc( PLATFORM_SDL_EVENT_QUEUE_LEN * sizeof( SDL_Event ) );
-	state->SDL_eventQueueLen = 0;
-#endif
-
-	return state->run;
 }
 
 void stateInitInterpret( int argn, const char** argc ) {
@@ -63,7 +53,7 @@ void stateFree() {
 		lua_close( state->luaState );
 		state->luaState = NULL;
 	}
-	if ( state->hasWindow ) {
+	if ( IsWindowReady() ) {
 		CloseWindow();
 	}
 #ifdef PLATFORM_DESKTOP_SDL

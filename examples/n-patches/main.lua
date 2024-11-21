@@ -6,18 +6,16 @@ Rect = require( "rectangle" )
 local dstRec = Rect:new( 100.0, 100.0, 8.0, 8.0 )
 local origin = Vec2:new( 0.0, 0.0 )
 local stretched = true
-
--- local ninePatchInfo = { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = RL.NPATCH_NINE_PATCH }
--- local nPatchTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/ui_border.png" )
-
 local ninePatchInfo = { source = { 0, 0, 96, 96 }, left = 32, top = 32, right = 32, bottom = 32, layout = RL.NPATCH_NINE_PATCH }
 -- local ninePatchInfo = { source = { 0, 0, 96, 96 }, left = 32, top = 32, right = 32, bottom = 32, layout = RL.NPATCH_THREE_PATCH_VERTICAL }
 -- local ninePatchInfo = { source = { 0, 0, 96, 96 }, left = 32, top = 32, right = 32, bottom = 32, layout = RL.NPATCH_THREE_PATCH_HORIZONTAL }
-local nPatchTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/nPatch.png" )
+local nPatchTexture = nil
 
 function RL.init()
 	RL.SetWindowTitle( "N-Patches" )
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
+
+	nPatchTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/nPatch.png" )
 end
 
 function RL.update( delta )

@@ -2,12 +2,12 @@
 
 ## Functions
 
-Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.update', 'RL.draw', 'RL.event', 'RL.log', and 'RL.exit'.
+Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are seven Lua functions that the framework will call, 'RL.init', 'RL.update', 'RL.draw', 'RL.event', 'RL.log', 'RL.exit' and 'RL.config'.
 
 ---
 > function RL.init()
 
-This function will be called first when 'main.lua' is found
+This function will be called after window has been initialized. Should be used as the main init point.
 
 ---
 
@@ -38,6 +38,12 @@ This function can be used for custom log message handling.
 > function RL.exit()
 
 This function will be called on program close. Cleanup could be done here.
+
+---
+
+> function RL.config()
+
+This function will be called before InitWindow. Note! Only place where you should call InitWindow manually. Doesn't have OpenGL context at this point.
 
 ---
 
@@ -3764,6 +3770,13 @@ assignGlobalInt = nil
 
 ---
 
+> RL.InitWindow( Vector2 size, string title )
+
+Initialize window and OpenGL context. Note! Should be called only in RL.config.
+InitWindow will still be called automatically before RL.init
+
+---
+
 > RL.CloseWindow()
 
 Close window and unload OpenGL context and free all resources
@@ -3850,13 +3863,13 @@ Clear window configuration state flags (FLAG_FULLSCREEN_MODE, FLAG_WINDOW_RESIZA
 
 > RL.ToggleFullscreen()
 
-Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
+Toggle window state: fullscreen/windowed, resizes monitor to match window resolution
 
 ---
 
 > RL.ToggleBorderlessWindowed()
 
-Toggle window state: borderless windowed (only PLATFORM_DESKTOP)
+Toggle window state: borderless windowed, resizes window to match monitor resolution
 
 ---
 

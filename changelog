@@ -1,8 +1,9 @@
 ------------------------------------------------------------------------
-Release:	ReiLua version 0.9.0		Using Raylib 5.5 and Forked Raygui 4.0
+Release:	ReiLua version 0.9.0		Using raylib 5.5 and Forked Raygui 4.0
 ------------------------------------------------------------------------
 KEY CHANGES:
 	- CHANGE: Switch to raylib 5.5.
+	- CHANGE: InitWindow is not called anymore before main.lua is called, but still is before RL.init.
 
 DETAILED CHANGES:
 	- CHANGE: Is*Ready to Is*Valid functions.
@@ -22,6 +23,9 @@ DETAILED CHANGES:
 	rlBindFramebuffer, rlColorMask and rlSetUniformMatrices.
 	- ADDED: Vector2Min, Vector2Max, Vector2Refract, Vector3MoveTowards, Vector3CubicHermite,
 	QuaternionCubicHermiteSpline, MatrixDecompose and Vector4* functions.
+	- ADDED: RL.config function.
+	- ADDED: InitWindow. Can be called from RL.config. If not, will be called automatically before RL.init.
+	(Curiously InitWindow is function #1057. Before that it was only called automatically.)
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

@@ -65,14 +65,15 @@ int main( int argn, const char** argc ) {
 	else {
 		printVersion();
 		stateInit( argn, argc, basePath );
-		state->run = luaCallMain();
+		luaCallMain();
+		luaCallInit();
 
 		while ( state->run ) {
+			luaCallUpdate();
+			luaCallDraw();
 			if ( WindowShouldClose() ) {
 				state->run = false;
 			}
-			luaCallUpdate();
-			luaCallDraw();
 		}
 		luaCallExit();
 	}

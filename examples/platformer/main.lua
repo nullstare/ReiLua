@@ -12,11 +12,11 @@ local GRAVITY = 6
 local JUMP_STR = 3
 local WALK_ANIM_SPEED = 12
 
-local tex = RL.LoadTexture( RL.GetBasePath().."../resources/images/arcade_platformerV2.png" )
+local tex = nil
 local res = Vec2:new( 160, 144 )
 local winScale = 5
 local winSize = res:scale( winScale )
-local framebuffer = RL.LoadRenderTexture( res )
+local framebuffer = nil
 local monitor = 0
 local tilemap = {
 	size = Vec2:new( res.x / TILE_SIZE, res.y / TILE_SIZE ),
@@ -80,21 +80,24 @@ local function createMap()
 	tilemap.tiles[1][8] = 6
 end
 
-function RL.init()
+function RL.config()
+	RL.SetConfigFlags( RL.FLAG_WINDOW_RESIZABLE )
+	RL.SetConfigFlags( RL.FLAG_VSYNC_HINT )
+	RL.InitWindow( winSize, "Platformer" )
+
 	local monitorPos = Vec2:newT( RL.GetMonitorPosition( monitor ) )
 	local monitorSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
-
-	RL.SetWindowTitle( "Platformer" )
-	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
-	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
-	RL.SetWindowSize( winSize )
 	RL.SetWindowPosition( { monitorPos.x + monitorSize.x / 2 - winSize.x / 2, monitorPos.y + monitorSize.y / 2 - winSize.y / 2 } )
+end
 
+function RL.init()
 	createMap()
+
+	tex = RL.LoadTexture( RL.GetBasePath().."../resources/images/arcade_platformerV2.png" )
+	framebuffer = RL.LoadRenderTexture( res )
 end
 
 local function isTileWall( pos )
-	-- if RL.CheckCollisionPointRec( { pos.x, pos.y }, { 0, 0, tilemap.size.x - 1, tilemap.size.y - 1 } ) then
 	if RL.CheckCollisionPointRec( { pos.x, pos.y }, { 0, 0, tilemap.size.x, tilemap.size.y } ) then
 		return 0 < tilemap.tiles[ pos.x + 1 ][ pos.y + 1 ]
 	else

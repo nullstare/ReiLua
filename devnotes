@@ -1,8 +1,5 @@
 Current {
-	* Migrating to raylib 5.5.
-		* New core functions.
-		* New rlgl functions.
-		* New raymath functions.
+	* Setup callback.
 }
 
 Backlog {
@@ -16,6 +13,8 @@ Backlog {
 	* Platform desktop SDL
 		* Text input not working on gui. Could this be Raylib issue?
 		* Haptic functions.
+		* SDL3 Pen.
+		* SDL3 GPU?
 	* Audio
 		* AudioStream.
 	* Models
@@ -23,7 +22,6 @@ Backlog {
 	* CBuffer
 		* Swap endianess.
 
-	* SDL2 platform specific functions.
 	* Textures
 		* Try making atlas packer with stbrp_pack_rects.
 	* Examples
@@ -37,9 +35,6 @@ Bugs {
 }
 
 Notes {
-	* raylib 5.5
-		* DrawBillboardPro BREAKING CHANGE.
-
 }
 
 Needs Testing {

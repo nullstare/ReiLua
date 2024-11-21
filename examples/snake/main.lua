@@ -13,8 +13,6 @@ local STATE = { TITLE = 0, GAME = 1, OVER = 2 } -- Enum.
 -- Resources
 local framebuffer = nil
 local monitor = 0
-local monitorPos = Vector2:newT( RL.GetMonitorPosition( monitor ) )
-local monitorSize = Vector2:newT( RL.GetMonitorSize( monitor ) )
 local winScale = 6
 local winSize = Vector2:new( RESOLUTION.x * winScale, RESOLUTION.y * winScale )
 local gameState = STATE.GAME
@@ -69,16 +67,22 @@ local function setApplePos()
 	end
 end
 
+-- Config.
+
+function RL.config()
+	RL.SetConfigFlags( RL.FLAG_WINDOW_RESIZABLE )
+	RL.SetConfigFlags( RL.FLAG_VSYNC_HINT )
+	RL.InitWindow( winSize, "Snake" )
+	RL.SetWindowIcon( RL.LoadImage( RL.GetBasePath().."../resources/images/apple.png" ) )
+
+	local monitorPos = Vector2:newT( RL.GetMonitorPosition( monitor ) )
+	local monitorSize = Vector2:newT( RL.GetMonitorSize( monitor ) )
+	RL.SetWindowPosition( { monitorPos.x + monitorSize.x / 2 - winSize.x / 2, monitorPos.y + monitorSize.y / 2 - winSize.y / 2 } )
+end
+
 -- Init.
 
 function RL.init()
-	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
-	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
-	RL.SetWindowSize( winSize )
-	RL.SetWindowPosition( { monitorPos.x + monitorSize.x / 2 - winSize.x / 2, monitorPos.y + monitorSize.y / 2 - winSize.y / 2 } )
-	RL.SetWindowTitle( "Snake" )
-	RL.SetWindowIcon( RL.LoadImage( RL.GetBasePath().."../resources/images/apple.png" ) )
-
 	framebuffer = RL.LoadRenderTexture( RESOLUTION )
 	grassTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/grass.png" )
 	snakeTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/snake.png" )

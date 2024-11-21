@@ -4,11 +4,7 @@ package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
 Vec2 = require( "vector2" )
 
-local monitor = 0
-local mPos = Vec2:newT( RL.GetMonitorPosition( monitor ) )
-local mSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
-local winSize = Vec2:newT( RL.GetScreenSize() )
-
+local winSize = Vec2:new()
 local polygon = {
 	texture = -1,
 	texcoords = {
@@ -30,6 +26,11 @@ local polygon = {
 }
 
 function RL.init()
+	local monitor = 0
+	local mPos = Vec2:newT( RL.GetMonitorPosition( monitor ) )
+	local mSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
+	winSize = Vec2:newT( RL.GetScreenSize() )
+
 	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 	RL.SetWindowPosition( { mPos.x + mSize.x / 2 - winSize.x / 2, mPos.y + mSize.y / 2 - winSize.y / 2 } )

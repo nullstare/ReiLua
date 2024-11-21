@@ -105,15 +105,16 @@ apiFile:write( "# ReiLua API\n" )
 -- Usage.
 
 apiFile:write( "\n## Functions\n" )
-apiFile:write( "\nApplication needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where \"main.lua\" is located can be given as argument. There are five Lua functions that the framework will call, 'RL.init', 'RL.update', 'RL.draw', 'RL.event', 'RL.log', and 'RL.exit'.\n" )
+apiFile:write( "\nApplication needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where \"main.lua\" is located can be given as argument. There are seven Lua functions that the framework will call, 'RL.init', 'RL.update', 'RL.draw', 'RL.event', 'RL.log', 'RL.exit' and 'RL.config'.\n" )
 
 local FUNC_DESC = {
-	init = "This function will be called first when 'main.lua' is found",
+	init = "This function will be called after window has been initialized. Should be used as the main init point.",
 	update = "This function will be called every frame during execution. It will get time duration from last frame on argument 'delta'",
 	draw = "This function will be called every frame after update and it should have all rendering related functions. Note: Engine will call Raylib functions 'BeginDrawing()' before this function call and 'EndDrawing()' after it. You can still use RL.BeginDrawing() and RL.EndDrawing() manually from anywhere.",
 	event = "This function will be called on events input. Content of event table is determined by event type.",
 	log = "This function can be used for custom log message handling.",
 	exit = "This function will be called on program close. Cleanup could be done here.",
+	config = "This function will be called before InitWindow. Note! Only place where you should call InitWindow manually. Doesn't have OpenGL context at this point.",
 }
 
 apiFile:write( "\n---\n> function RL.init()\n\n"..FUNC_DESC.init.."\n\n---\n" )
@@ -122,6 +123,7 @@ apiFile:write( "\n> function RL.draw()\n\n"..FUNC_DESC.draw.."\n\n---\n" )
 apiFile:write( "\n> function RL.event( event )\n\n"..FUNC_DESC.event.."\n\n---\n" )
 apiFile:write( "\n> function RL.log( logLevel, message )\n\n"..FUNC_DESC.log.."\n\n---\n" )
 apiFile:write( "\n> function RL.exit()\n\n"..FUNC_DESC.exit.."\n\n---\n" )
+apiFile:write( "\n> function RL.config()\n\n"..FUNC_DESC.config.."\n\n---\n" )
 
 luaApiFile:write( "-- Put this file into your project folder to provide annotations when using Lua language server.\n\n" )
 luaApiFile:write( "RL={}\n\n" )
@@ -139,6 +141,8 @@ luaApiFile:write(
 "---"..FUNC_DESC.log.."\n---@param logLevel integer\n---@param message string\nfunction RL.log( logLevel, message ) end\n" )
 luaApiFile:write(
 "---"..FUNC_DESC.exit.."\nfunction RL.exit() end\n" )
+luaApiFile:write(
+"---"..FUNC_DESC.config.."\nfunction RL.config() end\n" )
 
 -- Object unloading.
 

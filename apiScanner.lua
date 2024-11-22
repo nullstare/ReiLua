@@ -2,7 +2,6 @@ local raylib = {
 	prefix = "RLAPI",
 	file = "raylib.h",
 	blacklist = {
-		WindowShouldClose = "Handled internally",
 		GetScreenWidth = "Replaced by GetScreenSize",
 		GetScreenHeight = "Replaced by GetScreenSize",
 		GetRenderWidth = "Replaced by GetRenderSize",

@@ -55,6 +55,18 @@ int lcoreCloseWindow( lua_State* L ) {
 }
 
 /*
+> RL.WindowShouldClose()
+
+Check if application should close (KEY_ESCAPE pressed or windows close icon clicked).
+Note! Not needed unless you want to make custom main loop
+*/
+int lcoreWindowShouldClose( lua_State* L ) {
+	lua_pushboolean( L, WindowShouldClose() );
+
+	return 1;
+}
+
+/*
 > state = RL.IsWindowReady()
 
 Check if window has been initialized successfully

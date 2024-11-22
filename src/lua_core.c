@@ -1176,12 +1176,13 @@ void luaCallMain() {
 	luaL_dofile( L, path );
 
 	/* Check errors in main.lua */
-	if ( lua_tostring( state->luaState, -1 ) ) {
-		TraceLog( LOG_ERROR, "Lua error: %s\n", lua_tostring( state->luaState, -1 ) );
+	if ( lua_tostring( L, -1 ) ) {
+		TraceLog( LOG_ERROR, "Lua error: %s\n", lua_tostring( L, -1 ) );
+		state->run = false;
+		return;
 	}
 	lua_pushcfunction( L, luaTraceback );
 	int tracebackidx = lua_gettop( L );
-
 	/* Apply custom callback here. */
 	SetTraceLogCallback( logCustom );
 
@@ -1200,7 +1201,6 @@ void luaCallMain() {
 	if ( !IsWindowReady() ) {
 		InitWindow( 800, 600, "ReiLua" );
 	}
-	/* Set shader locs after we have window. */
 	if ( IsWindowReady() ) {
 		stateContextInit();
 	}
@@ -1295,6 +1295,7 @@ void luaRegister() {
 		/* Window-related functions. */
 	assingGlobalFunction( "InitWindow", lcoreInitWindow );
 	assingGlobalFunction( "CloseWindow", lcoreCloseWindow );
+	assingGlobalFunction( "WindowShouldClose", lcoreWindowShouldClose );
 	assingGlobalFunction( "IsWindowReady", lcoreIsWindowReady );
 	assingGlobalFunction( "IsWindowFullscreen", lcoreIsWindowFullscreen );
 	assingGlobalFunction( "IsWindowHidden", lcoreIsWindowHidden );

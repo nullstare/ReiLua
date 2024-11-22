@@ -6,6 +6,7 @@ void unloadBuffer( Buffer* buffer );
 /* Window-related functions. */
 int lcoreInitWindow( lua_State* L );
 int lcoreCloseWindow( lua_State* L );
+int lcoreWindowShouldClose( lua_State* L );
 int lcoreIsWindowReady( lua_State* L );
 int lcoreIsWindowFullscreen( lua_State* L );
 int lcoreIsWindowHidden( lua_State* L );

@@ -1337,6 +1337,11 @@ function  RL.InitWindow( size, title ) end
 ---@return any RL.CloseWindow
 function  RL.CloseWindow() end
 
+---Check if application should close (KEY_ESCAPE pressed or windows close icon clicked).
+---Note! Not needed unless you want to make custom main loop
+---@return any RL.WindowShouldClose
+function  RL.WindowShouldClose() end
+
 ---Check if window has been initialized successfully
 ---- Success return bool
 ---@return any state 

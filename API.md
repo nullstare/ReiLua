@@ -3783,6 +3783,13 @@ Close window and unload OpenGL context and free all resources
 
 ---
 
+> RL.WindowShouldClose()
+
+Check if application should close (KEY_ESCAPE pressed or windows close icon clicked).
+Note! Not needed unless you want to make custom main loop
+
+---
+
 > state = RL.IsWindowReady()
 
 Check if window has been initialized successfully

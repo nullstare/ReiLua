@@ -286,15 +286,15 @@ local function addTreeView()
 	)
 	-- Items.
 	
-	local folder = TreeView:addItem( RL.GuiIconText( 1, "Images" ) )
-	local folderEmpty = TreeView:addItem( RL.GuiIconText( 1, "Empty Folder" ) )
-	local folder2 = TreeView:addItem( RL.GuiIconText( 1, "More images" ), folder )
-	TreeView:addItem( RL.GuiIconText( 12, "Cat.png" ), folder )
-	TreeView:addItem( RL.GuiIconText( 12, "Dog.png" ), folder2 )
-	TreeView:addItem( RL.GuiIconText( 12, "Horse.png" ), folder2 )
+	local folder = TreeView:addItem( RL.GuiIconText( RL.ICON_FOLDER_FILE_OPEN, "Images" ) )
+	local folderEmpty = TreeView:addItem( RL.GuiIconText( RL.ICON_FOLDER_FILE_OPEN, "Empty Folder" ) )
+	local folder2 = TreeView:addItem( RL.GuiIconText( RL.ICON_FOLDER_FILE_OPEN, "More images" ), folder )
+	TreeView:addItem( RL.GuiIconText( RL.ICON_FILETYPE_IMAGE, "Cat.png" ), folder )
+	TreeView:addItem( RL.GuiIconText( RL.ICON_FILETYPE_IMAGE, "Dog.png" ), folder2 )
+	TreeView:addItem( RL.GuiIconText( RL.ICON_FILETYPE_IMAGE, "Horse.png" ), folder2 )
 
 	for i = 0, 10 do
-		TreeView:addItem( RL.GuiIconText( 12, "Duck"..i..".png" ), folder2 )
+		TreeView:addItem( RL.GuiIconText( RL.ICON_FILETYPE_IMAGE, "Duck"..i..".png" ), folder2 )
 	end
 end
 

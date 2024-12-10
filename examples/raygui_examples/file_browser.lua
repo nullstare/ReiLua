@@ -81,7 +81,7 @@ function FileBrowser:new( pos )
 	-- Back button.
 	object.backButton = Gui:Button(
 		Rect:new( 0, 0, iconButtonSize.x, iconButtonSize.y ),
-		RL.GuiIconText( 118, "" ),
+		RL.GuiIconText( RL.ICON_ARROW_LEFT_FILL, "" ),
 		{ -- callbacks.
 			pressed = function() object:back() end
 		}
@@ -94,7 +94,7 @@ function FileBrowser:new( pos )
 	-- Search button.
 	object.searchToggle = Gui:Toggle(
 		Rect:new( 0, 0, iconButtonSize.x, iconButtonSize.y ),
-		RL.GuiIconText( 42, "" ),
+		RL.GuiIconText( RL.ICON_LENS, "" ),
 		false, -- active.
 		{ -- callbacks.
 			pressed = function( this ) object:searchPressed( this.active ) end

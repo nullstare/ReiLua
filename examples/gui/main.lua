@@ -44,11 +44,11 @@ function RL.draw()
 	local result = 0
 	-- RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_SIZE, 10 )
 
-	if RL.GuiButton( { 112, 16, 96, 32 }, RL.GuiIconText( 113, "Exit" ) ) == 1 then
+	if RL.GuiButton( { 112, 16, 96, 32 }, RL.GuiIconText( RL.ICON_CROSS, "Exit" ) ) == 1 then
 		RL.CloseWindow()
 	end
 
-	RL.GuiButton( { 112, 64, 96, 32 }, RL.GuiIconText( 100, "Cat" ) )
+	RL.GuiButton( { 112, 64, 96, 32 }, RL.GuiIconText( RL.ICON_FOUR_BOXES, "Cat" ) )
 
 	if windowOpen and RL.GuiWindowBox( { 300, 16, 200, 320 }, "Window" ) == 1 then
 		windowOpen = false
@@ -117,7 +117,7 @@ function RL.draw()
 
 	_, guiTabBarActive = RL.GuiTabBar(
 		{ 420, 680, 320, 32 },
-		RL.GuiIconText( 13, "Play" )..";"..RL.GuiIconText( 12, "Cat.png" )..";"..RL.GuiIconText( 16, "Files" ),
+		RL.GuiIconText( RL.ICON_FILETYPE_PLAY, "Play" )..";"..RL.GuiIconText( RL.ICON_FILETYPE_IMAGE, "Cat.png" )..";"..RL.GuiIconText( RL.ICON_FILE_COPY, "Files" ),
 		guiTabBarActive
 	)
 

@@ -29,6 +29,7 @@ DETAILED CHANGES:
 	- ADDED: WindowShouldClose and custom main loop example.
 	- ADDED: EXPOSE_API_SYMBOLS.
 	- ADDED: SetShaderValueWithBuffer and SetShaderValueVWithBuffer.
+	- ADDED: Gui Icons enumeration.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

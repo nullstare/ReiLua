@@ -48,9 +48,9 @@ end
 
 local function setGroupText( text, active )
 	if active then
-		return RL.GuiIconText( 120, text )
+		return RL.GuiIconText( RL.ICON_ARROW_DOWN_FILL, text )
 	else
-		return RL.GuiIconText( 119, text )
+		return RL.GuiIconText( RL.ICON_ARROW_RIGHT_FILL, text )
 	end
 end
 

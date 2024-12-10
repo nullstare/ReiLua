@@ -35,9 +35,9 @@ end
 
 function TreeItem:setOpenIcon()
 	if self.open then
-		return RL.GuiIconText( 120, "" )
+		return RL.GuiIconText( RL.ICON_ARROW_DOWN_FILL, "" )
 	else
-		return RL.GuiIconText( 119, "" )
+		return RL.GuiIconText( RL.ICON_ARROW_RIGHT_FILL, "" )
 	end
 end
 

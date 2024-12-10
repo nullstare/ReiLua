@@ -1,5 +1,4 @@
 Current {
-	* Setup callback.
 }
 
 Backlog {
@@ -18,6 +17,7 @@ Backlog {
 	* Audio
 		* AudioStream.
 	* Models
+		* Material mapType range checks.
 		* Mesh bone weight management?
 	* CBuffer
 		* Swap endianess.

@@ -1,3 +1,5 @@
 libraylib.a
 liblua.a
 libluajit.a
+liblua.so
+libluajit.so

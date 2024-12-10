@@ -1374,6 +1374,8 @@ void luaRegister() {
 	assingGlobalFunction( "SetShaderValueTexture", lcoreSetShaderValueTexture );
 	assingGlobalFunction( "SetShaderValue", lcoreSetShaderValue );
 	assingGlobalFunction( "SetShaderValueV", lcoreSetShaderValueV );
+	assingGlobalFunction( "SetShaderValueWithBuffer", lcoreSetShaderValueWithBuffer );
+	assingGlobalFunction( "SetShaderValueVWithBuffer", lcoreSetShaderValueVWithBuffer );
 	assingGlobalFunction( "UnloadShader", lcoreUnloadShader );
 		/* Screen-space-related functions. */
 	assingGlobalFunction( "GetScreenToWorldRay", lcoreGetScreenToWorldRay );
@@ -2962,9 +2964,9 @@ BoneInfo uluaGetBoneInfo( lua_State* L, int index ) {
 					bone.parent = lua_tointeger( L, -1 );
 				}
 			}
-			i++;
-			lua_pop( L, 1 );
 		}
+		i++;
+		lua_pop( L, 1 );
 	}
 	return bone;
 }
@@ -3005,9 +3007,9 @@ Transform uluaGetTransform( lua_State* L, int index ) {
 					transform.scale = uluaGetVector3( L, lua_gettop( L ) );
 				}
 			}
-			i++;
-			lua_pop( L, 1 );
 		}
+		i++;
+		lua_pop( L, 1 );
 	}
 	return transform;
 }

@@ -1,9 +1,9 @@
 package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
-Vec2 = require "vector2"
+Vector2 = require "vector2"
 
 -- Settings.
-local winSize = Vec2:new( 800, 600 )
+local winSize = Vector2:new( 800, 600 )
 local monitor = 0
 
 -- Constants.
@@ -12,19 +12,19 @@ local BALL_SPEED = 330 -- Pixels per second.
 
 -- Game objects.
 local playerLeft = {
-	pos = Vec2:new( 0, 0 ),
-	size = Vec2:new( 10, 70 ),
+	pos = Vector2:new( 0, 0 ),
+	size = Vector2:new( 10, 70 ),
 	score = 0,
 }
 local playerRight = {
-	pos = Vec2:new( 0, 0 ),
-	size = Vec2:new( 10, 70 ),
+	pos = Vector2:new( 0, 0 ),
+	size = Vector2:new( 10, 70 ),
 	score = 0,
 }
 local ball = {
-	pos = Vec2:new( 0, 0 ),
+	pos = Vector2:new( 0, 0 ),
 	radius = 8.0,
-	vel = Vec2:new( 0, 0 ),
+	vel = Vector2:new( 0, 0 ),
 }
 
 local function reset()
@@ -54,8 +54,8 @@ end
 
 function RL.init()
 	-- Set window to center of monitor.
-	local mPos = Vec2:newT( RL.GetMonitorPosition( monitor ) )
-	local mSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
+	local mPos = Vector2:newT( RL.GetMonitorPosition( monitor ) )
+	local mSize = Vector2:newT( RL.GetMonitorSize( monitor ) )
 
 	RL.SetConfigFlags( RL.FLAG_VSYNC_HINT )
 	RL.SetWindowSize( winSize )
@@ -125,6 +125,6 @@ function RL.draw()
 
 	-- Draw score.
     RL.DrawText( tostring( playerLeft.score ), { 50, 10 }, 40, RL.WHITE )
-	local rightTextSize = Vec2:newT( RL.MeasureTextEx( RL.GetFontDefault(), tostring( playerRight.score ), 40, 2 ) )
+	local rightTextSize = Vector2:newT( RL.MeasureTextEx( RL.GetFontDefault(), tostring( playerRight.score ), 40, 2 ) )
     RL.DrawText( tostring( playerRight.score ), { winSize.x - 50 - rightTextSize.x, 10 }, 40, RL.WHITE )
 end

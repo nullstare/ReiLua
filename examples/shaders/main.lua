@@ -1,7 +1,7 @@
 local monitor = 0
-local shader = -1
-local texture = -1
-local textureSize
+local shader = nil
+local texture = nil
+local textureSize = nil
 
 local GLSL_VERSION = "330" -- PLATFORM_DESKTOP
 -- local GLSL_VERSION = "100" -- PLATFORM_RPI, PLATFORM_ANDROID, PLATFORM_WEB

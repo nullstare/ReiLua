@@ -932,7 +932,7 @@ int lcoreLoadShaderFromMemory( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsShaderValid( Shader shader )
+> isValid = RL.IsShaderValid( Shader shader )
 
 Check if a shader is valid (loaded on GPU)
 
@@ -1133,6 +1133,39 @@ int lcoreSetShaderValueV( lua_State* L ) {
 	else {
 		SetShaderValueV( *shader, locIndex, ints, uniformType, count );
 	}
+
+	return 0;
+}
+
+/*
+> RL.SetShaderValueWithBuffer( Shader shader, int locIndex, Buffer values, int uniformType )
+
+Set shader uniform value using Buffer object
+*/
+int lcoreSetShaderValueWithBuffer( lua_State* L ) {
+	Shader* shader = uluaGetShader( L, 1 );
+	int locIndex = luaL_checkinteger( L, 2 );
+	Buffer* value = uluaGetBuffer( L, 3 );
+	int uniformType = luaL_checkinteger( L, 4 );
+
+	SetShaderValue( *shader, locIndex, value->data, uniformType );
+
+	return 0;
+}
+
+/*
+> RL.SetShaderValueVWithBuffer( Shader shader, int locIndex, Buffer values, int uniformType, int count )
+
+Set shader uniform value vector using Buffer object
+*/
+int lcoreSetShaderValueVWithBuffer( lua_State* L ) {
+	Shader* shader = uluaGetShader( L, 1 );
+	int locIndex = luaL_checkinteger( L, 2 );
+	Buffer* value = uluaGetBuffer( L, 3 );
+	int uniformType = luaL_checkinteger( L, 4 );
+	int count = luaL_checkinteger( L, 5 );
+
+	SetShaderValueV( *shader, locIndex, value->data, uniformType, count );
 
 	return 0;
 }

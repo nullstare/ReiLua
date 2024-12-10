@@ -167,7 +167,7 @@ int ltexturesLoadImageFromScreen( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsImageValid( Image image )
+> isValid = RL.IsImageValid( Image image )
 
 Check if an image is valid (data and parameters)
 
@@ -1422,7 +1422,7 @@ int ltexturesLoadRenderTextureFromData( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsTextureValid( Texture texture )
+> isValid = RL.IsTextureValid( Texture texture )
 
 Check if a texture is valid (loaded in GPU)
 
@@ -1451,7 +1451,7 @@ int ltextureUnloadTexture( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsRenderTextureValid( RenderTexture target )
+> isValid = RL.IsRenderTextureValid( RenderTexture target )
 
 Check if a render texture is valid (loaded in GPU)
 

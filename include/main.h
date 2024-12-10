@@ -37,7 +37,6 @@
 	#include "rcamera.h"
 #endif
 
-
 #ifdef LUAJIT
 	#ifdef SHARED
 		#include <lua.h>

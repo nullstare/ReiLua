@@ -944,7 +944,7 @@ RL.RL_MAX_SHADER_LOCATIONS=32
 ---Default projection matrix near cull distance
 RL.RL_CULL_DISTANCE_NEAR=0.01
 ---Default projection matrix far cull distance
-RL.RL_CULL_DISTANCE_FAR=1000.0
+RL.RL_CULL_DISTANCE_FAR=1000
 
 -- Defines - RLGL Texture parameters
 
@@ -1671,7 +1671,7 @@ function RL.LoadShaderFromMemory( vsCode, fsCode ) end
 ---Check if a shader is valid (loaded on GPU)
 ---- Success return bool
 ---@param shader any
----@return any isReady 
+---@return any isValid 
 function RL.IsShaderValid( shader ) end
 
 ---Get shader program id
@@ -1740,6 +1740,23 @@ function  RL.SetShaderValue( shader, locIndex, values, uniformType ) end
 ---@param count integer
 ---@return any RL.SetShaderValueV
 function  RL.SetShaderValueV( shader, locIndex, values, uniformType, count ) end
+
+---Set shader uniform value using Buffer object
+---@param shader any
+---@param locIndex integer
+---@param values any
+---@param uniformType integer
+---@return any RL.SetShaderValueWithBuffer
+function  RL.SetShaderValueWithBuffer( shader, locIndex, values, uniformType ) end
+
+---Set shader uniform value vector using Buffer object
+---@param shader any
+---@param locIndex integer
+---@param values any
+---@param uniformType integer
+---@param count integer
+---@return any RL.SetShaderValueVWithBuffer
+function  RL.SetShaderValueVWithBuffer( shader, locIndex, values, uniformType, count ) end
 
 ---Unload shader from GPU memory (VRAM)
 ---@param shader any
@@ -3339,7 +3356,7 @@ function RL.LoadImageFromScreen() end
 ---Check if an image is valid (data and parameters)
 ---- Success return bool
 ---@param image any
----@return any isReady 
+---@return any isValid 
 function RL.IsImageValid( image ) end
 
 ---Unload image from CPU memory (RAM)
@@ -3864,7 +3881,7 @@ function RL.LoadRenderTextureFromData( renderTextureData ) end
 ---Check if a texture is valid (loaded in GPU)
 ---- Success return bool
 ---@param texture any
----@return any isReady 
+---@return any isValid 
 function RL.IsTextureValid( texture ) end
 
 ---Unload texture from GPU memory (VRAM)
@@ -3875,7 +3892,7 @@ function  RL.UnloadTexture( texture ) end
 ---Check if a render texture is valid (loaded in GPU)
 ---- Success return bool
 ---@param target any
----@return any isReady 
+---@return any isValid 
 function RL.IsRenderTextureValid( target ) end
 
 ---Unload render texture from GPU memory (VRAM)
@@ -4177,7 +4194,7 @@ function RL.FontCopy( font ) end
 ---Check if a font is valid (font data loaded, WARNING: GPU texture not checked)
 ---- Success return bool
 ---@param font any
----@return any isReady 
+---@return any isValid 
 function RL.IsFontValid( font ) end
 
 ---Load font data for further use. NOTE: fileData type should be unsigned char
@@ -4748,7 +4765,7 @@ function RL.LoadModelFromMesh( mesh ) end
 ---Check if a model is valid (loaded in GPU, VAO/VBOs)
 ---- Success return bool
 ---@param model any
----@return any isReady 
+---@return any isValid 
 function RL.IsModelValid( model ) end
 
 ---Unload model (meshes/materials) from memory (RAM and/or VRAM)
@@ -5152,7 +5169,7 @@ function RL.CreateMaterial( materialData ) end
 ---Check if a material is valid (shader assigned, map textures loaded in GPU)
 ---- Success return bool
 ---@param material any
----@return any isReady 
+---@return any isValid 
 function RL.IsMaterialValid( material ) end
 
 ---Unload material from GPU memory (VRAM). Note! Use freeAll to unload shaders and textures
@@ -5426,7 +5443,7 @@ function  RL.SetMasterVolume( volume ) end
 
 ---Get master volume (listener)
 ---- Success return float
----@return any isReady 
+---@return any volume 
 function RL.GetMasterVolume() end
 
 -- Audio - Wave/Sound loading/unloading functions
@@ -5455,7 +5472,7 @@ function RL.LoadWaveFromMemory( fileType, data ) end
 ---Checks if wave data is valid (data loaded and parameters)
 ---- Success return bool
 ---@param wave any
----@return any isReady 
+---@return any isValid 
 function RL.IsWaveValid( wave ) end
 
 ---Load sound from wave data
@@ -5473,7 +5490,7 @@ function RL.LoadSoundAlias( source ) end
 ---Checks if a sound is valid (data loaded and buffers initialized)
 ---- Success return bool
 ---@param sound any
----@return any isReady 
+---@return any isValid 
 function RL.IsSoundValid( sound ) end
 
 ---Update sound buffer with new data
@@ -5603,7 +5620,7 @@ function RL.LoadMusicStreamFromMemory( fileType, data ) end
 ---Checks if a music stream is valid (context and buffers initialized)
 ---- Success return bool
 ---@param music any
----@return any isReady 
+---@return any isValid 
 function RL.IsMusicValid( music ) end
 
 ---Unload music stream

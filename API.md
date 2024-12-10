@@ -2782,7 +2782,7 @@ Default projection matrix near cull distance
 
 ---
 
-> RL_CULL_DISTANCE_FAR = 1000.0
+> RL_CULL_DISTANCE_FAR = 1000
 
 Default projection matrix far cull distance
 
@@ -4250,7 +4250,7 @@ NOTE: Set nil if no shader
 
 ---
 
-> isReady = RL.IsShaderValid( Shader shader )
+> isValid = RL.IsShaderValid( Shader shader )
 
 Check if a shader is valid (loaded on GPU)
 
@@ -4319,6 +4319,18 @@ NOTE: Even one value should be in table
 
 Set shader uniform value vector
 NOTE: Even one value should be in table
+
+---
+
+> RL.SetShaderValueWithBuffer( Shader shader, int locIndex, Buffer values, int uniformType )
+
+Set shader uniform value using Buffer object
+
+---
+
+> RL.SetShaderValueVWithBuffer( Shader shader, int locIndex, Buffer values, int uniformType, int count )
+
+Set shader uniform value vector using Buffer object
 
 ---
 
@@ -6134,7 +6146,7 @@ Load image from screen buffer and (screenshot)
 
 ---
 
-> isReady = RL.IsImageValid( Image image )
+> isValid = RL.IsImageValid( Image image )
 
 Check if an image is valid (data and parameters)
 
@@ -6671,7 +6683,7 @@ Load RenderTexture from data (framebuffer)
 
 ---
 
-> isReady = RL.IsTextureValid( Texture texture )
+> isValid = RL.IsTextureValid( Texture texture )
 
 Check if a texture is valid (loaded in GPU)
 
@@ -6685,7 +6697,7 @@ Unload texture from GPU memory (VRAM)
 
 ---
 
-> isReady = RL.IsRenderTextureValid( RenderTexture target )
+> isValid = RL.IsRenderTextureValid( RenderTexture target )
 
 Check if a render texture is valid (loaded in GPU)
 
@@ -7021,7 +7033,7 @@ Load font copy as new userdata
 
 ---
 
-> isReady = RL.IsFontValid( Font font )
+> isValid = RL.IsFontValid( Font font )
 
 Check if a font is valid (font data loaded, WARNING: GPU texture not checked)
 
@@ -7578,7 +7590,7 @@ Load model from generated mesh (Default material)
 
 ---
 
-> isReady = RL.IsModelValid( Model model )
+> isValid = RL.IsModelValid( Model model )
 
 Check if a model is valid (loaded in GPU, VAO/VBOs)
 
@@ -7993,7 +8005,7 @@ Load material from table. See material table definition
 
 ---
 
-> isReady = RL.IsMaterialValid( Material material )
+> isValid = RL.IsMaterialValid( Material material )
 
 Check if a material is valid (shader assigned, map textures loaded in GPU)
 
@@ -8294,7 +8306,7 @@ Set master volume (listener)
 
 ---
 
-> isReady = RL.GetMasterVolume()
+> volume = RL.GetMasterVolume()
 
 Get master volume (listener)
 
@@ -8332,7 +8344,7 @@ Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
 
 ---
 
-> isReady = RL.IsWaveValid( Wave wave )
+> isValid = RL.IsWaveValid( Wave wave )
 
 Checks if wave data is valid (data loaded and parameters)
 
@@ -8356,7 +8368,7 @@ Create a new sound that shares the same sample data as the source sound, does no
 
 ---
 
-> isReady = RL.IsSoundValid( Sound sound )
+> isValid = RL.IsSoundValid( Sound sound )
 
 Checks if a sound is valid (data loaded and buffers initialized)
 
@@ -8506,7 +8518,7 @@ Load music stream from data
 
 ---
 
-> isReady = RL.IsMusicValid( Music music )
+> isValid = RL.IsMusicValid( Music music )
 
 Checks if a music stream is valid (context and buffers initialized)
 

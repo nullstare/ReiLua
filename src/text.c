@@ -295,7 +295,7 @@ int ltextFontCopy( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsFontValid( Font font )
+> isValid = RL.IsFontValid( Font font )
 
 Check if a font is valid (font data loaded, WARNING: GPU texture not checked)
 

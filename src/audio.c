@@ -56,7 +56,7 @@ int laudioSetMasterVolume( lua_State* L ) {
 }
 
 /*
-> isReady = RL.GetMasterVolume()
+> volume = RL.GetMasterVolume()
 
 Get master volume (listener)
 
@@ -129,7 +129,7 @@ int laudioLoadWaveFromMemory( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsWaveValid( Wave wave )
+> isValid = RL.IsWaveValid( Wave wave )
 
 Checks if wave data is valid (data loaded and parameters)
 
@@ -174,7 +174,7 @@ int laudioLoadSoundAlias( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsSoundValid( Sound sound )
+> isValid = RL.IsSoundValid( Sound sound )
 
 Checks if a sound is valid (data loaded and buffers initialized)
 
@@ -497,7 +497,7 @@ int laudioLoadMusicStreamFromMemory( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsMusicValid( Music music )
+> isValid = RL.IsMusicValid( Music music )
 
 Checks if a music stream is valid (context and buffers initialized)
 

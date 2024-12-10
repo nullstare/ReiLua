@@ -114,7 +114,7 @@ local function moveSnake()
 	snake.heading:set( snake.control.x, snake.control.y )
 	snake.headPos:set( snake.headPos.x + snake.heading.x, snake.headPos.y + snake.heading.y )
 
-	-- Check appple eating.
+	-- Check apple eating.
 	if snake.headPos == applePos then
 		snake.grow = snake.grow + 1
 		setApplePos()

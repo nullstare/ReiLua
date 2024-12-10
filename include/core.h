@@ -85,6 +85,8 @@ int lcoreSetShaderValueMatrix( lua_State* L );
 int lcoreSetShaderValueTexture( lua_State* L );
 int lcoreSetShaderValue( lua_State* L );
 int lcoreSetShaderValueV( lua_State* L );
+int lcoreSetShaderValueWithBuffer( lua_State* L );
+int lcoreSetShaderValueVWithBuffer( lua_State* L );
 int lcoreUnloadShader( lua_State* L );
 /* Screen-space-related functions. */
 int lcoreGetScreenToWorldRay( lua_State* L );

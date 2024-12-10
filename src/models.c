@@ -492,7 +492,7 @@ int lmodelsLoadModelFromMesh( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsModelValid( Model model )
+> isValid = RL.IsModelValid( Model model )
 
 Check if a model is valid (loaded in GPU, VAO/VBOs)
 
@@ -1889,7 +1889,7 @@ int lmodelsCreateMaterial( lua_State* L ) {
 }
 
 /*
-> isReady = RL.IsMaterialValid( Material material )
+> isValid = RL.IsMaterialValid( Material material )
 
 Check if a material is valid (shader assigned, map textures loaded in GPU)
 

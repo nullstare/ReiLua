@@ -27,6 +27,8 @@ DETAILED CHANGES:
 	- ADDED: InitWindow. Can be called from RL.config. If not, will be called automatically before RL.init.
 	(Curiously InitWindow is function #1057. Before that it was only called automatically.)
 	- ADDED: WindowShouldClose and custom main loop example.
+	- ADDED: EXPOSE_API_SYMBOLS.
+	- ADDED: SetShaderValueWithBuffer and SetShaderValueVWithBuffer.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

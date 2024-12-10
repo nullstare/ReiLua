@@ -2,6 +2,8 @@
 
 ## About
 
+Please note that ReiLua is lovingly :heart: handcrafted and will likely contain bugs and documentation errors so it would be much appreciated if you would report any such findings.
+
 Idea of this project was to bring the power and simplicity of Raylib to easy beginner friendly language like Lua in a very straight forward manner. It is loose binding to Raylib, some functions will not be included and some are added. The idea of pointing "main.lua" file and access functions "init", "update" and "draw" are borrowed from Löve game framework.
 
 ReiLua is not planned to be a one-to-one binding to raylib. If you want more direct bindings, there are other projects like https://github.com/TSnake41/raylib-lua.

@@ -1775,6 +1775,7 @@ void luaRegister() {
 	assingGlobalFunction( "UnloadBuffer", lcoreUnloadBuffer );
 	assingGlobalFunction( "CopyBufferData", lcoreCopyBufferData );
 	assingGlobalFunction( "SetBufferData", lcoreSetBufferData );
+	assingGlobalFunction( "SwapBufferEndianness", lcoreSwapBufferEndianness );
 	assingGlobalFunction( "GetBufferData", lcoreGetBufferData );
 	assingGlobalFunction( "GetBufferAsString", lcoreGetBufferAsString );
 	assingGlobalFunction( "GetBufferType", lcoreGetBufferType );

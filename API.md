@@ -6495,6 +6495,12 @@ Set buffer data value
 
 ---
 
+> RL.SwapBufferEndianness( Buffer buffer )
+
+Swap buffer endianness from big endian to little endian and vice versa
+
+---
+
 > data = RL.GetBufferData( Buffer buffer, int position, int length )
 
 Get buffer data as table in the format it was stored

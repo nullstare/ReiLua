@@ -24,6 +24,38 @@ void unloadBuffer( Buffer* buffer ) {
 	TraceLog( LOG_INFO, "BUFFER: Unloaded buffer with %u bytes of data", buffer->size );
 }
 
+/* Byte swaps. */
+
+static uint16_t swapU16( uint16_t val ) {
+	return (val << 8) | (val >> 8 );
+}
+
+static int16_t swapS16( int16_t val ) {
+	return (val << 8) | ( (val >> 8) & 0xFF);
+}
+
+static uint32_t swapU32( uint32_t val ) {
+	val = ( (val << 8) & 0xFF00FF00 ) | ( (val >> 8) & 0xFF00FF ); 
+	return (val << 16) | (val >> 16);
+}
+
+static int32_t swapS32( int32_t val ) {
+	val = ( (val << 8) & 0xFF00FF00) | ( (val >> 8) & 0xFF00FF ); 
+	return (val << 16) | ( (val >> 16) & 0xFFFF);
+}
+
+static uint64_t swapU64( uint64_t val ) {
+	val = ( (val << 8) & 0xFF00FF00FF00FF00ULL ) | ( (val >> 8) & 0x00FF00FF00FF00FFULL );
+	val = ( (val << 16) & 0xFFFF0000FFFF0000ULL ) | ( (val >> 16) & 0x0000FFFF0000FFFFULL );
+	return (val << 32) | (val >> 32);
+}
+
+static int64_t swapS64( int64_t val ) {
+	val = ( (val << 8) & 0xFF00FF00FF00FF00ULL ) | ( (val >> 8) & 0x00FF00FF00FF00FFULL );
+	val = ( (val << 16) & 0xFFFF0000FFFF0000ULL ) | ( (val >> 16) & 0x0000FFFF0000FFFFULL );
+	return (val << 32) | ( (val >> 32) & 0xFFFFFFFFULL);
+}
+
 /*
 ## Core - Window-related functions
 */
@@ -3835,6 +3867,69 @@ int lcoreSetBufferData( lua_State* L ) {
 }
 
 /*
+> RL.SwapBufferEndianness( Buffer buffer )
+
+Swap buffer endianness from big endian to little endian and vice versa
+*/
+int lcoreSwapBufferEndianness( lua_State* L ) {
+	Buffer* buffer = uluaGetBuffer( L, 1 );
+
+	size_t elementSize = getBufferElementSize( buffer );
+	size_t bufLen = buffer->size / elementSize;
+
+	if ( buffer->type == BUFFER_UNSIGNED_SHORT ) {
+		unsigned short *p = buffer->data;
+
+		for ( int i = 0; i < bufLen; i++ ) {
+			*p = swapU16( *p );
+			p++;
+		}
+	}
+	else if ( buffer->type == BUFFER_UNSIGNED_INT ) {
+		unsigned int *p = buffer->data;
+
+		for ( int i = 0; i < bufLen; i++ ) {
+			*p = swapU32( *p );
+			p++;
+		}
+	}
+	else if ( buffer->type == BUFFER_SHORT ) {
+		short *p = buffer->data;
+
+		for ( int i = 0; i < bufLen; i++ ) {
+			*p = swapS16( *p );
+			p++;
+		}
+	}
+	else if ( buffer->type == BUFFER_INT ) {
+		int *p = buffer->data;
+
+		for ( int i = 0; i < bufLen; i++ ) {
+			*p = swapS32( *p );
+			p++;
+		}
+	}
+	else if ( buffer->type == BUFFER_FLOAT ) {
+		float *p = buffer->data;
+
+		for ( int i = 0; i < bufLen; i++ ) {
+			*p = swapU32( *p );
+			p++;
+		}
+	}
+	else if ( buffer->type == BUFFER_DOUBLE ) {
+		double *p = buffer->data;
+
+		for ( int i = 0; i < bufLen; i++ ) {
+			*p = swapU64( *p );
+			p++;
+		}
+	}
+
+	return 0;
+}
+
+/*
 > data = RL.GetBufferData( Buffer buffer, int position, int length )
 
 Get buffer data as table in the format it was stored
@@ -3846,10 +3941,11 @@ int lcoreGetBufferData( lua_State* L ) {
 	size_t position = luaL_checkinteger( L, 2 );
 	size_t length = luaL_checkinteger( L, 3 );
 
+	size_t bufLen = buffer->size / getBufferElementSize( buffer );
+	size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
+
 	if ( buffer->type == BUFFER_UNSIGNED_CHAR ) {
 		unsigned char* p = buffer->data + position * sizeof( unsigned char );
-		size_t bufLen = buffer->size / sizeof( unsigned char );
-		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
 
 		for ( int i = 0; i < count; i++ ) {
@@ -3860,8 +3956,6 @@ int lcoreGetBufferData( lua_State* L ) {
 	}
 	else if ( buffer->type == BUFFER_UNSIGNED_SHORT ) {
 		unsigned short *p = buffer->data + position * sizeof( unsigned short );
-		size_t bufLen = buffer->size / sizeof( unsigned short );
-		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
 
 		for ( int i = 0; i < count; i++ ) {
@@ -3872,8 +3966,6 @@ int lcoreGetBufferData( lua_State* L ) {
 	}
 	else if ( buffer->type == BUFFER_UNSIGNED_INT ) {
 		unsigned int* p = buffer->data + position * sizeof( unsigned int );
-		size_t bufLen = buffer->size / sizeof( unsigned int );
-		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
 
 		for ( int i = 0; i < count; i++ ) {
@@ -3884,8 +3976,6 @@ int lcoreGetBufferData( lua_State* L ) {
 	}
 	else if ( buffer->type == BUFFER_CHAR ) {
 		char* p = buffer->data + position * sizeof( char );
-		size_t bufLen = buffer->size / sizeof( char );
-		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
 
 		for ( int i = 0; i < count; i++ ) {
@@ -3896,8 +3986,6 @@ int lcoreGetBufferData( lua_State* L ) {
 	}
 	else if ( buffer->type == BUFFER_SHORT ) {
 		short *p = buffer->data + position * sizeof( short );
-		size_t bufLen = buffer->size / sizeof( short );
-		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
 
 		for ( int i = 0; i < count; i++ ) {
@@ -3908,8 +3996,6 @@ int lcoreGetBufferData( lua_State* L ) {
 	}
 	else if ( buffer->type == BUFFER_INT ) {
 		int* p = buffer->data + position * sizeof( int );
-		size_t bufLen = buffer->size / sizeof( int );
-		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
 
 		for ( int i = 0; i < count; i++ ) {
@@ -3920,8 +4006,6 @@ int lcoreGetBufferData( lua_State* L ) {
 	}
 	else if ( buffer->type == BUFFER_FLOAT ) {
 		float* p = buffer->data + position * sizeof( float );
-		size_t bufLen = buffer->size / sizeof( float );
-		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
 
 		for ( int i = 0; i < count; i++ ) {
@@ -3932,8 +4016,6 @@ int lcoreGetBufferData( lua_State* L ) {
 	}
 	else if ( buffer->type == BUFFER_DOUBLE ) {
 		double* p = buffer->data + position * sizeof( double );
-		size_t bufLen = buffer->size / sizeof( double );
-		size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
 		lua_createtable( L, count, 0 );
 
 		for ( int i = 0; i < count; i++ ) {

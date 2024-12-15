@@ -267,6 +267,7 @@ int lcoreLoadBufferFromString( lua_State* L );
 int lcoreUnloadBuffer( lua_State* L );
 int lcoreCopyBufferData( lua_State* L );
 int lcoreSetBufferData( lua_State* L );
+int lcoreSwapBufferEndianness( lua_State* L );
 int lcoreGetBufferData( lua_State* L );
 int lcoreGetBufferAsString( lua_State* L );
 int lcoreGetBufferType( lua_State* L );

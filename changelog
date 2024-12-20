@@ -31,6 +31,7 @@ DETAILED CHANGES:
 	- ADDED: SetShaderValueWithBuffer and SetShaderValueVWithBuffer.
 	- ADDED: Gui Icons enumeration.
 	- ADDED: SwapBufferEndianness.
+	- ADDED: Reference lib.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

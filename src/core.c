@@ -9,9 +9,11 @@ static size_t getBufferElementSize( Buffer* buffer ) {
 		case BUFFER_UNSIGNED_CHAR: return sizeof( unsigned char );
 		case BUFFER_UNSIGNED_SHORT: return sizeof( unsigned short );
 		case BUFFER_UNSIGNED_INT: return sizeof( unsigned int );
+		case BUFFER_UNSIGNED_LONG: return sizeof( unsigned long );
 		case BUFFER_CHAR: return sizeof( char );
 		case BUFFER_SHORT: return sizeof( short );
 		case BUFFER_INT: return sizeof( int );
+		case BUFFER_LONG: return sizeof( long );
 		case BUFFER_FLOAT: return sizeof( float );
 		case BUFFER_DOUBLE: return sizeof( double );
 	}
@@ -3631,9 +3633,11 @@ int lcoreLoadBuffer( lua_State* L ) {
 	unsigned char* ucp = buffer.data;
 	unsigned short* usp = buffer.data;
 	unsigned int* uip = buffer.data;
+	unsigned long* ulp = buffer.data;
 	char* cp = buffer.data;
 	short* sp = buffer.data;
 	int* ip = buffer.data;
+	long* lp = buffer.data;
 	float* fp = buffer.data;
 	double* dp = buffer.data;
 	
@@ -3653,6 +3657,10 @@ int lcoreLoadBuffer( lua_State* L ) {
 				*uip = (unsigned int)lua_tointeger( L, -1 );
 				uip++;
 				break;
+			case BUFFER_UNSIGNED_LONG:
+				*ulp = (unsigned long)lua_tointeger( L, -1 );
+				ulp++;
+				break;
 			case BUFFER_CHAR:
 				*cp = (char)lua_tointeger( L, -1 );
 				cp++;
@@ -3664,6 +3672,10 @@ int lcoreLoadBuffer( lua_State* L ) {
 			case BUFFER_INT:
 				*ip = (int)lua_tointeger( L, -1 );
 				ip++;
+				break;
+			case BUFFER_LONG:
+				*lp = (long)lua_tointeger( L, -1 );
+				lp++;
 				break;
 			case BUFFER_FLOAT:
 				*fp = (float)lua_tonumber( L, -1 );
@@ -3828,9 +3840,11 @@ int lcoreSetBufferData( lua_State* L ) {
 	unsigned char* ucp = buffer->data + offset;
 	unsigned short* usp = buffer->data + offset;
 	unsigned int* uip = buffer->data + offset;
+	unsigned long* ulp = buffer->data + offset;
 	char* cp = buffer->data + offset;
 	short* sp = buffer->data + offset;
 	int* ip = buffer->data + offset;
+	long* lp = buffer->data + offset;
 	float* fp = buffer->data + offset;
 	double* dp = buffer->data + offset;
 
@@ -3844,6 +3858,9 @@ int lcoreSetBufferData( lua_State* L ) {
 		case BUFFER_UNSIGNED_INT:
 			*uip = (unsigned int)lua_tointeger( L, -1 );
 			break;
+		case BUFFER_UNSIGNED_LONG:
+			*ulp = (unsigned long)lua_tointeger( L, -1 );
+			break;
 		case BUFFER_CHAR:
 			*cp = (char)lua_tointeger( L, -1 );
 			break;
@@ -3852,6 +3869,9 @@ int lcoreSetBufferData( lua_State* L ) {
 			break;
 		case BUFFER_INT:
 			*ip = (int)lua_tointeger( L, -1 );
+			break;
+		case BUFFER_LONG:
+			*lp = (long)lua_tointeger( L, -1 );
 			break;
 		case BUFFER_FLOAT:
 			*fp = (float)lua_tonumber( L, -1 );
@@ -3893,6 +3913,14 @@ int lcoreSwapBufferEndianness( lua_State* L ) {
 			p++;
 		}
 	}
+	else if ( buffer->type == BUFFER_UNSIGNED_LONG ) {
+		unsigned long *p = buffer->data;
+
+		for ( int i = 0; i < bufLen; i++ ) {
+			*p = swapU64( *p );
+			p++;
+		}
+	}
 	else if ( buffer->type == BUFFER_SHORT ) {
 		short *p = buffer->data;
 
@@ -3906,6 +3934,14 @@ int lcoreSwapBufferEndianness( lua_State* L ) {
 
 		for ( int i = 0; i < bufLen; i++ ) {
 			*p = swapS32( *p );
+			p++;
+		}
+	}
+	else if ( buffer->type == BUFFER_LONG ) {
+		long *p = buffer->data;
+
+		for ( int i = 0; i < bufLen; i++ ) {
+			*p = swapS64( *p );
 			p++;
 		}
 	}
@@ -3974,6 +4010,16 @@ int lcoreGetBufferData( lua_State* L ) {
 			p++;
 		}
 	}
+	else if ( buffer->type == BUFFER_UNSIGNED_LONG ) {
+		unsigned long* p = buffer->data + position * sizeof( unsigned long );
+		lua_createtable( L, count, 0 );
+
+		for ( int i = 0; i < count; i++ ) {
+			lua_pushinteger( L, (unsigned long)*p );
+			lua_rawseti( L, -2, i+1 );
+			p++;
+		}
+	}
 	else if ( buffer->type == BUFFER_CHAR ) {
 		char* p = buffer->data + position * sizeof( char );
 		lua_createtable( L, count, 0 );
@@ -4000,6 +4046,16 @@ int lcoreGetBufferData( lua_State* L ) {
 
 		for ( int i = 0; i < count; i++ ) {
 			lua_pushinteger( L, (int)*p );
+			lua_rawseti( L, -2, i+1 );
+			p++;
+		}
+	}
+	else if ( buffer->type == BUFFER_LONG ) {
+		long* p = buffer->data + position * sizeof( long );
+		lua_createtable( L, count, 0 );
+
+		for ( int i = 0; i < count; i++ ) {
+			lua_pushinteger( L, (long)*p );
 			lua_rawseti( L, -2, i+1 );
 			p++;
 		}

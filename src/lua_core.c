@@ -1241,9 +1241,11 @@ static void defineGlobals() {
 	assignGlobalInt( BUFFER_UNSIGNED_CHAR, "BUFFER_UNSIGNED_CHAR" ); // C type unsigned char
 	assignGlobalInt( BUFFER_UNSIGNED_SHORT, "BUFFER_UNSIGNED_SHORT" ); // C type unsigned short
 	assignGlobalInt( BUFFER_UNSIGNED_INT, "BUFFER_UNSIGNED_INT" ); // C type unsigned int
+	assignGlobalInt( BUFFER_UNSIGNED_LONG, "BUFFER_UNSIGNED_LONG" ); // C type unsigned long
 	assignGlobalInt( BUFFER_CHAR, "BUFFER_CHAR" ); // C type char
 	assignGlobalInt( BUFFER_SHORT, "BUFFER_SHORT" ); // C type short
 	assignGlobalInt( BUFFER_INT, "BUFFER_INT" ); // C type int
+	assignGlobalInt( BUFFER_LONG, "BUFFER_LONG" ); // C type long
 	assignGlobalInt( BUFFER_FLOAT, "BUFFER_FLOAT" ); // C type float
 	assignGlobalInt( BUFFER_DOUBLE, "BUFFER_DOUBLE" ); // C type double
 /*DOC_DEFINES_END*/

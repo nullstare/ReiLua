@@ -32,6 +32,7 @@ DETAILED CHANGES:
 	- ADDED: Gui Icons enumeration.
 	- ADDED: SwapBufferEndianness.
 	- ADDED: Reference lib.
+	- ADDED: BUFFER_UNSIGNED_LONG and BUFFER_LONG.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

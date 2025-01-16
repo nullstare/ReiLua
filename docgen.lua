@@ -190,9 +190,9 @@ apiFile:write( "\n> RenderTexture = Userdata\n\
 RenderTexture, fbo for texture rendering\
 ```\
 renderTextureData = {\
-	id = unsigned int,		--OpenGL texture id\
-	texture = Texture,		--Texture base width\
-	depth = Texture,		--Texture base height\
+	id = unsigned int,		--OpenGL framebuffer object id\
+	texture = Texture,		--Color buffer attachment texture\
+	depth = Texture,		--Depth buffer attachment texture\
 }\
 ```\n\n---\n" )
 apiFile:write( "\n> Font = Userdata\n\

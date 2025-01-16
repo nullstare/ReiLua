@@ -1480,16 +1480,20 @@ RL.BUFFER_UNSIGNED_CHAR=0
 RL.BUFFER_UNSIGNED_SHORT=1
 ---C type unsigned int
 RL.BUFFER_UNSIGNED_INT=2
+---C type unsigned long
+RL.BUFFER_UNSIGNED_LONG=3
 ---C type char
-RL.BUFFER_CHAR=3
+RL.BUFFER_CHAR=4
 ---C type short
-RL.BUFFER_SHORT=4
+RL.BUFFER_SHORT=5
 ---C type int
-RL.BUFFER_INT=5
+RL.BUFFER_INT=6
+---C type long
+RL.BUFFER_LONG=7
 ---C type float
-RL.BUFFER_FLOAT=6
+RL.BUFFER_FLOAT=8
 ---C type double
-RL.BUFFER_DOUBLE=7
+RL.BUFFER_DOUBLE=9
 
 -- Defines - Keyboard keys (US keyboard layout)
 

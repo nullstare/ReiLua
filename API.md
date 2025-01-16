@@ -129,9 +129,9 @@ textureData = {
 RenderTexture, fbo for texture rendering
 ```
 renderTextureData = {
-	id = unsigned int,		--OpenGL texture id
-	texture = Texture,		--Texture base width
-	depth = Texture,		--Texture base height
+	id = unsigned int,		--OpenGL framebuffer object id
+	texture = Texture,		--Color buffer attachment texture
+	depth = Texture,		--Depth buffer attachment texture
 }
 ```
 
@@ -4478,31 +4478,43 @@ C type unsigned int
 
 ---
 
-> BUFFER_CHAR = 3
+> BUFFER_UNSIGNED_LONG = 3
+
+C type unsigned long
+
+---
+
+> BUFFER_CHAR = 4
 
 C type char
 
 ---
 
-> BUFFER_SHORT = 4
+> BUFFER_SHORT = 5
 
 C type short
 
 ---
 
-> BUFFER_INT = 5
+> BUFFER_INT = 6
 
 C type int
 
 ---
 
-> BUFFER_FLOAT = 6
+> BUFFER_LONG = 7
+
+C type long
+
+---
+
+> BUFFER_FLOAT = 8
 
 C type float
 
 ---
 
-> BUFFER_DOUBLE = 7
+> BUFFER_DOUBLE = 9
 
 C type double
 

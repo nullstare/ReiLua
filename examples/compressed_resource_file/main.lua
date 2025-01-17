@@ -27,10 +27,12 @@ local function writeDataFile( path )
 	local totalLength = 4 + RL.GetBufferLength( imgData.data ) / 4
 	local buffer = RL.LoadBufferFormatted( totalLength, RL.BUFFER_UNSIGNED_INT, 0 )
 
-	RL.SetBufferData( buffer, 0, imgData.size.x )
-	RL.SetBufferData( buffer, 1, imgData.size.y )
-	RL.SetBufferData( buffer, 2, imgData.mipmaps )
-	RL.SetBufferData( buffer, 3, imgData.format )
+	RL.SetBufferData( buffer, 0, {
+		imgData.size.x,
+		imgData.size.y,
+		imgData.mipmaps,
+		imgData.format,
+	} )
 	RL.CopyBufferData( buffer, imgData.data, 4, 0, RL.GetBufferLength( imgData.data ) )
 
 	if compress then

@@ -2984,9 +2984,9 @@ function  RL.CopyBufferData( dst, src, posDst, posSrc, size ) end
 ---Set buffer data value
 ---@param buffer any
 ---@param position integer
----@param value any
+---@param values table
 ---@return any RL.SetBufferData
-function  RL.SetBufferData( buffer, position, value ) end
+function  RL.SetBufferData( buffer, position, values ) end
 
 ---Swap buffer endianness from big endian to little endian and vice versa
 ---@param buffer any

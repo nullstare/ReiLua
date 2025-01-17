@@ -6501,7 +6501,7 @@ Copy buffer data to another buffer. Size is in bytes
 
 ---
 
-> RL.SetBufferData( Buffer buffer, int position, any value )
+> RL.SetBufferData( Buffer buffer, int position, any{} values )
 
 Set buffer data value
 

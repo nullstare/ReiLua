@@ -20,6 +20,70 @@ static size_t getBufferElementSize( Buffer* buffer ) {
 	return 1;
 }
 
+static void setBufferData( lua_State* L, Buffer* buffer, int index, size_t offset ) {
+	int t = index;
+	unsigned char* ucp = buffer->data + offset;
+	unsigned short* usp = buffer->data + offset;
+	unsigned int* uip = buffer->data + offset;
+	unsigned long* ulp = buffer->data + offset;
+	char* cp = buffer->data + offset;
+	short* sp = buffer->data + offset;
+	int* ip = buffer->data + offset;
+	long* lp = buffer->data + offset;
+	float* fp = buffer->data + offset;
+	double* dp = buffer->data + offset;
+	
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		switch ( buffer->type ) {
+			case BUFFER_UNSIGNED_CHAR:
+				*ucp = (unsigned char)lua_tointeger( L, -1 );
+				ucp++;
+				break;
+			case BUFFER_UNSIGNED_SHORT:
+				*usp = (unsigned short)lua_tointeger( L, -1 );
+				usp++;
+				break;
+			case BUFFER_UNSIGNED_INT:
+				*uip = (unsigned int)lua_tointeger( L, -1 );
+				uip++;
+				break;
+			case BUFFER_UNSIGNED_LONG:
+				*ulp = (unsigned long)lua_tointeger( L, -1 );
+				ulp++;
+				break;
+			case BUFFER_CHAR:
+				*cp = (char)lua_tointeger( L, -1 );
+				cp++;
+				break;
+			case BUFFER_SHORT:
+				*sp = (short)lua_tointeger( L, -1 );
+				sp++;
+				break;
+			case BUFFER_INT:
+				*ip = (int)lua_tointeger( L, -1 );
+				ip++;
+				break;
+			case BUFFER_LONG:
+				*lp = (long)lua_tointeger( L, -1 );
+				lp++;
+				break;
+			case BUFFER_FLOAT:
+				*fp = (float)lua_tonumber( L, -1 );
+				fp++;
+				break;
+			case BUFFER_DOUBLE:
+				*dp = (double)lua_tonumber( L, -1 );
+				dp++;
+				break;
+			default:
+				break;
+		}
+		lua_pop( L, 1 );
+	}
+}
+
 void unloadBuffer( Buffer* buffer ) {
 	free( buffer->data );
 
@@ -3628,69 +3692,7 @@ int lcoreLoadBuffer( lua_State* L ) {
 	buffer.size = len * getBufferElementSize( &buffer );
 	buffer.data = malloc( buffer.size );
 
-	int t = 1;
-	int i = 0;
-	unsigned char* ucp = buffer.data;
-	unsigned short* usp = buffer.data;
-	unsigned int* uip = buffer.data;
-	unsigned long* ulp = buffer.data;
-	char* cp = buffer.data;
-	short* sp = buffer.data;
-	int* ip = buffer.data;
-	long* lp = buffer.data;
-	float* fp = buffer.data;
-	double* dp = buffer.data;
-	
-	lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-		switch ( type ) {
-			case BUFFER_UNSIGNED_CHAR:
-				*ucp = (unsigned char)lua_tointeger( L, -1 );
-				ucp++;
-				break;
-			case BUFFER_UNSIGNED_SHORT:
-				*usp = (unsigned short)lua_tointeger( L, -1 );
-				usp++;
-				break;
-			case BUFFER_UNSIGNED_INT:
-				*uip = (unsigned int)lua_tointeger( L, -1 );
-				uip++;
-				break;
-			case BUFFER_UNSIGNED_LONG:
-				*ulp = (unsigned long)lua_tointeger( L, -1 );
-				ulp++;
-				break;
-			case BUFFER_CHAR:
-				*cp = (char)lua_tointeger( L, -1 );
-				cp++;
-				break;
-			case BUFFER_SHORT:
-				*sp = (short)lua_tointeger( L, -1 );
-				sp++;
-				break;
-			case BUFFER_INT:
-				*ip = (int)lua_tointeger( L, -1 );
-				ip++;
-				break;
-			case BUFFER_LONG:
-				*lp = (long)lua_tointeger( L, -1 );
-				lp++;
-				break;
-			case BUFFER_FLOAT:
-				*fp = (float)lua_tonumber( L, -1 );
-				fp++;
-				break;
-			case BUFFER_DOUBLE:
-				*dp = (double)lua_tonumber( L, -1 );
-				dp++;
-				break;
-			default:
-				break;
-		}
-		lua_pop( L, 1 );
-		i++;
-	}
+	setBufferData( L, &buffer, 1, 0 );
 	uluaPushBuffer( L, buffer );
 
 	return 1;
@@ -3823,65 +3825,24 @@ int lcoreCopyBufferData( lua_State* L ) {
 }
 
 /*
-> RL.SetBufferData( Buffer buffer, int position, any value )
+> RL.SetBufferData( Buffer buffer, int position, any{} values )
 
 Set buffer data value
 */
 int lcoreSetBufferData( lua_State* L ) {
 	Buffer* buffer = uluaGetBuffer( L, 1 );
 	size_t position = luaL_checkinteger( L, 2 );
+	luaL_checktype( L, 3, LUA_TTABLE );
 
-	if ( position < 0 || buffer->size / getBufferElementSize( buffer ) <= position ) {
+	int len = uluaGetTableLen( L, 3 );
+
+	if ( position < 0 || buffer->size / getBufferElementSize( buffer ) <= ( position + len - 1 ) ) {
 		TraceLog( state->logLevelInvalid, "SetBufferData. position %d out of bounds", position );
 		return 0;
 	}
 	size_t offset = position * getBufferElementSize( buffer );
 
-	unsigned char* ucp = buffer->data + offset;
-	unsigned short* usp = buffer->data + offset;
-	unsigned int* uip = buffer->data + offset;
-	unsigned long* ulp = buffer->data + offset;
-	char* cp = buffer->data + offset;
-	short* sp = buffer->data + offset;
-	int* ip = buffer->data + offset;
-	long* lp = buffer->data + offset;
-	float* fp = buffer->data + offset;
-	double* dp = buffer->data + offset;
-
-	switch ( buffer->type ) {
-		case BUFFER_UNSIGNED_CHAR:
-			*ucp = (unsigned char)lua_tointeger( L, -1 );
-			break;
-		case BUFFER_UNSIGNED_SHORT:
-			*usp = (unsigned short)lua_tointeger( L, -1 );
-			break;
-		case BUFFER_UNSIGNED_INT:
-			*uip = (unsigned int)lua_tointeger( L, -1 );
-			break;
-		case BUFFER_UNSIGNED_LONG:
-			*ulp = (unsigned long)lua_tointeger( L, -1 );
-			break;
-		case BUFFER_CHAR:
-			*cp = (char)lua_tointeger( L, -1 );
-			break;
-		case BUFFER_SHORT:
-			*sp = (short)lua_tointeger( L, -1 );
-			break;
-		case BUFFER_INT:
-			*ip = (int)lua_tointeger( L, -1 );
-			break;
-		case BUFFER_LONG:
-			*lp = (long)lua_tointeger( L, -1 );
-			break;
-		case BUFFER_FLOAT:
-			*fp = (float)lua_tonumber( L, -1 );
-			break;
-		case BUFFER_DOUBLE:
-			*dp = (double)lua_tonumber( L, -1 );
-			break;
-		default:
-			break;
-	}
+	setBufferData( L, buffer, 3, offset );
 
 	return 0;
 }

@@ -33,6 +33,7 @@ DETAILED CHANGES:
 	- ADDED: SwapBufferEndianness.
 	- ADDED: Reference lib.
 	- ADDED: BUFFER_UNSIGNED_LONG and BUFFER_LONG.
+	- FIXED: Bitwise functions now use 64 bit integers.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

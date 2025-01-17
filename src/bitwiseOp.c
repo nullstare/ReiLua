@@ -16,8 +16,8 @@ Equivalent to a & b in C
 - Success return int
 */
 int lbitAnd( lua_State* L ) {
-	int a = luaL_checkinteger( L, 1 );
-	int b = luaL_checkinteger( L, 2 );
+	uint64_t a = luaL_checkinteger( L, 1 );
+	uint64_t b = luaL_checkinteger( L, 2 );
 
 	lua_pushinteger( L, a & b );
 
@@ -32,8 +32,8 @@ Equivalent to a | b in C
 - Success return int
 */
 int lbitOr( lua_State* L ) {
-	int a = luaL_checkinteger( L, 1 );
-	int b = luaL_checkinteger( L, 2 );
+	uint64_t a = luaL_checkinteger( L, 1 );
+	uint64_t b = luaL_checkinteger( L, 2 );
 
 	lua_pushinteger( L, a | b );
 
@@ -48,8 +48,8 @@ Equivalent to a ^ b in C
 - Success return int
 */
 int lbitXor( lua_State* L ) {
-	int a = luaL_checkinteger( L, 1 );
-	int b = luaL_checkinteger( L, 2 );
+	uint64_t a = luaL_checkinteger( L, 1 );
+	uint64_t b = luaL_checkinteger( L, 2 );
 
 	lua_pushinteger( L, a ^ b );
 
@@ -64,7 +64,7 @@ Equivalent to ~v in C
 - Success return int
 */
 int lbitNot( lua_State* L ) {
-	int v = luaL_checkinteger( L, 1 );
+	uint64_t v = luaL_checkinteger( L, 1 );
 
 	lua_pushinteger( L, ~v );
 
@@ -79,8 +79,8 @@ Equivalent to v << n in C
 - Success return int
 */
 int lbitShiftLeft( lua_State* L ) {
-	int v = luaL_checkinteger( L, 1 );
-	int n = luaL_checkinteger( L, 2 );
+	uint64_t v = luaL_checkinteger( L, 1 );
+	uint64_t n = luaL_checkinteger( L, 2 );
 
 	lua_pushinteger( L, v << n );
 
@@ -95,8 +95,8 @@ Equivalent to v >> n in C
 - Success return int
 */
 int lbitShiftRight( lua_State* L ) {
-	int v = luaL_checkinteger( L, 1 );
-	int n = luaL_checkinteger( L, 2 );
+	uint64_t v = luaL_checkinteger( L, 1 );
+	uint64_t n = luaL_checkinteger( L, 2 );
 
 	lua_pushinteger( L, v >> n );
 
@@ -111,11 +111,11 @@ Set bit in index i to state b in value v
 - Success return int
 */
 int lbitSet( lua_State* L ) {
-	int v = luaL_checkinteger( L, 1 );
-	int i = luaL_checkinteger( L, 2 );
+	uint64_t v = luaL_checkinteger( L, 1 );
+	uint64_t i = luaL_checkinteger( L, 2 );
 	bool b = uluaGetBoolean( L, 3 );
 
-	lua_pushinteger( L, b ? v | 1 << i : v & ~( 1 << i ) );
+	lua_pushinteger( L, b ? v | 1UL << i : v & ~( 1UL << i ) );
 
 	return 1;
 }
@@ -128,10 +128,10 @@ Get bit in index i from value v
 - Success return bool
 */
 int lbitGet( lua_State* L ) {
-	int v = luaL_checkinteger( L, 1 );
-	int i = luaL_checkinteger( L, 2 );
+	uint64_t v = luaL_checkinteger( L, 1 );
+	uint64_t i = luaL_checkinteger( L, 2 );
 
-	lua_pushboolean( L, 0 < ( v & ( 1 << i ) ) );
+	lua_pushboolean( L, 0UL < ( v & ( 1UL << i ) ) );
 
 	return 1;
 }
@@ -144,10 +144,10 @@ Toggle bit in index i in value v
 - Success return int
 */
 int lbitToggle( lua_State* L ) {
-	int v = luaL_checkinteger( L, 1 );
-	int i = luaL_checkinteger( L, 2 );
+	uint64_t v = luaL_checkinteger( L, 1 );
+	uint64_t i = luaL_checkinteger( L, 2 );
 
-	lua_pushinteger( L, v ^ 1 << i );
+	lua_pushinteger( L, v ^ 1UL << i );
 
 	return 1;
 }

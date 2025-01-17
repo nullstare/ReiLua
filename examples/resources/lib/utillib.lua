@@ -171,7 +171,7 @@ function utillib.randomFloat( min, max )
 end
 
 function utillib.printBin( v )
-	for i = 31, 0, -1 do
+	for i = 63, 0, -1 do
 		if RL.BitGet( v, i ) then
 			io.write( "1" )
 		else

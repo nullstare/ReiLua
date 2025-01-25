@@ -32,7 +32,6 @@ List of some MISSING features that are planned to be included. For specific func
 ## Roadmap
 
 * v0.9
-	* Move to raylib 5.5.
 
 ## Usage
 

@@ -1480,80 +1480,30 @@ int ltextureUnloadRenderTexture( lua_State* L ) {
 }
 
 /*
-> RL.UpdateTexture( Texture texture, int{} pixels )
+> RL.UpdateTexture( Texture texture, Buffer pixels )
 
 Update GPU texture with new data
-NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 */
 int ltexturesUpdateTexture( lua_State* L ) {
 	Texture* texture = uluaGetTexture( L, 1 );
-	size_t len = uluaGetTableLen( L, 2 );
+	Buffer* pixels = uluaGetBuffer( L, 2 );
 
-	unsigned char* pixels = malloc( len * 4 * sizeof( unsigned char ) );
-
-	int t = lua_gettop( L );
-	unsigned int i = 0;
-	lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-		size_t colLen = uluaGetTableLen( L, lua_gettop( L ) );
-
-		int t2 = lua_gettop( L );
-		unsigned int j = 0;
-		lua_pushnil( L );
-
-		while ( lua_next( L, t2 ) != 0 ) {
-			*( pixels + ( i * colLen ) + j ) = lua_tointeger( L, -1 );
-
-			j++;
-			lua_pop( L, 1 );
-		}
-		i++;
-		lua_pop( L, 1 );
-	}
-	UpdateTexture( *texture, pixels );
-	free( pixels );
+	UpdateTexture( *texture, pixels->data );
 
 	return 0;
 }
 
 /*
-> RL.UpdateTextureRec( Texture texture, Rectangle rec, int{} pixels )
+> RL.UpdateTextureRec( Texture texture, Rectangle rec, Buffer pixels )
 
 Update GPU texture rectangle with new data.
-Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 */
 int ltexturesUpdateTextureRec( lua_State* L ) {
 	Texture* texture = uluaGetTexture( L, 1 );
 	Rectangle rec = uluaGetRectangle( L, 2 );
-	size_t len = uluaGetTableLen( L, 3 );
+	Buffer* pixels = uluaGetBuffer( L, 3 );
 
-	unsigned char* pixels = malloc( len * 4 * sizeof( unsigned char ) );
-
-	int t = lua_gettop( L );
-	unsigned int i = 0;
-	lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-		size_t colLen = uluaGetTableLen( L, lua_gettop( L ) );
-
-		int t2 = lua_gettop( L );
-		unsigned int j = 0;
-		lua_pushnil( L );
-
-		while ( lua_next( L, t2 ) != 0 ) {
-			*( pixels + ( i * colLen ) + j ) = lua_tointeger( L, -1 );
-
-			j++;
-			lua_pop( L, 1 );
-		}
-		i++;
-		lua_pop( L, 1 );
-	}
-	lua_pop( L, 1 ); /* Pixels arg. */
-
-	UpdateTextureRec( *texture, rec, pixels );
-	free( pixels );
+	UpdateTextureRec( *texture, rec, pixels->data );
 
 	return 0;
 }

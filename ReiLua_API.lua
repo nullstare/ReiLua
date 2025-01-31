@@ -4133,17 +4133,15 @@ function RL.IsRenderTextureValid( target ) end
 function  RL.UnloadRenderTexture( target ) end
 
 ---Update GPU texture with new data
----NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 ---@param texture any
----@param pixels table
+---@param pixels any
 ---@return any RL.UpdateTexture
 function  RL.UpdateTexture( texture, pixels ) end
 
 ---Update GPU texture rectangle with new data.
----Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 ---@param texture any
 ---@param rec table
----@param pixels table
+---@param pixels any
 ---@return any RL.UpdateTextureRec
 function  RL.UpdateTextureRec( texture, rec, pixels ) end
 

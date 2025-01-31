@@ -36,6 +36,7 @@ DETAILED CHANGES:
 	- FIXED: Bitwise functions now use 64 bit integers.
 	- CHANGE: SetBufferData takes table of values.
 	- ADDED: Texture atlas repeat example.
+	- CHANGE: UpdateTexture and UpdateTextureRec now take pixel data as Buffer.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

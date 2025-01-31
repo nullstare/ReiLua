@@ -7611,17 +7611,15 @@ Unload render texture from GPU memory (VRAM)
 
 ---
 
-> RL.UpdateTexture( Texture texture, int{} pixels )
+> RL.UpdateTexture( Texture texture, Buffer pixels )
 
 Update GPU texture with new data
-NOTE! Should be TEXTURE_TYPE_TEXTURE. Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 
 ---
 
-> RL.UpdateTextureRec( Texture texture, Rectangle rec, int{} pixels )
+> RL.UpdateTextureRec( Texture texture, Rectangle rec, Buffer pixels )
 
 Update GPU texture rectangle with new data.
-Pixel should be in format { { 255, 255, 255, 255 }... } depending on the pixel format
 
 ---
 

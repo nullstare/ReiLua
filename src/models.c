@@ -354,8 +354,6 @@ int lmodelDrawQuad3DTexture( lua_State* L ) {
 		lua_pop( L, 1 );
 	}
 
-	//TODO Normals. maybe something like Vector3Normalize(Vector3CrossProduct(Vector3Subtract(vB, vA), Vector3Subtract(vC, vA)));
-
 	/* Draw. */
 	rlCheckRenderBatchLimit( 4 );
 	rlSetTexture( texture->id );
@@ -2531,12 +2529,11 @@ int lmodelsGetRayBoxCells( lua_State* L ) {
 	Vector3 cellSize = uluaGetVector3( L, 3 );
 
 	/* To avoid possible div by 0 later. */
-	ray.direction.x == 0.0f ? EPSILON : ray.direction.x;
-	ray.direction.y == 0.0f ? EPSILON : ray.direction.y;
-	ray.direction.z == 0.0f ? EPSILON : ray.direction.z;
+	ray.direction.x = ray.direction.x == 0.0f ? EPSILON : ray.direction.x;
+	ray.direction.y = ray.direction.y == 0.0f ? EPSILON : ray.direction.y;
+	ray.direction.z = ray.direction.z == 0.0f ? EPSILON : ray.direction.z;
 
 	Vector3 boxSize = Vector3Subtract( box.max, box.min );
-	// Vector3 boxSizeCells = Vector3Ceil( Vector3Divide( boxSize, cellSize ) );
 	Vector3 cellPos = { -1.0f, -1.0f, -1.0f };
 	Vector3 localRayPos = { 0.0f, 0.0f, 0.0f };
 

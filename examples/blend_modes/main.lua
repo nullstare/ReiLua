@@ -1,6 +1,7 @@
 package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
 Vector2 = require( "vector2" )
+Rect = require( "rectangle" )
 
 local monitor = 0
 local winSize = Vector2:new( 1920, 1080 )
@@ -13,6 +14,10 @@ local lightTexSize = Vector2:new()
 local buttonSize = Vector2:new( 20, 20 )
 local fontSize = 20
 local textTint = RL.BLACK
+
+local guiRect = Rect:new( 0, 0, 550, 210 )
+local lightPos = Vector2:new()
+local lightPos2 = Vector2:new()
 
 local framebuffer = nil
 
@@ -93,9 +98,22 @@ function RL.init()
 	lightTexSize:setT( RL.GetTextureSize( lightTex ) )
 
 	framebuffer = RL.LoadRenderTexture( winSize )
+
+	lightPos:setV( winSize:scale( 0.5 ) - lightTexSize:scale( 0.5 ) )
+	lightPos2:setV( winSize:scale( 0.5 ) - lightTexSize:scale( 0.5 ) )
 end
 
 function RL.update( delta )
+	local mousePos = Vector2:newT( RL.GetMousePosition() )
+
+	if not RL.CheckCollisionPointRec( mousePos, guiRect ) then
+		if RL.IsMouseButtonDown( RL.MOUSE_BUTTON_LEFT ) then
+			lightPos:setV( mousePos - lightTexSize:scale( 0.5 ) )
+		end
+		if RL.IsMouseButtonDown( RL.MOUSE_BUTTON_RIGHT ) then
+			lightPos2:setV( mousePos - lightTexSize:scale( 0.5 ) )
+		end
+	end
 end
 
 local function drawControl( pos, t, name )
@@ -130,11 +148,12 @@ local function drawControls()
 	drawControl( pos, blendFactor, "srcAlpha" )
 	drawControl( pos, blendFactor, "dstAlpha" )
 	drawControl( pos, blendFunction, "eqAlpha" )
+	
+	pos.y = pos.y + 8
+	RL.DrawText( "Set texture positions with mouse right and left.", pos, 20, RL.BLACK )
 end
 
 function RL.draw()
-	local mousePos = Vector2:newT( RL.GetMousePosition() )
-
 	RL.ClearBackground( RL.BLACK )
 
 	if framebuffer then
@@ -161,7 +180,8 @@ function RL.draw()
 				blendFunction.options[ blendFunction.eqAlpha ].value
 			)
 			RL.BeginBlendMode( blendMode.options[ blendMode.mode ].value )
-				RL.DrawTexture( lightTex, mousePos - lightTexSize:scale( 0.5 ), RL.WHITE )
+				RL.DrawTexture( lightTex, lightPos, RL.RED )
+				RL.DrawTexture( lightTex, lightPos2, RL.BLUE )
 			RL.EndBlendMode()
 		RL.EndTextureMode()
 	end
@@ -173,7 +193,6 @@ function RL.draw()
 		0.0,
 		RL.WHITE
 	)
-
 	RL.DrawTexturePro(
 		RL.GetRenderTextureTexture( framebuffer ),
 		{ 0, 0, winSize.x, -winSize.y },
@@ -182,6 +201,6 @@ function RL.draw()
 		0.0,
 		RL.WHITE
 	)
-	RL.DrawRectangle( { 0, 0, 550, 180 }, { 255, 255, 255, 200 } )
+	RL.DrawRectangle( guiRect, { 255, 255, 255, 200 } )
 	drawControls()
 end

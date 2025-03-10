@@ -38,6 +38,7 @@ DETAILED CHANGES:
 	- ADDED: Texture atlas repeat example.
 	- CHANGE: UpdateTexture and UpdateTextureRec now take pixel data as Buffer.
 	- ADDED: Blend modes example.
+	- FIXED: uluaPushTransform translation field name fix.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

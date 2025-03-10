@@ -5039,10 +5039,12 @@ static const char **GuiTextSplit(const char *text, char delimiter, int *count, i
     // textRow is an externally provided array of integers that stores row number for every splitted string
 
     #if !defined(RAYGUI_TEXTSPLIT_MAX_ITEMS)
-        #define RAYGUI_TEXTSPLIT_MAX_ITEMS          128
+        // #define RAYGUI_TEXTSPLIT_MAX_ITEMS          128
+        #define RAYGUI_TEXTSPLIT_MAX_ITEMS          512
     #endif
     #if !defined(RAYGUI_TEXTSPLIT_MAX_TEXT_SIZE)
-        #define RAYGUI_TEXTSPLIT_MAX_TEXT_SIZE     1024
+        // #define RAYGUI_TEXTSPLIT_MAX_TEXT_SIZE     1024
+        #define RAYGUI_TEXTSPLIT_MAX_TEXT_SIZE     4096
     #endif
 
     static const char *result[RAYGUI_TEXTSPLIT_MAX_ITEMS] = { NULL };   // String pointers array (points to buffer data)
@@ -5451,10 +5453,12 @@ const char **TextSplit(const char *text, char delimiter, int *count)
     //      2. Maximum size of text to split is RAYGUI_TEXTSPLIT_MAX_TEXT_SIZE
 
     #if !defined(RAYGUI_TEXTSPLIT_MAX_ITEMS)
-        #define RAYGUI_TEXTSPLIT_MAX_ITEMS          128
+        // #define RAYGUI_TEXTSPLIT_MAX_ITEMS          128
+        #define RAYGUI_TEXTSPLIT_MAX_ITEMS          512
     #endif
     #if !defined(RAYGUI_TEXTSPLIT_MAX_TEXT_SIZE)
-        #define RAYGUI_TEXTSPLIT_MAX_TEXT_SIZE      1024
+        // #define RAYGUI_TEXTSPLIT_MAX_TEXT_SIZE      1024
+		#define RAYGUI_TEXTSPLIT_MAX_TEXT_SIZE     4096
     #endif
 
     static const char *result[RAYGUI_TEXTSPLIT_MAX_ITEMS] = { NULL };

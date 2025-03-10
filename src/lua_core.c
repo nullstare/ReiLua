@@ -3932,7 +3932,7 @@ void uluaPushBoneInfo( lua_State* L, BoneInfo boneInfo ) {
 void uluaPushTransform( lua_State* L, Transform transform ) {
 	lua_createtable( L, 3, 0 );
 	uluaPushVector3( L, transform.translation );
-	lua_setfield( L, -2, "name" );
+	lua_setfield( L, -2, "translation" );
 	uluaPushQuaternion( L, transform.rotation );
 	lua_setfield( L, -2, "rotation" );
 	uluaPushVector3( L, transform.scale );

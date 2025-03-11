@@ -1131,6 +1131,7 @@ int lcoreSetShaderValueMatrix( lua_State* L ) {
 	Matrix mat = uluaGetMatrix( L, 3 );
 
 	SetShaderValueMatrix( *shader, locIndex, mat );
+	rlDisableShader(); /* Remove this if added in raylib. Can cause bugs if not disabled. */
 
 	return 0;
 }
@@ -1146,6 +1147,7 @@ int lcoreSetShaderValueTexture( lua_State* L ) {
 	Texture* texture = uluaGetTexture( L, 3 );
 
 	SetShaderValueTexture( *shader, locIndex, *texture );
+	rlDisableShader(); /* Remove this if added in raylib. Can cause bugs if not disabled. */
 
 	return 0;
 }
@@ -1188,6 +1190,7 @@ int lcoreSetShaderValue( lua_State* L ) {
 	else {
 		SetShaderValue( *shader, locIndex, ints, uniformType );
 	}
+	rlDisableShader(); /* Remove this if added in raylib. Can cause bugs if not disabled. */
 
 	return 0;
 }

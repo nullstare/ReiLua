@@ -39,6 +39,8 @@ DETAILED CHANGES:
 	- CHANGE: UpdateTexture and UpdateTextureRec now take pixel data as Buffer.
 	- ADDED: Blend modes example.
 	- FIXED: uluaPushTransform translation field name fix.
+	- FIXED: Added rlDisableShader for SetShaderValue* functions to prevent bugs.
+	Should be removed if added back in raylib.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

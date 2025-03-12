@@ -29,7 +29,7 @@ void stateContextInit() {
 	state->defaultTexture = (Texture){ 1, 1, 1, 1, 7 };
 	state->shapesTexture = (Texture){ 1, 1, 1, 1, 7 };
 	state->RLGLcurrentShaderLocs = malloc( RL_MAX_SHADER_LOCATIONS * sizeof( int ) );
-#ifdef PLATFORM_DESKTOP_SDL
+#ifdef PLATFORM_DESKTOP_SDL2
 	state->SDL_eventQueue = malloc( PLATFORM_SDL_EVENT_QUEUE_LEN * sizeof( SDL_Event ) );
 	state->SDL_eventQueueLen = 0;
 #endif

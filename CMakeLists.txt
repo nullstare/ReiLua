@@ -16,7 +16,7 @@ option( LUA_EVENTS "Enable Lua event callbacks (RL.event)." off )
 option( DYNAMIC_SYMBOLS "Expose all dynamic symbols with rdynamic." off )
 option( EXPOSE_API_SYMBOLS "Expose dynamic symbols only for get and push functions of variable types." off )
 
-enum_option( PLATFORM "Desktop;Desktop_SDL;Web" "Platform to build for." )
+enum_option( PLATFORM "Desktop;Desktop_SDL2;Desktop_SDL3;Web" "Platform to build for." )
 
 if( NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES )
 	set( CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE )
@@ -30,8 +30,10 @@ add_executable( ${PROJECT_NAME} ${SOURCES} )
 
 if( PLATFORM STREQUAL "Desktop" )
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DPLATFORM_DESKTOP" )
-elseif( PLATFORM STREQUAL "Desktop_SDL" )
-	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DPLATFORM_DESKTOP_SDL" )
+elseif( PLATFORM STREQUAL "Desktop_SDL2" )
+	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DPLATFORM_DESKTOP_SDL2" )
+elseif( PLATFORM STREQUAL "Desktop_SDL3" )
+	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DPLATFORM_DESKTOP_SDL3" )
 elseif( PLATFORM STREQUAL "Web" )
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DPLATFORM_WEB" )
 endif()
@@ -86,11 +88,16 @@ else() # Desktop
 			set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DEXPOSE_LUA_API_SYMBOLS -rdynamic -fvisibility=hidden" )
 		endif()
 
-		if ( PLATFORM MATCHES "Desktop_SDL" )
+		if ( PLATFORM MATCHES "Desktop_SDL2" )
 			include( FindPkgConfig )
 			pkg_search_module( SDL2 REQUIRED sdl2 )
 			include_directories( ${SDL2_INCLUDE_DIRS} )
 			target_link_libraries( ${PROJECT_NAME} ${SDL2_LIBRARIES} )
+		elseif ( PLATFORM MATCHES "Desktop_SDL3" )
+			include( FindPkgConfig )
+			pkg_search_module( SDL3 REQUIRED sdl3 )
+			include_directories( ${SDL3_INCLUDE_DIRS} )
+			target_link_libraries( ${PROJECT_NAME} ${SDL3_LIBRARIES} )
 		endif()
 
 		if( DRM ) # For Raspberry Pi.
@@ -104,7 +111,7 @@ else() # Desktop
 	elseif( APPLE )
 		set( CMAKE_C_COMPILER "clang" )
 
-		# //TODO Linking to sdl2.
+		# //TODO Linking to SDL.
 
 		target_link_libraries( ${PROJECT_NAME} "-framework IOKit" )
 		target_link_libraries( ${PROJECT_NAME} "-framework Cocoa" )
@@ -114,11 +121,16 @@ else() # Desktop
 			set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DEXPOSE_LUA_API_SYMBOLS" )
 		endif()
 
-		if ( PLATFORM MATCHES "Desktop_SDL" )
+		if ( PLATFORM MATCHES "Desktop_SDL2" )
 			find_package( SDL2 REQUIRED )
 			include_directories( ${SDL2_INCLUDE_DIRS} )
 			target_link_libraries( ${PROJECT_NAME} ${SDL2MAIN_LIBRARIES} )
 			target_link_libraries( ${PROJECT_NAME} ${SDL2_LIBRARIES} )
+		elseif ( PLATFORM MATCHES "Desktop_SDL3" )
+			find_package( SDL3 REQUIRED )
+			include_directories( ${SDL3_INCLUDE_DIRS} )
+			target_link_libraries( ${PROJECT_NAME} ${SDL3MAIN_LIBRARIES} )
+			target_link_libraries( ${PROJECT_NAME} ${SDL3_LIBRARIES} )
 		endif()
 		# Remove this to get console. //TODO Could be build option.
 		set( CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-mwindows" )

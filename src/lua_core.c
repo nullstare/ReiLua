@@ -17,8 +17,10 @@
 
 #ifdef PLATFORM_DESKTOP
 	#include "platforms/core_desktop_glfw.c"
-#elif PLATFORM_DESKTOP_SDL
-	#include "platforms/core_desktop_sdl.c"
+#elif PLATFORM_DESKTOP_SDL2
+	#include "platforms/core_desktop_sdl2.c"
+#elif PLATFORM_DESKTOP_SDL3
+	#include "platforms/core_desktop_sdl3.c"
 #elif PLATFORM_WEB
 	#include "platforms/core_web.c"
 #endif
@@ -1451,7 +1453,7 @@ void luaCallInit() {
 
 
 void luaCallUpdate() {
-#if defined PLATFORM_DESKTOP_SDL && defined LUA_EVENTS
+#if defined PLATFORM_DESKTOP_SDL2 && defined LUA_EVENTS
 	platformSendEvents();
 #endif
 	lua_State* L = state->luaState;

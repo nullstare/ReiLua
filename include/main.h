@@ -17,8 +17,10 @@
 #ifdef PLATFORM_DESKTOP
 	#include "GLFW/glfw3.h"
 	#include "GLFW/glfw3native.h"
-#elif PLATFORM_DESKTOP_SDL
-	#include <SDL.h>
+#elif PLATFORM_DESKTOP_SDL2
+	#include <SDL2/SDL.h>
+#elif PLATFORM_DESKTOP_SDL3
+	#include <SDL3/SDL.h>
 #endif
 
 #ifdef SHARED

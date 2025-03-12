@@ -1,7 +1,7 @@
 #include "main.h"
 #include "lua_core.h"
 #include "core.h"
-#include "platforms/core_desktop_sdl.h"
+#include "platforms/core_desktop_sdl2.h"
 
 void platformDefineGlobals() {
 	lua_State* L = state->luaState;

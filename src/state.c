@@ -18,6 +18,11 @@ bool stateInit( int argn, const char** argc, const char* basePath ) {
 	state->mouseOffset = (Vector2){ 0, 0 };
 	state->mouseScale = (Vector2){ 1, 1 };
 
+#if defined PLATFORM_DESKTOP_SDL2 || defined PLATFORM_DESKTOP_SDL3
+	state->SDL_eventQueue = malloc( PLATFORM_SDL_EVENT_QUEUE_LEN * sizeof( SDL_Event ) );
+	state->SDL_eventQueueLen = 0;
+#endif
+
 	return state->run;
 }
 
@@ -29,10 +34,6 @@ void stateContextInit() {
 	state->defaultTexture = (Texture){ 1, 1, 1, 1, 7 };
 	state->shapesTexture = (Texture){ 1, 1, 1, 1, 7 };
 	state->RLGLcurrentShaderLocs = malloc( RL_MAX_SHADER_LOCATIONS * sizeof( int ) );
-#ifdef PLATFORM_DESKTOP_SDL2
-	state->SDL_eventQueue = malloc( PLATFORM_SDL_EVENT_QUEUE_LEN * sizeof( SDL_Event ) );
-	state->SDL_eventQueueLen = 0;
-#endif
 	int* defaultShaderLocs = rlGetShaderLocsDefault();
 
 	for ( int i = 0; i < RL_MAX_SHADER_LOCATIONS; i++ ) {

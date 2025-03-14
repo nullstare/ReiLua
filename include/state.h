@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef PLATFORM_DESKTOP_SDL2
+#if defined PLATFORM_DESKTOP_SDL2 || defined PLATFORM_DESKTOP_SDL3
 	#define PLATFORM_SDL_EVENT_QUEUE_LEN 128
 #endif
 
@@ -39,7 +39,7 @@ typedef struct {
 	GLFWpentabletdatafun glfwTabletDataCallback;
 	GLFWpentabletcursorfun glfwTabletCursorCallback;
 	GLFWpentabletproximityfun glfwTabletProximityCallback;
-#elif PLATFORM_DESKTOP_SDL2
+#elif defined PLATFORM_DESKTOP_SDL2 || defined PLATFORM_DESKTOP_SDL3
 	int SDL_eventQueueLen;
 	SDL_Event* SDL_eventQueue;
 #endif

@@ -4,6 +4,7 @@ Release:	ReiLua version 0.9.0		Using raylib 5.5 and Forked Raygui 4.0
 KEY CHANGES:
 	- CHANGE: Switch to raylib 5.5.
 	- CHANGE: InitWindow is not called anymore before main.lua is called, but still is before RL.init.
+	- ADDED: SDL3 Support.
 
 DETAILED CHANGES:
 	- CHANGE: Is*Ready to Is*Valid functions.
@@ -41,6 +42,7 @@ DETAILED CHANGES:
 	- FIXED: uluaPushTransform translation field name fix.
 	- FIXED: Added rlDisableShader for SetShaderValue* functions to prevent bugs.
 	Should be removed if added back in raylib.
+	- ADDED: SDL3 Events.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

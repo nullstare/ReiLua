@@ -1453,7 +1453,8 @@ void luaCallInit() {
 
 
 void luaCallUpdate() {
-#if defined PLATFORM_DESKTOP_SDL2 && defined LUA_EVENTS
+// #if defined PLATFORM_DESKTOP_SDL2 && defined LUA_EVENTS
+#if ( defined PLATFORM_DESKTOP_SDL2 || defined PLATFORM_DESKTOP_SDL3 ) && defined LUA_EVENTS
 	platformSendEvents();
 #endif
 	lua_State* L = state->luaState;

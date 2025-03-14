@@ -8,6 +8,9 @@ function RL.init()
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 
 	RL.SetTextLineSpacing( 24 )
+
+	-- RL.EnableEventWaiting()
+	-- RL.DisableEventWaiting()
 end
 
 local function getEventType( event )
@@ -67,46 +70,54 @@ end
 local mousePos = { 0, 0 }
 local cursorMode = 1
 
-function RL.event( event )
-	text = "Event: "..getEventType( event ).."\n"
+local pen = {
+	state = RL.SDL_EVENT_PEN_UP,
+	pos = { 0, 0 },
+	pressure = 0,
+	down = false,
+	eraser = false,
+}
 
-	if event.type == RL.GLFW_WINDOW_SIZE_EVENT then
-		text = text.."width: "..event.width.." height: "..event.height
-	elseif event.type == RL.GLFW_WINDOW_MAXIMIZE_EVENT then
-		text = text.."maximized: "..event.maximized
-	elseif event.type == RL.GLFW_WINDOW_ICONYFY_EVENT then
-		text = text.."iconified: "..event.iconified
-	elseif event.type == RL.GLFW_WINDOW_FOCUS_EVENT then
-		text = text.."focused: "..event.focused
-	elseif event.type == RL.GLFW_WINDOW_DROP_EVENT then
-		text = text.."count: "..event.count.."\n"
-		for _, path in ipairs( event.paths ) do
-			text = text..path.."\n"
-		end
-	elseif event.type == RL.GLFW_KEY_EVENT then
-		text = text.."key: "..event.key.." scancode: "..event.scancode.." action: "..getAction( event.action ).." mods: "..event.mods
-		text = text .."\nkeyName: "..keyName( event.key )
-	elseif event.type == RL.GLFW_CHAR_EVENT then
-		text = text.."key: "..event.key
-		-- text = text .."\nchar: "..string.char( event.key )
-		text = text .."\nchar: "..utf8.char( event.key )
-	elseif event.type == RL.GLFW_MOUSE_BUTTON_EVENT then
-		text = text.."button: "..event.button.." action: "..getAction( event.action ).." mods: "..event.mods
-	elseif event.type == RL.GLFW_MOUSE_CURSOR_POS_EVENT then
-		text = text.."x: "..event.x.." y: "..event.y
-	elseif event.type == RL.GLFW_MOUSE_SCROLL_EVENT then
-		text = text.."xoffset: "..event.xoffset.." yoffset: "..event.yoffset
-	elseif event.type == RL.GLFW_CURSOR_ENTER_EVENT then
-		text = text.."enter: "..event.enter
-		cursorIn = event.enter
-	elseif event.type == RL.EVENT_JOYSTICK then
-		text = text.."jid: "..event.jid.." event: "..event.event
-		if event.event == RL.GLFW_CONNECTED then
-			text = text.."\nConnected"
-		elseif event.event == RL.GLFW_DISCONNECTED then
-			text = text.."\nDisconnected"
-		end
-	end
+function RL.event( event )
+	-- text = "Event: "..getEventType( event ).."\n"
+
+	-- if event.type == RL.GLFW_WINDOW_SIZE_EVENT then
+	-- 	text = text.."width: "..event.width.." height: "..event.height
+	-- elseif event.type == RL.GLFW_WINDOW_MAXIMIZE_EVENT then
+	-- 	text = text.."maximized: "..event.maximized
+	-- elseif event.type == RL.GLFW_WINDOW_ICONYFY_EVENT then
+	-- 	text = text.."iconified: "..event.iconified
+	-- elseif event.type == RL.GLFW_WINDOW_FOCUS_EVENT then
+	-- 	text = text.."focused: "..event.focused
+	-- elseif event.type == RL.GLFW_WINDOW_DROP_EVENT then
+	-- 	text = text.."count: "..event.count.."\n"
+	-- 	for _, path in ipairs( event.paths ) do
+	-- 		text = text..path.."\n"
+	-- 	end
+	-- elseif event.type == RL.GLFW_KEY_EVENT then
+	-- 	text = text.."key: "..event.key.." scancode: "..event.scancode.." action: "..getAction( event.action ).." mods: "..event.mods
+	-- 	text = text .."\nkeyName: "..keyName( event.key )
+	-- elseif event.type == RL.GLFW_CHAR_EVENT then
+	-- 	text = text.."key: "..event.key
+	-- 	-- text = text .."\nchar: "..string.char( event.key )
+	-- 	text = text .."\nchar: "..utf8.char( event.key )
+	-- elseif event.type == RL.GLFW_MOUSE_BUTTON_EVENT then
+	-- 	text = text.."button: "..event.button.." action: "..getAction( event.action ).." mods: "..event.mods
+	-- elseif event.type == RL.GLFW_MOUSE_CURSOR_POS_EVENT then
+	-- 	text = text.."x: "..event.x.." y: "..event.y
+	-- elseif event.type == RL.GLFW_MOUSE_SCROLL_EVENT then
+	-- 	text = text.."xoffset: "..event.xoffset.." yoffset: "..event.yoffset
+	-- elseif event.type == RL.GLFW_CURSOR_ENTER_EVENT then
+	-- 	text = text.."enter: "..event.enter
+	-- 	cursorIn = event.enter
+	-- elseif event.type == RL.EVENT_JOYSTICK then
+	-- 	text = text.."jid: "..event.jid.." event: "..event.event
+	-- 	if event.event == RL.GLFW_CONNECTED then
+	-- 		text = text.."\nConnected"
+	-- 	elseif event.event == RL.GLFW_DISCONNECTED then
+	-- 		text = text.."\nDisconnected"
+	-- 	end
+	-- end
 
 	-- Some SDL events.
 
@@ -148,6 +159,45 @@ function RL.event( event )
 	-- elseif event.type == RL.GLFW_PEN_TABLET_PROXIMITY_EVENT then
 	-- 	print( event.state )
 	-- end
+
+	-- Some SDL3 events.
+
+	text = event.type.."\n\n"
+
+	if event.type == RL.SDL_EVENT_KEY_DOWN or event.type == RL.SDL_EVENT_KEY_UP then
+		text = text.."key: "..event.key.." repeat: "..tostring( event.repeating )
+	elseif event.type == RL.SDL_EVENT_PEN_AXIS then
+		text = text.."pen_state: "..event.pen_state.." axis: "..event.axis.." value: "..event.value
+		pen.pressure = event.value
+		pen.state = event.pen_state
+		pen.pos[1] = event.x
+		pen.pos[2] = event.y
+	elseif event.type == RL.SDL_EVENT_PEN_MOTION then
+		text = text.."pen_state: "..event.pen_state.." pos: "..event.x..", "..event.y
+		pen.pos[1] = event.x
+		pen.pos[2] = event.y
+	elseif event.type == RL.SDL_EVENT_PEN_DOWN or event.type == RL.SDL_EVENT_PEN_UP then
+		pen.down = event.down
+		pen.eraser = event.eraser
+	elseif event.type == RL.SDL_EVENT_CLIPBOARD_UPDATE then
+		print( "SDL_EVENT_CLIPBOARD_UPDATE:" )
+		for i, t in ipairs( event.mime_types ) do
+			print( i, t )
+		end
+	elseif event.type == RL.SDL_EVENT_GAMEPAD_AXIS_MOTION then
+		text = text.."axis: "..event.axis.."value: "..event.value
+		print( "axis: "..event.axis.." value: "..event.value )
+	elseif event.type == RL.SDL_EVENT_GAMEPAD_ADDED then
+		print( "SDL_EVENT_GAMEPAD_ADDED" )
+	end
+end
+
+local function drawSDL3PenCircle()
+	RL.DrawCircleLines( pen.pos, 32, RL.GREEN )
+
+	if pen.down then
+		RL.DrawCircle( pen.pos, pen.pressure * 32, pen.eraser and RL.YELLOW or RL.BLUE )
+	end
 end
 
 function RL.draw()
@@ -156,6 +206,8 @@ function RL.draw()
 	else
 		RL.ClearBackground( RL.RED )
 	end
+
+	drawSDL3PenCircle()
 
     RL.DrawText( text, textPos, 20, RL.BLACK )
 end

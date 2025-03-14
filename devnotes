@@ -10,7 +10,6 @@ Backlog {
 	* Platform desktop SDL
 		* Text input not working on gui. Could this be Raylib issue?
 		* Haptic functions.
-		* SDL3 Pen.
 		* SDL3 GPU?
 	* Audio
 		* AudioStream.

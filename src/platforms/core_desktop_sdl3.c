@@ -166,6 +166,8 @@ static void platformSendEvents() {
 		return;
 	}
 
+	lua_pop( L, -1 );
+
 	for ( int i = 0; i < state->SDL_eventQueueLen; i++ ) {
 		bool call = false;
 		lua_getglobal( L, "RL" );

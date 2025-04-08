@@ -63,3 +63,4 @@ int lshapesCheckCollisionPointPoly( lua_State* L );
 int lshapesCheckCollisionLines( lua_State* L );
 int lshapesCheckCollisionPointLine( lua_State* L );
 int lshapesGetCollisionRec( lua_State* L );
+int lshapesRectPack( lua_State* L );

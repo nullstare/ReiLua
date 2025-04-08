@@ -1853,6 +1853,7 @@ void luaRegister() {
 	assingGlobalFunction( "CheckCollisionLines", lshapesCheckCollisionLines );
 	assingGlobalFunction( "CheckCollisionPointLine", lshapesCheckCollisionPointLine );
 	assingGlobalFunction( "GetCollisionRec", lshapesGetCollisionRec );
+	assingGlobalFunction( "RectPack", lshapesRectPack );
 
 	/* Textures. */
 		/* Image loading functions. */

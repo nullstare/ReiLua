@@ -6975,6 +6975,14 @@ Get collision rectangle for two rectangles collision
 
 ---
 
+> rects{} = RL.RectPack( Rectangle{} rects, Vector2 size, int padding )
+
+Useful for e.g. packing rectangular textures into an atlas. stbrp_pack_rects
+
+- Success return Rectangle{}
+
+---
+
 ## Textures - Image loading functions
 
 ---

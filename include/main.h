@@ -12,7 +12,8 @@
 #include <string.h>
 #include <stdint.h>
 
-#include "glad.h"
+#include "external/glad.h"
+#include "external/stb_rect_pack.h"
 
 #ifdef PLATFORM_DESKTOP
 	#include "GLFW/glfw3.h"

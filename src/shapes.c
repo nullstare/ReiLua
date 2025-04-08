@@ -1040,3 +1040,50 @@ int lshapesGetCollisionRec( lua_State* L ) {
 
 	return 1;
 }
+
+/*
+> rects{} = RL.RectPack( Rectangle{} rects, Vector2 size, int padding )
+
+Useful for e.g. packing rectangular textures into an atlas. stbrp_pack_rects
+
+- Success return Rectangle{}
+*/
+int lshapesRectPack( lua_State* L ) {
+	int rectCount = uluaGetTableLen( L, 1 );
+	Vector2 size = uluaGetVector2( L, 2 );
+	int padding = luaL_checknumber( L, 3 );
+
+	stbrp_context *context = (stbrp_context*)RL_MALLOC( sizeof( *context ) );
+	stbrp_node *nodes = (stbrp_node*)RL_MALLOC( rectCount * sizeof( *nodes ) );
+
+	stbrp_init_target( context, size.x, size.y, nodes, rectCount ) ;
+	stbrp_rect *rects = (stbrp_rect*)RL_MALLOC( rectCount * sizeof( stbrp_rect ) );
+
+	int t = 1, i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		Rectangle rect = uluaGetRectangle( L, lua_gettop( L ) );
+		rects[i] = (stbrp_rect){ .id = 0, .x = rect.x, .y = rect.y,
+			.w = rect.width + padding, .h = rect.height + padding, .was_packed = 0
+		};
+		i++;
+		lua_pop( L, 1 );
+	}
+	stbrp_pack_rects( context, rects, rectCount );
+
+	lua_createtable( L, rectCount, 0 );
+
+	for ( int i = 0; i < rectCount; i++ ) {
+		uluaPushRectangle( L, (Rectangle){ .x = rects[i].x, .y = rects[i].y,
+			.width = rects[i].w - padding, .height = rects[i].h - padding }
+		);
+		lua_rawseti( L, -2, i+1 );
+	}
+
+	RL_FREE( rects );
+	RL_FREE( nodes );
+	RL_FREE( context );
+
+	return 1;
+}

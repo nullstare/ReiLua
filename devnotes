@@ -17,8 +17,6 @@ Backlog {
 		* Material mapType range checks.
 		* Mesh bone weight management?
 
-	* Textures
-		* Try making atlas packer with stbrp_pack_rects.
 	* Examples
 		* Platformer example physics update for true framerate independence.
 	* Android support

@@ -3521,6 +3521,14 @@ function RL.CheckCollisionPointLine( point, p1, p2, threshold ) end
 ---@return any rectangle 
 function RL.GetCollisionRec( rec1, rec2 ) end
 
+---Useful for e.g. packing rectangular textures into an atlas. stbrp_pack_rects
+---- Success return Rectangle{}
+---@param rects table
+---@param size table
+---@param padding integer
+---@return any rects{} 
+function RL.RectPack( rects, size, padding ) end
+
 -- Textures - Image loading functions
 
 ---Load image from file into CPU memory (RAM)

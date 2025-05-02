@@ -1916,6 +1916,7 @@ void luaRegister() {
 	assingGlobalFunction( "GetImageAlphaBorder", ltexturesGetImageAlphaBorder );
 	assingGlobalFunction( "GetImageColor", ltexturesGetImageColor );
 		/* Image configuration functions. */
+	assingGlobalFunction( "SetImageData", ltexturesSetImageData );
 	assingGlobalFunction( "GetImageData", ltexturesGetImageData );
 	assingGlobalFunction( "GetImageSize", ltexturesGetImageSize );
 	assingGlobalFunction( "GetImageMipmaps", ltexturesGetImageMipmaps );

@@ -7398,6 +7398,12 @@ Get image pixel color at (x, y) position
 
 ---
 
+> RL.SetImageData( Image image, Buffer data )
+
+Set image data from Buffer
+
+---
+
 > imageData = RL.GetImageData( Image image )
 
 Get image data as Buffer
@@ -7482,31 +7488,31 @@ Draw rectangle lines within an image
 
 ---
 
-> RL.ImageDrawTriangle( Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color )
+> RL.ImageDrawTriangle( Image dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color )
 
 Draw triangle within an image
 
 ---
 
-> RL.ImageDrawTriangleEx( Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3 )
+> RL.ImageDrawTriangleEx( Image dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3 )
 
 Draw triangle with interpolated colors within an image
 
 ---
 
-> RL.ImageDrawTriangleLines( Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color )
+> RL.ImageDrawTriangleLines( Image dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color )
 
 Draw triangle outline within an image
 
 ---
 
-> RL.ImageDrawTriangleFan( Image *dst, Vector2{} points, Color color )
+> RL.ImageDrawTriangleFan( Image dst, Vector2{} points, Color color )
 
 Draw a triangle fan defined by points within an image (first vertex is the center)
 
 ---
 
-> RL.ImageDrawTriangleStrip( Image *dst, Vector2{} points, Color color )
+> RL.ImageDrawTriangleStrip( Image dst, Vector2{} points, Color color )
 
 Draw a triangle strip defined by points within an image
 

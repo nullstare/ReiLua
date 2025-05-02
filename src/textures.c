@@ -3,6 +3,7 @@
 #include "textures.h"
 #include "text.h"
 #include "lua_core.h"
+#include "rmath.h"
 
 /*
 ## Textures - Image loading functions
@@ -931,6 +932,23 @@ int ltexturesGetImageColor( lua_State* L ) {
 */
 
 /*
+> RL.SetImageData( Image image, Buffer data )
+
+Set image data from Buffer
+*/
+int ltexturesSetImageData( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	Buffer* data = uluaGetBuffer( L, 2 );
+	
+	memcpy( image->data, data->data, imin(
+		GetPixelDataSize( image->width, image->height, image->format ),
+		data->size
+	) );
+
+	return 0;
+}
+
+/*
 > imageData = RL.GetImageData( Image image )
 
 Get image data as Buffer
@@ -1127,7 +1145,7 @@ int ltexturesImageDrawRectangleLines( lua_State* L ) {
 }
 
 /*
-> RL.ImageDrawTriangle( Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color )
+> RL.ImageDrawTriangle( Image dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color )
 
 Draw triangle within an image
 */
@@ -1144,7 +1162,7 @@ int ltexturesImageDrawTriangle( lua_State* L ) {
 }
 
 /*
-> RL.ImageDrawTriangleEx( Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3 )
+> RL.ImageDrawTriangleEx( Image dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3 )
 
 Draw triangle with interpolated colors within an image
 */
@@ -1163,7 +1181,7 @@ int ltexturesImageDrawTriangleEx( lua_State* L ) {
 }
 
 /*
-> RL.ImageDrawTriangleLines( Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color )
+> RL.ImageDrawTriangleLines( Image dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color )
 
 Draw triangle outline within an image
 */
@@ -1180,7 +1198,7 @@ int ltexturesImageDrawTriangleLines( lua_State* L ) {
 }
 
 /*
-> RL.ImageDrawTriangleFan( Image *dst, Vector2{} points, Color color )
+> RL.ImageDrawTriangleFan( Image dst, Vector2{} points, Color color )
 
 Draw a triangle fan defined by points within an image (first vertex is the center)
 */
@@ -1197,7 +1215,7 @@ int ltexturesImageDrawTriangleFan( lua_State* L ) {
 }
 
 /*
-> RL.ImageDrawTriangleStrip( Image *dst, Vector2{} points, Color color )
+> RL.ImageDrawTriangleStrip( Image dst, Vector2{} points, Color color )
 
 Draw a triangle strip defined by points within an image
 */

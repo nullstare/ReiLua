@@ -3914,6 +3914,12 @@ function RL.GetImageColor( image, pixelPos ) end
 
 -- Textures - Image configuration functions
 
+---Set image data from Buffer
+---@param image any
+---@param data any
+---@return any RL.SetImageData
+function  RL.SetImageData( image, data ) end
+
 ---Get image data as Buffer
 ---- Success return Buffer
 ---@param image any
@@ -4002,16 +4008,16 @@ function  RL.ImageDrawRectangle( dst, rec, color ) end
 function  RL.ImageDrawRectangleLines( dst, rec, thick, color ) end
 
 ---Draw triangle within an image
----@param *dst any
+---@param dst any
 ---@param v1 table
 ---@param v2 table
 ---@param v3 table
 ---@param color table
 ---@return any RL.ImageDrawTriangle
-function  RL.ImageDrawTriangle( *dst, v1, v2, v3, color ) end
+function  RL.ImageDrawTriangle( dst, v1, v2, v3, color ) end
 
 ---Draw triangle with interpolated colors within an image
----@param *dst any
+---@param dst any
 ---@param v1 table
 ---@param v2 table
 ---@param v3 table
@@ -4019,30 +4025,30 @@ function  RL.ImageDrawTriangle( *dst, v1, v2, v3, color ) end
 ---@param c2 table
 ---@param c3 table
 ---@return any RL.ImageDrawTriangleEx
-function  RL.ImageDrawTriangleEx( *dst, v1, v2, v3, c1, c2, c3 ) end
+function  RL.ImageDrawTriangleEx( dst, v1, v2, v3, c1, c2, c3 ) end
 
 ---Draw triangle outline within an image
----@param *dst any
+---@param dst any
 ---@param v1 table
 ---@param v2 table
 ---@param v3 table
 ---@param color table
 ---@return any RL.ImageDrawTriangleLines
-function  RL.ImageDrawTriangleLines( *dst, v1, v2, v3, color ) end
+function  RL.ImageDrawTriangleLines( dst, v1, v2, v3, color ) end
 
 ---Draw a triangle fan defined by points within an image (first vertex is the center)
----@param *dst any
+---@param dst any
 ---@param points table
 ---@param color table
 ---@return any RL.ImageDrawTriangleFan
-function  RL.ImageDrawTriangleFan( *dst, points, color ) end
+function  RL.ImageDrawTriangleFan( dst, points, color ) end
 
 ---Draw a triangle strip defined by points within an image
----@param *dst any
+---@param dst any
 ---@param points table
 ---@param color table
 ---@return any RL.ImageDrawTriangleStrip
-function  RL.ImageDrawTriangleStrip( *dst, points, color ) end
+function  RL.ImageDrawTriangleStrip( dst, points, color ) end
 
 ---Draw a source image within a destination image (Tint applied to source)
 ---@param dst any

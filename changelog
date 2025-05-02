@@ -45,6 +45,7 @@ DETAILED CHANGES:
 	- ADDED: SDL3 Events.
 	- ADDED: Fast tilemap example.
 	- ADDED: RectPack using stbrp_pack_rects. Atlas packer tutorial.
+	- ADDED: SetImageData.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

@@ -46,6 +46,8 @@ DETAILED CHANGES:
 	- ADDED: Fast tilemap example.
 	- ADDED: RectPack using stbrp_pack_rects. Atlas packer tutorial.
 	- ADDED: SetImageData.
+	- FIXED: DrawTextBoxed Could draw text outside rect when using special characters.
+	Also accepts optional tabSize argument.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

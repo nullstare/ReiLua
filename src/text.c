@@ -25,14 +25,12 @@ static float measureWord( Font font, char* text, float fontSize, float spacing )
 }
 
 static int DrawTextBoxed( Font font, char* text, Rectangle rec, float fontSize,
-float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2* textOffset ) {
-	const int tabSize = 4; /* How many spaces. */
+float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2* textOffset, int tabSize ) {
 	int lineSpacing = state->lineSpacing;
 
 	if ( rec.width <= 0 || ( rec.height <= limitHeight ? ( textOffset->y + lineSpacing ) : 0 ) ) {
 		return 0;
 	}
-
 	int len = TextLength( text );
 	float scaleFactor = fontSize / font.baseSize;
 	float wordWidth = 0.0;
@@ -52,6 +50,10 @@ float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2* textOffset 
 		if ( codepoint == '\n' ) {
 			textOffset->x = 0;
 			textOffset->y += lineSpacing;
+			measure = true;
+		}
+		else if ( codepoint == '\t' ) {
+			measure = true;
 		}
 		else if ( wordWrap && ( wordWidth < rec.width ) ) {
 			if ( measure && codepoint != ' ' ) {
@@ -63,7 +65,7 @@ float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2* textOffset 
 					textOffset->y += lineSpacing;
 				}
 			}
-			else if ( codepoint == ' ' || codepoint == '\n' || codepoint == '\t' ) {
+			else if ( codepoint == ' ' ) {
 				measure = true;
 			}
 		}
@@ -533,7 +535,7 @@ int ltextDrawTextCodepoints( lua_State* L ) {
 }
 
 /*
-> mouseCharId, textOffset = RL.DrawTextBoxed(Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, bool limitHeight )
+> mouseCharId, textOffset = RL.DrawTextBoxed(Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, bool limitHeight, int|nil tabSize )
 
 Draw text using font inside rectangle limits.
 
@@ -549,15 +551,19 @@ int ltextDrawTextBoxed( lua_State* L ) {
 	Color tint = uluaGetColor( L, 7 );
 	bool limitHeight = uluaGetBoolean( L, 8 );
 	Vector2 textOffset = { 0, 0 };
-	
-	lua_pushinteger( L, DrawTextBoxed( *font, text, rec, fontSize, spacing, wordWrap, tint, limitHeight, &textOffset ) );
+	int tabSize = 4;
+
+	if ( !lua_isnil( L, 9 ) && !lua_isnone( L, 9 ) ) {
+		tabSize = luaL_checkinteger( L, 9 );
+	}
+	lua_pushinteger( L, DrawTextBoxed( *font, text, rec, fontSize, spacing, wordWrap, tint, limitHeight, &textOffset, tabSize ) );
 	uluaPushVector2( L, textOffset );
 
 	return 2;
 }
 
 /*
-> mouseCharId, textOffset = RL.DrawTextBoxedEx( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2 textOffset )
+> mouseCharId, textOffset = RL.DrawTextBoxedEx( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2 textOffset, int|nil tabSize )
 
 Draw text using font inside rectangle limits. Return character id from mouse position (default 0).
 textOffset can be used to set start position inside rectangle. Usefull to pass from previous
@@ -575,8 +581,12 @@ int ltextDrawTextBoxedEx( lua_State* L ) {
 	Color tint = uluaGetColor( L, 7 );
 	bool limitHeight = uluaGetBoolean( L, 8 );
 	Vector2 textOffset = uluaGetVector2( L, 9 );
+	int tabSize = 4;
 
-	lua_pushinteger( L, DrawTextBoxed( *font, text, rec, fontSize, spacing, wordWrap, tint, limitHeight, &textOffset ) );
+	if ( !lua_isnil( L, 10 ) && !lua_isnone( L, 10 ) ) {
+		tabSize = luaL_checkinteger( L, 10 );
+	}
+	lua_pushinteger( L, DrawTextBoxed( *font, text, rec, fontSize, spacing, wordWrap, tint, limitHeight, &textOffset, tabSize ) );
 	uluaPushVector2( L, textOffset );
 
 	return 2;

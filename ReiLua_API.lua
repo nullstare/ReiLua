@@ -4529,6 +4529,7 @@ function  RL.DrawTextCodepoint( font, codepoint, position, fontSize, tint ) end
 function  RL.DrawTextCodepoints( font, codepoints, position, fontSize, spacing, tint ) end
 
 ---Draw text using font inside rectangle limits.
+---Support for tint change with "\a#FFFFFFFF"
 ---- Success return int, Vector2
 ---@param font any
 ---@param text string
@@ -4546,6 +4547,7 @@ function RL.DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint, l
 ---Draw text using font inside rectangle limits. Return character id from mouse position (default 0).
 ---textOffset can be used to set start position inside rectangle. Usefull to pass from previous
 ---DrawTextBoxedEx for continuous text.
+---Support for tint change with "\a#FFFFFFFF"
 ---- Success return int, Vector2
 ---@param font any
 ---@param text string

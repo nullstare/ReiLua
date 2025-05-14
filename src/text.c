@@ -24,6 +24,38 @@ static float measureWord( Font font, char* text, float fontSize, float spacing )
 	return size.x;
 }
 
+static int getDigit( const char input ) {
+	switch ( input ) {
+	case '0': return 0;
+	case '1': return 1;
+	case '2': return 2;
+	case '3': return 3;
+	case '4': return 4;
+	case '5': return 5;
+	case '6': return 6;
+	case '7': return 7;
+	case '8': return 8;
+	case '9': return 9;
+	case 'a':
+	case 'A': return 10;
+	case 'b':
+	case 'B': return 11;
+	case 'c':
+	case 'C': return 12;
+	case 'd':
+	case 'D': return 13;
+	case 'e':
+	case 'E': return 14;
+	case 'f':
+	case 'F': return 15;
+	}
+	return 0;
+}
+
+static unsigned char getHexValue( const char* ptr, size_t offset ) {
+	return getDigit( ptr[ offset ] ) * 16 + getDigit( ptr[ offset + 1 ] );
+}
+
 static int DrawTextBoxed( Font font, char* text, Rectangle rec, float fontSize,
 float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2* textOffset, int tabSize ) {
 	int lineSpacing = state->lineSpacing;
@@ -53,7 +85,19 @@ float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2* textOffset,
 			measure = true;
 		}
 		else if ( codepoint == '\t' ) {
+			textOffset->x += (float)font.recs[ GetGlyphIndex( font, ' ' ) ].width * tabSize * scaleFactor + spacing;
 			measure = true;
+		}
+		else if ( codepoint == '\a' ) {
+			i++; /* Jump over escape '\a'. */
+			if ( text[i] == '#' ) {
+				i++;
+				tint.r = getHexValue( &text[i], 0 );
+				tint.g = getHexValue( &text[i], 2 );
+				tint.b = getHexValue( &text[i], 4 );
+				tint.a = getHexValue( &text[i], 6 );
+				i += 8;
+			}
 		}
 		else if ( wordWrap && ( wordWidth < rec.width ) ) {
 			if ( measure && codepoint != ' ' ) {
@@ -80,16 +124,13 @@ float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2* textOffset,
 			break;
 		}
 
-		if ( codepoint != '\n' && codepoint != '\t' && !( textOffset->x == 0 && codepoint == ' ' ) && codepointWidth < rec.width ) {
+		if ( codepoint != '\a' && codepoint != '\n' && codepoint != '\t' && !( textOffset->x == 0 && codepoint == ' ' ) && codepointWidth < rec.width ) {
 			DrawTextCodepoint( font, codepoint, (Vector2){ round( rec.x + textOffset->x ), round( rec.y + textOffset->y ) }, fontSize, tint );
 
 			if ( CheckCollisionPointRec( mousePos, (Rectangle){ rec.x + textOffset->x - 1, rec.y + textOffset->y, codepointWidth, (float)font.baseSize * scaleFactor } ) ) {
 				mouseChar = i + 1;
 			}
 			textOffset->x += codepointWidth;
-		}
-		else if ( codepoint == '\t' ) {
-			textOffset->x += (float)font.recs[ GetGlyphIndex( font, ' ' ) ].width * tabSize * scaleFactor + spacing;
 		}
 		i += codepointByteCount;
 	}
@@ -538,6 +579,7 @@ int ltextDrawTextCodepoints( lua_State* L ) {
 > mouseCharId, textOffset = RL.DrawTextBoxed(Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, bool limitHeight, int|nil tabSize )
 
 Draw text using font inside rectangle limits.
+Support for tint change with "\a#FFFFFFFF"
 
 - Success return int, Vector2
 */
@@ -568,6 +610,7 @@ int ltextDrawTextBoxed( lua_State* L ) {
 Draw text using font inside rectangle limits. Return character id from mouse position (default 0).
 textOffset can be used to set start position inside rectangle. Usefull to pass from previous
 DrawTextBoxedEx for continuous text.
+Support for tint change with "\a#FFFFFFFF"
 
 - Success return int, Vector2
 */

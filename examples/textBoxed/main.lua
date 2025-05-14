@@ -33,7 +33,7 @@ function RL.draw()
 	RL.ClearBackground( RL.RAYWHITE )
 	RL.DrawRectangleLines( rect, RL.GREEN )
 
-	mouseCharId, textOffset = RL.DrawTextBoxedEx(
+	_, textOffset = RL.DrawTextBoxedEx(
 		RL.GetFontDefault(),
 		"\tYou can change the size of the box by pressing right mouse and toggle the wordwrap by pressing space. First we will write some text before the hyperlink to show that it is indeed is as powerful feature as adverticed.",
 		rect,
@@ -45,11 +45,17 @@ function RL.draw()
 		rect,
 		textSize, spacing, wordwrap, linkColor, limitHeight, textOffset
 	)
-	RL.DrawTextBoxedEx(
+	_, textOffset = RL.DrawTextBoxedEx(
 		RL.GetFontDefault(),
 		" Then we demonstrate this further by writin more text after the link. Isn't this just amazing! Don't forget to press left mouse to print text to your console when hovering mouse over the hyperlink.",
 		rect,
 		textSize, spacing, wordwrap, RL.RED, limitHeight, textOffset
+	)
+	RL.DrawTextBoxedEx(
+		RL.GetFontDefault(),
+		" \a#D28484FF Also supports \a#0000FFFF changing text \a#CCD834FF color in the \a#00FFFFFF middle of \a#B623A3FF the \a#00FF00FF text draw.",
+		rect,
+		textSize, spacing, wordwrap, RL.WHITE, limitHeight, textOffset
 	)
 
 	if 0 < mouseCharId then

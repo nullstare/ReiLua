@@ -115,6 +115,8 @@ local FUNC_DESC = {
 	log = "This function can be used for custom log message handling.",
 	exit = "This function will be called on program close. Cleanup could be done here.",
 	config = "This function will be called before InitWindow. Note! Only place where you should call InitWindow manually. Doesn't have OpenGL context at this point.",
+	load = "This function will be called when loading resource that allocates memory. Usefull for memory leak debugging. Note! Cannot detect all resources, for example material textures.",
+	unload = "This function will be called when unloading resource that has allocated memory. Usefull for memory leak debugging. Note! Cannot detect all resources, for example material textures.",
 }
 
 apiFile:write( "\n---\n> function RL.init()\n\n"..FUNC_DESC.init.."\n\n---\n" )
@@ -124,6 +126,8 @@ apiFile:write( "\n> function RL.event( event )\n\n"..FUNC_DESC.event.."\n\n---\n
 apiFile:write( "\n> function RL.log( logLevel, message )\n\n"..FUNC_DESC.log.."\n\n---\n" )
 apiFile:write( "\n> function RL.exit()\n\n"..FUNC_DESC.exit.."\n\n---\n" )
 apiFile:write( "\n> function RL.config()\n\n"..FUNC_DESC.config.."\n\n---\n" )
+apiFile:write( "\n> function RL.load()\n\n"..FUNC_DESC.load.."\n\n---\n" )
+apiFile:write( "\n> function RL.unload()\n\n"..FUNC_DESC.unload.."\n\n---\n" )
 
 luaApiFile:write( "-- Put this file into your project folder to provide annotations when using Lua language server.\n\n" )
 luaApiFile:write( "RL={}\n\n" )
@@ -260,6 +264,8 @@ apiFile:write( "\n> Wave = Userdata\n\
 Wave, audio wave data\n\n---\n" )
 apiFile:write( "\n> Sound = Userdata\n\
 Sound\n\n---\n" )
+apiFile:write( "\n> SoundAlias = Userdata\n\
+SoundAlias\n\n---\n" )
 apiFile:write( "\n> Music = Userdata\n\
 Music, audio stream, anything longer than ~10 seconds should be streamed\n\n---\n" )
 apiFile:write( "\n> NPatchInfo = { { 0, 0, 24, 24 }, 8, 8, 8, 8, NPATCH_NINE_PATCH } or { source = { 0, 0, 24, 24 }, left = 8, top = 8, right = 8, bottom = 8, layout = NPATCH_NINE_PATCH }\n\

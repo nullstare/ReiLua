@@ -438,8 +438,7 @@ Unload font from GPU memory (VRAM)
 int ltextUnloadFont( lua_State* L ) {
 	Font* font = uluaGetFont( L, 1 );
 
-	UnloadFont( *font );
-	memset( font, 0, sizeof( Font ) );
+	uluaUnloadFont( font );
 
 	return 0;
 }
@@ -905,7 +904,7 @@ Unload glyphInfo image from CPU memory (RAM)
 int ltextUnloadGlyphInfo( lua_State* L ) {
 	GlyphInfo* glyph = uluaGetGlyphInfo( L, 1 );
 
-	unloadGlyphInfo( glyph );
+	uluaUnloadGlyphInfo( glyph );
 
 	return 0;
 }

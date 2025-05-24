@@ -1128,7 +1128,7 @@ Unload render batch system
 int lrlglUnloadRenderBatch( lua_State* L ) {
 	rlRenderBatch* renderBatch = uluaGetRLRenderBatch( L, 1 );
 	
-	rlUnloadRenderBatch( *renderBatch );
+	uluaUnloadRLRenderBatch( renderBatch );
 
 	return 0;
 }

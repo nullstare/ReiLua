@@ -47,6 +47,18 @@ This function will be called before InitWindow. Note! Only place where you shoul
 
 ---
 
+> function RL.load()
+
+This function will be called when loading resource that allocates memory. Usefull for memory leak debugging. Note! Cannot detect all resources, for example material textures.
+
+---
+
+> function RL.unload()
+
+This function will be called when unloading resource that has allocated memory. Usefull for memory leak debugging. Note! Cannot detect all resources, for example material textures.
+
+---
+
 ## Object unloading
 
 Some objects allocate memory that needs to be freed when object is no longer needed. By default objects like Textures are unloaded by the Lua garbage collector. It is generatty however recommended to handle this manually in more complex projects. You can change the behavior with SetGCUnload.
@@ -258,6 +270,12 @@ Wave, audio wave data
 > Sound = Userdata
 
 Sound
+
+---
+
+> SoundAlias = Userdata
+
+SoundAlias
 
 ---
 

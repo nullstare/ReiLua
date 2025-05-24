@@ -512,8 +512,7 @@ Unload model (meshes/materials) from memory (RAM and/or VRAM)
 int lmodelsUnloadModel( lua_State* L ) {
 	Model* model = uluaGetModel( L, 1 );
 
-	UnloadModel( *model );
-	memset( model, 0, sizeof( Model ) );
+	uluaUnloadModel( model );
 
 	return 0;
 }
@@ -1125,8 +1124,7 @@ Unload mesh data from CPU and GPU
 int lmodelsUnloadMesh( lua_State* L ) {
 	Mesh* mesh = uluaGetMesh( L, 1 );
 
-	UnloadMesh( *mesh );
-	memset( mesh, 0, sizeof( Mesh ) );
+	uluaUnloadMesh( mesh );
 
 	return 0;
 }
@@ -1910,14 +1908,7 @@ int lmodelsUnloadMaterial( lua_State* L ) {
 	Material* material = uluaGetMaterial( L, 1 );
 	bool freeAll = lua_toboolean( L, 2 );
 
-	if ( freeAll ) {
-		UnloadMaterial( *material );
-	}
-	/* Custom UnloadMaterial if we don't want to free Shaders or Textures. */
-	else {
-		unloadMaterial( material );
-	}
-	memset( material, 0, sizeof( Material ) );
+	uluaUnloadMaterial( material, freeAll );
 
 	return 0;
 }
@@ -2164,8 +2155,7 @@ Unload animation data
 int lmodelsUnloadModelAnimation( lua_State* L ) {
 	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
 
-	UnloadModelAnimation( *animation );
-	memset( animation, 0, sizeof( ModelAnimation ) );
+	uluaUnloadModelAnimation( animation );
 
 	return 0;
 }
@@ -2182,8 +2172,7 @@ int lmodelsUnloadModelAnimations( lua_State* L ) {
 	while ( lua_next( L, t ) != 0 ) {
 		if ( lua_isuserdata( L, -1 ) ) {
 			ModelAnimation* animation = uluaGetModelAnimation( L, lua_gettop( L ) );
-			UnloadModelAnimation( *animation );
-			memset( animation, 0, sizeof( ModelAnimation ) );
+			uluaUnloadModelAnimation( animation );
 		}
 		i++;
 		lua_pop( L, 1 );

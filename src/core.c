@@ -1279,8 +1279,7 @@ Unload shader from GPU memory (VRAM)
 int lcoreUnloadShader( lua_State* L ) {
 	Shader* shader = uluaGetShader( L, 1 );
 
-	UnloadShader( *shader );
-	memset( shader, 0, sizeof( Shader ) );
+	uluaUnloadShader( shader );
 
 	return 0;
 }
@@ -2304,8 +2303,7 @@ Unload automation events list from file
 int lcoreUnloadAutomationEventList( lua_State* L ) {
 	AutomationEventList* list = uluaGetAutomationEventList( L, 1 );
 
-	UnloadAutomationEventList( *list );
-	memset( list, 0, sizeof( AutomationEventList ) );
+	uluaUnloadAutomationEventList( list );
 
 	return 0;
 }
@@ -3792,8 +3790,7 @@ Unload buffer data
 int lcoreUnloadBuffer( lua_State* L ) {
 	Buffer* buffer = uluaGetBuffer( L, 1 );
 
-	unloadBuffer( buffer );
-	memset( buffer, 0, sizeof( Buffer ) );
+	uluaUnloadBuffer( buffer );
 
 	return 0;
 }

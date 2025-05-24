@@ -190,8 +190,7 @@ Unload image from CPU memory (RAM)
 int ltextureUnloadImage( lua_State* L ) {
 	Image* image = uluaGetImage( L, 1 );
 
-	UnloadImage( *image );
-	memset( image, 0, sizeof( Image ) );
+	uluaUnloadImage( image );
 
 	return 0;
 }
@@ -1462,8 +1461,7 @@ Unload texture from GPU memory (VRAM)
 int ltextureUnloadTexture( lua_State* L ) {
 	Texture* texture = uluaGetTexture( L, 1 );
 
-	UnloadTexture( *texture );
-	memset( texture, 0, sizeof( Texture ) );
+	uluaUnloadTexture( texture );
 
 	return 0;
 }
@@ -1491,8 +1489,7 @@ Unload render texture from GPU memory (VRAM)
 int ltextureUnloadRenderTexture( lua_State* L ) {
 	RenderTexture* target = uluaGetRenderTexture( L, 1 );
 
-	UnloadRenderTexture( *target );
-	memset( target, 0, sizeof( RenderTexture ) );
+	uluaUnloadRenderTexture( target );
 
 	return 0;
 }

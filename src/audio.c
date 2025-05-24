@@ -168,7 +168,8 @@ Create a new sound that shares the same sample data as the source sound, does no
 int laudioLoadSoundAlias( lua_State* L ) {
 	Sound* source = uluaGetSound( L, 1 );
 
-	uluaPushSound( L, LoadSoundAlias( *source ) );
+	// uluaPushSound( L, LoadSoundAlias( *source ) );
+	uluaPushSoundAlias( L, LoadSoundAlias( *source ) );
 
 	return 1;
 }
@@ -211,8 +212,7 @@ Unload wave data
 int laudioUnloadWave( lua_State* L ) {
 	Wave* wave = uluaGetWave( L, 1 );
 
-	UnloadWave( *wave );
-	memset( wave, 0, sizeof( Wave ) );
+	uluaUnloadWave( wave );
 
 	return 0;
 }
@@ -225,8 +225,7 @@ Unload sound
 int laudioUnloadSound( lua_State* L ) {
 	Sound* sound = uluaGetSound( L, 1 );
 
-	UnloadSound( *sound );
-	memset( sound, 0, sizeof( Sound ) );
+	uluaUnloadSound( sound );
 
 	return 0;
 }
@@ -239,8 +238,7 @@ Unload a sound alias (does not deallocate sample data)
 int laudioUnloadSoundAlias( lua_State* L ) {
 	Sound* alias = uluaGetSound( L, 1 );
 
-	UnloadSoundAlias( *alias );
-	memset( alias, 0, sizeof( Sound ) );
+	uluaUnloadSoundAlias( alias );
 
 	return 0;
 }
@@ -519,8 +517,7 @@ Unload music stream
 int laudioUnloadMusicStream( lua_State* L ) {
 	Music* music = uluaGetMusic( L, 1 );
 
-	UnloadMusicStream( *music );
-	memset( music, 0, sizeof( Music ) );
+	uluaUnloadMusic( music );
 
 	return 0;
 }

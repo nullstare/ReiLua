@@ -2470,6 +2470,11 @@ void luaRegister() {
 	assingGlobalFunction( "QuaternionToEuler", lmathQuaternionToEuler );
 	assingGlobalFunction( "QuaternionTransform", lmathQuaternionTransform );
 	assingGlobalFunction( "QuaternionEquals", lmathQuaternionEquals );
+		/* Frustum. */
+	assingGlobalFunction( "ExtractFrustum", lmathExtractFrustum );
+	assingGlobalFunction( "PointInFrustum", lmathPointInFrustum );
+	assingGlobalFunction( "SphereInFrustum", lmathSphereInFrustum );
+	assingGlobalFunction( "AABBInFrustum", lmathAABBInFrustum );
 
 	/* Gui. */
 		/* Global gui state control functions. */

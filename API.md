@@ -3682,7 +3682,7 @@ Default projection matrix near cull distance
 
 ---
 
-> RL_CULL_DISTANCE_FAR = 1000
+> RL_CULL_DISTANCE_FAR = 1000.0
 
 Default projection matrix far cull distance
 
@@ -10741,6 +10741,42 @@ Transform a quaternion given a transformation matrix
 > result = RL.QuaternionEquals( Quaternion q1, Quaternion q2 )
 
 Check whether two given quaternions are almost equal
+
+- Success return bool
+
+---
+
+## Math - Frustum
+
+---
+
+> frustum = RL.ExtractFrustum( Matrix projection, Matrix modelview )
+
+Extract frustum from projection and modelView matrices.
+
+- Success return Vector4{}
+
+---
+
+> inFrustum = RL.PointInFrustum( Vector4{} frustum, Vector3 position )
+
+Check if point inside frustum
+
+- Success return bool
+
+---
+
+> inFrustum = RL.SphereInFrustum( Vector4{} frustum, Vector3 position )
+
+Check if sphere inside frustum
+
+- Success return bool
+
+---
+
+> inFrustum = RL.AABBInFrustum( Vector4{} frustum, Vector3 min, Vector3 max )
+
+Check if AABB inside frustum
 
 - Success return bool
 

@@ -1167,7 +1167,7 @@ RL.RL_MAX_SHADER_LOCATIONS=32
 ---Default projection matrix near cull distance
 RL.RL_CULL_DISTANCE_NEAR=0.01
 ---Default projection matrix far cull distance
-RL.RL_CULL_DISTANCE_FAR=1000
+RL.RL_CULL_DISTANCE_FAR=1000.0
 
 -- Defines - RLGL Texture parameters
 
@@ -6984,6 +6984,37 @@ function RL.QuaternionTransform( q, mat ) end
 ---@param q2 table
 ---@return any result 
 function RL.QuaternionEquals( q1, q2 ) end
+
+-- Math - Frustum
+
+---Extract frustum from projection and modelView matrices.
+---- Success return Vector4{}
+---@param projection table
+---@param modelview table
+---@return any frustum 
+function RL.ExtractFrustum( projection, modelview ) end
+
+---Check if point inside frustum
+---- Success return bool
+---@param frustum table
+---@param position table
+---@return any inFrustum 
+function RL.PointInFrustum( frustum, position ) end
+
+---Check if sphere inside frustum
+---- Success return bool
+---@param frustum table
+---@param position table
+---@return any inFrustum 
+function RL.SphereInFrustum( frustum, position ) end
+
+---Check if AABB inside frustum
+---- Success return bool
+---@param frustum table
+---@param min table
+---@param max table
+---@return any inFrustum 
+function RL.AABBInFrustum( frustum, min, max ) end
 
 -- Gui - Global gui state control functions
 

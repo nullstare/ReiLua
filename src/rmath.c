@@ -2,6 +2,7 @@
 #include "state.h"
 #include "rmath.h"
 #include "lua_core.h"
+#include "frustum.h"
 
 int imin( int a, int b ) {
 	return a < b ? a : b;
@@ -2340,6 +2341,106 @@ int lmathQuaternionEquals( lua_State* L ) {
 	Quaternion q2 = uluaGetQuaternion( L, 2 );
 
 	lua_pushboolean( L, QuaternionEquals( q1, q2 ) == 1 );
+
+	return 1;
+}
+
+/*
+## Math - Frustum
+*/
+
+static Frustum getFrustum( lua_State* L, int index ) {
+	luaL_checktype( L, index, LUA_TTABLE );
+	Frustum frustum = { 0 };
+
+	int t = index, i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 && i < 6 ) {
+		frustum.Planes[i] = uluaGetVector4( L, lua_gettop( L ) );
+		i++;
+		lua_pop( L, 1 );
+	}
+
+	return frustum;
+}
+
+static int pushFrustum( lua_State* L, Frustum* frustum ) {
+	lua_createtable( L, 6, 0 );
+
+	for ( int i = 0; i < 6; i++ ) {
+		uluaPushVector4( L, frustum->Planes[i] );
+		lua_rawseti( L, -2, 1 + i );
+	}
+
+	return 1;
+}
+
+/*
+> frustum = RL.ExtractFrustum( Matrix projection, Matrix modelview )
+
+Extract frustum from projection and modelView matrices.
+
+- Success return Vector4{}
+*/
+int lmathExtractFrustum( lua_State* L ) {
+	Matrix projection = uluaGetMatrix( L, 1 );
+	Matrix modelview = uluaGetMatrix( L, 2 );
+
+	Frustum frustum = { 0 };
+	ExtractFrustum( &frustum, projection, modelview );
+
+	pushFrustum( L, &frustum );
+
+	return 1;
+}
+
+/*
+> inFrustum = RL.PointInFrustum( Vector4{} frustum, Vector3 position )
+
+Check if point inside frustum
+
+- Success return bool
+*/
+int lmathPointInFrustum( lua_State* L ) {
+	Frustum frustum = getFrustum( L, 1 );
+	Vector3 position = uluaGetVector3( L, 2 );
+
+	lua_pushboolean( L, PointInFrustumV( &frustum, position ) );
+
+	return 1;
+}
+
+/*
+> inFrustum = RL.SphereInFrustum( Vector4{} frustum, Vector3 position )
+
+Check if sphere inside frustum
+
+- Success return bool
+*/
+int lmathSphereInFrustum( lua_State* L ) {
+	Frustum frustum = getFrustum( L, 1 );
+	Vector3 position = uluaGetVector3( L, 2 );
+	float radius = luaL_checknumber( L, 3 );
+
+	lua_pushboolean( L, SphereInFrustumV( &frustum, position, radius ) );
+
+	return 1;
+}
+
+/*
+> inFrustum = RL.AABBInFrustum( Vector4{} frustum, Vector3 min, Vector3 max )
+
+Check if AABB inside frustum
+
+- Success return bool
+*/
+int lmathAABBInFrustum( lua_State* L ) {
+	Frustum frustum = getFrustum( L, 1 );
+	Vector3 min = uluaGetVector3( L, 2 );
+	Vector3 max = uluaGetVector3( L, 3 );
+
+	lua_pushboolean( L, AABBoxInFrustum( &frustum, min, max ) );
 
 	return 1;
 }

@@ -22,6 +22,7 @@ function RL.init()
 	local mSize = Vec2:newT( RL.GetMonitorSize( monitor ) )
 	local winSize = Vec2:new( 1028, 720 )
 
+	RL.SetGCUnload( false )
 	RL.SetWindowTitle( "Simple Lighting" )
 	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
@@ -137,4 +138,10 @@ function RL.draw()
 	camera:endMode3D()
 
 	RL.DrawText( "Use keys [Y][R][G][B] to toggle lights", { 10, 10 }, 20, RL.DARKGRAY )
+end
+
+function RL.exit()
+	RL.UnloadMaterial( material, true )
+	RL.UnloadMesh( plane )
+	RL.UnloadMesh( cube )
 end

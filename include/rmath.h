@@ -152,3 +152,8 @@ int lmathQuaternionFromEuler( lua_State* L );
 int lmathQuaternionToEuler( lua_State* L );
 int lmathQuaternionTransform( lua_State* L );
 int lmathQuaternionEquals( lua_State* L );
+/* Frustum */
+int lmathExtractFrustum( lua_State* L );
+int lmathPointInFrustum( lua_State* L );
+int lmathSphereInFrustum( lua_State* L );
+int lmathAABBInFrustum( lua_State* L );

@@ -51,6 +51,7 @@ DETAILED CHANGES:
 	- ADDED: DrawTextBoxed Color change escape sequence.
 	- ADDED: RL.load and RL.unload functions for memory leak debugging.
 	- ADDED: SoundAlias garbage collection.
+	- ADDED: Frustum math from raylib extras.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

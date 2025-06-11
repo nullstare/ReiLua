@@ -25,6 +25,7 @@ function RL.init()
 	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
+	RL.SetGCUnload( false )
 
 	camera = Cam3D:new()
 	camera:setPosition( { 0, 8, 16 } )
@@ -48,9 +49,9 @@ function RL.init()
 
 	tileTexture = RL.LoadTexture( RL.GetBasePath().."../resources/images/tile.png" )
 	RL.GenTextureMipmaps( tileTexture )
-	RL.SetTextureFilter( tileTexture, RL.TEXTURE_FILTER_TRILINEAR )
+	RL.SetTextureFilter( tileTexture, RL.TEXTURE_FILTER_BILINEAR )
 	lightmap = RL.LoadTexture( RL.GetBasePath().."../resources/images/lightmap.png" )
-	RL.SetTextureFilter( lightmap, RL.TEXTURE_FILTER_TRILINEAR )
+	RL.SetTextureFilter( lightmap, RL.TEXTURE_FILTER_BILINEAR )
 
 	shader = RL.LoadShader( RL.GetBasePath().."../resources/shaders/glsl"..GLSL_VERSION.."/lightmap.vs",
 						    RL.GetBasePath().."../resources/shaders/glsl"..GLSL_VERSION.."/lightmap.fs" )
@@ -98,4 +99,9 @@ function RL.draw()
 	camera:beginMode3D()
 		RL.DrawMesh( mesh, material, matrix )
 	camera:endMode3D()
+end
+
+function RL.exit()
+	RL.UnloadMaterial( material, true )
+	RL.UnloadMesh( mesh )
 end

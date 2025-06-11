@@ -1167,7 +1167,7 @@ RL.RL_MAX_SHADER_LOCATIONS=32
 ---Default projection matrix near cull distance
 RL.RL_CULL_DISTANCE_NEAR=0.01
 ---Default projection matrix far cull distance
-RL.RL_CULL_DISTANCE_FAR=1000.0
+RL.RL_CULL_DISTANCE_FAR=1000
 
 -- Defines - RLGL Texture parameters
 

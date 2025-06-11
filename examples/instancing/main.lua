@@ -29,6 +29,7 @@ function RL.init()
 	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 	RL.SetWindowTitle( "Instancing" )
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
+	RL.SetGCUnload( false )
 
 	-- Define the camera to look into our 3d world
 	camera = RL.CreateCamera3D()
@@ -107,4 +108,9 @@ function RL.draw()
 	RL.EndMode3D()
 
 	RL.DrawFPS( { 10, 10 } )
+end
+
+function RL.exit()
+	RL.UnloadMaterial( matInstances, true )
+	RL.UnloadMesh( cube )
 end

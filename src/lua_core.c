@@ -3348,15 +3348,20 @@ Buffer* uluaGetBuffer( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "buffer", lua_tostring( L, -2 ) ) ) {
+				Buffer* buffer = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (Buffer*)lua_touserdata( L, lua_gettop( L ) );
+					buffer = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "Buffer" );
+					buffer = luaL_checkudata( L, lua_gettop( L ), "Buffer" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return buffer;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3373,15 +3378,20 @@ Image* uluaGetImage( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "image", lua_tostring( L, -2 ) ) ) {
+				Image* image = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (Image*)lua_touserdata( L, lua_gettop( L ) );
+					image = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "Image" );
+					image = luaL_checkudata( L, lua_gettop( L ), "Image" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return image;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3398,15 +3408,20 @@ Texture* uluaGetTexture( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "texture", lua_tostring( L, -2 ) ) ) {
+				Texture* texture = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (Texture*)lua_touserdata( L, lua_gettop( L ) );
+					texture = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "Texture" );
+					texture = luaL_checkudata( L, lua_gettop( L ), "Texture" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return texture;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3423,15 +3438,20 @@ RenderTexture* uluaGetRenderTexture( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "renderTexture", lua_tostring( L, -2 ) ) ) {
+				RenderTexture* renderTexture = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (RenderTexture*)lua_touserdata( L, lua_gettop( L ) );
+					renderTexture = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "RenderTexture" );
+					renderTexture = luaL_checkudata( L, lua_gettop( L ), "RenderTexture" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return renderTexture;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3448,15 +3468,20 @@ Shader* uluaGetShader( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "shader", lua_tostring( L, -2 ) ) ) {
+				Shader* shader = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (Shader*)lua_touserdata( L, lua_gettop( L ) );
+					shader = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "Shader" );
+					shader = luaL_checkudata( L, lua_gettop( L ), "Shader" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return shader;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3473,15 +3498,20 @@ Mesh* uluaGetMesh( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "mesh", lua_tostring( L, -2 ) ) ) {
+				Mesh* mesh = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (Mesh*)lua_touserdata( L, lua_gettop( L ) );
+					mesh = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "Mesh" );
+					mesh = luaL_checkudata( L, lua_gettop( L ), "Mesh" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return mesh;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3498,15 +3528,20 @@ Camera2D* uluaGetCamera2D( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "camera2D", lua_tostring( L, -2 ) ) ) {
+				Camera2D* camera = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (Camera2D*)lua_touserdata( L, lua_gettop( L ) );
+					camera = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "Camera2D" );
+					camera = luaL_checkudata( L, lua_gettop( L ), "Camera2D" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return camera;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3523,15 +3558,20 @@ Camera3D* uluaGetCamera3D( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "camera3D", lua_tostring( L, -2 ) ) ) {
+				Camera3D* camera = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (Camera3D*)lua_touserdata( L, lua_gettop( L ) );
+					camera = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "Camera3D" );
+					camera = luaL_checkudata( L, lua_gettop( L ), "Camera3D" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return camera;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3548,15 +3588,20 @@ Font* uluaGetFont( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "font", lua_tostring( L, -2 ) ) ) {
+				Font* font = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (Font*)lua_touserdata( L, lua_gettop( L ) );
+					font = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "Font" );
+					font = luaL_checkudata( L, lua_gettop( L ), "Font" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return font;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3573,15 +3618,20 @@ GlyphInfo* uluaGetGlyphInfo( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "glyphInfo", lua_tostring( L, -2 ) ) ) {
+				GlyphInfo* glyph = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (GlyphInfo*)lua_touserdata( L, lua_gettop( L ) );
+					glyph = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "GlyphInfo" );
+					glyph = luaL_checkudata( L, lua_gettop( L ), "GlyphInfo" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return glyph;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3598,15 +3648,20 @@ Wave* uluaGetWave( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "wave", lua_tostring( L, -2 ) ) ) {
+				Wave* wave = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (Wave*)lua_touserdata( L, lua_gettop( L ) );
+					wave = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "Wave" );
+					wave = luaL_checkudata( L, lua_gettop( L ), "Wave" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return wave;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3623,15 +3678,20 @@ Sound* uluaGetSound( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "sound", lua_tostring( L, -2 ) ) ) {
+				Sound* sound = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (Sound*)lua_touserdata( L, lua_gettop( L ) );
+					sound = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "Sound" );
+					sound = luaL_checkudata( L, lua_gettop( L ), "Sound" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return sound;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3654,15 +3714,20 @@ Music* uluaGetMusic( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "music", lua_tostring( L, -2 ) ) ) {
+				Music* music = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (Music*)lua_touserdata( L, lua_gettop( L ) );
+					music = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "Music" );
+					music = luaL_checkudata( L, lua_gettop( L ), "Music" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return music;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3679,15 +3744,20 @@ Light* uluaGetLight( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "light", lua_tostring( L, -2 ) ) ) {
+				Light* light = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (Light*)lua_touserdata( L, lua_gettop( L ) );
+					light = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "Light" );
+					light = luaL_checkudata( L, lua_gettop( L ), "Light" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return light;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3704,15 +3774,20 @@ Material* uluaGetMaterial( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "material", lua_tostring( L, -2 ) ) ) {
+				Material* material = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (Material*)lua_touserdata( L, lua_gettop( L ) );
+					material = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "Material" );
+					material = luaL_checkudata( L, lua_gettop( L ), "Material" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return material;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3729,15 +3804,20 @@ Model* uluaGetModel( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "model", lua_tostring( L, -2 ) ) ) {
+				Model* model = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (Model*)lua_touserdata( L, lua_gettop( L ) );
+					model = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "Model" );
+					model = luaL_checkudata( L, lua_gettop( L ), "Model" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return model;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3754,15 +3834,20 @@ ModelAnimation* uluaGetModelAnimation( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "modelAnimation", lua_tostring( L, -2 ) ) ) {
+				ModelAnimation* animation = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (ModelAnimation*)lua_touserdata( L, lua_gettop( L ) );
+					animation = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "ModelAnimation" );
+					animation = luaL_checkudata( L, lua_gettop( L ), "ModelAnimation" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return animation;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3779,15 +3864,20 @@ rlRenderBatch* uluaGetRLRenderBatch( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "rlRenderBatch", lua_tostring( L, -2 ) ) ) {
+				rlRenderBatch* batch = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (rlRenderBatch*)lua_touserdata( L, lua_gettop( L ) );
+					batch = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "rlRenderBatch" );
+					batch = luaL_checkudata( L, lua_gettop( L ), "rlRenderBatch" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return batch;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3804,15 +3894,20 @@ AutomationEvent* uluaGetAutomationEvent( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "automationEvent", lua_tostring( L, -2 ) ) ) {
+				AutomationEvent* event = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (AutomationEvent*)lua_touserdata( L, lua_gettop( L ) );
+					event = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "AutomationEvent" );
+					event = luaL_checkudata( L, lua_gettop( L ), "AutomationEvent" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return event;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:
@@ -3829,15 +3924,20 @@ AutomationEventList* uluaGetAutomationEventList( lua_State* L, int index ) {
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "automationEventList", lua_tostring( L, -2 ) ) ) {
+				AutomationEventList* list = NULL;
 				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
-					return (AutomationEventList*)lua_touserdata( L, lua_gettop( L ) );
+					list = lua_touserdata( L, lua_gettop( L ) );
 				}
 				else {
-					return luaL_checkudata( L, lua_gettop( L ), "AutomationEventList" );
+					list = luaL_checkudata( L, lua_gettop( L ), "AutomationEventList" );
 				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return list;
+			}
+			else {
+				lua_pop( L, 1 );
 			}
 			i++;
-			lua_pop( L, 1 );
 		}
 		/* Don't brake here, we want to get error from default if not found. */
 	default:

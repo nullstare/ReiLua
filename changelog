@@ -53,6 +53,8 @@ DETAILED CHANGES:
 	- ADDED: SoundAlias garbage collection.
 	- ADDED: Frustum math from raylib extras.
 	- FIXED: uluaGet* pops lua stack correctly when userdata given in table.
+	- ADDED: MeasureTextBoxed.
+	- CHANGE: DrawTextBoxedEx to DrawTextBoxed.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

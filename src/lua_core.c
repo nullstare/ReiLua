@@ -2222,12 +2222,12 @@ void luaRegister() {
 	assingGlobalFunction( "DrawTextCodepoint", ltextDrawTextCodepoint );
 	assingGlobalFunction( "DrawTextCodepoints", ltextDrawTextCodepoints );
 	assingGlobalFunction( "DrawTextBoxed", ltextDrawTextBoxed );
-	assingGlobalFunction( "DrawTextBoxedEx", ltextDrawTextBoxedEx );
 		/* Text font info functions. */
 	assingGlobalFunction( "SetTextLineSpacing", ltextSetTextLineSpacing );
 	assingGlobalFunction( "GetTextLineSpacing", ltextGetTextLineSpacing );
 	assingGlobalFunction( "MeasureText", ltextMeasureText );
 	assingGlobalFunction( "MeasureTextEx", ltextMeasureTextEx );
+	assingGlobalFunction( "MeasureTextBoxed", ltextMeasureTextBoxed );
 	assingGlobalFunction( "GetGlyphIndex", ltextGetGlyphIndex );
 	assingGlobalFunction( "GetGlyphInfo", ltextGetGlyphInfo );
 	assingGlobalFunction( "GetGlyphInfoByIndex", ltextGetGlyphInfoByIndex );

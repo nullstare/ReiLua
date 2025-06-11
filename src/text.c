@@ -56,15 +56,19 @@ static unsigned char getHexValue( const char* ptr, size_t offset ) {
 	return getDigit( ptr[ offset ] ) * 16 + getDigit( ptr[ offset + 1 ] );
 }
 
-static int DrawTextBoxed( Font font, char* text, Rectangle rec, float fontSize,
-float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2* textOffset, int tabSize ) {
+/* If draw is false, will only measure. */
+static int DrawTextBoxed( Font* font, char* text, Rectangle rec, float fontSize,
+float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2* textOffset, int tabSize, bool draw ) {
 	int lineSpacing = state->lineSpacing;
 
 	if ( rec.width <= 0 || ( rec.height <= limitHeight ? ( textOffset->y + lineSpacing ) : 0 ) ) {
+		if ( !draw ) {
+			textOffset->y -= lineSpacing;
+		}
 		return 0;
 	}
 	int len = TextLength( text );
-	float scaleFactor = fontSize / font.baseSize;
+	float scaleFactor = fontSize / font->baseSize;
 	float wordWidth = 0.0;
 	bool measure = true;
 	Vector2 mousePos = GetMousePosition();
@@ -73,11 +77,11 @@ float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2* textOffset,
 	for ( int i = 0; i < len; ) {
 		int codepointByteCount = 0;
 		int codepoint = GetCodepointNext( &text[i], &codepointByteCount );
-		int index = GetGlyphIndex( font, codepoint );
+		int index = GetGlyphIndex( *font, codepoint );
 
-		float codepointWidth = font.glyphs[ index ].advanceX == 0
-			? (float)font.recs[ index ].width * scaleFactor + spacing
-			: (float)font.glyphs[ index ].advanceX * scaleFactor + spacing;
+		float codepointWidth = font->glyphs[ index ].advanceX == 0
+			? (float)font->recs[ index ].width * scaleFactor + spacing
+			: (float)font->glyphs[ index ].advanceX * scaleFactor + spacing;
 
 		if ( codepoint == '\n' ) {
 			textOffset->x = 0;
@@ -85,7 +89,7 @@ float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2* textOffset,
 			measure = true;
 		}
 		else if ( codepoint == '\t' ) {
-			textOffset->x += (float)font.recs[ GetGlyphIndex( font, ' ' ) ].width * tabSize * scaleFactor + spacing;
+			textOffset->x += (float)font->recs[ GetGlyphIndex( *font, ' ' ) ].width * tabSize * scaleFactor + spacing;
 			measure = true;
 		}
 		else if ( codepoint == '\a' ) {
@@ -101,7 +105,7 @@ float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2* textOffset,
 		}
 		else if ( wordWrap && ( wordWidth < rec.width ) ) {
 			if ( measure && codepoint != ' ' ) {
-				wordWidth = measureWord( font, &text[i], fontSize, spacing );
+				wordWidth = measureWord( *font, &text[i], fontSize, spacing );
 				measure = false;
 
 				if ( rec.width < ( textOffset->x + wordWidth ) ) {
@@ -121,13 +125,18 @@ float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2* textOffset,
 		}
 
 		if ( limitHeight && ( rec.height < ( textOffset->y + lineSpacing ) ) ) {
+			if ( !draw ) {
+				textOffset->y -= lineSpacing;
+			}
 			break;
 		}
 
 		if ( codepoint != '\a' && codepoint != '\n' && codepoint != '\t' && !( textOffset->x == 0 && codepoint == ' ' ) && codepointWidth < rec.width ) {
-			DrawTextCodepoint( font, codepoint, (Vector2){ round( rec.x + textOffset->x ), round( rec.y + textOffset->y ) }, fontSize, tint );
+			if ( draw ) {
+				DrawTextCodepoint( *font, codepoint, (Vector2){ round( rec.x + textOffset->x ), round( rec.y + textOffset->y ) }, fontSize, tint );
+			}
 
-			if ( CheckCollisionPointRec( mousePos, (Rectangle){ rec.x + textOffset->x - 1, rec.y + textOffset->y, codepointWidth, (float)font.baseSize * scaleFactor } ) ) {
+			if ( CheckCollisionPointRec( mousePos, (Rectangle){ rec.x + textOffset->x - 1, rec.y + textOffset->y, codepointWidth, (float)font->baseSize * scaleFactor } ) ) {
 				mouseChar = i + 1;
 			}
 			textOffset->x += codepointWidth;
@@ -575,9 +584,11 @@ int ltextDrawTextCodepoints( lua_State* L ) {
 }
 
 /*
-> mouseCharId, textOffset = RL.DrawTextBoxed(Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, bool limitHeight, int|nil tabSize )
+> mouseCharId, textOffset = RL.DrawTextBoxed( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2|nil textOffset, int|nil tabSize )
 
-Draw text using font inside rectangle limits.
+Draw text inside rectangle limits. Return character id from mouse position (default 0).
+textOffset can be used to set start position inside rectangle. Usefull to pass from previous
+DrawTextBoxed for continuous text.
 Support for tint change with "\a#FFFFFFFF"
 
 - Success return int, Vector2
@@ -595,40 +606,12 @@ int ltextDrawTextBoxed( lua_State* L ) {
 	int tabSize = 4;
 
 	if ( !lua_isnil( L, 9 ) && !lua_isnone( L, 9 ) ) {
-		tabSize = luaL_checkinteger( L, 9 );
+		textOffset = uluaGetVector2( L, 9 );
 	}
-	lua_pushinteger( L, DrawTextBoxed( *font, text, rec, fontSize, spacing, wordWrap, tint, limitHeight, &textOffset, tabSize ) );
-	uluaPushVector2( L, textOffset );
-
-	return 2;
-}
-
-/*
-> mouseCharId, textOffset = RL.DrawTextBoxedEx( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2 textOffset, int|nil tabSize )
-
-Draw text using font inside rectangle limits. Return character id from mouse position (default 0).
-textOffset can be used to set start position inside rectangle. Usefull to pass from previous
-DrawTextBoxedEx for continuous text.
-Support for tint change with "\a#FFFFFFFF"
-
-- Success return int, Vector2
-*/
-int ltextDrawTextBoxedEx( lua_State* L ) {
-	Font* font = uluaGetFont( L, 1 );
-	char* text = (char*)luaL_checkstring( L, 2 );
-	Rectangle rec = uluaGetRectangle( L, 3 );
-	float fontSize = luaL_checknumber( L, 4 );
-	float spacing = luaL_checknumber( L, 5 );
-	bool wordWrap = uluaGetBoolean( L, 6 );
-	Color tint = uluaGetColor( L, 7 );
-	bool limitHeight = uluaGetBoolean( L, 8 );
-	Vector2 textOffset = uluaGetVector2( L, 9 );
-	int tabSize = 4;
-
 	if ( !lua_isnil( L, 10 ) && !lua_isnone( L, 10 ) ) {
 		tabSize = luaL_checkinteger( L, 10 );
 	}
-	lua_pushinteger( L, DrawTextBoxed( *font, text, rec, fontSize, spacing, wordWrap, tint, limitHeight, &textOffset, tabSize ) );
+	lua_pushinteger( L, DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint, limitHeight, &textOffset, tabSize, true ) );
 	uluaPushVector2( L, textOffset );
 
 	return 2;
@@ -697,6 +680,36 @@ int ltextMeasureTextEx( lua_State* L ) {
 	uluaPushVector2( L, MeasureTextEx( *font, text, fontSize, spacing ) );
 
 	return 1;
+}
+
+/*
+> size, textOffset = RL.MeasureTextBoxed( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2 textOffset, int|nil tabSize )
+
+Measure text inside rectangle limits.
+
+- Success return Vector2, Vector2
+*/
+int ltextMeasureTextBoxed( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
+	char* text = (char*)luaL_checkstring( L, 2 );
+	Rectangle rec = uluaGetRectangle( L, 3 );
+	float fontSize = luaL_checknumber( L, 4 );
+	float spacing = luaL_checknumber( L, 5 );
+	bool wordWrap = uluaGetBoolean( L, 6 );
+	Color tint = uluaGetColor( L, 7 );
+	bool limitHeight = uluaGetBoolean( L, 8 );
+	Vector2 textOffset = uluaGetVector2( L, 9 );
+	int tabSize = 4;
+
+	if ( !lua_isnil( L, 10 ) && !lua_isnone( L, 10 ) ) {
+		tabSize = luaL_checkinteger( L, 10 );
+	}
+	DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint, limitHeight, &textOffset, tabSize, false );
+	Vector2 size = { rec.width, textOffset.y + state->lineSpacing };
+	uluaPushVector2( L, size );
+	uluaPushVector2( L, textOffset );
+
+	return 2;
 }
 
 /*

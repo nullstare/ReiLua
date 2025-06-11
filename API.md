@@ -8041,20 +8041,11 @@ Draw multiple character (codepoint)
 
 ---
 
-> mouseCharId, textOffset = RL.DrawTextBoxed(Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, bool limitHeight, int|nil tabSize )
+> mouseCharId, textOffset = RL.DrawTextBoxed( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2|nil textOffset, int|nil tabSize )
 
-Draw text using font inside rectangle limits.
-Support for tint change with "\a#FFFFFFFF"
-
-- Success return int, Vector2
-
----
-
-> mouseCharId, textOffset = RL.DrawTextBoxedEx( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2 textOffset, int|nil tabSize )
-
-Draw text using font inside rectangle limits. Return character id from mouse position (default 0).
+Draw text inside rectangle limits. Return character id from mouse position (default 0).
 textOffset can be used to set start position inside rectangle. Usefull to pass from previous
-DrawTextBoxedEx for continuous text.
+DrawTextBoxed for continuous text.
 Support for tint change with "\a#FFFFFFFF"
 
 - Success return int, Vector2
@@ -8092,6 +8083,14 @@ Measure string width for default font
 Measure string size for Font
 
 - Success return Vector2
+
+---
+
+> size, textOffset = RL.MeasureTextBoxed( Font font, string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2 textOffset, int|nil tabSize )
+
+Measure text inside rectangle limits.
+
+- Success return Vector2, Vector2
 
 ---
 

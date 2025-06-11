@@ -4528,25 +4528,9 @@ function  RL.DrawTextCodepoint( font, codepoint, position, fontSize, tint ) end
 ---@return any RL.DrawTextCodepoints
 function  RL.DrawTextCodepoints( font, codepoints, position, fontSize, spacing, tint ) end
 
----Draw text using font inside rectangle limits.
----Support for tint change with "\a#FFFFFFFF"
----- Success return int, Vector2
----@param font any
----@param text string
----@param rec table
----@param fontSize number
----@param spacing number
----@param wordWrap boolean
----@param tint table
----@param limitHeight boolean
----@param tabSize integer|nil
----@return any mouseCharId
----@return any textOffset 
-function RL.DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint, limitHeight, tabSize ) end
-
----Draw text using font inside rectangle limits. Return character id from mouse position (default 0).
+---Draw text inside rectangle limits. Return character id from mouse position (default 0).
 ---textOffset can be used to set start position inside rectangle. Usefull to pass from previous
----DrawTextBoxedEx for continuous text.
+---DrawTextBoxed for continuous text.
 ---Support for tint change with "\a#FFFFFFFF"
 ---- Success return int, Vector2
 ---@param font any
@@ -4557,11 +4541,11 @@ function RL.DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint, l
 ---@param wordWrap boolean
 ---@param tint table
 ---@param limitHeight boolean
----@param textOffset table
+---@param textOffset table|nil
 ---@param tabSize integer|nil
 ---@return any mouseCharId
 ---@return any textOffset 
-function RL.DrawTextBoxedEx( font, text, rec, fontSize, spacing, wordWrap, tint, limitHeight, textOffset, tabSize ) end
+function RL.DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint, limitHeight, textOffset, tabSize ) end
 
 -- Text - Text font info functions
 
@@ -4590,6 +4574,22 @@ function RL.MeasureText( text, fontSize ) end
 ---@param spacing number
 ---@return any size 
 function RL.MeasureTextEx( font, text, fontSize, spacing ) end
+
+---Measure text inside rectangle limits.
+---- Success return Vector2, Vector2
+---@param font any
+---@param text string
+---@param rec table
+---@param fontSize number
+---@param spacing number
+---@param wordWrap boolean
+---@param tint table
+---@param limitHeight boolean
+---@param textOffset table
+---@param tabSize integer|nil
+---@return any size
+---@return any textOffset 
+function RL.MeasureTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint, limitHeight, textOffset, tabSize ) end
 
 ---Get glyph index position in font for a codepoint (unicode character), fallback to '?' if not found
 ---- Success return int

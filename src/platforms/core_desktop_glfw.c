@@ -99,7 +99,6 @@ int lcoreGetKeyScancode( lua_State* L ) {
 Called when the window is resized. Type GLFW_WINDOW_SIZE_EVENT
 */
 static void windowSizeEvent( GLFWwindow* window, int width, int height ) {
-// GLFWwindowsizefun windowSizeEvent( GLFWwindow* window, int width, int height ) {
 	/* Pass through to raylib callback. */
 	state->raylibWindowSizeCallback( window, width, height );
 

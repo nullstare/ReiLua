@@ -2349,21 +2349,21 @@ function RL.EncodeDataBase64( data ) end
 ---@return any outputSize 
 function RL.DecodeDataBase64( data ) end
 
----Compute CRC32 hash code. Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+---Compute CRC32 hash code.
 ---- Failure return false
 ---- Success return int
 ---@param data any
 ---@return any code 
 function RL.ComputeCRC32( data ) end
 
----Compute MD5 hash code, returns static int[4] (16 bytes). Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+---Compute MD5 hash code, returns static int[4] (16 bytes).
 ---- Failure return false
 ---- Success return int{4}
 ---@param data any
 ---@return any code 
 function RL.ComputeMD5( data ) end
 
----Compute SHA1 hash code, returns static int[5] (20 bytes). Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+---Compute SHA1 hash code, returns static int[5] (20 bytes).
 ---- Failure return false
 ---- Success return int{5}
 ---@param data any
@@ -5250,7 +5250,7 @@ function  RL.DrawMesh( mesh, material, transform ) end
 ---Draw multiple mesh instances with material and different transforms
 ---@param mesh any
 ---@param material any
----@param transforms table
+---@param transforms any
 ---@param instances integer
 ---@return any RL.DrawMeshInstanced
 function  RL.DrawMeshInstanced( mesh, material, transforms, instances ) end

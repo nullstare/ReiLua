@@ -2201,7 +2201,7 @@ int lcoreDecodeDataBase64( lua_State* L ) {
 /*
 > code = RL.ComputeCRC32( Buffer data )
 
-Compute CRC32 hash code. Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+Compute CRC32 hash code.
 
 - Failure return false
 - Success return int
@@ -2209,12 +2209,7 @@ Compute CRC32 hash code. Note! Buffer should be type BUFFER_UNSIGNED_CHAR
 int lcoreComputeCRC32( lua_State* L ) {
 	Buffer* buffer = uluaGetBuffer( L, 1 );
 
-	if ( buffer->type == BUFFER_UNSIGNED_CHAR ) {
-		lua_pushinteger( L, ComputeCRC32( buffer->data, buffer->size ) );
-	}
-	else {
-		lua_pushboolean( L, false );
-	}
+	lua_pushinteger( L, ComputeCRC32( buffer->data, buffer->size ) );
 
 	return 1;
 }
@@ -2222,7 +2217,7 @@ int lcoreComputeCRC32( lua_State* L ) {
 /*
 > code = RL.ComputeMD5( Buffer data )
 
-Compute MD5 hash code, returns static int[4] (16 bytes). Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+Compute MD5 hash code, returns static int[4] (16 bytes).
 
 - Failure return false
 - Success return int{4}
@@ -2230,17 +2225,12 @@ Compute MD5 hash code, returns static int[4] (16 bytes). Note! Buffer should be 
 int lcoreComputeMD5( lua_State* L ) {
 	Buffer* buffer = uluaGetBuffer( L, 1 );
 
-	if ( buffer->type == BUFFER_UNSIGNED_CHAR ) {
-		unsigned int* code = ComputeMD5( buffer->data, buffer->size );
-		lua_createtable( L, 4, 0 );
+	unsigned int* code = ComputeMD5( buffer->data, buffer->size );
+	lua_createtable( L, 4, 0 );
 
-		for ( unsigned int i = 0; i < 4; i++ ) {
-			lua_pushinteger( L, code[i] );
-			lua_rawseti( L, -2, i + 1 );
-		}
-	}
-	else {
-		lua_pushboolean( L, false );
+	for ( unsigned int i = 0; i < 4; i++ ) {
+		lua_pushinteger( L, code[i] );
+		lua_rawseti( L, -2, i + 1 );
 	}
 
 	return 1;
@@ -2249,7 +2239,7 @@ int lcoreComputeMD5( lua_State* L ) {
 /*
 > code = RL.ComputeSHA1( Buffer data )
 
-Compute SHA1 hash code, returns static int[5] (20 bytes). Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+Compute SHA1 hash code, returns static int[5] (20 bytes).
 
 - Failure return false
 - Success return int{5}
@@ -2257,17 +2247,12 @@ Compute SHA1 hash code, returns static int[5] (20 bytes). Note! Buffer should be
 int lcoreComputeSHA1( lua_State* L ) {
 	Buffer* buffer = uluaGetBuffer( L, 1 );
 
-	if ( buffer->type == BUFFER_UNSIGNED_CHAR ) {
-		unsigned int* code = ComputeSHA1( buffer->data, buffer->size );
-		lua_createtable( L, 5, 0 );
+	unsigned int* code = ComputeSHA1( buffer->data, buffer->size );
+	lua_createtable( L, 5, 0 );
 
-		for ( unsigned int i = 0; i < 5; i++ ) {
-			lua_pushinteger( L, code[i] );
-			lua_rawseti( L, -2, i + 1 );
-		}
-	}
-	else {
-		lua_pushboolean( L, false );
+	for ( unsigned int i = 0; i < 5; i++ ) {
+		lua_pushinteger( L, code[i] );
+		lua_rawseti( L, -2, i + 1 );
 	}
 
 	return 1;

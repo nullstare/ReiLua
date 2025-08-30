@@ -33,6 +33,9 @@ List of some MISSING features that are planned to be included. For specific func
 
 * v0.9
 
+* v1.0
+	* raylib 6.0
+
 ## Usage
 
 Application needs 'main.lua' or 'main' file as entry point. ReiLua executable will first look it from same directory. Alternatively, path to the folder where "main.lua" is located can be given as argument. There are seven Lua functions that the framework will call, 'RL.init', 'RL.update', 'RL.draw', 'RL.event', 'RL.log', 'RL.exit' and 'RL.config'.

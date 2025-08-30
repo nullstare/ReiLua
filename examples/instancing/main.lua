@@ -8,10 +8,14 @@
 	Modified by Jussi Viitala (@nullstare) for ReiLua style.
 ]]
 
+package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
+
+Matrix = require( "matrix" )
+
 local MAX_INSTANCES = 10000
 
 local cube
-local transforms = {}
+local transformsBuf
 local camera
 
 local shader
@@ -41,6 +45,9 @@ function RL.init()
 	-- Define mesh to be instanced
 	cube = RL.GenMeshCube( { 1, 1, 1 } )
 
+	transformsBuf = RL.LoadBufferFormatted( MAX_INSTANCES * 16, RL.BUFFER_FLOAT, 0 )
+	local bufPos = 0
+
 	-- Translate and rotate cubes randomly
 	for i = 1, MAX_INSTANCES do
 		local translation = RL.MatrixTranslate( { math.random( -50, 50 ), math.random( -50, 50 ), math.random( -50, 50 ) } )
@@ -48,7 +55,8 @@ function RL.init()
 		local angle = math.rad( math.random( 0, 10 ) )
 		local rotation = RL.MatrixRotate( axis, angle )
 
-		table.insert( transforms, RL.MatrixMultiply( rotation, translation ) )
+		RL.SetBufferData( transformsBuf, bufPos, Matrix:temp( RL.MatrixMultiply( rotation, translation ) ):arr() )
+		bufPos = bufPos + 16
 	end
 
 	-- Load lighting shader
@@ -101,7 +109,7 @@ function RL.draw()
 		-- Draw meshes instanced using material containing instancing shader (RED + lighting),
 		-- transforms[] for the instances should be provided, they are dynamically
 		-- updated in GPU every frame, so we can animate the different mesh instances
-		RL.DrawMeshInstanced( cube, matInstances, transforms, MAX_INSTANCES )
+		RL.DrawMeshInstanced( cube, matInstances, transformsBuf, MAX_INSTANCES )
 
 		-- Draw cube mesh with default material (BLUE)
 		RL.DrawMesh( cube, matDefault, RL.MatrixTranslate( { 10.0, 0.0, 0.0 } ) )
@@ -113,4 +121,5 @@ end
 function RL.exit()
 	RL.UnloadMaterial( matInstances, true )
 	RL.UnloadMesh( cube )
+	RL.UnloadBuffer( transformsBuf )
 end

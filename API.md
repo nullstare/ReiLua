@@ -5726,7 +5726,7 @@ Decode Base64 string data
 
 > code = RL.ComputeCRC32( Buffer data )
 
-Compute CRC32 hash code. Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+Compute CRC32 hash code.
 
 - Failure return false
 - Success return int
@@ -5735,7 +5735,7 @@ Compute CRC32 hash code. Note! Buffer should be type BUFFER_UNSIGNED_CHAR
 
 > code = RL.ComputeMD5( Buffer data )
 
-Compute MD5 hash code, returns static int[4] (16 bytes). Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+Compute MD5 hash code, returns static int[4] (16 bytes).
 
 - Failure return false
 - Success return int{4}
@@ -5744,7 +5744,7 @@ Compute MD5 hash code, returns static int[4] (16 bytes). Note! Buffer should be 
 
 > code = RL.ComputeSHA1( Buffer data )
 
-Compute SHA1 hash code, returns static int[5] (20 bytes). Note! Buffer should be type BUFFER_UNSIGNED_CHAR
+Compute SHA1 hash code, returns static int[5] (20 bytes).
 
 - Failure return false
 - Success return int{5}
@@ -8746,7 +8746,7 @@ Draw a 3d mesh with material and transform
 
 ---
 
-> RL.DrawMeshInstanced( Mesh mesh, Material material, Matrix{} transforms, int instances )
+> RL.DrawMeshInstanced( Mesh mesh, Material material, Buffer transforms, int instances )
 
 Draw multiple mesh instances with material and different transforms
 

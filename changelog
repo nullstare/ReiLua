@@ -55,6 +55,7 @@ DETAILED CHANGES:
 	- FIXED: uluaGet* pops lua stack correctly when userdata given in table.
 	- ADDED: MeasureTextBoxed.
 	- CHANGE: DrawTextBoxedEx to DrawTextBoxed.
+	- CHANGE: DrawMeshInstanced takes transforms as Buffer. Much better performance.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

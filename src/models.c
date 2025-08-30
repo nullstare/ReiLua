@@ -1145,29 +1145,17 @@ int lmodelsDrawMesh( lua_State* L ) {
 }
 
 /*
-> RL.DrawMeshInstanced( Mesh mesh, Material material, Matrix{} transforms, int instances )
+> RL.DrawMeshInstanced( Mesh mesh, Material material, Buffer transforms, int instances )
 
 Draw multiple mesh instances with material and different transforms
 */
 int lmodelsDrawMeshInstanced( lua_State* L ) {
 	Mesh* mesh = uluaGetMesh( L, 1 );
 	Material* material = uluaGetMaterial( L, 2 );
-	luaL_checktype( L, 3, LUA_TTABLE );
+	Buffer* transforms = uluaGetBuffer( L, 3 );
 	int instances = luaL_checkinteger( L, 4 );
 
-	Matrix transforms[ instances ];
-
-	int t = 3, i = 0;
-	lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-		if ( lua_istable( L, -1 ) ) {
-			transforms[i] = uluaGetMatrix( L, lua_gettop( L ) );
-		}
-		i++;
-		lua_pop( L, 1 );
-	}
-	DrawMeshInstanced( *mesh, *material, transforms, instances );
+	DrawMeshInstanced( *mesh, *material, (Matrix*)transforms->data, instances );
 
 	return 0;
 }

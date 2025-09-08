@@ -9401,6 +9401,14 @@ Set pan for a sound (0.5 is center)
 
 ---
 
+> stream = RL.GetSoundStream( Sound sound )
+
+Get sound audio stream. Return as lightuserdata
+
+- Success return AudioStream
+
+---
+
 > RL.WaveFormat( Wave wave, int sampleRate, int sampleSize, int channels )
 
 Convert wave data to desired format
@@ -9552,6 +9560,145 @@ Get music time length (in seconds)
 Get current music time played (in seconds)
 
 - Success return float
+
+---
+
+> stream = RL.GetMusicStream( Music music )
+
+Get music audio stream. Return as lightuserdata
+
+- Success return AudioStream
+
+---
+
+## Audio - AudioStream management functions
+
+---
+
+> audioStream = RL.LoadAudioStream( int sampleRate, int sampleSize, int channels )
+
+Load audio stream (to stream raw audio pcm data)
+
+- Success return AudioStream
+
+---
+
+> isValid = RL.IsAudioStreamValid( AudioStream stream )
+
+Checks if an audio stream is valid (buffers initialized)
+
+- Success return bool
+
+---
+
+> RL.UnloadAudioStream( AudioStream stream )
+
+Unload audio stream and free memory
+
+---
+
+> RL.UpdateAudioStream( AudioStream stream, Buffer data, int frameCount )
+
+Update audio stream buffers with data
+
+---
+
+> isProcessed = RL.IsAudioStreamProcessed( AudioStream stream )
+
+Check if any audio stream buffers requires refill
+
+- Success return bool
+
+---
+
+> RL.PlayAudioStream( AudioStream stream )
+
+Play audio stream
+
+---
+
+> RL.PauseAudioStream( AudioStream stream )
+
+Pause audio stream
+
+---
+
+> RL.ResumeAudioStream( AudioStream stream )
+
+Resume audio stream
+
+---
+
+> isPlaying = RL.IsAudioStreamPlaying( AudioStream stream )
+
+Check if audio stream is playing
+
+- Success return bool
+
+---
+
+> RL.StopAudioStream( AudioStream stream )
+
+Stop audio stream
+
+---
+
+> RL.SetAudioStreamVolume( AudioStream stream, float volume )
+
+Set volume for audio stream (1.0 is max level)
+
+---
+
+> RL.SetAudioStreamPitch( AudioStream stream, float pitch )
+
+Set pitch for audio stream (1.0 is base level)
+
+---
+
+> RL.SetAudioStreamPan( AudioStream stream, float pan )
+
+Set pan for audio stream (0.5 is centered)
+
+---
+
+> RL.SetAudioStreamBufferSizeDefault( int size )
+
+Default size for new audio streams
+
+---
+
+> RL.SetAudioStreamCallback( AudioStream stream, AudioCallback callback )
+
+Audio thread callback to request new data.
+AudioCallback should be lightuserdata function pointer
+
+---
+
+> RL.AttachAudioStreamProcessor( AudioStream stream, AudioCallback processor )
+
+Attach audio stream processor to stream, receives the samples as 'float'.
+AudioCallback should be lightuserdata function pointer
+
+---
+
+> RL.DetachAudioStreamProcessor( AudioStream stream, AudioCallback processor )
+
+Detach audio stream processor from stream.
+AudioCallback should be lightuserdata function pointer
+
+---
+
+> RL.AttachAudioMixedProcessor( AudioCallback processor )
+
+Attach audio stream processor to the entire audio pipeline, receives the samples as 'float'.
+AudioCallback should be lightuserdata function pointer
+
+---
+
+> RL.DetachAudioMixedProcessor( AudioCallback processor )
+
+Detach audio stream processor from the entire audio pipeline.
+AudioCallback should be lightuserdata function pointer
 
 ---
 

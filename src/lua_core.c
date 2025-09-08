@@ -254,6 +254,25 @@ static void defineMusic() {
 	lua_setfield( L, -2, "__gc" );
 }
 
+	/* AudioStream. */
+static int gcAudioStream( lua_State* L ) {
+	if ( state->gcUnload ) {
+		AudioStream* stream = luaL_checkudata( L, 1, "AudioStream" );
+		uluaUnloadAudioStream( stream );
+	}
+	return 0;
+}
+
+static void defineAudioStream() {
+	lua_State* L = state->luaState;
+
+	luaL_newmetatable( L, "AudioStream" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcAudioStream );
+	lua_setfield( L, -2, "__gc" );
+}
+
 	/* Light. */
 static void defineLight() {
 	lua_State* L = state->luaState;
@@ -1341,6 +1360,7 @@ bool luaInit( int argn, const char** argc ) {
 	defineSound();
 	defineSoundAlias();
 	defineMusic();
+	defineAudioStream();
 	defineLight();
 	defineMaterial();
 	defineMesh();
@@ -2319,6 +2339,27 @@ void luaRegister() {
 	assingGlobalFunction( "GetMusicLooping", laudioGetMusicLooping );
 	assingGlobalFunction( "GetMusicTimeLength", laudioGetMusicTimeLength );
 	assingGlobalFunction( "GetMusicTimePlayed", laudioGetMusicTimePlayed );
+	assingGlobalFunction( "GetMusicStream", laudioGetMusicStream );
+	/* AudioStream management functions. */
+	assingGlobalFunction( "LoadAudioStream", laudioLoadAudioStream );
+	assingGlobalFunction( "IsAudioStreamValid", laudioIsAudioStreamValid );
+	assingGlobalFunction( "UnloadAudioStream", laudioUnloadAudioStream );
+	assingGlobalFunction( "UpdateAudioStream", laudioUpdateAudioStream );
+	assingGlobalFunction( "IsAudioStreamProcessed", laudioIsAudioStreamProcessed );
+	assingGlobalFunction( "PlayAudioStream", laudioPlayAudioStream );
+	assingGlobalFunction( "PauseAudioStream", laudioPauseAudioStream );
+	assingGlobalFunction( "ResumeAudioStream", laudioResumeAudioStream );
+	assingGlobalFunction( "IsAudioStreamPlaying", laudioIsAudioStreamPlaying );
+	assingGlobalFunction( "StopAudioStream", laudioStopAudioStream );
+	assingGlobalFunction( "SetAudioStreamVolume", laudioSetAudioStreamVolume );
+	assingGlobalFunction( "SetAudioStreamPitch", laudioSetAudioStreamPitch );
+	assingGlobalFunction( "SetAudioStreamPan", laudioSetAudioStreamPan );
+	assingGlobalFunction( "SetAudioStreamBufferSizeDefault", laudioSetAudioStreamBufferSizeDefault );
+	assingGlobalFunction( "SetAudioStreamCallback", laudioSetAudioStreamCallback );
+	assingGlobalFunction( "AttachAudioStreamProcessor", laudioAttachAudioStreamProcessor );
+	assingGlobalFunction( "DetachAudioStreamProcessor", laudioDetachAudioStreamProcessor );
+	assingGlobalFunction( "AttachAudioMixedProcessor", laudioAttachAudioMixedProcessor );
+	assingGlobalFunction( "DetachAudioMixedProcessor", laudioDetachAudioMixedProcessor );
 
 	/* Math. */
 		/* Utils. */
@@ -3735,6 +3776,36 @@ Music* uluaGetMusic( lua_State* L, int index ) {
 	}
 }
 
+AudioStream* uluaGetAudioStream( lua_State* L, int index ) {
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
+		return (AudioStream*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		int t = index, i = 0;
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "audioStream", lua_tostring( L, -2 ) ) ) {
+				AudioStream* stream = NULL;
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					stream = lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					stream = luaL_checkudata( L, lua_gettop( L ), "AudioStream" );
+				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return stream;
+			}
+			else {
+				lua_pop( L, 1 );
+			}
+			i++;
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "AudioStream" );
+	}
+}
+
 Light* uluaGetLight( lua_State* L, int index ) {
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
@@ -4238,6 +4309,13 @@ void uluaPushMusic( lua_State* L, Music music ) {
 	luaL_setmetatable( L, "Music" );
 }
 
+void uluaPushAudioStream( lua_State* L, AudioStream stream ) {
+	AudioStream* streamP = lua_newuserdata( L, sizeof( AudioStream ) );
+	*streamP = stream;
+	luaCallLoad( "AudioStream", streamP );
+	luaL_setmetatable( L, "AudioStream" );
+}
+
 void uluaPushLight( lua_State* L, Light light ) {
 	Light* lightP = lua_newuserdata( L, sizeof( Light ) );
 	*lightP = light;
@@ -4359,6 +4437,12 @@ void uluaUnloadMusic( Music* music ) {
 	luaCallUnload( "Music", music );
 	UnloadMusicStream( *music );
 	memset( music, 0, sizeof( Music ) );
+}
+
+void uluaUnloadAudioStream( AudioStream* stream ) {
+	luaCallUnload( "AudioStream", stream );
+	UnloadAudioStream( *stream );
+	memset( stream, 0, sizeof( AudioStream ) );
 }
 
 void uluaUnloadMaterial( Material* material, bool freeAll ) {

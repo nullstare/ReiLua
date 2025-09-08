@@ -11,8 +11,6 @@ Backlog {
 		* Text input not working on gui. Could this be Raylib issue?
 		* Haptic functions.
 		* SDL3 GPU?
-	* Audio
-		* AudioStream.
 	* Models
 		* Material mapType range checks.
 		* Mesh bone weight management?
@@ -27,6 +25,7 @@ Bugs {
 }
 
 Notes {
+	* WARNING: BREAKING CHANGE: LoadFontData() has been redesigned! https://github.com/raysan5/raylib/commit/29ce5d8aa9d261eba395e24437e08c6bd744616e
 }
 
 Needs Testing {

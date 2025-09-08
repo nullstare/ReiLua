@@ -387,6 +387,21 @@ int laudioSetSoundPan( lua_State* L ) {
 }
 
 /*
+> stream = RL.GetSoundStream( Sound sound )
+
+Get sound audio stream. Return as lightuserdata
+
+- Success return AudioStream
+*/
+int laudioGetSoundStream( lua_State* L ) {
+	Sound* sound = uluaGetSound( L, 1 );
+
+	lua_pushlightuserdata( L, &sound->stream );
+
+	return 1;
+}
+
+/*
 > RL.WaveFormat( Wave wave, int sampleRate, int sampleSize, int channels )
 
 Convert wave data to desired format
@@ -715,4 +730,295 @@ int laudioGetMusicTimePlayed( lua_State* L ) {
 	lua_pushnumber( L, GetMusicTimePlayed( *music ) );
 
 	return 1;
+}
+
+static float arr[10] = {};
+
+/*
+> stream = RL.GetMusicStream( Music music )
+
+Get music audio stream. Return as lightuserdata
+
+- Success return AudioStream
+*/
+int laudioGetMusicStream( lua_State* L ) {
+	Music* music = uluaGetMusic( L, 1 );
+
+	lua_pushlightuserdata( L, &music->stream );
+
+	return 1;
+}
+
+/*
+## Audio - AudioStream management functions
+*/
+
+/*
+> audioStream = RL.LoadAudioStream( int sampleRate, int sampleSize, int channels )
+
+Load audio stream (to stream raw audio pcm data)
+
+- Success return AudioStream
+*/
+int laudioLoadAudioStream( lua_State* L ) {
+	int sampleRate = luaL_checkinteger( L, 1 );
+	int sampleSize = luaL_checkinteger( L, 2 );
+	int channels = luaL_checkinteger( L, 3 );
+
+	uluaPushAudioStream( L, LoadAudioStream( sampleRate, sampleSize, channels ) );
+
+	return 1;
+}
+
+/*
+> isValid = RL.IsAudioStreamValid( AudioStream stream )
+
+Checks if an audio stream is valid (buffers initialized)
+
+- Success return bool
+*/
+int laudioIsAudioStreamValid( lua_State* L ) {
+	AudioStream* stream = uluaGetAudioStream( L, 1 );
+
+	lua_pushboolean( L, IsAudioStreamValid( *stream ) );
+
+	return 1;
+}
+
+/*
+> RL.UnloadAudioStream( AudioStream stream )
+
+Unload audio stream and free memory
+*/
+int laudioUnloadAudioStream( lua_State* L ) {
+	AudioStream* stream = uluaGetAudioStream( L, 1 );
+
+	uluaUnloadAudioStream( stream );
+
+	return 0;
+}
+
+/*
+> RL.UpdateAudioStream( AudioStream stream, Buffer data, int frameCount )
+
+Update audio stream buffers with data
+*/
+int laudioUpdateAudioStream( lua_State* L ) {
+	AudioStream* stream = uluaGetAudioStream( L, 1 );
+	Buffer* buffer = uluaGetBuffer( L, 2 );
+	int frameCount = luaL_checkinteger( L, 3 );
+
+	UpdateAudioStream( *stream, buffer->data, frameCount );
+
+	return 0;
+}
+
+/*
+> isProcessed = RL.IsAudioStreamProcessed( AudioStream stream )
+
+Check if any audio stream buffers requires refill
+
+- Success return bool
+*/
+int laudioIsAudioStreamProcessed( lua_State* L ) {
+	AudioStream* stream = uluaGetAudioStream( L, 1 );
+
+	lua_pushboolean( L, IsAudioStreamProcessed( *stream ) );
+
+	return 1;
+}
+
+/*
+> RL.PlayAudioStream( AudioStream stream )
+
+Play audio stream
+*/
+int laudioPlayAudioStream( lua_State* L ) {
+	AudioStream* stream = uluaGetAudioStream( L, 1 );
+
+	PlayAudioStream( *stream );
+
+	return 0;
+}
+
+/*
+> RL.PauseAudioStream( AudioStream stream )
+
+Pause audio stream
+*/
+int laudioPauseAudioStream( lua_State* L ) {
+	AudioStream* stream = uluaGetAudioStream( L, 1 );
+
+	PauseAudioStream( *stream );
+
+	return 0;
+}
+
+/*
+> RL.ResumeAudioStream( AudioStream stream )
+
+Resume audio stream
+*/
+int laudioResumeAudioStream( lua_State* L ) {
+	AudioStream* stream = uluaGetAudioStream( L, 1 );
+
+	ResumeAudioStream( *stream );
+
+	return 0;
+}
+
+/*
+> isPlaying = RL.IsAudioStreamPlaying( AudioStream stream )
+
+Check if audio stream is playing
+
+- Success return bool
+*/
+int laudioIsAudioStreamPlaying( lua_State* L ) {
+	AudioStream* stream = uluaGetAudioStream( L, 1 );
+
+	lua_pushboolean( L, IsAudioStreamPlaying( *stream ) );
+
+	return 1;
+}
+
+/*
+> RL.StopAudioStream( AudioStream stream )
+
+Stop audio stream
+*/
+int laudioStopAudioStream( lua_State* L ) {
+	AudioStream* stream = uluaGetAudioStream( L, 1 );
+
+	StopAudioStream( *stream );
+
+	return 0;
+}
+
+/*
+> RL.SetAudioStreamVolume( AudioStream stream, float volume )
+
+Set volume for audio stream (1.0 is max level)
+*/
+int laudioSetAudioStreamVolume( lua_State* L ) {
+	AudioStream* stream = uluaGetAudioStream( L, 1 );
+	float volume = luaL_checknumber( L, 2 );
+
+	SetAudioStreamVolume( *stream, volume );
+
+	return 0;
+}
+
+/*
+> RL.SetAudioStreamPitch( AudioStream stream, float pitch )
+
+Set pitch for audio stream (1.0 is base level)
+*/
+int laudioSetAudioStreamPitch( lua_State* L ) {
+	AudioStream* stream = uluaGetAudioStream( L, 1 );
+	float pitch = luaL_checknumber( L, 2 );
+
+	SetAudioStreamPitch( *stream, pitch );
+
+	return 0;
+}
+
+/*
+> RL.SetAudioStreamPan( AudioStream stream, float pan )
+
+Set pan for audio stream (0.5 is centered)
+*/
+int laudioSetAudioStreamPan( lua_State* L ) {
+	AudioStream* stream = uluaGetAudioStream( L, 1 );
+	float pan = luaL_checknumber( L, 2 );
+
+	SetAudioStreamPan( *stream, pan );
+
+	return 0;
+}
+
+/*
+> RL.SetAudioStreamBufferSizeDefault( int size )
+
+Default size for new audio streams
+*/
+int laudioSetAudioStreamBufferSizeDefault( lua_State* L ) {
+	int size = luaL_checkinteger( L, 1 );
+
+	SetAudioStreamBufferSizeDefault( size );
+
+	return 0;
+}
+
+/*
+> RL.SetAudioStreamCallback( AudioStream stream, AudioCallback callback )
+
+Audio thread callback to request new data.
+AudioCallback should be lightuserdata function pointer
+*/
+int laudioSetAudioStreamCallback( lua_State* L ) {
+	AudioStream* stream = uluaGetAudioStream( L, 1 );
+	AudioCallback callback = lua_touserdata( L, 2 );
+
+	SetAudioStreamCallback( *stream, callback );
+
+	return 0;
+}
+
+/*
+> RL.AttachAudioStreamProcessor( AudioStream stream, AudioCallback processor )
+
+Attach audio stream processor to stream, receives the samples as 'float'.
+AudioCallback should be lightuserdata function pointer
+*/
+int laudioAttachAudioStreamProcessor( lua_State* L ) {
+	AudioStream* stream = uluaGetAudioStream( L, 1 );
+	AudioCallback processor = lua_touserdata( L, 2 );
+
+	AttachAudioStreamProcessor( *stream, processor );
+
+	return 0;
+}
+
+/*
+> RL.DetachAudioStreamProcessor( AudioStream stream, AudioCallback processor )
+
+Detach audio stream processor from stream.
+AudioCallback should be lightuserdata function pointer
+*/
+int laudioDetachAudioStreamProcessor( lua_State* L ) {
+	AudioStream* stream = uluaGetAudioStream( L, 1 );
+	AudioCallback processor = lua_touserdata( L, 2 );
+
+	DetachAudioStreamProcessor( *stream, processor );
+
+	return 0;
+}
+
+/*
+> RL.AttachAudioMixedProcessor( AudioCallback processor )
+
+Attach audio stream processor to the entire audio pipeline, receives the samples as 'float'.
+AudioCallback should be lightuserdata function pointer
+*/
+int laudioAttachAudioMixedProcessor( lua_State* L ) {
+	AudioCallback processor = lua_touserdata( L, 1 );
+
+	AttachAudioMixedProcessor( processor );
+
+	return 0;
+}
+
+/*
+> RL.DetachAudioMixedProcessor( AudioCallback processor )
+
+Detach audio stream processor from the entire audio pipeline.
+AudioCallback should be lightuserdata function pointer
+*/
+int laudioDetachAudioMixedProcessor( lua_State* L ) {
+	AudioCallback processor = lua_touserdata( L, 1 );
+
+	DetachAudioMixedProcessor( processor );
+
+	return 0;
 }

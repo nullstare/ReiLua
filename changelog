@@ -56,6 +56,9 @@ DETAILED CHANGES:
 	- ADDED: MeasureTextBoxed.
 	- CHANGE: DrawTextBoxedEx to DrawTextBoxed.
 	- CHANGE: DrawMeshInstanced takes transforms as Buffer. Much better performance.
+	- ADDED: AudioStream management functions.
+	- ADDED: GetSoundStream and GetMusicStream.
+	- ADDED: Audio stream effects example.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

@@ -3821,7 +3821,11 @@ int lcoreSetBufferData( lua_State* L ) {
 
 	int len = uluaGetTableLen( L, 3 );
 
-	if ( position < 0 || buffer->size / getBufferElementSize( buffer ) <= ( position + len - 1 ) ) {
+	// printf( "buffer->size %d len %d position %d element size %d\n", buffer->size, len, position, getBufferElementSize( buffer ) );
+	// printf( "Kissa %d %d\n", buffer->size / getBufferElementSize( buffer ), position + len - 1 );
+
+	// if ( position < 0 || buffer->size / getBufferElementSize( buffer ) <= ( position + len - 1 ) ) {
+	if ( position < 0 || ( ( buffer->size / getBufferElementSize( buffer ) ) <= ( position + len - 1 ) ) ) {
 		TraceLog( state->logLevelInvalid, "SetBufferData. position %d out of bounds", position );
 		return 0;
 	}

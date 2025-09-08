@@ -5823,6 +5823,12 @@ function  RL.SetSoundPitch( sound, pitch ) end
 ---@return any RL.SetSoundPan
 function  RL.SetSoundPan( sound, pan ) end
 
+---Get sound audio stream. Return as lightuserdata
+---- Success return AudioStream
+---@param sound any
+---@return any stream 
+function RL.GetSoundStream( sound ) end
+
 ---Convert wave data to desired format
 ---@param wave any
 ---@param sampleRate integer
@@ -5954,6 +5960,128 @@ function RL.GetMusicTimeLength( music ) end
 ---@param music any
 ---@return any timePlayed 
 function RL.GetMusicTimePlayed( music ) end
+
+---Get music audio stream. Return as lightuserdata
+---- Success return AudioStream
+---@param music any
+---@return any stream 
+function RL.GetMusicStream( music ) end
+
+-- Audio - AudioStream management functions
+
+---Load audio stream (to stream raw audio pcm data)
+---- Success return AudioStream
+---@param sampleRate integer
+---@param sampleSize integer
+---@param channels integer
+---@return any audioStream 
+function RL.LoadAudioStream( sampleRate, sampleSize, channels ) end
+
+---Checks if an audio stream is valid (buffers initialized)
+---- Success return bool
+---@param stream any
+---@return any isValid 
+function RL.IsAudioStreamValid( stream ) end
+
+---Unload audio stream and free memory
+---@param stream any
+---@return any RL.UnloadAudioStream
+function  RL.UnloadAudioStream( stream ) end
+
+---Update audio stream buffers with data
+---@param stream any
+---@param data any
+---@param frameCount integer
+---@return any RL.UpdateAudioStream
+function  RL.UpdateAudioStream( stream, data, frameCount ) end
+
+---Check if any audio stream buffers requires refill
+---- Success return bool
+---@param stream any
+---@return any isProcessed 
+function RL.IsAudioStreamProcessed( stream ) end
+
+---Play audio stream
+---@param stream any
+---@return any RL.PlayAudioStream
+function  RL.PlayAudioStream( stream ) end
+
+---Pause audio stream
+---@param stream any
+---@return any RL.PauseAudioStream
+function  RL.PauseAudioStream( stream ) end
+
+---Resume audio stream
+---@param stream any
+---@return any RL.ResumeAudioStream
+function  RL.ResumeAudioStream( stream ) end
+
+---Check if audio stream is playing
+---- Success return bool
+---@param stream any
+---@return any isPlaying 
+function RL.IsAudioStreamPlaying( stream ) end
+
+---Stop audio stream
+---@param stream any
+---@return any RL.StopAudioStream
+function  RL.StopAudioStream( stream ) end
+
+---Set volume for audio stream (1.0 is max level)
+---@param stream any
+---@param volume number
+---@return any RL.SetAudioStreamVolume
+function  RL.SetAudioStreamVolume( stream, volume ) end
+
+---Set pitch for audio stream (1.0 is base level)
+---@param stream any
+---@param pitch number
+---@return any RL.SetAudioStreamPitch
+function  RL.SetAudioStreamPitch( stream, pitch ) end
+
+---Set pan for audio stream (0.5 is centered)
+---@param stream any
+---@param pan number
+---@return any RL.SetAudioStreamPan
+function  RL.SetAudioStreamPan( stream, pan ) end
+
+---Default size for new audio streams
+---@param size integer
+---@return any RL.SetAudioStreamBufferSizeDefault
+function  RL.SetAudioStreamBufferSizeDefault( size ) end
+
+---Audio thread callback to request new data.
+---AudioCallback should be lightuserdata function pointer
+---@param stream any
+---@param callback any
+---@return any RL.SetAudioStreamCallback
+function  RL.SetAudioStreamCallback( stream, callback ) end
+
+---Attach audio stream processor to stream, receives the samples as 'float'.
+---AudioCallback should be lightuserdata function pointer
+---@param stream any
+---@param processor any
+---@return any RL.AttachAudioStreamProcessor
+function  RL.AttachAudioStreamProcessor( stream, processor ) end
+
+---Detach audio stream processor from stream.
+---AudioCallback should be lightuserdata function pointer
+---@param stream any
+---@param processor any
+---@return any RL.DetachAudioStreamProcessor
+function  RL.DetachAudioStreamProcessor( stream, processor ) end
+
+---Attach audio stream processor to the entire audio pipeline, receives the samples as 'float'.
+---AudioCallback should be lightuserdata function pointer
+---@param processor any
+---@return any RL.AttachAudioMixedProcessor
+function  RL.AttachAudioMixedProcessor( processor ) end
+
+---Detach audio stream processor from the entire audio pipeline.
+---AudioCallback should be lightuserdata function pointer
+---@param processor any
+---@return any RL.DetachAudioMixedProcessor
+function  RL.DetachAudioMixedProcessor( processor ) end
 
 -- Math - Utils
 

@@ -59,6 +59,7 @@ DETAILED CHANGES:
 	- ADDED: AudioStream management functions.
 	- ADDED: GetSoundStream and GetMusicStream.
 	- ADDED: Audio stream effects example.
+	- CHANGE: Bit fastes uluaGet* functions for vectors, color, rectangle and quaternion.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

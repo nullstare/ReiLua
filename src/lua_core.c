@@ -25,6 +25,12 @@
 	#include "platforms/core_web.c"
 #endif
 
+/* Custom implementation since LuaJIT doesn't have lua_geti. */
+static void lua_getiCustom( lua_State* L, int index, int i ) {
+    lua_pushinteger( L, i ); // Push the index onto the stack
+    lua_gettable( L, index ); // Get the value at the index
+}
+
 /* Define types. */
 
 	/* Buffer. */
@@ -2858,47 +2864,39 @@ Color uluaGetColor( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	Color color = { 0, 0, 0, 255 };
 
-	int t = index, i = 0;
-	lua_pushnil( L );
+	/* Assume object is given in named form if gets number. */
+	lua_getfield( L, index, "r" );
 
-	while ( lua_next( L, t ) != 0 ) {
-		if ( lua_isnumber( L, -1 ) ) {
-			if ( lua_isnumber( L, -2 ) ) {
-				switch ( i ) {
-					case 0:
-						color.r = (uint8_t)lua_tointeger( L, -1 );
-						break;
-					case 1:
-						color.g = (uint8_t)lua_tointeger( L, -1 );
-						break;
-					case 2:
-						color.b = (uint8_t)lua_tointeger( L, -1 );
-						break;
-					case 3:
-						color.a = (uint8_t)lua_tointeger( L, -1 );
-						break;
-					default:
-						break;
-				}
-			}
-			else if ( lua_isstring( L, -2 ) ) {
-				if ( TextIsEqual( "r", lua_tostring( L, -2 ) ) ) {
-					color.r = (uint8_t)lua_tointeger( L, -1 );
-				}
-				else if ( TextIsEqual( "g", lua_tostring( L, -2 ) ) ) {
-					color.g = (uint8_t)lua_tointeger( L, -1 );
-				}
-				else if ( TextIsEqual( "b", lua_tostring( L, -2 ) ) ) {
-					color.b = (uint8_t)lua_tointeger( L, -1 );
-				}
-				else if ( TextIsEqual( "a", lua_tostring( L, -2 ) ) ) {
-					color.a = (uint8_t)lua_tointeger( L, -1 );
-				}
-			}
-			i++;
-			lua_pop( L, 1 );
-		}
+	if ( lua_isnumber( L, -1 ) ) {
+		lua_getfield( L, index, "r" );
+		color.r = (uint8_t)lua_tointeger( L, -1 );
+		lua_pop( L, 1 );
+		lua_getfield( L, index, "g" );
+		color.g = (uint8_t)lua_tointeger( L, -1 );
+		lua_pop( L, 1 );
+		lua_getfield( L, index, "b" );
+		color.b = (uint8_t)lua_tointeger( L, -1 );
+		lua_pop( L, 1 );
+		lua_getfield( L, index, "a" );
+		color.a = (uint8_t)lua_tointeger( L, -1 );
+		lua_pop( L, 1 );
 	}
+	else {
+		lua_getiCustom( L, index, 1 );
+		color.r = (uint8_t)lua_tointeger( L, -1 );
+		lua_pop( L, 1 );
+		lua_getiCustom( L, index, 2 );
+		color.g = (uint8_t)lua_tointeger( L, -1 );
+		lua_pop( L, 1 );
+		lua_getiCustom( L, index, 3 );
+		color.b = (uint8_t)lua_tointeger( L, -1 );
+		lua_pop( L, 1 );
+		lua_getiCustom( L, index, 4 );
+		color.a = (uint8_t)lua_tointeger( L, -1 );
+		lua_pop( L, 1 );
+	}
+	lua_pop( L, 1 );
+
 	return color;
 }
 
@@ -2906,35 +2904,27 @@ Vector2 uluaGetVector2( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	Vector2 vector = { 0.0f, 0.0f };
 
-	int t = index, i = 0;
-	lua_pushnil( L );
+	/* Assume object is given in named form if gets number. */
+	lua_getfield( L, index, "x" );
 
-	while ( lua_next( L, t ) != 0 ) {
-		if ( lua_isnumber( L, -1 ) ) {
-			if ( lua_isnumber( L, -2 ) ) {
-				switch ( i ) {
-					case 0:
-						vector.x = lua_tonumber( L, -1 );
-						break;
-					case 1:
-						vector.y = lua_tonumber( L, -1 );
-						break;
-					default:
-						break;
-				}
-			}
-			else if ( lua_isstring( L, -2 ) ) {
-				if ( TextIsEqual( "x", lua_tostring( L, -2 ) ) ) {
-					vector.x = lua_tonumber( L, -1 );
-				}
-				else if ( TextIsEqual( "y", lua_tostring( L, -2 ) ) ) {
-					vector.y = lua_tonumber( L, -1 );
-				}
-			}
-			i++;
-			lua_pop( L, 1 );
-		}
+	if ( lua_isnumber( L, -1 ) ) {
+		lua_getfield( L, index, "x" );
+		vector.x = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getfield( L, index, "y" );
+		vector.y = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
 	}
+	else {
+		lua_getiCustom( L, index, 1 );
+		vector.x = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getiCustom( L, index, 2 );
+		vector.y = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+	}
+	lua_pop( L, 1 );
+
 	return vector;
 }
 
@@ -2942,41 +2932,33 @@ Vector3 uluaGetVector3( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	Vector3 vector = { 0.0f, 0.0f, 0.0f };
 
-	int t = index, i = 0;
-	lua_pushnil( L );
+	/* Assume object is given in named form if gets number. */
+	lua_getfield( L, index, "x" );
 
-	while ( lua_next( L, t ) != 0 ) {
-		if ( lua_isnumber( L, -1 ) ) {
-			if ( lua_isnumber( L, -2 ) ) {
-				switch ( i ) {
-					case 0:
-						vector.x = lua_tonumber( L, -1 );
-						break;
-					case 1:
-						vector.y = lua_tonumber( L, -1 );
-						break;
-					case 2:
-						vector.z = lua_tonumber( L, -1 );
-						break;
-					default:
-						break;
-				}
-			}
-			else if ( lua_isstring( L, -2 ) ) {
-				if ( TextIsEqual( "x", lua_tostring( L, -2 ) ) ) {
-					vector.x = lua_tonumber( L, -1 );
-				}
-				else if ( TextIsEqual( "y", lua_tostring( L, -2 ) ) ) {
-					vector.y = lua_tonumber( L, -1 );
-				}
-				else if ( TextIsEqual( "z", lua_tostring( L, -2 ) ) ) {
-					vector.z = lua_tonumber( L, -1 );
-				}
-			}
-		}
-		i++;
+	if ( lua_isnumber( L, -1 ) ) {
+		lua_getfield( L, index, "x" );
+		vector.x = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getfield( L, index, "y" );
+		vector.y = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getfield( L, index, "z" );
+		vector.z = luaL_checknumber( L, -1 );
 		lua_pop( L, 1 );
 	}
+	else {
+		lua_getiCustom( L, index, 1 );
+		vector.x = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getiCustom( L, index, 2 );
+		vector.y = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getiCustom( L, index, 3 );
+		vector.z = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+	}
+	lua_pop( L, 1 );
+
 	return vector;
 }
 
@@ -2984,47 +2966,39 @@ Vector4 uluaGetVector4( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	Vector4 vector = { 0.0f, 0.0f, 0.0f, 0.0f };
 
-	int t = index, i = 0;
-	lua_pushnil( L );
+	/* Assume object is given in named form if gets number. */
+	lua_getfield( L, index, "x" );
 
-	while ( lua_next( L, t ) != 0 ) {
-		if ( lua_isnumber( L, -1 ) ) {
-			if ( lua_isnumber( L, -2 ) ) {
-				switch ( i ) {
-					case 0:
-						vector.x = lua_tonumber( L, -1 );
-						break;
-					case 1:
-						vector.y = lua_tonumber( L, -1 );
-						break;
-					case 2:
-						vector.z = lua_tonumber( L, -1 );
-						break;
-					case 3:
-						vector.w = lua_tonumber( L, -1 );
-						break;
-					default:
-						break;
-				}
-			}
-			else if ( lua_isstring( L, -2 ) ) {
-				if ( TextIsEqual( "x", lua_tostring( L, -2 ) ) ) {
-					vector.x = lua_tonumber( L, -1 );
-				}
-				else if ( TextIsEqual( "y", lua_tostring( L, -2 ) ) ) {
-					vector.y = lua_tonumber( L, -1 );
-				}
-				else if ( TextIsEqual( "z", lua_tostring( L, -2 ) ) ) {
-					vector.z = lua_tonumber( L, -1 );
-				}
-				else if ( TextIsEqual( "w", lua_tostring( L, -2 ) ) ) {
-					vector.w = lua_tonumber( L, -1 );
-				}
-			}
-		}
-		i++;
+	if ( lua_isnumber( L, -1 ) ) {
+		lua_getfield( L, index, "x" );
+		vector.x = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getfield( L, index, "y" );
+		vector.y = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getfield( L, index, "z" );
+		vector.z = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getfield( L, index, "w" );
+		vector.w = luaL_checknumber( L, -1 );
 		lua_pop( L, 1 );
 	}
+	else {
+		lua_getiCustom( L, index, 1 );
+		vector.x = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getiCustom( L, index, 2 );
+		vector.y = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getiCustom( L, index, 3 );
+		vector.z = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getiCustom( L, index, 4 );
+		vector.w = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+	}
+	lua_pop( L, 1 );
+
 	return vector;
 }
 
@@ -3032,47 +3006,39 @@ Rectangle uluaGetRectangle( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	Rectangle rect = { 0.0f, 0.0f, 0.0f, 0.0f };
 
-	int t = index, i = 0;
-	lua_pushnil( L );
+	/* Assume object is given in named form if gets number. */
+	lua_getfield( L, index, "x" );
 
-	while ( lua_next( L, t ) != 0 ) {
-		if ( lua_isnumber( L, -1 ) ) {
-			if ( lua_isnumber( L, -2 ) ) {
-				switch ( i ) {
-					case 0:
-						rect.x = lua_tonumber( L, -1 );
-						break;
-					case 1:
-						rect.y = lua_tonumber( L, -1 );
-						break;
-					case 2:
-						rect.width = lua_tonumber( L, -1 );
-						break;
-					case 3:
-						rect.height = lua_tonumber( L, -1 );
-						break;
-					default:
-						break;
-				}
-			}
-			else if ( lua_isstring( L, -2 ) ) {
-				if ( TextIsEqual( "x", lua_tostring( L, -2 ) ) ) {
-					rect.x = lua_tonumber( L, -1 );
-				}
-				else if ( TextIsEqual( "y", lua_tostring( L, -2 ) ) ) {
-					rect.y = lua_tonumber( L, -1 );
-				}
-				else if ( TextIsEqual( "width", lua_tostring( L, -2 ) ) ) {
-					rect.width = lua_tonumber( L, -1 );
-				}
-				else if ( TextIsEqual( "height", lua_tostring( L, -2 ) ) ) {
-					rect.height = lua_tonumber( L, -1 );
-				}
-			}
-		}
-		i++;
+	if ( lua_isnumber( L, -1 ) ) {
+		lua_getfield( L, index, "x" );
+		rect.x = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getfield( L, index, "y" );
+		rect.y = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getfield( L, index, "width" );
+		rect.width = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getfield( L, index, "height" );
+		rect.height = luaL_checknumber( L, -1 );
 		lua_pop( L, 1 );
 	}
+	else {
+		lua_getiCustom( L, index, 1 );
+		rect.x = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getiCustom( L, index, 2 );
+		rect.y = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getiCustom( L, index, 3 );
+		rect.width = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getiCustom( L, index, 4 );
+		rect.height = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+	}
+	lua_pop( L, 1 );
+
 	return rect;
 }
 
@@ -3080,47 +3046,39 @@ Quaternion uluaGetQuaternion( lua_State* L, int index ) {
 	luaL_checktype( L, index, LUA_TTABLE );
 	Quaternion quaternion = { 0.0f, 0.0f, 0.0f, 0.0f };
 
-	int t = index, i = 0;
-	lua_pushnil( L );
+	/* Assume object is given in named form if gets number. */
+	lua_getfield( L, index, "x" );
 
-	while ( lua_next( L, t ) != 0 ) {
-		if ( lua_isnumber( L, -1 ) ) {
-			if ( lua_isnumber( L, -2 ) ) {
-				switch ( i ) {
-					case 0:
-						quaternion.x = lua_tonumber( L, -1 );
-						break;
-					case 1:
-						quaternion.y = lua_tonumber( L, -1 );
-						break;
-					case 2:
-						quaternion.z = lua_tonumber( L, -1 );
-						break;
-					case 3:
-						quaternion.w = lua_tonumber( L, -1 );
-						break;
-					default:
-						break;
-				}
-			}
-			else if ( lua_isstring( L, -2 ) ) {
-				if ( TextIsEqual( "x", lua_tostring( L, -2 ) ) ) {
-					quaternion.x = lua_tonumber( L, -1 );
-				}
-				else if ( TextIsEqual( "y", lua_tostring( L, -2 ) ) ) {
-					quaternion.y = lua_tonumber( L, -1 );
-				}
-				else if ( TextIsEqual( "z", lua_tostring( L, -2 ) ) ) {
-					quaternion.z = lua_tonumber( L, -1 );
-				}
-				else if ( TextIsEqual( "w", lua_tostring( L, -2 ) ) ) {
-					quaternion.w = lua_tonumber( L, -1 );
-				}
-			}
-		}
-		i++;
+	if ( lua_isnumber( L, -1 ) ) {
+		lua_getfield( L, index, "x" );
+		quaternion.x = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getfield( L, index, "y" );
+		quaternion.y = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getfield( L, index, "z" );
+		quaternion.z = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getfield( L, index, "w" );
+		quaternion.w = luaL_checknumber( L, -1 );
 		lua_pop( L, 1 );
 	}
+	else {
+		lua_getiCustom( L, index, 1 );
+		quaternion.x = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getiCustom( L, index, 2 );
+		quaternion.y = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getiCustom( L, index, 3 );
+		quaternion.z = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+		lua_getiCustom( L, index, 4 );
+		quaternion.w = luaL_checknumber( L, -1 );
+		lua_pop( L, 1 );
+	}
+	lua_pop( L, 1 );
+
 	return quaternion;
 }
 

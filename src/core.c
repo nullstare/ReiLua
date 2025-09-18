@@ -2142,6 +2142,7 @@ Decompress data (DEFLATE algorithm).
 */
 int lcoreDecompressData( lua_State* L ) {
 	Buffer* inBuffer = uluaGetBuffer( L, 1 );
+
 	Buffer outBuffer = {
 		.size = 0,
 		.type = inBuffer->type
@@ -2166,10 +2167,10 @@ Encode data to Base64 string
 */
 int lcoreEncodeDataBase64( lua_State* L ) {
 	int dataSize = 0;
-	const char* string = luaL_checklstring( L, 1, (size_t*)&dataSize );
+	const unsigned char* data = luaL_checklstring( L, 1, (size_t*)&dataSize );
 
 	int outputSize = 0;
-	char* compData = EncodeDataBase64( string, dataSize, &outputSize );
+	char* compData = EncodeDataBase64( data, dataSize, &outputSize );
 
 	lua_pushstring( L, compData );
 	lua_pushinteger( L, outputSize );
@@ -2187,8 +2188,10 @@ Decode Base64 string data
 - Success return string, int
 */
 int lcoreDecodeDataBase64( lua_State* L ) {
+	const unsigned char* data = luaL_checkstring( L, 1 );
+
 	int outputSize = 0;
-	unsigned char* decodedData = DecodeDataBase64( luaL_checkstring( L, 1 ), &outputSize );
+	unsigned char* decodedData = DecodeDataBase64( data, &outputSize );
 
 	lua_pushstring( L, decodedData );
 	lua_pushinteger( L, outputSize );

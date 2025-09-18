@@ -3339,11 +3339,12 @@ Transform uluaGetTransform( lua_State* L, int index ) {
 }
 
 Buffer* uluaGetBuffer( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (Buffer*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "buffer", lua_tostring( L, -2 ) ) ) {
@@ -3369,11 +3370,12 @@ Buffer* uluaGetBuffer( lua_State* L, int index ) {
 }
 
 Image* uluaGetImage( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (Image*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "image", lua_tostring( L, -2 ) ) ) {
@@ -3399,11 +3401,12 @@ Image* uluaGetImage( lua_State* L, int index ) {
 }
 
 Texture* uluaGetTexture( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (Texture*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "texture", lua_tostring( L, -2 ) ) ) {
@@ -3429,11 +3432,12 @@ Texture* uluaGetTexture( lua_State* L, int index ) {
 }
 
 RenderTexture* uluaGetRenderTexture( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (RenderTexture*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "renderTexture", lua_tostring( L, -2 ) ) ) {
@@ -3459,11 +3463,12 @@ RenderTexture* uluaGetRenderTexture( lua_State* L, int index ) {
 }
 
 Shader* uluaGetShader( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (Shader*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "shader", lua_tostring( L, -2 ) ) ) {
@@ -3489,11 +3494,12 @@ Shader* uluaGetShader( lua_State* L, int index ) {
 }
 
 Mesh* uluaGetMesh( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (Mesh*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "mesh", lua_tostring( L, -2 ) ) ) {
@@ -3519,11 +3525,12 @@ Mesh* uluaGetMesh( lua_State* L, int index ) {
 }
 
 Camera2D* uluaGetCamera2D( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (Camera2D*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "camera2D", lua_tostring( L, -2 ) ) ) {
@@ -3549,11 +3556,12 @@ Camera2D* uluaGetCamera2D( lua_State* L, int index ) {
 }
 
 Camera3D* uluaGetCamera3D( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (Camera3D*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "camera3D", lua_tostring( L, -2 ) ) ) {
@@ -3579,11 +3587,12 @@ Camera3D* uluaGetCamera3D( lua_State* L, int index ) {
 }
 
 Font* uluaGetFont( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (Font*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "font", lua_tostring( L, -2 ) ) ) {
@@ -3609,11 +3618,12 @@ Font* uluaGetFont( lua_State* L, int index ) {
 }
 
 GlyphInfo* uluaGetGlyphInfo( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (GlyphInfo*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "glyphInfo", lua_tostring( L, -2 ) ) ) {
@@ -3639,11 +3649,12 @@ GlyphInfo* uluaGetGlyphInfo( lua_State* L, int index ) {
 }
 
 Wave* uluaGetWave( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (Wave*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "wave", lua_tostring( L, -2 ) ) ) {
@@ -3669,11 +3680,12 @@ Wave* uluaGetWave( lua_State* L, int index ) {
 }
 
 Sound* uluaGetSound( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (Sound*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "sound", lua_tostring( L, -2 ) ) ) {
@@ -3699,17 +3711,18 @@ Sound* uluaGetSound( lua_State* L, int index ) {
 			return (Sound*)lua_touserdata( L, index );
 		}
 		else {
-			luaL_checkudata( L, index, "Sound" );
+			return luaL_checkudata( L, index, "Sound" );
 		}
 	}
 }
 
 Music* uluaGetMusic( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (Music*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "music", lua_tostring( L, -2 ) ) ) {
@@ -3735,11 +3748,12 @@ Music* uluaGetMusic( lua_State* L, int index ) {
 }
 
 AudioStream* uluaGetAudioStream( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (AudioStream*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "audioStream", lua_tostring( L, -2 ) ) ) {
@@ -3765,11 +3779,12 @@ AudioStream* uluaGetAudioStream( lua_State* L, int index ) {
 }
 
 Light* uluaGetLight( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (Light*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "light", lua_tostring( L, -2 ) ) ) {
@@ -3795,11 +3810,12 @@ Light* uluaGetLight( lua_State* L, int index ) {
 }
 
 Material* uluaGetMaterial( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (Material*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "material", lua_tostring( L, -2 ) ) ) {
@@ -3825,11 +3841,12 @@ Material* uluaGetMaterial( lua_State* L, int index ) {
 }
 
 Model* uluaGetModel( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (Model*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "model", lua_tostring( L, -2 ) ) ) {
@@ -3855,11 +3872,12 @@ Model* uluaGetModel( lua_State* L, int index ) {
 }
 
 ModelAnimation* uluaGetModelAnimation( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (ModelAnimation*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "modelAnimation", lua_tostring( L, -2 ) ) ) {
@@ -3885,11 +3903,12 @@ ModelAnimation* uluaGetModelAnimation( lua_State* L, int index ) {
 }
 
 rlRenderBatch* uluaGetRLRenderBatch( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (rlRenderBatch*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "rlRenderBatch", lua_tostring( L, -2 ) ) ) {
@@ -3915,11 +3934,12 @@ rlRenderBatch* uluaGetRLRenderBatch( lua_State* L, int index ) {
 }
 
 AutomationEvent* uluaGetAutomationEvent( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (AutomationEvent*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "automationEvent", lua_tostring( L, -2 ) ) ) {
@@ -3945,11 +3965,12 @@ AutomationEvent* uluaGetAutomationEvent( lua_State* L, int index ) {
 }
 
 AutomationEventList* uluaGetAutomationEventList( lua_State* L, int index ) {
+	int t = index, i = 0;
+
 	switch ( lua_type( L, index ) )	{
 	case LUA_TLIGHTUSERDATA:
 		return (AutomationEventList*)lua_touserdata( L, index );
 	case LUA_TTABLE:
-		int t = index, i = 0;
 		lua_pushnil( L );
 		while ( lua_next( L, t ) != 0 ) {
 			if ( TextIsEqual( "automationEventList", lua_tostring( L, -2 ) ) ) {

@@ -60,6 +60,8 @@ DETAILED CHANGES:
 	- ADDED: GetSoundStream and GetMusicStream.
 	- ADDED: Audio stream effects example.
 	- CHANGE: Bit fastes uluaGet* functions for vectors, color, rectangle and quaternion.
+	- FIXED: fast_tilemap and texture_atlas_repeat examples were giving truncated vectors
+	which isn't allowed anymore.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

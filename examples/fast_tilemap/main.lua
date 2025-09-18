@@ -39,7 +39,7 @@ local function setTile( meshData, pos, texcoord )
 	local texelSize = Vector2:new( 1 / tilemap.texSize.x, 1 / tilemap.texSize.y )
 
 	for i, v in ipairs( QUAD.VERTICES ) do
-		table.insert( meshData.vertices, ( pos + v ):scale( tilemap.tileSize ) )
+		table.insert( meshData.vertices, ( Vector3:temp( pos.x + v.x, pos.y + v.y, 0 ) ):scale( tilemap.tileSize ) )
 		table.insert( meshData.texcoords, ( QUAD.TEXCOORDS[i] + texcoord ) * texelSize:scale( tilemap.tileSize ) )
 		table.insert( meshData.colors, RL.WHITE )
 	end

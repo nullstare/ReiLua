@@ -28,8 +28,8 @@ function RL.draw()
 	RL.ClearBackground( RL.RAYWHITE )
 
 	RL.BeginShaderMode( shader )
-		RL.DrawTexturePro( atlas, { 0, 0, 32, 32 }, { 0, 0, 64, 64 }, { 0.0 }, 0.0, RL.WHITE )
-		RL.DrawTexturePro( atlas, { 32, 0, 32, 32 }, { 0, 64, 128, 64 }, { 0.0 }, 0.0, RL.WHITE )
+		RL.DrawTexturePro( atlas, { 0, 0, 32, 32 }, { 0, 0, 64, 64 }, { 0.0, 0.0 }, 0.0, RL.WHITE )
+		RL.DrawTexturePro( atlas, { 32, 0, 32, 32 }, { 0, 64, 128, 64 }, { 0.0, 0.0 }, 0.0, RL.WHITE )
 		RL.DrawTriangle( { 32, 200 }, { 128, 400 }, { 320, 240 }, RL.WHITE )
 	RL.EndShaderMode()
 end

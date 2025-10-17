@@ -62,6 +62,8 @@ DETAILED CHANGES:
 	- CHANGE: Bit fastes uluaGet* functions for vectors, color, rectangle and quaternion.
 	- FIXED: fast_tilemap and texture_atlas_repeat examples were giving truncated vectors
 	which isn't allowed anymore.
+	- CHANGE: Set LuaJIT to default build option.
+	- FIXED: SetMusicPan was setting pitch.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

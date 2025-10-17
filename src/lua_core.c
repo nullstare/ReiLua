@@ -675,6 +675,9 @@ static void defineGlobals() {
 	assignGlobalInt( SHADER_LOC_MAP_IRRADIANCE, "SHADER_LOC_MAP_IRRADIANCE" ); // Shader location: samplerCube texture: irradiance
 	assignGlobalInt( SHADER_LOC_MAP_PREFILTER, "SHADER_LOC_MAP_PREFILTER" ); // Shader location: samplerCube texture: prefilter
 	assignGlobalInt( SHADER_LOC_MAP_BRDF, "SHADER_LOC_MAP_BRDF" ); // Shader location: sampler2d texture: brdf
+	assignGlobalInt( SHADER_LOC_VERTEX_BONEIDS, "SHADER_LOC_VERTEX_BONEIDS" ); // Shader location: vertex attribute: boneIds
+	assignGlobalInt( SHADER_LOC_VERTEX_BONEWEIGHTS, "SHADER_LOC_VERTEX_BONEWEIGHTS" ); // Shader location: vertex attribute: boneWeights
+	assignGlobalInt( SHADER_LOC_BONE_MATRICES, "SHADER_LOC_BONE_MATRICES" ); // Shader location: array of matrices uniform: boneMatrices
 	assignGlobalInt( SHADER_LOC_MAP_DIFFUSE, "SHADER_LOC_MAP_DIFFUSE" ); // Shader location: sampler2d texture: diffuce (same as: SHADER_LOC_MAP_ALBEDO)
 	assignGlobalInt( SHADER_LOC_MAP_SPECULAR, "SHADER_LOC_MAP_SPECULAR" ); // Shader location: sampler2d texture: specular (same as: SHADER_LOC_MAP_METALNESS)
 	/* Shader uniform data type */
@@ -1206,6 +1209,20 @@ static void defineGlobals() {
 	assignGlobalInt( RL_BLEND_DST_ALPHA, "RL_BLEND_DST_ALPHA" ); // GL_BLEND_DST_ALPHA
 	assignGlobalInt( RL_BLEND_SRC_ALPHA, "RL_BLEND_SRC_ALPHA" ); // GL_BLEND_SRC_ALPHA
 	assignGlobalInt( RL_BLEND_COLOR, "RL_BLEND_COLOR" ); // GL_BLEND_COLOR
+	assignGlobalInt( RL_READ_FRAMEBUFFER, "RL_READ_FRAMEBUFFER" ); // GL_READ_FRAMEBUFFER
+	assignGlobalInt( RL_DRAW_FRAMEBUFFER, "RL_DRAW_FRAMEBUFFER" ); // GL_DRAW_FRAMEBUFFER
+	/* RLGL Default shader vertex attribute locations */
+	assignGlobalInt( RL_DEFAULT_SHADER_ATTRIB_LOCATION_POSITION, "RL_DEFAULT_SHADER_ATTRIB_LOCATION_POSITION" );
+	assignGlobalInt( RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD, "RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD" );
+	assignGlobalInt( RL_DEFAULT_SHADER_ATTRIB_LOCATION_NORMAL, "RL_DEFAULT_SHADER_ATTRIB_LOCATION_NORMAL" );
+	assignGlobalInt( RL_DEFAULT_SHADER_ATTRIB_LOCATION_COLOR, "RL_DEFAULT_SHADER_ATTRIB_LOCATION_COLOR" );
+	assignGlobalInt( RL_DEFAULT_SHADER_ATTRIB_LOCATION_TANGENT, "RL_DEFAULT_SHADER_ATTRIB_LOCATION_TANGENT" );
+	assignGlobalInt( RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD2, "RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD2" );
+	assignGlobalInt( RL_DEFAULT_SHADER_ATTRIB_LOCATION_INDICES, "RL_DEFAULT_SHADER_ATTRIB_LOCATION_INDICES" );
+#ifdef RL_SUPPORT_MESH_GPU_SKINNING
+	assignGlobalInt( RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEIDS, "RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEIDS" );
+	assignGlobalInt( RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEWEIGHTS, "RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEWEIGHTS" );
+#endif
 	/* RLGL GlVersion */
 	assignGlobalInt( RL_OPENGL_11, "RL_OPENGL_11" ); // OpenGL 1.1
 	assignGlobalInt( RL_OPENGL_21, "RL_OPENGL_21" ); // OpenGL 2.1 (GLSL 120)

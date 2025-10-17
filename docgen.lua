@@ -316,7 +316,7 @@ for _, src in ipairs( sourceFiles ) do
 				local gategorySplit = split( line, "*" )
 				apiFile:write( "\n## Defines - "..gategorySplit[2]:sub( 2, #gategorySplit[2] - 1 ).."\n" )
 				luaApiFile:write( "\n-- Defines - "..gategorySplit[2]:sub( 2, #gategorySplit[2] - 1 ).."\n\n" )
-			else
+			elseif lineSplit[1] ~= "#ifdef" and lineSplit[1] ~= "#endif" then
 				-- Remove comma from the end.
 				local defineName = lineSplit[2]:sub( 1, -2 )
 				local value = RL[ defineName ]

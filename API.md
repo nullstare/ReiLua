@@ -1616,6 +1616,24 @@ Shader location: sampler2d texture: brdf
 
 ---
 
+> SHADER_LOC_VERTEX_BONEIDS = 26
+
+Shader location: vertex attribute: boneIds
+
+---
+
+> SHADER_LOC_VERTEX_BONEWEIGHTS = 27
+
+Shader location: vertex attribute: boneWeights
+
+---
+
+> SHADER_LOC_BONE_MATRICES = 28
+
+Shader location: array of matrices uniform: boneMatrices
+
+---
+
 > SHADER_LOC_MAP_DIFFUSE = 15
 
 Shader location: sampler2d texture: diffuce (same as: SHADER_LOC_MAP_ALBEDO)
@@ -4085,6 +4103,58 @@ GL_BLEND_SRC_ALPHA
 > RL_BLEND_COLOR = 32773
 
 GL_BLEND_COLOR
+
+---
+
+> RL_READ_FRAMEBUFFER = 36008
+
+GL_READ_FRAMEBUFFER
+
+---
+
+> RL_DRAW_FRAMEBUFFER = 36009
+
+GL_DRAW_FRAMEBUFFER
+
+---
+
+
+## Defines - RLGL Default shader vertex attribute locations
+> RL_DEFAULT_SHADER_ATTRIB_LOCATION_POSITION = 0
+
+---
+
+> RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD = 1
+
+---
+
+> RL_DEFAULT_SHADER_ATTRIB_LOCATION_NORMAL = 2
+
+---
+
+> RL_DEFAULT_SHADER_ATTRIB_LOCATION_COLOR = 3
+
+---
+
+> RL_DEFAULT_SHADER_ATTRIB_LOCATION_TANGENT = 4
+
+---
+
+> RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD2 = 5
+
+---
+
+> RL_DEFAULT_SHADER_ATTRIB_LOCATION_INDICES = 6
+
+---
+
+
+RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEIDS = nil
+
+---
+
+
+RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEWEIGHTS = nil
 
 ---
 

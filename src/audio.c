@@ -668,7 +668,7 @@ int laudioSetMusicPan( lua_State* L ) {
 	Music* music = uluaGetMusic( L, 1 );
 	float pan = luaL_checknumber( L, 2 );
 
-	SetMusicPitch( *music, pan );
+	SetMusicPan( *music, pan );
 
 	return 0;
 }

@@ -11,7 +11,7 @@ project( ReiLua )
 set( CMAKE_C_STANDARD 99 ) # Requires C99 standard
 
 option( SHARED "Build using dynamic libraries." off )
-option( LUAJIT "Use LuaJIT." off )
+option( LUAJIT "Use LuaJIT." on )
 option( LUA_EVENTS "Enable Lua event callbacks (RL.event)." off )
 option( DYNAMIC_SYMBOLS "Expose all dynamic symbols with rdynamic." off )
 option( EXPOSE_API_SYMBOLS "Expose dynamic symbols only for get and push functions of variable types." off )

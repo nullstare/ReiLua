@@ -4674,6 +4674,28 @@ function RL.GetFontGlyphPadding( font ) end
 ---@return any texture 
 function RL.GetFontTexture( font ) end
 
+---Set font texture. Note that UnloadFont also unloads texture
+---@param font any
+---@param texture any
+---@return any RL.SetFontTexture
+function  RL.SetFontTexture( font, texture ) end
+
+---Set font glypth atlas rectangle
+---- Failure return nil
+---@param font any
+---@param index integer
+---@param rec table
+---@return any RL.SetGlyphAtlasRec
+function  RL.SetGlyphAtlasRec( font, index, rec ) end
+
+---Set font glypth
+---- Failure return nil
+---@param font any
+---@param index integer
+---@param glyph any
+---@return any RL.SetFontGlyph
+function  RL.SetFontGlyph( font, index, glyph ) end
+
 -- Text - GlyphInfo management functions
 
 ---Load GlyphInfo from data

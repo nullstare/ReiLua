@@ -37,6 +37,9 @@ int ltextGetFontBaseSize( lua_State* L );
 int ltextGetFontGlyphCount( lua_State* L );
 int ltextGetFontGlyphPadding( lua_State* L );
 int ltextGetFontTexture( lua_State* L );
+int ltextSetFontTexture( lua_State* L );
+int ltextSetGlyphAtlasRec( lua_State* L );
+int ltextSetFontGlyph( lua_State* L );
 /* GlyphInfo management functions. */
 int ltextLoadGlyphInfo( lua_State* L );
 int ltextUnloadGlyphInfo( lua_State* L );

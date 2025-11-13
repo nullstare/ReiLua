@@ -149,9 +149,34 @@ renderTextureData = {
 
 ---
 
+> GlyphInfo = Userdata
+
+GlyphInfo, font characters glyphs info
+```
+glyphInfoData = {
+	value = int,		--Character value (Unicode)
+	offsetX = int,		--Character offset X when drawing
+	offsetY = int,		--Character offset Y when drawing
+	advanceX = int,		--Character advance position X
+	image = Image,		--Character image data
+}
+```
+
+---
+
 > Font = Userdata
 
 Font, font texture and GlyphInfo array data
+```
+fontData = {
+	baseSize = int,			--Base size (default chars height)
+	glyphCount = int,		--Number of glyph characters
+	glyphPadding = int,		--Padding around the glyph characters
+	texture = Texture,		--Texture atlas containing the glyphs
+	recs = Rectangle{},		--Rectangles in texture for the glyphs
+	glyphs = GlyphInfo{},	--Glyphs info data
+}
+```
 
 ---
 
@@ -170,7 +195,6 @@ Camera, defines position/orientation in 3d space
 > Mesh = Userdata
 
 Mesh, vertex data and vao/vbo
-
 ```
 meshData = {
 	vertices = Vector3{},		--Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
@@ -188,7 +212,6 @@ meshData = {
 > Material = Userdata
 
 Material, includes shader and maps
-
 ```
 materialData = {
 	shader = Shader,
@@ -230,22 +253,6 @@ RayCollision, ray hit information
 > BoundingBox = { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } } or { min = { 0.0, 0.0, 0.0 }, max = { 1.0, 1.0, 1.0 } }
 
 BoundingBox
-
----
-
-> GlyphInfo = Userdata
-
-GlyphInfo, font characters glyphs info
-
-```
-glyphInfoData = {
-	value = int,		--Character value (Unicode)
-	offsetX = int,		--Character offset X when drawing
-	offsetY = int,		--Character offset Y when drawing
-	advanceX = int,		--Character advance position X
-	image = Image,		--Character image data
-}
-```
 
 ---
 
@@ -8235,6 +8242,28 @@ Get font padding around the glyph characters
 Get font texture atlas containing the glyphs. Return as lightuserdata
 
 - Success return Texture
+
+---
+
+> RL.SetFontTexture( Font font, Texture texture )
+
+Set font texture. Note that UnloadFont also unloads texture
+
+---
+
+> RL.SetGlyphAtlasRec( Font font, int index, Rectangle rec )
+
+Set font glypth atlas rectangle
+
+- Failure return nil
+
+---
+
+> RL.SetFontGlyph( Font font, int index, GlyphInfo glyph )
+
+Set font glypth
+
+- Failure return nil
 
 ---
 

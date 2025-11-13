@@ -158,6 +158,11 @@ static inline void getCodepoints( lua_State* L, int codepoints[], int index ) {
 	}
 }
 
+static inline void traceLogGlypthOutOfBounds( lua_State* L, int index ) {
+	TraceLog( state->logLevelInvalid, "Glyph index %d out of bounds", index );
+	lua_pushnil( L );
+}
+
 /*
 ## Text - Font loading/unloading functions
 */
@@ -761,8 +766,7 @@ int ltextGetGlyphInfoByIndex( lua_State* L ) {
 		lua_pushlightuserdata( L, &font->glyphs[ index ] );
 	}
 	else {
-		TraceLog( state->logLevelInvalid, "Glyph index %d out of bounds", index );
-		lua_pushnil( L );
+		traceLogGlypthOutOfBounds( L, index );
 	}
 
 	return 1;
@@ -800,8 +804,7 @@ int ltextGetGlyphAtlasRecByIndex( lua_State* L ) {
 		uluaPushRectangle( L, font->recs[ index ] );
 	}
 	else {
-		TraceLog( state->logLevelInvalid, "Glyph index %d out of bounds", index );
-		lua_pushnil( L );
+		traceLogGlypthOutOfBounds( L, index );
 	}
 
 	return 1;
@@ -863,6 +866,64 @@ int ltextGetFontTexture( lua_State* L ) {
 	Font* font = uluaGetFont( L, 1 );
 
 	lua_pushlightuserdata( L, &font->texture );
+
+	return 1;
+}
+
+/*
+> RL.SetFontTexture( Font font, Texture texture )
+
+Set font texture. Note that UnloadFont also unloads texture
+*/
+int ltextSetFontTexture( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
+	Texture* texture = uluaGetTexture( L, 2 );
+
+	font->texture = *texture;
+
+	return 1;
+}
+
+/*
+> RL.SetGlyphAtlasRec( Font font, int index, Rectangle rec )
+
+Set font glypth atlas rectangle
+
+- Failure return nil
+*/
+int ltextSetGlyphAtlasRec( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
+	int index = luaL_checkinteger( L, 2 );
+	Rectangle rec = uluaGetRectangle( L, 3 );
+
+	if ( 0 <= index && index < font->glyphCount ) {
+		font->recs[ index ] = rec;
+	}
+	else {
+		traceLogGlypthOutOfBounds( L, index );
+	}
+
+	return 1;
+}
+
+/*
+> RL.SetFontGlyph( Font font, int index, GlyphInfo glyph )
+
+Set font glypth
+
+- Failure return nil
+*/
+int ltextSetFontGlyph( lua_State* L ) {
+	Font* font = uluaGetFont( L, 1 );
+	int index = luaL_checkinteger( L, 2 );
+	GlyphInfo* glyph = uluaGetGlyphInfo( L, 3 );
+
+	if ( 0 <= index && index < font->glyphCount ) {
+		font->glyphs[ index ] = *glyph;
+	}
+	else {
+		traceLogGlypthOutOfBounds( L, index );
+	}
 
 	return 1;
 }

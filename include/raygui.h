@@ -2091,7 +2091,7 @@ int GuiToggle(Rectangle bounds, const char *text, bool *active)
 int GuiToggleGroup(Rectangle bounds, const char *text, int *active)
 {
     #if !defined(RAYGUI_TOGGLEGROUP_MAX_ITEMS)
-        #define RAYGUI_TOGGLEGROUP_MAX_ITEMS    32
+        #define RAYGUI_TOGGLEGROUP_MAX_ITEMS    512
     #endif
 
     int result = 0;

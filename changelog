@@ -64,6 +64,8 @@ DETAILED CHANGES:
 	which isn't allowed anymore.
 	- CHANGE: Set LuaJIT to default build option.
 	- FIXED: SetMusicPan was setting pitch.
+	- ADDED: SetFontTexture, SetGlyphAtlasRec and SetFontGlyph.
+	- ADDED: Custom font atlas example.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

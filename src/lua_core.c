@@ -2280,6 +2280,9 @@ void luaRegister() {
 	assingGlobalFunction( "GetFontGlyphCount", ltextGetFontGlyphCount );
 	assingGlobalFunction( "GetFontGlyphPadding", ltextGetFontGlyphPadding );
 	assingGlobalFunction( "GetFontTexture", ltextGetFontTexture );
+	assingGlobalFunction( "SetFontTexture", ltextSetFontTexture );
+	assingGlobalFunction( "SetGlyphAtlasRec", ltextSetGlyphAtlasRec );
+	assingGlobalFunction( "SetFontGlyph", ltextSetFontGlyph );
 		/* GlyphInfo management functions. */
 	assingGlobalFunction( "LoadGlyphInfo", ltextLoadGlyphInfo );
 	assingGlobalFunction( "UnloadGlyphInfo", ltextUnloadGlyphInfo );

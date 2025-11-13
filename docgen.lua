@@ -199,14 +199,35 @@ renderTextureData = {\
 	depth = Texture,		--Depth buffer attachment texture\
 }\
 ```\n\n---\n" )
+apiFile:write( "\n> GlyphInfo = Userdata\n\
+GlyphInfo, font characters glyphs info\
+```\
+glyphInfoData = {\
+	value = int,		--Character value (Unicode)\
+	offsetX = int,		--Character offset X when drawing\
+	offsetY = int,		--Character offset Y when drawing\
+	advanceX = int,		--Character advance position X\
+	image = Image,		--Character image data\
+}\
+```\n\n---\n" )
 apiFile:write( "\n> Font = Userdata\n\
-Font, font texture and GlyphInfo array data\n\n---\n" )
+Font, font texture and GlyphInfo array data\
+```\
+fontData = {\
+	baseSize = int,			--Base size (default chars height)\
+	glyphCount = int,		--Number of glyph characters\
+	glyphPadding = int,		--Padding around the glyph characters\
+	texture = Texture,		--Texture atlas containing the glyphs\
+	recs = Rectangle{},		--Rectangles in texture for the glyphs\
+	glyphs = GlyphInfo{},	--Glyphs info data\
+}\
+```\n\n---\n" )
 apiFile:write( "\n> Camera2D = Userdata\n\
 Camera2D, defines position/orientation in 2d space\n\n---\n" )
 apiFile:write( "\n> Camera3D = Userdata\n\
 Camera, defines position/orientation in 3d space\n\n---\n" )
 apiFile:write( "\n> Mesh = Userdata\n\
-Mesh, vertex data and vao/vbo\n\
+Mesh, vertex data and vao/vbo\
 ```\
 meshData = {\
 	vertices = Vector3{},		--Vertex position (XYZ - 3 components per vertex) (shader-location = 0)\
@@ -219,7 +240,7 @@ meshData = {\
 }\
 ```\n\n---\n" )
 apiFile:write( "\n> Material = Userdata\n\
-Material, includes shader and maps\n\
+Material, includes shader and maps\
 ```\
 materialData = {\
 	shader = Shader,\
@@ -245,17 +266,6 @@ apiFile:write( "\n> RayCollision = { hit = true, distance = 1.0, point = { 0.0, 
 RayCollision, ray hit information\n\n---\n" )
 apiFile:write( "\n> BoundingBox = { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } } or { min = { 0.0, 0.0, 0.0 }, max = { 1.0, 1.0, 1.0 } }\n\
 BoundingBox\n\n---\n" )
-apiFile:write( "\n> GlyphInfo = Userdata\n\
-GlyphInfo, font characters glyphs info\n\
-```\
-glyphInfoData = {\
-	value = int,		--Character value (Unicode)\
-	offsetX = int,		--Character offset X when drawing\
-	offsetY = int,		--Character offset Y when drawing\
-	advanceX = int,		--Character advance position X\
-	image = Image,		--Character image data\
-}\
-```\n\n---\n" )
 apiFile:write( "\n> BoneInfo = { name = string[32], parent = int }\n\
 Bone, skeletal animation bone\n\n---\n" )
 apiFile:write( "\n> Transform = { translation = Vector3, rotation = Quaternion, scale = Vector3 }\n\

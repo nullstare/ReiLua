@@ -34,8 +34,6 @@ function RL.init()
 
 	local pathPrefix = RL.GetBasePath().."../resources/images/"
 	local fontPath = pathPrefix.."font.png"
-	-- local glyphImages = {}
-	-- local glyphRects = {}
 	local images = {}
 	local rects = {}
 	local glyphIds = {}
@@ -47,8 +45,6 @@ function RL.init()
 	-- Font glyphs.
 	for i = 0, RL.GetFontGlyphCount( font ) - 1 do
 		local glyph = RL.GetGlyphInfoByIndex( font, i )
-		-- table.insert( glyphImages, RL.GetGlyphInfoImage( glyph ) )
-		-- table.insert( glyphRects, RL.GetGlyphAtlasRecByIndex( font, i ) )
 		table.insert( images, RL.GetGlyphInfoImage( glyph ) )
 		table.insert( rects, RL.GetGlyphAtlasRecByIndex( font, i ) )
 		table.insert( glyphIds, { glyphId = i, rectId = #rects } )
@@ -95,9 +91,8 @@ function RL.init()
 
 	-- Set other texture rects.
 
-	for name, data in pairs( atlasTextures ) do
+	for _, data in pairs( atlasTextures ) do
 		data.rect = atlas.rects[ data.rectId ]
-		-- print( name, Rectangle:tempT( data.rect ) )
 	end
 end
 

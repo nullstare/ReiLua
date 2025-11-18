@@ -59,7 +59,6 @@ int lmodelsDrawBillboard( lua_State* L );
 int lmodelsDrawBillboardRec( lua_State* L );
 int lmodelsDrawBillboardPro( lua_State* L );
 /* Mesh management functions. */
-int lmodelsLoadMeshesFromFile( lua_State* L );
 int lmodelsUpdateMesh( lua_State* L );
 int lmodelsUnloadMesh( lua_State* L );
 int lmodelsDrawMesh( lua_State* L );

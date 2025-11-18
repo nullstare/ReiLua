@@ -8841,15 +8841,6 @@ Draw a billboard texture defined by source and rotation
 
 ---
 
-> meshes = RL.LoadMeshesFromFile( string fileName )
-
-Load meshes from file
-
-- Failure return nil
-- Success return Mesh{}
-
----
-
 > RL.UpdateMesh( Mesh mesh, Mesh{} meshData )
 
 Update mesh vertex data in GPU.

@@ -2178,7 +2178,6 @@ void luaRegister() {
 	assingGlobalFunction( "DrawBillboardRec", lmodelsDrawBillboardRec );
 	assingGlobalFunction( "DrawBillboardPro", lmodelsDrawBillboardPro );
 		/* Mesh management functions. */
-	assingGlobalFunction( "LoadMeshesFromFile", lmodelsLoadMeshesFromFile );
 	assingGlobalFunction( "UpdateMesh", lmodelsUpdateMesh );
 	assingGlobalFunction( "UnloadMesh", lmodelsUnloadMesh );
 	assingGlobalFunction( "DrawMesh", lmodelsDrawMesh );

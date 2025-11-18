@@ -5286,13 +5286,6 @@ function  RL.DrawBillboardPro( camera, texture, source, position, up, size, orig
 
 -- Models - Mesh management functions
 
----Load meshes from file
----- Failure return nil
----- Success return Mesh{}
----@param fileName string
----@return any meshes 
-function RL.LoadMeshesFromFile( fileName ) end
-
 ---Update mesh vertex data in GPU.
 ---NOTE: Mainly intented to be used with custom meshes.
 ---@param mesh any

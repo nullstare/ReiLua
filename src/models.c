@@ -10,6 +10,13 @@ void unloadMaterial( Material* material ) {
 	free( material->maps );
 }
 
+void unloadModel( Model* model ) {
+	free( model->bones );
+	free( model->bindPose );
+
+	TRACELOG( LOG_INFO, "MODEL: Unloaded model bones and bindPose from RAM" );
+}
+
 /*
 ## Models - Basic geometric 3D shapes drawing functions
 */
@@ -478,6 +485,9 @@ int lmodelsLoadModel( lua_State* L ) {
 > model = RL.LoadModelFromMesh( Mesh mesh )
 
 Load model from generated mesh (Default material)
+WARNING: A shallow copy of mesh is generated, passed by value,
+as long as struct contains pointers to data and some values, we get a copy
+of mesh pointing to same data as original version... be careful!
 
 - Success return Model
 */
@@ -485,6 +495,48 @@ int lmodelsLoadModelFromMesh( lua_State* L ) {
 	Mesh* mesh = uluaGetMesh( L, 1 );
 
 	uluaPushModel( L, LoadModelFromMesh( *mesh ) );
+
+	return 1;
+}
+
+/*
+> model = RL.LoadModelFromMeshes( Mesh{} mesh )
+
+Load model from meshes (Default material)
+WARNING: A shallow copy of mesh is generated, passed by value,
+as long as struct contains pointers to data and some values, we get a copy
+of mesh pointing to same data as original version... be careful!
+
+- Success return Model
+*/
+int lmodelsLoadModelFromMeshes( lua_State* L ) {
+	luaL_checktype( L, 1, LUA_TTABLE );
+	
+	Model model = { 0 };
+
+	model.transform = MatrixIdentity();
+
+	model.meshCount = uluaGetTableLen( L, lua_gettop( L ) );
+	model.meshes = (Mesh*)RL_CALLOC( model.meshCount, sizeof( Mesh ) );
+
+	model.materialCount = model.meshCount;
+	model.materials = (Material*)RL_CALLOC( model.materialCount, sizeof( Material ) );
+
+	model.meshMaterial = (int*)RL_CALLOC( model.meshCount, sizeof( int ) );
+
+	int t = 1, i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		model.meshes[i] = *uluaGetMesh( L, lua_gettop( L ) );
+		model.materials[i] = LoadMaterialDefault();
+		model.meshMaterial[i] = i;  // Material index
+
+		i++;
+		lua_pop( L, 1 );
+	}
+
+	uluaPushModel( L, model );
 
 	return 1;
 }
@@ -505,14 +557,16 @@ int lmodelsIsModelValid( lua_State* L ) {
 }
 
 /*
-> RL.UnloadModel( Model model )
+> RL.UnloadModel( Model model, bool freeAll )
 
-Unload model (meshes/materials) from memory (RAM and/or VRAM)
+Unload model (meshes/materials) from memory (RAM and/or VRAM).
+Use freeAll to unload meshes and materials
 */
 int lmodelsUnloadModel( lua_State* L ) {
 	Model* model = uluaGetModel( L, 1 );
+	bool freeAll = uluaGetBoolean( L, 2 );
 
-	uluaUnloadModel( model );
+	uluaUnloadModel( model, freeAll );
 
 	return 0;
 }
@@ -990,6 +1044,71 @@ int lmodelsDrawBillboardPro( lua_State* L ) {
 /*
 ## Models - Mesh management functions
 */
+
+/*
+> meshes = RL.LoadMeshesFromFile( string fileName )
+
+Load meshes from file
+
+- Failure return nil
+- Success return Mesh{}
+*/
+int lmodelsLoadMeshesFromFile( lua_State* L ) {
+	const char* fileName = luaL_checkstring( L, 1 );
+
+	if ( FileExists( fileName ) ) {
+		Model model = { 0 };
+
+		#if defined(SUPPORT_FILEFORMAT_OBJ)
+			if ( IsFileExtension( fileName, ".obj" ) ) {
+				model = LoadOBJ( fileName );
+			}
+		#endif
+		#if defined(SUPPORT_FILEFORMAT_IQM)
+			if ( IsFileExtension( fileName, ".iqm" ) ) {
+				model = LoadIQM( fileName );
+			}
+		#endif
+		#if defined(SUPPORT_FILEFORMAT_GLTF)
+			if ( IsFileExtension( fileName, ".gltf" ) || IsFileExtension( fileName, ".glb" ) ) {
+				model = LoadGLTF( fileName );
+			}
+		#endif
+		#if defined(SUPPORT_FILEFORMAT_VOX)
+			if ( IsFileExtension( fileName, ".vox" ) ) {
+				model = LoadVOX( fileName );
+			}
+		#endif
+		#if defined(SUPPORT_FILEFORMAT_M3D)
+			if ( IsFileExtension( fileName, ".m3d" ) ) {
+				model = LoadM3D( fileName );
+			}
+		#endif
+
+		if ( ( model.meshCount != 0 ) && ( model.meshes != NULL ) ) {
+			// Upload vertex data to GPU (static meshes)
+			lua_createtable( L, model.meshCount, 0 );
+
+			for ( int i = 0; i < model.meshCount; i++) {
+				UploadMesh( &model.meshes[i], false );
+
+				uluaPushMesh( L, model.meshes[i] );
+				lua_rawseti( L, -2, i + 1 );
+			}
+		}
+		else {
+			TRACELOG( LOG_WARNING, "MESH: [%s] Failed to load model mesh(es) data", fileName );
+		}
+
+		// uluaPushModel( L, LoadModel( lua_tostring( L, 1 ) ) );
+
+		return 1;
+	}
+	TraceLog( state->logLevelInvalid, "Invalid file '%s'", lua_tostring( L, 1 ) );
+	lua_pushnil( L );
+
+	return 1;
+}
 
 /*
 > RL.UpdateMesh( Mesh mesh, Mesh{} meshData )

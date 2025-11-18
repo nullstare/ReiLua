@@ -5049,10 +5049,22 @@ function  RL.DrawGridEx( slices, spacing, transform, color, divider, dividerColo
 function RL.LoadModel( fileName ) end
 
 ---Load model from generated mesh (Default material)
+---WARNING: A shallow copy of mesh is generated, passed by value,
+---as long as struct contains pointers to data and some values, we get a copy
+---of mesh pointing to same data as original version... be careful!
 ---- Success return Model
 ---@param mesh any
 ---@return any model 
 function RL.LoadModelFromMesh( mesh ) end
+
+---Load model from meshes (Default material)
+---WARNING: A shallow copy of mesh is generated, passed by value,
+---as long as struct contains pointers to data and some values, we get a copy
+---of mesh pointing to same data as original version... be careful!
+---- Success return Model
+---@param mesh table
+---@return any model 
+function RL.LoadModelFromMeshes( mesh ) end
 
 ---Check if a model is valid (loaded in GPU, VAO/VBOs)
 ---- Success return bool
@@ -5060,10 +5072,12 @@ function RL.LoadModelFromMesh( mesh ) end
 ---@return any isValid 
 function RL.IsModelValid( model ) end
 
----Unload model (meshes/materials) from memory (RAM and/or VRAM)
+---Unload model (meshes/materials) from memory (RAM and/or VRAM).
+---Use freeAll to unload meshes and materials
 ---@param model any
+---@param freeAll boolean
 ---@return any RL.UnloadModel
-function  RL.UnloadModel( model ) end
+function  RL.UnloadModel( model, freeAll ) end
 
 ---Compute model bounding box limits (considers all meshes)
 ---- Success return BoundingBox
@@ -5271,6 +5285,13 @@ function  RL.DrawBillboardRec( camera, texture, source, position, size, tint ) e
 function  RL.DrawBillboardPro( camera, texture, source, position, up, size, origin, rotation, tint ) end
 
 -- Models - Mesh management functions
+
+---Load meshes from file
+---- Failure return nil
+---- Success return Mesh{}
+---@param fileName string
+---@return any meshes 
+function RL.LoadMeshesFromFile( fileName ) end
 
 ---Update mesh vertex data in GPU.
 ---NOTE: Mainly intented to be used with custom meshes.

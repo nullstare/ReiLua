@@ -330,7 +330,7 @@ static void defineMesh() {
 static int gcModel( lua_State* L ) {
 	if ( state->gcUnload ) {
 		Model* model = luaL_checkudata( L, 1, "Model" );
-		uluaUnloadModel( model );
+		uluaUnloadModel( model, true );
 	}
 	return 0;
 }
@@ -2148,6 +2148,7 @@ void luaRegister() {
 		/* Model management functions. */
 	assingGlobalFunction( "LoadModel", lmodelsLoadModel );
 	assingGlobalFunction( "LoadModelFromMesh", lmodelsLoadModelFromMesh );
+	assingGlobalFunction( "LoadModelFromMeshes", lmodelsLoadModelFromMeshes );
 	assingGlobalFunction( "IsModelValid", lmodelsIsModelValid );
 	assingGlobalFunction( "UnloadModel", lmodelsUnloadModel );
 	assingGlobalFunction( "GetModelBoundingBox", lmodelsGetModelBoundingBox );
@@ -2177,6 +2178,7 @@ void luaRegister() {
 	assingGlobalFunction( "DrawBillboardRec", lmodelsDrawBillboardRec );
 	assingGlobalFunction( "DrawBillboardPro", lmodelsDrawBillboardPro );
 		/* Mesh management functions. */
+	assingGlobalFunction( "LoadMeshesFromFile", lmodelsLoadMeshesFromFile );
 	assingGlobalFunction( "UpdateMesh", lmodelsUpdateMesh );
 	assingGlobalFunction( "UnloadMesh", lmodelsUnloadMesh );
 	assingGlobalFunction( "DrawMesh", lmodelsDrawMesh );
@@ -4462,9 +4464,15 @@ void uluaUnloadMesh( Mesh* mesh ) {
 	memset( mesh, 0, sizeof( Mesh ) );
 }
 
-void uluaUnloadModel( Model* model ) {
+void uluaUnloadModel( Model* model, bool freeAll ) {
 	luaCallUnload( "Model", model );
-	UnloadModel( *model );
+	if ( freeAll ) {
+		UnloadModel( *model );
+	}
+	/* Custom UnloadModel if we don't want to free Meshes or Materials. */
+	else {
+		unloadModel( model );
+	}
 	memset( model, 0, sizeof( Model ) );
 }
 

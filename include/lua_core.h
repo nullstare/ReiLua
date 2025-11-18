@@ -148,7 +148,7 @@ void uluaUnloadMusic( Music* music );
 void uluaUnloadAudioStream( AudioStream* stream );
 void uluaUnloadMaterial( Material* material, bool freeAll );
 void uluaUnloadMesh( Mesh* mesh );
-void uluaUnloadModel( Model* model );
+void uluaUnloadModel( Model* model, bool freeAll );
 void uluaUnloadModelAnimation( ModelAnimation* modelAnimation );
 void uluaUnloadRLRenderBatch( rlRenderBatch* renderBatch );
 void uluaUnloadAutomationEventList( AutomationEventList* eventList );

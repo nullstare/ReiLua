@@ -66,6 +66,9 @@ DETAILED CHANGES:
 	- FIXED: SetMusicPan was setting pitch.
 	- ADDED: SetFontTexture, SetGlyphAtlasRec and SetFontGlyph.
 	- ADDED: Custom font atlas example.
+	- ADDED: LoadMeshesFromFile.
+	- ADDED: LoadModelFromMeshes.
+	- CHANGE: UnloadModel takes freeAll bool as option to unload meshes and materials.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

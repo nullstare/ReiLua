@@ -8615,6 +8615,20 @@ Load model from files (Meshes and materials)
 > model = RL.LoadModelFromMesh( Mesh mesh )
 
 Load model from generated mesh (Default material)
+WARNING: A shallow copy of mesh is generated, passed by value,
+as long as struct contains pointers to data and some values, we get a copy
+of mesh pointing to same data as original version... be careful!
+
+- Success return Model
+
+---
+
+> model = RL.LoadModelFromMeshes( Mesh{} mesh )
+
+Load model from meshes (Default material)
+WARNING: A shallow copy of mesh is generated, passed by value,
+as long as struct contains pointers to data and some values, we get a copy
+of mesh pointing to same data as original version... be careful!
 
 - Success return Model
 
@@ -8628,9 +8642,10 @@ Check if a model is valid (loaded in GPU, VAO/VBOs)
 
 ---
 
-> RL.UnloadModel( Model model )
+> RL.UnloadModel( Model model, bool freeAll )
 
-Unload model (meshes/materials) from memory (RAM and/or VRAM)
+Unload model (meshes/materials) from memory (RAM and/or VRAM).
+Use freeAll to unload meshes and materials
 
 ---
 
@@ -8823,6 +8838,15 @@ Draw a billboard texture defined by source and rotation
 ---
 
 ## Models - Mesh management functions
+
+---
+
+> meshes = RL.LoadMeshesFromFile( string fileName )
+
+Load meshes from file
+
+- Failure return nil
+- Success return Mesh{}
 
 ---
 

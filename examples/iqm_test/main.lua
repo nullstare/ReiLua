@@ -97,6 +97,6 @@ end
 
 function RL.exit()
 	RL.UnloadTexture( texture )
-	RL.UnloadModel( model )
+	RL.UnloadModel( model, true )
 	RL.UnloadModelAnimations( animations )
 end

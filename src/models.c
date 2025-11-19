@@ -11,10 +11,11 @@ void unloadMaterial( Material* material ) {
 }
 
 void unloadModel( Model* model ) {
+	free( model->meshMaterial );
 	free( model->bones );
 	free( model->bindPose );
 
-	TRACELOG( LOG_INFO, "MODEL: Unloaded model bones and bindPose from RAM" );
+	TRACELOG( LOG_INFO, "MODEL: Unloaded model meshMaterial, bones and bindPose from RAM" );
 }
 
 /*

@@ -1410,30 +1410,50 @@ int ltexturesLoadRenderTexture( lua_State* L ) {
 Load RenderTexture from data (framebuffer)
 
 - Success return RenderTexture
+- Failure return nil
 */
 int ltexturesLoadRenderTextureFromData( lua_State* L ) {
 	luaL_checktype( L, 1, LUA_TTABLE );
 
-	RenderTexture renTexture = { 0 };
+	RenderTexture target = { 0 };
 
 	int t = 1;
 	lua_pushnil( L );
 
 	while ( lua_next( L, t ) != 0 ) {
 		if ( strcmp( "id", (char*)lua_tostring( L, -2 ) ) == 0 ) {
-			renTexture.id = (unsigned int)luaL_checkinteger( L, -1 );
+			target.id = (unsigned int)luaL_checkinteger( L, -1 );
 		}
 		else if ( strcmp( "texture", (char*)lua_tostring( L, -2 ) ) == 0 ) {
 			Texture* texture = uluaGetTexture( L, -1 );
-			renTexture.texture = *texture;
+			target.texture = *texture;
 		}
 		else if ( strcmp( "depth", (char*)lua_tostring( L, -2 ) ) == 0 ) {
 			Texture* depth = uluaGetTexture( L, -1 );
-			renTexture.depth = *depth;
+			target.depth = *depth;
 		}
 		lua_pop( L, 1 );
 	}
-	uluaPushRenderTexture( L, renTexture );
+
+	if ( 0 < target.id ) {
+		rlEnableFramebuffer( target.id );
+		// Attach color texture and depth renderbuffer/texture to FBO
+		rlFramebufferAttach( target.id, target.texture.id, RL_ATTACHMENT_COLOR_CHANNEL0, RL_ATTACHMENT_TEXTURE2D, 0 );
+		rlFramebufferAttach( target.id, target.depth.id, RL_ATTACHMENT_DEPTH, RL_ATTACHMENT_RENDERBUFFER, 0 );
+	
+		// Check if fbo is complete with attachments (valid)
+		if ( rlFramebufferComplete( target.id ) ) {
+			TRACELOG( LOG_INFO, "FBO: [ID %i] Framebuffer object created successfully", target.id );
+		}
+		rlDisableFramebuffer();
+
+		uluaPushRenderTexture( L, target );
+	}
+	else {
+		TRACELOG( LOG_WARNING, "FBO: Framebuffer object can not be created" );
+
+		lua_pushnil( L );
+	}
 
 	return 1;
 }
@@ -1934,6 +1954,42 @@ int ltexturesDrawTextureNPatchRepeat( lua_State* L ) {
 /*
 ## Textures - RenderTexture configuration functions
 */
+
+/*
+> RL.SetRenderTextureTexture( RenderTexture renderTexture, Texture texture )
+
+Set color buffer attachment texture and attach it to renderbuffer
+*/
+int ltexturesSetRenderTextureTexture( lua_State* L ) {
+	RenderTexture* renderTexture = uluaGetRenderTexture( L, 1 );
+	Texture* texture = uluaGetTexture( L, 2 );
+
+	renderTexture->texture = *texture;
+
+	rlEnableFramebuffer( renderTexture->id );
+	rlFramebufferAttach( renderTexture->id, renderTexture->texture.id, RL_ATTACHMENT_COLOR_CHANNEL0, RL_ATTACHMENT_TEXTURE2D, 0 );
+	rlDisableFramebuffer();
+
+	return 0;
+}
+
+/*
+> RL.SetRenderTextureDepthTexture( RenderTexture renderTexture, Texture texture )
+
+Set depth buffer attachment texture and attach it to renderbuffer
+*/
+int ltexturesSetRenderTextureDepthTexture( lua_State* L ) {
+	RenderTexture* renderTexture = uluaGetRenderTexture( L, 1 );
+	Texture* texture = uluaGetTexture( L, 2 );
+
+	renderTexture->depth = *texture;
+
+	rlEnableFramebuffer( renderTexture->id );
+	rlFramebufferAttach( renderTexture->id, renderTexture->depth.id, RL_ATTACHMENT_DEPTH, RL_ATTACHMENT_RENDERBUFFER, 0 );
+	rlDisableFramebuffer();
+
+	return 0;
+}
 
 /*
 > id = RL.GetRenderTextureId( RenderTexture renderTexture )

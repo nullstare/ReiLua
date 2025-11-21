@@ -7689,6 +7689,7 @@ Load texture for rendering (framebuffer)
 Load RenderTexture from data (framebuffer)
 
 - Success return RenderTexture
+- Failure return nil
 
 ---
 
@@ -7827,6 +7828,18 @@ Draws a texture (or part of it) that repeats nicely
 ---
 
 ## Textures - RenderTexture configuration functions
+
+---
+
+> RL.SetRenderTextureTexture( RenderTexture renderTexture, Texture texture )
+
+Set color buffer attachment texture and attach it to renderbuffer
+
+---
+
+> RL.SetRenderTextureDepthTexture( RenderTexture renderTexture, Texture texture )
+
+Set depth buffer attachment texture and attach it to renderbuffer
 
 ---
 

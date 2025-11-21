@@ -68,6 +68,8 @@ DETAILED CHANGES:
 	- ADDED: Custom font atlas example.
 	- ADDED: LoadModelFromMeshes.
 	- CHANGE: UnloadModel takes freeAll bool as option to unload meshes and materials.
+	- ADDED: SetRenderTextureTexture and SetRenderTextureDepthTexture.
+	- FIXED: LoadRenderTextureFromData also attaches textures to framebuffer.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.8.0		Using Raylib 5.0 and Forked Raygui 4.0

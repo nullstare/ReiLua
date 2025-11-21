@@ -4142,6 +4142,7 @@ function RL.LoadRenderTexture( size ) end
 
 ---Load RenderTexture from data (framebuffer)
 ---- Success return RenderTexture
+---- Failure return nil
 ---@param renderTextureData table
 ---@return any renderTexture 
 function RL.LoadRenderTextureFromData( renderTextureData ) end
@@ -4281,6 +4282,18 @@ function  RL.DrawTextureNPatch( texture, nPatchInfo, dest, origin, rotation, tin
 function  RL.DrawTextureNPatchRepeat( texture, nPatchInfo, dest, origin, rotation, tint ) end
 
 -- Textures - RenderTexture configuration functions
+
+---Set color buffer attachment texture and attach it to renderbuffer
+---@param renderTexture any
+---@param texture any
+---@return any RL.SetRenderTextureTexture
+function  RL.SetRenderTextureTexture( renderTexture, texture ) end
+
+---Set depth buffer attachment texture and attach it to renderbuffer
+---@param renderTexture any
+---@param texture any
+---@return any RL.SetRenderTextureDepthTexture
+function  RL.SetRenderTextureDepthTexture( renderTexture, texture ) end
 
 ---Get OpenGL framebuffer object id
 ---- Success return int

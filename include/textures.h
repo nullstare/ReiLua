@@ -112,6 +112,8 @@ int ltexturesDrawTexturePro( lua_State* L );
 int ltexturesDrawTextureNPatch( lua_State* L );
 int ltexturesDrawTextureNPatchRepeat( lua_State* L );
 /* RenderTexture configuration functions. */
+int ltexturesSetRenderTextureTexture( lua_State* L );
+int ltexturesSetRenderTextureDepthTexture( lua_State* L );
 int ltexturesGetRenderTextureId( lua_State* L );
 int ltexturesGetRenderTextureTexture( lua_State* L );
 int ltexturesGetRenderTextureDepthTexture( lua_State* L );

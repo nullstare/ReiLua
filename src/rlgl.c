@@ -736,9 +736,9 @@ Color mask control
 */
 int lrlglColorMask( lua_State* L ) {
 	bool r = uluaGetBoolean( L, 1 );
-	bool g = uluaGetBoolean( L, 1 );
-	bool b = uluaGetBoolean( L, 1 );
-	bool a = uluaGetBoolean( L, 1 );
+	bool g = uluaGetBoolean( L, 2 );
+	bool b = uluaGetBoolean( L, 3 );
+	bool a = uluaGetBoolean( L, 4 );
 
 	rlColorMask( r, g, b, a );
 

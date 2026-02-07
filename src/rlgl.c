@@ -1394,7 +1394,12 @@ int lrlglDrawVertexArrayInstanced( lua_State* L ) {
 	int count = luaL_checkinteger( L, 2 );
 	int instances = luaL_checkinteger( L, 3 );
 
-	rlDrawVertexArrayInstanced( offset, count, instances );
+	/* rlDrawVertexArrayInstanced does not use offset on raylib 5.5. Fixed on later. */
+	// rlDrawVertexArrayInstanced( offset, count, instances );
+
+#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
+    glDrawArraysInstanced(GL_TRIANGLES, offset, count, instances);
+#endif
 
 	return 0;
 }

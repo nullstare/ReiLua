@@ -147,6 +147,7 @@ bool SphereInFrustumV(Frustum* frustum, Vector3 position, float radius)
 
     return true;
 }
+
 bool AABBoxInFrustum(Frustum* frustum, Vector3 min, Vector3 max)
 {
     // if any point is in and we are good

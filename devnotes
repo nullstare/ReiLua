@@ -26,6 +26,18 @@ Bugs {
 
 Notes {
 	* WARNING: BREAKING CHANGE: LoadFontData() has been redesigned! https://github.com/raysan5/raylib/commit/29ce5d8aa9d261eba395e24437e08c6bd744616e
+	* WARNING: BREAKING: REDESIGNED: **Animation System. https://github.com/raysan5/raylib/commit/d4dc038e2e77ad8b0fddcfa323ee872cc2eb1d0b
+	* WARNING: rlgl BREAKING CHANGE: https://github.com/raysan5/raylib/commit/e40ddfabbb3552453d1feb09811d9f1c4c1c3741
+	* WARNING: BREAKING CHANGE: DrawModelPoints() and DrawModelPointsEx() have been REMOVED from raylib and moved to the example using them, implementation only processed first vertex of every model triangle
+	* WARNING: BREAKING CHANGE: REDESIGNED: TextInsert(), TextReplace(),  TextReplaceBetween(), using static buffers
+	ADDED: TextInsertAlloc(), TextReplaceAlloc(), TextReplaceBetweenAlloc(), alternatives with internal allocations
+	* WARNING: A bunch of breaking changes were introduced for consistency, they shouldn't affect many users but be careful.
+	Sorry for the inconvenience... it makes me sad because those changes should have been introduced before raylib 6.0 release.
+	https://github.com/raysan5/raylib/compare/a627cd5b6539...98efce4b0d2b
+	* WARNING: It seems CMake build system for raylib generates a broken library on latest raylib 6.0.
+	I don't maintain/use the CMake build system, it seems it has been broken for a couple of months but nobody noticed... 😔
+	A patched raylib 6.1 will be released as soon as possible but at this moment raylib is going through a private security audit and I prefer to wait for it to finish and fix potential security concerns for new release
+	I put a lot of work on every release and it's really sad to see this happen... sorry for any potential inconvenience... you can use master branch in the meantime (it should be already fixed in there)
 }
 
 Needs Testing {

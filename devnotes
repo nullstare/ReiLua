@@ -1,4 +1,10 @@
 Current {
+	* raylib 6
+		* Switch to raylib 6 style model animation system.
+		* File management functions.
+		* Draw functions.
+		* rlgl functions.
+		* raymath functions.
 }
 
 Backlog {

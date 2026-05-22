@@ -518,9 +518,9 @@ int lguiGuiTabBar( lua_State* L ) {
 	int active = luaL_checkinteger( L, 3 );
 
 	int count = 0;
-	const char** text = TextSplit( luaL_checkstring( L, 2 ), ';', &count );
+	char** text = TextSplit( luaL_checkstring( L, 2 ), ';', &count );
 
-	lua_pushinteger( L, GuiTabBar( bounds, text, count, &active ) );
+	lua_pushinteger( L, GuiTabBar( bounds, (const char**)text, count, &active ) );
 	lua_pushinteger( L, active );
 
 	return 2;
@@ -960,9 +960,9 @@ int lguiGuiListViewEx( lua_State* L ) {
 	int focus = luaL_checkinteger( L, 5 );
 
 	int count = 0;
-	const char** textSplits = TextSplit( text, ';', &count );
+	char** textSplits = TextSplit( text, ';', &count );
 
-	lua_pushinteger( L, GuiListViewEx( bounds, textSplits, count, &scrollIndex, &active, &focus ) );
+	lua_pushinteger( L, GuiListViewEx( bounds, (const char**)textSplits, count, &scrollIndex, &active, &focus ) );
 	lua_pushinteger( L, scrollIndex );
 	lua_pushinteger( L, active );
 	lua_pushinteger( L, focus );

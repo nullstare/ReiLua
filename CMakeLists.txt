@@ -106,7 +106,7 @@ else() # Desktop
 			target_link_libraries( ${PROJECT_NAME} raylib GLESv2 EGL pthread rt m gbm drm dl atomic )
 		else()
 			# target_link_libraries( ${PROJECT_NAME} m dl pthread )
-			target_link_libraries( ${PROJECT_NAME} m dl pthread glfw )
+			target_link_libraries( ${PROJECT_NAME} X11 m dl pthread glfw )
 		endif()
 	elseif( APPLE )
 		set( CMAKE_C_COMPILER "clang" )

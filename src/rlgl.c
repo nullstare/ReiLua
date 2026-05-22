@@ -1674,47 +1674,73 @@ int lrlglUnloadFramebuffer( lua_State* L ) {
 */
 
 /*
-> shaderId = RL.rlLoadShaderCode( string vsCode, string fsCode )
+> shaderId = RL.rlLoadShader( string code, int type )
+
+Load (compile) shader and return shader id (type: RL_VERTEX_SHADER, RL_FRAGMENT_SHADER, RL_COMPUTE_SHADER)
+
+- Success return int
+*/
+int lrlglLoadShader( lua_State* L ) {
+	lua_pushinteger( L, rlLoadShader( luaL_checkstring( L, 1 ), luaL_checkinteger( L, 2 ) ) );
+
+	return 1;
+}
+
+/*
+> shaderId = RL.rlLoadShaderProgram( string vsCode, string fsCode )
 
 Load shader from code strings
 
 - Success return int
 */
-int lrlglLoadShaderCode( lua_State* L ) {
-	lua_pushinteger( L, rlLoadShaderCode( luaL_checkstring( L, 1 ), luaL_checkstring( L, 2 ) ) );
-
-	return 1;
-}
-
-/*
-> shaderId = RL.rlCompileShader( string shaderCode, int type )
-
-Compile custom shader and return shader id (type: RL_VERTEX_SHADER, RL_FRAGMENT_SHADER, RL_COMPUTE_SHADER)
-
-- Success return int
-*/
-int lrlglCompileShader( lua_State* L ) {
-	int type = luaL_checkinteger( L, 2 );
-
-	lua_pushinteger( L, rlCompileShader( luaL_checkstring( L, 1 ), type ) );
-
-	return 1;
-}
-
-/*
-> shaderProgramId = RL.rlLoadShaderProgram( int vShaderId, int fShaderId )
-
-Load custom shader program
-
-- Success return int
-*/
 int lrlglLoadShaderProgram( lua_State* L ) {
+	lua_pushinteger( L, rlLoadShaderProgram( luaL_checkstring( L, 1 ), luaL_checkstring( L, 2 ) ) );
+
+	return 1;
+}
+
+/*
+> shaderProgramId = RL.rlLoadShaderProgramEx( int vShaderId, int fShaderId )
+
+Load shader program, using already loaded shader ids
+
+- Success return int
+*/
+int lrlglLoadShaderProgramEx( lua_State* L ) {
 	unsigned int vShaderId = (unsigned int)luaL_checkinteger( L, 1 );
 	unsigned int fShaderId = (unsigned int)luaL_checkinteger( L, 2 );
 
-	lua_pushinteger( L, rlLoadShaderProgram( vShaderId, fShaderId ) );
+	lua_pushinteger( L, rlLoadShaderProgramEx( vShaderId, fShaderId ) );
 
 	return 1;
+}
+
+/*
+> shaderProgramId = RL.rlLoadShaderProgramCompute( int csId )
+
+Load compute shader program
+
+- Success return int
+*/
+int lrlglLoadShaderProgramCompute( lua_State* L ) {
+	unsigned int csId = (unsigned int)luaL_checkinteger( L, 1 );
+
+	lua_pushinteger( L, rlLoadShaderProgramCompute( csId ) );
+
+	return 1;
+}
+
+/*
+> RL.rlUnloadShader( int id )
+
+Unload shader, loaded with rlLoadShader()
+*/
+int lrlgUnloadShader( lua_State* L ) {
+	unsigned int id = (unsigned int)luaL_checkinteger( L, 1 );
+
+	rlUnloadShader( id );
+
+	return 0;
 }
 
 /*
@@ -1856,21 +1882,6 @@ int lrlglSetShader( lua_State* L ) {
 /*
 ## RLGL - Compute shader management
 */
-
-/*
-> programId = RL.rlLoadComputeShaderProgram( int shaderId )
-
-Load compute shader program
-
-- Success return int
-*/
-int lrlglLoadComputeShaderProgram( lua_State* L ) {
-	unsigned int shaderId = (unsigned int)luaL_checkinteger( L, 1 );
-
-	lua_pushinteger( L, rlLoadComputeShaderProgram( shaderId ) );
-
-	return 1;
-}
 
 /*
 > RL.rlComputeShaderDispatch( int groupX, int groupY, int groupZ )

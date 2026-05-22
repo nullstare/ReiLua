@@ -135,9 +135,11 @@ int lrlglFramebufferAttach( lua_State* L );
 int lrlglFramebufferComplete( lua_State* L );
 int lrlglUnloadFramebuffer( lua_State* L );
 /* Shaders management */
-int lrlglLoadShaderCode( lua_State* L );
-int lrlglCompileShader( lua_State* L );
+int lrlglLoadShader( lua_State* L );
 int lrlglLoadShaderProgram( lua_State* L );
+int lrlglLoadShaderProgramEx( lua_State* L );
+int lrlglLoadShaderProgramCompute( lua_State* L );
+int lrlgUnloadShader( lua_State* L );
 int lrlglUnloadShaderProgram( lua_State* L );
 int lrlglGetLocationUniform( lua_State* L );
 int lrlglGetLocationAttrib( lua_State* L );
@@ -147,7 +149,6 @@ int lrlglSetUniformMatrices( lua_State* L );
 int lrlglSetUniformSampler( lua_State* L );
 int lrlglSetShader( lua_State* L );
 /* Compute shader management */
-int lrlglLoadComputeShaderProgram( lua_State* L );
 int lrlglComputeShaderDispatch( lua_State* L );
 /* Shader buffer storage object management (ssbo) */
 int lrlglLoadShaderBuffer( lua_State* L );

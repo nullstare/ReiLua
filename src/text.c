@@ -371,20 +371,21 @@ int ltextIsFontValid( lua_State* L ) {
 
 Load font data for further use. NOTE: fileData type should be unsigned char
 
-- Success return GlyphInfo{}
+- Success return GlyphInfo{}, glyphCount
 */
 int ltextLoadFontData( lua_State* L ) {
 	Buffer* fileData = uluaGetBuffer( L, 1 );
 	int fontSize = luaL_checkinteger( L, 2 );
 	int type = luaL_checkinteger( L, 4 );
 	int codepointCount = 95; // In case no chars count provided, default to 95.
+	int glyphCount = 0;
 
 	if ( lua_istable( L, 3 ) ) {
 		codepointCount = uluaGetTableLen( L, 3 );
 		int codepoints[ codepointCount ];
 
 		getCodepoints( L, codepoints, 3 );
-		GlyphInfo* glyphs = LoadFontData( fileData->data, fileData->size, fontSize, codepoints, codepointCount, type );
+		GlyphInfo* glyphs = LoadFontData( fileData->data, fileData->size, fontSize, codepoints, codepointCount, type, &glyphCount );
 		lua_createtable( L, codepointCount, 0 );
 
 		for ( int i = 0; i < codepointCount; i++ ) {
@@ -396,7 +397,7 @@ int ltextLoadFontData( lua_State* L ) {
 		return 1;
 	}
 	/* If no codepoints provided. */
-	GlyphInfo* glyphs = LoadFontData( fileData->data, fileData->size, fontSize, NULL, 0, type );
+	GlyphInfo* glyphs = LoadFontData( fileData->data, fileData->size, fontSize, NULL, 0, type, &glyphCount );
 	lua_createtable( L, codepointCount, 0 );
 
 	for ( int i = 0; i < codepointCount; i++ ) {
@@ -405,7 +406,9 @@ int ltextLoadFontData( lua_State* L ) {
 	}
 	UnloadFontData( glyphs, codepointCount );
 
-	return 1;
+	lua_pushnumber( L, glyphCount );
+
+	return 2;
 }
 
 /*
@@ -1325,7 +1328,7 @@ int ltextTextSplit( lua_State* L ) {
 	const char* delimiter = luaL_checkstring( L, 2 );
 
 	int count = 0;
-	const char** splits = TextSplit( text, delimiter[0], &count );
+	char** splits = TextSplit( text, delimiter[0], &count );
 
 	lua_createtable( L, count, 0 );
 

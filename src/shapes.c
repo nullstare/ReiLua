@@ -185,7 +185,7 @@ int lshapesDrawCircleGradient( lua_State* L ) {
 	Color color1 = uluaGetColor( L, 3 );
 	Color color2 = uluaGetColor( L, 4 );
 
-	DrawCircleGradient( center.x, center.y, radius, color1, color2 );
+	DrawCircleGradient( center, radius, color1, color2 );
 
 	return 0;
 }

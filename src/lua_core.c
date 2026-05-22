@@ -677,7 +677,7 @@ static void defineGlobals() {
 	assignGlobalInt( SHADER_LOC_MAP_BRDF, "SHADER_LOC_MAP_BRDF" ); // Shader location: sampler2d texture: brdf
 	assignGlobalInt( SHADER_LOC_VERTEX_BONEIDS, "SHADER_LOC_VERTEX_BONEIDS" ); // Shader location: vertex attribute: boneIds
 	assignGlobalInt( SHADER_LOC_VERTEX_BONEWEIGHTS, "SHADER_LOC_VERTEX_BONEWEIGHTS" ); // Shader location: vertex attribute: boneWeights
-	assignGlobalInt( SHADER_LOC_BONE_MATRICES, "SHADER_LOC_BONE_MATRICES" ); // Shader location: array of matrices uniform: boneMatrices
+	// assignGlobalInt( SHADER_LOC_BONE_MATRICES, "SHADER_LOC_BONE_MATRICES" ); // Shader location: array of matrices uniform: boneMatrices
 	assignGlobalInt( SHADER_LOC_MAP_DIFFUSE, "SHADER_LOC_MAP_DIFFUSE" ); // Shader location: sampler2d texture: diffuce (same as: SHADER_LOC_MAP_ALBEDO)
 	assignGlobalInt( SHADER_LOC_MAP_SPECULAR, "SHADER_LOC_MAP_SPECULAR" ); // Shader location: sampler2d texture: specular (same as: SHADER_LOC_MAP_METALNESS)
 	/* Shader uniform data type */
@@ -2158,23 +2158,21 @@ void luaRegister() {
 	assingGlobalFunction( "SetModelMesh", lmodelsSetModelMesh );
 	assingGlobalFunction( "SetModelMaterial", lmodelsSetModelMaterial );
 	assingGlobalFunction( "SetModelMeshMaterial", lmodelsSetModelMeshMaterial );
-	assingGlobalFunction( "SetModelBone", lmodelsSetModelBone );
-	assingGlobalFunction( "SetModelBindPose", lmodelsSetModelBindPose );
+	// assingGlobalFunction( "SetModelBone", lmodelsSetModelBone );
+	// assingGlobalFunction( "SetModelBindPose", lmodelsSetModelBindPose );
 	assingGlobalFunction( "GetModelTransform", lmodelsGetModelTransform );
 	assingGlobalFunction( "GetModelMeshCount", lmodelsGetModelMeshCount );
 	assingGlobalFunction( "GetModelMaterialCount", lmodelsGetModelMaterialCount );
 	assingGlobalFunction( "GetModelMesh", lmodelsGetModelMesh );
 	assingGlobalFunction( "GetModelMaterial", lmodelsGetModelMaterial );
-	assingGlobalFunction( "GetModelBoneCount", lmodelsGetModelBoneCount );
-	assingGlobalFunction( "GetModelBone", lmodelsGetModelBone );
-	assingGlobalFunction( "GetModelBindPose", lmodelsGetModelBindPose );
+	// assingGlobalFunction( "GetModelBoneCount", lmodelsGetModelBoneCount );
+	// assingGlobalFunction( "GetModelBone", lmodelsGetModelBone );
+	// assingGlobalFunction( "GetModelBindPose", lmodelsGetModelBindPose );
 		/* Model drawing functions. */
 	assingGlobalFunction( "DrawModel", lmodelsDrawModel );
 	assingGlobalFunction( "DrawModelEx", lmodelsDrawModelEx );
 	assingGlobalFunction( "DrawModelWires", lmodelsDrawModelWires );
 	assingGlobalFunction( "DrawModelWiresEx", lmodelsDrawModelWiresEx );
-	assingGlobalFunction( "DrawModelPoints", lmodelsDrawModelPoints );
-	assingGlobalFunction( "DrawModelPointsEx", lmodelsDrawModelPointsEx );
 	assingGlobalFunction( "DrawBoundingBox", lmodelsDrawBoundingBox );
 	assingGlobalFunction( "DrawBillboard", lmodelsDrawBillboard );
 	assingGlobalFunction( "DrawBillboardRec", lmodelsDrawBillboardRec );
@@ -2223,17 +2221,18 @@ void luaRegister() {
 		/* Model animations management functions. */
 	assingGlobalFunction( "LoadModelAnimations", lmodelsLoadModelAnimations );
 	assingGlobalFunction( "UpdateModelAnimation", lmodelsUpdateModelAnimation );
-	assingGlobalFunction( "UpdateModelAnimationBones", lmodelsUpdateModelAnimationBones );
+	assingGlobalFunction( "UpdateModelAnimationEx", lmodelsUpdateModelAnimationEx );
+	// assingGlobalFunction( "UpdateModelAnimationBones", lmodelsUpdateModelAnimationBones );
 	assingGlobalFunction( "UnloadModelAnimation", lmodelsUnloadModelAnimation );
 	assingGlobalFunction( "UnloadModelAnimations", lmodelsUnloadModelAnimations );
 	assingGlobalFunction( "IsModelAnimationValid", lmodelsIsModelAnimationValid );
-	assingGlobalFunction( "SetModelAnimationBone", lmodelsSetModelAnimationBone );
-	assingGlobalFunction( "SetModelAnimationFramePose", lmodelsSetModelAnimationFramePose );
+	// assingGlobalFunction( "SetModelAnimationBone", lmodelsSetModelAnimationBone );
+	// assingGlobalFunction( "SetModelAnimationFramePose", lmodelsSetModelAnimationFramePose );
 	assingGlobalFunction( "SetModelAnimationName", lmodelsSetModelAnimationName );
 	assingGlobalFunction( "GetModelAnimationBoneCount", lmodelsGetModelAnimationBoneCount );
-	assingGlobalFunction( "GetModelAnimationFrameCount", lmodelsGetModelAnimationFrameCount );
-	assingGlobalFunction( "GetModelAnimationBone", lmodelsGetModelAnimationBone );
-	assingGlobalFunction( "GetModelAnimationFramePose", lmodelsGetModelAnimationFramePose );
+	assingGlobalFunction( "GetModelAnimationKeyframeCount", lmodelsGetModelAnimationKeyframeCount );
+	// assingGlobalFunction( "GetModelAnimationBone", lmodelsGetModelAnimationBone );
+	// assingGlobalFunction( "GetModelAnimationFramePose", lmodelsGetModelAnimationFramePose );
 	assingGlobalFunction( "GetModelAnimationName", lmodelsGetModelAnimationName );
 		/* Collision detection functions. */
 	assingGlobalFunction( "CheckCollisionSpheres", lmodelsCheckCollisionSpheres );
@@ -2770,9 +2769,11 @@ void luaRegister() {
 	assingGlobalFunction( "rlFramebufferComplete", lrlglFramebufferComplete );
 	assingGlobalFunction( "rlUnloadFramebuffer", lrlglUnloadFramebuffer );
 		/* Shaders management */
-	assingGlobalFunction( "rlLoadShaderCode", lrlglLoadShaderCode );
-	assingGlobalFunction( "rlCompileShader", lrlglCompileShader );
+	assingGlobalFunction( "rlLoadShader", lrlglLoadShader );
 	assingGlobalFunction( "rlLoadShaderProgram", lrlglLoadShaderProgram );
+	assingGlobalFunction( "rlLoadShaderProgramEx", lrlglLoadShaderProgramEx );
+	assingGlobalFunction( "rlLoadShaderProgramCompute", lrlglLoadShaderProgramCompute );
+	assingGlobalFunction( "rlUnloadShader", lrlgUnloadShader );
 	assingGlobalFunction( "rlUnloadShaderProgram", lrlglUnloadShaderProgram );
 	assingGlobalFunction( "rlGetLocationUniform", lrlglGetLocationUniform );
 	assingGlobalFunction( "rlGetLocationAttrib", lrlglGetLocationAttrib );
@@ -2782,7 +2783,6 @@ void luaRegister() {
 	assingGlobalFunction( "rlSetUniformSampler", lrlglSetUniformSampler );
 	assingGlobalFunction( "rlSetShader", lrlglSetShader );
 		/* Compute shader management */
-	assingGlobalFunction( "rlLoadComputeShaderProgram", lrlglLoadComputeShaderProgram );
 	assingGlobalFunction( "rlComputeShaderDispatch", lrlglComputeShaderDispatch );
 		/* Shader buffer storage object management (ssbo) */
 	assingGlobalFunction( "rlLoadShaderBuffer", lrlglLoadShaderBuffer );
@@ -4479,7 +4479,8 @@ void uluaUnloadModel( Model* model, bool freeAll ) {
 
 void uluaUnloadModelAnimation( ModelAnimation* modelAnimation ) {
 	luaCallUnload( "ModelAnimation", modelAnimation );
-	UnloadModelAnimation( *modelAnimation );
+	// UnloadModelAnimation( *modelAnimation );
+	unloadModelAnimation( *modelAnimation );
 	memset( modelAnimation, 0, sizeof( ModelAnimation ) );
 }
 

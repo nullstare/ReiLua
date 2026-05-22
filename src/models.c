@@ -12,10 +12,15 @@ void unloadMaterial( Material* material ) {
 
 void unloadModel( Model* model ) {
 	free( model->meshMaterial );
-	free( model->bones );
-	free( model->bindPose );
+	free( model->boneMatrices );
 
-	TRACELOG( LOG_INFO, "MODEL: Unloaded model meshMaterial, bones and bindPose from RAM" );
+	TRACELOG( LOG_INFO, "MODEL: Unloaded model meshMaterial and boneMatrices from RAM" );
+}
+
+void unloadModelAnimation( ModelAnimation anim ) {
+	for ( int i = 0; i < anim.keyframeCount; i++ ) {
+		free( anim.keyframePoses[i] );
+	}
 }
 
 /*
@@ -671,54 +676,6 @@ int lmodelsSetModelMeshMaterial( lua_State* L ) {
 }
 
 /*
-> success = RL.SetModelBone( Model model, int boneId, BoneInfo bone )
-
-Set model bone information (skeleton)
-
-- Failure return false
-- Success return true
-*/
-int lmodelsSetModelBone( lua_State* L ) {
-	Model* model = uluaGetModel( L, 1 );
-	int boneId = luaL_checkinteger( L, 2 );
-	BoneInfo bone = uluaGetBoneInfo( L, 3 );
-
-	if ( 0 <= boneId && boneId < model->boneCount ) {
-		model->bones[ boneId ] = bone;
-		lua_pushboolean( L, true );
-	}
-	else {
-		TraceLog( LOG_WARNING, "SetModelBone boneId %d out of bounds", boneId );
-		lua_pushboolean( L, false );
-	}
-	return 1;
-}
-
-/*
-> success = RL.SetModelBindPose( Model model, int boneId, Transform pose )
-
-Set model bones base transformation (pose)
-
-- Failure return false
-- Success return true
-*/
-int lmodelsSetModelBindPose( lua_State* L ) {
-	Model* model = uluaGetModel( L, 1 );
-	int boneId = luaL_checkinteger( L, 2 );
-	Transform pose = uluaGetTransform( L, 3 );
-
-	if ( 0 <= boneId && boneId < model->boneCount ) {
-		model->bindPose[ boneId ] = pose;
-		lua_pushboolean( L, true );
-	}
-	else {
-		TraceLog( LOG_WARNING, "SetModelBindPose boneId %d out of bounds", boneId );
-		lua_pushboolean( L, false );
-	}
-	return 1;
-}
-
-/*
 > transform = RL.GetModelTransform( Model model )
 
 Get model transform matrix
@@ -808,65 +765,6 @@ int lmodelsGetModelMaterial( lua_State* L ) {
 }
 
 /*
-> boneCount = RL.GetModelBoneCount( Model model )
-
-Get model number of bones
-
-- Success return int
-*/
-int lmodelsGetModelBoneCount( lua_State* L ) {
-	Model* model = uluaGetModel( L, 1 );
-
-	lua_pushinteger( L, model->boneCount );
-
-	return 1;
-}
-
-/*
-> bone = RL.GetModelBone( Model model, int boneId )
-
-Get model bones information (skeleton)
-
-- Failure return nil
-- Success return BoneInfo
-*/
-int lmodelsGetModelBone( lua_State* L ) {
-	Model* model = uluaGetModel( L, 1 );
-	int boneId = luaL_checkinteger( L, 2 );
-
-	if ( 0 <= boneId && boneId < model->boneCount ) {
-		uluaPushBoneInfo( L, model->bones[ boneId ] );
-	}
-	else {
-		TraceLog( LOG_WARNING, "GetModelBone boneId %d out of bounds", boneId );
-		lua_pushnil( L );
-	}
-	return 1;
-}
-
-/*
-> pose = RL.GetModelBindPose( Model model, int boneId )
-
-Get models bones base transformation (pose)
-
-- Failure return nil
-- Success return Transform
-*/
-int lmodelsGetModelBindPose( lua_State* L ) {
-	Model* model = uluaGetModel( L, 1 );
-	int boneId = luaL_checkinteger( L, 2 );
-
-	if ( 0 <= boneId && boneId < model->boneCount ) {
-		uluaPushTransform( L, model->bindPose[ boneId ] );
-	}
-	else {
-		TraceLog( LOG_WARNING, "GetModelBindPose boneId %d out of bounds", boneId );
-		lua_pushnil( L );
-	}
-	return 1;
-}
-
-/*
 ## Models - Model drawing functions
 */
 
@@ -934,40 +832,6 @@ int lmodelsDrawModelWiresEx( lua_State* L ) {
 	Color tint = uluaGetColor( L, 6 );
 
 	DrawModelWiresEx( *model, position, rotationAxis, rotationAngle, scale, tint );
-
-	return 0;
-}
-
-/*
-> RL.DrawModelPoints( Model model, Vector3 position, float scale, Color tint )
-
-Draw a model as points
-*/
-int lmodelsDrawModelPoints( lua_State* L ) {
-	Model* model = uluaGetModel( L, 1 );
-	Vector3 position = uluaGetVector3( L, 2 );
-	float scale = luaL_checknumber( L, 3 );
-	Color tint = uluaGetColor( L, 4 );
-
-	DrawModelPoints( *model, position, scale, tint );
-
-	return 0;
-}
-
-/*
-> RL.DrawModelPointsEx( Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint )
-
-Draw a model as points with extended parameters
-*/
-int lmodelsDrawModelPointsEx( lua_State* L ) {
-	Model* model = uluaGetModel( L, 1 );
-	Vector3 position = uluaGetVector3( L, 2 );
-	Vector3 rotationAxis = uluaGetVector3( L, 3 );
-	float rotationAngle = luaL_checknumber( L, 4 );
-	Vector3 scale = uluaGetVector3( L, 5 );
-	Color tint = uluaGetColor( L, 6 );
-
-	DrawModelPointsEx( *model, position, rotationAxis, rotationAngle, scale, tint );
 
 	return 0;
 }
@@ -2163,7 +2027,7 @@ int lmodelsLoadModelAnimations( lua_State* L ) {
 /*
 > RL.UpdateModelAnimation( Model model, ModelAnimation animation, int frame )
 
-Update model animation pose
+Update model animation pose (vertex buffers and bone matrices)
 */
 int lmodelsUpdateModelAnimation( lua_State* L ) {
 	Model* model = uluaGetModel( L, 1 );
@@ -2176,16 +2040,19 @@ int lmodelsUpdateModelAnimation( lua_State* L ) {
 }
 
 /*
-> RL.UpdateModelAnimationBones( Model model, ModelAnimation animation, int frame )
+> RL.UpdateModelAnimationEx( Model model, ModelAnimation animA, float frameA, ModelAnimation animB, float frameB, float blend )
 
-Update model animation mesh bone matrices (GPU skinning)
+Update model animation pose, blending two animations
 */
-int lmodelsUpdateModelAnimationBones( lua_State* L ) {
+int lmodelsUpdateModelAnimationEx( lua_State* L ) {
 	Model* model = uluaGetModel( L, 1 );
-	ModelAnimation* animation = uluaGetModelAnimation( L, 2 );
-	int frame = luaL_checkinteger( L, 3 );
+	ModelAnimation* animA = uluaGetModelAnimation( L, 2 );
+	float frameA = luaL_checknumber( L, 3 );
+	ModelAnimation* animB = uluaGetModelAnimation( L, 4 );
+	float frameB = luaL_checknumber( L, 5 );
+	float blend = luaL_checknumber( L, 6 );
 
-	UpdateModelAnimationBones( *model, *animation, frame );
+	UpdateModelAnimationEx( *model, *animA, frameA, *animB, frameB, blend );
 
 	return 0;
 }
@@ -2247,21 +2114,21 @@ Set modelAnimation bones information (skeleton)
 - Failure return false
 - Success return true
 */
-int lmodelsSetModelAnimationBone( lua_State* L ) {
-	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
-	int boneId = luaL_checkinteger( L, 2 );
-	BoneInfo bone = uluaGetBoneInfo( L, 3 );
+// int lmodelsSetModelAnimationBone( lua_State* L ) {
+// 	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
+// 	int boneId = luaL_checkinteger( L, 2 );
+// 	BoneInfo bone = uluaGetBoneInfo( L, 3 );
 
-	if ( 0 <= boneId && boneId < animation->boneCount ) {
-		animation->bones[ boneId ] = bone;
-		lua_pushboolean( L, true );
-	}
-	else {
-		TraceLog( LOG_WARNING, "SetModelAnimationBone boneId %d out of bounds", boneId );
-		lua_pushboolean( L, false );
-	}
-	return 1;
-}
+// 	if ( 0 <= boneId && boneId < animation->boneCount ) {
+// 		animation->bones[ boneId ] = bone;
+// 		lua_pushboolean( L, true );
+// 	}
+// 	else {
+// 		TraceLog( LOG_WARNING, "SetModelAnimationBone boneId %d out of bounds", boneId );
+// 		lua_pushboolean( L, false );
+// 	}
+// 	return 1;
+// }
 
 /*
 > success = RL.SetModelAnimationFramePose( ModelAnimation animation, int frame, int boneId, Transform pose )
@@ -2271,22 +2138,22 @@ Set modelAnimation bones base transformation (pose)
 - Failure return false
 - Success return true
 */
-int lmodelsSetModelAnimationFramePose( lua_State* L ) {
-	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
-	int frame = luaL_checkinteger( L, 2 );
-	int boneId = luaL_checkinteger( L, 3 );
-	Transform pose = uluaGetTransform( L, 4 );
+// int lmodelsSetModelAnimationFramePose( lua_State* L ) {
+// 	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
+// 	int frame = luaL_checkinteger( L, 2 );
+// 	int boneId = luaL_checkinteger( L, 3 );
+// 	Transform pose = uluaGetTransform( L, 4 );
 
-	if ( 0 <= frame && frame < animation->frameCount && 0 <= boneId && boneId < animation->boneCount ) {
-		animation->framePoses[ frame ][ boneId ] = pose;
-		lua_pushboolean( L, true );
-	}
-	else {
-		TraceLog( LOG_WARNING, "SetModelAnimationFramePose frame %d or BoneId %d out of bounds", frame, boneId );
-		lua_pushboolean( L, false );
-	}
-	return 1;
-}
+// 	if ( 0 <= frame && frame < animation->frameCount && 0 <= boneId && boneId < animation->boneCount ) {
+// 		animation->framePoses[ frame ][ boneId ] = pose;
+// 		lua_pushboolean( L, true );
+// 	}
+// 	else {
+// 		TraceLog( LOG_WARNING, "SetModelAnimationFramePose frame %d or BoneId %d out of bounds", frame, boneId );
+// 		lua_pushboolean( L, false );
+// 	}
+// 	return 1;
+// }
 
 /*
 > RL.SetModelAnimationName( ModelAnimation animation, string name )
@@ -2318,16 +2185,16 @@ int lmodelsGetModelAnimationBoneCount( lua_State* L ) {
 }
 
 /*
-> frameCount = RL.GetModelAnimationFrameCount( ModelAnimation animation )
+> frameCount = RL.GetModelAnimationKeyframeCount( ModelAnimation animation )
 
 Return modelAnimation frame count
 
 - Success return int
 */
-int lmodelsGetModelAnimationFrameCount( lua_State* L ) {
+int lmodelsGetModelAnimationKeyframeCount( lua_State* L ) {
 	ModelAnimation* modelAnimation = uluaGetModelAnimation( L, 1 );
 
-	lua_pushinteger( L, modelAnimation->frameCount );
+	lua_pushinteger( L, modelAnimation->keyframeCount );
 
 	return 1;
 }
@@ -2340,38 +2207,38 @@ Get modelAnimation bones information (skeleton)
 - Failure return nil
 - Success return BoneInfo
 */
-int lmodelsGetModelAnimationBone( lua_State* L ) {
-	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
-	int boneId = luaL_checkinteger( L, 2 );
+// int lmodelsGetModelAnimationBone( lua_State* L ) {
+// 	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
+// 	int boneId = luaL_checkinteger( L, 2 );
 
-	if ( 0 <= boneId && boneId < animation->boneCount ) {
-		uluaPushBoneInfo( L, animation->bones[ boneId ] );
-	}
-	else {
-		TraceLog( LOG_WARNING, "GetModelAnimationBone boneId %d out of bounds", boneId );
-		lua_pushnil( L );
-	}
-	return 1;
-}
+// 	if ( 0 <= boneId && boneId < animation->boneCount ) {
+// 		uluaPushBoneInfo( L, animation->bones[ boneId ] );
+// 	}
+// 	else {
+// 		TraceLog( LOG_WARNING, "GetModelAnimationBone boneId %d out of bounds", boneId );
+// 		lua_pushnil( L );
+// 	}
+// 	return 1;
+// }
 
 /*
-> pose = RL.GetModelAnimationFramePose( ModelAnimation animation, int frame, int boneId )
+> pose = RL.GetModelAnimationKeyframePose( ModelAnimation animation, int keyframe, int pose )
 
 Get modelAnimation bones base transformation (pose)
 
 - Failure return nil
 - Success return Transform
 */
-int lmodelsGetModelAnimationFramePose( lua_State* L ) {
+int lmodelsGetModelAnimationKeyframePose( lua_State* L ) {
 	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
-	int frame = luaL_checkinteger( L, 2 );
-	int boneId = luaL_checkinteger( L, 3 );
+	int keyframe = luaL_checkinteger( L, 2 );
+	int pose = luaL_checkinteger( L, 3 );
 
-	if ( 0 <= frame && frame < animation->frameCount && 0 <= boneId && boneId < animation->boneCount ) {
-		uluaPushTransform( L, animation->framePoses[ frame ][ boneId ] );
+	if ( 0 <= keyframe && keyframe < animation->keyframeCount && 0 <= pose && pose < animation->boneCount ) {
+		uluaPushTransform( L, animation->keyframePoses[ keyframe ][ pose ] );
 	}
 	else {
-		TraceLog( LOG_WARNING, "GetModelAnimationFramePose frame %d or BoneId %d out of bounds", frame, boneId );
+		TraceLog( LOG_WARNING, "GetModelAnimationFramePose frame %d or BoneId %d out of bounds", keyframe, pose );
 		lua_pushnil( L );
 	}
 	return 1;
@@ -2677,3 +2544,114 @@ int lmodelsGetRayBoxCells( lua_State* L ) {
 
 	return 2;
 }
+
+
+/* Possible ModelSkeleton functions. */
+
+
+/*
+> success = RL.SetModelBone( Model model, int boneId, BoneInfo bone )
+
+Set model bone information (skeleton)
+
+- Failure return false
+- Success return true
+*/
+// int lmodelsSetModelBone( lua_State* L ) {
+// 	Model* model = uluaGetModel( L, 1 );
+// 	int boneId = luaL_checkinteger( L, 2 );
+// 	BoneInfo bone = uluaGetBoneInfo( L, 3 );
+
+// 	if ( 0 <= boneId && boneId < model->boneCount ) {
+// 		model->bones[ boneId ] = bone;
+// 		lua_pushboolean( L, true );
+// 	}
+// 	else {
+// 		TraceLog( LOG_WARNING, "SetModelBone boneId %d out of bounds", boneId );
+// 		lua_pushboolean( L, false );
+// 	}
+// 	return 1;
+// }
+
+/*
+> success = RL.SetModelBindPose( Model model, int boneId, Transform pose )
+
+Set model bones base transformation (pose)
+
+- Failure return false
+- Success return true
+*/
+// int lmodelsSetModelBindPose( lua_State* L ) {
+// 	Model* model = uluaGetModel( L, 1 );
+// 	int boneId = luaL_checkinteger( L, 2 );
+// 	Transform pose = uluaGetTransform( L, 3 );
+
+// 	if ( 0 <= boneId && boneId < model->boneCount ) {
+// 		model->bindPose[ boneId ] = pose;
+// 		lua_pushboolean( L, true );
+// 	}
+// 	else {
+// 		TraceLog( LOG_WARNING, "SetModelBindPose boneId %d out of bounds", boneId );
+// 		lua_pushboolean( L, false );
+// 	}
+// 	return 1;
+// }
+
+/*
+> boneCount = RL.GetModelBoneCount( Model model )
+
+Get model number of bones
+
+- Success return int
+*/
+// int lmodelsGetModelBoneCount( lua_State* L ) {
+// 	Model* model = uluaGetModel( L, 1 );
+
+// 	lua_pushinteger( L, model->boneCount );
+
+// 	return 1;
+// }
+
+/*
+> bone = RL.GetModelBone( Model model, int boneId )
+
+Get model bones information (skeleton)
+
+- Failure return nil
+- Success return BoneInfo
+*/
+// int lmodelsGetModelBone( lua_State* L ) {
+// 	Model* model = uluaGetModel( L, 1 );
+// 	int boneId = luaL_checkinteger( L, 2 );
+
+// 	if ( 0 <= boneId && boneId < model->boneCount ) {
+// 		uluaPushBoneInfo( L, model->bones[ boneId ] );
+// 	}
+// 	else {
+// 		TraceLog( LOG_WARNING, "GetModelBone boneId %d out of bounds", boneId );
+// 		lua_pushnil( L );
+// 	}
+// 	return 1;
+// }
+
+/*
+> pose = RL.GetModelBindPose( Model model, int boneId )
+
+Get models bones base transformation (pose)
+
+- Failure return nil
+- Success return Transform
+*/
+// int lmodelsGetModelBindPose( lua_State* L ) {
+// 	Model* model = uluaGetModel( L, 1 );
+// 	int boneId = luaL_checkinteger( L, 2 );
+
+// 	if ( 0 <= boneId && boneId < model->boneCount ) {
+// 		uluaPushTransform( L, model->bindPose[ boneId ] );
+// 	}
+// 	else {
+// 		TraceLog( LOG_WARNING, "GetModelBindPose boneId %d out of bounds", boneId );
+// 		lua_pushnil( L );
+// 	}
+// 	return 1;
+// }

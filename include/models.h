@@ -4,6 +4,7 @@
 void unloadMaterial( Material* material );
 void unloadModel( Model* model );
 void unloadModelAnimation( ModelAnimation anim );
+void unloadModelSkeleton( ModelSkeleton* skeleton );
 
 /* Basic geometric 3D shapes drawing functions. */
 int lmodelsDrawLine3D( lua_State* L );
@@ -38,16 +39,17 @@ int lmodelsSetModelTransform( lua_State* L );
 int lmodelsSetModelMesh( lua_State* L );
 int lmodelsSetModelMaterial( lua_State* L );
 int lmodelsSetModelMeshMaterial( lua_State* L );
-// int lmodelsSetModelBone( lua_State* L );
-// int lmodelsSetModelBindPose( lua_State* L );
+int lmodelsSetModelSkeleton( lua_State* L );
+int lmodelsSetModelCurrentPose( lua_State* L );
+int lmodelsSetModelBoneMatrix( lua_State* L );
 int lmodelsGetModelTransform( lua_State* L );
 int lmodelsGetModelMeshCount( lua_State* L );
 int lmodelsGetModelMaterialCount( lua_State* L );
 int lmodelsGetModelMesh( lua_State* L );
 int lmodelsGetModelMaterial( lua_State* L );
-// int lmodelsGetModelBoneCount( lua_State* L );
-// int lmodelsGetModelBone( lua_State* L );
-// int lmodelsGetModelBindPose( lua_State* L );
+int lmodelsGetModelSkeleton( lua_State* L );
+int lmodelsGetModelCurrentPose( lua_State* L );
+int lmodelsGetModelBoneMatrix( lua_State* L );
 /* Model drawing functions. */
 int lmodelsDrawModel( lua_State* L );
 int lmodelsDrawModelEx( lua_State* L );
@@ -102,18 +104,21 @@ int lmodelsGetMaterialParams( lua_State* L );
 int lmodelsLoadModelAnimations( lua_State* L );
 int lmodelsUpdateModelAnimation( lua_State* L );
 int lmodelsUpdateModelAnimationEx( lua_State* L );
-// int lmodelsUpdateModelAnimationBones( lua_State* L );
 int lmodelsUnloadModelAnimation( lua_State* L );
 int lmodelsUnloadModelAnimations( lua_State* L );
 int lmodelsIsModelAnimationValid( lua_State* L );
-// int lmodelsSetModelAnimationBone( lua_State* L );
-// int lmodelsSetModelAnimationFramePose( lua_State* L );
 int lmodelsSetModelAnimationName( lua_State* L );
+int lmodelsSetModelAnimationKeyframePose( lua_State* L );
+int lmodelsGetModelAnimationName( lua_State* L );
 int lmodelsGetModelAnimationBoneCount( lua_State* L );
 int lmodelsGetModelAnimationKeyframeCount( lua_State* L );
-// int lmodelsGetModelAnimationBone( lua_State* L );
-// int lmodelsGetModelAnimationFramePose( lua_State* L );
-int lmodelsGetModelAnimationName( lua_State* L );
+int lmodelsGetModelAnimationKeyframePose( lua_State* L );
+/* Model skeleton management functions. */
+int lmodelsSetModelSkeletonBone( lua_State* L );
+int lmodelsSetModelSkeletonBindPose( lua_State* L );
+int lmodelsGetModelSkeletonBoneCount( lua_State* L );
+int lmodelsGetModelSkeletonBone( lua_State* L );
+int lmodelsGetModelSkeletonBindPose( lua_State* L );
 /* Collision detection functions. */
 int lmodelsCheckCollisionSpheres( lua_State* L );
 int lmodelsCheckCollisionBoxes( lua_State* L );

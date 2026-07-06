@@ -364,6 +364,25 @@ static void defineModelAnimation() {
 	lua_setfield( L, -2, "__gc" );
 }
 
+	/* ModelSkeleton. */
+static int gcModelSkeleton( lua_State* L ) {
+	if ( state->gcUnload ) {
+		ModelSkeleton* modelSkeleton = luaL_checkudata( L, 1, "ModelSkeleton" );
+		uluaUnloadModelSkeleton( modelSkeleton );
+	}
+	return 0;
+}
+
+static void defineModelSkeleton() {
+	lua_State* L = state->luaState;
+
+	luaL_newmetatable( L, "ModelSkeleton" );
+	lua_pushvalue( L, -1 );
+	lua_setfield( L, -2, "__index" );
+	lua_pushcfunction( L, gcModelSkeleton );
+	lua_setfield( L, -2, "__gc" );
+}
+
 	/* rlRenderBatch. */
 static int gcRLRenderBatch( lua_State* L ) {
 	if ( state->gcUnload ) {
@@ -1222,6 +1241,7 @@ static void defineGlobals() {
 #ifdef RL_SUPPORT_MESH_GPU_SKINNING
 	assignGlobalInt( RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEIDS, "RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEIDS" );
 	assignGlobalInt( RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEWEIGHTS, "RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEWEIGHTS" );
+	assignGlobalInt( RL_SUPPORT_MESH_GPU_SKINNING, "SUPPORT_GPU_SKINNING" );
 #endif
 	/* RLGL GlVersion */
 	assignGlobalInt( RL_OPENGL_11, "RL_OPENGL_11" ); // OpenGL 1.1
@@ -1389,6 +1409,7 @@ bool luaInit( int argn, const char** argc ) {
 	defineMesh();
 	defineModel();
 	defineModelAnimation();
+	defineModelSkeleton();
 	defineRLRenderBatch();
 	defineAutomationEvent();
 	defineAutomationEventList();
@@ -2158,16 +2179,17 @@ void luaRegister() {
 	assingGlobalFunction( "SetModelMesh", lmodelsSetModelMesh );
 	assingGlobalFunction( "SetModelMaterial", lmodelsSetModelMaterial );
 	assingGlobalFunction( "SetModelMeshMaterial", lmodelsSetModelMeshMaterial );
-	// assingGlobalFunction( "SetModelBone", lmodelsSetModelBone );
-	// assingGlobalFunction( "SetModelBindPose", lmodelsSetModelBindPose );
+	assingGlobalFunction( "SetModelSkeleton", lmodelsSetModelSkeleton );
+	assingGlobalFunction( "SetModelCurrentPose", lmodelsSetModelCurrentPose );
+	assingGlobalFunction( "SetModelBoneMatrix", lmodelsSetModelBoneMatrix );
 	assingGlobalFunction( "GetModelTransform", lmodelsGetModelTransform );
 	assingGlobalFunction( "GetModelMeshCount", lmodelsGetModelMeshCount );
 	assingGlobalFunction( "GetModelMaterialCount", lmodelsGetModelMaterialCount );
 	assingGlobalFunction( "GetModelMesh", lmodelsGetModelMesh );
 	assingGlobalFunction( "GetModelMaterial", lmodelsGetModelMaterial );
-	// assingGlobalFunction( "GetModelBoneCount", lmodelsGetModelBoneCount );
-	// assingGlobalFunction( "GetModelBone", lmodelsGetModelBone );
-	// assingGlobalFunction( "GetModelBindPose", lmodelsGetModelBindPose );
+	assingGlobalFunction( "GetModelSkeleton", lmodelsGetModelSkeleton );
+	assingGlobalFunction( "GetModelCurrentPose", lmodelsGetModelCurrentPose );
+	assingGlobalFunction( "GetModelBoneMatrix", lmodelsGetModelBoneMatrix );
 		/* Model drawing functions. */
 	assingGlobalFunction( "DrawModel", lmodelsDrawModel );
 	assingGlobalFunction( "DrawModelEx", lmodelsDrawModelEx );
@@ -2222,19 +2244,22 @@ void luaRegister() {
 	assingGlobalFunction( "LoadModelAnimations", lmodelsLoadModelAnimations );
 	assingGlobalFunction( "UpdateModelAnimation", lmodelsUpdateModelAnimation );
 	assingGlobalFunction( "UpdateModelAnimationEx", lmodelsUpdateModelAnimationEx );
-	// assingGlobalFunction( "UpdateModelAnimationBones", lmodelsUpdateModelAnimationBones );
 	assingGlobalFunction( "UnloadModelAnimation", lmodelsUnloadModelAnimation );
 	assingGlobalFunction( "UnloadModelAnimations", lmodelsUnloadModelAnimations );
 	assingGlobalFunction( "IsModelAnimationValid", lmodelsIsModelAnimationValid );
-	// assingGlobalFunction( "SetModelAnimationBone", lmodelsSetModelAnimationBone );
-	// assingGlobalFunction( "SetModelAnimationFramePose", lmodelsSetModelAnimationFramePose );
 	assingGlobalFunction( "SetModelAnimationName", lmodelsSetModelAnimationName );
+	assingGlobalFunction( "SetModelAnimationKeyframePose", lmodelsSetModelAnimationKeyframePose );
+	assingGlobalFunction( "GetModelAnimationName", lmodelsGetModelAnimationName );
 	assingGlobalFunction( "GetModelAnimationBoneCount", lmodelsGetModelAnimationBoneCount );
 	assingGlobalFunction( "GetModelAnimationKeyframeCount", lmodelsGetModelAnimationKeyframeCount );
-	// assingGlobalFunction( "GetModelAnimationBone", lmodelsGetModelAnimationBone );
-	// assingGlobalFunction( "GetModelAnimationFramePose", lmodelsGetModelAnimationFramePose );
-	assingGlobalFunction( "GetModelAnimationName", lmodelsGetModelAnimationName );
-		/* Collision detection functions. */
+	assingGlobalFunction( "GetModelAnimationKeyframePose", lmodelsGetModelAnimationKeyframePose );
+	/* Model skeleton management functions. */
+	assingGlobalFunction( "SetModelSkeletonBone", lmodelsSetModelSkeletonBone );
+	assingGlobalFunction( "SetModelSkeletonBindPose", lmodelsSetModelSkeletonBindPose );
+	assingGlobalFunction( "GetModelSkeletonBoneCount", lmodelsGetModelSkeletonBoneCount );
+	assingGlobalFunction( "GetModelSkeletonBone", lmodelsGetModelSkeletonBone );
+	assingGlobalFunction( "GetModelSkeletonBindPose", lmodelsGetModelSkeletonBindPose );
+	/* Collision detection functions. */
 	assingGlobalFunction( "CheckCollisionSpheres", lmodelsCheckCollisionSpheres );
 	assingGlobalFunction( "CheckCollisionBoxes", lmodelsCheckCollisionBoxes );
 	assingGlobalFunction( "CheckCollisionBoxSphere", lmodelsCheckCollisionBoxSphere );
@@ -3925,6 +3950,37 @@ ModelAnimation* uluaGetModelAnimation( lua_State* L, int index ) {
 	}
 }
 
+ModelSkeleton* uluaGetModelSkeleton( lua_State* L, int index ) {
+	int t = index, i = 0;
+
+	switch ( lua_type( L, index ) )	{
+	case LUA_TLIGHTUSERDATA:
+		return (ModelSkeleton*)lua_touserdata( L, index );
+	case LUA_TTABLE:
+		lua_pushnil( L );
+		while ( lua_next( L, t ) != 0 ) {
+			if ( TextIsEqual( "modelSkeleton", lua_tostring( L, -2 ) ) ) {
+				ModelSkeleton* skeleton = NULL;
+				if ( lua_islightuserdata( L, lua_gettop( L ) ) ) {
+					skeleton = lua_touserdata( L, lua_gettop( L ) );
+				}
+				else {
+					skeleton = luaL_checkudata( L, lua_gettop( L ), "ModelSkeleton" );
+				}
+				lua_pop( L, 2 ); /* Pops also the string. */
+				return skeleton;
+			}
+			else {
+				lua_pop( L, 1 );
+			}
+			i++;
+		}
+		/* Don't brake here, we want to get error from default if not found. */
+	default:
+		return luaL_checkudata( L, index, "ModelSkeleton" );
+	}
+}
+
 rlRenderBatch* uluaGetRLRenderBatch( lua_State* L, int index ) {
 	int t = index, i = 0;
 
@@ -4353,6 +4409,13 @@ void uluaPushModelAnimation( lua_State* L, ModelAnimation modelAnimation ) {
 	luaL_setmetatable( L, "ModelAnimation" );
 }
 
+void uluaPushModelSkeleton( lua_State* L, ModelSkeleton modelSkeleton ) {
+	ModelSkeleton* modelSkeletonP = lua_newuserdata( L, sizeof( ModelSkeleton ) );
+	*modelSkeletonP = modelSkeleton;
+	luaCallLoad( "ModelSkeleton", modelSkeletonP );
+	luaL_setmetatable( L, "ModelSkeleton" );
+}
+
 void uluaPushRLRenderBatch( lua_State* L, rlRenderBatch renderBatch ) {
 	rlRenderBatch* renderBatchP = lua_newuserdata( L, sizeof( rlRenderBatch ) );
 	*renderBatchP = renderBatch;
@@ -4479,9 +4542,14 @@ void uluaUnloadModel( Model* model, bool freeAll ) {
 
 void uluaUnloadModelAnimation( ModelAnimation* modelAnimation ) {
 	luaCallUnload( "ModelAnimation", modelAnimation );
-	// UnloadModelAnimation( *modelAnimation );
 	unloadModelAnimation( *modelAnimation );
 	memset( modelAnimation, 0, sizeof( ModelAnimation ) );
+}
+
+void uluaUnloadModelSkeleton( ModelSkeleton* modelSkeleton ) {
+	luaCallUnload( "ModelSkeleton", modelSkeleton );
+	unloadModelSkeleton( modelSkeleton );
+	memset( modelSkeleton, 0, sizeof( ModelSkeleton ) );
 }
 
 void uluaUnloadRLRenderBatch( rlRenderBatch* renderBatch ) {

@@ -304,6 +304,12 @@ ModelAnimation
 
 ---
 
+> ModelSkeleton = Userdata
+
+ModelSkeleton
+
+---
+
 > AutomationEvent = Userdata
 
 Automation event
@@ -1635,9 +1641,10 @@ Shader location: vertex attribute: boneWeights
 
 ---
 
-> SHADER_LOC_BONE_MATRICES = 28
 
-Shader location: array of matrices uniform: boneMatrices
+assignGlobalInt = nil
+
+// Shader location: array of matrices uniform: boneMatrices
 
 ---
 
@@ -1703,7 +1710,7 @@ Shader uniform type: ivec4 (4 int)
 
 ---
 
-> SHADER_UNIFORM_SAMPLER2D = 8
+> SHADER_UNIFORM_SAMPLER2D = 12
 
 Shader uniform type: sampler2d
 
@@ -3701,13 +3708,13 @@ Maximum number of shader locations supported
 
 
 ## Defines - RLGL Projection matrix culling
-> RL_CULL_DISTANCE_NEAR = 0.01
+> RL_CULL_DISTANCE_NEAR = 0.05
 
 Default projection matrix near cull distance
 
 ---
 
-> RL_CULL_DISTANCE_FAR = 1000
+> RL_CULL_DISTANCE_FAR = 4000
 
 Default projection matrix far cull distance
 
@@ -4162,6 +4169,11 @@ RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEIDS = nil
 
 
 RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEWEIGHTS = nil
+
+---
+
+
+RL_SUPPORT_MESH_GPU_SKINNING = nil
 
 ---
 
@@ -8065,7 +8077,7 @@ Check if a font is valid (font data loaded, WARNING: GPU texture not checked)
 
 Load font data for further use. NOTE: fileData type should be unsigned char
 
-- Success return GlyphInfo{}
+- Success return GlyphInfo{}, glyphCount
 
 ---
 
@@ -8700,21 +8712,21 @@ Set material for a mesh (Mesh and material on this model)
 
 ---
 
-> success = RL.SetModelBone( Model model, int boneId, BoneInfo bone )
+> RL.SetModelSkeleton( Model model, ModelSkeleton skeleton )
 
-Set model bone information (skeleton)
-
-- Failure return false
-- Success return true
+Set skeleton for a model
 
 ---
 
-> success = RL.SetModelBindPose( Model model, int boneId, Transform pose )
+> RL.SetModelCurrentPose( Model model, int boneId, Transform pose )
 
-Set model bones base transformation (pose)
+Set current animation pose for a model
 
-- Failure return false
-- Success return true
+---
+
+> RL.SetModelBoneMatrix( Model model, int boneId, Matrix transform )
+
+Set model bone animated transformation matrix
 
 ---
 
@@ -8760,29 +8772,29 @@ Get model material. Return as lightuserdata
 
 ---
 
-> boneCount = RL.GetModelBoneCount( Model model )
+> skeleton = RL.GetModelSkeleton( Model model )
 
-Get model number of bones
+Get model skeleton
 
-- Success return int
-
----
-
-> bone = RL.GetModelBone( Model model, int boneId )
-
-Get model bones information (skeleton)
-
-- Failure return nil
-- Success return BoneInfo
+- Success return ModelSkeleton. Return as lightuserdata
 
 ---
 
-> pose = RL.GetModelBindPose( Model model, int boneId )
+> pose = RL.GetModelCurrentPose( Model model, int boneId )
 
-Get models bones base transformation (pose)
+Get model current animation pose (Transform)
 
 - Failure return nil
 - Success return Transform
+
+---
+
+> pose = RL.GetModelBoneMatrix( Model model, int boneId )
+
+Get model bone animated transformation matrix
+
+- Failure return nil
+- Success return Matrix
 
 ---
 
@@ -8811,18 +8823,6 @@ Draw a model wires (with texture if set)
 > RL.DrawModelWiresEx( Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint )
 
 Draw a model wires (with texture if set) with extended parameters
-
----
-
-> RL.DrawModelPoints( Model model, Vector3 position, float scale, Color tint )
-
-Draw a model as points
-
----
-
-> RL.DrawModelPointsEx( Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint )
-
-Draw a model as points with extended parameters
 
 ---
 
@@ -9162,13 +9162,13 @@ Load model animations from file
 
 > RL.UpdateModelAnimation( Model model, ModelAnimation animation, int frame )
 
-Update model animation pose
+Update model animation pose (vertex buffers and bone matrices)
 
 ---
 
-> RL.UpdateModelAnimationBones( Model model, ModelAnimation animation, int frame )
+> RL.UpdateModelAnimationEx( Model model, ModelAnimation animA, float frameA, ModelAnimation animB, float frameB, float blend )
 
-Update model animation mesh bone matrices (GPU skinning)
+Update model animation pose, blending two animations
 
 ---
 
@@ -9192,16 +9192,13 @@ Check model animation skeleton match
 
 ---
 
-> success = RL.SetModelAnimationBone( ModelAnimation animation, int boneId, BoneInfo bone )
+> RL.SetModelAnimationName( ModelAnimation animation, string name )
 
-Set modelAnimation bones information (skeleton)
-
-- Failure return false
-- Success return true
+Set modelAnimation name
 
 ---
 
-> success = RL.SetModelAnimationFramePose( ModelAnimation animation, int frame, int boneId, Transform pose )
+> success = RL.SetModelAnimationKeyframePose( ModelAnimation animation, int keyframe, int boneId, Transform pose )
 
 Set modelAnimation bones base transformation (pose)
 
@@ -9210,9 +9207,11 @@ Set modelAnimation bones base transformation (pose)
 
 ---
 
-> RL.SetModelAnimationName( ModelAnimation animation, string name )
+> name = RL.GetModelAnimationName( ModelAnimation animation )
 
-Set modelAnimation name
+Get modelAnimation name
+
+- Success return string
 
 ---
 
@@ -9224,7 +9223,7 @@ Return modelAnimation bone count
 
 ---
 
-> frameCount = RL.GetModelAnimationFrameCount( ModelAnimation animation )
+> frameCount = RL.GetModelAnimationKeyframeCount( ModelAnimation animation )
 
 Return modelAnimation frame count
 
@@ -9232,16 +9231,7 @@ Return modelAnimation frame count
 
 ---
 
-> bone = RL.GetModelAnimationBone( ModelAnimation animation, int boneId )
-
-Get modelAnimation bones information (skeleton)
-
-- Failure return nil
-- Success return BoneInfo
-
----
-
-> pose = RL.GetModelAnimationFramePose( ModelAnimation animation, int frame, int boneId )
+> pose = RL.GetModelAnimationKeyframePose( ModelAnimation animation, int keyframe, int boneId )
 
 Get modelAnimation bones base transformation (pose)
 
@@ -9250,11 +9240,51 @@ Get modelAnimation bones base transformation (pose)
 
 ---
 
-> name = RL.GetModelAnimationName( ModelAnimation animation )
+## Model - Model skeleton management functions
 
-Get modelAnimation name
+---
 
-- Success return string
+> success = RL.SetModelSkeletonBone( ModelSkeleton skeleton, int boneId, BoneInfo bone )
+
+Set model skeleton bone information
+
+- Failure return false
+- Success return true
+
+---
+
+> success = RL.SetModelSkeletonBindPose( ModelSkeleton model, int boneId, Transform pose )
+
+Set model skeleton bones base transformation (pose)
+
+- Failure return false
+- Success return true
+
+---
+
+> boneCount = RL.GetModelSkeletonBoneCount( ModelSkeleton skeleton )
+
+Get model skeleton number of bones
+
+- Success return int
+
+---
+
+> bone = RL.GetModelSkeletonBone( ModelSkeleton skeleton, int boneId )
+
+Get model skeleton bones information
+
+- Failure return nil
+- Success return BoneInfo
+
+---
+
+> pose = RL.GetModelSkeletonBindPose( ModelSkeleton skeleton, int boneId )
+
+Get model skeleton bones base transformation (pose)
+
+- Failure return nil
+- Success return Transform
 
 ---
 
@@ -12476,7 +12506,15 @@ Delete framebuffer from GPU
 
 ---
 
-> shaderId = RL.rlLoadShaderCode( string vsCode, string fsCode )
+> shaderId = RL.rlLoadShader( string code, int type )
+
+Load (compile) shader and return shader id (type: RL_VERTEX_SHADER, RL_FRAGMENT_SHADER, RL_COMPUTE_SHADER)
+
+- Success return int
+
+---
+
+> shaderId = RL.rlLoadShaderProgram( string vsCode, string fsCode )
 
 Load shader from code strings
 
@@ -12484,19 +12522,25 @@ Load shader from code strings
 
 ---
 
-> shaderId = RL.rlCompileShader( string shaderCode, int type )
+> shaderProgramId = RL.rlLoadShaderProgramEx( int vShaderId, int fShaderId )
 
-Compile custom shader and return shader id (type: RL_VERTEX_SHADER, RL_FRAGMENT_SHADER, RL_COMPUTE_SHADER)
+Load shader program, using already loaded shader ids
 
 - Success return int
 
 ---
 
-> shaderProgramId = RL.rlLoadShaderProgram( int vShaderId, int fShaderId )
+> shaderProgramId = RL.rlLoadShaderProgramCompute( int csId )
 
-Load custom shader program
+Load compute shader program
 
 - Success return int
+
+---
+
+> RL.rlUnloadShader( int id )
+
+Unload shader, loaded with rlLoadShader()
 
 ---
 
@@ -12553,14 +12597,6 @@ Set shader currently active (id and locations)
 ---
 
 ## RLGL - Compute shader management
-
----
-
-> programId = RL.rlLoadComputeShaderProgram( int shaderId )
-
-Load compute shader program
-
-- Success return int
 
 ---
 

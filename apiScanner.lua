@@ -150,9 +150,9 @@ for _, header in ipairs( headers ) do
 	
 		if file ~= nil then
 			local line = ""
-	
+
 			print( "\nFunctions not implemented from '"..header.file.."':\n" )
-	
+
 			repeat
 				line = file:read( "*l" )
 	

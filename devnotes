@@ -1,6 +1,5 @@
 Current {
 	* raylib 6
-		* Switch to raylib 6 style model animation system.
 		* File management functions.
 		* Draw functions.
 		* rlgl functions.
@@ -16,7 +15,6 @@ Backlog {
 	* Platform desktop SDL
 		* Text input not working on gui. Could this be Raylib issue?
 		* Haptic functions.
-		* SDL3 GPU?
 	* Models
 		* Material mapType range checks.
 		* Mesh bone weight management?
@@ -44,6 +42,9 @@ Notes {
 	I don't maintain/use the CMake build system, it seems it has been broken for a couple of months but nobody noticed... 😔
 	A patched raylib 6.1 will be released as soon as possible but at this moment raylib is going through a private security audit and I prefer to wait for it to finish and fix potential security concerns for new release
 	I put a lot of work on every release and it's really sad to see this happen... sorry for any potential inconvenience... you can use master branch in the meantime (it should be already fixed in there)
+	* ImageDraw() has been replaced by a more consistent API with DrawTexture*(), following same parameters pattern
+	I don't know if many users were using the ImageDraw() function, please, if you are a user reply and I can try to provide some #define to map ImageDraw() to the new ImageDrawImagePro().
+	Also note that several functions have been reviewed as part of that consistency alignment...
 }
 
 Needs Testing {

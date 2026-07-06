@@ -282,6 +282,8 @@ apiFile:write( "\n> NPatchInfo = { { 0, 0, 24, 24 }, 8, 8, 8, 8, NPATCH_NINE_PAT
 NPatchInfo, n-patch layout info\n\n---\n" )
 apiFile:write( "\n> ModelAnimations = Userdata\n\
 ModelAnimation\n\n---\n" )
+apiFile:write( "\n> ModelSkeleton = Userdata\n\
+ModelSkeleton\n\n---\n" )
 apiFile:write( "\n> AutomationEvent = Userdata\n\
 Automation event\n\n---\n" )
 apiFile:write( "\n> AutomationEventList = Userdata\n\

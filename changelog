@@ -5,6 +5,9 @@ KEY CHANGES:
 	- CHANGE: Switch to raylib 6.0.
 
 DETAILED CHANGES:
+	- ADDED: Animation blending example.
+	- ADDED: Model skeleton management functions.
+	- CHANGE: Model and ModelAnimation to new data format.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.9.0		Using raylib 5.5 and Forked Raygui 4.0

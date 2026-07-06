@@ -481,8 +481,8 @@ RL.SHADER_LOC_MAP_BRDF=25
 RL.SHADER_LOC_VERTEX_BONEIDS=26
 ---Shader location: vertex attribute: boneWeights
 RL.SHADER_LOC_VERTEX_BONEWEIGHTS=27
----Shader location: array of matrices uniform: boneMatrices
-RL.SHADER_LOC_BONE_MATRICES=28
+---// Shader location: array of matrices uniform: boneMatrices
+RL.assignGlobalInt=nil
 ---Shader location: sampler2d texture: diffuce (same as: SHADER_LOC_MAP_ALBEDO)
 RL.SHADER_LOC_MAP_DIFFUSE=15
 ---Shader location: sampler2d texture: specular (same as: SHADER_LOC_MAP_METALNESS)
@@ -507,7 +507,7 @@ RL.SHADER_UNIFORM_IVEC3=6
 ---Shader uniform type: ivec4 (4 int)
 RL.SHADER_UNIFORM_IVEC4=7
 ---Shader uniform type: sampler2d
-RL.SHADER_UNIFORM_SAMPLER2D=8
+RL.SHADER_UNIFORM_SAMPLER2D=12
 
 -- Defines - Shader attribute data types
 
@@ -1171,9 +1171,9 @@ RL.RL_MAX_SHADER_LOCATIONS=32
 -- Defines - RLGL Projection matrix culling
 
 ---Default projection matrix near cull distance
-RL.RL_CULL_DISTANCE_NEAR=0.01
+RL.RL_CULL_DISTANCE_NEAR=0.05
 ---Default projection matrix far cull distance
-RL.RL_CULL_DISTANCE_FAR=1000
+RL.RL_CULL_DISTANCE_FAR=4000
 
 -- Defines - RLGL Texture parameters
 
@@ -1342,6 +1342,7 @@ RL.RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD2=5
 RL.RL_DEFAULT_SHADER_ATTRIB_LOCATION_INDICES=6
 RL.RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEIDS=nil
 RL.RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEWEIGHTS=nil
+RL.RL_SUPPORT_MESH_GPU_SKINNING=nil
 
 -- Defines - RLGL GlVersion
 
@@ -4477,7 +4478,7 @@ function RL.FontCopy( font ) end
 function RL.IsFontValid( font ) end
 
 ---Load font data for further use. NOTE: fileData type should be unsigned char
----- Success return GlyphInfo{}
+---- Success return GlyphInfo{}, glyphCount
 ---@param fileData any
 ---@param fontSize integer
 ---@param codepoints table
@@ -5129,23 +5130,25 @@ function RL.SetModelMaterial( model, materialId, material ) end
 ---@return any RL.SetModelMeshMaterial
 function  RL.SetModelMeshMaterial( model, meshId, materialId ) end
 
----Set model bone information (skeleton)
----- Failure return false
----- Success return true
+---Set skeleton for a model
 ---@param model any
----@param boneId integer
----@param bone any
----@return any success 
-function RL.SetModelBone( model, boneId, bone ) end
+---@param skeleton any
+---@return any RL.SetModelSkeleton
+function  RL.SetModelSkeleton( model, skeleton ) end
 
----Set model bones base transformation (pose)
----- Failure return false
----- Success return true
+---Set current animation pose for a model
 ---@param model any
 ---@param boneId integer
 ---@param pose any
----@return any success 
-function RL.SetModelBindPose( model, boneId, pose ) end
+---@return any RL.SetModelCurrentPose
+function  RL.SetModelCurrentPose( model, boneId, pose ) end
+
+---Set model bone animated transformation matrix
+---@param model any
+---@param boneId integer
+---@param transform table
+---@return any RL.SetModelBoneMatrix
+function  RL.SetModelBoneMatrix( model, boneId, transform ) end
 
 ---Get model transform matrix
 ---- Success return Matrix
@@ -5181,27 +5184,27 @@ function RL.GetModelMesh( model, meshId ) end
 ---@return any material 
 function RL.GetModelMaterial( model, materialId ) end
 
----Get model number of bones
----- Success return int
+---Get model skeleton
+---- Success return ModelSkeleton. Return as lightuserdata
 ---@param model any
----@return any boneCount 
-function RL.GetModelBoneCount( model ) end
+---@return any skeleton 
+function RL.GetModelSkeleton( model ) end
 
----Get model bones information (skeleton)
----- Failure return nil
----- Success return BoneInfo
----@param model any
----@param boneId integer
----@return any bone 
-function RL.GetModelBone( model, boneId ) end
-
----Get models bones base transformation (pose)
+---Get model current animation pose (Transform)
 ---- Failure return nil
 ---- Success return Transform
 ---@param model any
 ---@param boneId integer
 ---@return any pose 
-function RL.GetModelBindPose( model, boneId ) end
+function RL.GetModelCurrentPose( model, boneId ) end
+
+---Get model bone animated transformation matrix
+---- Failure return nil
+---- Success return Matrix
+---@param model any
+---@param boneId integer
+---@return any pose 
+function RL.GetModelBoneMatrix( model, boneId ) end
 
 -- Models - Model drawing functions
 
@@ -5240,24 +5243,6 @@ function  RL.DrawModelWires( model, position, scale, tint ) end
 ---@param tint table
 ---@return any RL.DrawModelWiresEx
 function  RL.DrawModelWiresEx( model, position, rotationAxis, rotationAngle, scale, tint ) end
-
----Draw a model as points
----@param model any
----@param position table
----@param scale number
----@param tint table
----@return any RL.DrawModelPoints
-function  RL.DrawModelPoints( model, position, scale, tint ) end
-
----Draw a model as points with extended parameters
----@param model any
----@param position table
----@param rotationAxis table
----@param rotationAngle number
----@param scale table
----@param tint table
----@return any RL.DrawModelPointsEx
-function  RL.DrawModelPointsEx( model, position, rotationAxis, rotationAngle, scale, tint ) end
 
 ---Draw bounding box (wires)
 ---@param box any
@@ -5572,19 +5557,22 @@ function RL.GetMaterialParams( material ) end
 ---@return any animations 
 function RL.LoadModelAnimations( fileName ) end
 
----Update model animation pose
+---Update model animation pose (vertex buffers and bone matrices)
 ---@param model any
 ---@param animation any
 ---@param frame integer
 ---@return any RL.UpdateModelAnimation
 function  RL.UpdateModelAnimation( model, animation, frame ) end
 
----Update model animation mesh bone matrices (GPU skinning)
+---Update model animation pose, blending two animations
 ---@param model any
----@param animation any
----@param frame integer
----@return any RL.UpdateModelAnimationBones
-function  RL.UpdateModelAnimationBones( model, animation, frame ) end
+---@param animA any
+---@param frameA number
+---@param animB any
+---@param frameB number
+---@param blend number
+---@return any RL.UpdateModelAnimationEx
+function  RL.UpdateModelAnimationEx( model, animA, frameA, animB, frameB, blend ) end
 
 ---Unload animation data
 ---@param animation any
@@ -5603,30 +5591,27 @@ function  RL.UnloadModelAnimations( animations ) end
 ---@return any valid 
 function RL.IsModelAnimationValid( model, animation ) end
 
----Set modelAnimation bones information (skeleton)
----- Failure return false
----- Success return true
----@param animation any
----@param boneId integer
----@param bone any
----@return any success 
-function RL.SetModelAnimationBone( animation, boneId, bone ) end
-
----Set modelAnimation bones base transformation (pose)
----- Failure return false
----- Success return true
----@param animation any
----@param frame integer
----@param boneId integer
----@param pose any
----@return any success 
-function RL.SetModelAnimationFramePose( animation, frame, boneId, pose ) end
-
 ---Set modelAnimation name
 ---@param animation any
 ---@param name string
 ---@return any RL.SetModelAnimationName
 function  RL.SetModelAnimationName( animation, name ) end
+
+---Set modelAnimation bones base transformation (pose)
+---- Failure return false
+---- Success return true
+---@param animation any
+---@param keyframe integer
+---@param boneId integer
+---@param pose any
+---@return any success 
+function RL.SetModelAnimationKeyframePose( animation, keyframe, boneId, pose ) end
+
+---Get modelAnimation name
+---- Success return string
+---@param animation any
+---@return any name 
+function RL.GetModelAnimationName( animation ) end
 
 ---Return modelAnimation bone count
 ---- Success return int
@@ -5638,30 +5623,58 @@ function RL.GetModelAnimationBoneCount( animation ) end
 ---- Success return int
 ---@param animation any
 ---@return any frameCount 
-function RL.GetModelAnimationFrameCount( animation ) end
-
----Get modelAnimation bones information (skeleton)
----- Failure return nil
----- Success return BoneInfo
----@param animation any
----@param boneId integer
----@return any bone 
-function RL.GetModelAnimationBone( animation, boneId ) end
+function RL.GetModelAnimationKeyframeCount( animation ) end
 
 ---Get modelAnimation bones base transformation (pose)
 ---- Failure return nil
 ---- Success return Transform
 ---@param animation any
----@param frame integer
+---@param keyframe integer
 ---@param boneId integer
 ---@return any pose 
-function RL.GetModelAnimationFramePose( animation, frame, boneId ) end
+function RL.GetModelAnimationKeyframePose( animation, keyframe, boneId ) end
 
----Get modelAnimation name
----- Success return string
----@param animation any
----@return any name 
-function RL.GetModelAnimationName( animation ) end
+-- Model - Model skeleton management functions
+
+---Set model skeleton bone information
+---- Failure return false
+---- Success return true
+---@param skeleton any
+---@param boneId integer
+---@param bone any
+---@return any success 
+function RL.SetModelSkeletonBone( skeleton, boneId, bone ) end
+
+---Set model skeleton bones base transformation (pose)
+---- Failure return false
+---- Success return true
+---@param model any
+---@param boneId integer
+---@param pose any
+---@return any success 
+function RL.SetModelSkeletonBindPose( model, boneId, pose ) end
+
+---Get model skeleton number of bones
+---- Success return int
+---@param skeleton any
+---@return any boneCount 
+function RL.GetModelSkeletonBoneCount( skeleton ) end
+
+---Get model skeleton bones information
+---- Failure return nil
+---- Success return BoneInfo
+---@param skeleton any
+---@param boneId integer
+---@return any bone 
+function RL.GetModelSkeletonBone( skeleton, boneId ) end
+
+---Get model skeleton bones base transformation (pose)
+---- Failure return nil
+---- Success return Transform
+---@param skeleton any
+---@param boneId integer
+---@return any pose 
+function RL.GetModelSkeletonBindPose( skeleton, boneId ) end
 
 -- Model - Collision detection functions
 
@@ -8480,26 +8493,37 @@ function  RL.rlUnloadFramebuffer( id ) end
 
 -- RLGL - Shaders management
 
+---Load (compile) shader and return shader id (type: RL_VERTEX_SHADER, RL_FRAGMENT_SHADER, RL_COMPUTE_SHADER)
+---- Success return int
+---@param code string
+---@param type integer
+---@return any shaderId 
+function RL.rlLoadShader( code, type ) end
+
 ---Load shader from code strings
 ---- Success return int
 ---@param vsCode string
 ---@param fsCode string
 ---@return any shaderId 
-function RL.rlLoadShaderCode( vsCode, fsCode ) end
+function RL.rlLoadShaderProgram( vsCode, fsCode ) end
 
----Compile custom shader and return shader id (type: RL_VERTEX_SHADER, RL_FRAGMENT_SHADER, RL_COMPUTE_SHADER)
----- Success return int
----@param shaderCode string
----@param type integer
----@return any shaderId 
-function RL.rlCompileShader( shaderCode, type ) end
-
----Load custom shader program
+---Load shader program, using already loaded shader ids
 ---- Success return int
 ---@param vShaderId integer
 ---@param fShaderId integer
 ---@return any shaderProgramId 
-function RL.rlLoadShaderProgram( vShaderId, fShaderId ) end
+function RL.rlLoadShaderProgramEx( vShaderId, fShaderId ) end
+
+---Load compute shader program
+---- Success return int
+---@param csId integer
+---@return any shaderProgramId 
+function RL.rlLoadShaderProgramCompute( csId ) end
+
+---Unload shader, loaded with rlLoadShader()
+---@param id integer
+---@return any RL.rlUnloadShader
+function  RL.rlUnloadShader( id ) end
 
 ---Unload shader program
 ---@param id integer
@@ -8553,12 +8577,6 @@ function  RL.rlSetUniformSampler( locIndex, textureId ) end
 function  RL.rlSetShader( id, locs ) end
 
 -- RLGL - Compute shader management
-
----Load compute shader program
----- Success return int
----@param shaderId integer
----@return any programId 
-function RL.rlLoadComputeShaderProgram( shaderId ) end
 
 ---Dispatch compute shader (equivalent to *draw* for graphics pipeline)
 ---@param groupX integer

@@ -1799,10 +1799,17 @@ void luaRegister() {
 	assingGlobalFunction( "SaveFileText", lcoreSaveFileText );
 		/* Files system functions. */
 	assingGlobalFunction( "GetBasePath", lcoreGetBasePath );
+	assingGlobalFunction( "FileRename", lcoreFileRename );
+	assingGlobalFunction( "FileRemove", lcoreFileRemove );
+	assingGlobalFunction( "FileCopy", lcoreFileCopy );
+	assingGlobalFunction( "FileMove", lcoreFileMove );
+	assingGlobalFunction( "FileTextReplace", lcoreFileTextReplace );
+	assingGlobalFunction( "FileTextFindIndex", lcoreFileTextFindIndex );
 	assingGlobalFunction( "FileExists", lcoreFileExists );
 	assingGlobalFunction( "DirectoryExists", lcoreDirectoryExists );
 	assingGlobalFunction( "IsFileExtension", lcoreIsFileExtension );
 	assingGlobalFunction( "GetFileLength", lcoreGetFileLength );
+	assingGlobalFunction( "GetFileModTime", lcoreGetFileModTime );
 	assingGlobalFunction( "GetFileExtension", lcoreGetFileExtension );
 	assingGlobalFunction( "GetFileName", lcoreGetFileName );
 	assingGlobalFunction( "GetFileNameWithoutExt", lcoreGetFileNameWithoutExt );
@@ -1818,7 +1825,8 @@ void luaRegister() {
 	assingGlobalFunction( "LoadDirectoryFilesEx", lcoreLoadDirectoryFilesEx );
 	assingGlobalFunction( "IsFileDropped", lcoreIsFileDropped );
 	assingGlobalFunction( "LoadDroppedFiles", lcoreLoadDroppedFiles );
-	assingGlobalFunction( "GetFileModTime", lcoreGetFileModTime );
+	assingGlobalFunction( "GetDirectoryFileCount", lcoreGetDirectoryFileCount );
+	assingGlobalFunction( "GetDirectoryFileCountEx", lcoreGetDirectoryFileCountEx );
 		/* Compression/Encoding functionality. */
 	assingGlobalFunction( "CompressData", lcoreCompressData );
 	assingGlobalFunction( "DecompressData", lcoreDecompressData );
@@ -1827,6 +1835,7 @@ void luaRegister() {
 	assingGlobalFunction( "ComputeCRC32", lcoreComputeCRC32 );
 	assingGlobalFunction( "ComputeMD5", lcoreComputeMD5 );
 	assingGlobalFunction( "ComputeSHA1", lcoreComputeSHA1 );
+	assingGlobalFunction( "ComputeSHA256", lcoreComputeSHA256 );
 		/* Automation events functionality. */
 	assingGlobalFunction( "LoadAutomationEventList", lcoreLoadAutomationEventList );
 	assingGlobalFunction( "UnloadAutomationEventList", lcoreUnloadAutomationEventList );
@@ -1951,8 +1960,9 @@ void luaRegister() {
 	assingGlobalFunction( "GetShapesTextureRectangle", lshapesGetShapesTextureRectangle );
 	assingGlobalFunction( "DrawPixel", lshapesDrawPixel );
 	assingGlobalFunction( "DrawLine", lshapesDrawLine );
-	assingGlobalFunction( "DrawLineBezier", lshapesDrawLineBezier );
 	assingGlobalFunction( "DrawLineStrip", lshapesDrawLineStrip );
+	assingGlobalFunction( "DrawLineBezier", lshapesDrawLineBezier );
+	assingGlobalFunction( "DrawLineDashed", lshapesDrawLineDashed );
 	assingGlobalFunction( "DrawCircle", lshapesDrawCircle );
 	assingGlobalFunction( "DrawCircleSector", lshapesDrawCircleSector );
 	assingGlobalFunction( "DrawCircleSectorLines", lshapesDrawCircleSectorLines );

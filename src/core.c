@@ -1813,6 +1813,102 @@ int lcoreGetBasePath( lua_State* L ) {
 }
 
 /*
+> result = RL.FileRename( string fileName, string fileRename )
+
+Rename file (if exists). NOTE: Only rename file name required, not full path
+
+- Success return int
+*/
+int lcoreFileRename( lua_State* L ) {
+	const char* fileName = luaL_checkstring( L, 1 );
+	const char* fileRename = luaL_checkstring( L, 2 );
+
+	lua_pushinteger( L, FileRename( fileName, fileRename ) );
+
+	return 1;
+}
+
+/*
+> result = RL.FileRemove( string fileName )
+
+Remove file (if exists)
+
+- Success return int
+*/
+int lcoreFileRemove( lua_State* L ) {
+	const char* fileName = luaL_checkstring( L, 1 );
+
+	lua_pushinteger( L, FileRemove( fileName ) );
+
+	return 1;
+}
+
+/*
+> result = RL.FileCopy( string srcPath, string dstPath )
+
+Copy file from one path to another, dstPath created if it doesn't exist
+
+- Success return int
+*/
+int lcoreFileCopy( lua_State* L ) {
+	const char* srcPath = luaL_checkstring( L, 1 );
+	const char* dstPath = luaL_checkstring( L, 2 );
+
+	lua_pushinteger( L, FileCopy( srcPath, dstPath ) );
+
+	return 1;
+}
+
+/*
+> result = RL.FileMove( string srcPath, string dstPath )
+
+Move file from one directory to another, dstPath created if it doesn't exist
+
+- Success return int
+*/
+int lcoreFileMove( lua_State* L ) {
+	const char* srcPath = luaL_checkstring( L, 1 );
+	const char* dstPath = luaL_checkstring( L, 2 );
+
+	lua_pushinteger( L, FileMove( srcPath, dstPath ) );
+
+	return 1;
+}
+
+/*
+> result = RL.FileTextReplace( string fileName, string search, string replacement )
+
+Replace text in an existing file
+
+- Success return int
+*/
+int lcoreFileTextReplace( lua_State* L ) {
+	const char* fileName = luaL_checkstring( L, 1 );
+	const char* search = luaL_checkstring( L, 2 );
+	const char* replacement = luaL_checkstring( L, 3 );
+
+	lua_pushinteger( L, FileTextReplace( fileName, search, replacement ) );
+
+	return 1;
+}
+
+/*
+> result = RL.FileTextFindIndex( string fileName, string search )
+
+Find text in existing file
+
+- Success return int
+*/
+int lcoreFileTextFindIndex( lua_State* L ) {
+	const char* fileName = luaL_checkstring( L, 1 );
+	const char* search = luaL_checkstring( L, 2 );
+
+	lua_pushinteger( L, FileTextFindIndex( fileName, search ) );
+
+	return 1;
+}
+
+/*
 > fileExists = RL.FileExists( string fileName )
 
 Check if file exists
@@ -1860,6 +1956,19 @@ Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
 */
 int lcoreGetFileLength( lua_State* L ) {
 	lua_pushinteger( L, GetFileLength( luaL_checkstring( L, 1 ) ) );
+
+	return 1;
+}
+
+/*
+> time = RL.GetFileModTime( string fileName )
+
+Get file modification time (Last write time)
+
+- Success return int
+*/
+int lcoreGetFileModTime( lua_State* L ) {
+	lua_pushinteger( L, GetFileModTime( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
 }
@@ -2093,14 +2202,34 @@ int lcoreLoadDroppedFiles( lua_State* L ) {
 }
 
 /*
-> time = RL.GetFileModTime( string fileName )
+> count = RL.GetDirectoryFileCount( string dirPath )
 
-Get file modification time (Last write time)
+Get the file count in a directory
 
 - Success return int
 */
-int lcoreGetFileModTime( lua_State* L ) {
-	lua_pushinteger( L, GetFileModTime( luaL_checkstring( L, 1 ) ) );
+int lcoreGetDirectoryFileCount( lua_State* L ) {
+	const char* dirPath = luaL_checkstring( L, 1 );
+
+	lua_pushinteger( L, GetDirectoryFileCount( dirPath ) );
+
+	return 1;
+}
+
+/*
+> count = RL.GetDirectoryFileCountEx( string basePath, string filter, bool scanSubdirs)
+
+Get the file count in a directory with extension filtering and recursive directory scan.
+Use 'DIR' in the filter string to include directories in the result
+
+- Success return int
+*/
+int lcoreGetDirectoryFileCountEx( lua_State* L ) {
+	const char* basePath = luaL_checkstring( L, 1 );
+	const char* filter = luaL_checkstring( L, 2 );
+	bool scanSubdirs = uluaGetBoolean( L, 3 );
+
+	lua_pushinteger( L, GetDirectoryFileCountEx( basePath, filter, scanSubdirs ) );
 
 	return 1;
 }
@@ -2220,7 +2349,7 @@ int lcoreComputeCRC32( lua_State* L ) {
 /*
 > code = RL.ComputeMD5( Buffer data )
 
-Compute MD5 hash code, returns static int[4] (16 bytes).
+Compute MD5 hash code, returns static int[4] (16 bytes)
 
 - Failure return false
 - Success return int{4}
@@ -2242,7 +2371,7 @@ int lcoreComputeMD5( lua_State* L ) {
 /*
 > code = RL.ComputeSHA1( Buffer data )
 
-Compute SHA1 hash code, returns static int[5] (20 bytes).
+Compute SHA1 hash code, returns static int[5] (20 bytes)
 
 - Failure return false
 - Success return int{5}
@@ -2254,6 +2383,28 @@ int lcoreComputeSHA1( lua_State* L ) {
 	lua_createtable( L, 5, 0 );
 
 	for ( unsigned int i = 0; i < 5; i++ ) {
+		lua_pushinteger( L, code[i] );
+		lua_rawseti( L, -2, i + 1 );
+	}
+
+	return 1;
+}
+
+/*
+> code = RL.ComputeSHA256( Buffer data )
+
+Compute SHA256 hash code, returns static int[8] (32 bytes)
+
+- Failure return false
+- Success return int{8}
+*/
+int lcoreComputeSHA256( lua_State* L ) {
+	Buffer* buffer = uluaGetBuffer( L, 1 );
+
+	unsigned int* code = ComputeSHA256( buffer->data, buffer->size );
+	lua_createtable( L, 8, 0 );
+
+	for ( unsigned int i = 0; i < 8; i++ ) {
 		lua_pushinteger( L, code[i] );
 		lua_rawseti( L, -2, i + 1 );
 	}

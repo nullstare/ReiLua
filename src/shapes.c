@@ -124,6 +124,23 @@ int lshapesDrawLineBezier( lua_State* L ) {
 }
 
 /*
+> RL.DrawLineDashed( Vector2 startPos, Vector2 endPos, int dashSize, int spaceSize, Color color )
+
+Draw a dashed line
+*/
+int lshapesDrawLineDashed( lua_State* L ) {
+	Vector2 startPos = uluaGetVector2( L, 1 );
+	Vector2 endPos = uluaGetVector2( L, 2 );
+	int dashSize = luaL_checknumber( L, 3 );
+	int spaceSize = luaL_checknumber( L, 4 );
+	Color color = uluaGetColor( L, 5 );
+
+	DrawLineDashed( startPos, endPos, dashSize, spaceSize, color );
+
+	return 0;
+}
+
+/*
 > RL.DrawCircle( Vector2 center, float radius, Color color )
 
 Draw a color-filled circle

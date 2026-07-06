@@ -5617,6 +5617,54 @@ Return game directory (where main.lua is located)
 
 ---
 
+> result = RL.FileRename( string fileName, string fileRename )
+
+Rename file (if exists). NOTE: Only rename file name required, not full path
+
+- Success return int
+
+---
+
+> result = RL.FileRemove( string fileName )
+
+Remove file (if exists)
+
+- Success return int
+
+---
+
+> result = RL.FileCopy( string srcPath, string dstPath )
+
+Copy file from one path to another, dstPath created if it doesn't exist
+
+- Success return int
+
+---
+
+> result = RL.FileMove( string srcPath, string dstPath )
+
+Move file from one directory to another, dstPath created if it doesn't exist
+
+- Success return int
+
+---
+
+> result = RL.FileTextReplace( string fileName, string search, string replacement )
+
+Replace text in an existing file
+
+- Success return int
+
+---
+
+> result = RL.FileTextFindIndex( string fileName, string search )
+
+Find text in existing file
+
+- Success return int
+
+---
+
 > fileExists = RL.FileExists( string fileName )
 
 Check if file exists
@@ -5644,6 +5692,14 @@ Check file extension (Including point: .png, .wav)
 > length = RL.GetFileLength( string fileName )
 
 Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
+
+- Success return int
+
+---
+
+> time = RL.GetFileModTime( string fileName )
+
+Get file modification time (Last write time)
 
 - Success return int
 
@@ -5769,9 +5825,18 @@ Load dropped filepaths
 
 ---
 
-> time = RL.GetFileModTime( string fileName )
+> count = RL.GetDirectoryFileCount( string dirPath )
 
-Get file modification time (Last write time)
+Get the file count in a directory
+
+- Success return int
+
+---
+
+> count = RL.GetDirectoryFileCountEx( string basePath, string filter, bool scanSubdirs)
+
+Get the file count in a directory with extension filtering and recursive directory scan.
+Use 'DIR' in the filter string to include directories in the result
 
 - Success return int
 
@@ -5824,7 +5889,7 @@ Compute CRC32 hash code.
 
 > code = RL.ComputeMD5( Buffer data )
 
-Compute MD5 hash code, returns static int[4] (16 bytes).
+Compute MD5 hash code, returns static int[4] (16 bytes)
 
 - Failure return false
 - Success return int{4}
@@ -5833,10 +5898,19 @@ Compute MD5 hash code, returns static int[4] (16 bytes).
 
 > code = RL.ComputeSHA1( Buffer data )
 
-Compute SHA1 hash code, returns static int[5] (20 bytes).
+Compute SHA1 hash code, returns static int[5] (20 bytes)
 
 - Failure return false
 - Success return int{5}
+
+---
+
+> code = RL.ComputeSHA256( Buffer data )
+
+Compute SHA256 hash code, returns static int[8] (32 bytes)
+
+- Failure return false
+- Success return int{8}
 
 ---
 
@@ -6723,6 +6797,12 @@ Draw lines sequence
 > RL.DrawLineBezier( Vector2 startPos, Vector2 endPos, float thickness, Color color )
 
 Draw a line using cubic-bezier curves in-out
+
+---
+
+> RL.DrawLineDashed( Vector2 startPos, Vector2 endPos, int dashSize, int spaceSize, Color color )
+
+Draw a dashed line
 
 ---
 

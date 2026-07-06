@@ -65,6 +65,8 @@ local raylib = {
 		UnloadWaveSamples = "Handled internally",
 		GetPixelColor = "Not seen necessary",
 		SetPixelColor = "Not seen necessary",
+		DrawEllipseV = "Replaced by DrawEllipse",
+		DrawEllipseLinesV = "Replaced by DrawEllipseLines",
 	},
 	info = {
 	}

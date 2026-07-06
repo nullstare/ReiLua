@@ -129,10 +129,17 @@ int lcoreLoadFileText( lua_State* L );
 int lcoreSaveFileText( lua_State* L );
 /* Files system functions. */
 int lcoreGetBasePath( lua_State* L );
+int lcoreFileRename( lua_State* L );
+int lcoreFileRemove( lua_State* L );
+int lcoreFileCopy( lua_State* L );
+int lcoreFileMove( lua_State* L );
+int lcoreFileTextReplace( lua_State* L );
+int lcoreFileTextFindIndex( lua_State* L );
 int lcoreFileExists( lua_State* L );
 int lcoreDirectoryExists( lua_State* L );
 int lcoreIsFileExtension( lua_State* L );
 int lcoreGetFileLength( lua_State* L );
+int lcoreGetFileModTime( lua_State* L );
 int lcoreGetFileExtension( lua_State* L );
 int lcoreGetFileName( lua_State* L );
 int lcoreGetFileNameWithoutExt( lua_State* L );
@@ -148,7 +155,8 @@ int lcoreLoadDirectoryFiles( lua_State* L );
 int lcoreLoadDirectoryFilesEx( lua_State* L );
 int lcoreIsFileDropped( lua_State* L );
 int lcoreLoadDroppedFiles( lua_State* L );
-int lcoreGetFileModTime( lua_State* L );
+int lcoreGetDirectoryFileCount( lua_State* L );
+int lcoreGetDirectoryFileCountEx( lua_State* L );
 /* Compression/Encoding functionality. */
 int lcoreCompressData( lua_State* L );
 int lcoreDecompressData( lua_State* L );
@@ -157,6 +165,7 @@ int lcoreDecodeDataBase64( lua_State* L );
 int lcoreComputeCRC32( lua_State* L );
 int lcoreComputeMD5( lua_State* L );
 int lcoreComputeSHA1( lua_State* L );
+int lcoreComputeSHA256( lua_State* L );
 /* Automation events functionality. */
 int lcoreLoadAutomationEventList( lua_State* L );
 int lcoreUnloadAutomationEventList( lua_State* L );

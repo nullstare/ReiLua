@@ -2225,6 +2225,48 @@ function RL.SaveFileText( fileName, text ) end
 ---@return any path 
 function RL.GetBasePath() end
 
+---Rename file (if exists). NOTE: Only rename file name required, not full path
+---- Success return int
+---@param fileName string
+---@param fileRename string
+---@return any result 
+function RL.FileRename( fileName, fileRename ) end
+
+---Remove file (if exists)
+---- Success return int
+---@param fileName string
+---@return any result 
+function RL.FileRemove( fileName ) end
+
+---Copy file from one path to another, dstPath created if it doesn't exist
+---- Success return int
+---@param srcPath string
+---@param dstPath string
+---@return any result 
+function RL.FileCopy( srcPath, dstPath ) end
+
+---Move file from one directory to another, dstPath created if it doesn't exist
+---- Success return int
+---@param srcPath string
+---@param dstPath string
+---@return any result 
+function RL.FileMove( srcPath, dstPath ) end
+
+---Replace text in an existing file
+---- Success return int
+---@param fileName string
+---@param search string
+---@param replacement string
+---@return any result 
+function RL.FileTextReplace( fileName, search, replacement ) end
+
+---Find text in existing file
+---- Success return int
+---@param fileName string
+---@param search string
+---@return any result 
+function RL.FileTextFindIndex( fileName, search ) end
+
 ---Check if file exists
 ---- Success return bool
 ---@param fileName string
@@ -2249,6 +2291,12 @@ function RL.IsFileExtension( fileName, ext ) end
 ---@param fileName string
 ---@return any length 
 function RL.GetFileLength( fileName ) end
+
+---Get file modification time (Last write time)
+---- Success return int
+---@param fileName string
+---@return any time 
+function RL.GetFileModTime( fileName ) end
 
 ---Get pointer to extension for a filename string (Includes dot: '.png')
 ---- Success return string
@@ -2338,11 +2386,20 @@ function RL.IsFileDropped() end
 ---@return any files 
 function RL.LoadDroppedFiles() end
 
----Get file modification time (Last write time)
+---Get the file count in a directory
 ---- Success return int
----@param fileName string
----@return any time 
-function RL.GetFileModTime( fileName ) end
+---@param dirPath string
+---@return any count 
+function RL.GetDirectoryFileCount( dirPath ) end
+
+---Get the file count in a directory with extension filtering and recursive directory scan.
+---Use 'DIR' in the filter string to include directories in the result
+---- Success return int
+---@param basePath string
+---@param filter string
+---@param scanSubdir boolean
+---@return any count 
+function RL.GetDirectoryFileCountEx( basePath, filter, scanSubdir ) end
 
 -- Core - Compression/Encoding functionality
 
@@ -2379,19 +2436,26 @@ function RL.DecodeDataBase64( data ) end
 ---@return any code 
 function RL.ComputeCRC32( data ) end
 
----Compute MD5 hash code, returns static int[4] (16 bytes).
+---Compute MD5 hash code, returns static int[4] (16 bytes)
 ---- Failure return false
 ---- Success return int{4}
 ---@param data any
 ---@return any code 
 function RL.ComputeMD5( data ) end
 
----Compute SHA1 hash code, returns static int[5] (20 bytes).
+---Compute SHA1 hash code, returns static int[5] (20 bytes)
 ---- Failure return false
 ---- Success return int{5}
 ---@param data any
 ---@return any code 
 function RL.ComputeSHA1( data ) end
+
+---Compute SHA256 hash code, returns static int[8] (32 bytes)
+---- Failure return false
+---- Success return int{8}
+---@param data any
+---@return any code 
+function RL.ComputeSHA256( data ) end
 
 -- Core - Automation events functionality
 
@@ -3107,6 +3171,15 @@ function  RL.DrawLineStrip( points, color ) end
 ---@param color table
 ---@return any RL.DrawLineBezier
 function  RL.DrawLineBezier( startPos, endPos, thickness, color ) end
+
+---Draw a dashed line
+---@param startPos table
+---@param endPos table
+---@param dashSize integer
+---@param spaceSize integer
+---@param color table
+---@return any RL.DrawLineDashed
+function  RL.DrawLineDashed( startPos, endPos, dashSize, spaceSize, color ) end
 
 ---Draw a color-filled circle
 ---@param center table

@@ -1,7 +1,5 @@
 Current {
 	* raylib 6
-		* File management functions.
-		* Draw functions.
 		* rlgl functions.
 		* raymath functions.
 }

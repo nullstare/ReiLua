@@ -2444,6 +2444,7 @@ void luaRegister() {
 	assingGlobalFunction( "Vector2Length", lmathVector2Length );
 	assingGlobalFunction( "Vector2LengthSqr", lmathVector2LengthSqr );
 	assingGlobalFunction( "Vector2DotProduct", lmathVector2DotProduct );
+	assingGlobalFunction( "Vector2CrossProduct", lmathVector2CrossProduct );
 	assingGlobalFunction( "Vector2Distance", lmathVector2Distance );
 	assingGlobalFunction( "Vector2DistanceSqr", lmathVector2DistanceSqr );
 	assingGlobalFunction( "Vector2Angle", lmathVector2Angle );
@@ -2536,6 +2537,7 @@ void luaRegister() {
 	assingGlobalFunction( "MatrixAdd", lmathMatrixAdd );
 	assingGlobalFunction( "MatrixSubtract", lmathMatrixSubtract );
 	assingGlobalFunction( "MatrixMultiply", lmathMatrixMultiply );
+	assingGlobalFunction( "MatrixMultiplyValue", lmathMatrixMultiplyValue );
 	assingGlobalFunction( "MatrixTranslate", lmathMatrixTranslate );
 	assingGlobalFunction( "MatrixRotate", lmathMatrixRotate );
 	assingGlobalFunction( "MatrixRotateX", lmathMatrixRotateX );
@@ -2548,6 +2550,7 @@ void luaRegister() {
 	assingGlobalFunction( "MatrixPerspective", lmathMatrixPerspective );
 	assingGlobalFunction( "MatrixOrtho", lmathMatrixOrtho );
 	assingGlobalFunction( "MatrixLookAt", lmathMatrixLookAt );
+	assingGlobalFunction( "MatrixCompose", lmathMatrixCompose );
 	assingGlobalFunction( "MatrixDecompose", lmathMatrixDecompose );
 		/* Quaternion. */
 	assingGlobalFunction( "QuaternionAdd", lmathQuaternionAdd );
@@ -2740,10 +2743,13 @@ void luaRegister() {
 	assingGlobalFunction( "rlDisableScissorTest", lrlglDisableScissorTest );
 	assingGlobalFunction( "rlScissor", lrlglScissor );
 	assingGlobalFunction( "rlEnableWireMode", lrlglEnableWireMode );
-	assingGlobalFunction( "rlEnablePointMode", lrlglEnablePointMode );
 	assingGlobalFunction( "rlDisableWireMode", lrlglDisableWireMode );
+	assingGlobalFunction( "rlEnablePointMode", lrlglEnablePointMode );
+	assingGlobalFunction( "rlDisablePointMode", lrlglDisablePointMode );
 	assingGlobalFunction( "rlSetLineWidth", lrlglSetLineWidth );
 	assingGlobalFunction( "rlGetLineWidth", lrlglGetLineWidth );
+	assingGlobalFunction( "rlSetPointSize", lrlglSetPointSize );
+	assingGlobalFunction( "rlGetPointSize", lrlglGetPointSize );
 	assingGlobalFunction( "rlEnableSmoothLines", lrlglEnableSmoothLines );
 	assingGlobalFunction( "rlDisableSmoothLines", lrlglDisableSmoothLines );
 	assingGlobalFunction( "rlEnableStereoRender", lrlglEnableStereoRender );
@@ -2803,6 +2809,8 @@ void luaRegister() {
 	assingGlobalFunction( "rlFramebufferAttach", lrlglFramebufferAttach );
 	assingGlobalFunction( "rlFramebufferComplete", lrlglFramebufferComplete );
 	assingGlobalFunction( "rlUnloadFramebuffer", lrlglUnloadFramebuffer );
+	assingGlobalFunction( "rlCopyFramebuffer", lrlglCopyFramebuffer );
+	assingGlobalFunction( "rlResizeFramebuffer", lrlglResizeFramebuffer );
 		/* Shaders management */
 	assingGlobalFunction( "rlLoadShader", lrlglLoadShader );
 	assingGlobalFunction( "rlLoadShaderProgram", lrlglLoadShaderProgram );

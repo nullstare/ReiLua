@@ -803,6 +803,17 @@ int lrlglEnableWireMode( lua_State* L ) {
 }
 
 /*
+> RL.rlDisableWireMode()
+
+Disable wire mode
+*/
+int lrlglDisableWireMode( lua_State* L ) {
+	rlDisableWireMode();
+
+	return 0;
+}
+
+/*
 > RL.rlEnablePointMode()
 
 Enable point mode
@@ -814,12 +825,12 @@ int lrlglEnablePointMode( lua_State* L ) {
 }
 
 /*
-> RL.rlDisableWireMode()
+> RL.rlDisablePointMode()
 
-Disable wire mode
+Disable point mode
 */
-int lrlglDisableWireMode( lua_State* L ) {
-	rlDisableWireMode();
+int lrlglDisablePointMode( lua_State* L ) {
+	rlDisablePointMode();
 
 	return 0;
 }
@@ -844,6 +855,32 @@ Get the line drawing width
 */
 int lrlglGetLineWidth( lua_State* L ) {
 	lua_pushnumber( L, rlGetLineWidth() );
+
+	return 1;
+}
+
+/*
+> RL.rlSetPointSize( int pointSize )
+
+Set the point drawing size
+*/
+int lrlglSetPointSize( lua_State* L ) {
+	int pointSize = luaL_checkinteger( L, 1 );
+
+	rlSetPointSize( pointSize );
+
+	return 0;
+}
+
+/*
+> size = RL.rlGetPointSize()
+
+Get the point drawing size
+
+- Success return float
+*/
+int lrlglGetPointSize( lua_State* L ) {
+	lua_pushnumber( L, rlGetPointSize() );
 
 	return 1;
 }
@@ -1665,6 +1702,34 @@ int lrlglUnloadFramebuffer( lua_State* L ) {
 	unsigned int id = luaL_checkinteger( L, 1 );
 
 	rlUnloadFramebuffer( id );
+
+	return 0;
+}
+
+/*
+> RL.rlCopyFramebuffer( Rectangle rect, int format, Buffer pixels )
+
+Copy framebuffer pixel data to internal buffer. Used by GRAPHICS_API_OPENGL_SOFTWARE
+*/
+int lrlglCopyFramebuffer( lua_State* L ) {
+	Rectangle rect = uluaGetRectangle( L, 1 );
+	int format = luaL_checkinteger( L, 2 );
+	Buffer* pixels = uluaGetBuffer( L, 3 );
+
+	rlCopyFramebuffer( rect.x, rect.y, rect.width, rect.height, format, pixels->data );
+
+	return 0;
+}
+
+/*
+> RL.rlResizeFramebuffer( Vector2 size )
+
+Resize internal framebuffer. Used by GRAPHICS_API_OPENGL_SOFTWARE
+*/
+int lrlglResizeFramebuffer( lua_State* L ) {
+	Vector2 size = uluaGetVector2( L, 1 );
+
+	rlResizeFramebuffer( size.x, size.y );
 
 	return 0;
 }

@@ -6362,6 +6362,13 @@ function RL.Vector2LengthSqr( v ) end
 ---@return any result 
 function RL.Vector2DotProduct( v1, v2 ) end
 
+---Calculate two vectors cross product
+---- Success return float
+---@param v1 table
+---@param v2 table
+---@return any result 
+function RL.Vector2CrossProduct( v1, v2 ) end
+
 ---Calculate distance between two vectors
 ---- Success return float
 ---@param v1 table
@@ -6999,7 +7006,14 @@ function RL.MatrixSubtract( left, right ) end
 ---@param left table
 ---@param right table
 ---@return any result 
-function RL.MatrixMultiply( left, right ) end
+function RL.MatrixMultiplyValue( left, right ) end
+
+---Multiply matrix components by value
+---- Success return Matrix
+---@param left table
+---@param value number
+---@return any result 
+function RL.MatrixMultiply( left, value ) end
 
 ---Get translation matrix
 ---- Success return Matrix
@@ -7088,6 +7102,14 @@ function RL.MatrixOrtho( left, right, bottom, top, near, far ) end
 ---@param up table
 ---@return any result 
 function RL.MatrixLookAt( eye, target, up ) end
+
+---Compose a transformation matrix from rotational, translational and scaling components
+---- Success return Matrix
+---@param translation table
+---@param rotation table
+---@param scale table
+---@return any result 
+function RL.MatrixCompose( translation, rotation, scale ) end
 
 ---Decompose a transformation matrix into its rotational, translational and scaling components
 ---- Success return Vector3, Quaternion, Vector3
@@ -8209,13 +8231,17 @@ function  RL.rlScissor( area ) end
 ---@return any RL.rlEnableWireMode
 function  RL.rlEnableWireMode() end
 
+---Disable wire mode
+---@return any RL.rlDisableWireMode
+function  RL.rlDisableWireMode() end
+
 ---Enable point mode
 ---@return any RL.rlEnablePointMode
 function  RL.rlEnablePointMode() end
 
----Disable wire mode
----@return any RL.rlDisableWireMode
-function  RL.rlDisableWireMode() end
+---Disable point mode
+---@return any RL.rlDisablePointMode
+function  RL.rlDisablePointMode() end
 
 ---Set the line drawing width
 ---@param width number
@@ -8226,6 +8252,16 @@ function  RL.rlSetLineWidth( width ) end
 ---- Success return float
 ---@return any width 
 function RL.rlGetLineWidth() end
+
+---Set the point drawing size
+---@param pointSize integer
+---@return any RL.rlSetPointSize
+function  RL.rlSetPointSize( pointSize ) end
+
+---Get the point drawing size
+---- Success return float
+---@return any size 
+function RL.rlGetPointSize() end
 
 ---Enable line aliasing
 ---@return any RL.rlEnableSmoothLines
@@ -8563,6 +8599,18 @@ function RL.rlFramebufferComplete( id ) end
 ---@param id integer
 ---@return any RL.rlUnloadFramebuffer
 function  RL.rlUnloadFramebuffer( id ) end
+
+---Copy framebuffer pixel data to internal buffer. Used by GRAPHICS_API_OPENGL_SOFTWARE
+---@param rect table
+---@param format integer
+---@param pixels any
+---@return any RL.rlCopyFramebuffer
+function  RL.rlCopyFramebuffer( rect, format, pixels ) end
+
+---Resize internal framebuffer. Used by GRAPHICS_API_OPENGL_SOFTWARE
+---@param size table
+---@return any RL.rlResizeFramebuffer
+function  RL.rlResizeFramebuffer( size ) end
 
 -- RLGL - Shaders management
 

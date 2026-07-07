@@ -10083,6 +10083,14 @@ Calculate two vectors dot product
 
 ---
 
+> result = RL.Vector2CrossProduct( Vector2 v1, Vector2 v2 )
+
+Calculate two vectors cross product
+
+- Success return float
+
+---
+
 > result = RL.Vector2Distance( Vector2 v1, Vector2 v2 )
 
 Calculate distance between two vectors
@@ -10817,9 +10825,17 @@ Subtract two matrices (left - right)
 
 ---
 
-> result = RL.MatrixMultiply( Matrix left, Matrix right )
+> result = RL.MatrixMultiplyValue( Matrix left, Matrix right )
 
 Get two matrix multiplication
+
+- Success return Matrix
+
+---
+
+> result = RL.MatrixMultiply( Matrix left, float value )
+
+Multiply matrix components by value
 
 - Success return Matrix
 
@@ -10916,6 +10932,14 @@ Get orthographic projection matrix
 > result = RL.MatrixLookAt( Vector3 eye, Vector3 target, Vector3 up )
 
 Get camera look-at matrix (View matrix)
+
+- Success return Matrix
+
+---
+
+> result = RL.MatrixCompose( Vector3 translation, Quaternion rotation, Vector3 scale )
+
+Compose a transformation matrix from rotational, translational and scaling components
 
 - Success return Matrix
 
@@ -12168,15 +12192,21 @@ Enable wire mode
 
 ---
 
+> RL.rlDisableWireMode()
+
+Disable wire mode
+
+---
+
 > RL.rlEnablePointMode()
 
 Enable point mode
 
 ---
 
-> RL.rlDisableWireMode()
+> RL.rlDisablePointMode()
 
-Disable wire mode
+Disable point mode
 
 ---
 
@@ -12189,6 +12219,20 @@ Set the line drawing width
 > width = RL.rlGetLineWidth()
 
 Get the line drawing width
+
+- Success return float
+
+---
+
+> RL.rlSetPointSize( int pointSize )
+
+Set the point drawing size
+
+---
+
+> size = RL.rlGetPointSize()
+
+Get the point drawing size
 
 - Success return float
 
@@ -12579,6 +12623,18 @@ Verify framebuffer is complete
 > RL.rlUnloadFramebuffer( int id )
 
 Delete framebuffer from GPU
+
+---
+
+> RL.rlCopyFramebuffer( Rectangle rect, int format, Buffer pixels )
+
+Copy framebuffer pixel data to internal buffer. Used by GRAPHICS_API_OPENGL_SOFTWARE
+
+---
+
+> RL.rlResizeFramebuffer( Vector2 size )
+
+Resize internal framebuffer. Used by GRAPHICS_API_OPENGL_SOFTWARE
 
 ---
 

@@ -290,6 +290,22 @@ int lmathVector2DotProduct( lua_State* L ) {
 }
 
 /*
+> result = RL.Vector2CrossProduct( Vector2 v1, Vector2 v2 )
+
+Calculate two vectors cross product
+
+- Success return float
+*/
+int lmathVector2CrossProduct( lua_State* L ) {
+	Vector2 v1 = uluaGetVector2( L, 1 );
+	Vector2 v2 = uluaGetVector2( L, 2 );
+
+	lua_pushnumber( L, Vector2CrossProduct( v1, v2 ) );
+
+	return 1;
+}
+
+/*
 > result = RL.Vector2Distance( Vector2 v1, Vector2 v2 )
 
 Calculate distance between two vectors
@@ -1717,7 +1733,7 @@ int lmathMatrixSubtract( lua_State* L ) {
 }
 
 /*
-> result = RL.MatrixMultiply( Matrix left, Matrix right )
+> result = RL.MatrixMultiplyValue( Matrix left, Matrix right )
 
 Get two matrix multiplication
 
@@ -1728,6 +1744,22 @@ int lmathMatrixMultiply( lua_State* L ) {
 	Matrix mat2 = uluaGetMatrix( L, 2 );
 
 	uluaPushMatrix( L, MatrixMultiply( mat1, mat2 ) );
+
+	return 1;
+}
+
+/*
+> result = RL.MatrixMultiply( Matrix left, float value )
+
+Multiply matrix components by value
+
+- Success return Matrix
+*/
+int lmathMatrixMultiplyValue( lua_State* L ) {
+	Matrix left = uluaGetMatrix( L, 1 );
+	float value = luaL_checknumber( L, 2 );
+
+	uluaPushMatrix( L, MatrixMultiplyValue( left, value ) );
 
 	return 1;
 }
@@ -1924,6 +1956,23 @@ int lmathMatrixLookAt( lua_State* L ) {
 	Vector3 up = uluaGetVector3( L, 3 );
 
 	uluaPushMatrix( L, MatrixLookAt( eye, target, up ) );
+
+	return 1;
+}
+
+/*
+> result = RL.MatrixCompose( Vector3 translation, Quaternion rotation, Vector3 scale )
+
+Compose a transformation matrix from rotational, translational and scaling components
+
+- Success return Matrix
+*/
+int lmathMatrixCompose( lua_State* L ) {
+	Vector3 translation = uluaGetVector3( L, 1 );
+	Quaternion rotation = uluaGetQuaternion( L, 1 );
+	Vector3 scale = uluaGetVector3( L, 1 );
+
+	uluaPushMatrix( L, MatrixCompose( translation, rotation, scale ) );
 
 	return 1;
 }

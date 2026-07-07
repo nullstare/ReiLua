@@ -141,7 +141,7 @@ function RL.init()
 	RL.SetWindowPosition( { monitorPos.x + monitorSize.x / 2 - winSize.x / 2, monitorPos.y + monitorSize.y / 2 - winSize.y / 2 } )
 
 	RL.rlViewport( { 0, 0, res.x ,res.y } )
-	shaderProgram = RL.rlLoadShaderCode( vertexShader, fragmentShader )
+	shaderProgram = RL.rlLoadShaderProgram( vertexShader, fragmentShader )
 
 	createTriangle()
 end

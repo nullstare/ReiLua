@@ -13,6 +13,7 @@ DETAILED CHANGES:
 	- ADDED: DrawLineDashed.
 	- ADDED: New rlgl functions.
 	- ADDED: New raymath functions.
+	- FIXED: Examples iqm_test and rlgl_hello_triangle.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.9.0		Using raylib 5.5 and Forked Raygui 4.0

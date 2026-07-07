@@ -58,7 +58,7 @@ function RL.update( delta )
 		end
 
 		frame = 0.0
-		frameCount = RL.GetModelAnimationFrameCount( animations[ curAnim + 1 ] )
+		frameCount = RL.GetModelAnimationKeyframeCount( animations[ curAnim + 1 ] )
 	elseif RL.IsKeyPressed( RL.KEY_UP ) then
 		animSpeed = animSpeed + 5
 	elseif RL.IsKeyPressed( RL.KEY_DOWN ) then

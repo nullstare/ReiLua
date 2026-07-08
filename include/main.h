@@ -14,14 +14,6 @@
 
 #include "external/glad.h"
 
-// #ifndef STB_RECT_PACK_IMPLEMENTATION
-// #if !defined(SUPPORT_FILEFORMAT_TTF) && !defined(SUPPORT_FILEFORMAT_BDF)
-// #ifndef STB_INCLUDE_STB_RECT_PACK_H
-// 	#define STB_RECT_PACK_IMPLEMENTATION
-// #endif
-
-#include "external/stb_rect_pack.h"
-
 #ifdef PLATFORM_DESKTOP
 	#include "GLFW/glfw3.h"
 	#include "GLFW/glfw3native.h"

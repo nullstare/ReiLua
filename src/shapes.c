@@ -5,6 +5,17 @@
 #include "textures.h"
 
 /*
+	NOTE! Not ideal solution. There is a conflict with rtext.c STB_RECT_PACK_IMPLEMENTATION
+*/
+// #ifndef SUPPORT_FILEFORMAT_TTF && SUPPORT_FILEFORMAT_BDF
+// #ifndef STB_RECT_PACK_IMPLEMENTATION
+#if SHARED
+	#define STB_RECT_PACK_IMPLEMENTATION
+#endif
+
+#include "external/stb_rect_pack.h"
+
+/*
 ## Shapes - Basic shapes drawing functions
 */
 

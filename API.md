@@ -5795,7 +5795,7 @@ Check if fileName is valid for the platform/OS
 
 > fileNames = RL.LoadDirectoryFiles( string dirPath )
 
-Load directory filepaths
+Load directory filepaths, files and directories, no subdirs scan
 
 - Success return string{}
 
@@ -5803,7 +5803,7 @@ Load directory filepaths
 
 > fileNames = RL.LoadDirectoryFilesEx( string basePath, string|nil filter, bool scanSubdirs )
 
-Load directory filepaths with extension filtering and recursive directory scan
+Load directory filepaths with extension filtering and subdir scan; some filters available: "*.*", "FILES*", "DIRS*"
 
 - Success return string{}
 

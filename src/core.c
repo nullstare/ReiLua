@@ -2121,7 +2121,7 @@ int lcoreIsFileNameValid( lua_State* L ) {
 /*
 > fileNames = RL.LoadDirectoryFiles( string dirPath )
 
-Load directory filepaths
+Load directory filepaths, files and directories, no subdirs scan
 
 - Success return string{}
 */
@@ -2142,7 +2142,7 @@ int lcoreLoadDirectoryFiles( lua_State* L ) {
 /*
 > fileNames = RL.LoadDirectoryFilesEx( string basePath, string|nil filter, bool scanSubdirs )
 
-Load directory filepaths with extension filtering and recursive directory scan
+Load directory filepaths with extension filtering and subdir scan; some filters available: "*.*", "FILES*", "DIRS*"
 
 - Success return string{}
 */

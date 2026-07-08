@@ -41,12 +41,13 @@ typedef struct {
 	void* data;
 } Buffer;
 
-/* Global assing functions. */
+/* Global assign functions. */
 void assignGlobalInt( int value, const char* name );
 void assignGlobalFloat( float value, const char* name );
 void assignGlobalDouble( double value, const char* name );
 void assignGlobalColor( Color color, const char* name );
-void assingGlobalFunction( const char* name, int ( *functionPtr )( lua_State* ) );
+void assignGlobalFunction( const char* name, int ( *functionPtr )( lua_State* ) );
+void assignGlobalString( const char* value, const char* name );
 
 bool luaInit( int argn, const char** argc );
 int luaTraceback( lua_State* L );

@@ -866,7 +866,7 @@ function Container:draw()
 	end
 end
 
---Assingments.
+--Assignments.
 
 Gui.text = Text
 Gui.texture = Texture

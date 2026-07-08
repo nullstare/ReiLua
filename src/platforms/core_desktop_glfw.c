@@ -644,8 +644,8 @@ void luaPlatformRegister() {
 	lua_getglobal( L, "RL" );
 
 	/* Input-related functions: keyboard. */
-	assingGlobalFunction( "GetKeyName", lcoreGetKeyName );
-	assingGlobalFunction( "GetKeyScancode", lcoreGetKeyScancode );
+	assignGlobalFunction( "GetKeyName", lcoreGetKeyName );
+	assignGlobalFunction( "GetKeyScancode", lcoreGetKeyScancode );
 
 	lua_pop( L, -1 );
 

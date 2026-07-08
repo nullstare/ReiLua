@@ -2362,13 +2362,13 @@ function RL.IsPathFile( path ) end
 ---@return any isValid 
 function RL.IsFileNameValid( fileName ) end
 
----Load directory filepaths
+---Load directory filepaths, files and directories, no subdirs scan
 ---- Success return string{}
 ---@param dirPath string
 ---@return any fileNames 
 function RL.LoadDirectoryFiles( dirPath ) end
 
----Load directory filepaths with extension filtering and recursive directory scan
+---Load directory filepaths with extension filtering and subdir scan; some filters available: "*.*", "FILES*", "DIRS*"
 ---- Success return string{}
 ---@param basePath string
 ---@param filter string|nil

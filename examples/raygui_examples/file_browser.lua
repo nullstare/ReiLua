@@ -168,7 +168,7 @@ function FileBrowser:new( pos )
 	table.insert( object.controls, object.pathBox )
 	table.insert( object.controls, object.fileBox )
 
-	object.filter = nil
+	object.filter = "*.*"
 	object.path = ""
 	object.file = ""
 	object.searchText = ""
@@ -349,7 +349,7 @@ end
 
 function FileBrowser:setFilter()
 	if self.filterDropdown.active == 0 then
-		self.filter = nil
+		self.filter = "*.*"
 	else
 		self.filter = self.filterDropdown:getItem( self.filterDropdown.active )
 	end

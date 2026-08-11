@@ -1,8 +1,9 @@
 ------------------------------------------------------------------------
-Release:	ReiLua version 1.0.0		Using raylib 6.0 and Forked Raygui 4.0
+Release:	ReiLua version 1.0.0		Using raylib 6.0 and raygui 5.0
 ------------------------------------------------------------------------
 KEY CHANGES:
 	- CHANGE: Switch to raylib 6.0.
+	- CHANGE: Switch to raygui 5.0.
 
 DETAILED CHANGES:
 	- ADDED: Animation blending example.
@@ -14,6 +15,7 @@ DETAILED CHANGES:
 	- ADDED: New rlgl functions.
 	- ADDED: New raymath functions.
 	- FIXED: Examples iqm_test and rlgl_hello_triangle.
+	- REMOVED: GuiSetSliderDragging, GuiGetSliderDragging, GuiSetSliderActive and GuiGetSliderActive.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.9.0		Using raylib 5.5 and Forked Raygui 4.0

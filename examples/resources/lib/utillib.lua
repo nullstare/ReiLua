@@ -69,6 +69,7 @@ function utillib.utf8Sub( s, i, j )
 	end
 end
 
+-- Note that LuaJIT doesn't have math.tointeger. Recommended to use RL.Round instead.
 function utillib.round( v )
 	return math.tointeger( v + 0.5 - ( v + 0.5 ) % 1 )
 end

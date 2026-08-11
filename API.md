@@ -2468,12 +2468,6 @@ Used also for: TEXTBOXMULTI
 
 ---
 
-> SPINNER = 11
-
-Uses: BUTTON, VALUEBOX
-
----
-
 > LISTVIEW = 12
 
 ---
@@ -2695,20 +2689,6 @@ DropdownBox items separation
 > TEXT_READONLY = 16
 
 TextBox in read-only mode: 0-text editable, 1-text no-editable
-
----
-
-
-## Defines - Gui Spinner
-> SPIN_BUTTON_WIDTH = 16
-
-Spinner left/right buttons width
-
----
-
-> SPIN_BUTTON_SPACING = 17
-
-Spinner buttons separation
 
 ---
 
@@ -6745,6 +6725,10 @@ Get buffer element count
 > RL.ExportBuffer( Buffer buffer, string path )
 
 Write buffer data to binary file
+
+---
+
+	NOTE! Not ideal solution. There is a conflict with rtext.c STB_RECT_PACK_IMPLEMENTATION
 
 ---
 
@@ -11245,34 +11229,6 @@ Get gui state (global state)
 
 ---
 
-> RL.GuiSetSliderDragging( bool dragging )
-
-Set guiSliderDragging
-
----
-
-> isSliderDragging = RL.GuiGetSliderDragging()
-
-Get guiSliderDragging
-
-- Success return bool
-
----
-
-> RL.GuiSetSliderActive( Rectange rect )
-
-Set guiSliderActive
-
----
-
-> isSliderDragging = RL.GuiGetSliderActive()
-
-Get guiSliderActive
-
-- Success return Rectangle
-
----
-
 ## Gui - Font set/get functions
 
 ---
@@ -11504,11 +11460,11 @@ Toggle Slider control, returns true when clicked
 
 ---
 
-> result, checked, textBounds = RL.GuiCheckBox( Rectangle bounds, string|nil text, bool checked )
+> result, checked = RL.GuiCheckBox( Rectangle bounds, string|nil text, bool checked )
 
 Check Box control, returns true when active
 
-- Success return bool, Rectangle
+- Success return bool
 
 ---
 
@@ -11528,7 +11484,7 @@ Dropdown Box control, returns selected item
 
 ---
 
-> result, value, textBounds = RL.GuiSpinner( Rectangle bounds, string|nil text, int value, int minValue, int maxValue, bool editMode )
+> result, value = RL.GuiSpinner( Rectangle bounds, string|nil text, int value, int minValue, int maxValue, bool editMode )
 
 Spinner control, returns selected value
 
@@ -11536,11 +11492,11 @@ Spinner control, returns selected value
 
 ---
 
-> result, value, textBounds = RL.GuiValueBox( Rectangle bounds, string|nil text, int value, int minValue, int maxValue, bool editMode )
+> result, value = RL.GuiValueBox( Rectangle bounds, string|nil text, int value, int minValue, int maxValue, bool editMode )
 
 Value Box control, updates input text with numbers
 
-- Success return int, int, Rectangle
+- Success return int, int
 
 ---
 
@@ -11552,27 +11508,27 @@ Text Box control, updates input text
 
 ---
 
-> result, value, textLeftBounds, textRightBounds = RL.GuiSlider( Rectangle bounds, string|nil textLeft, string|nil textRight, float value, float minValue, float maxValue )
+> result, value = RL.GuiSlider( Rectangle bounds, string|nil textLeft, string|nil textRight, float value, float minValue, float maxValue )
 
 Slider control, returns selected value
 
-- Success return int, float, Rectangle, Rectangle
+- Success return int, float
 
 ---
 
-> result, value, textLeftBounds, textRightBounds = RL.GuiSliderBar( Rectangle bounds, string|nil textLeft, string|nil textRight, float value, float minValue, float maxValue )
+> result, value = RL.GuiSliderBar( Rectangle bounds, string|nil textLeft, string|nil textRight, float value, float minValue, float maxValue )
 
 Slider Bar control, returns selected value
 
-- Success return int, float, Rectangle, Rectangle
+- Success return int, float
 
 ---
 
-> result, value, textLeftBounds, textRightBounds = RL.GuiProgressBar( Rectangle bounds, string|nil textLeft, string|nil textRight, float value, float minValue, float maxValue )
+> result, value = RL.GuiProgressBar( Rectangle bounds, string|nil textLeft, string|nil textRight, float value, float minValue, float maxValue )
 
 Progress Bar control, shows current progress value
 
-- Success return int, float, Rectangle, Rectangle
+- Success return int, float
 
 ---
 
@@ -11628,19 +11584,19 @@ List View with extended parameters
 
 ---
 
-> result = RL.GuiMessageBox( Rectangle bounds, string|nil title, string message, string buttons )
+> result, btnActive = RL.GuiMessageBox( Rectangle bounds, string|nil title, string message, string btnText, int btnActive )
 
 Message Box control, displays a message
 
-- Success return int
+- Success return int, int
 
 ---
 
-> result, text, secretViewActive = RL.GuiTextInputBox( Rectangle bounds, string title, string message, string buttons, string text, int textMaxSize, bool secretViewActive )
+> result, text, secretViewActive, btnActive = RL.GuiTextInputBox( Rectangle bounds, string title, string message, string text, int textSize, string btnText, int btnActive, bool secretViewActive )
 
 Text Input Box control, ask for text, supports secret
 
-- Success return int, string, bool
+- Success return int, string, bool, int
 
 ---
 

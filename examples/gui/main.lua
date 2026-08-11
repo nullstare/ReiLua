@@ -81,16 +81,14 @@ function RL.draw()
 	
 	_, listView.scroll, listView.item = RL.GuiListView( { 200, 400, 200, 200 }, "Cat\nElefant\nSquirrel", listView.scroll, listView.item )
 
-	result = RL.GuiMessageBox( { 420, 400, 200, 100 }, "Message", "Are you sure about this?", "Yes;No" )
-	if 0 <= result then
-		print( "messageBox.buttonIndex", result )
-	end
+	local btnActive = 0
+
+	result = RL.GuiMessageBox( { 420, 400, 200, 100 }, "Message", "Are you sure about this?", "Yes;No", btnActive )
+
+	btnActive = 0
 
 	result, textInputBox.text, textInputBox.secretViewActive
-	= RL.GuiTextInputBox( { 420, 510, 300, 150 }, "Input Box", "Put text here", "Button", textInputBox.text, 200, textInputBox.secretViewActive )
-	if 0 <= result then
-		print( "textInputBox.buttonIndex", result )
-	end
+	= RL.GuiTextInputBox( { 420, 510, 300, 150 }, "Input Box", "Put text here", textInputBox.text, 200, "Button", btnActive, textInputBox.secretViewActive )
 
 	_, colorPicker.color = RL.GuiColorPicker( { 620, 20, 150, 150 }, "Color Picker", colorPicker.color )
 

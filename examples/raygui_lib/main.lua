@@ -46,7 +46,7 @@ function RL.init()
 
 	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_SIZE, 20 )
 	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_SPACING, 4 )
-	RL.GuiSetStyle( RL.SPINNER, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_RIGHT )
+	-- RL.GuiSetStyle( RL.SPINNER, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_RIGHT )
 	RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT )
 
 	-- RL.GuiSetStyle( RL.DEFAULT, RL.TEXT_COLOR_NORMAL, RL.ColorToInt( RL.RED ) )
@@ -289,11 +289,12 @@ function RL.init()
 			texture = { texture = texture, rect = textureRect },
 		}
 	)
-	local messagebox = Gui:MessageBox(
+	local messageBox = Gui:MessageBox(
 		Rect:new( 1100, 150, 300, 128 ),
 		"Title",
 		"Should we disable\nwindow box?",
 		"No;Yes",
+		0,
 		{ -- Callbacks.
 			pressed = function( self )
 				if 0 < self.buttonIndex then
@@ -311,9 +312,10 @@ function RL.init()
 		Rect:new( 1100, 300, 300, 128 ),
 		"Title",
 		"Message",
-		"Cancel;Ok",
 		"Text",
 		8,
+		"Cancel;Ok",
+		0,
 		false,
 		{ -- Callbacks.
 			pressed = function( self )

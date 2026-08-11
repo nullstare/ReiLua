@@ -86,7 +86,7 @@ local function addPropertyList()
 			}
 		}
 	)
-	RL.GuiSetStyle( RL.SPINNER, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT )
+	-- RL.GuiSetStyle( RL.SPINNER, RL.TEXT_ALIGNMENT, RL.TEXT_ALIGN_LEFT )
 	PropertyList.contentPadding.x = PropertyList.bounds.height -- Room for dropdown.
 
 	PropertyList:addControl( PropertyList.gui:Line(

@@ -794,8 +794,6 @@ RL.DROPDOWNBOX=8
 ---Used also for: TEXTBOXMULTI
 RL.TEXTBOX=9
 RL.VALUEBOX=10
----Uses: BUTTON, VALUEBOX
-RL.SPINNER=11
 RL.LISTVIEW=12
 RL.COLORPICKER=13
 RL.SCROLLBAR=14
@@ -886,13 +884,6 @@ RL.DROPDOWN_ITEMS_SPACING=17
 
 ---TextBox in read-only mode: 0-text editable, 1-text no-editable
 RL.TEXT_READONLY=16
-
--- Defines - Gui Spinner
-
----Spinner left/right buttons width
-RL.SPIN_BUTTON_WIDTH=16
----Spinner buttons separation
-RL.SPIN_BUTTON_SPACING=17
 
 -- Defines - Gui ListView
 
@@ -3123,6 +3114,8 @@ function RL.GetBufferLength( buffer ) end
 ---@param path string
 ---@return any RL.ExportBuffer
 function  RL.ExportBuffer( buffer, path ) end
+
+---	NOTE! Not ideal solution. There is a conflict with rtext.c STB_RECT_PACK_IMPLEMENTATION
 
 -- Shapes - Basic shapes drawing functions
 
@@ -7361,26 +7354,6 @@ function  RL.GuiSetState( state ) end
 ---@return any state 
 function RL.GuiGetState() end
 
----Set guiSliderDragging
----@param dragging boolean
----@return any RL.GuiSetSliderDragging
-function  RL.GuiSetSliderDragging( dragging ) end
-
----Get guiSliderDragging
----- Success return bool
----@return any isSliderDragging 
-function RL.GuiGetSliderDragging() end
-
----Set guiSliderActive
----@param rect any
----@return any RL.GuiSetSliderActive
-function  RL.GuiSetSliderActive( rect ) end
-
----Get guiSliderActive
----- Success return Rectangle
----@return any isSliderDragging 
-function RL.GuiGetSliderActive() end
-
 -- Gui - Font set/get functions
 
 ---Set gui custom font (global state)
@@ -7581,13 +7554,12 @@ function RL.GuiToggleGroup( bounds, text, active ) end
 function RL.GuiToggleSlider( bounds, text, active ) end
 
 ---Check Box control, returns true when active
----- Success return bool, Rectangle
+---- Success return bool
 ---@param bounds table
 ---@param text string|nil
 ---@param checked boolean
 ---@return any result
----@return any checked
----@return any textBounds 
+---@return any checked 
 function RL.GuiCheckBox( bounds, text, checked ) end
 
 ---Combo Box control, returns selected item index
@@ -7618,12 +7590,11 @@ function RL.GuiDropdownBox( bounds, text, active, editMode ) end
 ---@param maxValue integer
 ---@param editMode boolean
 ---@return any result
----@return any value
----@return any textBounds 
+---@return any value 
 function RL.GuiSpinner( bounds, text, value, minValue, maxValue, editMode ) end
 
 ---Value Box control, updates input text with numbers
----- Success return int, int, Rectangle
+---- Success return int, int
 ---@param bounds table
 ---@param text string|nil
 ---@param value integer
@@ -7631,8 +7602,7 @@ function RL.GuiSpinner( bounds, text, value, minValue, maxValue, editMode ) end
 ---@param maxValue integer
 ---@param editMode boolean
 ---@return any result
----@return any value
----@return any textBounds 
+---@return any value 
 function RL.GuiValueBox( bounds, text, value, minValue, maxValue, editMode ) end
 
 ---Text Box control, updates input text
@@ -7646,7 +7616,7 @@ function RL.GuiValueBox( bounds, text, value, minValue, maxValue, editMode ) end
 function RL.GuiTextBox( bounds, text, bufferSize, editMode ) end
 
 ---Slider control, returns selected value
----- Success return int, float, Rectangle, Rectangle
+---- Success return int, float
 ---@param bounds table
 ---@param textLeft string|nil
 ---@param textRight string|nil
@@ -7654,13 +7624,11 @@ function RL.GuiTextBox( bounds, text, bufferSize, editMode ) end
 ---@param minValue number
 ---@param maxValue number
 ---@return any result
----@return any value
----@return any textLeftBounds
----@return any textRightBounds 
+---@return any value 
 function RL.GuiSlider( bounds, textLeft, textRight, value, minValue, maxValue ) end
 
 ---Slider Bar control, returns selected value
----- Success return int, float, Rectangle, Rectangle
+---- Success return int, float
 ---@param bounds table
 ---@param textLeft string|nil
 ---@param textRight string|nil
@@ -7668,13 +7636,11 @@ function RL.GuiSlider( bounds, textLeft, textRight, value, minValue, maxValue ) 
 ---@param minValue number
 ---@param maxValue number
 ---@return any result
----@return any value
----@return any textLeftBounds
----@return any textRightBounds 
+---@return any value 
 function RL.GuiSliderBar( bounds, textLeft, textRight, value, minValue, maxValue ) end
 
 ---Progress Bar control, shows current progress value
----- Success return int, float, Rectangle, Rectangle
+---- Success return int, float
 ---@param bounds table
 ---@param textLeft string|nil
 ---@param textRight string|nil
@@ -7682,9 +7648,7 @@ function RL.GuiSliderBar( bounds, textLeft, textRight, value, minValue, maxValue
 ---@param minValue number
 ---@param maxValue number
 ---@return any result
----@return any value
----@return any textLeftBounds
----@return any textRightBounds 
+---@return any value 
 function RL.GuiProgressBar( bounds, textLeft, textRight, value, minValue, maxValue ) end
 
 ---Status Bar control, shows info text
@@ -7748,27 +7712,31 @@ function RL.GuiListView( bounds, text, scrollIndex, active ) end
 function RL.GuiListViewEx( bounds, text, scrollIndex, active, focus ) end
 
 ---Message Box control, displays a message
----- Success return int
+---- Success return int, int
 ---@param bounds table
 ---@param title string|nil
 ---@param message string
----@param buttons string
----@return any result 
-function RL.GuiMessageBox( bounds, title, message, buttons ) end
+---@param btnText string
+---@param btnActive integer
+---@return any result
+---@return any btnActive 
+function RL.GuiMessageBox( bounds, title, message, btnText, btnActive ) end
 
 ---Text Input Box control, ask for text, supports secret
----- Success return int, string, bool
+---- Success return int, string, bool, int
 ---@param bounds table
 ---@param title string
 ---@param message string
----@param buttons string
 ---@param text string
----@param textMaxSize integer
+---@param textSize integer
+---@param btnText string
+---@param btnActive integer
 ---@param secretViewActive boolean
 ---@return any result
 ---@return any text
----@return any secretViewActive 
-function RL.GuiTextInputBox( bounds, title, message, buttons, text, textMaxSize, secretViewActive ) end
+---@return any secretViewActive
+---@return any btnActive 
+function RL.GuiTextInputBox( bounds, title, message, text, textSize, btnText, btnActive, secretViewActive ) end
 
 ---Color Picker control (multiple color controls)
 ---- Success return int, Color

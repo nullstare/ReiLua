@@ -859,7 +859,6 @@ static void defineGlobals() {
 	assignGlobalInt( DROPDOWNBOX, "DROPDOWNBOX" );
 	assignGlobalInt( TEXTBOX, "TEXTBOX" ); // Used also for: TEXTBOXMULTI
 	assignGlobalInt( VALUEBOX, "VALUEBOX" );
-	assignGlobalInt( SPINNER, "SPINNER" ); // Uses: BUTTON, VALUEBOX
 	assignGlobalInt( LISTVIEW, "LISTVIEW" );
 	assignGlobalInt( COLORPICKER, "COLORPICKER" );
 	assignGlobalInt( SCROLLBAR, "SCROLLBAR" );
@@ -912,9 +911,6 @@ static void defineGlobals() {
 	assignGlobalInt( DROPDOWN_ITEMS_SPACING, "DROPDOWN_ITEMS_SPACING" ); // DropdownBox items separation
 	/* Gui TextBox/TextBoxMulti/ValueBox/Spinner */
 	assignGlobalInt( TEXT_READONLY, "TEXT_READONLY" ); // TextBox in read-only mode: 0-text editable, 1-text no-editable
-	/* Gui Spinner */
-	assignGlobalInt( SPIN_BUTTON_WIDTH, "SPIN_BUTTON_WIDTH" ); // Spinner left/right buttons width
-	assignGlobalInt( SPIN_BUTTON_SPACING, "SPIN_BUTTON_SPACING" ); // Spinner buttons separation
 	/* Gui ListView */
 	assignGlobalInt( LIST_ITEMS_HEIGHT, "LIST_ITEMS_HEIGHT" ); // ListView items height
 	assignGlobalInt( LIST_ITEMS_SPACING, "LIST_ITEMS_SPACING" ); // ListView items separation
@@ -2599,10 +2595,6 @@ void luaRegister() {
 	assignGlobalFunction( "GuiSetAlpha", lguiGuiSetAlpha );
 	assignGlobalFunction( "GuiSetState", lguiGuiSetState );
 	assignGlobalFunction( "GuiGetState", lguiGuiGetState );
-	assignGlobalFunction( "GuiSetSliderDragging", lguiGuiSetSliderDragging );
-	assignGlobalFunction( "GuiGetSliderDragging", lguiGuiGetSliderDragging );
-	assignGlobalFunction( "GuiSetSliderActive", lguiGuiSetSliderActive );
-	assignGlobalFunction( "GuiGetSliderActive", lguiGuiGetSliderActive );
 		/* Font set/get functions. */
 	assignGlobalFunction( "GuiSetFont", lguiGuiSetFont );
 	assignGlobalFunction( "GuiGetFont", lguiGuiGetFont );

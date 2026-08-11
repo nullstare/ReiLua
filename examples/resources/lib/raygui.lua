@@ -570,10 +570,7 @@ function CheckBox:new( bounds, text, checked, callbacks, styles, tooltip )
 
 	object.visible = true
 	object.disabled = false
-	object.textBounds = Rectangle:new( 0, 0, 0, 0 )
-	object.focusBounds = bounds:clone()
 
-	object._focusBoundsOffset = Vector2:new( 0, 0 ) -- Used in set position.
 	object.styles = styles
 	object.tooltip = tooltip
 
@@ -581,17 +578,14 @@ function CheckBox:new( bounds, text, checked, callbacks, styles, tooltip )
 end
 
 function CheckBox:update()
-	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.focusBounds )
+	return RL.CheckCollisionPointRec( RL.GetMousePosition(), self.bounds )
 end
 
 function CheckBox:draw()
-	local result, checked, textBounds = RL.GuiCheckBox( self.bounds, self.text, self.checked )
-	self.textBounds:setT( textBounds )
-	self.focusBounds = self.bounds:fit( self.textBounds )
-	self._focusBoundsOffset:set( self.focusBounds.x - self.bounds.x, self.focusBounds.y - self.bounds.y )
+	local result, checked = RL.GuiCheckBox( self.bounds, self.text, self.checked )
 
 	if 0 < result then
-		if self._gui:clickedInBounds( self.focusBounds ) then
+		if self._gui:clickedInBounds( self.bounds ) then
 			self.checked = checked
 
 			if self.callbacks.pressed then
@@ -604,8 +598,6 @@ end
 function CheckBox:setPosition( pos )
 	self.bounds.x = pos.x
 	self.bounds.y = pos.y
-	self.focusBounds.x = self.bounds.x + self._focusBoundsOffset.x
-	self.focusBounds.y = self.bounds.y + self._focusBoundsOffset.y
 end
 
 -- ComboBox.
@@ -745,7 +737,6 @@ function Spinner:new( bounds, text, value, minValue, maxValue, editMode, callbac
 
 	object.visible = true
 	object.disabled = false
-	object.textBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
 
 	object._viewBoundsOffset = Vector2:new( 0, 0 )
@@ -764,9 +755,8 @@ function Spinner:update()
 end
 
 function Spinner:draw()
-	local result, value, textBounds = RL.GuiSpinner( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
-	self.textBounds:setT( textBounds )
-	self.viewBounds = self.bounds:fit( self.textBounds )
+	local result, value = RL.GuiSpinner( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
+	self.viewBounds = self.bounds:clone()
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
 	if result == 1 then
@@ -812,7 +802,6 @@ function ValueBox:new( bounds, text, value, minValue, maxValue, editMode, callba
 
 	object.visible = true
 	object.disabled = false
-	object.textBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
 
 	object._viewBoundsOffset = Vector2:new( 0, 0 )
@@ -833,11 +822,9 @@ end
 function ValueBox:draw()
 	local result = 0
 	local oldValue = self.value
-	local textBounds
 
-	result, self.value, textBounds = RL.GuiValueBox( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
-	self.textBounds:setT( textBounds )
-	self.viewBounds = self.bounds:fit( self.textBounds )
+	result, self.value = RL.GuiValueBox( self.bounds, self.text, self.value, self.minValue, self.maxValue, self.editMode )
+	self.viewBounds = self.bounds:clone()
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
 	if result == 1 then
@@ -932,8 +919,6 @@ function Slider:new( bounds, textLeft, textRight, value, minValue, maxValue, cal
 
 	object.visible = true
 	object.disabled = false
-	object.textLeftBounds = Rectangle:new( 0, 0, 0, 0 )
-	object.textRightBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
 
 	object._viewBoundsOffset = Vector2:new( 0, 0 )
@@ -948,10 +933,8 @@ function Slider:update()
 end
 
 function Slider:draw()
-	local result, value, textLeftBounds, textRightBounds = RL.GuiSlider( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
-	self.textLeftBounds:setT( textLeftBounds )
-	self.textRightBounds:setT( textRightBounds )
-	self.viewBounds = self.bounds:fit( self.textLeftBounds ):fit( self.textRightBounds )
+	local result, value = RL.GuiSlider( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
+	self.viewBounds = self.bounds:clone()
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
 	if 0 < result then
@@ -992,8 +975,6 @@ function SliderBar:new( bounds, textLeft, textRight, value, minValue, maxValue, 
 
 	object.visible = true
 	object.disabled = false
-	object.textLeftBounds = Rectangle:new( 0, 0, 0, 0 )
-	object.textRightBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
 
 	object._viewBoundsOffset = Vector2:new( 0, 0 )
@@ -1008,10 +989,8 @@ function SliderBar:update()
 end
 
 function SliderBar:draw()
-	local result, value, textLeftBounds, textRightBounds = RL.GuiSliderBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
-	self.textLeftBounds:setT( textLeftBounds )
-	self.textRightBounds:setT( textRightBounds )
-	self.viewBounds = self.bounds:fit( self.textLeftBounds ):fit( self.textRightBounds )
+	local result, value = RL.GuiSliderBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
+	self.viewBounds = self.bounds:clone()
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
 	if 0 < result then
@@ -1052,8 +1031,6 @@ function ProgressBar:new( bounds, textLeft, textRight, value, minValue, maxValue
 
 	object.visible = true
 	object.disabled = false
-	object.textLeftBounds = Rectangle:new( 0, 0, 0, 0 )
-	object.textRightBounds = Rectangle:new( 0, 0, 0, 0 )
 	object.viewBounds = bounds:clone()
 
 	object._viewBoundsOffset = Vector2:new( 0, 0 )
@@ -1068,10 +1045,8 @@ function ProgressBar:update()
 end
 
 function ProgressBar:draw()
-	local result, value, textLeftBounds, textRightBounds = RL.GuiProgressBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
-	self.textLeftBounds:setT( textLeftBounds )
-	self.textRightBounds:setT( textRightBounds )
-	self.viewBounds = self.bounds:fit( self.textLeftBounds ):fit( self.textRightBounds )
+	local result, value = RL.GuiProgressBar( self.bounds, self.textLeft, self.textRight, self.value, self.minValue, self.maxValue )
+	self.viewBounds = self.bounds:clone()
 	self._viewBoundsOffset:set( self.viewBounds.x - self.bounds.x, self.viewBounds.y - self.bounds.y )
 
 	if 0 < result then
@@ -1308,14 +1283,15 @@ end
 local MessageBox = {}
 MessageBox.__index = MessageBox
 
-function MessageBox:new( bounds, title, message, buttons, callbacks, styles, tooltip )
+function MessageBox:new( bounds, title, message, btnText, btnActive, callbacks, styles, tooltip )
 	local object = setmetatable( {}, self )
 	object._gui = nil
 
 	object.bounds = bounds:clone()
 	object.title = title
 	object.message = message
-	object.buttons = buttons
+	object.btnText = btnText
+	object.btnActive = btnActive
 	object.callbacks = callbacks -- pressed, grab, drag.
 
 	object.buttonIndex = -1
@@ -1337,7 +1313,7 @@ function MessageBox:update()
 end
 
 function MessageBox:draw()
-	self.buttonIndex = RL.GuiMessageBox( self.bounds, self.title, self.message, self.buttons )
+	self.buttonIndex = RL.GuiMessageBox( self.bounds, self.title, self.message, self.btnText, self.btnActive )
 
 	if 0 <= self.buttonIndex and self.callbacks.pressed and self._gui:clickedInBounds( self.bounds ) then
 		self.callbacks.pressed( self )
@@ -1355,16 +1331,17 @@ end
 local TextInputBox = {}
 TextInputBox.__index = TextInputBox
 
-function TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callbacks, styles, tooltip )
+function TextInputBox:new( bounds, title, message, text, textSize, btnText, btnActive, secretViewActive, callbacks, styles, tooltip )
 	local object = setmetatable( {}, self )
 	object._gui = nil
 
 	object.bounds = bounds:clone()
 	object.title = title
 	object.message = message
-	object.buttons = buttons
 	object.text = text
-	object.textMaxSize = textMaxSize
+	object.textSize = textSize
+	object.btnText = btnText
+	object.btnActive = btnActive
 	object.secretViewActive = secretViewActive
 	object.callbacks = callbacks -- pressed, grab, drag.
 
@@ -1387,7 +1364,7 @@ function TextInputBox:update()
 end
 
 function TextInputBox:draw()
-	self.buttonIndex, self.text, self.secretViewActive = RL.GuiTextInputBox( self.bounds, self.title, self.message, self.buttons, self.text, self.textMaxSize, self.secretViewActive )
+	self.buttonIndex, self.text, self.secretViewActive = RL.GuiTextInputBox( self.bounds, self.title, self.message, self.text, self.textSize, self.btnText, self.btnActive, self.secretViewActive )
 
 	if 0 <= self.buttonIndex and self.callbacks.pressed and self._gui:clickedInBounds( self.bounds ) then
 		self.callbacks.pressed( self )
@@ -1828,7 +1805,8 @@ function Raygui:draw()
 		RL.GuiEnable()
 	end
 	-- Drawing is done from back to front so we want to lock the ui on begin.
-	if not self.textEdit and not RL.GuiGetSliderDragging() then
+	-- if not self.textEdit and not RL.GuiGetSliderDragging() then
+	if not self.textEdit then
 		RL.GuiLock()
 	end
 
@@ -2295,28 +2273,30 @@ end
 ---@param bounds Rectangle
 ---@param title string
 ---@param message string
----@param buttons string
+---@param btnText string
+---@param btnActive integer
 ---@param callbacks table pressed, grab, drag.
 ---@param styles table|nil
 ---@param tooltip string|nil
 ---@return table MessageBox
-function Raygui:MessageBox( bounds, title, message, buttons, callbacks, styles, tooltip )
-	return self:addControl( MessageBox:new( bounds, title, message, buttons, callbacks, styles, tooltip ) )
+function Raygui:MessageBox( bounds, title, message, btnText, btnActive, callbacks, styles, tooltip )
+	return self:addControl( MessageBox:new( bounds, title, message, btnText, btnActive, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle
 ---@param title string
 ---@param message string
----@param buttons string
 ---@param text string
----@param textMaxSize integer
+---@param textSize integer
+---@param btnText string
+---@param btnActive integer
 ---@param secretViewActive boolean
 ---@param callbacks table pressed, grab, drag.
 ---@param styles table|nil
 ---@param tooltip string|nil
 ---@return table TextInputBox
-function Raygui:TextInputBox( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callbacks, styles, tooltip )
-	return self:addControl( TextInputBox:new( bounds, title, message, buttons, text, textMaxSize, secretViewActive, callbacks, styles, tooltip ) )
+function Raygui:TextInputBox( bounds, title, message, text, textSize, btnText, btnActive, secretViewActive, callbacks, styles, tooltip )
+	return self:addControl( TextInputBox:new( bounds, title, message, text, textSize, btnText, btnActive, secretViewActive, callbacks, styles, tooltip ) )
 end
 
 ---@param bounds Rectangle

@@ -64,10 +64,10 @@ end
 function Rectangle:newR( r )
 	local object = setmetatable( {}, metatable )
 
-	object.x = r.x
-	object.y = r.y
-	object.width = r.width
-	object.height = r.height
+	object.x = r.x or 0
+	object.y = r.y or object.x
+	object.width = r.width or 0
+	object.height = r.height or object.width
 
 	return object
 end
@@ -75,10 +75,10 @@ end
 function Rectangle:newV( position, size )
 	local object = setmetatable( {}, metatable )
 
-	object.x = position.x
-	object.y = position.y
-	object.width = size.x
-	object.height = size.y
+	object.x = position.x or 0
+	object.y = position.y or object.x
+	object.width = size.x or 0
+	object.height = size.y or object.width
 
 	return object
 end
@@ -95,17 +95,57 @@ function Rectangle:setT( t )
 end
 
 function Rectangle:setR( r )
-	self.x = r.x
-	self.y = r.y
-	self.width = r.width
-	self.height = r.height
+	self.x = r.x or 0
+	self.y = r.y or self.x
+	self.width = r.width or 0
+	self.height = r.height or self.width
 end
 
 function Rectangle:setV( position, size )
-	self.x = position.x
-	self.y = position.y
-	self.width = size.x
-	self.height = size.y
+	self.x = position.x or 0
+	self.y = position.y or self.x
+	self.width = size.x or 0
+	self.height = size.y or self.width
+end
+
+function Rectangle:setPosition( x, y )
+	self.x = x
+	self.y = y or self.x
+end
+
+function Rectangle:setPositionV( position )
+	self.x = position.x or 0
+	self.y = position.y or self.x
+end
+
+function Rectangle:setSize( width, height )
+	self.width = width
+	self.height = height
+end
+
+function Rectangle:setPositionT( t )
+	self.x, self.y = table.unpack( t )
+end
+
+function Rectangle:setSizeV( size )
+	self.width = size.x or 0
+	self.height = size.y or self.width
+end
+
+function Rectangle:setSizeT( t )
+	self.width, self.height = table.unpack( t )
+end
+
+function Rectangle:getPosition()
+	return Vector2:new( self.x, self.y )
+end
+
+function Rectangle:getSize()
+	return Vector2:new( self.width, self.height )
+end
+
+function Rectangle:abs()
+	return Rectangle:new( math.abs( self.x ), math.abs( self.y ), math.abs( self.width ), math.abs( self.height ) )
 end
 
 function Rectangle:serialize()
@@ -174,6 +214,22 @@ function Rectangle:clampInside( rec )
 		self.width,
 		self.height
 	)
+end
+
+function Rectangle:addPosition( v )
+	return Rectangle:new( self.x + v.x, self.y + v.y, self.width, self.height )
+end
+
+function Rectangle:addSize( v )
+	return Rectangle:new( self.x, self.y, self.width + v.x, self.height + v.y )
+end
+
+function Rectangle:subPosition( v )
+	return Rectangle:new( self.x - v.x, self.y - v.y, self.width, self.height )
+end
+
+function Rectangle:subSize( v )
+	return Rectangle:new( self.x, self.y, self.width - v.x, self.height - v.y )
 end
 
 function Rectangle:checkCollisionRec( rec )

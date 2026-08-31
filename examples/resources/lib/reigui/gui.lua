@@ -6,69 +6,69 @@ local Color = Color or require( "color" )
 GUI_DEFAULT_STYLES = {
 	normal = {
 		base = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.BASE_COLOR_NORMAL ) ) ),
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BASE_COLOR_NORMAL ) ) ),
 		},
 		border = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.BORDER_COLOR_NORMAL ) ) ),
-			width = RL.GuiGetStyle( RL.BUTTON, RL.BORDER_WIDTH ),
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_COLOR_NORMAL ) ) ),
+			width = RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_WIDTH ),
 		},
 		text = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_COLOR_NORMAL ) ) ),
 			font = RL.GuiGetFont(),
 			fontSize = RL.GetFontBaseSize( RL.GuiGetFont() ),
 			spacing = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING ),
-			alignH = RL.GuiGetStyle( RL.BUTTON, RL.TEXT_ALIGNMENT ),
+			alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
 			alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
 		}
 	},
 	focused = {
 		base = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.BASE_COLOR_FOCUSED ) ) ),
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BASE_COLOR_FOCUSED ) ) ),
 		},
 		border = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.BORDER_COLOR_FOCUSED ) ) ),
-			width = RL.GuiGetStyle( RL.BUTTON, RL.BORDER_WIDTH ),
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_COLOR_FOCUSED ) ) ),
+			width = RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_WIDTH ),
 		},
 		text = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_FOCUSED ) ) ),
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_COLOR_FOCUSED ) ) ),
 			font = RL.GuiGetFont(),
 			fontSize = RL.GetFontBaseSize( RL.GuiGetFont() ),
 			spacing = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING ),
-			alignH = RL.GuiGetStyle( RL.BUTTON, RL.TEXT_ALIGNMENT ),
+			alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
 			alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
 		}
 	},
 	disabled = {
 		base = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.BASE_COLOR_DISABLED ) ) ),
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BASE_COLOR_DISABLED ) ) ),
 		},
 		border = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.BORDER_COLOR_DISABLED ) ) ),
-			width = RL.GuiGetStyle( RL.BUTTON, RL.BORDER_WIDTH ),
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_COLOR_DISABLED ) ) ),
+			width = RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_WIDTH ),
 		},
 		text = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_DISABLED ) ) ),
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_COLOR_DISABLED ) ) ),
 			font = RL.GuiGetFont(),
 			fontSize = RL.GetFontBaseSize( RL.GuiGetFont() ),
 			spacing = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING ),
-			alignH = RL.GuiGetStyle( RL.BUTTON, RL.TEXT_ALIGNMENT ),
+			alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
 			alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
 		}
 	},
 	pressed = {
 		base = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.BASE_COLOR_PRESSED ) ) ),
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BASE_COLOR_PRESSED ) ) ),
 		},
 		border = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.BORDER_COLOR_PRESSED ) ) ),
-			width = RL.GuiGetStyle( RL.BUTTON, RL.BORDER_WIDTH ),
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_COLOR_PRESSED ) ) ),
+			width = RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_WIDTH ),
 		},
 		text = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_PRESSED ) ) ),
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_COLOR_PRESSED ) ) ),
 			font = RL.GuiGetFont(),
 			fontSize = RL.GetFontBaseSize( RL.GuiGetFont() ),
 			spacing = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING ),
-			alignH = RL.GuiGetStyle( RL.BUTTON, RL.TEXT_ALIGNMENT ),
+			alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
 			alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
 		}
 	},
@@ -91,7 +91,7 @@ function Gui:new()
 	object.dragging = nil
 	object.grabPos = Vector2:new( 0, 0 )
 	-- object.textEdit = false
-	object.textEditControl = nil
+	-- object.textEditControl = nil
 	-- object.defaultTexture = RL.GetTextureDefault()
 	-- object.defaultRect = Rectangle:new( 0, 0, 1, 1 ) -- For texture.
 	-- object.defaultFont = {
@@ -101,7 +101,7 @@ function Gui:new()
 	object.mouseOffset = Vector2:new( 0, 0 )
 	object.mouseScale = Vector2:new( 1, 1 )
 	object.view = Rectangle:new( 0, 0, 0, 0 ) -- Active if larger than 0. Then only controls in view will be updated and drawn.
-	object.tooltipStyles = GUI_DEFAULT_STYLES.normal
+	object.tooltipStyles = Util.deepCopy( GUI_DEFAULT_STYLES.normal )
 	object.tooltip = {
 		mouseOver = nil,
 		text = nil,
@@ -111,7 +111,10 @@ function Gui:new()
 	}
 	object.mouseOver = nil
 	object.controlPressed = nil
-
+	object.controlTextEdit = nil
+	object.controlDragged = nil
+	
+	object._mousePos = Vector2:new()
 	object._mousePressPos = Vector2:new( -1, -1 ) -- Use to check if release and check are inside bounds.
 	object._isMousePressed = false
 
@@ -141,25 +144,38 @@ function Gui:update( delta )
 	-- RL.SetMouseOffset( self.mouseOffset )
 	-- RL.SetMouseScale( self.mouseScale )
 
-	local mousePos = Vector2:newT( RL.GetMousePosition() )
+	-- local mousePos = Vector2:newT( RL.GetMousePosition() )
+	self._mousePos = Vector2:newT( RL.GetMousePosition() )
 
 	self._isMousePressed = RL.IsMouseButtonPressed( self.MOUSE_BUTTON )
 	self._isMouseDown = RL.IsMouseButtonDown( self.MOUSE_BUTTON )
 	self._isMouseReleased = RL.IsMouseButtonReleased( self.MOUSE_BUTTON )
 
 	if self._isMousePressed then
-		self._mousePressPos:setV( mousePos )
+		self._mousePressPos:setV( self._mousePos )
 	end
 
 	self.mouseOver = nil
 	self.tooltip.mouseOver = nil
 
+	if self.controlDragged then
+		if self.controlTextEdit then
+			self.controlTextEdit:endEditMode()
+		end
+
+		self.controlDragged:update( delta )
+
+		return
+	end
+
 	for i = #self.controls, 1, -1 do
 		local control = self.controls[i]
 
+		-- print( control.__index == self.Slider, control.disabled, control.locked )
+
 		if control.visible then
 			if control._isMouseOver ~= nil then
-				control._isMouseOver = self.mouseOver == nil and RL.CheckCollisionPointRec( mousePos, control.bounds )
+				control._isMouseOver = self.mouseOver == nil and RL.CheckCollisionPointRec( self._mousePos, control.bounds )
 			end
 
 			if control._isMouseOver then
@@ -171,7 +187,7 @@ function Gui:update( delta )
 
 				if self.mouseOver and control.tooltip then
 					self.tooltip.mouseOver = control
-					self.tooltip.position = mousePos + self.tooltip.offset
+					self.tooltip.position = self._mousePos + self.tooltip.offset
 
 					if self.tooltip.timer < self.tooltip.delay then
 						self.tooltip.timer = self.tooltip.timer + delta
@@ -194,62 +210,9 @@ function Gui:update( delta )
 		self.tooltip.timer = 0.0
 	end
 
-	-- if self.textEditControl then
-	-- 	self:textEdit()
-	-- end
-
 	-- RL.SetMouseOffset( mouseOffset )
 	-- RL.SetMouseScale( mouseScale )
 end
-
--- function Gui:getUtf8Char( char )
--- 	return utf8.char( char )
--- end
-
--- function Gui:textEdit()
--- 	local editControl = self.textEditControl
-
--- 	repeat
--- 		local char = RL.GetCharPressed()
-
--- 		if 0 < char then
--- 			-- print( char )
--- 			-- print( RL.CodepointToUTF8( char ) )
--- 			-- editControl.text = editControl.text..self:getUtf8Char( char )
--- 			-- editControl.text = editControl.text..utf8.char( char )
--- 			editControl.text = editControl.text..RL.CodepointToUTF8( char )
--- 			-- if utf8.len( Gui._inputItem.text ) < Gui._inputItem.maxTextLen then
--- 			-- 	Gui._inputItem.text = Gui._inputItem.text..utf8.char( char )
--- 			-- end
--- 		end
--- 	until char == 0
-
--- 	repeat
--- 		local key = RL.GetKeyPressed()
-
--- 		if 0 < key then
--- 			if key == RL.KEY_BACKSPACE then
--- 				local cpStr = RL.LoadCodepoints( editControl.text )
--- 				table.remove( cpStr )
-
--- 				if 0 < #cpStr then
--- 					editControl.text = RL.LoadUTF8( cpStr )
--- 				else
--- 					editControl.text = ""
--- 				end
--- 			elseif key == RL.KEY_ENTER or key == RL.KEY_KP_ENTER then
--- 				self.textEditControl = nil
--- 			-- 	if Gui._inputItem.allowLineBreak then
--- 			-- 		Gui._inputItem.text = Gui._inputItem.text.."\n"
--- 			-- 	else
--- 			-- 		Gui.inputUnfocus()
--- 			-- 	end
--- 			-- elseif key == RL.KEY_ESCAPE then
--- 			-- 	Gui.inputUnfocus()
--- 			end
--- 		end
--- 	until key == 0
--- end
 
 function Gui:drag( control )
 	local mousePos = Vector2:tempT( RL.GetMousePosition() )
@@ -400,26 +363,27 @@ function Gui:clear()
 	end
 end
 
-function Gui:editMode( control )
-	if self.textEditControl ~= nil and not control.editMode then
-		self.textEditControl.editMode = false
+-- function Gui:editMode( control )
+-- 	if self.textEditControl ~= nil and not control.editMode then
+-- 		self.textEditControl.editMode = false
 
-		if self.textEditControl.callbacks.edit ~= nil then
-			self.textEditControl.callbacks.edit( self.textEditControl )
-		end
-	end
-	self.textEdit = not control.editMode
+-- 		if self.textEditControl.callbacks.edit ~= nil then
+-- 			self.textEditControl.callbacks.edit( self.textEditControl )
+-- 		end
+-- 	end
+-- 	self.textEdit = not control.editMode
 
-	if self.textEdit then
-		self.textEditControl = control
-	else
-		self.textEditControl = nil
-	end
-end
+-- 	if self.textEdit then
+-- 		self.textEditControl = control
+-- 	else
+-- 		self.textEditControl = nil
+-- 	end
+-- end
 
 function Gui:addControl( control )
 	control._gui = self
 	table.insert( self.controls, control )
+
 	return control
 end
 
@@ -429,7 +393,7 @@ function Gui:include( controls )
 		-- self.__index[ name.."Class" ] = control
 		-- self.__index[ name ] = function( self, t ) self:addControl( control:new( t ) ) end
 		self.__index[ name ] = control
-		self.__index[ "new"..name ] = function( self, t ) self:addControl( control:new( t ) ) end
+		self.__index[ "new"..name ] = function( self, t ) return self:addControl( control:new( t ) ) end
 	end
 end
 
@@ -463,7 +427,6 @@ function Gui:drawTexturedRectangle( rect, styles )
 		local dest = tex.dest and tex.dest:addPosition( rect:getPosition() ) or rect
 
 		if tex.nPatchInfo then
-
 			if tex.nPatchRepeat then
 				RL.DrawTextureNPatchRepeat(
 					tex.texture,
@@ -505,7 +468,33 @@ function Gui:drawText( text, bounds, styles )
 		pos:addEq( styles.text.offset )
 	end
 
+	pos.x = RL.Round( pos.x )
+	pos.y = RL.Round( pos.y )
+
 	RL.DrawTextEx( styles.text.font, text, pos, styles.text.fontSize, styles.text.spacing, styles.text.color )
+end
+
+function Gui:drawIcons( bounds, styles )
+	local ICON_SIZE = 16
+
+	for _, icon in ipairs( styles.icons ) do
+		local iconSize = ICON_SIZE * icon.pixelSize
+		local pos = bounds:getPosition()
+
+		if icon.alignH == RL.TEXT_ALIGN_MIDDLE then
+			pos.x = bounds.x + bounds.width / 2 - iconSize / 2
+		elseif icon.alignH == RL.TEXT_ALIGN_RIGHT then
+			pos.x = bounds.x + bounds.width - iconSize
+		end
+
+		if icon.alignV == RL.TEXT_ALIGN_MIDDLE then
+			pos.y = bounds.y + bounds.height / 2 - iconSize / 2
+		elseif icon.alignV == RL.TEXT_ALIGN_BOTTOM then
+			pos.y = bounds.y + bounds.height - iconSize
+		end
+
+		RL.GuiDrawIcon( icon.iconId, pos + icon.offset, icon.pixelSize, icon.color )
+	end
 end
 
 return Gui

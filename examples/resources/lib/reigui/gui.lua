@@ -90,14 +90,6 @@ function Gui:new()
 	-- object.focused = 0
 	object.dragging = nil
 	object.grabPos = Vector2:new( 0, 0 )
-	-- object.textEdit = false
-	-- object.textEditControl = nil
-	-- object.defaultTexture = RL.GetTextureDefault()
-	-- object.defaultRect = Rectangle:new( 0, 0, 1, 1 ) -- For texture.
-	-- object.defaultFont = {
-	-- 	font = RL.GuiGetFont(),
-	-- 	size = RL.GetFontBaseSize( RL.GuiGetFont() ),
-	-- }
 	object.mouseOffset = Vector2:new( 0, 0 )
 	object.mouseScale = Vector2:new( 1, 1 )
 	object.view = Rectangle:new( 0, 0, 0, 0 ) -- Active if larger than 0. Then only controls in view will be updated and drawn.
@@ -133,18 +125,6 @@ function Gui:update( delta )
 		self.tooltip.text = nil
 		return
 	end
-	-- If dragging, don't update control masking.
-	-- if self.dragging ~= nil then
-	-- 	self:drag( self.dragging )
-	-- 	return
-	-- end
-	-- Set mouse offset if gui is for example embedded to some control.
-	-- local mouseOffset = RL.GetMouseOffset()
-	-- local mouseScale = RL.GetMouseScale()
-	-- RL.SetMouseOffset( self.mouseOffset )
-	-- RL.SetMouseScale( self.mouseScale )
-
-	-- local mousePos = Vector2:newT( RL.GetMousePosition() )
 	self._mousePos = Vector2:newT( RL.GetMousePosition() )
 
 	self._isMousePressed = RL.IsMouseButtonPressed( self.MOUSE_BUTTON )
@@ -282,12 +262,7 @@ function Gui:draw()
 	-- RL.SetMouseOffset( self.mouseOffset )
 	-- RL.SetMouseScale( self.mouseScale )
 
-	for i, control in ipairs( self.controls ) do
-		if not self.locked and not self.disabled
-		and i == self.focused and not control.locked then
-			RL.GuiUnlock()
-		end
-
+	for _, control in ipairs( self.controls ) do
 		if control.visible and control.draw ~= nil and self:inView( control ) then
 			control:draw()
 		end
@@ -363,25 +338,7 @@ function Gui:clear()
 	end
 end
 
--- function Gui:editMode( control )
--- 	if self.textEditControl ~= nil and not control.editMode then
--- 		self.textEditControl.editMode = false
-
--- 		if self.textEditControl.callbacks.edit ~= nil then
--- 			self.textEditControl.callbacks.edit( self.textEditControl )
--- 		end
--- 	end
--- 	self.textEdit = not control.editMode
-
--- 	if self.textEdit then
--- 		self.textEditControl = control
--- 	else
--- 		self.textEditControl = nil
--- 	end
--- end
-
 function Gui:addControl( control )
-	control._gui = self
 	table.insert( self.controls, control )
 
 	return control
@@ -389,17 +346,24 @@ end
 
 function Gui:include( controls )
 	for name, control in pairs( controls ) do
-		-- self.includes[ name ] = control
-		-- self.__index[ name.."Class" ] = control
-		-- self.__index[ name ] = function( self, t ) self:addControl( control:new( t ) ) end
 		self.__index[ name ] = control
-		self.__index[ "new"..name ] = function( self, t ) return self:addControl( control:new( t ) ) end
+		self.__index[ "new"..name ] = function( this, t )
+			local c = this:addControl( control:new( this, t ) )
+
+			return c
+		end
 	end
 end
 
 -- Draw functions.
 
-function Gui:drawRectangle( rect, styles )
+function Gui:drawRectangle( rect, styles, crop )
+	crop = crop or styles.base.crop
+
+	if crop then
+		RL.BeginScissorMode( crop )
+	end
+
 	local drawCallbacks = {
 		horizontal = function( r, c ) RL.DrawRectangleGradientH( r, c[1], c[2] ) end,
 		vertical = function( r, c ) RL.DrawRectangleGradientV( r, c[1], c[2] ) end,
@@ -420,9 +384,19 @@ function Gui:drawRectangle( rect, styles )
 	else
 		drawCallbacks[ styles.base.gradient or "normal" ]( rect, styles.base.color )
 	end
+
+	if crop then
+		RL.EndScissorMode()
+	end
 end
 
-function Gui:drawTexturedRectangle( rect, styles )
+function Gui:drawTexturedRectangle( rect, styles, crop )
+	crop = crop or styles.base.crop
+
+	if crop then
+		RL.BeginScissorMode( crop )
+	end
+
 	for _, tex in ipairs( styles.textures ) do
 		local dest = tex.dest and tex.dest:addPosition( rect:getPosition() ) or rect
 
@@ -446,9 +420,15 @@ function Gui:drawTexturedRectangle( rect, styles )
 			RL.DrawTexturePro( tex.texture, tex.source, dest, { 0, 0 }, 0, tex.color )
 		end
 	end
+
+	if crop then
+		RL.EndScissorMode()
+	end
 end
 
-function Gui:drawText( text, bounds, styles )
+function Gui:drawText( text, bounds, styles, crop )
+	crop = crop or styles.text.crop
+
 	local textSize = Vector2:newT( RL.MeasureTextEx( styles.text.font, text, styles.text.fontSize, styles.text.spacing ) )
 	local pos = bounds:getPosition()
 
@@ -471,7 +451,15 @@ function Gui:drawText( text, bounds, styles )
 	pos.x = RL.Round( pos.x )
 	pos.y = RL.Round( pos.y )
 
+	if crop then
+		RL.BeginScissorMode( crop )
+	end
+
 	RL.DrawTextEx( styles.text.font, text, pos, styles.text.fontSize, styles.text.spacing, styles.text.color )
+
+	if crop then
+		RL.EndScissorMode()
+	end
 end
 
 function Gui:drawIcons( bounds, styles )

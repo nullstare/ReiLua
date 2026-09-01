@@ -109,8 +109,13 @@ function Rectangle:setV( position, size )
 end
 
 function Rectangle:setPosition( x, y )
+	x = x or 0
 	self.x = x
 	self.y = y or self.x
+end
+
+function Rectangle:setPositionT( t )
+	self.x, self.y = table.unpack( t )
 end
 
 function Rectangle:setPositionV( position )
@@ -118,13 +123,18 @@ function Rectangle:setPositionV( position )
 	self.y = position.y or self.x
 end
 
+function Rectangle:setPositionR( rect )
+	self.x = rect.x or 0
+	self.y = rect.y or self.x
+end
+
 function Rectangle:setSize( width, height )
 	self.width = width
 	self.height = height
 end
 
-function Rectangle:setPositionT( t )
-	self.x, self.y = table.unpack( t )
+function Rectangle:setSizeT( t )
+	self.width, self.height = table.unpack( t )
 end
 
 function Rectangle:setSizeV( size )
@@ -132,8 +142,9 @@ function Rectangle:setSizeV( size )
 	self.height = size.y or self.width
 end
 
-function Rectangle:setSizeT( t )
-	self.width, self.height = table.unpack( t )
+function Rectangle:setSizeR( rect )
+	self.width = rect.width or 0
+	self.height = rect.height or self.width
 end
 
 function Rectangle:getPosition()

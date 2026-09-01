@@ -30,6 +30,7 @@ function InitGui()
 	RL.GuiLoadStyleDefault()
 	Gui = require( "reigui/gui" )
 	Gui:include( require( "reigui.default_controls" ) )
+	Gui:include( require( "reigui.window" ) )
 	gui = Gui:new()
 
 	local prefix = RL.GetBasePath().."../resources/images/"
@@ -129,7 +130,7 @@ function InitGui()
 		bounds = Rectangle:new( 16, 128, 256, 64 ),
 		text = "Textured Button",
 		callbacks = {
-			pressed = function() print( "Textured button clicked!" ) end,
+			released = function() print( "Textured button clicked!" ) end,
 		},
 		tooltip = "This button has texture",
 		styles = button3Styles,
@@ -249,7 +250,32 @@ function InitGui()
 		styles = slider2Style,
 	} )
 
+	-- Handle.
+
+	local handle = gui:newHandle( {
+		bounds = Rectangle:new( 350, 32, 128, 32 ),
+		text = "Handle",
+		callbacks = {
+			pressed = function( self ) self:setToTop() end,
+			drag = function( self ) label.text = "Pos: "..self.bounds:getPosition() end,
+		},
+		tooltip = "You can drag this thing",
+		-- clampBounds = Rectangle:new( -32, -16, 200, 64 ), -- Usefull for windows for example.
+	} )
+
 	gui:setToBack( panel )
+
+	-- Window.
+
+	local window = gui:newWindow( {
+		bounds = Rectangle:new( 60, 400, 256, 400 ),
+		text = "Window",
+		callbacks = {
+			close = function( self ) self:setVisible( false ) end,
+			grab = function( self ) self:setToTop() end,
+		},
+	} )
+	-- window.callbacks.close = function( self ) window:setVisible( false ) end
 end
 
 function RL.update( delta )

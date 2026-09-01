@@ -13,9 +13,9 @@ Label.DEFAULT_STYLES = {
 	disabled = GUI_DEFAULT_STYLES.disabled,
 }
 
-function Label:new( t )
+function Label:new( gui, t )
 	local object = setmetatable( {}, self )
-	object._gui = nil
+	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
 	object.text = t.text
@@ -37,16 +37,26 @@ function Label:draw()
 	local style = self.disabled and "disabled" or "normal"
 	local styles = self.styles[ style ]
 	
-	Gui:drawText( self.text, self.bounds, styles )
+	-- RL.BeginScissorMode( self.bounds )
+		Gui:drawText( self.text, self.bounds, styles )
 
-	if styles.icons then
-		self._gui:drawIcons( self.bounds, styles )
-	end
+		if styles.icons then
+			self._gui:drawIcons( self.bounds, styles )
+		end
+	-- RL.EndScissorMode()
 end
 
 function Label:setPosition( pos )
 	self.bounds.x = pos.x
 	self.bounds.y = pos.y
+end
+
+function Label:setToTop()
+	self._gui:setToTop( self )
+end
+
+function Label:remove()
+	self._gui:remove( self )
 end
 
 -- Button control.
@@ -56,13 +66,13 @@ Button.__index = Button
 
 Button.DEFAULT_STYLES = GUI_DEFAULT_STYLES
 
-function Button:new( t )
+function Button:new( gui, t )
 	local object = setmetatable( {}, self )
-	object._gui = nil
+	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
 	object.text = t.text
-	object.callbacks = t.callbacks or {} -- pressed.
+	object.callbacks = t.callbacks or {} -- pressed, released.
 
 	object.visible = t.visible or true
 	object.locked = t.locked or false
@@ -80,8 +90,14 @@ function Button:update( delta )
 		return
 	end
 
-	if self.callbacks.pressed and self._gui._isMouseReleased and self._gui.mouseOver == self and self._gui.controlPressed == self then
-		self.callbacks.pressed( self )
+	if self._gui.mouseOver == self and self._gui.controlPressed == self then
+		if self._gui._isMousePressed and self.callbacks.pressed then
+			self.callbacks.pressed( self )
+		end
+
+		if self._gui._isMouseReleased and self.callbacks.released then
+			self.callbacks.released( self )
+		end
 	end
 end
 
@@ -110,6 +126,14 @@ function Button:setPosition( pos )
 	self.bounds.y = pos.y
 end
 
+function Button:setToTop()
+	self._gui:setToTop( self )
+end
+
+function Button:remove()
+	self._gui:remove( self )
+end
+
 -- TextInputBox control. Single line text box.
 
 local TextInputBox = {}
@@ -117,9 +141,9 @@ TextInputBox.__index = TextInputBox
 
 TextInputBox.DEFAULT_STYLES = GUI_DEFAULT_STYLES
 
-function TextInputBox:new( t )
+function TextInputBox:new( gui, t )
 	local object = setmetatable( {}, self )
-	object._gui = nil
+	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
 	object.text = t.text
@@ -214,7 +238,7 @@ function TextInputBox:startEditMode()
 	local styles = self:getStyles()
 	local ts = styles.text
 	
-	if self._gui.textEditControl == self then
+	if self._gui.controlTextEdit == self then
 		local pos = #cpt + 1
 		local clickPos = self._gui._mousePressPos - self.view:getPosition() + Vector2:temp( self._cursor.scrollPos, 0 )
 		local len = 0
@@ -365,15 +389,13 @@ function TextInputBox:draw()
 
 	local borderW = styles.border.width
 
-	RL.BeginScissorMode( self.view )
-		if self.text then
-			self._gui:drawText( self.text, self.bounds:addPosition( Vector2:temp( borderW - self._cursor.scrollPos, 0 ) ), styles )
-		end
+	if self.text then
+		self._gui:drawText( self.text, self.bounds:addPosition( Vector2:temp( borderW - self._cursor.scrollPos, 0 ) ), styles, self.view )
+	end
 
-		if self._editMode then
-			RL.DrawRectangle( self._cursor.rect:addPosition( Vector2:temp( borderW + self.bounds.x - self._cursor.scrollPos, self.bounds.y ) ), RL.BLUE )
-		end
-	RL.EndScissorMode()
+	if self._editMode then
+		RL.DrawRectangle( self._cursor.rect:addPosition( Vector2:temp( borderW + self.bounds.x - self._cursor.scrollPos, self.bounds.y ) ), RL.BLUE )
+	end
 end
 
 function TextInputBox:setPosition( pos )
@@ -381,6 +403,14 @@ function TextInputBox:setPosition( pos )
 	self.bounds.y = pos.y
 
 	self:updateView()
+end
+
+function TextInputBox:setToTop()
+	self._gui:setToTop( self )
+end
+
+function TextInputBox:remove()
+	self._gui:remove( self )
 end
 
 -- Panel control.
@@ -393,9 +423,9 @@ Panel.DEFAULT_STYLES = {
 	disabled = GUI_DEFAULT_STYLES.disabled,
 }
 
-function Panel:new( t )
+function Panel:new( gui, t )
 	local object = setmetatable( {}, self )
-	object._gui = nil
+	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
 
@@ -432,6 +462,14 @@ function Panel:setPosition( pos )
 	self.bounds.y = pos.y
 end
 
+function Panel:setToTop()
+	self._gui:setToTop( self )
+end
+
+function Panel:remove()
+	self._gui:remove( self )
+end
+
 -- Slider control.
 
 local Slider = {}
@@ -441,7 +479,6 @@ Slider.DEFAULT_STYLES = Util.deepCopy( GUI_DEFAULT_STYLES )
 Slider.DEFAULT_STYLES.normal.slider = {
 	width = RL.GuiGetStyle( RL.SLIDER, RL.SLIDER_WIDTH ),
 	base = {
-		-- color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BASE_COLOR_NORMAL ) ) ),
 		color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BORDER_COLOR_NORMAL ) ) ),
 	},
 	border = {
@@ -480,9 +517,9 @@ Slider.DEFAULT_STYLES.pressed.slider = {
 	},
 }
 
-function Slider:new( t )
+function Slider:new( gui, t )
 	local object = setmetatable( {}, self )
-	object._gui = nil
+	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
 	object.callbacks = t.callbacks or {} -- pressed, edit and set.
@@ -608,10 +645,122 @@ function Slider:setPosition( pos )
 	self.bounds.y = pos.y
 end
 
+function Slider:setToTop()
+	self._gui:setToTop( self )
+end
+
+function Slider:remove()
+	self._gui:remove( self )
+end
+
+-- Handle.
+
+local Handle = {}
+Handle.__index = Handle
+
+Handle.DEFAULT_STYLES = GUI_DEFAULT_STYLES
+
+function Handle:new( gui, t )
+	local object = setmetatable( {}, self )
+	object._gui = gui
+
+	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
+	object.text = t.text
+	object.dragBounds = t.dragBounds or Rectangle:new( 0, 0, RL.GetScreenSize()[1], RL.GetScreenSize()[2] )
+	object.clampBounds = t.clampBounds
+	object.callbacks = t.callbacks or {} -- pressed, drag, released.
+
+	object.visible = t.visible or true
+	object.locked = t.locked or false
+	object.disabled = t.disabled or false -- Same as locked but also uses style.
+	object.styles = t.styles or object.DEFAULT_STYLES
+	object.tooltip = t.tooltip
+	
+	object._isMouseOver = false
+	object._grabPos = Vector2:new()
+
+	return object
+end
+
+function Handle:update( delta )
+	if self.locked or self.disabled then
+		return
+	end
+
+	if self._gui.controlPressed == self then
+		if self._gui.mouseOver == self or self._gui.controlDragged == self then
+			if self._gui._isMousePressed then
+				self._gui.controlDragged = self
+				self._grabPos:setV( self._gui._mousePos - self.bounds:getPosition() )
+
+				if self.callbacks.pressed then
+					self.callbacks.pressed( self )
+				end
+			end
+
+			if self._gui._isMouseDown then
+				local rect = self.clampBounds and self.clampBounds:clone() or self.bounds:clone()
+				local clampBoundsPos = self.clampBounds and self.clampBounds:getPosition() or Vector2:temp()
+				
+				rect:setPositionV( self._gui._mousePos - self._grabPos + clampBoundsPos )
+				rect:setR( rect:clampInside( self.dragBounds ) )
+				self:setPosition( rect:getPosition() - clampBoundsPos )
+
+				if self.callbacks.drag then
+					self.callbacks.drag( self )
+				end
+			end
+		end
+
+		if self._gui._isMouseReleased then
+			self._gui.controlDragged = nil
+
+			if self.callbacks.released then
+				self.callbacks.released( self )
+			end
+		end
+	end
+end
+
+function Handle:draw()
+	local pressed = not self.locked and not self.disabled and self._gui._isMouseDown
+	and ( self._gui.controlPressed == self or self._gui.controlDragged == self )
+	local style = pressed and "pressed" or self.disabled and "disabled" or self._isMouseOver and "focused" or "normal"
+	local styles = self.styles[ style ]
+
+	if styles.textures then
+		self._gui:drawTexturedRectangle( self.bounds, styles )
+	else
+		self._gui:drawRectangle( self.bounds, styles )
+	end
+
+	if self.text then
+		self._gui:drawText( self.text, self.bounds, styles )
+	end
+
+	if styles.icons then
+		self._gui:drawIcons( self.bounds, styles )
+	end
+end
+
+function Handle:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+end
+
+function Handle:setToTop()
+	self._gui:setToTop( self )
+end
+
+function Handle:remove()
+	self._gui:remove( self )
+end
+
 return {
 	Label = Label,
 	Button = Button,
 	TextInputBox = TextInputBox,
 	Panel = Panel,
 	Slider = Slider,
+	Handle = Handle,
 }

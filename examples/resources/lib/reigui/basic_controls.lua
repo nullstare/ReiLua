@@ -2,6 +2,7 @@ local Util = Util or require( "utillib" )
 local Rectangle = Rectangle or require( "rectangle" )
 local Vector2 = Vector2 or require( "vector2" )
 local Color = Color or require( "color" )
+-- local Gui = Gui or require( "reigui/gui" )
 
 -- Label control.
 
@@ -20,30 +21,24 @@ function Label:new( gui, t )
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
 	object.text = t.text
 
-	object.visible = t.visible or true
-	object.disabled = t.disabled or false
+	object.visible = t.visible == nil and true or t.visible
+	object.locked = t.locked == nil and false or t.locked
+	object.disabled = t.disabled == nil and false or t.disabled -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
 	object.tooltip = t.tooltip
-	
-	-- object._isMouseOver = false
 
 	return object
 end
-
--- function Label:update( delta )
--- end
 
 function Label:draw()
 	local style = self.disabled and "disabled" or "normal"
 	local styles = self.styles[ style ]
 	
-	-- RL.BeginScissorMode( self.bounds )
-		Gui:drawText( self.text, self.bounds, styles )
+	self._gui:drawText( self.text, self.bounds, styles )
 
-		if styles.icons then
-			self._gui:drawIcons( self.bounds, styles )
-		end
-	-- RL.EndScissorMode()
+	if styles.icons then
+		self._gui:drawIcons( self.bounds, styles )
+	end
 end
 
 function Label:setPosition( pos )
@@ -74,9 +69,9 @@ function Button:new( gui, t )
 	object.text = t.text
 	object.callbacks = t.callbacks or {} -- pressed, released.
 
-	object.visible = t.visible or true
-	object.locked = t.locked or false
-	object.disabled = t.disabled or false -- Same as locked but also uses style.
+	object.visible = t.visible == nil and true or t.visible
+	object.locked = t.locked == nil and false or t.locked
+	object.disabled = t.disabled == nil and false or t.disabled -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
 	object.tooltip = t.tooltip
 	
@@ -85,7 +80,7 @@ function Button:new( gui, t )
 	return object
 end
 
-function Button:update( delta )
+function Button:update( _ )
 	if self.locked or self.disabled then
 		return
 	end
@@ -106,11 +101,7 @@ function Button:draw()
 	local style = pressed and "pressed" or self.disabled and "disabled" or self._isMouseOver and "focused" or "normal"
 	local styles = self.styles[ style ]
 
-	if styles.textures then
-		self._gui:drawTexturedRectangle( self.bounds, styles )
-	else
-		self._gui:drawRectangle( self.bounds, styles )
-	end
+	self._gui:drawRectangle( self.bounds, styles )
 
 	if self.text then
 		self._gui:drawText( self.text, self.bounds, styles )
@@ -139,7 +130,17 @@ end
 local TextInputBox = {}
 TextInputBox.__index = TextInputBox
 
-TextInputBox.DEFAULT_STYLES = GUI_DEFAULT_STYLES
+TextInputBox.DEFAULT_STYLES = Util.deepCopy( GUI_DEFAULT_STYLES )
+TextInputBox.DEFAULT_STYLES.normal.cursor = {
+	draw = true,
+}
+TextInputBox.DEFAULT_STYLES.focused.cursor = Util.deepCopy( TextInputBox.DEFAULT_STYLES.normal.cursor )
+TextInputBox.DEFAULT_STYLES.disabled.cursor = Util.deepCopy( TextInputBox.DEFAULT_STYLES.normal.cursor )
+TextInputBox.DEFAULT_STYLES.pressed.cursor = Util.deepCopy( TextInputBox.DEFAULT_STYLES.normal.cursor )
+TextInputBox.DEFAULT_STYLES.normal.text.alignH = RL.TEXT_ALIGN_LEFT
+TextInputBox.DEFAULT_STYLES.focused.text.alignH = RL.TEXT_ALIGN_LEFT
+TextInputBox.DEFAULT_STYLES.disabled.text.alignH = RL.TEXT_ALIGN_LEFT
+TextInputBox.DEFAULT_STYLES.pressed.text.alignH = RL.TEXT_ALIGN_LEFT
 
 function TextInputBox:new( gui, t )
 	local object = setmetatable( {}, self )
@@ -150,9 +151,9 @@ function TextInputBox:new( gui, t )
 	object.charLimit = t.charLimit or 64
 	object.callbacks = t.callbacks or {} -- pressed, edit, set.
 
-	object.visible = t.visible or true
-	object.locked = t.locked or false
-	object.disabled = t.disabled or false -- Same as locked but also uses style.
+	object.visible = t.visible == nil and true or t.visible
+	object.locked = t.locked == nil and false or t.locked
+	object.disabled = t.disabled == nil and false or t.disabled -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
 	object.tooltip = t.tooltip
 	
@@ -344,6 +345,23 @@ function TextInputBox:textEdit( delta )
 		self._eraceTimer.timer = 0
 	end
 
+	if RL.IsKeyDown( RL.KEY_LEFT_CONTROL ) then
+		if RL.IsKeyPressed( RL.KEY_C ) then
+			local cpt = RL.LoadCodepoints( self.text )
+			local slice = Util.slice( cpt, 1, self._cursor.pos - 1 )
+
+			RL.SetClipboardText( RL.LoadUTF8( slice ) )
+		elseif RL.IsKeyPressed( RL.KEY_V ) then
+			local cpt = RL.LoadCodepoints( self.text )
+			local clipCpt = RL.LoadCodepoints( RL.GetClipboardText() )
+
+			Util.insertTable( cpt, clipCpt, self._cursor.pos )
+			self._cursor.pos = self._cursor.pos + #clipCpt
+			self:updateText( cpt )
+			edited = true
+		end
+	end
+
 	if edited and self.callbacks.edit then
 		self.callbacks.edit( self )
 	end
@@ -381,11 +399,7 @@ end
 function TextInputBox:draw()
 	local styles = self:getStyles()
 
-	if styles.textures then
-		self._gui:drawTexturedRectangle( self.bounds, styles )
-	else
-		self._gui:drawRectangle( self.bounds, styles )
-	end
+	self._gui:drawRectangle( self.bounds, styles )
 
 	local borderW = styles.border.width
 
@@ -393,7 +407,8 @@ function TextInputBox:draw()
 		self._gui:drawText( self.text, self.bounds:addPosition( Vector2:temp( borderW - self._cursor.scrollPos, 0 ) ), styles, self.view )
 	end
 
-	if self._editMode then
+	if self._editMode and styles.cursor.draw then
+		-- //TODO Draw to correct position when using text alignment.
 		RL.DrawRectangle( self._cursor.rect:addPosition( Vector2:temp( borderW + self.bounds.x - self._cursor.scrollPos, self.bounds.y ) ), RL.BLUE )
 	end
 end
@@ -429,9 +444,11 @@ function Panel:new( gui, t )
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
 
-	object.visible = t.visible or true
-	object.disabled = t.disabled or false
+	object.visible = t.visible == nil and true or t.visible
+	object.locked = t.locked == nil and false or t.locked
+	object.disabled = t.disabled == nil and false or t.disabled -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
+	object.callbacks = t.callbacks or {}
 	object.tooltip = t.tooltip
 
 	object._isMouseOver = false
@@ -439,18 +456,31 @@ function Panel:new( gui, t )
 	return object
 end
 
--- function Panel:update( delta )
--- end
+function Panel:update( _ )
+	if self.locked or self.disabled then
+		return
+	end
+
+	if self._gui.mouseOver == self and self._gui.controlPressed == self then
+		if self._gui._isMousePressed and self.callbacks.pressed then
+			self.callbacks.pressed( self )
+		end
+
+		if self._gui._isMouseReleased and self.callbacks.released then
+			self.callbacks.released( self )
+		end
+
+		if self._gui._isMouseDown and self.callbacks.down then
+			self.callbacks.down( self )
+		end
+	end
+end
 
 function Panel:draw()
 	local style = self.disabled and "disabled" or "normal"
 	local styles = self.styles[ style ]
 	
-	if styles.textures then
-		self._gui:drawTexturedRectangle( self.bounds, styles )
-	else
-		self._gui:drawRectangle( self.bounds, styles )
-	end
+	self._gui:drawRectangle( self.bounds, styles )
 
 	if styles.icons then
 		self._gui:drawIcons( self.bounds, styles )
@@ -523,14 +553,14 @@ function Slider:new( gui, t )
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
 	object.callbacks = t.callbacks or {} -- pressed, edit and set.
-	object.value = t.value or 0
-	object.minValue = t.minValue or 0
-	object.maxValue = t.maxValue or 100
+	object.value = t.value or Vector2:new()
+	object.minValue = t.minValue or Vector2:new()
+	object.maxValue = t.maxValue or Vector2:new( 100, 0 )
 	object.valueStep = t.valueStep
 
-	object.visible = t.visible or true
-	object.locked = t.locked or false
-	object.disabled = t.disabled or false -- Same as locked but also uses style.
+	object.visible = t.visible == nil and true or t.visible
+	object.locked = t.locked == nil and false or t.locked
+	object.disabled = t.disabled == nil and false or t.disabled -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
 	object.tooltip = t.tooltip
 
@@ -546,7 +576,7 @@ function Slider:getStyles()
 	return self.styles[ style ]
 end
 
-function Slider:update( delta )
+function Slider:update( _ )
 	if self.locked or self.disabled then
 		return
 	end
@@ -565,16 +595,24 @@ function Slider:update( delta )
 				local styles = self:getStyles()
 				local sliderW = styles.slider.width
 
-				self.value = RL.Remap(
-					self._gui._mousePos.x - self.bounds.x - sliderW / 2,
-					0, self.bounds.width - sliderW,
-					self.minValue, self.maxValue
+				self.value:set(
+					RL.Remap(
+						self._gui._mousePos.x - self.bounds.x - sliderW / 2,
+						0, self.bounds.width - sliderW,
+						self.minValue.x, self.maxValue.x
+					),
+					RL.Remap(
+						self._gui._mousePos.y - self.bounds.y - sliderW / 2,
+						0, self.bounds.height - sliderW,
+						self.minValue.y, self.maxValue.y
+					)
 				)
 				if self.valueStep then
-					self.value = RL.Round( self.value / self.valueStep ) * self.valueStep
+					self.value.x = RL.Round( self.value.x / self.valueStep.x ) * self.valueStep.x
+					self.value.y = RL.Round( self.value.y / self.valueStep.y ) * self.valueStep.y
 				end
 
-				self.value = Util.clamp( self.value, self.minValue, self.maxValue )
+				self.value = self.value:clamp( self.minValue, self.maxValue )
 
 				if self.callbacks.edit then
 					self.callbacks.edit( self )
@@ -595,11 +633,16 @@ function Slider:update( delta )
 		local mouseWheel = RL.GetMouseWheelMove()
 
 		if mouseWheel ~= 0 then
-			self.value = self.value + ( self.valueStep or 1 ) * mouseWheel
-			self.value = Util.clamp( self.value, self.minValue, self.maxValue )
+			if RL.IsKeyDown( RL.KEY_LEFT_SHIFT ) then
+				self.value.y = self.value.y + ( self.valueStep and self.valueStep.y or 1 ) * mouseWheel
+				self.value.y = Util.clamp( self.value.y, self.minValue.y, self.maxValue.y )
+			else
+				self.value.x = self.value.x + ( self.valueStep and self.valueStep.x or 1 ) * mouseWheel
+				self.value.x = Util.clamp( self.value.x, self.minValue.x, self.maxValue.x )
+			end
 
-			if self.callbacks.set then
-				self.callbacks.set( self )
+			if self.callbacks.edit then
+				self.callbacks.edit( self )
 			end
 		end
 	end
@@ -608,30 +651,27 @@ end
 function Slider:draw()
 	local styles = self:getStyles()
 	
-	if styles.textures then
-		self._gui:drawTexturedRectangle( self.bounds, styles )
-	else
-		self._gui:drawRectangle( self.bounds, styles )
-	end
+	self._gui:drawRectangle( self.bounds, styles )
 	
-	if styles.slider.textures then
+	if self.minValue.x ~= self.maxValue.x then
 		local rect = Rectangle:new(
-			RL.Remap( self.value, self.minValue, self.maxValue,
+			RL.Remap( self.value.x, self.minValue.x, self.maxValue.x,
 				self.bounds.x, self.bounds.x + self.bounds.width - styles.slider.width
 			),
 			self.bounds.y,
 			styles.slider.width, self.bounds.height
 		)
-		self._gui:drawTexturedRectangle( rect, styles.slider )
-	else
-		local rect = Rectangle:new(
-			RL.Remap( self.value, self.minValue, self.maxValue,
-				self.bounds.x, self.bounds.x + self.bounds.width - styles.slider.width
-			),
-			self.bounds.y,
-			styles.slider.width, self.bounds.height
-		)
+		self._gui:drawRectangle( rect, styles.slider )
+	end
 
+	if self.minValue.y ~= self.maxValue.y then
+		local rect = Rectangle:new(
+			self.bounds.x,
+			RL.Remap( self.value.y, self.minValue.y, self.maxValue.y,
+				self.bounds.y, self.bounds.y + self.bounds.height - styles.slider.width
+			),
+			self.bounds.width, styles.slider.width
+		)
 		self._gui:drawRectangle( rect, styles.slider )
 	end
 
@@ -670,9 +710,10 @@ function Handle:new( gui, t )
 	object.clampBounds = t.clampBounds
 	object.callbacks = t.callbacks or {} -- pressed, drag, released.
 
-	object.visible = t.visible or true
-	object.locked = t.locked or false
-	object.disabled = t.disabled or false -- Same as locked but also uses style.
+	object.visible = t.visible == nil and true or t.visible
+	object.locked = t.locked == nil and false or t.locked
+	object.disabled = t.disabled == nil and false or t.disabled -- Same as locked but also uses style.
+	object.draggable = t.draggable == nil and true or t.draggable
 	object.styles = t.styles or object.DEFAULT_STYLES
 	object.tooltip = t.tooltip
 	
@@ -682,7 +723,7 @@ function Handle:new( gui, t )
 	return object
 end
 
-function Handle:update( delta )
+function Handle:update( _ )
 	if self.locked or self.disabled then
 		return
 	end
@@ -690,15 +731,18 @@ function Handle:update( delta )
 	if self._gui.controlPressed == self then
 		if self._gui.mouseOver == self or self._gui.controlDragged == self then
 			if self._gui._isMousePressed then
-				self._gui.controlDragged = self
-				self._grabPos:setV( self._gui._mousePos - self.bounds:getPosition() )
+				if self.draggable then
+					self._gui.controlDragged = self
+
+					self._grabPos:setV( self._gui._mousePos - self.bounds:getPosition() )
+				end
 
 				if self.callbacks.pressed then
 					self.callbacks.pressed( self )
 				end
 			end
 
-			if self._gui._isMouseDown then
+			if self._gui._isMouseDown and self.draggable then
 				local rect = self.clampBounds and self.clampBounds:clone() or self.bounds:clone()
 				local clampBoundsPos = self.clampBounds and self.clampBounds:getPosition() or Vector2:temp()
 				
@@ -724,15 +768,12 @@ end
 
 function Handle:draw()
 	local pressed = not self.locked and not self.disabled and self._gui._isMouseDown
-	and ( self._gui.controlPressed == self or self._gui.controlDragged == self )
-	local style = pressed and "pressed" or self.disabled and "disabled" or self._isMouseOver and "focused" or "normal"
+	and self._gui.controlDragged == self
+	local style = pressed and "pressed" or self.disabled and "disabled"
+	or (self._isMouseOver and self.draggable and "focused") or "normal"
 	local styles = self.styles[ style ]
 
-	if styles.textures then
-		self._gui:drawTexturedRectangle( self.bounds, styles )
-	else
-		self._gui:drawRectangle( self.bounds, styles )
-	end
+	self._gui:drawRectangle( self.bounds, styles )
 
 	if self.text then
 		self._gui:drawText( self.text, self.bounds, styles )

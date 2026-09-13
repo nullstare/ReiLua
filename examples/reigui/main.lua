@@ -4,7 +4,6 @@ Util = require( "utillib" )
 Vector2 = require( "vector2" )
 Rectangle = require( "rectangle" )
 Color = require( "color" )
--- Gui = require( "reigui/gui" )
 
 local gui = nil
 local buttonTex = nil
@@ -29,8 +28,11 @@ end
 function InitGui()
 	RL.GuiLoadStyleDefault()
 	Gui = require( "reigui/gui" )
-	Gui:include( require( "reigui.default_controls" ) )
+	Gui:include( require( "reigui.basic_controls" ) )
 	Gui:include( require( "reigui.window" ) )
+	Gui:include( require( "reigui.spinner" ) )
+	Gui:include( require( "reigui.color_picker" ) )
+
 	gui = Gui:new()
 
 	local prefix = RL.GetBasePath().."../resources/images/"
@@ -152,16 +154,13 @@ function InitGui()
 
 	-- TextEdit.
 
-	local textEditStyle = Util.deepCopy( GUI_DEFAULT_STYLES )
+	local textEditStyle = Util.deepCopy( gui.TextInputBox.DEFAULT_STYLES )
 	local textStyle = Util.deepCopy( textEditStyle.normal.text )
 	textStyle.fontSize = 20
 	textStyle.spacing = 2
 	textStyle.alignH = RL.TEXT_ALIGN_LEFT
 
-	textEditStyle.normal.text = textStyle
-	textEditStyle.pressed.text = textStyle
-	textEditStyle.focused.text = textStyle
-	textEditStyle.disabled.text = textStyle
+	gui:setForAllStyles( textEditStyle, "text", textStyle )
 
 	local textInputBox = gui:newTextInputBox( {
 		bounds = Rectangle:new( 16, 200, 256, 32 ),
@@ -196,21 +195,27 @@ function InitGui()
 		}
 	}
 
+	-- Panel.
+
 	local panel = gui:newPanel( {
-		bounds = Rectangle:new( 2, 2, 300, 324 ),
+		bounds = Rectangle:new( 2, 2, 300, 400 ),
 		styles = panelStyles,
 	} )
 
+	-- Slider.
+	
 	local slider = gui:newSlider( {
 		bounds = Rectangle:new( 16, 248, 256, 16 ),
-		valueStep = 1,
-		minValue = 0,
-		maxValue = 10,
+		-- valueStep = 1,
+		-- minValue = 0,
+		-- maxValue = 10,
 		callbacks = {
-			set = function( self ) label.text = "Value: "..self.value end,
+			set = function( self ) label.text = "Value: "..self.value.x end,
 		},
 		tooltip = "Slide the slider",
 	} )
+
+	-- Textured Slider.
 
 	local slider2Style = Util.deepCopy( gui.Slider.DEFAULT_STYLES )
 	slider2Style.normal.textures = {
@@ -234,17 +239,15 @@ function InitGui()
 	}
 	slider2Style.disabled = slider2Style.normal
 	slider2Style.pressed = slider2Style.normal
-	-- slider2Style.focused = slider2Style.normal
 	slider2Style.focused = Util.deepCopy( slider2Style.normal )
 	slider2Style.focused.slider.textures[1].color = RL.WHITE
 
 	local slider2 = gui:newSlider( {
 		bounds = Rectangle:new( 16, 280, 256, 16 ),
-		valueStep = 0.1,
-		minValue = 0,
-		maxValue = 10,
+		valueStep = Vector2:new( 1, 0 ),
+		maxValue = Vector2:new( 10, 0 ),
 		callbacks = {
-			set = function( self ) label.text = "Value: "..self.value end,
+			set = function( self ) label.text = "Value: "..self.value.x end,
 		},
 		tooltip = "Slide the slider",
 		styles = slider2Style,
@@ -263,19 +266,48 @@ function InitGui()
 		-- clampBounds = Rectangle:new( -32, -16, 200, 64 ), -- Usefull for windows for example.
 	} )
 
-	gui:setToBack( panel )
-
 	-- Window.
 
 	local window = gui:newWindow( {
-		bounds = Rectangle:new( 60, 400, 256, 400 ),
+		bounds = Rectangle:new( 360, 80, 256, 400 ),
 		text = "Window",
-		callbacks = {
-			close = function( self ) self:setVisible( false ) end,
-			grab = function( self ) self:setToTop() end,
-		},
+		-- draggable = false,
+		-- callbacks = {
+			-- close = function( self ) self:setVisible( false ) end,
+			-- grab = function( self ) self:setToTop() end,
+		-- },
 	} )
-	-- window.callbacks.close = function( self ) window:setVisible( false ) end
+
+	-- Spinner.
+
+	local spinnerStyle = Util.deepCopy( gui.Spinner.DEFAULT_STYLES )
+
+	Gui:setForAllStyles( spinnerStyle.textInput, "text.fontSize", 20 )
+
+	local spinner = gui:newSpinner( {
+		bounds = Rectangle:new( 16, 316, 96, 32 ),
+		callbacks = {
+		},
+		styles = spinnerStyle
+	} )
+
+	-- Color panel.
+
+	local colorPicker = gui:newColorPicker( {
+		-- bounds = Rectangle:new( 32, 450, 256, 400 ),
+		bounds = Rectangle:new(
+			32, 450,
+			gui.ColorPicker.DEFAULT_STYLES.colorPicker.size.x, gui.ColorPicker.DEFAULT_STYLES.colorPicker.size.y
+		),
+		-- text = "Color Panel",
+		-- draggable = false,
+		-- callbacks = {
+			-- close = function( self ) self:setVisible( false ) end,
+			-- grab = function( self ) self:setToTop() end,
+		-- },
+	} )
+
+	gui:setToBack( panel )
 end
 
 function RL.update( delta )

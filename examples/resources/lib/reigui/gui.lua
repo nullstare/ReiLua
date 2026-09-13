@@ -355,9 +355,30 @@ function Gui:include( controls )
 	end
 end
 
+function Gui:setForAllStyles( styles, keyChain, value, makeDeepCopy )
+	if keyChain then
+		for _, style in pairs( styles ) do
+			Util.setNested( style, keyChain, makeDeepCopy and Util.deepCopy( value ) or value )
+		end
+	else
+		for name, _ in pairs( styles ) do
+			styles[ name ] = makeDeepCopy and Util.deepCopy( value ) or value
+		end
+	end
+end
+
 -- Draw functions.
 
 function Gui:drawRectangle( rect, styles, crop )
+	if styles.drawRectangleCallback then
+		styles.drawRectangleCallback( rect, styles, crop )
+		return
+	end
+	if styles.textures then
+		self:drawTexturedRectangle( rect, styles, crop )
+		return
+	end
+
 	crop = crop or styles.base.crop
 
 	if crop then
@@ -416,6 +437,11 @@ function Gui:drawTexturedRectangle( rect, styles, crop )
 					tex.color
 				)
 			end
+		-- elseif styles.textureGradient then
+		-- 	RL.SetShapesTexture( tex.texture, tex.source )
+		-- 	-- self:drawRectangle( rect, styles )
+		-- 	RL.DrawRectangleGradientEx( dest, tex.color[1], tex.color[2], tex.color[3], tex.color[4] )
+		-- 	RL.SetShapesTexture( RL.GetTextureDefault(), { 0, 0, 1, 1 } )
 		else
 			RL.DrawTexturePro( tex.texture, tex.source, dest, { 0, 0 }, 0, tex.color )
 		end

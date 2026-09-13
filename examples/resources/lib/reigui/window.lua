@@ -2,63 +2,54 @@ local Util = Util or require( "utillib" )
 local Rectangle = Rectangle or require( "rectangle" )
 local Vector2 = Vector2 or require( "vector2" )
 local Color = Color or require( "color" )
+local Gui = Gui or require( "reigui/gui" )
 
 -- Window control.
 
 local Window = {}
 Window.__index = Window
 
--- Window.DEFAULT_STYLES = {
--- 	handle = Gui.Handle,
--- 	closeButton = Gui.Button,
--- 	panel = Gui.Panel,
--- }
-
--- Window.DEFAULT_STYLES = Util.deepCopy( GUI_DEFAULT_STYLES )
 Window.DEFAULT_STYLES = {
-	handleHeight = 20,
-	closeButtonWidth = 20,
+	window = {
+		handleHeight = 20,
+		closeButtonWidth = 20,
+	},
+	handle = Gui.Handle.DEFAULT_STYLES,
+	closeButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
+	panel = Gui.Panel.DEFAULT_STYLES,
 }
 
+Window.DEFAULT_STYLES.closeButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES )
+
+Window.DEFAULT_STYLES.closeButton.normal.icons = {
+	{
+		iconId = RL.ICON_CROSS,
+		offset = Vector2:new( 0, 0 ),
+		pixelSize = 1,
+		color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
+		alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
+		alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+	}
+}
+Gui:setForAllStyles( Window.DEFAULT_STYLES.closeButton, "icons", Window.DEFAULT_STYLES.closeButton.normal.icons )
+
 function Window:new( gui, t )
-	if not gui.Window.DEFAULT_STYLES_CLOSE_BUTTON then
-		gui.Window.DEFAULT_STYLES_CLOSE_BUTTON = Util.deepCopy( gui.Button.DEFAULT_STYLES )
-
-		gui.Window.DEFAULT_STYLES_CLOSE_BUTTON.normal.icons = {
-			{
-				iconId = RL.ICON_CROSS,
-				offset = Vector2:new( 0, 0 ),
-				pixelSize = 1,
-				color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
-				alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
-				alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
-			}
-		}
-		local icons = gui.Window.DEFAULT_STYLES_CLOSE_BUTTON.normal.icons
-
-		gui.Window.DEFAULT_STYLES_CLOSE_BUTTON.focused.icons = icons
-		gui.Window.DEFAULT_STYLES_CLOSE_BUTTON.disabled.icons = icons
-		gui.Window.DEFAULT_STYLES_CLOSE_BUTTON.pressed.icons = icons
-	end
-
 	local object = setmetatable( {}, self )
-
 	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
 	object.text = t.text
 
-	object.visible = t.visible or true
-	object.disabled = t.disabled or false
-	object.locked = t.locked or false
-	object.callbacks = t.callbacks -- grab, drag, close, setPosition.
-	object.styles = t.styles or {
-		window = object.DEFAULT_STYLES,
-		handle = gui.Handle.DEFAULT_STYLES,
-		closeButton = gui.Window.DEFAULT_STYLES_CLOSE_BUTTON,
-		panel = gui.Panel.DEFAULT_STYLES,
+	object.visible = t.visible == nil and true or t.visible
+	object.locked = t.locked == nil and false or t.locked
+	object.disabled = t.disabled == nil and false or t.disabled -- Same as locked but also uses style.
+	object.draggable = t.draggable == nil and true or t.draggable
+	object.callbacks = { -- grab, drag, close, setPosition.
+		close = t.callbacks and t.callbacks.close or function() object:setVisible( false ) end,
+		grab = t.callbacks and t.callbacks.grab or function() object:setToTop() end,
+		drag = t.callbacks and t.callbacks.drag or function( this ) object:setPosition( this.bounds:getPosition() ) end,
 	}
-	-- object.tooltip = t.tooltip
+	object.styles = t.styles or object.DEFAULT_STYLES
 	
 	object.controls = {
 		-- handle = nil,
@@ -67,15 +58,13 @@ function Window:new( gui, t )
 	}
 	object._controlsArray = {} -- Controls in predefined order.
 
-	object:createControls( t )
+	object:createControls()
 	object:setPosition( object.bounds:getPosition() )
-	
-	-- object._isMouseOver = false
 
 	return object
 end
 
-function Window:createControls( t )
+function Window:createControls()
 	local styles = self.styles
 
 	-- Handle.
@@ -86,6 +75,7 @@ function Window:createControls( t )
 	self.controls.handle = self._gui:newHandle( {
 		bounds = Rectangle:new( 0, 0, self.bounds.width - styles.window.closeButtonWidth, styles.window.handleHeight ),
 		text = self.text,
+		draggable = self.draggable,
 		callbacks = {
 			pressed = function()
 				if self.callbacks.grab then
@@ -93,10 +83,12 @@ function Window:createControls( t )
 				end
 			end,
 			drag = function( this )
-				self:setPosition( this.bounds:getPosition() )
+				if self.draggable then
+					self:setPosition( this.bounds:getPosition() )
 
-				if self.callbacks.drag then
-					self.callbacks.drag( self )
+					if self.callbacks.drag then
+						self.callbacks.drag( self )
+					end
 				end
 			end,
 		},
@@ -109,7 +101,6 @@ function Window:createControls( t )
 
 	self.controls.closeButton = self._gui:newButton( {
 		bounds = Rectangle:new( 0, 0, styles.window.closeButtonWidth, self.controls.handle.bounds.height ),
-		-- text = "Button 1",
 		callbacks = {
 			released = function()
 				if self.callbacks.close then
@@ -175,6 +166,11 @@ function Window:addControl( control, name )
 	table.insert( self._controlsArray, control )
 end
 
+function Window:setDraggable( draggable )
+	self.draggable = draggable
+	self.controls.handle.draggable = self.draggable
+end
+
 function Window:setToTop()
 	for _, control in ipairs( self._controlsArray ) do
 		control:setToTop()
@@ -182,18 +178,24 @@ function Window:setToTop()
 end
 
 function Window:setVisible( visible )
+	self.visible = visible
+
 	for _, control in ipairs( self._controlsArray ) do
 		control.visible = visible
 	end
 end
 
 function Window:setDisabled( disabled )
+	self.disabled = disabled
+
 	for _, control in ipairs( self._controlsArray ) do
 		control.disabled = disabled
 	end
 end
 
 function Window:setLocked( locked )
+	self.locked = locked
+
 	for _, control in ipairs( self._controlsArray ) do
 		control.locked = locked
 	end
@@ -204,7 +206,7 @@ function Window:remove()
 		control:remove()
 	end
 
-	self = nil
+	self._gui:remove( self )
 end
 
 return { Window = Window }

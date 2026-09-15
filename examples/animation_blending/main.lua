@@ -214,9 +214,7 @@ function RL.draw()
 
 	-- Draw blending text
 	if anim.transition then
-		local blendDir = anim.nextToPlay == 1 and "->" or "<-"
-
-		RL.DrawText( "ANIM TRANSITION BLENDING! Direction "..blendDir, { 10, 60 }, 30, RL.BLUE )
+		RL.DrawText( "ANIM TRANSITION BLENDING!", { 10, 60 }, 30, RL.BLUE )
 	else
 		RL.DrawText( "PRESS SPACE to START BLENDING", { 10, 60 }, 30, RL.BLUE )
 	end
@@ -261,6 +259,11 @@ function RL.draw()
 	end
 
 	-- Blending process progress bar
+	if ( anim.nextToPlay == 1 ) then
+		RL.GuiSetStyle( RL.PROGRESSBAR, RL.PROGRESS_SIDE, 0 ) -- Left-->Right
+	else
+		RL.GuiSetStyle( RL.PROGRESSBAR, RL.PROGRESS_SIDE, 1 ) -- Right-->Left
+	end
 	RL.GuiProgressBar( { 180, 14, winSize.x - 170 - 180 - 10, 16 }, nil, nil, ui.blendProgress, 0, 1 )
 
 	result, anim.index1 = RL.GuiDropdownBox( { winSize.x - 170, 10, 160, 24 }, anim.info.names, anim.index1, ui.dropdownEditMode1 )

@@ -2355,6 +2355,26 @@ Radians to degrees
 ---
 
 
+## Defines - Gui control result
+> RESULT_NONE = 0
+
+---
+
+> RESULT_PRESSED = 1
+
+---
+
+> RESULT_CHANGED = 2
+
+---
+
+> RESULT_TAB_CLOSE = 4
+
+GuiTabBar(), tab close request
+
+---
+
+
 ## Defines - Gui control state
 > STATE_NORMAL = 0
 
@@ -2488,61 +2508,97 @@ Used also for: TEXTBOXMULTI
 ## Defines - Gui base properties for every control
 > BORDER_COLOR_NORMAL = 0
 
+Control border color in STATE_NORMAL
+
 ---
 
 > BASE_COLOR_NORMAL = 1
+
+Control base color in STATE_NORMAL
 
 ---
 
 > TEXT_COLOR_NORMAL = 2
 
+Control text color in STATE_NORMAL
+
 ---
 
 > BORDER_COLOR_FOCUSED = 3
+
+Control border color in STATE_FOCUSED
 
 ---
 
 > BASE_COLOR_FOCUSED = 4
 
+Control base color in STATE_FOCUSED
+
 ---
 
 > TEXT_COLOR_FOCUSED = 5
+
+Control text color in STATE_FOCUSED
 
 ---
 
 > BORDER_COLOR_PRESSED = 6
 
+Control border color in STATE_PRESSED
+
 ---
 
 > BASE_COLOR_PRESSED = 7
+
+Control base color in STATE_PRESSED
 
 ---
 
 > TEXT_COLOR_PRESSED = 8
 
+Control text color in STATE_PRESSED
+
 ---
 
 > BORDER_COLOR_DISABLED = 9
+
+Control border color in STATE_DISABLED
 
 ---
 
 > BASE_COLOR_DISABLED = 10
 
+Control base color in STATE_DISABLED
+
 ---
 
 > TEXT_COLOR_DISABLED = 11
+
+Control text color in STATE_DISABLED
 
 ---
 
 > BORDER_WIDTH = 12
 
+Control border size, 0 for no border
+
 ---
 
 > TEXT_PADDING = 13
 
+Control text padding, not considering border
+
 ---
 
 > TEXT_ALIGNMENT = 14
+
+Control text horizontal alignment inside control text bound (after border and padding): 0-Left, 1-Center, 2-Right
+
+---
+
+> BASEPROP16 = 15
+
+Not used yet...
 
 ---
 
@@ -2590,11 +2646,23 @@ Text wrap-mode inside text bounds
 
 ---
 
+> EXTPROP08 = 23
+
+Not used yet...
+
+---
+
 
 ## Defines - Gui Toggle/ToggleGroup
 > GROUP_PADDING = 16
 
 ToggleGroup separation between toggles
+
+---
+
+> GROUP_WIDTH_FULL = 17
+
+ToggleGroup bounds width considers all items: 0-Width per item, 1-Full width
 
 ---
 
@@ -2620,31 +2688,47 @@ ProgressBar internal padding
 
 ---
 
+> PROGRESS_SIDE = 17
+
+ProgressBar increment side: 0-Left->Right, 1-Right->Left
+
+---
+
 
 ## Defines - Gui ScrollBar
 > ARROWS_SIZE = 16
+
+ScrollBar arrows size
 
 ---
 
 > ARROWS_VISIBLE = 17
 
+ScrollBar arrows visible
+
 ---
 
 > SCROLL_SLIDER_PADDING = 18
 
-(SLIDERBAR, SLIDER_PADDING)
+ScrollBar slider internal padding
 
 ---
 
 > SCROLL_SLIDER_SIZE = 19
 
+ScrollBar slider size
+
 ---
 
 > SCROLL_PADDING = 20
 
+ScrollBar scroll padding from arrows
+
 ---
 
 > SCROLL_SPEED = 21
+
+ScrollBar scrolling speed
 
 ---
 
@@ -2684,6 +2768,18 @@ DropdownBox items separation
 
 ---
 
+> DROPDOWN_ARROW_HIDDEN = 18
+
+DropdownBox arrow hidden
+
+---
+
+> DROPDOWN_ROLL_UP = 19
+
+DropdownBox roll up flag: 0-Roll down, 1-Roll up
+
+---
+
 
 ## Defines - Gui TextBox/TextBoxMulti/ValueBox/Spinner
 > TEXT_READONLY = 16
@@ -2693,7 +2789,49 @@ TextBox in read-only mode: 0-text editable, 1-text no-editable
 ---
 
 
+## Defines - Gui ValueBox/Spinner
+> SPINNER_BUTTON_WIDTH = 16
+
+Spinner left/right buttons width
+
+---
+
+> SPINNER_BUTTON_SPACING = 17
+
+Spinner buttons separation
+
+---
+
+
+## Defines - Gui TabBar
+> TAB_ITEMS_WIDTH = 16
+
+TabBar tab items width
+
+---
+
+> TAB_CLOSE_BUTTON = 17
+
+TabBar tab close button: 0-Not shown, 1-Shown
+
+---
+
+> TAB_LINE_SIDE = 18
+
+TabBar tabs side: 0-Bottom, 1-Top
+
+---
+
+
 ## Defines - Gui ListView
+> SCROLLBAR_LEFT_SIDE = 0
+
+---
+
+> SCROLLBAR_RIGHT_SIDE = 1
+
+---
+
 > LIST_ITEMS_HEIGHT = 16
 
 ListView items height
@@ -2715,6 +2853,18 @@ ListView scrollbar size (usually width)
 > SCROLLBAR_SIDE = 19
 
 ListView scrollbar side (0-left, 1-right)
+
+---
+
+> LIST_ITEMS_BORDER_NORMAL = 20
+
+ListView items border enabled in normal state
+
+---
+
+> LIST_ITEMS_BORDER_WIDTH = 21
+
+ListView items border width
 
 ---
 

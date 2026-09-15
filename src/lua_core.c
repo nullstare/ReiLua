@@ -830,6 +830,11 @@ static void defineGlobals() {
 	assignGlobalFloat( EPSILON, "EPSILON" ); // Epsilon
 	assignGlobalFloat( DEG2RAD, "DEG2RAD" ); // Degrees to radians
 	assignGlobalFloat( RAD2DEG, "RAD2DEG" ); // Radians to degrees
+	/* Gui control result */
+	assignGlobalInt( RESULT_NONE, "RESULT_NONE" );
+	assignGlobalInt( RESULT_PRESSED, "RESULT_PRESSED" );
+	assignGlobalInt( RESULT_CHANGED, "RESULT_CHANGED" );
+	assignGlobalInt( RESULT_TAB_CLOSE, "RESULT_TAB_CLOSE" ); // GuiTabBar(), tab close request
 	/* Gui control state */
 	assignGlobalInt( STATE_NORMAL, "STATE_NORMAL" );
 	assignGlobalInt( STATE_FOCUSED, "STATE_FOCUSED" );
@@ -864,21 +869,22 @@ static void defineGlobals() {
 	assignGlobalInt( SCROLLBAR, "SCROLLBAR" );
 	assignGlobalInt( STATUSBAR, "STATUSBAR" );
 	/* Gui base properties for every control */
-	assignGlobalInt( BORDER_COLOR_NORMAL, "BORDER_COLOR_NORMAL" );
-	assignGlobalInt( BASE_COLOR_NORMAL, "BASE_COLOR_NORMAL" );
-	assignGlobalInt( TEXT_COLOR_NORMAL, "TEXT_COLOR_NORMAL" );
-	assignGlobalInt( BORDER_COLOR_FOCUSED, "BORDER_COLOR_FOCUSED" );
-	assignGlobalInt( BASE_COLOR_FOCUSED, "BASE_COLOR_FOCUSED" );
-	assignGlobalInt( TEXT_COLOR_FOCUSED, "TEXT_COLOR_FOCUSED" );
-	assignGlobalInt( BORDER_COLOR_PRESSED, "BORDER_COLOR_PRESSED" );
-	assignGlobalInt( BASE_COLOR_PRESSED, "BASE_COLOR_PRESSED" );
-	assignGlobalInt( TEXT_COLOR_PRESSED, "TEXT_COLOR_PRESSED" );
-	assignGlobalInt( BORDER_COLOR_DISABLED, "BORDER_COLOR_DISABLED" );
-	assignGlobalInt( BASE_COLOR_DISABLED, "BASE_COLOR_DISABLED" );
-	assignGlobalInt( TEXT_COLOR_DISABLED, "TEXT_COLOR_DISABLED" );
-	assignGlobalInt( BORDER_WIDTH, "BORDER_WIDTH" );
-	assignGlobalInt( TEXT_PADDING, "TEXT_PADDING" );
-	assignGlobalInt( TEXT_ALIGNMENT, "TEXT_ALIGNMENT" );
+	assignGlobalInt( BORDER_COLOR_NORMAL, "BORDER_COLOR_NORMAL" ); // Control border color in STATE_NORMAL
+	assignGlobalInt( BASE_COLOR_NORMAL, "BASE_COLOR_NORMAL" ); // Control base color in STATE_NORMAL
+	assignGlobalInt( TEXT_COLOR_NORMAL, "TEXT_COLOR_NORMAL" ); // Control text color in STATE_NORMAL
+	assignGlobalInt( BORDER_COLOR_FOCUSED, "BORDER_COLOR_FOCUSED" );  // Control border color in STATE_FOCUSED
+	assignGlobalInt( BASE_COLOR_FOCUSED, "BASE_COLOR_FOCUSED" ); // Control base color in STATE_FOCUSED
+	assignGlobalInt( TEXT_COLOR_FOCUSED, "TEXT_COLOR_FOCUSED" ); // Control text color in STATE_FOCUSED
+	assignGlobalInt( BORDER_COLOR_PRESSED, "BORDER_COLOR_PRESSED" ); // Control border color in STATE_PRESSED
+	assignGlobalInt( BASE_COLOR_PRESSED, "BASE_COLOR_PRESSED" ); // Control base color in STATE_PRESSED
+	assignGlobalInt( TEXT_COLOR_PRESSED, "TEXT_COLOR_PRESSED" ); // Control text color in STATE_PRESSED
+	assignGlobalInt( BORDER_COLOR_DISABLED, "BORDER_COLOR_DISABLED" ); // Control border color in STATE_DISABLED
+	assignGlobalInt( BASE_COLOR_DISABLED, "BASE_COLOR_DISABLED" ); // Control base color in STATE_DISABLED
+	assignGlobalInt( TEXT_COLOR_DISABLED, "TEXT_COLOR_DISABLED" ); // Control text color in STATE_DISABLED
+	assignGlobalInt( BORDER_WIDTH, "BORDER_WIDTH" ); // Control border size, 0 for no border
+	assignGlobalInt( TEXT_PADDING, "TEXT_PADDING" ); // Control text padding, not considering border
+	assignGlobalInt( TEXT_ALIGNMENT, "TEXT_ALIGNMENT" ); // Control text horizontal alignment inside control text bound (after border and padding): 0-Left, 1-Center, 2-Right
+	assignGlobalInt( BASEPROP16, "BASEPROP16" ); // Not used yet...
 	/* Gui extended properties depend on control */
 	assignGlobalInt( TEXT_SIZE, "TEXT_SIZE" ); // Text size (glyphs max height)
 	assignGlobalInt( TEXT_SPACING, "TEXT_SPACING" ); // Text spacing between glyphs
@@ -887,20 +893,23 @@ static void defineGlobals() {
 	assignGlobalInt( TEXT_LINE_SPACING, "TEXT_LINE_SPACING" ); // Text spacing between lines
 	assignGlobalInt( TEXT_ALIGNMENT_VERTICAL, "TEXT_ALIGNMENT_VERTICAL" ); // Text vertical alignment inside text bounds (after border and padding)
 	assignGlobalInt( TEXT_WRAP_MODE, "TEXT_WRAP_MODE" ); // Text wrap-mode inside text bounds
+	assignGlobalInt( EXTPROP08, "EXTPROP08" ); // Not used yet...
 	/* Gui Toggle/ToggleGroup */
 	assignGlobalInt( GROUP_PADDING, "GROUP_PADDING" ); // ToggleGroup separation between toggles
+	assignGlobalInt( GROUP_WIDTH_FULL, "GROUP_WIDTH_FULL" ); // ToggleGroup bounds width considers all items: 0-Width per item, 1-Full width
 	/* Gui Slider/SliderBar */
 	assignGlobalInt( SLIDER_WIDTH, "SLIDER_WIDTH" ); // Slider size of internal bar
 	assignGlobalInt( SLIDER_PADDING, "SLIDER_PADDING" ); // Slider/SliderBar internal bar padding
 	/* Gui ProgressBar */
 	assignGlobalInt( PROGRESS_PADDING, "PROGRESS_PADDING" ); // ProgressBar internal padding
+	assignGlobalInt( PROGRESS_SIDE, "PROGRESS_SIDE" ); // ProgressBar increment side: 0-Left->Right, 1-Right->Left
 	/* Gui ScrollBar */
-	assignGlobalInt( ARROWS_SIZE, "ARROWS_SIZE" );
-	assignGlobalInt( ARROWS_VISIBLE, "ARROWS_VISIBLE" );
-	assignGlobalInt( SCROLL_SLIDER_PADDING, "SCROLL_SLIDER_PADDING" ); // (SLIDERBAR, SLIDER_PADDING)
-	assignGlobalInt( SCROLL_SLIDER_SIZE, "SCROLL_SLIDER_SIZE" );
-	assignGlobalInt( SCROLL_PADDING, "SCROLL_PADDING" );
-	assignGlobalInt( SCROLL_SPEED, "SCROLL_SPEED" );
+	assignGlobalInt( ARROWS_SIZE, "ARROWS_SIZE" ); // ScrollBar arrows size
+	assignGlobalInt( ARROWS_VISIBLE, "ARROWS_VISIBLE" ); // ScrollBar arrows visible
+	assignGlobalInt( SCROLL_SLIDER_PADDING, "SCROLL_SLIDER_PADDING" ); // ScrollBar slider internal padding
+	assignGlobalInt( SCROLL_SLIDER_SIZE, "SCROLL_SLIDER_SIZE" ); // ScrollBar slider size
+	assignGlobalInt( SCROLL_PADDING, "SCROLL_PADDING" ); // ScrollBar scroll padding from arrows
+	assignGlobalInt( SCROLL_SPEED, "SCROLL_SPEED" ); // ScrollBar scrolling speed
 	/* Gui CheckBox */
 	assignGlobalInt( CHECK_PADDING, "CHECK_PADDING" ); // CheckBox internal check padding
 	/* Gui ComboBox */
@@ -909,13 +918,26 @@ static void defineGlobals() {
 	/* Gui DropdownBox */
 	assignGlobalInt( ARROW_PADDING, "ARROW_PADDING" ); // DropdownBox arrow separation from border and items
 	assignGlobalInt( DROPDOWN_ITEMS_SPACING, "DROPDOWN_ITEMS_SPACING" ); // DropdownBox items separation
+	assignGlobalInt( DROPDOWN_ARROW_HIDDEN, "DROPDOWN_ARROW_HIDDEN" ); // DropdownBox arrow hidden
+	assignGlobalInt( DROPDOWN_ROLL_UP, "DROPDOWN_ROLL_UP" ); // DropdownBox roll up flag: 0-Roll down, 1-Roll up
 	/* Gui TextBox/TextBoxMulti/ValueBox/Spinner */
 	assignGlobalInt( TEXT_READONLY, "TEXT_READONLY" ); // TextBox in read-only mode: 0-text editable, 1-text no-editable
+	/* Gui ValueBox/Spinner */
+	assignGlobalInt( SPINNER_BUTTON_WIDTH, "SPINNER_BUTTON_WIDTH" ); // Spinner left/right buttons width
+	assignGlobalInt( SPINNER_BUTTON_SPACING, "SPINNER_BUTTON_SPACING" ); // Spinner buttons separation
+	/* Gui TabBar */
+	assignGlobalInt( TAB_ITEMS_WIDTH, "TAB_ITEMS_WIDTH" ); // TabBar tab items width
+	assignGlobalInt( TAB_CLOSE_BUTTON, "TAB_CLOSE_BUTTON" ); // TabBar tab close button: 0-Not shown, 1-Shown
+	assignGlobalInt( TAB_LINE_SIDE, "TAB_LINE_SIDE" ); // TabBar tabs side: 0-Bottom, 1-Top
 	/* Gui ListView */
+	assignGlobalInt( SCROLLBAR_LEFT_SIDE, "SCROLLBAR_LEFT_SIDE" );
+	assignGlobalInt( SCROLLBAR_RIGHT_SIDE, "SCROLLBAR_RIGHT_SIDE" );
 	assignGlobalInt( LIST_ITEMS_HEIGHT, "LIST_ITEMS_HEIGHT" ); // ListView items height
 	assignGlobalInt( LIST_ITEMS_SPACING, "LIST_ITEMS_SPACING" ); // ListView items separation
 	assignGlobalInt( SCROLLBAR_WIDTH, "SCROLLBAR_WIDTH" ); // ListView scrollbar size (usually width)
 	assignGlobalInt( SCROLLBAR_SIDE, "SCROLLBAR_SIDE" ); // ListView scrollbar side (0-left, 1-right)
+	assignGlobalInt( LIST_ITEMS_BORDER_NORMAL, "LIST_ITEMS_BORDER_NORMAL" ); // ListView items border enabled in normal state
+	assignGlobalInt( LIST_ITEMS_BORDER_WIDTH, "LIST_ITEMS_BORDER_WIDTH" ); // ListView items border width
 	/* Gui ColorPicker */
 	assignGlobalInt( COLOR_SELECTOR_SIZE, "COLOR_SELECTOR_SIZE" );
 	assignGlobalInt( HUEBAR_WIDTH, "HUEBAR_WIDTH" ); // ColorPicker right hue bar width

@@ -25,6 +25,7 @@ ColorPicker.DEFAULT_STYLES = {
 	checkerPanel = Util.deepCopy( Gui.Panel.DEFAULT_STYLES ),
 	hexValueInputBox = Util.deepCopy( Gui.TextInputBox.DEFAULT_STYLES ),
 	hexValueLabel = Util.deepCopy( Gui.Label.DEFAULT_STYLES ),
+	aplyButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
 }
 -- Gui:setForAllStyles( ColorPicker.DEFAULT_STYLES.colorPanel, "base.gradient", "vertex" )
 -- Gui:setForAllStyles( ColorPicker.DEFAULT_STYLES.colorPanel, "base.color", { RL.RED, RL.BLUE, RL.GREEN, RL.WHITE } )
@@ -53,6 +54,7 @@ function ColorPicker:new( gui, t )
 		close = t.callbacks and t.callbacks.close or function() object:setVisible( false ) end,
 		grab = t.callbacks and t.callbacks.grab or function() object:setToTop() end,
 		drag = t.callbacks and t.callbacks.drag or function( this ) object:setPosition( this.bounds:getPosition() ) end,
+		apply = t.callbacks.apply
 	}
 	object.styles = t.styles or object.DEFAULT_STYLES
 
@@ -60,7 +62,7 @@ function ColorPicker:new( gui, t )
 	object.checkerTex = t.checkerTex or object:genCheckerTex()
 
 	object.controls = {
-		-- windows = nil,
+		-- window = nil,
 		-- colorPanel = nil,
 		-- colorBarHue = nil,
 		-- colorPreview = nil,
@@ -138,7 +140,9 @@ function ColorPicker:createControls()
 		styles = colorPanelStyles,
 		callbacks = {
 			edit = function( this )
-				self:setColor( Color:newT( RL.ColorFromHSV( self.hsv.x, this.value.x, this.maxValue.y - this.value.y ) ) )
+				local color = Color:newT( RL.ColorFromHSV( self.hsv.x, this.value.x, this.maxValue.y - this.value.y ) )
+				color.a = self.color.a
+				self:setColor( color )
 			end
 		},
 	} )
@@ -164,7 +168,9 @@ function ColorPicker:createControls()
 		styles = colorBarHueStyles,
 		callbacks = {
 			edit = function( this )
-				self:setColor( Color:newT( RL.ColorFromHSV( this.value.y, self.hsv.y, self.hsv.z ) ) )
+				local color = Color:newT( RL.ColorFromHSV( this.value.y, self.hsv.y, self.hsv.z ) )
+				color.a = self.color.a
+				self:setColor( color )
 			end
 		},
 	} )
@@ -285,7 +291,7 @@ function ColorPicker:createControls()
 
 	self.controls.hexValueInputBox = self._gui:newTextInputBox( {
 		bounds = Rectangle:new( 0, 0, 64, 24 ),
-		text = string.format( "%x", self.color:toHex() ),
+		text = string.format( "%x", self.color:toHex() ):upper(),
 		charLimit = 8,
 		callbacks = {
 			-- edit = function( this )
@@ -314,6 +320,27 @@ function ColorPicker:createControls()
 	self.controls.hexValueLabel.position = Vector2:newV( pos )
 
 	table.insert( self._controlsArray, self.controls.hexValueLabel )
+
+	pos:set( spacing, pos.y + self.controls.hexValueInputBox.bounds.height + spacing )
+
+	-- Apply Button.
+
+	self.controls.applyButton = self._gui:newButton( {
+		bounds = Rectangle:new( 0, 0, width, 24 ),
+		text = "Apply",
+		callbacks = {
+			pressed = function() self.callbacks.apply( self.color:clone() ) end,
+		},
+		styles = self.styles.aplyButton,
+	} )
+	self.controls.applyButton.position = Vector2:newV( pos )
+
+	table.insert( self._controlsArray, self.controls.applyButton )
+
+	-- Set window bounds.
+
+	self.bounds.height = self.controls.applyButton.position.y + self.controls.applyButton.bounds.height + spacing
+	self.controls.window:setSize( self.bounds:getSize() )
 end
 
 function ColorPicker:drawColorPanel( rect, styles, crop )
@@ -361,6 +388,11 @@ function ColorPicker:drawColorChannelSlider( rect, styles, crop, channel )
 	col1[ channel ] = 0
 	col2[ channel ] = 255
 
+	if channel ~= "a" then
+		col1.a = 255
+		col2.a = 255
+	end
+
 	RL.DrawTextureRec( self.checkerTex, { 0, 0, rect.width, rect.height }, rect:getPosition(), RL.WHITE )
 	RL.DrawRectangleGradientH(
 		rect, col1, col2
@@ -389,7 +421,7 @@ function ColorPicker:setColor( color )
 		self.controls[ spinnerName ]:setValue( v )
 	end
 
-	self.controls.hexValueInputBox.text = string.format( "%x", self.color:toHex() )
+	self.controls.hexValueInputBox.text = string.format( "%x", self.color:toHex() ):upper()
 end
 
 function ColorPicker:setPosition( pos )

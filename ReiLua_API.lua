@@ -752,6 +752,14 @@ RL.DEG2RAD=0.017453292384744
 ---Radians to degrees
 RL.RAD2DEG=57.295776367188
 
+-- Defines - Gui control result
+
+RL.RESULT_NONE=0
+RL.RESULT_PRESSED=1
+RL.RESULT_CHANGED=2
+---GuiTabBar(), tab close request
+RL.RESULT_TAB_CLOSE=4
+
 -- Defines - Gui control state
 
 RL.STATE_NORMAL=0
@@ -801,21 +809,38 @@ RL.STATUSBAR=15
 
 -- Defines - Gui base properties for every control
 
+---Control border color in STATE_NORMAL
 RL.BORDER_COLOR_NORMAL=0
+---Control base color in STATE_NORMAL
 RL.BASE_COLOR_NORMAL=1
+---Control text color in STATE_NORMAL
 RL.TEXT_COLOR_NORMAL=2
+---Control border color in STATE_FOCUSED
 RL.BORDER_COLOR_FOCUSED=3
+---Control base color in STATE_FOCUSED
 RL.BASE_COLOR_FOCUSED=4
+---Control text color in STATE_FOCUSED
 RL.TEXT_COLOR_FOCUSED=5
+---Control border color in STATE_PRESSED
 RL.BORDER_COLOR_PRESSED=6
+---Control base color in STATE_PRESSED
 RL.BASE_COLOR_PRESSED=7
+---Control text color in STATE_PRESSED
 RL.TEXT_COLOR_PRESSED=8
+---Control border color in STATE_DISABLED
 RL.BORDER_COLOR_DISABLED=9
+---Control base color in STATE_DISABLED
 RL.BASE_COLOR_DISABLED=10
+---Control text color in STATE_DISABLED
 RL.TEXT_COLOR_DISABLED=11
+---Control border size, 0 for no border
 RL.BORDER_WIDTH=12
+---Control text padding, not considering border
 RL.TEXT_PADDING=13
+---Control text horizontal alignment inside control text bound (after border and padding): 0-Left, 1-Center, 2-Right
 RL.TEXT_ALIGNMENT=14
+---Not used yet...
+RL.BASEPROP16=15
 
 -- Defines - Gui extended properties depend on control
 
@@ -833,11 +858,15 @@ RL.TEXT_LINE_SPACING=20
 RL.TEXT_ALIGNMENT_VERTICAL=21
 ---Text wrap-mode inside text bounds
 RL.TEXT_WRAP_MODE=22
+---Not used yet...
+RL.EXTPROP08=23
 
 -- Defines - Gui Toggle/ToggleGroup
 
 ---ToggleGroup separation between toggles
 RL.GROUP_PADDING=16
+---ToggleGroup bounds width considers all items: 0-Width per item, 1-Full width
+RL.GROUP_WIDTH_FULL=17
 
 -- Defines - Gui Slider/SliderBar
 
@@ -850,15 +879,22 @@ RL.SLIDER_PADDING=17
 
 ---ProgressBar internal padding
 RL.PROGRESS_PADDING=16
+---ProgressBar increment side: 0-Left->Right, 1-Right->Left
+RL.PROGRESS_SIDE=17
 
 -- Defines - Gui ScrollBar
 
+---ScrollBar arrows size
 RL.ARROWS_SIZE=16
+---ScrollBar arrows visible
 RL.ARROWS_VISIBLE=17
----(SLIDERBAR, SLIDER_PADDING)
+---ScrollBar slider internal padding
 RL.SCROLL_SLIDER_PADDING=18
+---ScrollBar slider size
 RL.SCROLL_SLIDER_SIZE=19
+---ScrollBar scroll padding from arrows
 RL.SCROLL_PADDING=20
+---ScrollBar scrolling speed
 RL.SCROLL_SPEED=21
 
 -- Defines - Gui CheckBox
@@ -879,14 +915,36 @@ RL.COMBO_BUTTON_SPACING=17
 RL.ARROW_PADDING=16
 ---DropdownBox items separation
 RL.DROPDOWN_ITEMS_SPACING=17
+---DropdownBox arrow hidden
+RL.DROPDOWN_ARROW_HIDDEN=18
+---DropdownBox roll up flag: 0-Roll down, 1-Roll up
+RL.DROPDOWN_ROLL_UP=19
 
 -- Defines - Gui TextBox/TextBoxMulti/ValueBox/Spinner
 
 ---TextBox in read-only mode: 0-text editable, 1-text no-editable
 RL.TEXT_READONLY=16
 
+-- Defines - Gui ValueBox/Spinner
+
+---Spinner left/right buttons width
+RL.SPINNER_BUTTON_WIDTH=16
+---Spinner buttons separation
+RL.SPINNER_BUTTON_SPACING=17
+
+-- Defines - Gui TabBar
+
+---TabBar tab items width
+RL.TAB_ITEMS_WIDTH=16
+---TabBar tab close button: 0-Not shown, 1-Shown
+RL.TAB_CLOSE_BUTTON=17
+---TabBar tabs side: 0-Bottom, 1-Top
+RL.TAB_LINE_SIDE=18
+
 -- Defines - Gui ListView
 
+RL.SCROLLBAR_LEFT_SIDE=0
+RL.SCROLLBAR_RIGHT_SIDE=1
 ---ListView items height
 RL.LIST_ITEMS_HEIGHT=16
 ---ListView items separation
@@ -895,6 +953,10 @@ RL.LIST_ITEMS_SPACING=17
 RL.SCROLLBAR_WIDTH=18
 ---ListView scrollbar side (0-left, 1-right)
 RL.SCROLLBAR_SIDE=19
+---ListView items border enabled in normal state
+RL.LIST_ITEMS_BORDER_NORMAL=20
+---ListView items border width
+RL.LIST_ITEMS_BORDER_WIDTH=21
 
 -- Defines - Gui ColorPicker
 

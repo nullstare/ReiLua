@@ -1,10 +1,9 @@
 Current {
 	- Reigui.
-		- Color panel.
-			- Palette.
-			- Apply button.
 		- Container.
 		- File browser.
+		- Color panel.
+			- Palette.
 }
 
 Backlog {

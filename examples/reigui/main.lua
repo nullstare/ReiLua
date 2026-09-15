@@ -294,17 +294,15 @@ function InitGui()
 	-- Color panel.
 
 	local colorPicker = gui:newColorPicker( {
-		-- bounds = Rectangle:new( 32, 450, 256, 400 ),
 		bounds = Rectangle:new(
 			32, 450,
 			gui.ColorPicker.DEFAULT_STYLES.colorPicker.size.x, gui.ColorPicker.DEFAULT_STYLES.colorPicker.size.y
 		),
 		-- text = "Color Panel",
 		-- draggable = false,
-		-- callbacks = {
-			-- close = function( self ) self:setVisible( false ) end,
-			-- grab = function( self ) self:setToTop() end,
-		-- },
+		callbacks = {
+			apply = function( color ) button3Styles.normal.textures[3].color:setC( color ) end
+		},
 	} )
 
 	gui:setToBack( panel )

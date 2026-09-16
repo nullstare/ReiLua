@@ -1,7 +1,9 @@
 Current {
 	- Reigui.
-		- Container.
+		- Dropdown.
+			- Could also work as a toggle. (Could be used in properties groups)
 		- File browser.
+		- Tree View.
 		- Color panel.
 			- Palette.
 }

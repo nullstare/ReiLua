@@ -61,7 +61,7 @@ function ColorPicker:new( gui, t )
 	object._generatedOwnTexture = false
 	object.checkerTex = t.checkerTex or object:genCheckerTex()
 
-	object.controls = {
+	object._controls = {
 		-- window = nil,
 		-- colorPanel = nil,
 		-- colorBarHue = nil,
@@ -96,7 +96,7 @@ function ColorPicker:createControls()
 
 	-- Window.
 
-	self.controls.window = self._gui:newWindow( {
+	self._controls.window = self._gui:newWindow( {
 		bounds = Rectangle:new( 0, 0, self.bounds.width, self.bounds.height ),
 		text = self.text,
 		draggable = self.draggable,
@@ -105,11 +105,11 @@ function ColorPicker:createControls()
 			grab = self.callbacks.grab,
 			drag = self.callbacks.drag,
 		},
-		styles = self.styles.window,
+		styles = styles.window,
 	} )
-	self.controls.window.position = Vector2:new()
+	self._controls.window.position = Vector2:new()
 
-	table.insert( self._controlsArray, self.controls.window )
+	table.insert( self._controlsArray, self._controls.window )
 
 	-- Color panel.
 
@@ -120,7 +120,7 @@ function ColorPicker:createControls()
 
 	-- Color bar hue.
 
-	local colorPanelStyles = Util.deepCopy( self.styles.colorPanel )
+	local colorPanelStyles = Util.deepCopy( styles.colorPanel )
 	local drawRectangleCallback = function( rect, s, crop )
 		self:drawColorPanel( rect, s, crop )
 	end
@@ -132,7 +132,7 @@ function ColorPicker:createControls()
 	Gui:setForAllStyles( colorPanelStyles, "drawRectangleCallback", drawRectangleCallback )
 	Gui:setForAllStyles( colorPanelStyles, "slider.drawRectangleCallback", drawColorPanelSliderCallback )
 
-	self.controls.colorPanel = self._gui:newSlider( {
+	self._controls.colorPanel = self._gui:newSlider( {
 		bounds = bounds,
 		value = Vector2:new( self.hsv.y, self.hsv.z ),
 		maxValue = Vector2:new( 1 ),
@@ -146,22 +146,22 @@ function ColorPicker:createControls()
 			end
 		},
 	} )
-	self.controls.colorPanel.position = Vector2:new( spacing, self.DEFAULT_STYLES.window.window.handleHeight + spacing )
-	self.controls.colorPanel.colors = { Color:newT( RL.RED ), Color:newT( RL.BLUE ), Color:newT( RL.GREEN ), Color:newT( RL.WHITE ) }
+	self._controls.colorPanel.position = Vector2:new( spacing, self.DEFAULT_STYLES.window.window.handleHeight + spacing )
+	self._controls.colorPanel.colors = { Color:newT( RL.RED ), Color:newT( RL.BLUE ), Color:newT( RL.GREEN ), Color:newT( RL.WHITE ) }
 
-	table.insert( self._controlsArray, self.controls.colorPanel )
+	table.insert( self._controlsArray, self._controls.colorPanel )
 
 	-- Color bar hue.
 
-	local panelBounds = self.controls.colorPanel.bounds:addPosition( self.controls.colorPanel.position )
-	local colorBarHueStyles = Util.deepCopy( self.styles.colorPanel )
+	local panelBounds = self._controls.colorPanel.bounds:addPosition( self._controls.colorPanel.position )
+	local colorBarHueStyles = Util.deepCopy( styles.colorPanel )
 
 	Gui:setForAllStyles( colorBarHueStyles, "slider.width", 1 )
 	Gui:setForAllStyles( colorBarHueStyles, "drawRectangleCallback", function( rect, s, crop )
 		self:drawColorBarHue( rect, s, crop )
 	end )
 
-	self.controls.colorBarHue = self._gui:newSlider( {
+	self._controls.colorBarHue = self._gui:newSlider( {
 		bounds = Rectangle:new( 0, 0, barWidth, panelBounds.height ),
 		value = Vector2:new( 0, self.hsv.x ),
 		maxValue = Vector2:new( 0, 360 ),
@@ -174,15 +174,15 @@ function ColorPicker:createControls()
 			end
 		},
 	} )
-	self.controls.colorBarHue.position = Vector2:new( panelBounds.width + spacing * 2, panelBounds.y )
+	self._controls.colorBarHue.position = Vector2:new( panelBounds.width + spacing * 2, panelBounds.y )
 
-	table.insert( self._controlsArray, self.controls.colorBarHue )
+	table.insert( self._controlsArray, self._controls.colorBarHue )
 
 	-- Color preview.
 
 	width = self.bounds.width - spacing * 2
 
-	local previewStyles = Util.deepCopy( self.styles.colorPreview )
+	local previewStyles = Util.deepCopy( styles.colorPreview )
 	Gui:setForAllStyles( previewStyles, "base.color", self.color )
 
 	bounds = Rectangle:new( 0, 0, width, 32 )
@@ -201,42 +201,42 @@ function ColorPicker:createControls()
 	}
 	Gui:setForAllStyles( previewStyles, "textures", textures )
 
-	self.controls.colorPreview = self._gui:newPanel( {
+	self._controls.colorPreview = self._gui:newPanel( {
 		bounds = bounds,
 		styles = previewStyles,
 	} )
-	self.controls.colorPreview.position = Vector2:new( spacing, panelBounds.y + panelBounds.height + spacing )
+	self._controls.colorPreview.position = Vector2:new( spacing, panelBounds.y + panelBounds.height + spacing )
 
-	table.insert( self._controlsArray, self.controls.colorPreview )
+	table.insert( self._controlsArray, self._controls.colorPreview )
 
 	-- RGB Color sliders and spinners.
 
-	local pos = self.controls.colorPreview.position + Vector2:temp( 0, self.controls.colorPreview.bounds.height + spacing )
+	local pos = self._controls.colorPreview.position + Vector2:temp( 0, self._controls.colorPreview.bounds.height + spacing )
 	local spinnerSize = Vector2:new( 72, 8 * 3 ) -- Size of one checher in the texture.
 	local charWidth = 10
 	barWidth = width - spinnerSize.x - spacing - charWidth
 
-	local colorChannelLabel = Util.deepCopy( self.styles.colorChannelLabel )
+	local colorChannelLabel = Util.deepCopy( styles.colorChannelLabel )
 	Gui:setForAllStyles( colorChannelLabel, "text.alignH", RL.TEXT_ALIGN_LEFT )
 
-	local sliderStyles = Util.deepCopy( self.styles.colorChannelSlider )
+	local sliderStyles = Util.deepCopy( styles.colorChannelSlider )
 	Gui:setForAllStyles( sliderStyles, "slider.width", 1 )
 	Gui:setForAllStyles( sliderStyles, "base.gradient", "horizontal" )
 
-	local spinnerStyles = Util.deepCopy( self.styles.colorChannelSpinner )
+	local spinnerStyles = Util.deepCopy( styles.colorChannelSpinner )
 
 	for _, c in ipairs( { "r", "g", "b", "a" } ) do
 		-- Label.
 		local labelName = "colorLabel"..self.CHANNEL_NAMES[c]
 
-		self.controls[ labelName ] = self._gui:newLabel( {
+		self._controls[ labelName ] = self._gui:newLabel( {
 			bounds = Rectangle:new( 0, 0, charWidth, spinnerSize.y ),
 			text = string.upper( c ),
 			styles = colorChannelLabel,
 		} )
-		self.controls[ labelName ].position = Vector2:newV( pos )
+		self._controls[ labelName ].position = Vector2:newV( pos )
 
-		table.insert( self._controlsArray, self.controls[ labelName ] )
+		table.insert( self._controlsArray, self._controls[ labelName ] )
 
 		-- Slider.
 		local sliderName = "colorSlider"..self.CHANNEL_NAMES[c]
@@ -246,7 +246,7 @@ function ColorPicker:createControls()
 			self:drawColorChannelSlider( rect, s, crop, c )
 		end )
 
-		self.controls[ sliderName ] = self._gui:newSlider( {
+		self._controls[ sliderName ] = self._gui:newSlider( {
 			bounds = Rectangle:new( 0, 0, barWidth, spinnerSize.y ),
 			value = Vector2:new( self.color[c], 0 ),
 			maxValue = Vector2:new( 255, 0 ),
@@ -260,14 +260,14 @@ function ColorPicker:createControls()
 			},
 			styles = Util.deepCopy( sliderStyles ), -- Each one need to set their own colors.
 		} )
-		self.controls[ sliderName ].position = Vector2:newV( Vector2:temp( charWidth, 0 ) + pos )
+		self._controls[ sliderName ].position = Vector2:newV( Vector2:temp( charWidth, 0 ) + pos )
 
-		table.insert( self._controlsArray, self.controls[ sliderName ] )
+		table.insert( self._controlsArray, self._controls[ sliderName ] )
 
 		-- Spinner.
 		local spinnerName = "colorSpinner"..self.CHANNEL_NAMES[c]
 
-		self.controls[ spinnerName ] = self._gui:newSpinner( {
+		self._controls[ spinnerName ] = self._gui:newSpinner( {
 			bounds = Rectangle:new( 0, 0, spinnerSize.x, spinnerSize.y ),
 			maxValue = 255,
 			valueStep = 1,
@@ -280,16 +280,16 @@ function ColorPicker:createControls()
 			},
 			styles = spinnerStyles,
 		} )
-		self.controls[ spinnerName ].position = Vector2:newV( Vector2:temp( charWidth + barWidth + spacing, 0 ) + pos )
+		self._controls[ spinnerName ].position = Vector2:newV( Vector2:temp( charWidth + barWidth + spacing, 0 ) + pos )
 
 		pos:addEq( Vector2:temp( 0, spinnerSize.y + math.floor( spacing / 2 ) ) )
 
-		table.insert( self._controlsArray, self.controls[ spinnerName ] )
+		table.insert( self._controlsArray, self._controls[ spinnerName ] )
 	end
 
 	-- Hex Value InputBox.
 
-	self.controls.hexValueInputBox = self._gui:newTextInputBox( {
+	self._controls.hexValueInputBox = self._gui:newTextInputBox( {
 		bounds = Rectangle:new( 0, 0, 64, 24 ),
 		text = string.format( "%x", self.color:toHex() ):upper(),
 		charLimit = 8,
@@ -302,30 +302,30 @@ function ColorPicker:createControls()
 				self:setColor( color )
 			end,
 		},
-		styles = self.styles.hexValueInputBox,
+		styles = styles.hexValueInputBox,
 	} )
-	self.controls.hexValueInputBox.position = Vector2:newV( Vector2:temp( 0, 2 ) + pos )
+	self._controls.hexValueInputBox.position = Vector2:newV( Vector2:temp( 0, 2 ) + pos )
 
-	table.insert( self._controlsArray, self.controls.hexValueInputBox )
+	table.insert( self._controlsArray, self._controls.hexValueInputBox )
 
-	pos:addEq( Vector2:temp( self.controls.hexValueInputBox.bounds.width + spacing, 0 ) )
+	pos:addEq( Vector2:temp( self._controls.hexValueInputBox.bounds.width + spacing, 0 ) )
 
 	-- Hex label.
 
-	self.controls.hexValueLabel = self._gui:newLabel( {
-		bounds = Rectangle:new( 0, 0, width - self.controls.hexValueInputBox.bounds.width - spacing * 2, 24 ),
+	self._controls.hexValueLabel = self._gui:newLabel( {
+		bounds = Rectangle:new( 0, 0, width - self._controls.hexValueInputBox.bounds.width - spacing * 2, 24 ),
 		text = "Hex",
-		styles = self.styles.hexValueLabel,
+		styles = styles.hexValueLabel,
 	} )
-	self.controls.hexValueLabel.position = Vector2:newV( pos )
+	self._controls.hexValueLabel.position = Vector2:newV( pos )
 
-	table.insert( self._controlsArray, self.controls.hexValueLabel )
+	table.insert( self._controlsArray, self._controls.hexValueLabel )
 
-	pos:set( spacing, pos.y + self.controls.hexValueInputBox.bounds.height + spacing )
+	pos:set( spacing, pos.y + self._controls.hexValueInputBox.bounds.height + spacing )
 
 	-- Apply Button.
 
-	self.controls.applyButton = self._gui:newButton( {
+	self._controls.applyButton = self._gui:newButton( {
 		bounds = Rectangle:new( 0, 0, width, 24 ),
 		text = "Apply",
 		callbacks = {
@@ -333,18 +333,18 @@ function ColorPicker:createControls()
 		},
 		styles = self.styles.aplyButton,
 	} )
-	self.controls.applyButton.position = Vector2:newV( pos )
+	self._controls.applyButton.position = Vector2:newV( pos )
 
-	table.insert( self._controlsArray, self.controls.applyButton )
+	table.insert( self._controlsArray, self._controls.applyButton )
 
 	-- Set window bounds.
 
-	self.bounds.height = self.controls.applyButton.position.y + self.controls.applyButton.bounds.height + spacing
-	self.controls.window:setSize( self.bounds:getSize() )
+	self.bounds.height = self._controls.applyButton.position.y + self._controls.applyButton.bounds.height + spacing
+	self._controls.window:setSize( self.bounds:getSize() )
 end
 
 function ColorPicker:drawColorPanel( rect, styles, crop )
-	local c = self.controls.colorPanel.colors
+	local c = self._controls.colorPanel.colors
 
 	RL.DrawRectangleGradientEx(
 		rect,
@@ -359,7 +359,7 @@ end
 function ColorPicker:drawColorPanelSlider( rect, styles, crop )
 	-- Only draw once since this function is called for both axis.
 	if rect.height < rect.width then
-		local cp = self.controls.colorPanel
+		local cp = self._controls.colorPanel
 		local point = Vector2:new( rect.x + rect.width / cp.maxValue.x * cp.value.x, rect.y )
 
 		RL.DrawCircleLines( point, 4, styles.base.color )
@@ -405,23 +405,23 @@ function ColorPicker:setColor( color )
 	local maxHue = Vector3:new( self.hsv.x, 1, 1 )
 	local rgbHue = Color:newT( RL.ColorFromHSV( maxHue.x, maxHue.y, maxHue.z ) )
 
-	self.controls.colorPanel.colors[1]:setT( RL.WHITE )
-	self.controls.colorPanel.colors[2]:setT( RL.WHITE )
-	self.controls.colorPanel.colors[3]:setC( rgbHue )
-	self.controls.colorPanel.colors[4]:setC( rgbHue )
+	self._controls.colorPanel.colors[1]:setT( RL.WHITE )
+	self._controls.colorPanel.colors[2]:setT( RL.WHITE )
+	self._controls.colorPanel.colors[3]:setC( rgbHue )
+	self._controls.colorPanel.colors[4]:setC( rgbHue )
 
-	self.controls.colorPanel.value:set( self.hsv.y, 1 - self.hsv.z )
-	self.controls.colorBarHue.value.y = self.hsv.x
+	self._controls.colorPanel.value:set( self.hsv.y, 1 - self.hsv.z )
+	self._controls.colorBarHue.value.y = self.hsv.x
 
 	for c, v in pairs( self.color ) do
 		local sliderName = "colorSlider"..self.CHANNEL_NAMES[c]
 		local spinnerName = "colorSpinner"..self.CHANNEL_NAMES[c]
 
-		self.controls[ sliderName ].value.x = v
-		self.controls[ spinnerName ]:setValue( v )
+		self._controls[ sliderName ].value.x = v
+		self._controls[ spinnerName ]:setValue( v )
 	end
 
-	self.controls.hexValueInputBox.text = string.format( "%x", self.color:toHex() ):upper()
+	self._controls.hexValueInputBox.text = string.format( "%x", self.color:toHex() ):upper()
 end
 
 function ColorPicker:setPosition( pos )
@@ -451,8 +451,8 @@ function ColorPicker:setSize( size )
 	self:setPosition( self.bounds:getPosition() )
 end
 
-function ColorPicker:addControl( control, name )
-	self.controls[ name ] = control
+function ColorPicker:_addControl( control, name )
+	self._controls[ name ] = control
 	table.insert( self._controlsArray, control )
 end
 

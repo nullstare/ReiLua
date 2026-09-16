@@ -72,6 +72,7 @@ function Button:new( gui, t )
 	object.visible = t.visible == nil and true or t.visible
 	object.locked = t.locked == nil and false or t.locked
 	object.disabled = t.disabled == nil and false or t.disabled -- Same as locked but also uses style.
+	object.toggle = t.toggle -- Note that toggle needs to be set in custom function.
 	object.styles = t.styles or object.DEFAULT_STYLES
 	object.tooltip = t.tooltip
 	
@@ -98,6 +99,7 @@ end
 
 function Button:draw()
 	local pressed = not self.locked and not self.disabled and self._gui._isMouseDown and self._gui.mouseOver == self and self._gui.controlPressed == self
+	or ( self.toggle ~= nil and self.toggle )
 	local style = pressed and "pressed" or self.disabled and "disabled" or self._isMouseOver and "focused" or "normal"
 	local styles = self.styles[ style ]
 
@@ -350,7 +352,11 @@ function TextInputBox:textEdit( delta )
 			local cpt = RL.LoadCodepoints( self.text )
 			local slice = Util.slice( cpt, 1, self._cursor.pos - 1 )
 
-			RL.SetClipboardText( RL.LoadUTF8( slice ) )
+			if 0 < #slice then
+				RL.SetClipboardText( RL.LoadUTF8( slice ) )
+			else
+				RL.SetClipboardText( "" )
+			end
 		elseif RL.IsKeyPressed( RL.KEY_V ) then
 			local cpt = RL.LoadCodepoints( self.text )
 			local clipCpt = RL.LoadCodepoints( RL.GetClipboardText() )
@@ -379,14 +385,16 @@ function TextInputBox:update( delta )
 		return
 	end
 
-	if self._gui._isMouseReleased then
-		if self._gui.mouseOver == self and self._gui.controlPressed == self then
-			if self.callbacks.pressed then
-				self.callbacks.pressed( self )
+	if self._gui._isMousePressed then
+		if self._gui.mouseOver == self then
+			if self._gui.controlPressed == self then
+				if self.callbacks.pressed then
+					self.callbacks.pressed( self )
+				end
+	
+				self:startEditMode()
 			end
-
-			self:startEditMode()
-		else
+		elseif self._editMode then
 			self:endEditMode()
 		end
 	end
@@ -595,7 +603,7 @@ function Slider:update( _ )
 				local styles = self:getStyles()
 				local sliderW = styles.slider.width
 
-				self.value:set(
+				local value = Vector2:temp(
 					RL.Remap(
 						self._gui._mousePos.x - self.bounds.x - sliderW / 2,
 						0, self.bounds.width - sliderW,
@@ -607,16 +615,7 @@ function Slider:update( _ )
 						self.minValue.y, self.maxValue.y
 					)
 				)
-				if self.valueStep then
-					self.value.x = RL.Round( self.value.x / self.valueStep.x ) * self.valueStep.x
-					self.value.y = RL.Round( self.value.y / self.valueStep.y ) * self.valueStep.y
-				end
-
-				self.value = self.value:clamp( self.minValue, self.maxValue )
-
-				if self.callbacks.edit then
-					self.callbacks.edit( self )
-				end
+				self:setValue( value )
 			end
 		end
 
@@ -677,6 +676,19 @@ function Slider:draw()
 
 	if styles.icons then
 		self._gui:drawIcons( self.bounds, styles )
+	end
+end
+
+function Slider:setValue( value )
+	if self.valueStep then
+		value.x = RL.Round( value.x / self.valueStep.x ) * self.valueStep.x
+		value.y = RL.Round( value.y / self.valueStep.y ) * self.valueStep.y
+	end
+
+	self.value:setV( value:clamp( self.minValue, self.maxValue ) )
+
+	if self.callbacks.edit then
+		self.callbacks.edit( self )
 	end
 end
 

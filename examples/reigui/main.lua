@@ -32,6 +32,7 @@ function InitGui()
 	Gui:include( require( "reigui.window" ) )
 	Gui:include( require( "reigui.spinner" ) )
 	Gui:include( require( "reigui.color_picker" ) )
+	Gui:include( require( "reigui.container" ) )
 
 	gui = Gui:new()
 
@@ -78,13 +79,14 @@ function InitGui()
 		bounds = Rectangle:new( 16, 64, 256, 32 ),
 		text = "Make tooltip larger",
 		callbacks = {
-			pressed = function()
-				print( "Button clicked 2" )
-				gui.tooltipStyles.text.fontSize = 20
+			released = function( this )
+				this.toggle = not this.toggle
+				gui.tooltipStyles.text.fontSize = this.toggle and 20 or 10
 			end,
 		},
 		tooltip = "This button has also icon in it",
 		styles = button2Styles,
+		toggle = false, 
 	} )
 
 	-- Button 3.
@@ -304,6 +306,48 @@ function InitGui()
 			apply = function( color ) button3Styles.normal.textures[3].color:setC( color ) end
 		},
 	} )
+
+	-- Container.
+
+	local container = gui:newContainer( {
+		bounds = Rectangle:new(	650, 64, 160, 200 ),
+
+		callbacks = {
+			-- apply = function( color ) button3Styles.normal.textures[3].color:setC( color ) end
+		},
+	} )
+	container.position = Vector2:new( 8, 32 )
+
+	-- for i = 1, 42 do
+	for i = 1, 12 do
+	-- for i = 1, 4 do
+		container:addControl(
+			container.gui:newButton( {
+				bounds = Rectangle:new( 0, 0, 120, 16 ),
+				-- bounds = Rectangle:new( 0, 0, 160, 16 ),
+				-- bounds = Rectangle:new( 0, 0, 32, 16 ),
+				text = "Button "..i,
+				callbacks = {
+					pressed = function( this ) print( this.text ) end
+				}
+			} )
+		)
+		-- container:addControl(
+		-- 	container.gui:newButton( {
+		-- 		-- bounds = Rectangle:new( 0, 0, 120, 16 ),
+		-- 		-- bounds = Rectangle:new( 0, 0, 160, 16 ),
+		-- 		bounds = Rectangle:new( 0, 0, 20, 20 ),
+		-- 		-- text = "Button "..i,
+		-- 		callbacks = {
+		-- 			pressed = function( this ) print( this.text ) end
+		-- 		}
+		-- 	} )
+		-- )
+	end
+
+	-- Add container to window.
+	window:_addControl( container, "container" )
+	window:setPosition( window.bounds:getPosition() )
 
 	gui:setToBack( panel )
 end

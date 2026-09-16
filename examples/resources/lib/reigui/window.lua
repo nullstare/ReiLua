@@ -51,7 +51,7 @@ function Window:new( gui, t )
 	}
 	object.styles = t.styles or object.DEFAULT_STYLES
 	
-	object.controls = {
+	object._controls = {
 		-- handle = nil,
 		-- closeButton = nil,
 		-- panel = nil,
@@ -72,7 +72,7 @@ function Window:createControls()
 	local clampBounds = Rectangle:newR( self.bounds )
 	clampBounds:setPosition()
 
-	self.controls.handle = self._gui:newHandle( {
+	self._controls.handle = self._gui:newHandle( {
 		bounds = Rectangle:new( 0, 0, self.bounds.width - styles.window.closeButtonWidth, styles.window.handleHeight ),
 		text = self.text,
 		draggable = self.draggable,
@@ -95,12 +95,12 @@ function Window:createControls()
 		styles = styles.handle,
 		clampBounds = clampBounds,
 	} )
-	self.controls.handle.position = Vector2:new()
+	self._controls.handle.position = Vector2:new()
 
 	-- Close button.
 
-	self.controls.closeButton = self._gui:newButton( {
-		bounds = Rectangle:new( 0, 0, styles.window.closeButtonWidth, self.controls.handle.bounds.height ),
+	self._controls.closeButton = self._gui:newButton( {
+		bounds = Rectangle:new( 0, 0, styles.window.closeButtonWidth, self._controls.handle.bounds.height ),
 		callbacks = {
 			released = function()
 				if self.callbacks.close then
@@ -110,20 +110,20 @@ function Window:createControls()
 		},
 		styles = styles.closeButton,
 	} )
-	self.controls.closeButton.position = Vector2:new( self.controls.handle.bounds.width, 0 )
+	self._controls.closeButton.position = Vector2:new( self._controls.handle.bounds.width, 0 )
 
 	-- Panel.
 
-	self.controls.panel = self._gui:newPanel( {
-		bounds = Rectangle:new( 0, 0, self.bounds.width, self.bounds.height - self.controls.handle.bounds.height ),
+	self._controls.panel = self._gui:newPanel( {
+		bounds = Rectangle:new( 0, 0, self.bounds.width, self.bounds.height - self._controls.handle.bounds.height ),
 		styles = styles.panel,
 	} )
-	self.controls.panel.position = Vector2:new( 0, styles.window.handleHeight )
+	self._controls.panel.position = Vector2:new( 0, styles.window.handleHeight )
 
 	self._controlsArray = {
-		self.controls.handle,
-		self.controls.closeButton,
-		self.controls.panel,
+		self._controls.handle,
+		self._controls.closeButton,
+		self._controls.panel,
 	}
 end
 
@@ -145,14 +145,18 @@ function Window:setPosition( pos )
 end
 
 function Window:setSize( size )
-	self.bounds:setSize( size )
+	self.bounds:setSizeV( size )
 
-	local ctrs = self.controls
+	local ctrs = self._controls
 
 	ctrs.handle.bounds.width = size.x - ctrs.closeButton.bounds.width
 	ctrs.closeButton.position.x = ctrs.handle.bounds.width
 	ctrs.panel.bounds.width = size.x
 	ctrs.panel.bounds.height = size.y - ctrs.handle.bounds.height
+
+	if ctrs.handle.clampBounds then
+		ctrs.handle.clampBounds:setR( self.bounds )
+	end
 
 	if self.callbacks.setSize then
 		self.callbacks.setSize( self )
@@ -161,14 +165,14 @@ function Window:setSize( size )
 	self:setPosition( self.bounds:getPosition() )
 end
 
-function Window:addControl( control, name )
-	self.controls[ name ] = control
+function Window:_addControl( control, name )
+	self._controls[ name ] = control
 	table.insert( self._controlsArray, control )
 end
 
 function Window:setDraggable( draggable )
 	self.draggable = draggable
-	self.controls.handle.draggable = self.draggable
+	self._controls.handle.draggable = self.draggable
 end
 
 function Window:setToTop()

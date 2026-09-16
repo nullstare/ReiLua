@@ -88,8 +88,8 @@ function Gui:new()
 
 	object.controls = {}
 	-- object.focused = 0
-	object.dragging = nil
-	object.grabPos = Vector2:new( 0, 0 )
+	-- object.dragging = nil
+	-- object.grabPos = Vector2:new( 0, 0 )
 	object.mouseOffset = Vector2:new( 0, 0 )
 	object.mouseScale = Vector2:new( 1, 1 )
 	object.view = Rectangle:new( 0, 0, 0, 0 ) -- Active if larger than 0. Then only controls in view will be updated and drawn.
@@ -115,111 +115,92 @@ end
 
 function Gui:inView( control )
 	-- CheckBox for example uses focusBounds and sliders viewBounds.
-	return self.view.width == 0 or self.view.height == 0 or self.view:checkCollisionRec( control.viewBounds or control.focusBounds or control.bounds )
+	return self.view.width == 0 or self.view.height == 0 or self.view:checkCollisionRec( control.bounds )
 end
 
 function Gui:update( delta )
-	if self.disabled or self.locked then
+	local mouseOffset = RL.GetMouseOffset()
+	local mouseScale = RL.GetMouseScale()
+	RL.SetMouseOffset( self.mouseOffset )
+	RL.SetMouseScale( self.mouseScale )
+
+	if not self.disabled and not self.locked
+	and ( ( 0 < self.view.width and 0 < self.view.height and self.view:checkCollisionPoint( Vector2:tempT( RL.GetMousePosition() ) ) )
+	or ( self.view.width == 0 or self.view.height == 0 ) ) then
+		self._mousePos = Vector2:newT( RL.GetMousePosition() )
+		self._isMousePressed = RL.IsMouseButtonPressed( self.MOUSE_BUTTON )
+		self._isMouseDown = RL.IsMouseButtonDown( self.MOUSE_BUTTON )
+		self._isMouseReleased = RL.IsMouseButtonReleased( self.MOUSE_BUTTON )
+	
+		if self._isMousePressed then
+			self._mousePressPos:setV( self._mousePos )
+		end
+	
+		self.mouseOver = nil
+		self.tooltip.mouseOver = nil
+	
+		if self.controlDragged then
+			if self.controlTextEdit then
+				self.controlTextEdit:endEditMode()
+			end
+	
+			self.controlDragged:update( delta )
+	
+			return
+		end
+	
+		for i = #self.controls, 1, -1 do
+			local control = self.controls[i]
+	
+			if control.visible then
+				if control._isMouseOver ~= nil then
+					control._isMouseOver = self.mouseOver == nil and RL.CheckCollisionPointRec( self._mousePos, control.bounds )
+				end
+	
+				if control._isMouseOver then
+					self.mouseOver = control
+	
+					if self._isMousePressed then
+						self.controlPressed = control
+					end
+	
+					if self.mouseOver and control.tooltip then
+						self.tooltip.mouseOver = control
+						self.tooltip.position = self._mousePos + self.tooltip.offset
+	
+						if self.tooltip.timer < self.tooltip.delay then
+							self.tooltip.timer = self.tooltip.timer + delta
+						else
+							self.tooltip.text = control.tooltip
+						end
+					else
+						self.tooltip.mouseOver = nil
+						self.tooltip.timer = 0.0
+					end
+				end
+	
+				if control.update then
+					control:update( delta )
+				end
+			end
+		end
+	
+		if not self.mouseOver then
+			self.tooltip.timer = 0.0
+		end
+	else
+		if self.mouseOver then
+			self.mouseOver._isMouseOver = false
+		end
+
 		self.mouseOver = nil
 		self.controlPressed = nil
 		self.tooltip.text = nil
-		return
-	end
-	self._mousePos = Vector2:newT( RL.GetMousePosition() )
-
-	self._isMousePressed = RL.IsMouseButtonPressed( self.MOUSE_BUTTON )
-	self._isMouseDown = RL.IsMouseButtonDown( self.MOUSE_BUTTON )
-	self._isMouseReleased = RL.IsMouseButtonReleased( self.MOUSE_BUTTON )
-
-	if self._isMousePressed then
-		self._mousePressPos:setV( self._mousePos )
 	end
 
-	self.mouseOver = nil
-	self.tooltip.mouseOver = nil
-
-	if self.controlDragged then
-		if self.controlTextEdit then
-			self.controlTextEdit:endEditMode()
-		end
-
-		self.controlDragged:update( delta )
-
-		return
-	end
-
-	for i = #self.controls, 1, -1 do
-		local control = self.controls[i]
-
-		-- print( control.__index == self.Slider, control.disabled, control.locked )
-
-		if control.visible then
-			if control._isMouseOver ~= nil then
-				control._isMouseOver = self.mouseOver == nil and RL.CheckCollisionPointRec( self._mousePos, control.bounds )
-			end
-
-			if control._isMouseOver then
-				self.mouseOver = control
-
-				if self._isMousePressed then
-					self.controlPressed = control
-				end
-
-				if self.mouseOver and control.tooltip then
-					self.tooltip.mouseOver = control
-					self.tooltip.position = self._mousePos + self.tooltip.offset
-
-					if self.tooltip.timer < self.tooltip.delay then
-						self.tooltip.timer = self.tooltip.timer + delta
-					else
-						self.tooltip.text = control.tooltip
-					end
-				else
-					self.tooltip.mouseOver = nil
-					self.tooltip.timer = 0.0
-				end
-			end
-
-			if control.update then
-				control:update( delta )
-			end
-		end
-	end
-
-	if not self.mouseOver then
-		self.tooltip.timer = 0.0
-	end
-
-	-- RL.SetMouseOffset( mouseOffset )
-	-- RL.SetMouseScale( mouseScale )
-end
-
-function Gui:drag( control )
-	local mousePos = Vector2:tempT( RL.GetMousePosition() )
-	local mouseOver = RL.CheckCollisionPointRec( mousePos, control.bounds )
-
-	if not control.disabled and control.draggable and control ~= self.dragging and RL.IsMouseButtonPressed( self.MOUSE_BUTTON )
-	and mouseOver and mousePos.y - control.bounds.y <= self.RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT then
-		self.grabPos = mousePos - Vector2:temp( control.bounds.x, control.bounds.y )
-
-		if control.callbacks.grab then
-			control.callbacks.grab( control )
-		end
-		self.dragging = control
-	end
-
-	if control == self.dragging then
-		if not RL.IsMouseButtonDown( self.MOUSE_BUTTON ) then
-			self.dragging = nil
-		end
-		control:setPosition( mousePos - self.grabPos )
-
-		if control.callbacks.drag then
-			control.callbacks.drag( control )
-		end
-	end
-
-	return mouseOver
+	-- Set mouse offset if gui is for example embedded to some control.
+	RL.SetMouseOffset( mouseOffset )
+	RL.SetMouseScale( mouseScale )
 end
 
 function Gui:drawTooltip()
@@ -250,18 +231,6 @@ function Gui:drawTooltip()
 end
 
 function Gui:draw()
-	-- local oldTextEditText = "" -- For checking if text has changed so we can call input callback.
-
-	-- if self.textEdit then
-	-- 	oldTextEditText = self.textEditControl.text
-	-- end
-
-	-- Set mouse offset if gui is for example embedded to some control.
-	-- local mouseOffset = RL.GetMouseOffset()
-	-- local mouseScale = RL.GetMouseScale()
-	-- RL.SetMouseOffset( self.mouseOffset )
-	-- RL.SetMouseScale( self.mouseScale )
-
 	for _, control in ipairs( self.controls ) do
 		if control.visible and control.draw ~= nil and self:inView( control ) then
 			control:draw()
@@ -275,19 +244,6 @@ function Gui:draw()
 	if self.tooltip.mouseOver ~= nil and self.tooltip.text ~= nil and self.tooltip.delay <= self.tooltip.timer then
 		self:drawTooltip()
 	end
-
-	-- if not self.locked and not self.disabled and self.tooltip.text ~= nil
-	-- and self.controls[ self.tooltip.focused ]:update()
-	-- and self.tooltip.delay <= self.tooltip.timer then
-	-- 	self:drawTooltip()
-	-- end
-
-	-- if self.textEdit and oldTextEditText ~= self.textEditControl.text and self.textEditControl.callbacks.textEdit ~= nil then
-	-- 	self.textEditControl.callbacks.textEdit( self.textEditControl )
-	-- end
-
-	-- RL.SetMouseOffset( mouseOffset )
-	-- RL.SetMouseScale( mouseScale )
 end
 
 function Gui:clickedInBounds( bounds )

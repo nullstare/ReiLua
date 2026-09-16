@@ -59,7 +59,7 @@ function Spinner:new( gui, t )
 	object.callbacks = t.callbacks -- set, setPosition.
 	object.styles = t.styles or object.DEFAULT_STYLES
 
-	object.controls = {
+	object._controls = {
 		-- subButton = nil,
 		-- addButton = nil,
 		-- textInput = nil,
@@ -77,7 +77,7 @@ function Spinner:createControls( t )
 
 	-- Sub button.
 
-	self.controls.subButton = self._gui:newButton( {
+	self._controls.subButton = self._gui:newButton( {
 		bounds = Rectangle:new( 0, 0, styles.spinner.buttonWidth, self.bounds.height ),
 		callbacks = {
 			released = function()
@@ -90,11 +90,11 @@ function Spinner:createControls( t )
 		},
 		styles = styles.subButton,
 	} )
-	self.controls.subButton.position = Vector2:new()
+	self._controls.subButton.position = Vector2:new()
 
 	-- Add button.
 
-	self.controls.addButton = self._gui:newButton( {
+	self._controls.addButton = self._gui:newButton( {
 		bounds = Rectangle:new( 0, 0, styles.spinner.buttonWidth, self.bounds.height ),
 		callbacks = {
 			released = function()
@@ -107,13 +107,13 @@ function Spinner:createControls( t )
 		},
 		styles = styles.addButton,
 	} )
-	self.controls.addButton.position = Vector2:new( self.bounds.width - styles.spinner.buttonWidth, 0 )
+	self._controls.addButton.position = Vector2:new( self.bounds.width - styles.spinner.buttonWidth, 0 )
 
 	-- Text Field.
 
 	local spacing = styles.spinner.spacing
 
-	self.controls.textInput = self._gui:newTextInputBox( {
+	self._controls.textInput = self._gui:newTextInputBox( {
 		bounds = Rectangle:new( 0, 0, self.bounds.width - styles.spinner.buttonWidth * 2 - spacing * 2, self.bounds.height ),
 		text = tostring( self.value ),
 		callbacks = {
@@ -127,12 +127,12 @@ function Spinner:createControls( t )
 		},
 		styles = styles.textInput,
 	} )
-	self.controls.textInput.position = Vector2:new( styles.spinner.buttonWidth + spacing, 0 )
+	self._controls.textInput.position = Vector2:new( styles.spinner.buttonWidth + spacing, 0 )
 
 	self._controlsArray = {
-		self.controls.subButton,
-		self.controls.addButton,
-		self.controls.textInput,
+		self._controls.subButton,
+		self._controls.addButton,
+		self._controls.textInput,
 	}
 end
 
@@ -145,7 +145,7 @@ function Spinner:setValue( value )
 
 	self.value = Util.clamp( value, self.minValue, self.maxValue )
 
-	self.controls.textInput.text = tostring( self.value )
+	self._controls.textInput.text = tostring( self.value )
 
 end
 
@@ -169,7 +169,7 @@ end
 function Spinner:setSize( size )
 	self.bounds:setSize( size )
 
-	local ctrs = self.controls
+	local ctrs = self._controls
 
 	ctrs.handle.bounds.width = size.x - ctrs.closeButton.bounds.width
 	ctrs.closeButton.position.x = ctrs.handle.bounds.width
@@ -183,8 +183,8 @@ function Spinner:setSize( size )
 	self:setPosition( self.bounds:getPosition() )
 end
 
-function Spinner:addControl( control, name )
-	self.controls[ name ] = control
+function Spinner:_addControl( control, name )
+	self._controls[ name ] = control
 	table.insert( self._controlsArray, control )
 end
 

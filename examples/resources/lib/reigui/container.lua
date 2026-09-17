@@ -4,7 +4,10 @@ local Vector2 = Vector2 or require( "vector2" )
 local Gui = Gui or require( "reigui/gui" )
 
 Container = {}
-Container.__index = Container
+local metatable = {
+	__index = setmetatable( Container, { __index = GuiControl } ),
+}
+
 Container.FILL_TYPE = {
 	LIST_DOWN = 0,
 	LIST_RIGHT = 1,
@@ -29,15 +32,14 @@ Container.DEFAULT_STYLES = {
 Gui:setForAllStyles( Container.DEFAULT_STYLES.scrollBarH, "slider.minWidth", 8 )
 Gui:setForAllStyles( Container.DEFAULT_STYLES.scrollBarV, "slider.minWidth", 8 )
 
--- function Container:new( bounds, fillType, scrollable, callbacks, styles )
 function Container:new( gui, t )
-	local object = setmetatable( {}, self )
+	local object = setmetatable( {}, metatable )
 	object._gui = gui
 
 	local styles = object.DEFAULT_STYLES.container
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new( 0, 0, styles.size.x, styles.size.y )
-	object.callbacks = t.callbacks -- pressed.
+	object.callbacks = t.callbacks or {}
 	object.styles = t.styles or object.DEFAULT_STYLES
 
 	-- Implementation controls.
@@ -64,15 +66,11 @@ function Container:new( gui, t )
 		y = fillType == object.FILL_TYPE.LIST_DOWN or fillType == object.FILL_TYPE.GRID_DOWN or fillType == object.FILL_TYPE.FREE
 	}
 
-	object.visible = true
-	object.disabled = false
-	object.locked = false
+	object.visible = Util.setWithDefault( t.visible, true )
+	object.locked = Util.setWithDefault( t.locked, false )
+	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 
 	object._ctrPos = Vector2:new()
-	object._scrollbarRects = { x = Rectangle:new(), y = Rectangle:new() }
-	object._scrollbarSliderLen = { x = 0, y = 0 }
-	object._scrollbarSliderPos = { x = 0, y = 0 }
-	object._scrolling = { x = false, y = false }
 
 	object:createControls()
 	object:setPosition( object.bounds:getPosition() )
@@ -148,19 +146,19 @@ function Container:createControls()
 end
 
 function Container:refresh()
+	self:updateScrollBars()
+	self:updateMouseOffset()
 	self.gui.view:set( -self.scroll.x, -self.scroll.y, self.view.width, self.view.height )
 
 	local styles = self.styles.container
 	local panelBounds = self._controls.panel.bounds
+
 	self.view:set(
 		panelBounds.x + styles.padding,
 		panelBounds.y + styles.padding,
 		panelBounds.width - styles.padding * 2,
 		panelBounds.height - styles.padding * 2
 	)
-
-	self:updateScrollBars()
-	self:updateMouseOffset()
 end
 
 function Container:updateScrollBars()
@@ -169,6 +167,7 @@ function Container:updateScrollBars()
 
 	if sbH then
 		sbH.maxValue:set( math.max( self.content.width - self.view.width, 0 ), 0 )
+		sbH.value:set( math.min( sbH.value.x, sbH.maxValue.x, 0 ) )
 
 		local styles = sbH.styles
 		local ratio = self.view.width / self.content.width
@@ -179,6 +178,8 @@ function Container:updateScrollBars()
 
 	if sbV then
 		sbV.maxValue:set( 0, math.max( self.content.height - self.view.height, 0 ) )
+		sbV.value:set( 0, math.min( sbV.value.y, sbV.maxValue.y ) )
+		self.scroll.y = math.max( self.scroll.y, -sbV.value.y )
 
 		local styles = sbV.styles
 		local ratio = self.view.height / self.content.height
@@ -190,7 +191,6 @@ end
 
 function Container:update( delta )
 	local mousePos = Vector2:tempT( RL.GetMousePosition() )
-
 	local styles = self.styles.container
 
 	if self.view:checkCollisionPoint( mousePos ) then
@@ -216,11 +216,16 @@ function Container:updateControls()
 		return
 	end
 
-	self.content:set( 0 )
+	self._ctrPos:set()
+	self.content:set()
 
 	for _, control in ipairs( self.controls ) do
-		self:setControlPos( control )
+		if control.visible then
+			self:setControlPos( control )
+		end
 	end
+
+	self:refresh()
 end
 
 -- Note! GridFills expect that controls are the same size.
@@ -233,8 +238,7 @@ function Container:setControlPos( control )
 	local styles = self.styles.container
 	local spacing = styles.spacing
 
-	control.bounds.x = self._ctrPos.x
-	control.bounds.y = self._ctrPos.y
+	control:setPosition( self._ctrPos )
 
 	local fillType = styles.fillType
 
@@ -271,7 +275,7 @@ end
 function Container:clear()
 	self.controls = {}
 	self.gui:clear()
-	self:setScrollPosition( Vector2:new( 0, 0 ) )
+	self.scroll:set( 0 )
 end
 
 function Container:updateMouseOffset()
@@ -336,60 +340,17 @@ function Container:setSize( size )
 	self:setPosition( self.bounds:getPosition() )
 end
 
--- Implementation control.
-function Container:_addControl( control, name )
-	self._controls[ name ] = control
-	table.insert( self._controlsArray, control )
-end
-
 function Container:setToTop()
-	for _, control in ipairs( self._controlsArray ) do
-		control:setToTop()
-	end
-
-	self._gui:setToTop( self )
-end
-
-function Container:setVisible( visible )
-	self.visible = visible
-
-	for _, control in ipairs( self._controlsArray ) do
-		if control.setVisible then
-			control:setVisible( visible )
-		else
-			control.visible = visible
+	if self._controlsArray then
+		for _, control in ipairs( self._controlsArray ) do
+			control:setToTop()
 		end
 	end
-
-	self.gui.visible = visible
-end
-
-function Container:setDisabled( disabled )
-	self.disabled = disabled
-
-	for _, control in ipairs( self._controlsArray ) do
-		control.disabled = disabled
+	if self.callbacks.setToTop then
+		self.callbacks.setToTop( self )
 	end
-
-	self.gui.visible = disabled
-end
-
-function Container:setLocked( locked )
-	self.locked = locked
-
-	for _, control in ipairs( self._controlsArray ) do
-		control.locked = locked
-	end
-
-	self.gui.visible = locked
-end
-
-function Container:remove()
-	for _, control in ipairs( self._controlsArray ) do
-		control:remove()
-	end
-
-	self._gui:remove( self )
+	-- Sets gui in front of others.
+	self._gui:setToTop( self )
 end
 
 return { Container = Container }

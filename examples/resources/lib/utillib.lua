@@ -279,6 +279,15 @@ function utillib.boolToNumber( bool )
 	return bool and 1 or 0
 end
 
+-- Set value with default if nil. Usefull with booleans.
+function utillib.setWithDefault( v, default )
+	if v == nil then
+		return default
+	end
+
+	return v
+end
+
 -- Print table content.
 function utillib.printt( t )
 	print( tostring(t).." = {" )

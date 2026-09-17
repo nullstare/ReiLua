@@ -7,7 +7,9 @@ local Gui = Gui or require( "reigui/gui" )
 -- Window control.
 
 local Window = {}
-Window.__index = Window
+local metatable = {
+	__index = setmetatable( Window, { __index = GuiControl } ),
+}
 
 Window.DEFAULT_STYLES = {
 	window = {
@@ -34,16 +36,17 @@ Window.DEFAULT_STYLES.closeButton.normal.icons = {
 Gui:setForAllStyles( Window.DEFAULT_STYLES.closeButton, "icons", Window.DEFAULT_STYLES.closeButton.normal.icons )
 
 function Window:new( gui, t )
-	local object = setmetatable( {}, self )
+	local object = setmetatable( {}, metatable )
 	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
 	object.text = t.text
 
-	object.visible = t.visible == nil and true or t.visible
-	object.locked = t.locked == nil and false or t.locked
-	object.disabled = t.disabled == nil and false or t.disabled -- Same as locked but also uses style.
-	object.draggable = t.draggable == nil and true or t.draggable
+	object.visible = Util.setWithDefault( t.visible, true )
+	object.locked = Util.setWithDefault( t.locked, false )
+	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
+	object.draggable = Util.setWithDefault( t.draggable, true )
+
 	object.callbacks = { -- grab, drag, close, setPosition.
 		close = t.callbacks and t.callbacks.close or function() object:setVisible( false ) end,
 		grab = t.callbacks and t.callbacks.grab or function() object:setToTop() end,
@@ -127,23 +130,6 @@ function Window:createControls()
 	}
 end
 
-function Window:setPosition( pos )
-	self.bounds.x = pos.x
-	self.bounds.y = pos.y
-
-	for _, control in ipairs( self._controlsArray ) do
-		if control.setPosition then
-			control:setPosition( pos + control.position or Vector2:temp() )
-		else
-			control.bounds:setPositionV( self.bounds:getPosition() + control.position or Vector2:temp() )
-		end
-	end
-
-	if self.callbacks.setPosition then
-		self.callbacks.setPosition( self )
-	end
-end
-
 function Window:setSize( size )
 	self.bounds:setSizeV( size )
 
@@ -165,52 +151,9 @@ function Window:setSize( size )
 	self:setPosition( self.bounds:getPosition() )
 end
 
-function Window:_addControl( control, name )
-	self._controls[ name ] = control
-	table.insert( self._controlsArray, control )
-end
-
 function Window:setDraggable( draggable )
 	self.draggable = draggable
 	self._controls.handle.draggable = self.draggable
-end
-
-function Window:setToTop()
-	for _, control in ipairs( self._controlsArray ) do
-		control:setToTop()
-	end
-end
-
-function Window:setVisible( visible )
-	self.visible = visible
-
-	for _, control in ipairs( self._controlsArray ) do
-		control.visible = visible
-	end
-end
-
-function Window:setDisabled( disabled )
-	self.disabled = disabled
-
-	for _, control in ipairs( self._controlsArray ) do
-		control.disabled = disabled
-	end
-end
-
-function Window:setLocked( locked )
-	self.locked = locked
-
-	for _, control in ipairs( self._controlsArray ) do
-		control.locked = locked
-	end
-end
-
-function Window:remove()
-	for _, control in ipairs( self._controlsArray ) do
-		control:remove()
-	end
-
-	self._gui:remove( self )
 end
 
 return { Window = Window }

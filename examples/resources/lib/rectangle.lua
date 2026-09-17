@@ -129,8 +129,8 @@ function Rectangle:setPositionR( rect )
 end
 
 function Rectangle:setSize( width, height )
-	self.width = width
-	self.height = height
+	self.width = width or 0
+	self.height = height or self.width
 end
 
 function Rectangle:setSizeT( t )

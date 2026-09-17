@@ -29,8 +29,8 @@ List of some MISSING features that are planned to be included. For specific func
 
 ## Roadmap
 
-* v1.0
-	* raylib 6.0
+* v1.1
+	* raylib 6.2
 
 ## Usage
 

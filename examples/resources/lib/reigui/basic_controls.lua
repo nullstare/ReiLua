@@ -7,7 +7,9 @@ local Color = Color or require( "color" )
 -- Label control.
 
 local Label = {}
-Label.__index = Label
+local labelMetatable = {
+	__index = setmetatable( Label, { __index = GuiControl } ),
+}
 
 Label.DEFAULT_STYLES = {
 	normal = GUI_DEFAULT_STYLES.normal,
@@ -15,15 +17,16 @@ Label.DEFAULT_STYLES = {
 }
 
 function Label:new( gui, t )
-	local object = setmetatable( {}, self )
+	local object = setmetatable( {}, labelMetatable )
 	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
 	object.text = t.text
+	object.callbacks = t.callbacks or {}
 
-	object.visible = t.visible == nil and true or t.visible
-	object.locked = t.locked == nil and false or t.locked
-	object.disabled = t.disabled == nil and false or t.disabled -- Same as locked but also uses style.
+	object.visible = Util.setWithDefault( t.visible, true )
+	object.locked = Util.setWithDefault( t.locked, false )
+	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
 	object.tooltip = t.tooltip
 
@@ -41,37 +44,26 @@ function Label:draw()
 	end
 end
 
-function Label:setPosition( pos )
-	self.bounds.x = pos.x
-	self.bounds.y = pos.y
-end
-
-function Label:setToTop()
-	self._gui:setToTop( self )
-end
-
-function Label:remove()
-	self._gui:remove( self )
-end
-
 -- Button control.
 
 local Button = {}
-Button.__index = Button
+local buttonMetatable = {
+	__index = setmetatable( Button, { __index = GuiControl } ),
+}
 
 Button.DEFAULT_STYLES = GUI_DEFAULT_STYLES
 
 function Button:new( gui, t )
-	local object = setmetatable( {}, self )
+	local object = setmetatable( {}, buttonMetatable )
 	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
 	object.text = t.text
 	object.callbacks = t.callbacks or {} -- pressed, released.
 
-	object.visible = t.visible == nil and true or t.visible
-	object.locked = t.locked == nil and false or t.locked
-	object.disabled = t.disabled == nil and false or t.disabled -- Same as locked but also uses style.
+	object.visible = Util.setWithDefault( t.visible, true )
+	object.locked = Util.setWithDefault( t.locked, false )
+	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.toggle = t.toggle -- Note that toggle needs to be set in custom function.
 	object.styles = t.styles or object.DEFAULT_STYLES
 	object.tooltip = t.tooltip
@@ -114,23 +106,12 @@ function Button:draw()
 	end
 end
 
-function Button:setPosition( pos )
-	self.bounds.x = pos.x
-	self.bounds.y = pos.y
-end
-
-function Button:setToTop()
-	self._gui:setToTop( self )
-end
-
-function Button:remove()
-	self._gui:remove( self )
-end
-
 -- TextInputBox control. Single line text box.
 
 local TextInputBox = {}
-TextInputBox.__index = TextInputBox
+local textInputBoxMetatable = {
+	__index = setmetatable( TextInputBox, { __index = GuiControl } ),
+}
 
 TextInputBox.DEFAULT_STYLES = Util.deepCopy( GUI_DEFAULT_STYLES )
 TextInputBox.DEFAULT_STYLES.normal.cursor = {
@@ -145,7 +126,7 @@ TextInputBox.DEFAULT_STYLES.disabled.text.alignH = RL.TEXT_ALIGN_LEFT
 TextInputBox.DEFAULT_STYLES.pressed.text.alignH = RL.TEXT_ALIGN_LEFT
 
 function TextInputBox:new( gui, t )
-	local object = setmetatable( {}, self )
+	local object = setmetatable( {}, textInputBoxMetatable )
 	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
@@ -153,9 +134,9 @@ function TextInputBox:new( gui, t )
 	object.charLimit = t.charLimit or 64
 	object.callbacks = t.callbacks or {} -- pressed, edit, set.
 
-	object.visible = t.visible == nil and true or t.visible
-	object.locked = t.locked == nil and false or t.locked
-	object.disabled = t.disabled == nil and false or t.disabled -- Same as locked but also uses style.
+	object.visible = Util.setWithDefault( t.visible, true )
+	object.locked = Util.setWithDefault( t.locked, false )
+	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
 	object.tooltip = t.tooltip
 	
@@ -206,7 +187,6 @@ function TextInputBox:updateText( cpt )
 
 	if 0 < #cpt then
 		local styles = self:getStyles()
-		-- local borderW = styles.border.width
 		local ts = styles.text
 		local cursorText = RL.LoadUTF8( cpt )
 		local textSize = Vector2:tempT( RL.MeasureTextEx( ts.font, cursorText, ts.fontSize, ts.spacing ) )
@@ -428,18 +408,12 @@ function TextInputBox:setPosition( pos )
 	self:updateView()
 end
 
-function TextInputBox:setToTop()
-	self._gui:setToTop( self )
-end
-
-function TextInputBox:remove()
-	self._gui:remove( self )
-end
-
 -- Panel control.
 
 local Panel = {}
-Panel.__index = Panel
+local panelMetatable = {
+	__index = setmetatable( Panel, { __index = GuiControl } ),
+}
 
 Panel.DEFAULT_STYLES = {
 	normal = GUI_DEFAULT_STYLES.normal,
@@ -447,14 +421,14 @@ Panel.DEFAULT_STYLES = {
 }
 
 function Panel:new( gui, t )
-	local object = setmetatable( {}, self )
+	local object = setmetatable( {}, panelMetatable )
 	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
 
-	object.visible = t.visible == nil and true or t.visible
-	object.locked = t.locked == nil and false or t.locked
-	object.disabled = t.disabled == nil and false or t.disabled -- Same as locked but also uses style.
+	object.visible = Util.setWithDefault( t.visible, true )
+	object.locked = Util.setWithDefault( t.locked, false )
+	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
 	object.callbacks = t.callbacks or {}
 	object.tooltip = t.tooltip
@@ -495,23 +469,12 @@ function Panel:draw()
 	end
 end
 
-function Panel:setPosition( pos )
-	self.bounds.x = pos.x
-	self.bounds.y = pos.y
-end
-
-function Panel:setToTop()
-	self._gui:setToTop( self )
-end
-
-function Panel:remove()
-	self._gui:remove( self )
-end
-
 -- Slider control.
 
 local Slider = {}
-Slider.__index = Slider
+local sliderMetatable = {
+	__index = setmetatable( Slider, { __index = GuiControl } ),
+}
 
 Slider.DEFAULT_STYLES = Util.deepCopy( GUI_DEFAULT_STYLES )
 Slider.DEFAULT_STYLES.normal.slider = {
@@ -556,7 +519,7 @@ Slider.DEFAULT_STYLES.pressed.slider = {
 }
 
 function Slider:new( gui, t )
-	local object = setmetatable( {}, self )
+	local object = setmetatable( {}, sliderMetatable )
 	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
@@ -566,9 +529,9 @@ function Slider:new( gui, t )
 	object.maxValue = t.maxValue or Vector2:new( 100, 0 )
 	object.valueStep = t.valueStep
 
-	object.visible = t.visible == nil and true or t.visible
-	object.locked = t.locked == nil and false or t.locked
-	object.disabled = t.disabled == nil and false or t.disabled -- Same as locked but also uses style.
+	object.visible = Util.setWithDefault( t.visible, true )
+	object.locked = Util.setWithDefault( t.locked, false )
+	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
 	object.tooltip = t.tooltip
 
@@ -692,28 +655,23 @@ function Slider:setValue( value )
 	end
 end
 
-function Slider:setPosition( pos )
-	self.bounds.x = pos.x
-	self.bounds.y = pos.y
-end
-
-function Slider:setToTop()
-	self._gui:setToTop( self )
-end
-
-function Slider:remove()
-	self._gui:remove( self )
-end
+-- function Slider:setMaxValue( maxValue )
+-- 	self.maxValue:setV( maxValue )
+-- 	-- self:setValue( self.value )
+-- 	self.value:setV( self.value:clamp( self.minValue, self.maxValue ) )
+-- end
 
 -- Handle.
 
 local Handle = {}
-Handle.__index = Handle
+local handleMetatable = {
+	__index = setmetatable( Handle, { __index = GuiControl } ),
+}
 
 Handle.DEFAULT_STYLES = GUI_DEFAULT_STYLES
 
 function Handle:new( gui, t )
-	local object = setmetatable( {}, self )
+	local object = setmetatable( {}, handleMetatable )
 	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
@@ -722,10 +680,10 @@ function Handle:new( gui, t )
 	object.clampBounds = t.clampBounds
 	object.callbacks = t.callbacks or {} -- pressed, drag, released.
 
-	object.visible = t.visible == nil and true or t.visible
-	object.locked = t.locked == nil and false or t.locked
-	object.disabled = t.disabled == nil and false or t.disabled -- Same as locked but also uses style.
-	object.draggable = t.draggable == nil and true or t.draggable
+	object.visible = Util.setWithDefault( t.visible, true )
+	object.locked = Util.setWithDefault( t.locked, false )
+	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
+	object.draggable = Util.setWithDefault( t.locked, true )
 	object.styles = t.styles or object.DEFAULT_STYLES
 	object.tooltip = t.tooltip
 	
@@ -794,19 +752,6 @@ function Handle:draw()
 	if styles.icons then
 		self._gui:drawIcons( self.bounds, styles )
 	end
-end
-
-function Handle:setPosition( pos )
-	self.bounds.x = pos.x
-	self.bounds.y = pos.y
-end
-
-function Handle:setToTop()
-	self._gui:setToTop( self )
-end
-
-function Handle:remove()
-	self._gui:remove( self )
 end
 
 return {

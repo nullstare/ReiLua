@@ -8,7 +8,9 @@ local Gui = Gui or require( "reigui/gui" )
 -- Window control.
 
 local ColorPicker = {}
-ColorPicker.__index = ColorPicker
+local metatable = {
+	__index = setmetatable( ColorPicker, { __index = GuiControl } ),
+}
 
 ColorPicker.DEFAULT_STYLES = {
 	colorPicker = {
@@ -36,7 +38,7 @@ Gui:setForAllStyles( ColorPicker.DEFAULT_STYLES.hexValueLabel, "text.alignH", RL
 ColorPicker.CHANNEL_NAMES = { r = "Red", g = "Green", b = "Blue", a = "Alpha" }
 
 function ColorPicker:new( gui, t )
-	local object = setmetatable( {}, self )
+	local object = setmetatable( {}, metatable )
 	object._gui = gui
 
 	local styles = object.DEFAULT_STYLES.colorPicker
@@ -46,10 +48,11 @@ function ColorPicker:new( gui, t )
 	object.color = t.color or Color:newT( RL.RED )
 	object.hsv = Vector3:new()
 
-	object.visible = t.visible == nil and true or t.visible
-	object.locked = t.locked == nil and false or t.locked
-	object.disabled = t.disabled == nil and false or t.disabled -- Same as locked but also uses style.
-	object.draggable = t.draggable == nil and true or t.draggable
+	object.visible = Util.setWithDefault( t.visible, true )
+	object.locked = Util.setWithDefault( t.locked, false )
+	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
+	object.draggable = Util.setWithDefault( t.draggable, true )
+
 	object.callbacks = { -- grab, drag, close, setPosition.
 		close = t.callbacks and t.callbacks.close or function() object:setVisible( false ) end,
 		grab = t.callbacks and t.callbacks.grab or function() object:setToTop() end,
@@ -424,23 +427,6 @@ function ColorPicker:setColor( color )
 	self._controls.hexValueInputBox.text = string.format( "%x", self.color:toHex() ):upper()
 end
 
-function ColorPicker:setPosition( pos )
-	self.bounds.x = pos.x
-	self.bounds.y = pos.y
-
-	for _, control in ipairs( self._controlsArray ) do
-		if control.setPosition then
-			control:setPosition( pos + control.position or Vector2:temp() )
-		else
-			control.bounds:setPositionV( self.bounds:getPosition() + control.position or Vector2:temp() )
-		end
-	end
-
-	if self.callbacks.setPosition then
-		self.callbacks.setPosition( self )
-	end
-end
-
 function ColorPicker:setSize( size )
 	self.bounds:setSize( size )
 
@@ -449,53 +435,6 @@ function ColorPicker:setSize( size )
 	end
 
 	self:setPosition( self.bounds:getPosition() )
-end
-
-function ColorPicker:_addControl( control, name )
-	self._controls[ name ] = control
-	table.insert( self._controlsArray, control )
-end
-
-function ColorPicker:setToTop()
-	for _, control in ipairs( self._controlsArray ) do
-		control:setToTop()
-	end
-end
-
-function ColorPicker:setVisible( visible )
-	self.visible = visible
-
-	for _, control in ipairs( self._controlsArray ) do
-		if control.setVisible then
-			control:setVisible( visible )
-		else
-			control.visible = visible
-		end
-	end
-end
-
-function ColorPicker:setDisabled( disabled )
-	self.disabled = disabled
-
-	for _, control in ipairs( self._controlsArray ) do
-		control.disabled = disabled
-	end
-end
-
-function ColorPicker:setLocked( locked )
-	self.locked = locked
-
-	for _, control in ipairs( self._controlsArray ) do
-		control.locked = locked
-	end
-end
-
-function ColorPicker:remove()
-	for _, control in ipairs( self._controlsArray ) do
-		control:remove()
-	end
-
-	self._gui:remove( self )
 end
 
 function ColorPicker:unload()

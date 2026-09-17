@@ -3,6 +3,124 @@ local Rectangle = Rectangle or require( "rectangle" )
 local Vector2 = Vector2 or require( "vector2" )
 local Color = Color or require( "color" )
 
+-- Gui Base Control.
+
+GuiControl = {}
+GuiControl.__index = GuiControl
+
+function GuiControl:setVisible( visible )
+	self.visible = visible
+
+	if self._controlsArray then
+		for _, control in ipairs( self._controlsArray ) do
+			control:setVisible( visible )
+		end
+	end
+	if self.callbacks.setVisible then
+		self.callbacks.setVisible( self, visible )
+	end
+end
+
+function GuiControl:setDisabled( disabled )
+	self.disabled = disabled
+
+	if self._controlsArray then
+		for _, control in ipairs( self._controlsArray ) do
+			control.disabled = disabled
+		end
+	end
+	if self.callbacks.setDisabled then
+		self.callbacks.setDisabled( self, disabled )
+	end
+end
+
+function GuiControl:setLocked( locked )
+	self.locked = locked
+
+	if self._controlsArray then
+		for _, control in ipairs( self._controlsArray ) do
+			control.locked = locked
+		end
+	end
+	if self.callbacks.setLocked then
+		self.callbacks.setLocked( self, locked )
+	end
+end
+
+function GuiControl:setPosition( pos )
+	self.bounds.x = pos.x
+	self.bounds.y = pos.y
+
+	if self._controlsArray then
+		for _, control in ipairs( self._controlsArray ) do
+			control:setPosition( pos + control.position or Vector2:temp() )
+		end
+	end
+	if self.callbacks.setPosition then
+		self.callbacks.setPosition( self, pos )
+	end
+end
+
+function GuiControl:setSize( size )
+	self.bounds.width = size.x
+	self.bounds.height = size.y
+
+	-- if self._controlsArray then
+	-- 	for _, control in ipairs( self._controlsArray ) do
+	-- 		control:setSize( size )
+	-- 	end
+	-- end
+	if self.callbacks.setSize then
+		self.callbacks.setSize( self, size )
+	end
+end
+
+function GuiControl:setToTop()
+	self._gui:setToTop( self )
+
+	if self._controlsArray then
+		for _, control in ipairs( self._controlsArray ) do
+			control:setToTop()
+		end
+	end
+	if self.callbacks.setToTop then
+		self.callbacks.setToTop( self )
+	end
+end
+
+function GuiControl:setToBack()
+	self._gui:setToBack( self )
+
+	if self._controlsArray then
+		for _, control in ipairs( self._controlsArray ) do
+			control:setToBack()
+		end
+	end
+	if self.callbacks.setToBack then
+		self.callbacks.setToBack( self )
+	end
+end
+
+function GuiControl:remove()
+	if self._controlsArray then
+		for _, control in ipairs( self._controlsArray ) do
+			control:remove()
+		end
+	end
+	if self.callbacks.remove then
+		self.callbacks.remove( self )
+	end
+
+	self._gui:remove( self )
+end
+
+function GuiControl:_addControl( control, name )
+	self._controls[ name ] = control
+	table.insert( self._controlsArray, control )
+end
+
+-- Gui.
+
 GUI_DEFAULT_STYLES = {
 	normal = {
 		base = {

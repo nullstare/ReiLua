@@ -7,7 +7,9 @@ local Gui = Gui or require( "reigui/gui" )
 -- Spinner control.
 
 local Spinner = {}
-Spinner.__index = Spinner
+local metatable = {
+	__index = setmetatable( Spinner, { __index = GuiControl } ),
+}
 
 Spinner.DEFAULT_STYLES = {
 	spinner = {
@@ -44,7 +46,7 @@ Gui:setForAllStyles( Spinner.DEFAULT_STYLES.textInput, "text.alignH", RL.TEXT_AL
 Gui:setForAllStyles( Spinner.DEFAULT_STYLES.textInput, "cursor.draw", false )
 
 function Spinner:new( gui, t )
-	local object = setmetatable( {}, self )
+	local object = setmetatable( {}, metatable )
 	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
@@ -53,9 +55,9 @@ function Spinner:new( gui, t )
 	object.maxValue = t.maxValue or 100
 	object.valueStep = t.valueStep
 
-	object.visible = t.visible or true
-	object.disabled = t.disabled or false
-	object.locked = t.locked or false
+	object.visible = Util.setWithDefault( t.visible, true )
+	object.locked = Util.setWithDefault( t.locked, false )
+	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.callbacks = t.callbacks -- set, setPosition.
 	object.styles = t.styles or object.DEFAULT_STYLES
 
@@ -146,24 +148,6 @@ function Spinner:setValue( value )
 	self.value = Util.clamp( value, self.minValue, self.maxValue )
 
 	self._controls.textInput.text = tostring( self.value )
-
-end
-
-function Spinner:setPosition( pos )
-	self.bounds.x = pos.x
-	self.bounds.y = pos.y
-
-	for _, control in ipairs( self._controlsArray ) do
-		if control.setPosition then
-			control:setPosition( pos + control.position or Vector2:temp() )
-		else
-			control.bounds:setPositionV( self.bounds:getPosition() + control.position or Vector2:temp() )
-		end
-	end
-
-	if self.callbacks.setPosition then
-		self.callbacks.setPosition( self )
-	end
 end
 
 function Spinner:setSize( size )
@@ -181,43 +165,6 @@ function Spinner:setSize( size )
 	end
 
 	self:setPosition( self.bounds:getPosition() )
-end
-
-function Spinner:_addControl( control, name )
-	self._controls[ name ] = control
-	table.insert( self._controlsArray, control )
-end
-
-function Spinner:setToTop()
-	for _, control in ipairs( self._controlsArray ) do
-		control:setToTop()
-	end
-end
-
-function Spinner:setVisible( visible )
-	for _, control in ipairs( self._controlsArray ) do
-		control.visible = visible
-	end
-end
-
-function Spinner:setDisabled( disabled )
-	for _, control in ipairs( self._controlsArray ) do
-		control.disabled = disabled
-	end
-end
-
-function Spinner:setLocked( locked )
-	for _, control in ipairs( self._controlsArray ) do
-		control.locked = locked
-	end
-end
-
-function Spinner:remove()
-	for _, control in ipairs( self._controlsArray ) do
-		control:remove()
-	end
-
-	self._gui:remove( self )
 end
 
 return { Spinner = Spinner }

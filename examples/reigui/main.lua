@@ -33,6 +33,7 @@ function InitGui()
 	Gui:include( require( "reigui.spinner" ) )
 	Gui:include( require( "reigui.color_picker" ) )
 	Gui:include( require( "reigui.container" ) )
+	Gui:include( require( "reigui.dropdown" ) )
 
 	gui = Gui:new()
 
@@ -300,8 +301,6 @@ function InitGui()
 			32, 450,
 			gui.ColorPicker.DEFAULT_STYLES.colorPicker.size.x, gui.ColorPicker.DEFAULT_STYLES.colorPicker.size.y
 		),
-		-- text = "Color Panel",
-		-- draggable = false,
 		callbacks = {
 			apply = function( color ) button3Styles.normal.textures[3].color:setC( color ) end
 		},
@@ -311,10 +310,6 @@ function InitGui()
 
 	local container = gui:newContainer( {
 		bounds = Rectangle:new(	650, 64, 160, 200 ),
-
-		callbacks = {
-			-- apply = function( color ) button3Styles.normal.textures[3].color:setC( color ) end
-		},
 	} )
 	container.position = Vector2:new( 8, 32 )
 
@@ -324,30 +319,75 @@ function InitGui()
 		container:addControl(
 			container.gui:newButton( {
 				bounds = Rectangle:new( 0, 0, 120, 16 ),
-				-- bounds = Rectangle:new( 0, 0, 160, 16 ),
-				-- bounds = Rectangle:new( 0, 0, 32, 16 ),
 				text = "Button "..i,
 				callbacks = {
 					pressed = function( this ) print( this.text ) end
 				}
 			} )
 		)
-		-- container:addControl(
-		-- 	container.gui:newButton( {
-		-- 		-- bounds = Rectangle:new( 0, 0, 120, 16 ),
-		-- 		-- bounds = Rectangle:new( 0, 0, 160, 16 ),
-		-- 		bounds = Rectangle:new( 0, 0, 20, 20 ),
-		-- 		-- text = "Button "..i,
-		-- 		callbacks = {
-		-- 			pressed = function( this ) print( this.text ) end
-		-- 		}
-		-- 	} )
-		-- )
 	end
 
 	-- Add container to window.
 	window:_addControl( container, "container" )
 	window:setPosition( window.bounds:getPosition() )
+
+	-- Dropdown.
+
+	local dropdown = gui:newDropdown( {
+		bounds = Rectangle:new( 16, 360, 128, 32 ),
+		text = "Dropdown",
+		callbacks = {
+		},
+	} )
+
+	local dropdown2 = container:addControl(
+		container.gui:newDropdown( {
+			bounds = Rectangle:new( 0, 0, 128, 32 ),
+			text = "Group",
+			mouseClose = false,
+			callbacks = {
+				released = function( this )
+					container:updateControls()
+				end
+			}
+		} )
+	)
+
+	for i = 1, 4 do
+		dropdown:addControl( gui:newButton( {
+			bounds = Rectangle:new( 0, 0, 160, 20 ),
+			text = "Button "..i,
+			visible = false,
+			callbacks = {
+				released = function( this )
+					print( "Dropdown button "..i )
+					dropdown:showContent( false )
+				end
+			}
+		} )	)
+
+		container:addControl( dropdown2:addControl(
+			container.gui:newButton( {
+				bounds = Rectangle:new( 0, 0, 120, 20 ),
+				text = "Button "..i,
+				visible = false,
+				callbacks = {
+					released = function( this )
+						print( "Group button "..i )
+					end
+				}
+			} )
+		) )
+	end
+
+	container:addControl(
+		container.gui:newLabel( {
+			bounds = Rectangle:new( 0, 0, 128, 20 ),
+			text = "Cat",
+		} )
+	)
+
+	container:updateControls()
 
 	gui:setToBack( panel )
 end

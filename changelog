@@ -17,6 +17,7 @@ DETAILED CHANGES:
 	- FIXED: Examples iqm_test and rlgl_hello_triangle.
 	- REMOVED: GuiSetSliderDragging, GuiGetSliderDragging, GuiSetSliderActive and GuiGetSliderActive.
 	- FIXED: Events on GLFW Windows.
+	- CHANGE: EXPORT_SYMBOLS for Linux and Windows. Removed other symbol based options at least for now.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.9.0		Using raylib 5.5 and Forked Raygui 4.0

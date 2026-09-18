@@ -17,8 +17,8 @@ set( CMAKE_C_STANDARD 99 ) # Requires C99 standard
 option( SHARED "Build using dynamic libraries." off )
 option( LUAJIT "Use LuaJIT." on )
 option( LUA_EVENTS "Enable Lua event callbacks (RL.event)." on )
-option( DYNAMIC_SYMBOLS "Expose all dynamic symbols with rdynamic." off )
-option( EXPOSE_API_SYMBOLS "Expose dynamic symbols only for get and push functions of variable types." off )
+option( EXPORT_SYMBOLS "Expose all symbols. Usefull for Lua C libraries." off )
+# option( EXPOSE_API_SYMBOLS "Expose dynamic symbols for API. Usefull for Lua C libraries." off )
 
 enum_option( PLATFORM "Desktop;Desktop_SDL2;Desktop_SDL3;Web" "Platform to build for." )
 
@@ -46,10 +46,6 @@ if( LUA_EVENTS )
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DLUA_EVENTS" )
 endif()
 
-if( DYNAMIC_SYMBOLS )
-	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -rdynamic" )
-endif()
-
 if( PLATFORM STREQUAL "Web" )
 	target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/web/libraylib.a )
 	target_link_libraries( ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/web/liblua.a )
@@ -64,7 +60,7 @@ else() # Desktop
 	if( SHARED )
 		message( Shared )
 		set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DSHARED" )
-		# find_package( raylib 5.0 REQUIRED ) # Requires at least version 5.0
+		# find_package( raylib 6.0 REQUIRED ) # Requires at least version 6.0
 		target_link_libraries( ${PROJECT_NAME} raylib )
 
 		if( LUAJIT )
@@ -88,11 +84,14 @@ else() # Desktop
 	if( UNIX )
 		set( CMAKE_C_COMPILER "gcc" )
 
-		if( EXPOSE_API_SYMBOLS )
-			# set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DEXPOSE_LUA_API_SYMBOLS -rdynamic -fvisibility=hidden" )
-			# set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DEXPOSE_LUA_API_SYMBOLS -fvisibility=hidden" )
-			set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DEXPOSE_LUA_API_SYMBOLS" )
+		if ( EXPORT_SYMBOLS )
+			set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -rdynamic" )
 		endif()
+
+		# if( EXPOSE_API_SYMBOLS )
+		# 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DEXPOSE_API_SYMBOLS -fvisibility=hidden" )
+		# 	target_link_options( ReiLua PRIVATE "LINKER:--export-dynamic" )
+		# endif()
 
 		if ( PLATFORM MATCHES "Desktop_SDL2" )
 			include( FindPkgConfig )
@@ -117,15 +116,23 @@ else() # Desktop
 	elseif( APPLE )
 		set( CMAKE_C_COMPILER "clang" )
 
+		# EXPORT_SYMBOLS is not needed since Apple exports them by default.
+
 		# //TODO Linking to SDL.
 
 		target_link_libraries( ${PROJECT_NAME} "-framework IOKit" )
 		target_link_libraries( ${PROJECT_NAME} "-framework Cocoa" )
 		target_link_libraries( ${PROJECT_NAME} "-framework OpenGL" )
 	elseif( WIN32 )
-		if( EXPOSE_API_SYMBOLS )
-			set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DEXPOSE_LUA_API_SYMBOLS" )
+		if ( EXPORT_SYMBOLS )
+			target_link_options( ReiLua PRIVATE "LINKER:--export-all-symbols" )
 		endif()
+		# if( EXPOSE_API_SYMBOLS )
+		# 	# set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DEXPOSE_API_SYMBOLS" )
+		# 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DEXPOSE_API_SYMBOLS -fvisibility=hidden" )
+		# 	target_link_options( ReiLua PRIVATE "LINKER:--export-all-symbols" )
+		# 	# target_link_options( ReiLua PRIVATE "LINKER:--export-dynamic" )
+		# endif()
 
 		if ( PLATFORM MATCHES "Desktop_SDL2" )
 			find_package( SDL2 REQUIRED )

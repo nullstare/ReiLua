@@ -9,8 +9,6 @@ Current {
 Backlog {
 	- Raygui lib
 		- Remove and replace with new gui library.
-	- Symbols
-		- Expose symbols on Windows.
 	- Platform desktop SDL
 		- Text input not working on gui. Could this be Raylib issue?
 		- Haptic functions.
@@ -21,10 +19,6 @@ Backlog {
 	- Examples
 		- Platformer example physics update for true framerate independence.
 	- Android support
-}
-
-Bugs {
-	- glfwSet*Callback functions segfault on Windows. Should keep Lua events off for now.
 }
 
 Notes {

@@ -3,23 +3,23 @@
 // Function specifiers in case library is build/used as a shared library
 // NOTE: Microsoft specifiers to tell compiler that symbols are imported/exported from a .dll
 // NOTE: visibility("default") attribute makes symbols "visible" when compiled with -fvisibility=hidden
-#if defined( _WIN32 )
-    #if defined( __TINYC__ )
-        #define __declspec(x) __attribute__( (x) )
-    #endif
-    #if defined( EXPOSE_LUA_API_SYMBOLS )
-        #define REILUAPI __declspec( dllexport )     // We are building the library as a Win32 shared library (.dll)
-    #elif defined( USE_LIBTYPE_SHARED )
-        #define REILUAPI __declspec( dllimport )     // We are using the library as a Win32 shared library (.dll)
-    #endif
-#else
-    #if defined( EXPOSE_LUA_API_SYMBOLS )
-        #define REILUAPI __attribute__( ( visibility( "default" ) ) ) // We are building as a Unix shared library (.so/.dylib)
-    #endif
-#endif
+// #if defined( _WIN32 )
+// 	#if defined( __TINYC__ )
+// 		#define __declspec(x) __attribute__( (x) )
+// 	#endif
+// 	#if defined( EXPOSE_API_SYMBOLS )
+// 		#define REILUAPI __declspec( dllexport )
+// 	#elif defined( USE_LIBTYPE_SHARED )
+// 		#define REILUAPI __declspec( dllimport )
+// 	#endif
+// #else
+// 	#if defined( EXPOSE_API_SYMBOLS )
+// 		#define REILUAPI __attribute__( ( visibility( "default" ) ) )
+// 	#endif
+// #endif
 
 #ifndef REILUAPI
-    #define REILUAPI       // Functions defined as 'extern' by default (implicit specifiers)
+	#define REILUAPI       // Functions defined as 'extern' by default (implicit specifiers)
 #endif
 
 enum BufferType {
@@ -56,8 +56,8 @@ void luaCallInit();
 void luaCallUpdate();
 void luaCallDraw();
 void luaCallExit();
-void luaCallLoad( const char* type, void* object );
-void luaCallUnload( const char* type, void* object );
+REILUAPI void luaCallLoad( const char* type, void* object );
+REILUAPI void luaCallUnload( const char* type, void* object );
 void luaRegister();
 void platformDefineGlobals();
 void luaPlatformRegister();
@@ -137,25 +137,25 @@ REILUAPI void uluaPushRLRenderBatch( lua_State* L, rlRenderBatch renderBatch );
 REILUAPI void uluaPushAutomationEvent( lua_State* L, AutomationEvent event );
 REILUAPI void uluaPushAutomationEventList( lua_State* L, AutomationEventList eventList );
 /* Unload objects. */
-void uluaUnloadBuffer( Buffer* buffer );
-void uluaUnloadImage( Image* image );
-void uluaUnloadTexture( Texture* texture );
-void uluaUnloadRenderTexture( RenderTexture* renderTexture );
-void uluaUnloadShader( Shader* shader );
-void uluaUnloadFont( Font* font );
-void uluaUnloadGlyphInfo( GlyphInfo* glyph );
-void uluaUnloadWave( Wave* wave );
-void uluaUnloadSound( Sound* sound );
-void uluaUnloadSoundAlias( Sound* sound );
-void uluaUnloadMusic( Music* music );
-void uluaUnloadAudioStream( AudioStream* stream );
-void uluaUnloadMaterial( Material* material, bool freeAll );
-void uluaUnloadMesh( Mesh* mesh );
-void uluaUnloadModel( Model* model, bool freeAll );
-void uluaUnloadModelAnimation( ModelAnimation* modelAnimation );
-void uluaUnloadModelSkeleton( ModelSkeleton* modelSkeleton );
-void uluaUnloadRLRenderBatch( rlRenderBatch* renderBatch );
-void uluaUnloadAutomationEventList( AutomationEventList* eventList );
+REILUAPI void uluaUnloadBuffer( Buffer* buffer );
+REILUAPI void uluaUnloadImage( Image* image );
+REILUAPI void uluaUnloadTexture( Texture* texture );
+REILUAPI void uluaUnloadRenderTexture( RenderTexture* renderTexture );
+REILUAPI void uluaUnloadShader( Shader* shader );
+REILUAPI void uluaUnloadFont( Font* font );
+REILUAPI void uluaUnloadGlyphInfo( GlyphInfo* glyph );
+REILUAPI void uluaUnloadWave( Wave* wave );
+REILUAPI void uluaUnloadSound( Sound* sound );
+REILUAPI void uluaUnloadSoundAlias( Sound* sound );
+REILUAPI void uluaUnloadMusic( Music* music );
+REILUAPI void uluaUnloadAudioStream( AudioStream* stream );
+REILUAPI void uluaUnloadMaterial( Material* material, bool freeAll );
+REILUAPI void uluaUnloadMesh( Mesh* mesh );
+REILUAPI void uluaUnloadModel( Model* model, bool freeAll );
+REILUAPI void uluaUnloadModelAnimation( ModelAnimation* modelAnimation );
+REILUAPI void uluaUnloadModelSkeleton( ModelSkeleton* modelSkeleton );
+REILUAPI void uluaUnloadRLRenderBatch( rlRenderBatch* renderBatch );
+REILUAPI void uluaUnloadAutomationEventList( AutomationEventList* eventList );
 /* Utils. */
 REILUAPI int uluaGetTableLen( lua_State* L, int index );
 REILUAPI bool uluaIsNil( lua_State* L, int index );

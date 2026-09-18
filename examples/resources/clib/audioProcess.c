@@ -1,13 +1,24 @@
 /* Based on raylib audio_stream_effects example */
 
-#include <lua.h>
-#include <lauxlib.h>
-#include <lualib.h>
+// #include <lua.h>
+// #include <lauxlib.h>
+// #include <lualib.h>
+// #include "../../../include/lua/lua.h"
+// #include "../../../include/lua/lauxlib.h"
+// #include "../../../include/lua/lualib.h"
+#include "../../../include/luajit/lua.h"
+#include "../../../include/luajit/lauxlib.h"
+#include "../../../include/luajit/lualib.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-/* gcc audioProcess.c -shared -o audioProcess.so -fPIC -llua */
+/* Linux */
+/* gcc audioProcess.c -shared -o audioProcess.so -fPIC */
+
+/* Windows. You may want to change compiler and provide libReiLua.dll.a*/
+/* x86_64-w64-mingw32-gcc audioProcess.c -shared -o audioProcess.dll -L. -l:libReiLua.dll.a */
 
 // Audio effect: lowpass filter
 void AudioProcessEffectLPF(void *buffer, unsigned int frames)

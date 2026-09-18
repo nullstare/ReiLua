@@ -1,1 +1,3 @@
 *.so
+*.dll
+libReiLua.dll.a

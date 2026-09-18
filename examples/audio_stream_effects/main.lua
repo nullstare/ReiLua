@@ -1,7 +1,12 @@
 -- Based on raylib audio_stream_effects example
 
 package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
-package.cpath = package.cpath..";"..RL.GetBasePath().."../resources/clib/?.so"
+
+if RL.GetPlatform() == "Windows" then
+	package.cpath = package.cpath..";"..RL.GetBasePath().."../resources/clib/?.dll"
+else
+	package.cpath = package.cpath..";"..RL.GetBasePath().."../resources/clib/?.so"
+end
 
 Vector2 = require( "vector2" )
 Rect = require( "rectangle" )

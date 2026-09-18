@@ -18,6 +18,7 @@ option( SHARED "Build using dynamic libraries." off )
 option( LUAJIT "Use LuaJIT." on )
 option( LUA_EVENTS "Enable Lua event callbacks (RL.event)." on )
 option( EXPORT_SYMBOLS "Expose all symbols. Usefull for Lua C libraries." off )
+option( WINDOWS_CONSOLE "Window console." off )
 # option( EXPOSE_API_SYMBOLS "Expose dynamic symbols for API. Usefull for Lua C libraries." off )
 
 enum_option( PLATFORM "Desktop;Desktop_SDL2;Desktop_SDL3;Web" "Platform to build for." )
@@ -29,8 +30,13 @@ endif()
 
 file( GLOB SOURCES src/*.c )
 
+if( NOT WINDOWS_CONSOLE AND WIN32 )
+	add_executable( ${PROJECT_NAME} WIN32 ${SOURCES} )
+else()
+	add_executable( ${PROJECT_NAME} ${SOURCES} )
+endif()
+
 include_directories( include )
-add_executable( ${PROJECT_NAME} ${SOURCES} )
 
 if( PLATFORM STREQUAL "Desktop" )
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DPLATFORM_DESKTOP" )

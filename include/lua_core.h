@@ -7,13 +7,13 @@
     #if defined( __TINYC__ )
         #define __declspec(x) __attribute__( (x) )
     #endif
-    #if defined( EXPOSE_API_SYMBOLS )
+    #if defined( EXPOSE_LUA_API_SYMBOLS )
         #define REILUAPI __declspec( dllexport )     // We are building the library as a Win32 shared library (.dll)
     #elif defined( USE_LIBTYPE_SHARED )
         #define REILUAPI __declspec( dllimport )     // We are using the library as a Win32 shared library (.dll)
     #endif
 #else
-    #if defined( EXPOSE_API_SYMBOLS )
+    #if defined( EXPOSE_LUA_API_SYMBOLS )
         #define REILUAPI __attribute__( ( visibility( "default" ) ) ) // We are building as a Unix shared library (.so/.dylib)
     #endif
 #endif

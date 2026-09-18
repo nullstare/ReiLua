@@ -1542,6 +1542,10 @@ void luaCallMain() {
 	/* If InitWindow is not called in RL.config, call it here. */
 	if ( !IsWindowReady() ) {
 		InitWindow( 800, 600, "ReiLua" );
+		/* Need to register events after InitWindow so we have context for glfw. */
+		#ifdef LUA_EVENTS
+			platformRegisterEvents();
+		#endif
 	}
 	if ( IsWindowReady() ) {
 		stateContextInit();

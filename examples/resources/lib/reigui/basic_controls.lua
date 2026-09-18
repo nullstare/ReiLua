@@ -655,12 +655,6 @@ function Slider:setValue( value )
 	end
 end
 
--- function Slider:setMaxValue( maxValue )
--- 	self.maxValue:setV( maxValue )
--- 	-- self:setValue( self.value )
--- 	self.value:setV( self.value:clamp( self.minValue, self.maxValue ) )
--- end
-
 -- Handle.
 
 local Handle = {}

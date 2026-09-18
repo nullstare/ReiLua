@@ -1,18 +1,22 @@
+cmake_minimum_required( VERSION 3.10 )
+
 set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake )
 include( CMakeDependentOption )
 include( EnumOption )
 
-cmake_minimum_required( VERSION 3.10 )
 project( ReiLua )
 
 # To make web build
 # cmake .. -DCMAKE_TOOLCHAIN_FILE=<YOUR PATH HERE>/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DPLATFORM=Web
 
+# Cross compile Linux to Windows
+# cmake -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=../mingw-w64.cmake ..
+
 set( CMAKE_C_STANDARD 99 ) # Requires C99 standard
 
 option( SHARED "Build using dynamic libraries." off )
 option( LUAJIT "Use LuaJIT." on )
-option( LUA_EVENTS "Enable Lua event callbacks (RL.event)." off )
+option( LUA_EVENTS "Enable Lua event callbacks (RL.event)." on )
 option( DYNAMIC_SYMBOLS "Expose all dynamic symbols with rdynamic." off )
 option( EXPOSE_API_SYMBOLS "Expose dynamic symbols only for get and push functions of variable types." off )
 
@@ -85,7 +89,9 @@ else() # Desktop
 		set( CMAKE_C_COMPILER "gcc" )
 
 		if( EXPOSE_API_SYMBOLS )
-			set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DEXPOSE_LUA_API_SYMBOLS -rdynamic -fvisibility=hidden" )
+			# set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DEXPOSE_LUA_API_SYMBOLS -rdynamic -fvisibility=hidden" )
+			# set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DEXPOSE_LUA_API_SYMBOLS -fvisibility=hidden" )
+			set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DEXPOSE_LUA_API_SYMBOLS" )
 		endif()
 
 		if ( PLATFORM MATCHES "Desktop_SDL2" )
@@ -133,7 +139,7 @@ else() # Desktop
 			target_link_libraries( ${PROJECT_NAME} ${SDL3_LIBRARIES} )
 		endif()
 		# Remove this to get console. //TODO Could be build option.
-		set( CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-mwindows" )
+		# set( CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-mwindows" )
 		target_link_libraries( ${PROJECT_NAME} mingw32 opengl32 gdi32 winmm )
 	endif()
 endif()

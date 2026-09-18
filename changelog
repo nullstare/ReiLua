@@ -16,6 +16,7 @@ DETAILED CHANGES:
 	- ADDED: New raymath functions.
 	- FIXED: Examples iqm_test and rlgl_hello_triangle.
 	- REMOVED: GuiSetSliderDragging, GuiGetSliderDragging, GuiSetSliderActive and GuiGetSliderActive.
+	- FIXED: Events on GLFW Windows.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.9.0		Using raylib 5.5 and Forked Raygui 4.0

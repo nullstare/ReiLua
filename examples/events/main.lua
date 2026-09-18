@@ -96,8 +96,8 @@ function RL.event( event )
 		text = text .."\nkeyName: "..keyName( event.key )
 	elseif event.type == RL.GLFW_CHAR_EVENT then
 		text = text.."key: "..event.key
-		-- text = text .."\nchar: "..string.char( event.key )
-		text = text .."\nchar: "..utf8.char( event.key )
+		text = text .."\nchar: "..string.char( event.key )
+		-- text = text .."\nchar: "..utf8.char( event.key )
 	elseif event.type == RL.GLFW_MOUSE_BUTTON_EVENT then
 		text = text.."button: "..event.button.." action: "..getAction( event.action ).." mods: "..event.mods
 	elseif event.type == RL.GLFW_MOUSE_CURSOR_POS_EVENT then

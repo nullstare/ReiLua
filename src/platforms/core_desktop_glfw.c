@@ -617,21 +617,21 @@ static void penTabletProximityEvent( int proxState ) {
 
 static void platformRegisterEvents() {
 	/* Window events. */
-	state->raylibWindowSizeCallback = glfwSetWindowSizeCallback( GetWindowHandle(), (GLFWwindowsizefun)windowSizeEvent );
+	state->raylibWindowSizeCallback = glfwSetWindowSizeCallback( glfwGetCurrentContext(), (GLFWwindowsizefun)windowSizeEvent );
 #if !defined( PLATFORM_WEB )
-	state->raylibWindowMaximizeCallback = glfwSetWindowMaximizeCallback( GetWindowHandle(), windowMaximizeEvent );
+	state->raylibWindowMaximizeCallback = glfwSetWindowMaximizeCallback( glfwGetCurrentContext(), windowMaximizeEvent );
 #endif
-	state->raylibWindowIconifyCallback = glfwSetWindowIconifyCallback( GetWindowHandle(), windowIconyfyEvent );
-	state->raylibWindowFocusCallback = glfwSetWindowFocusCallback( GetWindowHandle(), windowFocusEvent );
-	state->raylibWindowDropCallback = glfwSetDropCallback( GetWindowHandle(), windowDropEvent );
+	state->raylibWindowIconifyCallback = glfwSetWindowIconifyCallback( glfwGetCurrentContext(), windowIconyfyEvent );
+	state->raylibWindowFocusCallback = glfwSetWindowFocusCallback( glfwGetCurrentContext(), windowFocusEvent );
+	state->raylibWindowDropCallback = glfwSetDropCallback( glfwGetCurrentContext(), windowDropEvent );
 
 	/* Input events. */
-	state->raylibKeyCallback = glfwSetKeyCallback( GetWindowHandle(), keyInputEvent );
-	state->raylibCharCallback = glfwSetCharCallback( GetWindowHandle(), charInputEvent );
-	state->raylibMouseButtonCallback = glfwSetMouseButtonCallback( GetWindowHandle(), mouseButtonInputEvent );
-	state->raylibMouseCursorPosCallback = glfwSetCursorPosCallback( GetWindowHandle(), mouseCursorPosInputEvent );
-	state->raylibMouseScrollCallback = glfwSetScrollCallback( GetWindowHandle(), mouseScrollInputEvent );
-	state->raylibCursorEnterCallback = glfwSetCursorEnterCallback( GetWindowHandle(), cursorEnterInputEvent );
+	state->raylibKeyCallback = glfwSetKeyCallback( glfwGetCurrentContext(), keyInputEvent );
+	state->raylibCharCallback = glfwSetCharCallback( glfwGetCurrentContext(), charInputEvent );
+	state->raylibMouseButtonCallback = glfwSetMouseButtonCallback( glfwGetCurrentContext(), mouseButtonInputEvent );
+	state->raylibMouseCursorPosCallback = glfwSetCursorPosCallback( glfwGetCurrentContext(), mouseCursorPosInputEvent );
+	state->raylibMouseScrollCallback = glfwSetScrollCallback( glfwGetCurrentContext(), mouseScrollInputEvent );
+	state->raylibCursorEnterCallback = glfwSetCursorEnterCallback( glfwGetCurrentContext(), cursorEnterInputEvent );
 	state->raylibJoystickCallback = glfwSetJoystickCallback( joystickEvent );
 	/* NOTE! Experimental. Needs glfw PR https://github.com/glfw/glfw/pull/1445 */
 	// state->glfwTabletDataCallback = glfwSetPenTabletDataCallback( penTabletDataEvent );
@@ -648,8 +648,4 @@ void luaPlatformRegister() {
 	assignGlobalFunction( "GetKeyScancode", lcoreGetKeyScancode );
 
 	lua_pop( L, -1 );
-
-#ifdef LUA_EVENTS
-	platformRegisterEvents();
-#endif
 }

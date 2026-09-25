@@ -25,6 +25,7 @@ function Dropdown:new( gui, t )
 	object.mouseClose = Util.setWithDefault( t.mouseClose, true )
 	object.callbacks = t.callbacks or {} -- pressed, released.
 	object.styles = t.styles or object.DEFAULT_STYLES
+	object.tooltip = t.tooltip
 
 	object.contentBounds = Rectangle:new()
 	-- object.gui = Gui:new() -- Contains full independent gui system.
@@ -60,6 +61,7 @@ function Dropdown:createControls()
 		text = self.text,
 		toggle = self.toggle,
 		styles = styles.button,
+		tooltip = self.tooltip,
 		callbacks = {
 			released = function( this )
 				this.toggle = not this.toggle

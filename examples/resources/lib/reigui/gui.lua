@@ -65,11 +65,6 @@ function GuiControl:setSize( size )
 	self.bounds.width = size.x
 	self.bounds.height = size.y
 
-	-- if self._controlsArray then
-	-- 	for _, control in ipairs( self._controlsArray ) do
-	-- 		control:setSize( size )
-	-- 	end
-	-- end
 	if self.callbacks.setSize then
 		self.callbacks.setSize( self, size )
 	end
@@ -270,7 +265,7 @@ function Gui:update( delta )
 		for i = #self.controls, 1, -1 do
 			local control = self.controls[i]
 	
-			if control.visible then
+			if control and control.visible then
 				if control._isMouseOver ~= nil then
 					control._isMouseOver = self.mouseOver == nil and RL.CheckCollisionPointRec( self._mousePos, control.bounds )
 				end
@@ -294,6 +289,7 @@ function Gui:update( delta )
 					else
 						self.tooltip.mouseOver = nil
 						self.tooltip.timer = 0.0
+						self.tooltip.text = nil
 					end
 				end
 	
@@ -388,6 +384,7 @@ function Gui:setToBack( control )
 	end
 end
 
+-- Note! Control should call remove callback themselves.
 function Gui:remove( control )
 	for i, curControl in ipairs( self.controls ) do
 		if control == curControl then
@@ -408,8 +405,10 @@ end
 
 function Gui:clear()
 	for _, control in ipairs( self.controls ) do
-		table.remove( control )
+		control:remove()
 	end
+
+	self.controls = {}
 end
 
 function Gui:addControl( control )

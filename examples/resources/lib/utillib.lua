@@ -401,6 +401,11 @@ end
 -- Would be equivalent to player.position.x
 function utillib.getNested( t, keyChain )
 	for key in string.gmatch( keyChain, "[^.]+" ) do
+		-- Array access.
+		if type( tonumber( key ) ) == "number" then
+			key = tonumber( key )
+		end
+
 		t = t[ key ]
 
 		if t == nil then
@@ -417,6 +422,11 @@ function utillib.setNested( t, keyChain, value )
 	local chain = utillib.split( keyChain, "." )
 
 	for i, key in ipairs( chain ) do
+		-- Array access.
+		if type( tonumber( key ) ) == "number" then
+			key = tonumber( key )
+		end
+
 		if i < #chain then
 			if t[ key ] == nil then
 				t[ key ] = {}

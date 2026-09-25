@@ -26,7 +26,8 @@ function RL.init()
 end
 
 function InitGui()
-	RL.GuiLoadStyleDefault()
+	-- RL.GuiLoadStyleDefault()
+	RL.GuiLoadStyle( RL.GetBasePath().."../resources/styles/style_dark.rgs" )
 	Gui = require( "reigui/gui" )
 	Gui:include( require( "reigui.basic_controls" ) )
 	Gui:include( require( "reigui.window" ) )
@@ -34,6 +35,7 @@ function InitGui()
 	Gui:include( require( "reigui.color_picker" ) )
 	Gui:include( require( "reigui.container" ) )
 	Gui:include( require( "reigui.dropdown" ) )
+	Gui:include( require( "reigui.file_browser" ) )
 
 	gui = Gui:new()
 
@@ -44,6 +46,8 @@ function InitGui()
 	gradientTex = RL.LoadTexture( prefix.."gradient.png" )
 	wabbitTex = RL.LoadTexture( prefix.."wabbit_alpha.png" )
 	sliderTex = RL.LoadTexture( prefix.."slider.png" )
+
+	local fontSize = RL.GetFontBaseSize( RL.GuiGetFont() )
 
 	-- Button 1.
 
@@ -82,7 +86,7 @@ function InitGui()
 		callbacks = {
 			released = function( this )
 				this.toggle = not this.toggle
-				gui.tooltipStyles.text.fontSize = this.toggle and 20 or 10
+				gui.tooltipStyles.text.fontSize = this.toggle and fontSize * 2 or fontSize
 			end,
 		},
 		tooltip = "This button has also icon in it",
@@ -93,13 +97,11 @@ function InitGui()
 	-- Button 3.
 
 	local button3Styles = Util.deepCopy( GUI_DEFAULT_STYLES )
+
 	button3Styles.normal.text.color = RL.BLACK
-	button3Styles.normal.text.fontSize = 20
-	button3Styles.normal.text.spacing = 2
-	button3Styles.focused.text.fontSize = 20
-	button3Styles.focused.text.spacing = 2
-	button3Styles.pressed.text.fontSize = 20
-	button3Styles.pressed.text.spacing = 2
+
+	-- Gui:setForAllStyles( button3Styles, "text.fontSize", fontSize * 2 )
+	Gui:setForAllStyles( button3Styles, "text.spacing", 2 )
 
 	local textures = {
 		{
@@ -145,7 +147,7 @@ function InitGui()
 
 	local labelStyle = Util.deepCopy( gui.Label.DEFAULT_STYLES )
 	labelStyle.normal.text.color = Color:newT( RL.BLACK )
-	labelStyle.normal.text.fontSize = 20
+	labelStyle.normal.text.fontSize = fontSize * 2
 	labelStyle.normal.text.spacing = 2
 	labelStyle.normal.text.alignH = RL.TEXT_ALIGN_LEFT
 
@@ -159,7 +161,7 @@ function InitGui()
 
 	local textEditStyle = Util.deepCopy( gui.TextInputBox.DEFAULT_STYLES )
 	local textStyle = Util.deepCopy( textEditStyle.normal.text )
-	textStyle.fontSize = 20
+	textStyle.fontSize = fontSize * 2
 	textStyle.spacing = 2
 	textStyle.alignH = RL.TEXT_ALIGN_LEFT
 
@@ -252,7 +254,7 @@ function InitGui()
 		callbacks = {
 			set = function( self ) label.text = "Value: "..self.value.x end,
 		},
-		tooltip = "Slide the slider",
+		tooltip = "Slide the textured slider",
 		styles = slider2Style,
 	} )
 
@@ -285,7 +287,7 @@ function InitGui()
 
 	local spinnerStyle = Util.deepCopy( gui.Spinner.DEFAULT_STYLES )
 
-	Gui:setForAllStyles( spinnerStyle.textInput, "text.fontSize", 20 )
+	Gui:setForAllStyles( spinnerStyle.textInput, "text.fontSize", fontSize * 2 )
 
 	local spinner = gui:newSpinner( {
 		bounds = Rectangle:new( 16, 316, 96, 32 ),
@@ -342,7 +344,7 @@ function InitGui()
 
 	local dropdown2 = container:addControl(
 		container.gui:newDropdown( {
-			bounds = Rectangle:new( 0, 0, 128, 32 ),
+			bounds = Rectangle:new( 0, 0, 120, 32 ),
 			text = "Group",
 			mouseClose = false,
 			callbacks = {
@@ -382,12 +384,46 @@ function InitGui()
 
 	container:addControl(
 		container.gui:newLabel( {
-			bounds = Rectangle:new( 0, 0, 128, 20 ),
+			bounds = Rectangle:new( 0, 0, 120, 20 ),
 			text = "Cat",
 		} )
 	)
 
 	container:updateControls()
+
+	local fileBrowser = gui:newFileBrowser( {
+		callbacks = {
+			apply = function( path )
+				print( "File path: "..path )
+			end
+		},
+	} )
+	fileBrowser:setPosition( Vector2:new( 650, 32 ) )
+
+	container:addControl(
+		container.gui:newButton( {
+			bounds = Rectangle:new( 0, 0, 120, 20 ),
+			text = "File Browser",
+			callbacks = {
+				released = function()
+					local function loadTexture( path )
+						if not RL.FileExists( path ) or not RL.IsFileExtension( path, ".png" ) then
+							return
+						end
+
+						local tex = RL.LoadTexture( path )
+
+						if tex then
+							Gui:setForAllStyles( button3Styles, "textures.3.texture", tex )
+							fileBrowser:setVisible( false )
+						end
+					end
+
+					fileBrowser:popup( RL.GetBasePath(), loadTexture, { "*.*", ".png" } )
+				end
+			}
+		} )
+	)
 
 	gui:setToBack( panel )
 end

@@ -475,7 +475,7 @@ static void defineGlobals() {
 	lua_setglobal( L, "RL" );
 	lua_getglobal( L, "RL" );
 
-/* Note! Docgen rely on this line format. */
+/* Note! "docgen.lua" rely on this line format. */
 /*DOC_DEFINES_START*/
 	/* System/Window config flags */
 	assignGlobalInt( FLAG_VSYNC_HINT, "FLAG_VSYNC_HINT" ); // Set to try enabling V-Sync on GPU

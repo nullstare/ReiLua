@@ -273,9 +273,9 @@ function Container:addControl( control, index )
 end
 
 function Container:clear()
-	self.controls = {}
 	self.gui:clear()
 	self.scroll:set( 0 )
+	self.controls = {}
 end
 
 function Container:updateMouseOffset()

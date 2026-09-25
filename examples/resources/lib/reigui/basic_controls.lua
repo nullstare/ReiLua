@@ -130,8 +130,9 @@ function TextInputBox:new( gui, t )
 	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
-	object.text = t.text
-	object.charLimit = t.charLimit or 64
+	object.text = t.text or ""
+	-- object.charLimit = t.charLimit or 64
+	object.charLimit = t.charLimit
 	object.callbacks = t.callbacks or {} -- pressed, edit, set.
 
 	object.visible = Util.setWithDefault( t.visible, true )

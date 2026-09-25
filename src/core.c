@@ -1976,7 +1976,7 @@ int lcoreGetFileModTime( lua_State* L ) {
 /*
 > extension = RL.GetFileExtension( string fileName )
 
-Get pointer to extension for a filename string (Includes dot: '.png')
+Get filename string (Includes dot: '.png')
 
 - Success return string
 */
@@ -1989,7 +1989,7 @@ int lcoreGetFileExtension( lua_State* L ) {
 /*
 > fileName = RL.GetFileName( string filePath )
 
-Get pointer to filename for a path string
+Get filename for a path string
 
 - Success return string
 */
@@ -2143,6 +2143,7 @@ int lcoreLoadDirectoryFiles( lua_State* L ) {
 > fileNames = RL.LoadDirectoryFilesEx( string basePath, string|nil filter, bool scanSubdirs )
 
 Load directory filepaths with extension filtering and subdir scan; some filters available: "*.*", "FILES*", "DIRS*"
+WARNING: Custom file filters can be specified but following raylib IsFileExtension() convention: ".png;.wav;.glb"
 
 - Success return string{}
 */
@@ -2217,10 +2218,11 @@ int lcoreGetDirectoryFileCount( lua_State* L ) {
 }
 
 /*
-> count = RL.GetDirectoryFileCountEx( string basePath, string filter, bool scanSubdirs)
+> count = RL.GetDirectoryFileCountEx( string basePath, string filter, bool scanSubdirs )
 
-Get the file count in a directory with extension filtering and recursive directory scan.
-Use 'DIR' in the filter string to include directories in the result
+Get the file count in a directory with extension filtering and recursive directory scan;
+some filters available: "*.*", "FILES*", "DIRS*"
+WARNING: Custom file filters can be specified but following raylib IsFileExtension() convention: ".png;.wav;.glb"
 
 - Success return int
 */

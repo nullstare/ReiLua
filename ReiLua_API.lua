@@ -2351,13 +2351,13 @@ function RL.GetFileLength( fileName ) end
 ---@return any time 
 function RL.GetFileModTime( fileName ) end
 
----Get pointer to extension for a filename string (Includes dot: '.png')
+---Get filename string (Includes dot: '.png')
 ---- Success return string
 ---@param fileName string
 ---@return any extension 
 function RL.GetFileExtension( fileName ) end
 
----Get pointer to filename for a path string
+---Get filename for a path string
 ---- Success return string
 ---@param filePath string
 ---@return any fileName 
@@ -2422,6 +2422,7 @@ function RL.IsFileNameValid( fileName ) end
 function RL.LoadDirectoryFiles( dirPath ) end
 
 ---Load directory filepaths with extension filtering and subdir scan; some filters available: "*.*", "FILES*", "DIRS*"
+---WARNING: Custom file filters can be specified but following raylib IsFileExtension() convention: ".png;.wav;.glb"
 ---- Success return string{}
 ---@param basePath string
 ---@param filter string|nil
@@ -2445,14 +2446,15 @@ function RL.LoadDroppedFiles() end
 ---@return any count 
 function RL.GetDirectoryFileCount( dirPath ) end
 
----Get the file count in a directory with extension filtering and recursive directory scan.
----Use 'DIR' in the filter string to include directories in the result
+---Get the file count in a directory with extension filtering and recursive directory scan;
+---some filters available: "*.*", "FILES*", "DIRS*"
+---WARNING: Custom file filters can be specified but following raylib IsFileExtension() convention: ".png;.wav;.glb"
 ---- Success return int
 ---@param basePath string
 ---@param filter string
----@param scanSubdir boolean
+---@param scanSubdirs boolean
 ---@return any count 
-function RL.GetDirectoryFileCountEx( basePath, filter, scanSubdir ) end
+function RL.GetDirectoryFileCountEx( basePath, filter, scanSubdirs ) end
 
 -- Core - Compression/Encoding functionality
 

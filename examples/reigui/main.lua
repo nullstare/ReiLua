@@ -403,11 +403,12 @@ function InitGui()
 	container:addControl(
 		container.gui:newButton( {
 			bounds = Rectangle:new( 0, 0, 120, 20 ),
-			text = "File Browser",
+			text = "Load bunny tex",
 			callbacks = {
 				released = function()
 					local function loadTexture( path )
 						if not RL.FileExists( path ) or not RL.IsFileExtension( path, ".png" ) then
+							RL.TraceLog( RL.LOG_WARNING, "'"..path.."' Not an image file" )
 							return
 						end
 
@@ -419,7 +420,9 @@ function InitGui()
 						end
 					end
 
-					fileBrowser:popup( RL.GetBasePath(), loadTexture, { "*.*", ".png" } )
+					-- fileBrowser:popup( RL.GetBasePath(), loadTexture, { "*.*", ".png" } )
+					-- fileBrowser:popup( RL.GetBasePath(), loadTexture, { "DIRS*", ".png" } )
+					fileBrowser:popup( RL.GetBasePath(), loadTexture, { "DIRS*;.png" } )
 				end
 			}
 		} )

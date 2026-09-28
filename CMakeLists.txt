@@ -6,6 +6,9 @@ include( EnumOption )
 
 project( ReiLua )
 
+# For clangd.
+set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
+
 # To make web build
 # cmake .. -DCMAKE_TOOLCHAIN_FILE=<YOUR PATH HERE>/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DPLATFORM=Web
 

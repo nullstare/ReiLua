@@ -10,7 +10,7 @@ local metatable = {
 
 FileBrowser.DEFAULT_STYLES = {
 	fileBrowser = {
-		defaultRect = Rectangle:new( 0, 0, 600, 490 ),
+		defaultRect = Rectangle:new( 0, 0, 632, 504 ),
 		padding = 8,
 		spacing = 4,
 		iconButtonSize = Vector2:new( 28 ),
@@ -30,7 +30,8 @@ FileBrowser.DEFAULT_STYLES = {
 
 -- File list.
 
-FileBrowser.DEFAULT_STYLES.fileList.container.scrollSteps = 32
+FileBrowser.DEFAULT_STYLES.fileList.container.scrollSteps = FileBrowser.DEFAULT_STYLES.fileBrowser.fileButtonHeight
++ FileBrowser.DEFAULT_STYLES.fileBrowser.spacing
 
 -- Search button.
 
@@ -295,18 +296,14 @@ function FileBrowser:createControls()
 	self._controls.applyButton.position = pos:clone()
 
 	table.insert( self._controlsArray, self._controls.applyButton )
-
-	self:checkPath( self.path )
 end
 
 function FileBrowser:popup( path, callback, filters )
-	self:checkPath( path or self.path )
-
 	self.callbacks.apply = callback
 
 	if filters ~= nil then
 		self.filters = filters
-
+		self.filter = self.filters[1]
 		self._controls.filterDropdown:clear()
 		self:updateFilterDropdown()
 	end
@@ -316,12 +313,13 @@ function FileBrowser:popup( path, callback, filters )
 	self:setPosition( winSize:scale( 0.5 ) - self.bounds:getSize():scale( 0.5 ) )
 	self:setVisible( true )
 	self:setToTop()
+	self:checkPath( path or self.path )
 end
 
 function FileBrowser:updateFilterDropdown()
 	local textButtonSize = self.styles.fileBrowser.textButtonSize
 
-	for _, ft in ipairs( self.filters ) do
+	for i, ft in ipairs( self.filters ) do
 		self._controls.filterDropdown:addControl( self._gui:newButton( {
 			bounds = Rectangle:new( 0, 0, textButtonSize.x, textButtonSize.y ),
 			text = ft,
@@ -335,6 +333,10 @@ function FileBrowser:updateFilterDropdown()
 				end
 			}
 		} )	)
+
+		if ft == self.filter then
+			self._controls.filterDropdown._controls.button.text = ft
+		end
 	end
 end
 
@@ -472,7 +474,6 @@ end
 
 function FileBrowser:apply( path )
 	if self.callbacks.apply then
-		-- self.callbacks.apply( self )
 		self.callbacks.apply( path )
 	end
 end

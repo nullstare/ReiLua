@@ -29,9 +29,6 @@ ColorPicker.DEFAULT_STYLES = {
 	hexValueLabel = Util.deepCopy( Gui.Label.DEFAULT_STYLES ),
 	aplyButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
 }
--- Gui:setForAllStyles( ColorPicker.DEFAULT_STYLES.colorPanel, "base.gradient", "vertex" )
--- Gui:setForAllStyles( ColorPicker.DEFAULT_STYLES.colorPanel, "base.color", { RL.RED, RL.BLUE, RL.GREEN, RL.WHITE } )
--- Gui:setForAllStyles( ColorPicker.DEFAULT_STYLES.colorPanel, "base.color", { RL.GRAY, RL.GRAY, RL.GRAY, RL.GRAY } )
 
 Gui:setForAllStyles( ColorPicker.DEFAULT_STYLES.hexValueLabel, "text.alignH", RL.TEXT_ALIGN_LEFT )
 

@@ -1,9 +1,6 @@
 Current {
 	- Reigui.
-		- File browser.
 		- Tree View.
-		- Color panel.
-			- Palette.
 }
 
 Backlog {
@@ -23,7 +20,6 @@ Backlog {
 
 Notes {
 	- WARNING: BREAKING CHANGE: LoadFontData() has been redesigned! https://github.com/raysan5/raylib/commit/29ce5d8aa9d261eba395e24437e08c6bd744616e
-	- WARNING: BREAKING: REDESIGNED: **Animation System. https://github.com/raysan5/raylib/commit/d4dc038e2e77ad8b0fddcfa323ee872cc2eb1d0b
 	- WARNING: rlgl BREAKING CHANGE: https://github.com/raysan5/raylib/commit/e40ddfabbb3552453d1feb09811d9f1c4c1c3741
 	- WARNING: A bunch of breaking changes were introduced for consistency, they shouldn't affect many users but be careful.
 	Sorry for the inconvenience... it makes me sad because those changes should have been introduced before raylib 6.0 release.

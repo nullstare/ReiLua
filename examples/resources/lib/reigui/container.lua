@@ -23,7 +23,7 @@ Container.DEFAULT_STYLES = {
 		spacing = 4,
 		scrollBarSpacing = 8,
 		borderClipWidth = 4,
-		scrollSteps = 8, -- How many slider valueSteps.
+		scrollSteps = 16, -- How many slider valueSteps.
 	},
 	panel = Util.deepCopy( Gui.Panel.DEFAULT_STYLES ),
 	scrollBarH = Util.deepCopy( Gui.Slider.DEFAULT_STYLES ),

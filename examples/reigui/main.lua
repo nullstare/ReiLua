@@ -28,7 +28,7 @@ end
 function InitGui()
 	-- RL.GuiLoadStyleDefault()
 	RL.GuiLoadStyle( RL.GetBasePath().."../resources/styles/style_dark.rgs" )
-	Gui = require( "reigui/gui" )
+	Gui = require( "reigui.gui" )
 	Gui:include( require( "reigui.basic_controls" ) )
 	Gui:include( require( "reigui.window" ) )
 	Gui:include( require( "reigui.spinner" ) )
@@ -36,6 +36,7 @@ function InitGui()
 	Gui:include( require( "reigui.container" ) )
 	Gui:include( require( "reigui.dropdown" ) )
 	Gui:include( require( "reigui.file_browser" ) )
+	Gui:include( require( "reigui.message_window" ) )
 
 	gui = Gui:new()
 
@@ -400,33 +401,122 @@ function InitGui()
 	} )
 	fileBrowser:setPosition( Vector2:new( 650, 32 ) )
 
+	-- Create default message window. Popup will give it context.
+	local messageWindow = gui:newMessageWindow( {} )
+
 	container:addControl(
 		container.gui:newButton( {
 			bounds = Rectangle:new( 0, 0, 120, 20 ),
 			text = "Load bunny tex",
 			callbacks = {
 				released = function()
+					local function confirm( path )
+						messageWindow:popup( "Confirm load",
+							string.format( "Are you sure you want to load texture '%s'", path ),
+							{ -- Buttons.
+								{
+									text = "No",
+									callbacks = {
+										released = function()
+											messageWindow:setVisible( false )
+										end
+									}
+								},
+								{
+									text = "Yes",
+									callbacks = {
+										released = function()
+											local tex = RL.LoadTexture( path )
+											
+											if tex then
+												Gui:setForAllStyles( button3Styles, "textures.3.texture", tex )
+												fileBrowser:setVisible( false )
+											end
+
+											messageWindow:setVisible( false )
+										end
+									}
+								},
+							}
+						)
+					end
+
 					local function loadTexture( path )
 						if not RL.FileExists( path ) or not RL.IsFileExtension( path, ".png" ) then
-							RL.TraceLog( RL.LOG_WARNING, "'"..path.."' Not an image file" )
-							return
-						end
-
-						local tex = RL.LoadTexture( path )
-
-						if tex then
-							Gui:setForAllStyles( button3Styles, "textures.3.texture", tex )
-							fileBrowser:setVisible( false )
+							messageWindow:popup( "Invalid file",
+								string.format( "'%s' is not an image file", path ),
+								{ -- Buttons.
+									{
+										text = "Ok",
+										callbacks = {
+											released = function()
+												messageWindow:setVisible( false )
+											end
+										}
+									},
+								}
+							)
+						else
+							confirm( path )
 						end
 					end
 
-					-- fileBrowser:popup( RL.GetBasePath(), loadTexture, { "*.*", ".png" } )
-					-- fileBrowser:popup( RL.GetBasePath(), loadTexture, { "DIRS*", ".png" } )
-					fileBrowser:popup( RL.GetBasePath(), loadTexture, { "DIRS*;.png" } )
+					fileBrowser:popup( RL.GetBasePath(), loadTexture )
 				end
 			}
 		} )
 	)
+
+	-- Hypertext.
+
+	local hyperStyle = Util.deepCopy( Gui.TextBox.DEFAULT_STYLES )
+	hyperStyle.normal.text.color = RL.DARKBLUE
+	hyperStyle.focused.text.color = RL.BLUE
+
+	local textBox = gui:newTextBox( {
+		bounds = Rectangle:new( 400, 300, window.bounds.width - 16, 100 ),
+		texts = {
+			{
+				string = "This is just ordinary text.",
+			},
+			{
+				string = " This section is a hypertext",
+				styles = hyperStyle,
+				isHypertext = true,
+			},
+			{
+				string = " and we continue with some more normal text.",
+			},
+			{
+				string = " Another hypertext.",
+				styles = hyperStyle,
+				isHypertext = true,
+			},
+		},
+		callbacks = {
+			mouseOnChar = function( this, sec, charId )
+				local text = this.texts[ sec ]
+
+				if text.isHypertext then
+					this.tooltip = "This text can be clicked"
+
+					if gui._isMouseReleased then
+						print( "Section "..sec, "Char is "..text.string:sub( charId, charId ) )
+					end
+				else
+					this.tooltip = nil
+				end
+			end,
+			mouseOut = function( this )
+				this.tooltip = nil
+			end,
+		},
+	} )
+
+	-- Add hypertext to window.
+	textBox.position = container.position + Vector2:temp( 0, container.bounds.height + 8 )
+	window:_addControl( textBox, "textBox" )
+	window:setPosition( window.bounds:getPosition() )
 
 	gui:setToBack( panel )
 end

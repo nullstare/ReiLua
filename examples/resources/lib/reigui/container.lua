@@ -3,7 +3,7 @@ local Rectangle = Rectangle or require( "rectangle" )
 local Vector2 = Vector2 or require( "vector2" )
 local Gui = Gui or require( "reigui/gui" )
 
-Container = {}
+local Container = {}
 local metatable = {
 	__index = setmetatable( Container, { __index = GuiControl } ),
 }
@@ -15,22 +15,29 @@ Container.FILL_TYPE = {
 	GRID_RIGHT = 3,
 	FREE = 4,
 }
-Container.DEFAULT_STYLES = {
-	container = {
-		fillType = Container.FILL_TYPE.LIST_DOWN,
-		size = Vector2:new( 256, 256 ),
-		padding = 8,
-		spacing = 4,
-		scrollBarSpacing = 8,
-		borderClipWidth = 4,
-		scrollSteps = 16, -- How many slider valueSteps.
-	},
-	panel = Util.deepCopy( Gui.Panel.DEFAULT_STYLES ),
-	scrollBarH = Util.deepCopy( Gui.Slider.DEFAULT_STYLES ),
-	scrollBarV = Util.deepCopy( Gui.Slider.DEFAULT_STYLES ),
-}
-Gui:setForAllStyles( Container.DEFAULT_STYLES.scrollBarH, "slider.minWidth", 8 )
-Gui:setForAllStyles( Container.DEFAULT_STYLES.scrollBarV, "slider.minWidth", 8 )
+
+Container.DEFAULT_STYLES = {}
+
+function Container.DEFAULT_STYLES_UPDATE()
+	Container.DEFAULT_STYLES = {
+		container = {
+			fillType = Container.FILL_TYPE.LIST_DOWN,
+			size = Vector2:new( 256, 256 ),
+			padding = 8,
+			spacing = 4,
+			scrollBarSpacing = 8,
+			borderClipWidth = 4,
+			scrollSteps = 16, -- How many slider valueSteps.
+		},
+		panel = Util.deepCopy( Gui.Panel.DEFAULT_STYLES ),
+		scrollBarH = Util.deepCopy( Gui.Slider.DEFAULT_STYLES ),
+		scrollBarV = Util.deepCopy( Gui.Slider.DEFAULT_STYLES ),
+	}
+	Gui:setForAllStyles( Container.DEFAULT_STYLES.scrollBarH, "slider.minWidth", 8 )
+	Gui:setForAllStyles( Container.DEFAULT_STYLES.scrollBarV, "slider.minWidth", 8 )
+end
+
+Container.DEFAULT_STYLES_UPDATE()
 
 function Container:new( gui, t )
 	local object = setmetatable( {}, metatable )
@@ -265,6 +272,7 @@ end
 
 function Container:addControl( control, index )
 	index = RL.Clamp( index or #self.controls + 1, 1, #self.controls + 1 )
+	control._parent = self
 	table.insert( self.controls, index, control )
 
 	self:setControlPos( control )

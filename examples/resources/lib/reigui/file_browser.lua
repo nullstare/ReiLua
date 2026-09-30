@@ -3,63 +3,10 @@ local Rectangle = Rectangle or require( "rectangle" )
 local Vector2 = Vector2 or require( "vector2" )
 local Gui = Gui or require( "reigui/gui" )
 
-FileBrowser = {}
+local FileBrowser = {}
 local metatable = {
 	__index = setmetatable( FileBrowser, { __index = GuiControl } ),
 }
-
-FileBrowser.DEFAULT_STYLES = {
-	fileBrowser = {
-		defaultRect = Rectangle:new( 0, 0, 632, 504 ),
-		padding = 8,
-		spacing = 4,
-		iconButtonSize = Vector2:new( 28 ),
-		textButtonSize = Vector2:new( 72, 28 ),
-		fileButtonHeight = 24,
-	},
-	window = Util.deepCopy( Gui.Window.DEFAULT_STYLES ),
-	pathInput = Util.deepCopy( Gui.TextInputBox.DEFAULT_STYLES ),
-	searchButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
-	backButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
-	fileList = Util.deepCopy( Gui.Container.DEFAULT_STYLES ),
-	fileInput = Util.deepCopy( Gui.TextInputBox.DEFAULT_STYLES ),
-	filterDropdown = Util.deepCopy( Gui.Dropdown.DEFAULT_STYLES ),
-	applyButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
-	listFileButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
-}
-
--- File list.
-
-FileBrowser.DEFAULT_STYLES.fileList.container.scrollSteps = FileBrowser.DEFAULT_STYLES.fileBrowser.fileButtonHeight
-+ FileBrowser.DEFAULT_STYLES.fileBrowser.spacing
-
--- Search button.
-
-FileBrowser.DEFAULT_STYLES.searchButton.normal.icons = {
-	{
-		iconId = RL.ICON_LENS,
-		offset = Vector2:new( 0, 0 ),
-		pixelSize = 1,
-		color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
-		alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
-		alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
-	}
-}
-Gui:setForAllStyles( FileBrowser.DEFAULT_STYLES.searchButton, "icons", FileBrowser.DEFAULT_STYLES.searchButton.normal.icons )
-
--- Back button.
-
-FileBrowser.DEFAULT_STYLES.backButton.normal.icons = {
-	{
-		iconId = RL.ICON_ARROW_LEFT,
-		offset = Vector2:new( 0, 0 ),
-		pixelSize = 1,
-		color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
-		alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
-		alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
-	}
-}
-Gui:setForAllStyles( FileBrowser.DEFAULT_STYLES.backButton, "icons", FileBrowser.DEFAULT_STYLES.backButton.normal.icons )
 
 FileBrowser.FILE_TYPES = { "*.*", "DIRS*", "FILES*", ".png", ".lua", ".wav", ".ogg", ".txt" }
 FileBrowser.FILE_ICONS = {
@@ -81,22 +28,81 @@ FileBrowser.FILE_ICONS = {
 	[".exe"] = RL.ICON_GEAR_BIG,
 }
 
--- List file button.
+FileBrowser.DEFAULT_STYLES = {}
 
-FileBrowser.DEFAULT_STYLES.listFileButton.normal.icons = {
-	{
-		iconId = FileBrowser.FILE_ICONS.FILE,
-		offset = Vector2:new( 0, 0 ),
-		pixelSize = 1,
-		color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
-		-- alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
-		alignH = RL.TEXT_ALIGN_LEFT,
-		alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+function FileBrowser.DEFAULT_STYLES_UPDATE()
+	FileBrowser.DEFAULT_STYLES = {
+		fileBrowser = {
+			defaultRect = Rectangle:new( 0, 0, 632, 504 ),
+			padding = 8,
+			spacing = 4,
+			iconButtonSize = Vector2:new( 28 ),
+			textButtonSize = Vector2:new( 72, 28 ),
+			fileButtonHeight = 24,
+		},
+		window = Util.deepCopy( Gui.Window.DEFAULT_STYLES ),
+		pathInput = Util.deepCopy( Gui.TextInputBox.DEFAULT_STYLES ),
+		searchButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
+		backButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
+		fileList = Util.deepCopy( Gui.Container.DEFAULT_STYLES ),
+		fileInput = Util.deepCopy( Gui.TextInputBox.DEFAULT_STYLES ),
+		filterDropdown = Util.deepCopy( Gui.Dropdown.DEFAULT_STYLES ),
+		applyButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
+		listFileButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
 	}
-}
-Gui:setForAllStyles( FileBrowser.DEFAULT_STYLES.listFileButton, "icons", FileBrowser.DEFAULT_STYLES.listFileButton.normal.icons )
-Gui:setForAllStyles( FileBrowser.DEFAULT_STYLES.listFileButton, "text.alignH", RL.TEXT_ALIGN_LEFT )
-Gui:setForAllStyles( FileBrowser.DEFAULT_STYLES.listFileButton, "text.offset", Vector2:new( 20, 0 ) )
+
+	-- File list.
+
+	FileBrowser.DEFAULT_STYLES.fileList.container.scrollSteps = FileBrowser.DEFAULT_STYLES.fileBrowser.fileButtonHeight
+	+ FileBrowser.DEFAULT_STYLES.fileBrowser.spacing
+
+	-- Search button.
+
+	FileBrowser.DEFAULT_STYLES.searchButton.normal.icons = {
+		{
+			iconId = RL.ICON_LENS,
+			offset = Vector2:new( 0, 0 ),
+			pixelSize = 1,
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
+			alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
+			alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+		}
+	}
+	Gui:setForAllStyles( FileBrowser.DEFAULT_STYLES.searchButton, "icons", FileBrowser.DEFAULT_STYLES.searchButton.normal.icons )
+
+	-- Back button.
+
+	FileBrowser.DEFAULT_STYLES.backButton.normal.icons = {
+		{
+			iconId = RL.ICON_ARROW_LEFT,
+			offset = Vector2:new( 0, 0 ),
+			pixelSize = 1,
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
+			alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
+			alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+		}
+	}
+	Gui:setForAllStyles( FileBrowser.DEFAULT_STYLES.backButton, "icons", FileBrowser.DEFAULT_STYLES.backButton.normal.icons )
+
+	-- List file button.
+
+	FileBrowser.DEFAULT_STYLES.listFileButton.normal.icons = {
+		{
+			iconId = FileBrowser.FILE_ICONS.FILE,
+			offset = Vector2:new( 0, 0 ),
+			pixelSize = 1,
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
+			-- alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
+			alignH = RL.TEXT_ALIGN_LEFT,
+			alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+		}
+	}
+	Gui:setForAllStyles( FileBrowser.DEFAULT_STYLES.listFileButton, "icons", FileBrowser.DEFAULT_STYLES.listFileButton.normal.icons )
+	Gui:setForAllStyles( FileBrowser.DEFAULT_STYLES.listFileButton, "text.alignH", RL.TEXT_ALIGN_LEFT )
+	Gui:setForAllStyles( FileBrowser.DEFAULT_STYLES.listFileButton, "text.offset", Vector2:new( 20, 0 ) )
+end
+
+FileBrowser.DEFAULT_STYLES_UPDATE()
 
 function FileBrowser:new( gui, t )
 	local object = setmetatable( {}, metatable )
@@ -111,6 +117,7 @@ function FileBrowser:new( gui, t )
 		apply = t.callbacks.apply
 	}
 	object.styles = t.styles or object.DEFAULT_STYLES
+	object.stylesOverlay = t.stylesOverlay
 	object.filters = self.FILE_TYPES
 
 	-- Implementation controls.
@@ -129,6 +136,7 @@ function FileBrowser:new( gui, t )
 	object.visible = Util.setWithDefault( t.visible, true )
 	object.locked = Util.setWithDefault( t.locked, false )
 	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
+	object.draggable = Util.setWithDefault( t.draggable, true )
 
 	object.path = t.path or RL.GetBasePath()
 	object.files = {}
@@ -139,6 +147,7 @@ function FileBrowser:new( gui, t )
 
 	object:createControls()
 	object:setPosition( object.bounds:getPosition() )
+	object:setVisible( object.visible )
 
 	return object
 end
@@ -319,7 +328,7 @@ end
 function FileBrowser:updateFilterDropdown()
 	local textButtonSize = self.styles.fileBrowser.textButtonSize
 
-	for i, ft in ipairs( self.filters ) do
+	for _, ft in ipairs( self.filters ) do
 		self._controls.filterDropdown:addControl( self._gui:newButton( {
 			bounds = Rectangle:new( 0, 0, textButtonSize.x, textButtonSize.y ),
 			text = ft,

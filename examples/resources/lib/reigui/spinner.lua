@@ -11,39 +11,43 @@ local metatable = {
 	__index = setmetatable( Spinner, { __index = GuiControl } ),
 }
 
-Spinner.DEFAULT_STYLES = {
-	spinner = {
-		buttonWidth = 20,
-		spacing = 2,
-	},
-	subButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
-	-- addButton = gui.Spinner.DEFAULT_STYLES_BUTTON_ADD,
-	-- textInput = gui.Spinner.DEFAULT_STYLES_TEXT_INPUT_BOX,
-}
+Spinner.DEFAULT_STYLES = {}
 
-Spinner.DEFAULT_STYLES.subButton.normal.icons = {
-	{
-		iconId = RL.ICON_ARROW_LEFT,
-		offset = Vector2:new( 0, 0 ),
-		pixelSize = 1,
-		color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
-		alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
-		alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+function Spinner.DEFAULT_STYLES_UPDATE()
+	Spinner.DEFAULT_STYLES = {
+		spinner = {
+			buttonWidth = 20,
+			spacing = 2,
+		},
+		subButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
 	}
-}
-Gui:setForAllStyles( Spinner.DEFAULT_STYLES.subButton, "icons", Spinner.DEFAULT_STYLES.subButton.normal.icons )
 
--- Button add.
+	Spinner.DEFAULT_STYLES.subButton.normal.icons = {
+		{
+			iconId = RL.ICON_ARROW_LEFT,
+			offset = Vector2:new( 0, 0 ),
+			pixelSize = 1,
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
+			alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
+			alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+		}
+	}
+	Gui:setForAllStyles( Spinner.DEFAULT_STYLES.subButton, "icons", Spinner.DEFAULT_STYLES.subButton.normal.icons )
 
-Spinner.DEFAULT_STYLES.addButton = Util.deepCopy( Spinner.DEFAULT_STYLES.subButton )
-Spinner.DEFAULT_STYLES.addButton.normal.icons[1].iconId = RL.ICON_ARROW_RIGHT
-Gui:setForAllStyles( Spinner.DEFAULT_STYLES.addButton, "icons", Spinner.DEFAULT_STYLES.addButton.normal.icons )
+	-- Button add.
 
--- Text input.
+	Spinner.DEFAULT_STYLES.addButton = Util.deepCopy( Spinner.DEFAULT_STYLES.subButton )
+	Spinner.DEFAULT_STYLES.addButton.normal.icons[1].iconId = RL.ICON_ARROW_RIGHT
+	Gui:setForAllStyles( Spinner.DEFAULT_STYLES.addButton, "icons", Spinner.DEFAULT_STYLES.addButton.normal.icons )
 
-Spinner.DEFAULT_STYLES.textInput = Util.deepCopy( Gui.TextInputBox.DEFAULT_STYLES )
-Gui:setForAllStyles( Spinner.DEFAULT_STYLES.textInput, "text.alignH", RL.TEXT_ALIGN_CENTER )
-Gui:setForAllStyles( Spinner.DEFAULT_STYLES.textInput, "cursor.draw", false )
+	-- Text input.
+
+	Spinner.DEFAULT_STYLES.textInput = Util.deepCopy( Gui.TextInputBox.DEFAULT_STYLES )
+	Gui:setForAllStyles( Spinner.DEFAULT_STYLES.textInput, "text.alignH", RL.TEXT_ALIGN_CENTER )
+	Gui:setForAllStyles( Spinner.DEFAULT_STYLES.textInput, "cursor.draw", false )
+end
+
+Spinner.DEFAULT_STYLES_UPDATE()
 
 function Spinner:new( gui, t )
 	local object = setmetatable( {}, metatable )

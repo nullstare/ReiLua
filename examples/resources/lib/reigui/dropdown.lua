@@ -3,17 +3,23 @@ local Rectangle = Rectangle or require( "rectangle" )
 local Vector2 = Vector2 or require( "vector2" )
 local Gui = Gui or require( "reigui/gui" )
 
-Dropdown = {}
+local Dropdown = {}
 local metatable = {
 	__index = setmetatable( Dropdown, { __index = GuiControl } ),
 }
 
-Dropdown.DEFAULT_STYLES = {
-	dropdown = {
-		spacing = 0,
-	},
-	button = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
-}
+Dropdown.DEFAULT_STYLES = {}
+
+function Dropdown.DEFAULT_STYLES_UPDATE()
+	Dropdown.DEFAULT_STYLES = {
+		dropdown = {
+			spacing = 0,
+		},
+		button = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
+	}
+end
+
+Dropdown.DEFAULT_STYLES_UPDATE()
 
 function Dropdown:new( gui, t )
 	local object = setmetatable( {}, metatable )
@@ -96,6 +102,7 @@ end
 
 function Dropdown:addControl( control, index )
 	index = RL.Clamp( index or #self.controls + 1, 1, #self.controls + 1 )
+	control._parent = self
 	table.insert( self.controls, index, control )
 
 	self:setControlPos( control )
@@ -124,7 +131,7 @@ function Dropdown:update( delta )
 end
 
 -- function Dropdown:draw()
--- 	RL.DrawRectangleLines( self.contentBounds, RL.RED )
+	-- RL.DrawRectangleLines( self.contentBounds, RL.RED )
 -- end
 
 function Dropdown:showContent( visible )
@@ -173,13 +180,19 @@ function Dropdown:setPosition( pos )
 end
 
 function Dropdown:setSize( size )
-	self.bounds:setSize( size )
+	self.bounds:setSizeV( size )
+
+	if self._controlsArray then
+		for _, control in ipairs( self._controlsArray ) do
+			control:setSize( size )
+		end
+	end
 
 	if self.callbacks.setSize then
 		self.callbacks.setSize( self )
 	end
 
-	self:setPosition( self.bounds:getPosition() )
+	-- self:setPosition( self.bounds:getPosition() )
 end
 
 return { Dropdown = Dropdown }

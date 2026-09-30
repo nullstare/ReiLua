@@ -2,7 +2,7 @@ local Util = Util or require( "utillib" )
 local Rectangle = Rectangle or require( "rectangle" )
 local Vector2 = Vector2 or require( "vector2" )
 local Color = Color or require( "color" )
--- local Gui = Gui or require( "reigui/gui" )
+local Gui = Gui or require( "reigui/gui" )
 
 -- Label control.
 
@@ -11,33 +11,119 @@ local labelMetatable = {
 	__index = setmetatable( Label, { __index = GuiControl } ),
 }
 
-Label.DEFAULT_STYLES = {
-	normal = GUI_DEFAULT_STYLES.normal,
-	disabled = GUI_DEFAULT_STYLES.disabled,
-}
+Label.DEFAULT_STYLES = {}
+
+function Label.DEFAULT_STYLES_UPDATE()
+	Label.DEFAULT_STYLES = GUI_DEFAULT_STYLES
+end
+
+Label.DEFAULT_STYLES_UPDATE()
 
 function Label:new( gui, t )
 	local object = setmetatable( {}, labelMetatable )
 	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
-	object.text = t.text
+	object.text = t.text or ""
 	object.callbacks = t.callbacks or {}
 
 	object.visible = Util.setWithDefault( t.visible, true )
 	object.locked = Util.setWithDefault( t.locked, false )
 	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
+	object.stylesOverlay = t.stylesOverlay
 	object.tooltip = t.tooltip
 
 	return object
 end
 
 function Label:draw()
-	local style = self.disabled and "disabled" or "normal"
+	local style = self.disabled and "disabled" or self.locked and "locked" or "normal"
 	local styles = self.styles[ style ]
-	
+
 	self._gui:drawText( self.text, self.bounds, styles )
+
+	if styles.icons then
+		self._gui:drawIcons( self.bounds, styles )
+	end
+end
+
+-- Text box control.
+
+local TextBox = {}
+local textBoxMetatable = {
+	__index = setmetatable( TextBox, { __index = GuiControl } ),
+}
+
+TextBox.DEFAULT_STYLES = {}
+
+function TextBox.DEFAULT_STYLES_UPDATE()
+	TextBox.DEFAULT_STYLES = Util.deepCopy( GUI_DEFAULT_STYLES )
+
+	Gui:setForAllStyles( TextBox.DEFAULT_STYLES, "text.wordWrap", true )
+	Gui:setForAllStyles( TextBox.DEFAULT_STYLES, "text.limitHeight", true )
+	Gui:setForAllStyles( TextBox.DEFAULT_STYLES, "text.tabSize", 4 )
+end
+
+TextBox.DEFAULT_STYLES_UPDATE()
+
+function TextBox:new( gui, t )
+	local object = setmetatable( {}, textBoxMetatable )
+	object._gui = gui
+
+	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
+	object.texts = t.texts or { { string = "" } } -- Note that this is an array. Format { { string, styles|nil } ... }.
+	object.callbacks = t.callbacks or {} -- mouseOnChar, mouseOut.
+
+	object.visible = Util.setWithDefault( t.visible, true )
+	object.locked = Util.setWithDefault( t.locked, false )
+	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
+	object.styles = t.styles or object.DEFAULT_STYLES
+	object.stylesOverlay = t.stylesOverlay
+	object.tooltip = t.tooltip
+
+	object.offset = Vector2:new()
+	object.mouseSection = nil
+	object.mouseCharId = nil
+
+	object._isMouseOver = false
+
+	return object
+end
+
+function TextBox:draw()
+	local style = self.disabled and "disabled" or self.locked and "locked" or "normal"
+	local styles = self.styles[ style ]
+	local offset = Vector2:new()
+	local mouseCharId = 0
+	local oldMouseCharId = self.mouseCharId
+	local oldMouseSection = self.mouseSection
+
+	self.mouseSection = nil
+	self.mouseCharId = nil
+
+	for i, text in ipairs( self.texts ) do
+		local textStyle = self.disabled and "disabled" or self.locked and "locked" or oldMouseSection == i and "focused" or "normal"
+
+		mouseCharId, offset = self._gui:drawTextBoxed( text.string, self.bounds, offset, text.styles and text.styles[ textStyle ] or styles, text.stylesOverlay )
+
+		self.offset:setT( offset )
+
+		if self._isMouseOver and 0 < mouseCharId then
+			self.mouseCharId = mouseCharId
+			self.mouseSection = i
+		end
+	end
+
+	if self.mouseCharId then
+		if self.callbacks.mouseOnChar then
+			self.callbacks.mouseOnChar( self, self.mouseSection, self.mouseCharId )
+		end
+	elseif oldMouseCharId then
+		if self.callbacks.mouseOut then
+			self.callbacks.mouseOut( self )
+		end
+	end
 
 	if styles.icons then
 		self._gui:drawIcons( self.bounds, styles )
@@ -51,7 +137,13 @@ local buttonMetatable = {
 	__index = setmetatable( Button, { __index = GuiControl } ),
 }
 
-Button.DEFAULT_STYLES = GUI_DEFAULT_STYLES
+Button.DEFAULT_STYLES = {}
+
+function Button.DEFAULT_STYLES_UPDATE()
+	Button.DEFAULT_STYLES = GUI_DEFAULT_STYLES
+end
+
+Button.DEFAULT_STYLES_UPDATE()
 
 function Button:new( gui, t )
 	local object = setmetatable( {}, buttonMetatable )
@@ -66,8 +158,9 @@ function Button:new( gui, t )
 	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.toggle = t.toggle -- Note that toggle needs to be set in custom function.
 	object.styles = t.styles or object.DEFAULT_STYLES
+	object.stylesOverlay = t.stylesOverlay
 	object.tooltip = t.tooltip
-	
+
 	object._isMouseOver = false
 
 	return object
@@ -113,17 +206,25 @@ local textInputBoxMetatable = {
 	__index = setmetatable( TextInputBox, { __index = GuiControl } ),
 }
 
-TextInputBox.DEFAULT_STYLES = Util.deepCopy( GUI_DEFAULT_STYLES )
-TextInputBox.DEFAULT_STYLES.normal.cursor = {
-	draw = true,
-}
-TextInputBox.DEFAULT_STYLES.focused.cursor = Util.deepCopy( TextInputBox.DEFAULT_STYLES.normal.cursor )
-TextInputBox.DEFAULT_STYLES.disabled.cursor = Util.deepCopy( TextInputBox.DEFAULT_STYLES.normal.cursor )
-TextInputBox.DEFAULT_STYLES.pressed.cursor = Util.deepCopy( TextInputBox.DEFAULT_STYLES.normal.cursor )
-TextInputBox.DEFAULT_STYLES.normal.text.alignH = RL.TEXT_ALIGN_LEFT
-TextInputBox.DEFAULT_STYLES.focused.text.alignH = RL.TEXT_ALIGN_LEFT
-TextInputBox.DEFAULT_STYLES.disabled.text.alignH = RL.TEXT_ALIGN_LEFT
-TextInputBox.DEFAULT_STYLES.pressed.text.alignH = RL.TEXT_ALIGN_LEFT
+TextInputBox.DEFAULT_STYLES = {}
+
+function TextInputBox.DEFAULT_STYLES_UPDATE()
+	TextInputBox.DEFAULT_STYLES = Util.deepCopy( GUI_DEFAULT_STYLES )
+	TextInputBox.DEFAULT_STYLES.normal.cursor = {
+		draw = true,
+	}
+	Gui:setForAllStyles( TextInputBox.DEFAULT_STYLES, "cursor", Util.deepCopy( TextInputBox.DEFAULT_STYLES.normal.cursor ) )
+	Gui:setForAllStyles( TextInputBox.DEFAULT_STYLES, "text.alignH", RL.TEXT_ALIGN_LEFT )
+	-- TextInputBox.DEFAULT_STYLES.focused.cursor = Util.deepCopy( TextInputBox.DEFAULT_STYLES.normal.cursor )
+	-- TextInputBox.DEFAULT_STYLES.disabled.cursor = Util.deepCopy( TextInputBox.DEFAULT_STYLES.normal.cursor )
+	-- TextInputBox.DEFAULT_STYLES.pressed.cursor = Util.deepCopy( TextInputBox.DEFAULT_STYLES.normal.cursor )
+	-- TextInputBox.DEFAULT_STYLES.normal.text.alignH = RL.TEXT_ALIGN_LEFT
+	-- TextInputBox.DEFAULT_STYLES.focused.text.alignH = RL.TEXT_ALIGN_LEFT
+	-- TextInputBox.DEFAULT_STYLES.disabled.text.alignH = RL.TEXT_ALIGN_LEFT
+	-- TextInputBox.DEFAULT_STYLES.pressed.text.alignH = RL.TEXT_ALIGN_LEFT
+end
+
+TextInputBox.DEFAULT_STYLES_UPDATE()
 
 function TextInputBox:new( gui, t )
 	local object = setmetatable( {}, textInputBoxMetatable )
@@ -139,8 +240,9 @@ function TextInputBox:new( gui, t )
 	object.locked = Util.setWithDefault( t.locked, false )
 	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
+	object.stylesOverlay = t.stylesOverlay
 	object.tooltip = t.tooltip
-	
+
 	object.view = object.bounds:clone()
 
 	object._isMouseOver = false
@@ -221,7 +323,7 @@ function TextInputBox:startEditMode()
 	local cpt = RL.LoadCodepoints( self.text )
 	local styles = self:getStyles()
 	local ts = styles.text
-	
+
 	if self._gui.controlTextEdit == self then
 		local pos = #cpt + 1
 		local clickPos = self._gui._mousePressPos - self.view:getPosition() + Vector2:temp( self._cursor.scrollPos, 0 )
@@ -372,7 +474,7 @@ function TextInputBox:update( delta )
 				if self.callbacks.pressed then
 					self.callbacks.pressed( self )
 				end
-	
+
 				self:startEditMode()
 			end
 		elseif self._editMode then
@@ -416,10 +518,16 @@ local panelMetatable = {
 	__index = setmetatable( Panel, { __index = GuiControl } ),
 }
 
-Panel.DEFAULT_STYLES = {
-	normal = GUI_DEFAULT_STYLES.normal,
-	disabled = GUI_DEFAULT_STYLES.disabled,
-}
+Panel.DEFAULT_STYLES = {}
+
+function Panel.DEFAULT_STYLES_UPDATE()
+	Panel.DEFAULT_STYLES = {
+		normal = GUI_DEFAULT_STYLES.normal,
+		disabled = GUI_DEFAULT_STYLES.disabled,
+	}
+end
+
+Panel.DEFAULT_STYLES_UPDATE()
 
 function Panel:new( gui, t )
 	local object = setmetatable( {}, panelMetatable )
@@ -431,6 +539,7 @@ function Panel:new( gui, t )
 	object.locked = Util.setWithDefault( t.locked, false )
 	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
+	object.stylesOverlay = t.stylesOverlay
 	object.callbacks = t.callbacks or {}
 	object.tooltip = t.tooltip
 
@@ -462,7 +571,7 @@ end
 function Panel:draw()
 	local style = self.disabled and "disabled" or "normal"
 	local styles = self.styles[ style ]
-	
+
 	self._gui:drawRectangle( self.bounds, styles )
 
 	if styles.icons then
@@ -477,47 +586,53 @@ local sliderMetatable = {
 	__index = setmetatable( Slider, { __index = GuiControl } ),
 }
 
-Slider.DEFAULT_STYLES = Util.deepCopy( GUI_DEFAULT_STYLES )
-Slider.DEFAULT_STYLES.normal.slider = {
-	width = RL.GuiGetStyle( RL.SLIDER, RL.SLIDER_WIDTH ),
-	base = {
-		color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BORDER_COLOR_NORMAL ) ) ),
-	},
-	border = {
-		color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BORDER_COLOR_NORMAL ) ) ),
-		width = RL.GuiGetStyle( RL.SLIDER, RL.BORDER_WIDTH ),
-	},
-}
-Slider.DEFAULT_STYLES.focused.slider = {
-	width = RL.GuiGetStyle( RL.SLIDER, RL.SLIDER_WIDTH ),
-	base = {
-		color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BASE_COLOR_FOCUSED ) ) ),
-	},
-	border = {
-		color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BORDER_COLOR_FOCUSED ) ) ),
-		width = RL.GuiGetStyle( RL.SLIDER, RL.BORDER_WIDTH ),
-	},
-}
-Slider.DEFAULT_STYLES.disabled.slider = {
-	width = RL.GuiGetStyle( RL.SLIDER, RL.SLIDER_WIDTH ),
-	base = {
-		color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BASE_COLOR_DISABLED ) ) ),
-	},
-	border = {
-		color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BORDER_COLOR_DISABLED ) ) ),
-		width = RL.GuiGetStyle( RL.SLIDER, RL.BORDER_WIDTH ),
-	},
-}
-Slider.DEFAULT_STYLES.pressed.slider = {
-	width = RL.GuiGetStyle( RL.SLIDER, RL.SLIDER_WIDTH ),
-	base = {
-		color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BASE_COLOR_PRESSED ) ) ),
-	},
-	border = {
-		color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BORDER_COLOR_PRESSED ) ) ),
-		width = RL.GuiGetStyle( RL.SLIDER, RL.BORDER_WIDTH ),
-	},
-}
+Slider.DEFAULT_STYLES = {}
+
+function Slider.DEFAULT_STYLES_UPDATE()
+	Slider.DEFAULT_STYLES = Util.deepCopy( GUI_DEFAULT_STYLES )
+	Slider.DEFAULT_STYLES.normal.slider = {
+		width = RL.GuiGetStyle( RL.SLIDER, RL.SLIDER_WIDTH ),
+		base = {
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BORDER_COLOR_NORMAL ) ) ),
+		},
+		border = {
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BORDER_COLOR_NORMAL ) ) ),
+			width = RL.GuiGetStyle( RL.SLIDER, RL.BORDER_WIDTH ),
+		},
+	}
+	Slider.DEFAULT_STYLES.focused.slider = {
+		width = RL.GuiGetStyle( RL.SLIDER, RL.SLIDER_WIDTH ),
+		base = {
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BASE_COLOR_FOCUSED ) ) ),
+		},
+		border = {
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BORDER_COLOR_FOCUSED ) ) ),
+			width = RL.GuiGetStyle( RL.SLIDER, RL.BORDER_WIDTH ),
+		},
+	}
+	Slider.DEFAULT_STYLES.disabled.slider = {
+		width = RL.GuiGetStyle( RL.SLIDER, RL.SLIDER_WIDTH ),
+		base = {
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BASE_COLOR_DISABLED ) ) ),
+		},
+		border = {
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BORDER_COLOR_DISABLED ) ) ),
+			width = RL.GuiGetStyle( RL.SLIDER, RL.BORDER_WIDTH ),
+		},
+	}
+	Slider.DEFAULT_STYLES.pressed.slider = {
+		width = RL.GuiGetStyle( RL.SLIDER, RL.SLIDER_WIDTH ),
+		base = {
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BASE_COLOR_PRESSED ) ) ),
+		},
+		border = {
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.SLIDER, RL.BORDER_COLOR_PRESSED ) ) ),
+			width = RL.GuiGetStyle( RL.SLIDER, RL.BORDER_WIDTH ),
+		},
+	}
+end
+
+Slider.DEFAULT_STYLES_UPDATE()
 
 function Slider:new( gui, t )
 	local object = setmetatable( {}, sliderMetatable )
@@ -534,6 +649,7 @@ function Slider:new( gui, t )
 	object.locked = Util.setWithDefault( t.locked, false )
 	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
+	object.stylesOverlay = t.stylesOverlay
 	object.tooltip = t.tooltip
 
 	object._isMouseOver = false
@@ -613,9 +729,9 @@ end
 
 function Slider:draw()
 	local styles = self:getStyles()
-	
+
 	self._gui:drawRectangle( self.bounds, styles )
-	
+
 	if self.minValue.x ~= self.maxValue.x then
 		local rect = Rectangle:new(
 			RL.Remap( self.value.x, self.minValue.x, self.maxValue.x,
@@ -663,7 +779,13 @@ local handleMetatable = {
 	__index = setmetatable( Handle, { __index = GuiControl } ),
 }
 
-Handle.DEFAULT_STYLES = GUI_DEFAULT_STYLES
+Handle.DEFAULT_STYLES = {}
+
+function Handle.DEFAULT_STYLES_UPDATE()
+	Handle.DEFAULT_STYLES = GUI_DEFAULT_STYLES
+end
+
+Handle.DEFAULT_STYLES_UPDATE()
 
 function Handle:new( gui, t )
 	local object = setmetatable( {}, handleMetatable )
@@ -680,8 +802,9 @@ function Handle:new( gui, t )
 	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.draggable = Util.setWithDefault( t.locked, true )
 	object.styles = t.styles or object.DEFAULT_STYLES
+	object.stylesOverlay = t.stylesOverlay
 	object.tooltip = t.tooltip
-	
+
 	object._isMouseOver = false
 	object._grabPos = Vector2:new()
 
@@ -710,7 +833,7 @@ function Handle:update( _ )
 			if self._gui._isMouseDown and self.draggable then
 				local rect = self.clampBounds and self.clampBounds:clone() or self.bounds:clone()
 				local clampBoundsPos = self.clampBounds and self.clampBounds:getPosition() or Vector2:temp()
-				
+
 				rect:setPositionV( self._gui._mousePos - self._grabPos + clampBoundsPos )
 				rect:setR( rect:clampInside( self.dragBounds ) )
 				self:setPosition( rect:getPosition() - clampBoundsPos )
@@ -751,6 +874,7 @@ end
 
 return {
 	Label = Label,
+	TextBox = TextBox,
 	Button = Button,
 	TextInputBox = TextInputBox,
 	Panel = Panel,

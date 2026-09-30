@@ -12,25 +12,31 @@ local metatable = {
 	__index = setmetatable( ColorPicker, { __index = GuiControl } ),
 }
 
-ColorPicker.DEFAULT_STYLES = {
-	colorPicker = {
-		size = Vector2:new( 256, 500 ),
-		spacing = 8,
-		barWidth = 24,
-	},
-	window = Gui.Window.DEFAULT_STYLES,
-	colorPanel = Util.deepCopy( Gui.Slider.DEFAULT_STYLES ),
-	colorPreview = Util.deepCopy( Gui.Panel.DEFAULT_STYLES ),
-	colorChannelSlider = Util.deepCopy( Gui.Slider.DEFAULT_STYLES ),
-	colorChannelSpinner = Util.deepCopy( Gui.Spinner.DEFAULT_STYLES ),
-	colorChannelLabel = Util.deepCopy( Gui.Label.DEFAULT_STYLES ),
-	checkerPanel = Util.deepCopy( Gui.Panel.DEFAULT_STYLES ),
-	hexValueInputBox = Util.deepCopy( Gui.TextInputBox.DEFAULT_STYLES ),
-	hexValueLabel = Util.deepCopy( Gui.Label.DEFAULT_STYLES ),
-	aplyButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
-}
+ColorPicker.DEFAULT_STYLES = {}
 
-Gui:setForAllStyles( ColorPicker.DEFAULT_STYLES.hexValueLabel, "text.alignH", RL.TEXT_ALIGN_LEFT )
+function ColorPicker.DEFAULT_STYLES_UPDATE()
+	ColorPicker.DEFAULT_STYLES = {
+		colorPicker = {
+			size = Vector2:new( 256, 500 ),
+			spacing = 8,
+			barWidth = 24,
+		},
+		window = Gui.Window.DEFAULT_STYLES,
+		colorPanel = Util.deepCopy( Gui.Slider.DEFAULT_STYLES ),
+		colorPreview = Util.deepCopy( Gui.Panel.DEFAULT_STYLES ),
+		colorChannelSlider = Util.deepCopy( Gui.Slider.DEFAULT_STYLES ),
+		colorChannelSpinner = Util.deepCopy( Gui.Spinner.DEFAULT_STYLES ),
+		colorChannelLabel = Util.deepCopy( Gui.Label.DEFAULT_STYLES ),
+		checkerPanel = Util.deepCopy( Gui.Panel.DEFAULT_STYLES ),
+		hexValueInputBox = Util.deepCopy( Gui.TextInputBox.DEFAULT_STYLES ),
+		hexValueLabel = Util.deepCopy( Gui.Label.DEFAULT_STYLES ),
+		aplyButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
+	}
+
+	Gui:setForAllStyles( ColorPicker.DEFAULT_STYLES.hexValueLabel, "text.alignH", RL.TEXT_ALIGN_LEFT )
+end
+
+ColorPicker.DEFAULT_STYLES_UPDATE()
 
 ColorPicker.CHANNEL_NAMES = { r = "Red", g = "Green", b = "Blue", a = "Alpha" }
 

@@ -65,6 +65,12 @@ function GuiControl:setSize( size )
 	self.bounds.width = size.x
 	self.bounds.height = size.y
 
+	if self._controlsArray then
+		for _, control in ipairs( self._controlsArray ) do
+			control:setSize( size )
+		end
+	end
+
 	if self.callbacks.setSize then
 		self.callbacks.setSize( self, size )
 	end
@@ -116,79 +122,87 @@ end
 
 -- Gui.
 
-GUI_DEFAULT_STYLES = {
-	normal = {
-		base = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BASE_COLOR_NORMAL ) ) ),
+GUI_ICON_SIZE = 16
+GUI_DEFAULT_STYLES = {}
+
+function GUI_DEFAULT_STYLES_UPDATE()
+	GUI_DEFAULT_STYLES = {
+		normal = {
+			base = {
+				color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BASE_COLOR_NORMAL ) ) ),
+			},
+			border = {
+				color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_COLOR_NORMAL ) ) ),
+				width = RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_WIDTH ),
+			},
+			text = {
+				color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_COLOR_NORMAL ) ) ),
+				font = RL.GuiGetFont(),
+				fontSize = RL.GetFontBaseSize( RL.GuiGetFont() ),
+				spacing = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING ),
+				alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
+				alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+			}
 		},
-		border = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_COLOR_NORMAL ) ) ),
-			width = RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_WIDTH ),
+		focused = {
+			base = {
+				color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BASE_COLOR_FOCUSED ) ) ),
+			},
+			border = {
+				color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_COLOR_FOCUSED ) ) ),
+				width = RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_WIDTH ),
+			},
+			text = {
+				color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_COLOR_FOCUSED ) ) ),
+				font = RL.GuiGetFont(),
+				fontSize = RL.GetFontBaseSize( RL.GuiGetFont() ),
+				spacing = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING ),
+				alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
+				alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+			}
 		},
-		text = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_COLOR_NORMAL ) ) ),
-			font = RL.GuiGetFont(),
-			fontSize = RL.GetFontBaseSize( RL.GuiGetFont() ),
-			spacing = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING ),
-			alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
-			alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
-		}
-	},
-	focused = {
-		base = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BASE_COLOR_FOCUSED ) ) ),
+		disabled = {
+			base = {
+				color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BASE_COLOR_DISABLED ) ) ),
+			},
+			border = {
+				color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_COLOR_DISABLED ) ) ),
+				width = RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_WIDTH ),
+			},
+			text = {
+				color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_COLOR_DISABLED ) ) ),
+				font = RL.GuiGetFont(),
+				fontSize = RL.GetFontBaseSize( RL.GuiGetFont() ),
+				spacing = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING ),
+				alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
+				alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+			}
 		},
-		border = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_COLOR_FOCUSED ) ) ),
-			width = RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_WIDTH ),
+		pressed = {
+			base = {
+				color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BASE_COLOR_PRESSED ) ) ),
+			},
+			border = {
+				color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_COLOR_PRESSED ) ) ),
+				width = RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_WIDTH ),
+			},
+			text = {
+				color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_COLOR_PRESSED ) ) ),
+				font = RL.GuiGetFont(),
+				fontSize = RL.GetFontBaseSize( RL.GuiGetFont() ),
+				spacing = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING ),
+				alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
+				alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+			}
 		},
-		text = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_COLOR_FOCUSED ) ) ),
-			font = RL.GuiGetFont(),
-			fontSize = RL.GetFontBaseSize( RL.GuiGetFont() ),
-			spacing = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING ),
-			alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
-			alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
-		}
-	},
-	disabled = {
-		base = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BASE_COLOR_DISABLED ) ) ),
-		},
-		border = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_COLOR_DISABLED ) ) ),
-			width = RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_WIDTH ),
-		},
-		text = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_COLOR_DISABLED ) ) ),
-			font = RL.GuiGetFont(),
-			fontSize = RL.GetFontBaseSize( RL.GuiGetFont() ),
-			spacing = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING ),
-			alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
-			alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
-		}
-	},
-	pressed = {
-		base = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BASE_COLOR_PRESSED ) ) ),
-		},
-		border = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_COLOR_PRESSED ) ) ),
-			width = RL.GuiGetStyle( RL.DEFAULT, RL.BORDER_WIDTH ),
-		},
-		text = {
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_COLOR_PRESSED ) ) ),
-			font = RL.GuiGetFont(),
-			fontSize = RL.GetFontBaseSize( RL.GuiGetFont() ),
-			spacing = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING ),
-			alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
-			alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
-		}
-	},
-}
+	}
+end
+
+GUI_DEFAULT_STYLES_UPDATE()
 
 local Gui = {}
 Gui.__index = Gui
+Gui._includeArray = {}
 
 function Gui:new()
 	local object = setmetatable( {}, self )
@@ -200,9 +214,6 @@ function Gui:new()
 	object.locked = false -- Shows locked style.
 
 	object.controls = {}
-	-- object.focused = 0
-	-- object.dragging = nil
-	-- object.grabPos = Vector2:new( 0, 0 )
 	object.mouseOffset = Vector2:new( 0, 0 )
 	object.mouseScale = Vector2:new( 1, 1 )
 	object.view = Rectangle:new( 0, 0, 0, 0 ) -- Active if larger than 0. Then only controls in view will be updated and drawn.
@@ -218,12 +229,22 @@ function Gui:new()
 	object.controlPressed = nil
 	object.controlTextEdit = nil
 	object.controlDragged = nil
-	
+
 	object._mousePos = Vector2:new()
 	object._mousePressPos = Vector2:new( -1, -1 ) -- Use to check if release and check are inside bounds.
 	object._isMousePressed = false
 
 	return object
+end
+
+function Gui:updateDefaultStyles()
+	GUI_DEFAULT_STYLES_UPDATE()
+
+	for _, t in ipairs( self._includeArray ) do
+		if t.DEFAULT_STYLES_UPDATE then
+			t.DEFAULT_STYLES_UPDATE()
+		end
+	end
 end
 
 function Gui:inView( control )
@@ -244,43 +265,43 @@ function Gui:update( delta )
 		self._isMousePressed = RL.IsMouseButtonPressed( self.MOUSE_BUTTON )
 		self._isMouseDown = RL.IsMouseButtonDown( self.MOUSE_BUTTON )
 		self._isMouseReleased = RL.IsMouseButtonReleased( self.MOUSE_BUTTON )
-	
+
 		if self._isMousePressed then
 			self._mousePressPos:setV( self._mousePos )
 		end
-	
+
 		self.mouseOver = nil
 		self.tooltip.mouseOver = nil
-	
+
 		if self.controlDragged then
 			if self.controlTextEdit then
 				self.controlTextEdit:endEditMode()
 			end
-	
+
 			self.controlDragged:update( delta )
-	
+
 			return
 		end
-	
+
 		for i = #self.controls, 1, -1 do
 			local control = self.controls[i]
-	
+
 			if control and control.visible then
 				if control._isMouseOver ~= nil then
 					control._isMouseOver = self.mouseOver == nil and RL.CheckCollisionPointRec( self._mousePos, control.bounds )
 				end
-	
+
 				if control._isMouseOver then
 					self.mouseOver = control
-	
+
 					if self._isMousePressed then
 						self.controlPressed = control
 					end
-	
+
 					if self.mouseOver and control.tooltip then
 						self.tooltip.mouseOver = control
 						self.tooltip.position = self._mousePos + self.tooltip.offset
-	
+
 						if self.tooltip.timer < self.tooltip.delay then
 							self.tooltip.timer = self.tooltip.timer + delta
 						else
@@ -292,13 +313,13 @@ function Gui:update( delta )
 						self.tooltip.text = nil
 					end
 				end
-	
+
 				if control.update then
 					control:update( delta )
 				end
 			end
 		end
-	
+
 		if not self.mouseOver then
 			self.tooltip.timer = 0.0
 		end
@@ -422,9 +443,9 @@ function Gui:include( controls )
 		self.__index[ name ] = control
 		self.__index[ "new"..name ] = function( this, t )
 			local c = this:addControl( control:new( this, t ) )
-
 			return c
 		end
+		table.insert( self._includeArray, control )
 	end
 end
 
@@ -440,19 +461,34 @@ function Gui:setForAllStyles( styles, keyChain, value, makeDeepCopy )
 	end
 end
 
+function Gui:measureText( text, styles, stylesOverlay )
+	local sText = styles.text
+	local soText = stylesOverlay and stylesOverlay.text
+	local font = soText and soText.font or sText.font
+	local fontSize = soText and soText.fontSize or sText.fontSize
+	local spacing = soText and soText.spacing or sText.spacing
+
+	return Vector2:newT( RL.MeasureTextEx( font, text, fontSize, spacing ) )
+end
+
 -- Draw functions.
 
-function Gui:drawRectangle( rect, styles, crop )
-	if styles.drawRectangleCallback then
-		styles.drawRectangleCallback( rect, styles, crop )
-		return
-	end
-	if styles.textures then
-		self:drawTexturedRectangle( rect, styles, crop )
-		return
-	end
+function Gui:drawRectangle( rect, styles, stylesOverlay )
+	local drawRectangleCallback = stylesOverlay and stylesOverlay.drawRectangleCallback or styles.drawRectangleCallback
+	local textures = stylesOverlay and stylesOverlay.textures or styles.textures
+	local crop = ( stylesOverlay and stylesOverlay.base and stylesOverlay.base.crop ) or styles.crop
+	local borderWidth = ( stylesOverlay and stylesOverlay.border and stylesOverlay.border.width ) or styles.border.width
+	local baseGradient = ( stylesOverlay and stylesOverlay.base and stylesOverlay.base.gradient ) or styles.base.gradient
+	local baseColor = ( stylesOverlay and stylesOverlay.base and stylesOverlay.base.color ) or styles.base.color
 
-	crop = crop or styles.base.crop
+	if drawRectangleCallback then
+		drawRectangleCallback( rect, styles, stylesOverlay )
+		return
+	end
+	if textures then
+		self:drawTexturedRectangle( rect, styles, stylesOverlay )
+		return
+	end
 
 	if crop then
 		RL.BeginScissorMode( crop )
@@ -465,18 +501,19 @@ function Gui:drawRectangle( rect, styles, crop )
 		normal = function( r, c ) RL.DrawRectangle( r, c ) end,
 	}
 
-	if styles.border and 0 < styles.border.width then
-		local borderW = styles.border.width
+	if borderWidth then
+		local borderGradient = ( stylesOverlay and stylesOverlay.border and stylesOverlay.border.gradient ) or styles.border.gradient
+		local borderColor = ( stylesOverlay and stylesOverlay.border and stylesOverlay.border.color ) or styles.border.color
 		local innerRect = Rectangle:temp(
-			rect.x + borderW,
-			rect.y + borderW,
-			rect.width - borderW * 2,
-			rect.height - borderW * 2
+			rect.x + borderWidth,
+			rect.y + borderWidth,
+			rect.width - borderWidth * 2,
+			rect.height - borderWidth * 2
 		)
-		drawCallbacks[ styles.border.gradient or "normal" ]( rect, styles.border.color )
-		drawCallbacks[ styles.base.gradient or "normal" ]( innerRect, styles.base.color )
+		drawCallbacks[ borderGradient or "normal" ]( rect, borderColor )
+		drawCallbacks[ baseGradient or "normal" ]( innerRect, baseColor )
 	else
-		drawCallbacks[ styles.base.gradient or "normal" ]( rect, styles.base.color )
+		drawCallbacks[ baseGradient or "normal" ]( rect, baseColor )
 	end
 
 	if crop then
@@ -484,14 +521,15 @@ function Gui:drawRectangle( rect, styles, crop )
 	end
 end
 
-function Gui:drawTexturedRectangle( rect, styles, crop )
-	crop = crop or styles.base.crop
+function Gui:drawTexturedRectangle( rect, styles, stylesOverlay )
+	local crop = ( stylesOverlay and stylesOverlay.base and stylesOverlay.base.crop ) or styles.crop
+	local textures = stylesOverlay and stylesOverlay.textures or styles.textures
 
 	if crop then
 		RL.BeginScissorMode( crop )
 	end
 
-	for _, tex in ipairs( styles.textures ) do
+	for _, tex in ipairs( textures ) do
 		local dest = tex.dest and tex.dest:addPosition( rect:getPosition() ) or rect
 
 		if tex.nPatchInfo then
@@ -510,11 +548,6 @@ function Gui:drawTexturedRectangle( rect, styles, crop )
 					tex.color
 				)
 			end
-		-- elseif styles.textureGradient then
-		-- 	RL.SetShapesTexture( tex.texture, tex.source )
-		-- 	-- self:drawRectangle( rect, styles )
-		-- 	RL.DrawRectangleGradientEx( dest, tex.color[1], tex.color[2], tex.color[3], tex.color[4] )
-		-- 	RL.SetShapesTexture( RL.GetTextureDefault(), { 0, 0, 1, 1 } )
 		else
 			RL.DrawTexturePro( tex.texture, tex.source, dest, { 0, 0 }, 0, tex.color )
 		end
@@ -525,26 +558,34 @@ function Gui:drawTexturedRectangle( rect, styles, crop )
 	end
 end
 
-function Gui:drawText( text, bounds, styles, crop )
-	crop = crop or styles.text.crop
-
-	local textSize = Vector2:newT( RL.MeasureTextEx( styles.text.font, text, styles.text.fontSize, styles.text.spacing ) )
+function Gui:drawText( text, bounds, styles, stylesOverlay )
+	local sText = styles.text
+	local soText = stylesOverlay and stylesOverlay.text
+	local crop = ( soText and soText.crop ) or sText.crop
+	local font = soText and soText.font or sText.font
+	local fontSize = soText and soText.fontSize or sText.fontSize
+	local spacing = soText and soText.spacing or sText.spacing
+	local offset = soText and soText.offset or sText.offset
+	local color = soText and soText.color or sText.color
+	local alignH = soText and soText.alignH or sText.alignH
+	local alignV = soText and soText.alignV or sText.alignV
+	local textSize = Vector2:newT( RL.MeasureTextEx( font, text, fontSize, spacing ) )
 	local pos = bounds:getPosition()
 
-	if styles.text.alignH == RL.TEXT_ALIGN_MIDDLE then
+	if alignH == RL.TEXT_ALIGN_MIDDLE then
 		pos.x = bounds.x + bounds.width / 2 - textSize.x / 2
-	elseif styles.text.alignH == RL.TEXT_ALIGN_RIGHT then
+	elseif alignH == RL.TEXT_ALIGN_RIGHT then
 		pos.x = bounds.x + bounds.width - textSize.x
 	end
 
-	if styles.text.alignV == RL.TEXT_ALIGN_MIDDLE then
+	if alignV == RL.TEXT_ALIGN_MIDDLE then
 		pos.y = bounds.y + bounds.height / 2 - textSize.y / 2
-	elseif styles.text.alignV == RL.TEXT_ALIGN_BOTTOM then
+	elseif alignV == RL.TEXT_ALIGN_BOTTOM then
 		pos.y = bounds.y + bounds.height - textSize.y
 	end
 
-	if styles.text.offset then
-		pos:addEq( styles.text.offset )
+	if offset then
+		pos:addEq( offset )
 	end
 
 	pos.x = RL.Round( pos.x )
@@ -554,18 +595,46 @@ function Gui:drawText( text, bounds, styles, crop )
 		RL.BeginScissorMode( crop )
 	end
 
-	RL.DrawTextEx( styles.text.font, text, pos, styles.text.fontSize, styles.text.spacing, styles.text.color )
+	RL.DrawTextEx( font, text, pos, fontSize, spacing, color )
 
 	if crop then
 		RL.EndScissorMode()
 	end
 end
 
-function Gui:drawIcons( bounds, styles )
-	local ICON_SIZE = 16
+function Gui:drawTextBoxed( text, bounds, offset, styles, stylesOverlay )
+	local sText = styles.text
+	local soText = stylesOverlay and stylesOverlay.text
+	local crop = ( soText and soText.crop ) or sText.crop
 
-	for _, icon in ipairs( styles.icons ) do
-		local iconSize = ICON_SIZE * icon.pixelSize
+	if crop then
+		RL.BeginScissorMode( crop )
+	end
+
+	local font = soText and soText.font or sText.font
+	local fontSize = soText and soText.fontSize or sText.fontSize
+	local spacing = soText and soText.spacing or sText.spacing
+	local wordWrap = soText and soText.wordWrap or sText.wordWrap
+	local color = soText and soText.color or sText.color
+	local limitHeight = soText and soText.limitHeight or sText.limitHeight
+	local tabSize = soText and soText.tabSize or sText.tabSize
+
+	local mouseCharId = 0
+
+	mouseCharId, offset = RL.DrawTextBoxed( font, text, bounds, fontSize, spacing, wordWrap, color, limitHeight, offset, tabSize )
+
+	if crop then
+		RL.EndScissorMode()
+	end
+
+	return mouseCharId, offset
+end
+
+function Gui:drawIcons( bounds, styles, stylesOverlay )
+	local icons = stylesOverlay and stylesOverlay.icons or styles.icons
+
+	for _, icon in ipairs( icons ) do
+		local iconSize = GUI_ICON_SIZE * icon.pixelSize
 		local pos = bounds:getPosition()
 
 		if icon.alignH == RL.TEXT_ALIGN_MIDDLE then

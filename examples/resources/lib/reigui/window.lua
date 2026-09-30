@@ -11,36 +11,41 @@ local metatable = {
 	__index = setmetatable( Window, { __index = GuiControl } ),
 }
 
-Window.DEFAULT_STYLES = {
-	window = {
-		handleHeight = 20,
-		closeButtonWidth = 20,
-	},
-	handle = Gui.Handle.DEFAULT_STYLES,
-	closeButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
-	panel = Gui.Panel.DEFAULT_STYLES,
-}
+Window.DEFAULT_STYLES = {}
 
-Window.DEFAULT_STYLES.closeButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES )
-
-Window.DEFAULT_STYLES.closeButton.normal.icons = {
-	{
-		iconId = RL.ICON_CROSS,
-		offset = Vector2:new( 0, 0 ),
-		pixelSize = 1,
-		color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
-		alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
-		alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+function Window.DEFAULT_STYLES_UPDATE()
+	Window.DEFAULT_STYLES = {
+		window = {
+			handleHeight = 20,
+			closeButtonWidth = 20,
+		},
+		handle = Gui.Handle.DEFAULT_STYLES,
+		closeButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
+		panel = Gui.Panel.DEFAULT_STYLES,
 	}
-}
-Gui:setForAllStyles( Window.DEFAULT_STYLES.closeButton, "icons", Window.DEFAULT_STYLES.closeButton.normal.icons )
+	Window.DEFAULT_STYLES.closeButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES )
+
+	Window.DEFAULT_STYLES.closeButton.normal.icons = {
+		{
+			iconId = RL.ICON_CROSS,
+			offset = Vector2:new( 0, 0 ),
+			pixelSize = 1,
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
+			alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
+			alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+		}
+	}
+	Gui:setForAllStyles( Window.DEFAULT_STYLES.closeButton, "icons", Window.DEFAULT_STYLES.closeButton.normal.icons )
+end
+
+Window.DEFAULT_STYLES_UPDATE()
 
 function Window:new( gui, t )
 	local object = setmetatable( {}, metatable )
 	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
-	object.text = t.text
+	object.text = t.text or ""
 
 	object.visible = Util.setWithDefault( t.visible, true )
 	object.locked = Util.setWithDefault( t.locked, false )
@@ -53,6 +58,7 @@ function Window:new( gui, t )
 		drag = t.callbacks and t.callbacks.drag or function( this ) object:setPosition( this.bounds:getPosition() ) end,
 	}
 	object.styles = t.styles or object.DEFAULT_STYLES
+	object.stylesOverlay = t.stylesOverlay
 	
 	object._controls = {
 		-- handle = nil,
@@ -130,6 +136,15 @@ function Window:createControls()
 	}
 end
 
+function Window:setText( text )
+	self.text = text
+	self._controls.handle.text = self.text
+end
+
+function Window:getPanelBounds()
+	return self._controls.panel.bounds:clone()
+end
+
 function Window:setSize( size )
 	self.bounds:setSizeV( size )
 
@@ -141,7 +156,7 @@ function Window:setSize( size )
 	ctrs.panel.bounds.height = size.y - ctrs.handle.bounds.height
 
 	if ctrs.handle.clampBounds then
-		ctrs.handle.clampBounds:setR( self.bounds )
+		ctrs.handle.clampBounds:set( 0, 0, self.bounds.width, self.bounds.height )
 	end
 
 	if self.callbacks.setSize then

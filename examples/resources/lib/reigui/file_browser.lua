@@ -117,7 +117,7 @@ function FileBrowser:new( gui, t )
 		apply = t.callbacks.apply
 	}
 	object.styles = t.styles or object.DEFAULT_STYLES
-	object.stylesOverlay = t.stylesOverlay
+	object.stylesOverlay = t.stylesOverlay or {}
 	object.filters = self.FILE_TYPES
 
 	-- Implementation controls.

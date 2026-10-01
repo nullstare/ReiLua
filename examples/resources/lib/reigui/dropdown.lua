@@ -14,6 +14,9 @@ function Dropdown.DEFAULT_STYLES_UPDATE()
 	Dropdown.DEFAULT_STYLES = {
 		dropdown = {
 			spacing = 0,
+			trimToTextWidth = false,
+			trimMarginLeft = 4,
+			trimMarginRight = 4,
 		},
 		button = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
 	}
@@ -31,10 +34,10 @@ function Dropdown:new( gui, t )
 	object.mouseClose = Util.setWithDefault( t.mouseClose, true )
 	object.callbacks = t.callbacks or {} -- pressed, released.
 	object.styles = t.styles or object.DEFAULT_STYLES
+	object.stylesOverlay = t.stylesOverlay or {}
 	object.tooltip = t.tooltip
 
 	object.contentBounds = Rectangle:new()
-	-- object.gui = Gui:new() -- Contains full independent gui system.
 
 	-- Implementation controls.
 	object._controls = {
@@ -108,6 +111,45 @@ function Dropdown:addControl( control, index )
 	self:setControlPos( control )
 
 	return control
+end
+
+function Dropdown:setButtonToTextWidth( leftMargin, rightMargin )
+	local button = self._controls.button
+	local textSize = self._gui:measureText( button.text, button.styles.normal, button.stylesOverlay.normal )
+
+	if Util.tableLen( button.stylesOverlay ) == 0 then
+		button.stylesOverlay = self._gui:getDummyStyles()
+	end
+
+	button:setSize( Vector2:new( textSize.x + ( leftMargin or 0 ) + ( rightMargin or 0 ), button.bounds.height ) )
+	self._gui:setForAllStyles( button.stylesOverlay, "text.alignH", RL.TEXT_ALIGN_LEFT )
+	self._gui:setForAllStyles( button.stylesOverlay, "text.offset", Vector2:new( leftMargin or 0, 0 ) )
+end
+
+function Dropdown:setControlsToTextWidth( leftMargin, rightMargin )
+	local maxWidth = 0
+	-- Measure widest.
+	for _, control in ipairs( self.controls ) do
+		if control.text then
+			local textSize = self._gui:measureText( control.text, control.styles.normal, control.stylesOverlay.normal )
+
+			maxWidth = math.max(
+				maxWidth,
+				textSize.x + ( leftMargin or 0 ) + ( rightMargin or 0 )
+			)
+		end
+	end
+	-- Set widths.
+	for _, control in ipairs( self.controls ) do
+		control:setSize( Vector2:new( maxWidth, control.bounds.height ) )
+		
+		if Util.tableLen( control.stylesOverlay ) == 0 then
+			control.stylesOverlay = self._gui:getDummyStyles()
+		end
+
+		self._gui:setForAllStyles( control.stylesOverlay, "text.alignH", RL.TEXT_ALIGN_LEFT )
+		self._gui:setForAllStyles( control.stylesOverlay, "text.offset", Vector2:new( leftMargin or 0, 0 ) )
+	end
 end
 
 function Dropdown:updateMouseOffset()

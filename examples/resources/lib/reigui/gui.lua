@@ -461,6 +461,14 @@ function Gui:setForAllStyles( styles, keyChain, value, makeDeepCopy )
 	end
 end
 
+function Gui:getStyle( keyChain, styles, stylesOverlay )
+	return ( stylesOverlay and Util.getNested( stylesOverlay, keyChain ) ) or Util.getNested( styles, keyChain )
+end
+
+function Gui:getDummyStyles()
+	return { normal = {}, focused = {}, pressed = {}, disabled = {} }
+end
+
 function Gui:measureText( text, styles, stylesOverlay )
 	local sText = styles.text
 	local soText = stylesOverlay and stylesOverlay.text

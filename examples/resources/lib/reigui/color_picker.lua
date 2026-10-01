@@ -63,6 +63,7 @@ function ColorPicker:new( gui, t )
 		apply = t.callbacks.apply
 	}
 	object.styles = t.styles or object.DEFAULT_STYLES
+	object.stylesOverlay = t.stylesOverlay or {}
 
 	object._generatedOwnTexture = false
 	object.checkerTex = t.checkerTex or object:genCheckerTex()
@@ -127,11 +128,11 @@ function ColorPicker:createControls()
 	-- Color bar hue.
 
 	local colorPanelStyles = Util.deepCopy( styles.colorPanel )
-	local drawRectangleCallback = function( rect, s, crop )
-		self:drawColorPanel( rect, s, crop )
+	local drawRectangleCallback = function( rect, s, so )
+		self:drawColorPanel( rect, s, so )
 	end
-	local drawColorPanelSliderCallback = function( rect, s, crop )
-		self:drawColorPanelSlider( rect, s, crop )
+	local drawColorPanelSliderCallback = function( rect, s, so )
+		self:drawColorPanelSlider( rect, s, so )
 	end
 
 	Gui:setForAllStyles( colorPanelStyles, "slider.width", 1 )
@@ -163,8 +164,8 @@ function ColorPicker:createControls()
 	local colorBarHueStyles = Util.deepCopy( styles.colorPanel )
 
 	Gui:setForAllStyles( colorBarHueStyles, "slider.width", 1 )
-	Gui:setForAllStyles( colorBarHueStyles, "drawRectangleCallback", function( rect, s, crop )
-		self:drawColorBarHue( rect, s, crop )
+	Gui:setForAllStyles( colorBarHueStyles, "drawRectangleCallback", function( rect, s, so )
+		self:drawColorBarHue( rect, s, so )
 	end )
 
 	self._controls.colorBarHue = self._gui:newSlider( {
@@ -248,8 +249,8 @@ function ColorPicker:createControls()
 		local sliderName = "colorSlider"..self.CHANNEL_NAMES[c]
 
 		Gui:setForAllStyles( sliderStyles, "base.color", { self.color, self.color } )
-		Gui:setForAllStyles( sliderStyles, "drawRectangleCallback", function( rect, s, crop )
-			self:drawColorChannelSlider( rect, s, crop, c )
+		Gui:setForAllStyles( sliderStyles, "drawRectangleCallback", function( rect, s, so )
+			self:drawColorChannelSlider( rect, s, so, c )
 		end )
 
 		self._controls[ sliderName ] = self._gui:newSlider( {
@@ -349,7 +350,7 @@ function ColorPicker:createControls()
 	self._controls.window:setSize( self.bounds:getSize() )
 end
 
-function ColorPicker:drawColorPanel( rect, styles, crop )
+function ColorPicker:drawColorPanel( rect, styles, stylesOverlay )
 	local c = self._controls.colorPanel.colors
 
 	RL.DrawRectangleGradientEx(
@@ -362,7 +363,7 @@ function ColorPicker:drawColorPanel( rect, styles, crop )
 	)
 end
 
-function ColorPicker:drawColorPanelSlider( rect, styles, crop )
+function ColorPicker:drawColorPanelSlider( rect, styles, stylesOverlay )
 	-- Only draw once since this function is called for both axis.
 	if rect.height < rect.width then
 		local cp = self._controls.colorPanel
@@ -372,7 +373,7 @@ function ColorPicker:drawColorPanelSlider( rect, styles, crop )
 	end
 end
 
-function ColorPicker:drawColorBarHue( rect, styles, crop )
+function ColorPicker:drawColorBarHue( rect, styles, stylesOverlay )
 	local hueCols = { { 255, 0, 0, 255 }, { 255, 255, 0, 255 },	{ 0, 255, 0, 255 },
 		{ 0, 255, 255, 255 }, { 0, 0, 255, 255 }, { 255, 0, 255, 255 },	{ 255, 0, 0, 255 } }
 	local segN = #hueCols - 1
@@ -387,7 +388,7 @@ function ColorPicker:drawColorBarHue( rect, styles, crop )
 	end
 end
 
-function ColorPicker:drawColorChannelSlider( rect, styles, crop, channel )
+function ColorPicker:drawColorChannelSlider( rect, styles, stylesOverlay, channel )
 	local col1 = self.color:clone()
 	local col2 = self.color:clone()
 

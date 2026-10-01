@@ -31,7 +31,7 @@ function Label:new( gui, t )
 	object.locked = Util.setWithDefault( t.locked, false )
 	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
-	object.stylesOverlay = t.stylesOverlay
+	object.stylesOverlay = t.stylesOverlay or {}
 	object.tooltip = t.tooltip
 
 	return object
@@ -40,11 +40,12 @@ end
 function Label:draw()
 	local style = self.disabled and "disabled" or self.locked and "locked" or "normal"
 	local styles = self.styles[ style ]
+	local stylesOverlay = self.stylesOverlay[ style ]
 
-	self._gui:drawText( self.text, self.bounds, styles )
+	self._gui:drawText( self.text, self.bounds, styles, stylesOverlay )
 
-	if styles.icons then
-		self._gui:drawIcons( self.bounds, styles )
+	if styles.icons or ( stylesOverlay and stylesOverlay.icons ) then
+		self._gui:drawIcons( self.bounds, styles, stylesOverlay )
 	end
 end
 
@@ -79,7 +80,7 @@ function TextBox:new( gui, t )
 	object.locked = Util.setWithDefault( t.locked, false )
 	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
-	object.stylesOverlay = t.stylesOverlay
+	object.stylesOverlay = t.stylesOverlay or {}
 	object.tooltip = t.tooltip
 
 	object.offset = Vector2:new()
@@ -94,6 +95,7 @@ end
 function TextBox:draw()
 	local style = self.disabled and "disabled" or self.locked and "locked" or "normal"
 	local styles = self.styles[ style ]
+	local stylesOverlay = self.stylesOverlay[ style ]
 	local offset = Vector2:new()
 	local mouseCharId = 0
 	local oldMouseCharId = self.mouseCharId
@@ -125,8 +127,8 @@ function TextBox:draw()
 		end
 	end
 
-	if styles.icons then
-		self._gui:drawIcons( self.bounds, styles )
+	if styles.icons or ( stylesOverlay and stylesOverlay.icons ) then
+		self._gui:drawIcons( self.bounds, styles, stylesOverlay )
 	end
 end
 
@@ -158,7 +160,7 @@ function Button:new( gui, t )
 	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.toggle = t.toggle -- Note that toggle needs to be set in custom function.
 	object.styles = t.styles or object.DEFAULT_STYLES
-	object.stylesOverlay = t.stylesOverlay
+	object.stylesOverlay = t.stylesOverlay or {}
 	object.tooltip = t.tooltip
 
 	object._isMouseOver = false
@@ -187,15 +189,16 @@ function Button:draw()
 	or ( self.toggle ~= nil and self.toggle )
 	local style = pressed and "pressed" or self.disabled and "disabled" or self._isMouseOver and "focused" or "normal"
 	local styles = self.styles[ style ]
+	local stylesOverlay = self.stylesOverlay[ style ]
 
-	self._gui:drawRectangle( self.bounds, styles )
+	self._gui:drawRectangle( self.bounds, styles, stylesOverlay )
 
 	if self.text then
-		self._gui:drawText( self.text, self.bounds, styles )
+		self._gui:drawText( self.text, self.bounds, styles, stylesOverlay )
 	end
 
-	if styles.icons then
-		self._gui:drawIcons( self.bounds, styles )
+	if styles.icons or ( stylesOverlay and stylesOverlay.icons ) then
+		self._gui:drawIcons( self.bounds, styles, stylesOverlay )
 	end
 end
 
@@ -215,13 +218,6 @@ function TextInputBox.DEFAULT_STYLES_UPDATE()
 	}
 	Gui:setForAllStyles( TextInputBox.DEFAULT_STYLES, "cursor", Util.deepCopy( TextInputBox.DEFAULT_STYLES.normal.cursor ) )
 	Gui:setForAllStyles( TextInputBox.DEFAULT_STYLES, "text.alignH", RL.TEXT_ALIGN_LEFT )
-	-- TextInputBox.DEFAULT_STYLES.focused.cursor = Util.deepCopy( TextInputBox.DEFAULT_STYLES.normal.cursor )
-	-- TextInputBox.DEFAULT_STYLES.disabled.cursor = Util.deepCopy( TextInputBox.DEFAULT_STYLES.normal.cursor )
-	-- TextInputBox.DEFAULT_STYLES.pressed.cursor = Util.deepCopy( TextInputBox.DEFAULT_STYLES.normal.cursor )
-	-- TextInputBox.DEFAULT_STYLES.normal.text.alignH = RL.TEXT_ALIGN_LEFT
-	-- TextInputBox.DEFAULT_STYLES.focused.text.alignH = RL.TEXT_ALIGN_LEFT
-	-- TextInputBox.DEFAULT_STYLES.disabled.text.alignH = RL.TEXT_ALIGN_LEFT
-	-- TextInputBox.DEFAULT_STYLES.pressed.text.alignH = RL.TEXT_ALIGN_LEFT
 end
 
 TextInputBox.DEFAULT_STYLES_UPDATE()
@@ -240,7 +236,7 @@ function TextInputBox:new( gui, t )
 	object.locked = Util.setWithDefault( t.locked, false )
 	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
-	object.stylesOverlay = t.stylesOverlay
+	object.stylesOverlay = t.stylesOverlay or {}
 	object.tooltip = t.tooltip
 
 	object.view = object.bounds:clone()
@@ -266,7 +262,7 @@ function TextInputBox:getStyles()
 	and ( self._gui._isMouseDown and self._gui.mouseOver == self and self._gui.controlPressed == self )
 	or self._editMode
 	local style = pressed and "pressed" or self.disabled and "disabled" or self._isMouseOver and "focused" or "normal"
-	return self.styles[ style ]
+	return self.styles[ style ], self.stylesOverlay[ style ]
 end
 
 function TextInputBox:updateText( cpt )
@@ -284,15 +280,12 @@ function TextInputBox:updateText( cpt )
 		table.remove( cpt )
 	end
 
-	-- table.move(  )
-
-	-- print( "self._cursor.pos", self._cursor.pos )
+	-- //TODO Review if table.move could be used.
 
 	if 0 < #cpt then
-		local styles = self:getStyles()
-		local ts = styles.text
+		local styles, stylesOverlay = self:getStyles()
 		local cursorText = RL.LoadUTF8( cpt )
-		local textSize = Vector2:tempT( RL.MeasureTextEx( ts.font, cursorText, ts.fontSize, ts.spacing ) )
+		local textSize = self._gui:measureText( cursorText, styles, stylesOverlay )
 
 		self._cursor.rect:setPosition( textSize.x, 0 )
 		self._cursor.scrollPos = math.max( 0, self._cursor.rect.x + self._cursor.rect.width + 8 - self.view.width )
@@ -321,8 +314,7 @@ end
 
 function TextInputBox:startEditMode()
 	local cpt = RL.LoadCodepoints( self.text )
-	local styles = self:getStyles()
-	local ts = styles.text
+	local styles, stylesOverlay = self:getStyles()
 
 	if self._gui.controlTextEdit == self then
 		local pos = #cpt + 1
@@ -331,9 +323,9 @@ function TextInputBox:startEditMode()
 
 		for i, cp in ipairs( cpt ) do
 			local s = RL.CodepointToUTF8( cp )
-			local textSize = Vector2:tempT( RL.MeasureTextEx( ts.font, s, ts.fontSize, ts.spacing ) )
+			local textSize = self._gui:measureText( s, styles, stylesOverlay )
 
-			len = len + textSize.x + ts.spacing
+			len = len + textSize.x +  self._gui:getStyle( "text.spacing", styles, stylesOverlay )
 
 			if clickPos.x <= len then
 				pos = i
@@ -457,10 +449,16 @@ function TextInputBox:textEdit( delta )
 end
 
 function TextInputBox:updateView()
-	local styles = self:getStyles()
-	local borderW = styles.border.width
+	local styles, stylesOverlay = self:getStyles()
+	local borderW = self._gui:getStyle( "border.width", styles, stylesOverlay )
 
 	self.view = self.bounds:addPosition( Vector2:temp( borderW ) ):subSize( Vector2:temp( borderW * 2 ) )
+
+	if not stylesOverlay then
+		self.stylesOverlay = self._gui:getDummyStyles()
+	end
+
+	self._gui:setForAllStyles( self.stylesOverlay, "text.crop", self.view )
 end
 
 function TextInputBox:update( delta )
@@ -488,14 +486,14 @@ function TextInputBox:update( delta )
 end
 
 function TextInputBox:draw()
-	local styles = self:getStyles()
+	local styles, stylesOverlay = self:getStyles()
 
-	self._gui:drawRectangle( self.bounds, styles )
+	self._gui:drawRectangle( self.bounds, styles, stylesOverlay )
 
 	local borderW = styles.border.width
 
 	if self.text then
-		self._gui:drawText( self.text, self.bounds:addPosition( Vector2:temp( borderW - self._cursor.scrollPos, 0 ) ), styles, self.view )
+		self._gui:drawText( self.text, self.bounds:addPosition( Vector2:temp( borderW - self._cursor.scrollPos, 0 ) ), styles, stylesOverlay )
 	end
 
 	if self._editMode and styles.cursor.draw then
@@ -539,7 +537,7 @@ function Panel:new( gui, t )
 	object.locked = Util.setWithDefault( t.locked, false )
 	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
-	object.stylesOverlay = t.stylesOverlay
+	object.stylesOverlay = t.stylesOverlay or {}
 	object.callbacks = t.callbacks or {}
 	object.tooltip = t.tooltip
 
@@ -571,11 +569,12 @@ end
 function Panel:draw()
 	local style = self.disabled and "disabled" or "normal"
 	local styles = self.styles[ style ]
+	local stylesOverlay = self.stylesOverlay[ style ]
 
-	self._gui:drawRectangle( self.bounds, styles )
+	self._gui:drawRectangle( self.bounds, styles, stylesOverlay )
 
-	if styles.icons then
-		self._gui:drawIcons( self.bounds, styles )
+	if styles.icons or ( stylesOverlay and stylesOverlay.icons ) then
+		self._gui:drawIcons( self.bounds, styles, stylesOverlay )
 	end
 end
 
@@ -649,7 +648,7 @@ function Slider:new( gui, t )
 	object.locked = Util.setWithDefault( t.locked, false )
 	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.styles = t.styles or object.DEFAULT_STYLES
-	object.stylesOverlay = t.stylesOverlay
+	object.stylesOverlay = t.stylesOverlay or {}
 	object.tooltip = t.tooltip
 
 	object._isMouseOver = false
@@ -661,7 +660,7 @@ function Slider:getStyles()
 	local pressed = not self.locked and not self.disabled and self._gui._isMouseDown and self._gui.mouseOver == self and self._gui.controlPressed == self
 	local style = pressed and "pressed" or self.disabled and "disabled" or self._isMouseOver and "focused" or "normal"
 
-	return self.styles[ style ]
+	return self.styles[ style ], self.stylesOverlay[ style ]
 end
 
 function Slider:update( _ )
@@ -680,8 +679,8 @@ function Slider:update( _ )
 			end
 
 			if self._gui._isMouseDown then
-				local styles = self:getStyles()
-				local sliderW = styles.slider.width
+				local styles, stylesOverlay = self:getStyles()
+				local sliderW = self._gui:getStyle( "slider.width", styles, stylesOverlay )
 
 				local value = Vector2:temp(
 					RL.Remap(
@@ -728,9 +727,9 @@ function Slider:update( _ )
 end
 
 function Slider:draw()
-	local styles = self:getStyles()
+	local styles, stylesOverlay = self:getStyles()
 
-	self._gui:drawRectangle( self.bounds, styles )
+	self._gui:drawRectangle( self.bounds, styles, stylesOverlay )
 
 	if self.minValue.x ~= self.maxValue.x then
 		local rect = Rectangle:new(
@@ -740,7 +739,7 @@ function Slider:draw()
 			self.bounds.y,
 			styles.slider.width, self.bounds.height
 		)
-		self._gui:drawRectangle( rect, styles.slider )
+		self._gui:drawRectangle( rect, styles.slider, stylesOverlay and stylesOverlay.slider )
 	end
 
 	if self.minValue.y ~= self.maxValue.y then
@@ -751,11 +750,11 @@ function Slider:draw()
 			),
 			self.bounds.width, styles.slider.width
 		)
-		self._gui:drawRectangle( rect, styles.slider )
+		self._gui:drawRectangle( rect, styles.slider, stylesOverlay and stylesOverlay.slider )
 	end
 
-	if styles.icons then
-		self._gui:drawIcons( self.bounds, styles )
+	if styles.icons or ( stylesOverlay and stylesOverlay.icons ) then
+		self._gui:drawIcons( self.bounds, styles, stylesOverlay )
 	end
 end
 
@@ -802,7 +801,7 @@ function Handle:new( gui, t )
 	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
 	object.draggable = Util.setWithDefault( t.locked, true )
 	object.styles = t.styles or object.DEFAULT_STYLES
-	object.stylesOverlay = t.stylesOverlay
+	object.stylesOverlay = t.stylesOverlay or {}
 	object.tooltip = t.tooltip
 
 	object._isMouseOver = false
@@ -860,15 +859,16 @@ function Handle:draw()
 	local style = pressed and "pressed" or self.disabled and "disabled"
 	or (self._isMouseOver and self.draggable and "focused") or "normal"
 	local styles = self.styles[ style ]
+	local stylesOverlay = self.stylesOverlay[ style ]
 
 	self._gui:drawRectangle( self.bounds, styles )
 
 	if self.text then
-		self._gui:drawText( self.text, self.bounds, styles )
+		self._gui:drawText( self.text, self.bounds, styles, stylesOverlay )
 	end
 
-	if styles.icons then
-		self._gui:drawIcons( self.bounds, styles )
+	if styles.icons or ( stylesOverlay and stylesOverlay.icons ) then
+		self._gui:drawIcons( self.bounds, styles, stylesOverlay )
 	end
 end
 

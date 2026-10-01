@@ -316,9 +316,7 @@ function InitGui()
 	} )
 	container.position = Vector2:new( 8, 32 )
 
-	-- for i = 1, 42 do
 	for i = 1, 12 do
-	-- for i = 1, 4 do
 		container:addControl(
 			container.gui:newButton( {
 				bounds = Rectangle:new( 0, 0, 120, 16 ),
@@ -345,7 +343,7 @@ function InitGui()
 
 	local dropdown2 = container:addControl(
 		container.gui:newDropdown( {
-			bounds = Rectangle:new( 0, 0, 120, 32 ),
+			bounds = Rectangle:new( 0, 0, 120, 24 ),
 			text = "Group",
 			mouseClose = false,
 			callbacks = {
@@ -355,33 +353,54 @@ function InitGui()
 			}
 		} )
 	)
+	local dropdownTexts = { "New", "Open", "Save", "Preferences", "Quit" }
+	local dropdownIcons = { RL.ICON_FILE_ADD, RL.ICON_FILE_OPEN, RL.ICON_FILE_SAVE, RL.ICON_GEAR_BIG, RL.ICON_EXIT }
 
-	for i = 1, 4 do
-		dropdown:addControl( gui:newButton( {
-			bounds = Rectangle:new( 0, 0, 160, 20 ),
-			text = "Button "..i,
+	for i = 1, 5 do
+		local b = dropdown:addControl( gui:newButton( {
+			bounds = Rectangle:new( 0, 0, 0, 20 ),
+			text = dropdownTexts[i],
 			visible = false,
+			stylesOverlay = {
+				normal = {
+					icons = {
+						{
+							iconId = dropdownIcons[i],
+							offset = Vector2:new( 0, 0 ),
+							pixelSize = 1,
+							color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
+							alignH = RL.TEXT_ALIGN_LEFT,
+							alignV = RL.TEXT_ALIGN_CENTER,
+						},
+					},
+				}
+			},
 			callbacks = {
 				released = function( this )
-					print( "Dropdown button "..i )
+					print( dropdownTexts[i] )
 					dropdown:showContent( false )
 				end
 			}
 		} )	)
 
+		Gui:setForAllStyles( b.stylesOverlay, "icons", b.stylesOverlay.normal.icons )
+
 		container:addControl( dropdown2:addControl(
 			container.gui:newButton( {
 				bounds = Rectangle:new( 0, 0, 120, 20 ),
-				text = "Button "..i,
+				text = dropdownTexts[i],
 				visible = false,
 				callbacks = {
 					released = function( this )
-						print( "Group button "..i )
+						print( dropdownTexts[i] )
 					end
 				}
 			} )
 		) )
 	end
+
+	dropdown:setButtonToTextWidth( 4, 4 )
+	dropdown:setControlsToTextWidth( 20, 4 )
 
 	container:addControl(
 		container.gui:newLabel( {
@@ -411,7 +430,8 @@ function InitGui()
 			callbacks = {
 				released = function()
 					local function confirm( path )
-						messageWindow:popup( "Confirm load",
+						messageWindow:popup(
+							"Confirm load",
 							string.format( "Are you sure you want to load texture '%s'", path ),
 							{ -- Buttons.
 								{
@@ -443,7 +463,8 @@ function InitGui()
 
 					local function loadTexture( path )
 						if not RL.FileExists( path ) or not RL.IsFileExtension( path, ".png" ) then
-							messageWindow:popup( "Invalid file",
+							messageWindow:popup(
+								"Invalid file",
 								string.format( "'%s' is not an image file", path ),
 								{ -- Buttons.
 									{

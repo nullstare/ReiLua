@@ -48,6 +48,7 @@ function Container:new( gui, t )
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new( 0, 0, styles.size.x, styles.size.y )
 	object.callbacks = t.callbacks or {}
 	object.styles = t.styles or object.DEFAULT_STYLES
+	object.stylesOverlay = t.stylesOverlay or {}
 
 	-- Implementation controls.
 	object._controls = {

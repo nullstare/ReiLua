@@ -58,7 +58,7 @@ function Window:new( gui, t )
 		drag = t.callbacks and t.callbacks.drag or function( this ) object:setPosition( this.bounds:getPosition() ) end,
 	}
 	object.styles = t.styles or object.DEFAULT_STYLES
-	object.stylesOverlay = t.stylesOverlay
+	object.stylesOverlay = t.stylesOverlay or {}
 	
 	object._controls = {
 		-- handle = nil,

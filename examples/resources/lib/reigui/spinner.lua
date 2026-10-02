@@ -62,7 +62,7 @@ function Spinner:new( gui, t )
 	object.visible = Util.setWithDefault( t.visible, true )
 	object.locked = Util.setWithDefault( t.locked, false )
 	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
-	object.callbacks = t.callbacks -- set, setPosition.
+	object.callbacks = t.callbacks or {} -- set, setPosition.
 	object.styles = t.styles or object.DEFAULT_STYLES
 	object.stylesOverlay = t.stylesOverlay or {}
 

@@ -37,6 +37,7 @@ function InitGui()
 	Gui:include( require( "reigui.dropdown" ) )
 	Gui:include( require( "reigui.file_browser" ) )
 	Gui:include( require( "reigui.message_window" ) )
+	Gui:include( require( "reigui.check_box" ) )
 
 	gui = Gui:new()
 
@@ -361,20 +362,7 @@ function InitGui()
 			bounds = Rectangle:new( 0, 0, 0, 20 ),
 			text = dropdownTexts[i],
 			visible = false,
-			stylesOverlay = {
-				normal = {
-					icons = {
-						{
-							iconId = dropdownIcons[i],
-							offset = Vector2:new( 0, 0 ),
-							pixelSize = 1,
-							color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
-							alignH = RL.TEXT_ALIGN_LEFT,
-							alignV = RL.TEXT_ALIGN_CENTER,
-						},
-					},
-				}
-			},
+			stylesOverlay = gui:getDummyStyles(),
 			callbacks = {
 				released = function( this )
 					print( dropdownTexts[i] )
@@ -383,7 +371,16 @@ function InitGui()
 			}
 		} )	)
 
-		Gui:setForAllStyles( b.stylesOverlay, "icons", b.stylesOverlay.normal.icons )
+		Gui:setForAllStyles( b.stylesOverlay, "icons", {
+			{
+				iconId = dropdownIcons[i],
+				offset = Vector2:new( 0, 0 ),
+				pixelSize = 1,
+				color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
+				alignH = RL.TEXT_ALIGN_LEFT,
+				alignV = RL.TEXT_ALIGN_CENTER,
+			},
+		} )
 
 		container:addControl( dropdown2:addControl(
 			container.gui:newButton( {
@@ -426,7 +423,7 @@ function InitGui()
 	container:addControl(
 		container.gui:newButton( {
 			bounds = Rectangle:new( 0, 0, 120, 20 ),
-			text = "Load bunny tex",
+			text = "Load button tex",
 			callbacks = {
 				released = function()
 					local function confirm( path )
@@ -482,7 +479,7 @@ function InitGui()
 						end
 					end
 
-					fileBrowser:popup( RL.GetBasePath(), loadTexture )
+					fileBrowser:popup( RL.GetBasePath(), loadTexture, { "DIRS*;.png", "*.*" } )
 				end
 			}
 		} )
@@ -538,6 +535,14 @@ function InitGui()
 	textBox.position = container.position + Vector2:temp( 0, container.bounds.height + 8 )
 	window:_addControl( textBox, "textBox" )
 	window:setPosition( window.bounds:getPosition() )
+
+	-- Check box.
+
+	local checkBox = gui:newCheckBox( {
+		bounds = Rectangle:new( 150, 360, 128, 32 ),
+		toggle = false,
+		text = "Checkbox",
+	} )
 
 	gui:setToBack( panel )
 end

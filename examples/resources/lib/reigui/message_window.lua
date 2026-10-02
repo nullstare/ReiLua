@@ -96,15 +96,12 @@ function MessageWindow:createControls( t )
 end
 
 function MessageWindow:popup( header, text, buttons )
-	print( "popup" )
 	self._controls.window:setText( header )
 	self._controls.label.text = text
 
 	local winStyles = self.styles.messageWindow
-	local textSize = self._gui:measureText( text, self.styles.label.normal, self.stylesOverlay and self.stylesOverlay.label.normal )
-	-- local winHandleHeight = self._controls.window._controls.handle.bounds.height
+	local textSize = self._gui:measureText( text, self.styles.label.normal, self.stylesOverlay.label and self.stylesOverlay.label.normal )
 	local buttonHeight = winStyles.buttonSize.y
-	-- local winPanelBounds = self._controls.window:getPanelBounds()
 	local padding = winStyles.padding
 	local size = Vector2:new(
 		RL.Clamp( textSize.x + padding * 2, winStyles.minBounds.width, winStyles.maxBounds.width ),

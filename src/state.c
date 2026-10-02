@@ -14,7 +14,7 @@ bool stateInit( int argn, const char** argc, const char* basePath ) {
 	state->run = luaInit( argn, argc );;
 	state->logLevelInvalid = LOG_ERROR;
 	state->gcUnload = true;
-	state->lineSpacing = 15;
+	state->lineSpacing = 2;
 	state->mouseOffset = (Vector2){ 0, 0 };
 	state->mouseScale = (Vector2){ 1, 1 };
 

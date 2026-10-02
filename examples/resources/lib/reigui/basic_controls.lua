@@ -284,10 +284,11 @@ function TextInputBox:updateText( cpt )
 
 	if 0 < #cpt then
 		local styles, stylesOverlay = self:getStyles()
+		local padding = self._gui:getStyle( "text.padding", styles, stylesOverlay )
 		local cursorText = RL.LoadUTF8( cpt )
 		local textSize = self._gui:measureText( cursorText, styles, stylesOverlay )
 
-		self._cursor.rect:setPosition( textSize.x, 0 )
+		self._cursor.rect:setPosition( textSize.x + padding, 0 )
 		self._cursor.scrollPos = math.max( 0, self._cursor.rect.x + self._cursor.rect.width + 8 - self.view.width )
 	else
 		self._cursor.rect:setPosition( 0 )
@@ -861,7 +862,7 @@ function Handle:draw()
 	local styles = self.styles[ style ]
 	local stylesOverlay = self.stylesOverlay[ style ]
 
-	self._gui:drawRectangle( self.bounds, styles )
+	self._gui:drawRectangle( self.bounds, styles, stylesOverlay )
 
 	if self.text then
 		self._gui:drawText( self.text, self.bounds, styles, stylesOverlay )
@@ -869,6 +870,159 @@ function Handle:draw()
 
 	if styles.icons or ( stylesOverlay and stylesOverlay.icons ) then
 		self._gui:drawIcons( self.bounds, styles, stylesOverlay )
+	end
+end
+
+-- List.
+
+local List = {}
+local listMetatable = {
+	__index = setmetatable( List, { __index = GuiControl } ),
+}
+
+List.DEFAULT_STYLES = {}
+
+function List.DEFAULT_STYLES_UPDATE()
+	List.DEFAULT_STYLES = Util.deepCopy( GUI_DEFAULT_STYLES )
+
+	Gui:setForAllStyles( List.DEFAULT_STYLES, "text.alignH", RL.TEXT_ALIGN_LEFT )
+end
+
+List.DEFAULT_STYLES_UPDATE()
+
+function List:new( gui, t )
+	local object = setmetatable( {}, listMetatable )
+	object._gui = gui
+
+	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
+	object.list = t.list or {}
+	object.callbacks = t.callbacks or {} -- pressed, drag, released.
+	object.selectedId = t.selectedId
+
+	object.visible = Util.setWithDefault( t.visible, true )
+	object.locked = Util.setWithDefault( t.locked, false )
+	object.disabled = Util.setWithDefault( t.disabled, false ) -- Same as locked but also uses style.
+	object.styles = t.styles or object.DEFAULT_STYLES
+	object.stylesOverlay = t.stylesOverlay or {}
+	object.tooltip = t.tooltip
+
+	object._isMouseOver = false
+	object._text = ""
+	object._mouseOverId = nil
+	object._itemRect = Rectangle:new()
+	object._selectedItemRect = Rectangle:new()
+	object._icons = {}
+	object._oldView = Rectangle:new( 0, 0, -1, -1 )
+	object._textRect = Rectangle:new()
+
+	object:updateList()
+
+	return object
+end
+
+function List:update( delta )
+	if self.locked or self.disabled then
+		return
+	end
+
+	if self._gui.mouseOver == self then
+		self._mouseOverId = math.floor( ( self._gui._mousePos.y - self.bounds.y ) / self._itemRect.height ) + 1
+		self._itemRect.y = ( self._mouseOverId - 1 ) * self._itemRect.height
+
+		if self._gui.controlPressed == self and self._gui._isMousePressed then
+			self.selectedId = self._mouseOverId
+			self._selectedItemRect:setR( self._itemRect )
+
+			if self.callbacks.pressed then
+				self.callbacks.pressed( self )
+			end
+		end
+	end
+
+	if self._oldView ~= self._gui.view then
+		self:updateList()
+	end
+end
+
+function List:refresh()
+	self:updateList()
+end
+
+function List:updateList( list )
+	local itemHeight = RL.GetTextLineSpacing() + self.styles.normal.text.fontSize
+	local hasView = 0 < self._gui.view.width and 0 < self._gui.view.height
+	local listStrT = {}
+
+	self.list = list or self.list
+	self._text = ""
+	self._icons = {}
+	self._itemRect:set( 0, 0, self.bounds.width, itemHeight )
+	self._textRect = self.bounds:clone()
+
+	local function insertItem( i, item )
+		table.insert( listStrT, item.text )
+
+		if item.icon then
+			item.icon._listId = i
+
+			table.insert( self._icons, item.icon )
+		end
+	end
+
+	local itemBounds = self._itemRect:clone()
+	local listStartId = hasView and math.max( math.ceil( ( self._gui.view.y - self.bounds.y ) / itemHeight ), 1 ) or 1
+	local listEndId = hasView
+	and math.min( math.ceil( ( self._gui.view.y + self._gui.view.height - self.bounds.y ) / itemHeight ), #self.list )
+	or #self.list
+
+	itemBounds:setPositionV( self.bounds:getPosition() )
+	self._textRect.y = self.bounds.y + ( listStartId - 1 ) * itemHeight
+
+	for i = listStartId, listEndId do
+		local item = self.list[i]
+
+		if hasView then
+			insertItem( i, item )
+			itemBounds.y = itemBounds.y + itemHeight
+		else
+			insertItem( i, item )
+		end
+	end
+
+	self._text = table.concat( listStrT, "\n" )
+	self._textRect.height = #listStrT * itemHeight
+	self.bounds.height = #self.list * itemHeight
+
+	-- Set offset when we know item height.
+	for _, icon in ipairs( self._icons ) do
+		icon.offset.y = ( icon._listId - 1 ) * self._itemRect.height
+	end
+
+	if hasView then
+		self._oldView:setR( self._gui.view )
+	end
+end
+
+function List:draw()
+	local style = "normal"
+	local styles = self.styles[ style ]
+	local stylesOverlay = self.stylesOverlay[ style ]
+	local pos = self.bounds:getPosition()
+
+	if self._isMouseOver and self._mouseOverId then
+		self._gui:drawRectangle( self._itemRect:addPosition( pos ), self.styles.focused, self.stylesOverlay.focused )
+	end
+
+	if self.selectedId then
+		self._gui:drawRectangle( self._selectedItemRect:addPosition( pos ), self.styles.pressed, self.stylesOverlay.pressed )
+	end
+
+	if self._text then
+		self._gui:drawText( self._text, self._textRect, styles, stylesOverlay )
+	end
+
+	if 0 < #self._icons then
+		self._gui:drawIcons( self.bounds, { icons = self._icons }, stylesOverlay )
 	end
 end
 
@@ -880,4 +1034,5 @@ return {
 	Panel = Panel,
 	Slider = Slider,
 	Handle = Handle,
+	List = List,
 }

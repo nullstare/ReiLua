@@ -142,6 +142,7 @@ function GUI_DEFAULT_STYLES_UPDATE()
 				spacing = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING ),
 				alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
 				alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+				padding = 2,
 			}
 		},
 		focused = {
@@ -159,6 +160,7 @@ function GUI_DEFAULT_STYLES_UPDATE()
 				spacing = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING ),
 				alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
 				alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+				padding = 2,
 			}
 		},
 		disabled = {
@@ -176,6 +178,7 @@ function GUI_DEFAULT_STYLES_UPDATE()
 				spacing = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING ),
 				alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
 				alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+				padding = 2,
 			}
 		},
 		pressed = {
@@ -193,6 +196,7 @@ function GUI_DEFAULT_STYLES_UPDATE()
 				spacing = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_SPACING ),
 				alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
 				alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+				padding = 2,
 			}
 		},
 	}
@@ -577,19 +581,20 @@ function Gui:drawText( text, bounds, styles, stylesOverlay )
 	local color = soText and soText.color or sText.color
 	local alignH = soText and soText.alignH or sText.alignH
 	local alignV = soText and soText.alignV or sText.alignV
+	local padding = soText and soText.padding or sText.padding
 	local textSize = Vector2:newT( RL.MeasureTextEx( font, text, fontSize, spacing ) )
-	local pos = bounds:getPosition()
+	local pos = bounds:getPosition() + Vector2:temp( padding )
 
 	if alignH == RL.TEXT_ALIGN_MIDDLE then
 		pos.x = bounds.x + bounds.width / 2 - textSize.x / 2
 	elseif alignH == RL.TEXT_ALIGN_RIGHT then
-		pos.x = bounds.x + bounds.width - textSize.x
+		pos.x = bounds.x + bounds.width - textSize.x - padding * 2
 	end
 
 	if alignV == RL.TEXT_ALIGN_MIDDLE then
 		pos.y = bounds.y + bounds.height / 2 - textSize.y / 2
 	elseif alignV == RL.TEXT_ALIGN_BOTTOM then
-		pos.y = bounds.y + bounds.height - textSize.y
+		pos.y = bounds.y + bounds.height - textSize.y - padding * 2
 	end
 
 	if offset then

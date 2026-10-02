@@ -167,6 +167,12 @@ function Container:refresh()
 		panelBounds.width - styles.padding * 2,
 		panelBounds.height - styles.padding * 2
 	)
+
+	for _, control in ipairs( self.controls ) do
+		if control.refresh then
+			control:refresh()
+		end
+	end
 end
 
 function Container:updateScrollBars()

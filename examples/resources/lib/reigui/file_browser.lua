@@ -39,21 +39,22 @@ function FileBrowser.DEFAULT_STYLES_UPDATE()
 			iconButtonSize = Vector2:new( 28 ),
 			textButtonSize = Vector2:new( 72, 28 ),
 			fileButtonHeight = 24,
+			iconColor = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
 		},
 		window = Util.deepCopy( Gui.Window.DEFAULT_STYLES ),
 		pathInput = Util.deepCopy( Gui.TextInputBox.DEFAULT_STYLES ),
 		searchButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
 		backButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
-		fileList = Util.deepCopy( Gui.Container.DEFAULT_STYLES ),
+		fileContainer = Util.deepCopy( Gui.Container.DEFAULT_STYLES ),
 		fileInput = Util.deepCopy( Gui.TextInputBox.DEFAULT_STYLES ),
 		filterDropdown = Util.deepCopy( Gui.Dropdown.DEFAULT_STYLES ),
 		applyButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
-		listFileButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
+		fileList = Util.deepCopy( Gui.List.DEFAULT_STYLES ),
 	}
 
 	-- File list.
 
-	FileBrowser.DEFAULT_STYLES.fileList.container.scrollSteps = FileBrowser.DEFAULT_STYLES.fileBrowser.fileButtonHeight
+	FileBrowser.DEFAULT_STYLES.fileContainer.container.scrollSteps = FileBrowser.DEFAULT_STYLES.fileBrowser.fileButtonHeight
 	+ FileBrowser.DEFAULT_STYLES.fileBrowser.spacing
 
 	-- Search button.
@@ -84,22 +85,9 @@ function FileBrowser.DEFAULT_STYLES_UPDATE()
 	}
 	Gui:setForAllStyles( FileBrowser.DEFAULT_STYLES.backButton, "icons", FileBrowser.DEFAULT_STYLES.backButton.normal.icons )
 
-	-- List file button.
+	-- File list.
 
-	FileBrowser.DEFAULT_STYLES.listFileButton.normal.icons = {
-		{
-			iconId = FileBrowser.FILE_ICONS.FILE,
-			offset = Vector2:new( 0, 0 ),
-			pixelSize = 1,
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
-			-- alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
-			alignH = RL.TEXT_ALIGN_LEFT,
-			alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
-		}
-	}
-	Gui:setForAllStyles( FileBrowser.DEFAULT_STYLES.listFileButton, "icons", FileBrowser.DEFAULT_STYLES.listFileButton.normal.icons )
-	Gui:setForAllStyles( FileBrowser.DEFAULT_STYLES.listFileButton, "text.alignH", RL.TEXT_ALIGN_LEFT )
-	Gui:setForAllStyles( FileBrowser.DEFAULT_STYLES.listFileButton, "text.offset", Vector2:new( 20, 0 ) )
+	Gui:setForAllStyles( FileBrowser.DEFAULT_STYLES.fileList, "text.padding", 18 )
 end
 
 FileBrowser.DEFAULT_STYLES_UPDATE()
@@ -126,10 +114,11 @@ function FileBrowser:new( gui, t )
 		-- pathInput = nil,
 		-- searchButton = nil,
 		-- backButton = nil,
-		-- fileList = nil,
+		-- fileContainer = nil,
 		-- fileInput = nil,
 		-- filterDropdown = nil,
 		-- applyButton = nil,
+		-- fileList = nil,
 	}
 	object._controlsArray = {} -- Controls in predefined order.
 
@@ -244,20 +233,20 @@ function FileBrowser:createControls()
 	pos.x = padding
 	pos.y = pos.y + iconButtonSize.y + spacing
 
-	self._controls.fileList = self._gui:newContainer( {
+	self._controls.fileContainer = self._gui:newContainer( {
 		bounds = Rectangle:new(	0, 0,
 			self.bounds.width - padding * 2,
 			self.bounds.height - padding * 2 - spacing * 2 - iconButtonSize.y * 2 - windowHandleHeight
 		),
-		styles = styles.fileList,
+		styles = styles.fileContainer,
 	} )
-	self._controls.fileList.position = pos:clone()
+	self._controls.fileContainer.position = pos:clone()
 
-	table.insert( self._controlsArray, self._controls.fileList )
+	table.insert( self._controlsArray, self._controls.fileContainer )
 
 	-- File input.
 
-	pos.y = pos.y + self._controls.fileList.bounds.height + spacing
+	pos.y = pos.y + self._controls.fileContainer.bounds.height + spacing
 
 	self._controls.fileInput = self._gui:newTextInputBox( {
 		bounds = Rectangle:new( 0, 0,
@@ -305,6 +294,22 @@ function FileBrowser:createControls()
 	self._controls.applyButton.position = pos:clone()
 
 	table.insert( self._controlsArray, self._controls.applyButton )
+
+	-- File list.
+
+	local view = self._controls.fileContainer.view
+
+	self._controls.fileList = self._controls.fileContainer:addControl(
+		self._controls.fileContainer.gui:newList( {
+			bounds = Rectangle:new( 0, 0, view.width, view.height ),
+			callbacks = {
+				pressed = function( this )
+					self:select( this.selectedId )
+				end
+			},
+			styles = Util.deepCopy( styles.fileList ),
+		} )
+	)
 end
 
 function FileBrowser:popup( path, callback, filters )
@@ -364,15 +369,14 @@ function FileBrowser:checkPath( path )
 end
 
 function FileBrowser:updateList()
-	local list = self._controls.fileList
-	list:clear()
 	self._controls.fileInput.text = ""
 	self.files = {}
 	self.lastIndex = 0
+
 	local files = RL.LoadDirectoryFilesEx( self.path, self.filter, false )
 
 	table.sort( files, function( a, b ) return a < b end )
-	
+
 	for i = #files, 1, -1 do
 		local filePath = files[i]
 
@@ -398,8 +402,9 @@ function FileBrowser:updateList()
 
 	table.sort( self.files, function( a, b ) return a.sortValue < b.sortValue end )
 
-	for i, file in ipairs( self.files ) do
-		local styles = Util.deepCopy( FileBrowser.DEFAULT_STYLES.listFileButton )
+	local listT = {}
+
+	for _, file in ipairs( self.files ) do
 		local icon = self.FILE_ICONS.DIR
 
 		if file.isFile then
@@ -412,29 +417,26 @@ function FileBrowser:updateList()
 			end
 		end
 
-		styles.normal.icons[1].iconId = icon
-		Gui:setForAllStyles( styles, "icons", styles.normal.icons )
-
-		list:addControl(
-			list.gui:newButton( {
-				bounds = Rectangle:new( 0, 0, list.view.width, self.styles.fileBrowser.fileButtonHeight ),
-				text = file.name,
-				toggle = false,
-				callbacks = {
-					pressed = function( this )
-						self:select( i )
-					end
-				},
-				styles = styles,
-			} )
-		)
+		table.insert( listT, {
+			text = file.name,
+			icon = {
+				iconId = icon,
+				offset = Vector2:new( 0, 0 ),
+				pixelSize = 1,
+				color = self.styles.fileBrowser.iconColor,
+				alignH = RL.TEXT_ALIGN_LEFT,
+				alignV = RL.TEXT_ALIGN_TOP,
+			}
+		} )
 	end
 
-	list:updateControls()
+	self._controls.fileList.selectedId = nil
+	self._controls.fileList:updateList( listT )
+	self._controls.fileContainer:updateControls()
 end
 
 function FileBrowser:select( index )
-	local list = self._controls.fileList
+	local list = self._controls.fileContainer
 
 	if index == self.lastIndex then
 		if RL.IsPathFile( self.file ) then
@@ -443,7 +445,7 @@ function FileBrowser:select( index )
 			self:checkPath( self.file )
 			return
 		end
-	else
+	elseif 0 < index and index <= #self.files then
 		self.file = self.files[ index ].path
 		self._controls.fileInput.text = RL.GetFileName( self.file )
 	end

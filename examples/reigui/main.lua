@@ -406,8 +406,6 @@ function InitGui()
 		} )
 	)
 
-	container:updateControls()
-
 	local fileBrowser = gui:newFileBrowser( {
 		callbacks = {
 			apply = function( path )
@@ -544,6 +542,80 @@ function InitGui()
 		text = "Checkbox",
 	} )
 
+	-- List.
+
+	container:addControl(
+		container.gui:newLabel( {
+			bounds = Rectangle:new( 0, 0, 120, 20 ),
+			text = "List:",
+			stylesOverlay = { normal = { text = { alignH = RL.TEXT_ALIGN_LEFT } } }
+		} )
+	)
+
+	-- local icon = {
+	-- 	iconId = RL.ICON_AUDIO,
+	-- 	offset = Vector2:new( 42, 0 ),
+	-- 	pixelSize = 1,
+	-- 	color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
+	-- 	alignH = RL.TEXT_ALIGN_LEFT,
+	-- 	alignV = RL.TEXT_ALIGN_TOP,
+	-- }
+
+	local listData = {
+		{ text = "Pencil", name = "pen", icon = RL.ICON_PENCIL },
+		{ text = "Brush", name = "brush", icon = RL.ICON_BRUSH_CLASSIC },
+		{ text = "Painter", name = "paint", icon = RL.ICON_BRUSH_PAINTER },
+		{ text = "Bucket", name = "bucket", icon = RL.ICON_COLOR_BUCKET },
+		{ text = "Picker", name = "picer", icon = RL.ICON_COLOR_PICKER },
+		{ text = "Eraser", name = "erace", icon = RL.ICON_RUBBER },
+	}
+	local listT = {}
+
+	for _, item in ipairs( listData ) do
+		table.insert( listT, {
+			text = item.text,
+			name = item.name,
+			icon = {
+				iconId = item.icon,
+				offset = Vector2:new( 0, 0 ),
+				pixelSize = 1,
+				color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
+				alignH = RL.TEXT_ALIGN_LEFT,
+				alignV = RL.TEXT_ALIGN_TOP,
+			}
+		} )
+	end
+
+	local listStyles = Util.deepCopy( Gui.List.DEFAULT_STYLES )
+
+	Gui:setForAllStyles( listStyles, "text.padding", 24 )
+
+	local list = container:addControl(
+		container.gui:newList( {
+			bounds = Rectangle:new( 0, 0, 120, 20 ),
+			list = listT,
+			callbacks = {
+				pressed = function( this )
+					print( "Selected ", this.selectedId, this.list[ this.selectedId ].name )
+				end
+			},
+			styles = listStyles,
+		} )
+	)
+
+	list:updateList()
+
+	for i = 1, 30 do
+		container:addControl(
+			container.gui:newLabel( {
+				bounds = Rectangle:new( 0, 0, 120, 20 ),
+				text = "Kissa ".. i,
+			} )
+		)
+	end
+
+	container:updateControls()
+
 	gui:setToBack( panel )
 end
 
@@ -553,6 +625,15 @@ end
 
 function RL.draw()
 	RL.ClearBackground( { 50, 20, 75 } )
+
+	-- local font = RL.GuiGetFont()
+	-- local fontSize = RL.GetFontBaseSize( font )
+	-- local spacing = 1
+	-- local text = "Kissa\nkoira"
+	-- local textSize = Vector2:newT( RL.MeasureTextEx( font, text, fontSize, spacing ) )
+
+	-- RL.DrawTextEx( font, text, { 400, 600 }, fontSize, spacing, RL.WHITE )
+	-- RL.DrawRectangleLines( { 400, 600, textSize.x, textSize.y }, RL.RED )
 
 	gui:draw()
 end

@@ -59,7 +59,7 @@ static unsigned char getHexValue( const char* ptr, size_t offset ) {
 /* If draw is false, will only measure. */
 static int DrawTextBoxed( Font* font, char* text, Rectangle rec, float fontSize,
 float spacing, bool wordWrap, Color tint, bool limitHeight, Vector2* textOffset, int tabSize, bool draw ) {
-	int lineSpacing = state->lineSpacing;
+	int lineSpacing = fontSize + state->lineSpacing;
 
 	if ( rec.width <= 0 || ( rec.height <= limitHeight ? ( textOffset->y + lineSpacing ) : 0 ) ) {
 		if ( !draw ) {

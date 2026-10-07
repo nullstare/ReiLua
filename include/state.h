@@ -1,5 +1,6 @@
 #pragma once
 
+#include "raylib.h"
 #if defined PLATFORM_DESKTOP_SDL2 || defined PLATFORM_DESKTOP_SDL3
 	#define PLATFORM_SDL_EVENT_QUEUE_LEN 128
 #endif
@@ -19,6 +20,8 @@ typedef struct {
 	Texture defaultTexture;
 	Texture shapesTexture;
 	int* RLGLcurrentShaderLocs;
+	bool isScissorMode;
+	Rectangle scissorRect;
 	/* Events. */
 #ifdef PLATFORM_DESKTOP
 	/* Window events. */

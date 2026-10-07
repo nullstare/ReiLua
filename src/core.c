@@ -1,4 +1,6 @@
+#include "luajit/lua.h"
 #include "main.h"
+#include "raylib.h"
 #include "state.h"
 #include "core.h"
 #include "textures.h"
@@ -960,6 +962,9 @@ Begin scissor mode (define screen area for following drawing)
 int lcoreBeginScissorMode( lua_State* L ) {
 	Rectangle rect = uluaGetRectangle( L, 1 );
 
+	state->isScissorMode = true;
+	state->scissorRect = rect;
+
 	BeginScissorMode( rect.x, rect.y, rect.width, rect.height );
 
 	return 0;
@@ -971,9 +976,29 @@ int lcoreBeginScissorMode( lua_State* L ) {
 End scissor mode
 */
 int lcoreEndScissorMode( lua_State* L ) {
+	state->isScissorMode = false;
+
 	EndScissorMode();
 
 	return 0;
+}
+
+/*
+> rect = RL.GetScissorMode()
+
+Get current scissor mode rectangle. If not scissor mode return nil.
+
+- Success return Rectangle or nil
+*/
+int lcoreGetScissorMode( lua_State* L ) {
+	if ( state->isScissorMode ) {
+		uluaPushRectangle( L, state->scissorRect );
+	}
+	else {
+		lua_pushnil( L );
+	}
+
+	return 1;
 }
 
 /*

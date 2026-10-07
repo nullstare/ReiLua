@@ -252,7 +252,7 @@ function Container:setControlPos( control )
 	local styles = self.styles.container
 	local spacing = styles.spacing
 
-	control:setPosition( self._ctrPos )
+	control:setPosition( self._ctrPos + ( control.position or Vector2:temp() ) )
 
 	local fillType = styles.fillType
 
@@ -319,11 +319,6 @@ function Container:draw()
 		self.gui:draw()
 		RL.rlPopMatrix()
 	RL.EndScissorMode()
-
-	-- RL.DrawRectangleLines( self.gui.view, RL.RED )
-	-- RL.DrawRectangleLines( self.view, RL.RED )
-	-- RL.DrawRectangleLines( self.content, RL.BLUE )
-	-- RL.DrawRectangleLines( clipRect, RL.GREEN )
 end
 
 function Container:setPosition( pos )
@@ -346,7 +341,7 @@ function Container:setPosition( pos )
 end
 
 function Container:setSize( size )
-	self.bounds:setSize( size )
+	self.bounds:setSizeV( size )
 
 	if self.callbacks.setSize then
 		self.callbacks.setSize( self )

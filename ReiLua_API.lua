@@ -1951,6 +1951,11 @@ function  RL.BeginScissorMode( rectange ) end
 ---@return any RL.EndScissorMode
 function  RL.EndScissorMode() end
 
+---Get current scissor mode rectangle. If not scissor mode return nil.
+---- Success return Rectangle or nil
+---@return any rect 
+function RL.GetScissorMode() end
+
 -- Core - Shader management functions
 
 ---Load shader from files and bind default locations.

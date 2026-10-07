@@ -5357,6 +5357,14 @@ End scissor mode
 
 ---
 
+> rect = RL.GetScissorMode()
+
+Get current scissor mode rectangle. If not scissor mode return nil.
+
+- Success return Rectangle or nil
+
+---
+
 ## Core - Shader management functions
 
 ---

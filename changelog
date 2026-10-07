@@ -19,6 +19,7 @@ DETAILED CHANGES:
 	- FIXED: Events on GLFW Windows.
 	- CHANGE: EXPORT_SYMBOLS for Linux and Windows. Removed other symbol based options at least for now.
 	- ADDED: Windows console build option.
+	- ADDED: GetScissorMode.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.9.0		Using raylib 5.5 and Forked Raygui 4.0

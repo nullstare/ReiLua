@@ -764,6 +764,8 @@ Enable scissor test
 int lrlglEnableScissorTest( lua_State* L ) {
 	rlEnableScissorTest();
 
+	state->isScissorMode = true;
+
 	return 0;
 }
 
@@ -775,6 +777,8 @@ Disable scissor test
 int lrlglDisableScissorTest( lua_State* L ) {
 	rlDisableScissorTest();
 
+	state->isScissorMode = false;
+
 	return 0;
 }
 
@@ -785,6 +789,9 @@ Scissor test
 */
 int lrlglScissor( lua_State* L ) {
 	Rectangle area = uluaGetRectangle( L, 1 );
+
+	state->isScissorMode = true;
+	state->scissorRect = area;
 	
 	rlScissor( area.x, area.y, area.width, area.height );
 

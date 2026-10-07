@@ -495,12 +495,15 @@ function TextInputBox:draw()
 
 	if self.text then
 		self._gui:drawText( self.text, self.bounds:addPosition( Vector2:temp( borderW - self._cursor.scrollPos, 0 ) ), styles, stylesOverlay )
+		-- self._gui:drawText( self.text, self.bounds, styles, stylesOverlay )
 	end
 
 	if self._editMode and styles.cursor.draw then
 		-- //TODO Draw to correct position when using text alignment.
 		RL.DrawRectangle( self._cursor.rect:addPosition( Vector2:temp( borderW + self.bounds.x - self._cursor.scrollPos, self.bounds.y ) ), RL.BLUE )
 	end
+
+	RL.DrawRectangle( RL.RED, self.view )
 end
 
 function TextInputBox:setPosition( pos )

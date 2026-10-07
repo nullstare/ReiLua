@@ -1,6 +1,7 @@
 #include "main.h"
 #include "state.h"
 #include "lua_core.h"
+#include "raylib.h"
 #include "textures.h"
 #include "models.h"
 
@@ -17,6 +18,8 @@ bool stateInit( int argn, const char** argc, const char* basePath ) {
 	state->lineSpacing = 2;
 	state->mouseOffset = (Vector2){ 0, 0 };
 	state->mouseScale = (Vector2){ 1, 1 };
+	state->isScissorMode = false;
+	state->scissorRect = (Rectangle){ 0, 0, 0, 0 };
 
 #if defined PLATFORM_DESKTOP_SDL2 || defined PLATFORM_DESKTOP_SDL3
 	state->SDL_eventQueue = malloc( PLATFORM_SDL_EVENT_QUEUE_LEN * sizeof( SDL_Event ) );

@@ -38,6 +38,7 @@ function InitGui()
 	Gui:include( require( "reigui.file_browser" ) )
 	Gui:include( require( "reigui.message_window" ) )
 	Gui:include( require( "reigui.check_box" ) )
+	Gui:include( require( "reigui.group_view" ) )
 
 	gui = Gui:new()
 
@@ -276,26 +277,16 @@ function InitGui()
 	-- Window.
 
 	local window = gui:newWindow( {
-		bounds = Rectangle:new( 360, 80, 256, 400 ),
+		bounds = Rectangle:new( 360, 80, 256, 360 ),
 		text = "Window",
-		-- draggable = false,
-		-- callbacks = {
-			-- close = function( self ) self:setVisible( false ) end,
-			-- grab = function( self ) self:setToTop() end,
-		-- },
 	} )
 
 	-- Spinner.
-
-	local spinnerStyle = Util.deepCopy( gui.Spinner.DEFAULT_STYLES )
-
-	Gui:setForAllStyles( spinnerStyle.textInput, "text.fontSize", fontSize * 2 )
 
 	local spinner = gui:newSpinner( {
 		bounds = Rectangle:new( 16, 316, 96, 32 ),
 		callbacks = {
 		},
-		styles = spinnerStyle
 	} )
 
 	-- Color panel.
@@ -342,18 +333,6 @@ function InitGui()
 		},
 	} )
 
-	local dropdown2 = container:addControl(
-		container.gui:newDropdown( {
-			bounds = Rectangle:new( 0, 0, 120, 24 ),
-			text = "Group",
-			mouseClose = false,
-			callbacks = {
-				released = function( this )
-					container:updateControls()
-				end
-			}
-		} )
-	)
 	local dropdownTexts = { "New", "Open", "Save", "Preferences", "Quit" }
 	local dropdownIcons = { RL.ICON_FILE_ADD, RL.ICON_FILE_OPEN, RL.ICON_FILE_SAVE, RL.ICON_GEAR_BIG, RL.ICON_EXIT }
 
@@ -381,19 +360,6 @@ function InitGui()
 				alignV = RL.TEXT_ALIGN_CENTER,
 			},
 		} )
-
-		container:addControl( dropdown2:addControl(
-			container.gui:newButton( {
-				bounds = Rectangle:new( 0, 0, 120, 20 ),
-				text = dropdownTexts[i],
-				visible = false,
-				callbacks = {
-					released = function( this )
-						print( dropdownTexts[i] )
-					end
-				}
-			} )
-		) )
 	end
 
 	dropdown:setButtonToTextWidth( 4, 4 )
@@ -552,15 +518,6 @@ function InitGui()
 		} )
 	)
 
-	-- local icon = {
-	-- 	iconId = RL.ICON_AUDIO,
-	-- 	offset = Vector2:new( 42, 0 ),
-	-- 	pixelSize = 1,
-	-- 	color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
-	-- 	alignH = RL.TEXT_ALIGN_LEFT,
-	-- 	alignV = RL.TEXT_ALIGN_TOP,
-	-- }
-
 	local listData = {
 		{ text = "Pencil", name = "pen", icon = RL.ICON_PENCIL },
 		{ text = "Brush", name = "brush", icon = RL.ICON_BRUSH_CLASSIC },
@@ -604,17 +561,49 @@ function InitGui()
 	)
 
 	list:updateList()
+	container:updateControls()
 
-	for i = 1, 30 do
-		container:addControl(
-			container.gui:newLabel( {
-				bounds = Rectangle:new( 0, 0, 120, 20 ),
-				text = "Kissa ".. i,
-			} )
-		)
+	-- Properties window.
+
+	local propertiesWin = gui:newWindow( {
+		bounds = Rectangle:new( 360, 480, 256, 332 ),
+		text = "Properties",
+	} )
+
+	-- Group view.
+
+	local groupView = gui:newGroupView( {
+		bounds = Rectangle:new( 360, 550, 256 - 16, 332 - 40 ),
+	} )
+
+	groupView:addGroup( "transform", "Transform" )
+
+	for _, axis in ipairs( { "x", "y", "z" } ) do
+		groupView:addToGroup( "transform", groupView.gui:newSpinner( {
+			bounds = Rectangle:new( 0, 0, 190, 24 ),
+			value = 0,
+			text = axis,
+		} ) )
 	end
 
-	container:updateControls()
+	groupView:addGroup( "misc", "Miscellaneous" )
+
+	groupView:addToGroup( "misc", groupView.gui:newTextInputBox( {
+		bounds = Rectangle:new( 0, 0, 190, 24 ),
+		text = "Text field",
+	} ) )
+
+	for i = 1, 10 do
+		groupView:addToGroup( "misc", groupView.gui:newLabel( {
+			bounds = Rectangle:new( 0, 0, 190, 24 ),
+			text = "Label "..i,
+		} ) )
+	end
+
+	-- Add Group view to properties window.
+	groupView.position = Vector2:new( 8, 32 )
+	propertiesWin:_addControl( groupView, "groupView" )
+	propertiesWin:setPosition( propertiesWin.bounds:getPosition() )
 
 	gui:setToBack( panel )
 end

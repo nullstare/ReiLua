@@ -72,6 +72,7 @@ int lcoreBeginBlendMode( lua_State* L );
 int lcoreEndBlendMode( lua_State* L );
 int lcoreBeginScissorMode( lua_State* L );
 int lcoreEndScissorMode( lua_State* L );
+int lcoreGetScissorMode( lua_State* L );
 /* Shader management functions. */
 int lcoreLoadShader( lua_State* L );
 int lcoreLoadShaderFromMemory( lua_State* L );

@@ -17,9 +17,13 @@ function Spinner.DEFAULT_STYLES_UPDATE()
 	Spinner.DEFAULT_STYLES = {
 		spinner = {
 			buttonWidth = 20,
+			textInputWidth = 40,
 			spacing = 2,
 		},
+		addButton = nil, -- Set from subButton.
 		subButton = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
+		textInput = Util.deepCopy( Gui.TextInputBox.DEFAULT_STYLES ),
+		label = Util.deepCopy( Gui.Label.DEFAULT_STYLES ),
 	}
 
 	Spinner.DEFAULT_STYLES.subButton.normal.icons = {
@@ -42,9 +46,12 @@ function Spinner.DEFAULT_STYLES_UPDATE()
 
 	-- Text input.
 
-	Spinner.DEFAULT_STYLES.textInput = Util.deepCopy( Gui.TextInputBox.DEFAULT_STYLES )
 	Gui:setForAllStyles( Spinner.DEFAULT_STYLES.textInput, "text.alignH", RL.TEXT_ALIGN_CENTER )
 	Gui:setForAllStyles( Spinner.DEFAULT_STYLES.textInput, "cursor.draw", false )
+
+	-- Label.
+
+	Gui:setForAllStyles( Spinner.DEFAULT_STYLES.label, "text.alignH", RL.TEXT_ALIGN_LEFT )
 end
 
 Spinner.DEFAULT_STYLES_UPDATE()
@@ -54,6 +61,7 @@ function Spinner:new( gui, t )
 	object._gui = gui
 
 	object.bounds = t.bounds and t.bounds:clone() or Rectangle:new()
+	object.text = t.text
 	object.value = t.value or 0
 	object.minValue = t.minValue or 0
 	object.maxValue = t.maxValue or 100
@@ -70,6 +78,7 @@ function Spinner:new( gui, t )
 		-- subButton = nil,
 		-- addButton = nil,
 		-- textInput = nil,
+		-- label = nil,
 	}
 	object._controlsArray = {} -- Controls in predefined order.
 
@@ -81,6 +90,7 @@ end
 
 function Spinner:createControls( t )
 	local styles = self.styles
+	local spacing = styles.spinner.spacing
 
 	-- Sub button.
 
@@ -99,6 +109,28 @@ function Spinner:createControls( t )
 	} )
 	self._controls.subButton.position = Vector2:new()
 
+	table.insert( self._controlsArray, self._controls.subButton )
+
+	-- Text Field.
+
+	self._controls.textInput = self._gui:newTextInputBox( {
+		bounds = Rectangle:new( 0, 0, styles.spinner.textInputWidth, self.bounds.height ),
+		text = tostring( self.value ),
+		callbacks = {
+			set = function( this )
+				self:setValue( tonumber( this.text ) )
+
+				if self.callbacks.set then
+					self.callbacks.set( self )
+				end
+			end,
+		},
+		styles = styles.textInput,
+	} )
+	self._controls.textInput.position = Vector2:new( styles.spinner.buttonWidth + spacing, 0 )
+
+	table.insert( self._controlsArray, self._controls.textInput )
+
 	-- Add button.
 
 	self._controls.addButton = self._gui:newButton( {
@@ -114,33 +146,20 @@ function Spinner:createControls( t )
 		},
 		styles = styles.addButton,
 	} )
-	self._controls.addButton.position = Vector2:new( self.bounds.width - styles.spinner.buttonWidth, 0 )
+	self._controls.addButton.position = Vector2:new( self._controls.textInput.position.x + styles.spinner.textInputWidth + spacing * 2, 0 )
 
-	-- Text Field.
+	table.insert( self._controlsArray, self._controls.addButton )
 
-	local spacing = styles.spinner.spacing
+	-- Label.
 
-	self._controls.textInput = self._gui:newTextInputBox( {
-		bounds = Rectangle:new( 0, 0, self.bounds.width - styles.spinner.buttonWidth * 2 - spacing * 2, self.bounds.height ),
-		text = tostring( self.value ),
-		callbacks = {
-			set = function( this )
-				self:setValue( tonumber( this.text ) )
-
-				if self.callbacks.set then
-					self.callbacks.set( self )
-				end
-			end,
-		},
-		styles = styles.textInput,
+	self._controls.label = self._gui:newLabel( {
+		bounds = Rectangle:new( 0, 0, self.bounds.width - self._controls.addButton.position.x - spacing, self.bounds.height ),
+		text = self.text,
+		styles = styles.label,
 	} )
-	self._controls.textInput.position = Vector2:new( styles.spinner.buttonWidth + spacing, 0 )
+	self._controls.label.position = Vector2:new( self._controls.addButton.position.x + styles.spinner.buttonWidth + spacing, 0 )
 
-	self._controlsArray = {
-		self._controls.subButton,
-		self._controls.addButton,
-		self._controls.textInput,
-	}
+	table.insert( self._controlsArray, self._controls.label )
 end
 
 function Spinner:setValue( value )
@@ -156,14 +175,16 @@ function Spinner:setValue( value )
 end
 
 function Spinner:setSize( size )
-	self.bounds:setSize( size )
+	self.bounds:setSizeV( size )
 
-	local ctrs = self._controls
+	if self._controlsArray then
+		for _, control in ipairs( self._controlsArray ) do
+			-- control:setSize( size )
+			control.bounds.height = size.y
+		end
+	end
 
-	ctrs.handle.bounds.width = size.x - ctrs.closeButton.bounds.width
-	ctrs.closeButton.position.x = ctrs.handle.bounds.width
-	ctrs.panel.bounds.width = size.x
-	ctrs.panel.bounds.height = size.y - ctrs.handle.bounds.height
+	self._controls.label.bounds.width = self.bounds.width - self._controls.addButton.position.x - self.styles.spinner.spacing
 
 	if self.callbacks.setSize then
 		self.callbacks.setSize( self )

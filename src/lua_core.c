@@ -1770,6 +1770,7 @@ void luaRegister() {
 	assignGlobalFunction( "EndBlendMode", lcoreEndBlendMode );
 	assignGlobalFunction( "BeginScissorMode", lcoreBeginScissorMode );
 	assignGlobalFunction( "EndScissorMode", lcoreEndScissorMode );
+	assignGlobalFunction( "GetScissorMode", lcoreGetScissorMode );
 		/* Shader management functions. */
 	assignGlobalFunction( "LoadShader", lcoreLoadShader );
 	assignGlobalFunction( "LoadShaderFromMemory", lcoreLoadShaderFromMemory );

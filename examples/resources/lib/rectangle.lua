@@ -211,7 +211,7 @@ function Rectangle:fit( rec )
 	)
 end
 
--- If rectangle is fully inside another rectangle
+-- If rectangle is fully inside another rectangle.
 function Rectangle:isInside( rec )
 	return rec.x <= self.x and self.x + self.width <= rec.x + rec.width
 	and rec.y <= self.y and self.y + self.height <= rec.y + rec.height
@@ -256,7 +256,7 @@ function Rectangle:checkCollisionPoint( point )
 end
 
 function Rectangle:getCollisionRec( rec )
-	return Rectangle:new( RL.GetCollisionRec( self, rec ) )
+	return Rectangle:newT( RL.GetCollisionRec( self, rec ) )
 end
 
 -- Temp pre generated objects to avoid "slow" table generation.

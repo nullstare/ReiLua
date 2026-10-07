@@ -107,7 +107,7 @@ function CheckBox:createControls( t )
 end
 
 function CheckBox:setSize( size )
-	self.bounds:setSize( size )
+	self.bounds:setSizeV( size )
 
 	local styles = self.styles
 	local ctrs = self._controls

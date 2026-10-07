@@ -490,7 +490,7 @@ function FileBrowser:apply( path )
 end
 
 function FileBrowser:setSize( size )
-	self.bounds:setSize( size )
+	self.bounds:setSizeV( size )
 
 	if self.callbacks.setSize then
 		self.callbacks.setSize( self )

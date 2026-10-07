@@ -485,10 +485,34 @@ end
 
 -- Draw functions.
 
+function Gui:beginScissorMode( crop )
+	crop = crop:subPosition( self.mouseOffset )
+
+	local scissorRect = RL.GetScissorMode()
+
+	if scissorRect then
+		crop = crop:getCollisionRec( scissorRect )
+	end
+
+	RL.BeginScissorMode( crop )
+
+	return crop, scissorRect
+end
+
+function Gui:endScissorMode( scissorRect )
+	if scissorRect then
+		RL.BeginScissorMode( scissorRect )
+		self._scissorRect = scissorRect
+	else
+		RL.EndScissorMode()
+		self._scissorRect = nil
+	end
+end
+
 function Gui:drawRectangle( rect, styles, stylesOverlay )
 	local drawRectangleCallback = stylesOverlay and stylesOverlay.drawRectangleCallback or styles.drawRectangleCallback
 	local textures = stylesOverlay and stylesOverlay.textures or styles.textures
-	local crop = ( stylesOverlay and stylesOverlay.base and stylesOverlay.base.crop ) or styles.crop
+	local crop = ( stylesOverlay and stylesOverlay.base and stylesOverlay.base.crop ) or ( styles.base and styles.base.crop )
 	local borderWidth = ( stylesOverlay and stylesOverlay.border and stylesOverlay.border.width ) or styles.border.width
 	local baseGradient = ( stylesOverlay and stylesOverlay.base and stylesOverlay.base.gradient ) or styles.base.gradient
 	local baseColor = ( stylesOverlay and stylesOverlay.base and stylesOverlay.base.color ) or styles.base.color
@@ -502,8 +526,10 @@ function Gui:drawRectangle( rect, styles, stylesOverlay )
 		return
 	end
 
+	local scissorRect = nil
+
 	if crop then
-		RL.BeginScissorMode( crop )
+		crop, scissorRect = self:beginScissorMode( crop )
 	end
 
 	local drawCallbacks = {
@@ -529,16 +555,18 @@ function Gui:drawRectangle( rect, styles, stylesOverlay )
 	end
 
 	if crop then
-		RL.EndScissorMode()
+		self:endScissorMode( scissorRect )
 	end
 end
 
 function Gui:drawTexturedRectangle( rect, styles, stylesOverlay )
-	local crop = ( stylesOverlay and stylesOverlay.base and stylesOverlay.base.crop ) or styles.crop
+	local crop = ( stylesOverlay and stylesOverlay.base and stylesOverlay.base.crop ) or ( styles.base and styles.base.crop )
 	local textures = stylesOverlay and stylesOverlay.textures or styles.textures
 
+	local scissorRect = nil
+
 	if crop then
-		RL.BeginScissorMode( crop )
+		crop, scissorRect = self:beginScissorMode( crop )
 	end
 
 	for _, tex in ipairs( textures ) do
@@ -566,7 +594,7 @@ function Gui:drawTexturedRectangle( rect, styles, stylesOverlay )
 	end
 
 	if crop then
-		RL.EndScissorMode()
+		self:endScissorMode( scissorRect )
 	end
 end
 
@@ -604,14 +632,16 @@ function Gui:drawText( text, bounds, styles, stylesOverlay )
 	pos.x = RL.Round( pos.x )
 	pos.y = RL.Round( pos.y )
 
+	local scissorRect = nil
+
 	if crop then
-		RL.BeginScissorMode( crop )
+		crop, scissorRect = self:beginScissorMode( crop )
 	end
 
 	RL.DrawTextEx( font, text, pos, fontSize, spacing, color )
 
 	if crop then
-		RL.EndScissorMode()
+		self:endScissorMode( scissorRect )
 	end
 end
 
@@ -620,8 +650,10 @@ function Gui:drawTextBoxed( text, bounds, offset, styles, stylesOverlay )
 	local soText = stylesOverlay and stylesOverlay.text
 	local crop = ( soText and soText.crop ) or sText.crop
 
+	local scissorRect = nil
+
 	if crop then
-		RL.BeginScissorMode( crop )
+		crop, scissorRect = self:beginScissorMode( crop )
 	end
 
 	local font = soText and soText.font or sText.font
@@ -637,14 +669,21 @@ function Gui:drawTextBoxed( text, bounds, offset, styles, stylesOverlay )
 	mouseCharId, offset = RL.DrawTextBoxed( font, text, bounds, fontSize, spacing, wordWrap, color, limitHeight, offset, tabSize )
 
 	if crop then
-		RL.EndScissorMode()
+		self:endScissorMode( scissorRect )
 	end
 
 	return mouseCharId, offset
 end
 
 function Gui:drawIcons( bounds, styles, stylesOverlay )
+	local crop = ( stylesOverlay and stylesOverlay.base and stylesOverlay.base.crop ) or ( styles.base and styles.base.crop )
 	local icons = stylesOverlay and stylesOverlay.icons or styles.icons
+
+	local scissorRect = nil
+
+	if crop then
+		crop, scissorRect = self:beginScissorMode( crop )
+	end
 
 	for _, icon in ipairs( icons ) do
 		local iconSize = GUI_ICON_SIZE * icon.pixelSize
@@ -663,6 +702,10 @@ function Gui:drawIcons( bounds, styles, stylesOverlay )
 		end
 
 		RL.GuiDrawIcon( icon.iconId, pos + icon.offset, icon.pixelSize, icon.color )
+	end
+
+	if crop then
+		self:endScissorMode( scissorRect )
 	end
 end
 

@@ -17,6 +17,8 @@ function Dropdown.DEFAULT_STYLES_UPDATE()
 			trimToTextWidth = false,
 			trimMarginLeft = 4,
 			trimMarginRight = 4,
+			alignH = RL.TEXT_ALIGN_LEFT,
+			accumPosY = true,
 		},
 		button = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
 	}
@@ -88,7 +90,7 @@ function Dropdown:createControls()
 end
 
 function Dropdown:updateControls()
-	self._ctrPos:set( 0, self._controls.button.bounds.height )
+	self._ctrPos:set( 0, self.bounds.height )
 
 	for _, control in ipairs( self.controls ) do
 		self:setControlPos( control )
@@ -99,8 +101,17 @@ end
 function Dropdown:setControlPos( control )
 	local styles = self.styles.dropdown
 
-	control.position = self._ctrPos:clone()
+	-- control.position = self._ctrPos:clone()
+	-- control.position = Vector2:new()
+	control.position = styles.accumPosY and self._ctrPos:clone() or Vector2:new()
+
 	self._ctrPos.y = self._ctrPos.y + control.bounds.height + styles.spacing
+
+	if styles.alignH == RL.TEXT_ALIGN_RIGHT then
+		control.position.x = self.bounds.width - control.bounds.width
+	elseif styles.alignH == RL.TEXT_ALIGN_CENTER then
+		control.position.x = RL.Round( self.bounds.width / 2 - control.bounds.width / 2 )
+	end
 end
 
 function Dropdown:addControl( control, index )
@@ -116,14 +127,16 @@ end
 function Dropdown:setButtonToTextWidth( leftMargin, rightMargin )
 	local button = self._controls.button
 	local textSize = self._gui:measureText( button.text, button.styles.normal, button.stylesOverlay.normal )
+	local size = Vector2:new( textSize.x + ( leftMargin or 0 ) + ( rightMargin or 0 ), button.bounds.height )
 
 	if Util.tableLen( button.stylesOverlay ) == 0 then
 		button.stylesOverlay = self._gui:getDummyStyles()
 	end
 
-	button:setSize( Vector2:new( textSize.x + ( leftMargin or 0 ) + ( rightMargin or 0 ), button.bounds.height ) )
 	self._gui:setForAllStyles( button.stylesOverlay, "text.alignH", RL.TEXT_ALIGN_LEFT )
 	self._gui:setForAllStyles( button.stylesOverlay, "text.offset", Vector2:new( leftMargin or 0, 0 ) )
+
+	self:setSize( size )
 end
 
 function Dropdown:setControlsToTextWidth( leftMargin, rightMargin )
@@ -172,10 +185,6 @@ function Dropdown:update( delta )
 	end
 end
 
--- function Dropdown:draw()
-	-- RL.DrawRectangleLines( self.contentBounds, RL.RED )
--- end
-
 function Dropdown:showContent( visible )
 	self._controls.button.toggle = visible
 	self.toggle = visible
@@ -208,7 +217,7 @@ function Dropdown:setPosition( pos )
 	for _, control in ipairs( self._controlsArray ) do
 		control:setPosition( pos + control.position or Vector2:temp() )
 	end
-	for i, control in pairs( self.controls ) do
+	for _, control in pairs( self.controls ) do
 		control:setPosition( pos + control.position or Vector2:temp() )
 
 		if self.mouseClose then

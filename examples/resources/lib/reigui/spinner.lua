@@ -2,7 +2,7 @@ local Util = Util or require( "utillib" )
 local Rectangle = Rectangle or require( "rectangle" )
 local Vector2 = Vector2 or require( "vector2" )
 local Color = Color or require( "color" )
-local Gui = Gui or require( "reigui/gui" )
+local Gui = Gui or require( "reigui.gui" )
 
 -- Spinner control.
 
@@ -17,7 +17,7 @@ function Spinner.DEFAULT_STYLES_UPDATE()
 	Spinner.DEFAULT_STYLES = {
 		spinner = {
 			buttonWidth = 20,
-			textInputWidth = 40,
+			textInputWidth = nil, -- Set this to have fixed size and reserve rest of the bounds.width for text.
 			spacing = 2,
 		},
 		addButton = nil, -- Set from subButton.
@@ -113,8 +113,11 @@ function Spinner:createControls( t )
 
 	-- Text Field.
 
+	local textFieldWidthStyle = self._gui:getStyle( "spinner.textInputWidth", self.styles, self.stylesOverlay )
+	local textFieldWidth = textFieldWidthStyle or ( self.bounds.width - styles.spinner.buttonWidth * 2 - spacing * 2 )
+
 	self._controls.textInput = self._gui:newTextInputBox( {
-		bounds = Rectangle:new( 0, 0, styles.spinner.textInputWidth, self.bounds.height ),
+		bounds = Rectangle:new( 0, 0, textFieldWidth, self.bounds.height ),
 		text = tostring( self.value ),
 		callbacks = {
 			set = function( this )
@@ -146,7 +149,9 @@ function Spinner:createControls( t )
 		},
 		styles = styles.addButton,
 	} )
-	self._controls.addButton.position = Vector2:new( self._controls.textInput.position.x + styles.spinner.textInputWidth + spacing * 2, 0 )
+	-- self._controls.addButton.position = Vector2:new( self._controls.textInput.position.x + styles.spinner.textInputWidth + spacing * 2, 0 )
+	-- self._controls.addButton.position = Vector2:new( self._controls.textInput.position.x + textFieldWidth + spacing * 2, 0 )
+	self._controls.addButton.position = Vector2:new( self._controls.textInput.position.x + textFieldWidth + spacing, 0 )
 
 	table.insert( self._controlsArray, self._controls.addButton )
 

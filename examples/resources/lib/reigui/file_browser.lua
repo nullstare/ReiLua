@@ -1,7 +1,7 @@
 local Util = Util or require( "utillib" )
 local Rectangle = Rectangle or require( "rectangle" )
 local Vector2 = Vector2 or require( "vector2" )
-local Gui = Gui or require( "reigui/gui" )
+local Gui = Gui or require( "reigui.gui" )
 
 local FileBrowser = {}
 local metatable = {
@@ -37,7 +37,7 @@ function FileBrowser.DEFAULT_STYLES_UPDATE()
 			padding = 8,
 			spacing = 4,
 			iconButtonSize = Vector2:new( 28 ),
-			textButtonSize = Vector2:new( 72, 28 ),
+			textButtonSize = Vector2:new( 100, 28 ),
 			fileButtonHeight = 24,
 			iconColor = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
 		},

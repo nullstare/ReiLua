@@ -48,6 +48,7 @@ function GuiControl:setLocked( locked )
 end
 
 function GuiControl:setPosition( pos )
+	pos = pos:round()
 	self.bounds.x = pos.x
 	self.bounds.y = pos.y
 
@@ -74,6 +75,14 @@ function GuiControl:setSize( size )
 	if self.callbacks.setSize then
 		self.callbacks.setSize( self, size )
 	end
+end
+
+function GuiControl:getPosition()
+	return self.bounds:getPosition()
+end
+
+function GuiControl:getSize()
+	return self.bounds:getSize()
 end
 
 function GuiControl:setToTop()
@@ -199,6 +208,16 @@ function GUI_DEFAULT_STYLES_UPDATE()
 				padding = 2,
 			}
 		},
+	}
+	GUI_DEFAULT_ICONS = {
+		{
+			iconId = RL.ICON_FOLDER_FILE_OPEN,
+			offset = Vector2:new( 0, 0 ),
+			pixelSize = 1,
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
+			alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
+			alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
+		}
 	}
 end
 
@@ -561,7 +580,12 @@ end
 
 function Gui:drawTexturedRectangle( rect, styles, stylesOverlay )
 	local crop = ( stylesOverlay and stylesOverlay.base and stylesOverlay.base.crop ) or ( styles.base and styles.base.crop )
-	local textures = stylesOverlay and stylesOverlay.textures or styles.textures
+	local textures = styles.textures or stylesOverlay or stylesOverlay.textures
+	local texturesOverlay = stylesOverlay and stylesOverlay.textures
+
+	if not textures then
+		return
+	end
 
 	local scissorRect = nil
 
@@ -569,27 +593,34 @@ function Gui:drawTexturedRectangle( rect, styles, stylesOverlay )
 		crop, scissorRect = self:beginScissorMode( crop )
 	end
 
-	for _, tex in ipairs( textures ) do
-		local dest = tex.dest and tex.dest:addPosition( rect:getPosition() ) or rect
+	for i, tex in ipairs( textures ) do
+		local texture = texturesOverlay and texturesOverlay[i] and texturesOverlay[i].texture or tex.texture
+		local nPatchInfo = texturesOverlay and texturesOverlay[i] and texturesOverlay[i].nPatchInfo or tex.nPatchInfo
+		local nPatchRepeat = texturesOverlay and texturesOverlay[i] and texturesOverlay[i].nPatchRepeat or tex.nPatchRepeat
+		local source = texturesOverlay and texturesOverlay[i] and texturesOverlay[i].source or tex.source
+		local dest = texturesOverlay and texturesOverlay[i] and texturesOverlay[i].dest or tex.dest
+		local color = texturesOverlay and texturesOverlay[i] and texturesOverlay[i].color or tex.color
 
-		if tex.nPatchInfo then
-			if tex.nPatchRepeat then
+		dest = dest and dest:addPosition( rect:getPosition() ) or rect
+
+		if nPatchInfo then
+			if nPatchRepeat then
 				RL.DrawTextureNPatchRepeat(
-					tex.texture,
-					tex.nPatchInfo,
+					texture,
+					nPatchInfo,
 					dest, { 0, 0 }, 0,
-					tex.color
+					color
 				)
 			else
 				RL.DrawTextureNPatch(
-					tex.texture,
-					tex.nPatchInfo,
+					texture,
+					nPatchInfo,
 					dest, { 0, 0 }, 0,
-					tex.color
+					color
 				)
 			end
 		else
-			RL.DrawTexturePro( tex.texture, tex.source, dest, { 0, 0 }, 0, tex.color )
+			RL.DrawTexturePro( texture, source, dest, { 0, 0 }, 0, color )
 		end
 	end
 
@@ -677,7 +708,12 @@ end
 
 function Gui:drawIcons( bounds, styles, stylesOverlay )
 	local crop = ( stylesOverlay and stylesOverlay.base and stylesOverlay.base.crop ) or ( styles.base and styles.base.crop )
-	local icons = stylesOverlay and stylesOverlay.icons or styles.icons
+	local icons = styles.icons or stylesOverlay or stylesOverlay.icons
+	local iconsOverlay = stylesOverlay and stylesOverlay.icons
+
+	if not icons then
+		return
+	end
 
 	local scissorRect = nil
 
@@ -685,23 +721,30 @@ function Gui:drawIcons( bounds, styles, stylesOverlay )
 		crop, scissorRect = self:beginScissorMode( crop )
 	end
 
-	for _, icon in ipairs( icons ) do
+	for i, icon in ipairs( icons ) do
+		local iconId = iconsOverlay and iconsOverlay[i] and iconsOverlay[i].iconId or icon.iconId
+		local pixelSize = iconsOverlay and iconsOverlay[i] and iconsOverlay[i].pixelSize or icon.pixelSize
+		local alignH = iconsOverlay and iconsOverlay[i] and iconsOverlay[i].alignH or icon.alignH
+		local alignV = iconsOverlay and iconsOverlay[i] and iconsOverlay[i].alignV or icon.alignV
+		local offset = iconsOverlay and iconsOverlay[i] and iconsOverlay[i].offset or icon.offset
+		local color = iconsOverlay and iconsOverlay[i] and iconsOverlay[i].color or icon.color
+
 		local iconSize = GUI_ICON_SIZE * icon.pixelSize
 		local pos = bounds:getPosition()
 
-		if icon.alignH == RL.TEXT_ALIGN_MIDDLE then
+		if alignH == RL.TEXT_ALIGN_MIDDLE then
 			pos.x = bounds.x + bounds.width / 2 - iconSize / 2
-		elseif icon.alignH == RL.TEXT_ALIGN_RIGHT then
+		elseif alignH == RL.TEXT_ALIGN_RIGHT then
 			pos.x = bounds.x + bounds.width - iconSize
 		end
 
-		if icon.alignV == RL.TEXT_ALIGN_MIDDLE then
+		if alignV == RL.TEXT_ALIGN_MIDDLE then
 			pos.y = bounds.y + bounds.height / 2 - iconSize / 2
-		elseif icon.alignV == RL.TEXT_ALIGN_BOTTOM then
+		elseif alignV == RL.TEXT_ALIGN_BOTTOM then
 			pos.y = bounds.y + bounds.height - iconSize
 		end
 
-		RL.GuiDrawIcon( icon.iconId, pos + icon.offset, icon.pixelSize, icon.color )
+		RL.GuiDrawIcon( iconId, pos + offset, pixelSize, color )
 	end
 
 	if crop then

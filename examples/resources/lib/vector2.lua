@@ -183,6 +183,20 @@ function Vector2:lerp( v2, value )
 	return Vector2:newT( RL.Vector2Lerp( self, v2, value ) )
 end
 
+function Vector2:angleLerpDeg( v2, value )
+	return Vector2:new(
+		Util.angleLerpDeg( self.x, v2.x, value ),
+		Util.angleLerpDeg( self.y, v2.y, value )
+	)
+end
+
+function Vector2:angleLerpRad( v2, value )
+	return Vector2:new(
+		Util.angleLerpRad( self.x, v2.x, value ),
+		Util.angleLerpRad( self.y, v2.y, value )
+	)
+end
+
 function Vector2:reflect( normal )
 	return Vector2:newT( RL.Vector2Reflect( self, normal ) )
 end
@@ -213,6 +227,17 @@ end
 
 function Vector2:sign()
 	return Vector2:new( RL.Sign( self.x ), RL.Sign( self.y ) )
+end
+
+function Vector2:area()
+	return self.x * self.y
+end
+
+-- Returns the integral part and the fractional part.
+function Vector2:modf()
+	local integral = self:floor()
+
+	return integral, self - integral
 end
 
 function Vector2:addEq( v2 )

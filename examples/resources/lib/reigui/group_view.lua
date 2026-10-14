@@ -1,7 +1,7 @@
 local Util = Util or require( "utillib" )
 local Rectangle = Rectangle or require( "rectangle" )
 local Vector2 = Vector2 or require( "vector2" )
-local Gui = Gui or require( "reigui/gui" )
+local Gui = Gui or require( "reigui.gui" )
 
 -- GroupView control.
 

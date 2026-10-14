@@ -1,7 +1,7 @@
 local Util = Util or require( "utillib" )
 local Rectangle = Rectangle or require( "rectangle" )
 local Vector2 = Vector2 or require( "vector2" )
-local Gui = Gui or require( "reigui/gui" )
+local Gui = Reigui or require( "reigui.gui" )
 
 local Dropdown = {}
 local metatable = {
@@ -21,7 +21,10 @@ function Dropdown.DEFAULT_STYLES_UPDATE()
 			accumPosY = true,
 		},
 		button = Util.deepCopy( Gui.Button.DEFAULT_STYLES ),
+
 	}
+
+	-- Gui:setForAllStyles( Dropdown.DEFAULT_STYLES.button, "icons", GUI_DEFAULT_ICONS )
 end
 
 Dropdown.DEFAULT_STYLES_UPDATE()
@@ -126,8 +129,9 @@ end
 
 function Dropdown:setButtonToTextWidth( leftMargin, rightMargin )
 	local button = self._controls.button
+	local padding = self._gui:getStyle( "text.padding", button.styles.normal, button.stylesOverlay.normal )
 	local textSize = self._gui:measureText( button.text, button.styles.normal, button.stylesOverlay.normal )
-	local size = Vector2:new( textSize.x + ( leftMargin or 0 ) + ( rightMargin or 0 ), button.bounds.height )
+	local size = Vector2:new( textSize.x + ( leftMargin or 0 ) + ( rightMargin or 0 ) + padding * 2, button.bounds.height )
 
 	if Util.tableLen( button.stylesOverlay ) == 0 then
 		button.stylesOverlay = self._gui:getDummyStyles()
@@ -144,18 +148,19 @@ function Dropdown:setControlsToTextWidth( leftMargin, rightMargin )
 	-- Measure widest.
 	for _, control in ipairs( self.controls ) do
 		if control.text then
+			local padding = self._gui:getStyle( "text.padding", control.styles.normal, control.stylesOverlay.normal )
 			local textSize = self._gui:measureText( control.text, control.styles.normal, control.stylesOverlay.normal )
 
 			maxWidth = math.max(
 				maxWidth,
-				textSize.x + ( leftMargin or 0 ) + ( rightMargin or 0 )
+				textSize.x + ( leftMargin or 0 ) + ( rightMargin or 0 ) + padding * 2
 			)
 		end
 	end
 	-- Set widths.
 	for _, control in ipairs( self.controls ) do
 		control:setSize( Vector2:new( maxWidth, control.bounds.height ) )
-		
+
 		if Util.tableLen( control.stylesOverlay ) == 0 then
 			control.stylesOverlay = self._gui:getDummyStyles()
 		end

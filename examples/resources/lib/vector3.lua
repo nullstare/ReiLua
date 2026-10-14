@@ -171,6 +171,10 @@ function Vector3:lengthSqr()
 	return RL.Vector3LengthSqr( self )
 end
 
+function Vector3:distanceFromPlane( planePosition, planeNormal )
+	return RL.Vector3DotProduct( ( self - planePosition ), planeNormal )
+end
+
 function Vector3:dot( v2 )
 	return RL.Vector3DotProduct( self, v2 )
 end
@@ -216,6 +220,22 @@ function Vector3:lerp( v2, value )
 	return Vector3:newT( RL.Vector3Lerp( self, v2, value ) )
 end
 
+function Vector3:angleLerpDeg( v2, value )
+	return Vector3:new(
+		Util.angleLerpDeg( self.x, v2.x, value ),
+		Util.angleLerpDeg( self.y, v2.y, value ),
+		Util.angleLerpDeg( self.z, v2.z, value )
+	)
+end
+
+function Vector3:angleLerpRad( v2, value )
+	return Vector3:new(
+		Util.angleLerpRad( self.x, v2.x, value ),
+		Util.angleLerpRad( self.y, v2.y, value ),
+		Util.angleLerpRad( self.z, v2.z, value )
+	)
+end
+
 function Vector3:reflect( normal )
 	return Vector3:newT( RL.Vector3Reflect( self, normal ) )
 end
@@ -238,6 +258,17 @@ end
 
 function Vector3:sign()
 	return Vector3:new( RL.Sign( self.x ), RL.Sign( self.y ), RL.Sign( self.z ) )
+end
+
+function Vector3:area()
+	return self.x * self.y * self.z
+end
+
+-- Returns the integral part and the fractional part.
+function Vector3:modf()
+	local integral = self:floor()
+
+	return integral, self - integral
 end
 
 function Vector3:addEq( v2 )

@@ -3,7 +3,7 @@ local Rectangle = Rectangle or require( "rectangle" )
 local Vector2 = Vector2 or require( "vector2" )
 local Vector3 = Vector3 or require( "vector3" )
 local Color = Color or require( "color" )
-local Gui = Gui or require( "reigui/gui" )
+local Gui = Gui or require( "reigui.gui" )
 
 -- Window control.
 
@@ -220,6 +220,7 @@ function ColorPicker:createControls()
 
 	local pos = self._controls.colorPreview.position + Vector2:temp( 0, self._controls.colorPreview.bounds.height + spacing )
 	local spinnerSize = Vector2:new( 72, 8 * 3 ) -- Size of one checher in the texture.
+	-- local spinnerSize = Vector2:new( 30, 8 * 3 ) -- Size of one checher in the texture.
 	local charWidth = 10
 	barWidth = width - spinnerSize.x - spacing - charWidth
 

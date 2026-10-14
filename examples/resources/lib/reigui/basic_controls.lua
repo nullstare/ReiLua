@@ -2,7 +2,7 @@ local Util = Util or require( "utillib" )
 local Rectangle = Rectangle or require( "rectangle" )
 local Vector2 = Vector2 or require( "vector2" )
 local Color = Color or require( "color" )
-local Gui = Gui or require( "reigui/gui" )
+local Gui = Gui or require( "reigui.gui" )
 
 -- Label control.
 

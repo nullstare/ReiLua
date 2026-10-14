@@ -336,11 +336,24 @@ function InitGui()
 	local dropdownTexts = { "New", "Open", "Save", "Preferences", "Quit" }
 	local dropdownIcons = { RL.ICON_FILE_ADD, RL.ICON_FILE_OPEN, RL.ICON_FILE_SAVE, RL.ICON_GEAR_BIG, RL.ICON_EXIT }
 
+	local buttonStyle = Util.deepCopy( gui.Button.DEFAULT_STYLES )
+	local buttonIcons = {
+		{
+			iconId = RL.ICON_INFO,
+			offset = Vector2:new( 0, 0 ),
+			pixelSize = 1,
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
+			alignH = RL.TEXT_ALIGN_LEFT,
+			alignV = RL.TEXT_ALIGN_CENTER,
+		},
+	}
+
 	for i = 1, 5 do
 		local b = dropdown:addControl( gui:newButton( {
 			bounds = Rectangle:new( 0, 0, 0, 20 ),
 			text = dropdownTexts[i],
 			visible = false,
+			styles = buttonStyle,
 			stylesOverlay = gui:getDummyStyles(),
 			callbacks = {
 				released = function( this )
@@ -350,16 +363,8 @@ function InitGui()
 			}
 		} )	)
 
-		Gui:setForAllStyles( b.stylesOverlay, "icons", {
-			{
-				iconId = dropdownIcons[i],
-				offset = Vector2:new( 0, 0 ),
-				pixelSize = 1,
-				color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
-				alignH = RL.TEXT_ALIGN_LEFT,
-				alignV = RL.TEXT_ALIGN_CENTER,
-			},
-		} )
+		Gui:setForAllStyles( b.styles, "icons", buttonIcons )
+		Gui:setForAllStyles( b.stylesOverlay, "icons", { { iconId = dropdownIcons[i] } } )
 	end
 
 	dropdown:setButtonToTextWidth( 4, 4 )
@@ -576,11 +581,18 @@ function InitGui()
 		bounds = Rectangle:new( 360, 550, 256 - 16, 332 - 40 ),
 	} )
 
+	local spinnerOverlays = {
+		spinner = {
+			textInputWidth = 48
+		}
+	}
+
 	groupView:addGroup( "transform", "Transform" )
 
 	for _, axis in ipairs( { "x", "y", "z" } ) do
 		groupView:addToGroup( "transform", groupView.gui:newSpinner( {
 			bounds = Rectangle:new( 0, 0, 190, 24 ),
+			stylesOverlay = spinnerOverlays,
 			value = 0,
 			text = axis,
 		} ) )

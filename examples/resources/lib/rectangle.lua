@@ -195,6 +195,10 @@ function Rectangle:ceil()
 	return Rectangle:new( math.ceil( self.x ), math.ceil( self.y ), math.ceil( self.width ), math.ceil( self.height ) )
 end
 
+function Rectangle:round()
+	return Rectangle:new( RL.Round( self.x ), RL.Round( self.y ), RL.Round( self.width ), RL.Round( self.height ) )
+end
+
 function Rectangle:area()
 	return self.width * self.height
 end

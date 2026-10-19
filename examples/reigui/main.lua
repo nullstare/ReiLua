@@ -626,15 +626,5 @@ end
 
 function RL.draw()
 	RL.ClearBackground( { 50, 20, 75 } )
-
-	-- local font = RL.GuiGetFont()
-	-- local fontSize = RL.GetFontBaseSize( font )
-	-- local spacing = 1
-	-- local text = "Kissa\nkoira"
-	-- local textSize = Vector2:newT( RL.MeasureTextEx( font, text, fontSize, spacing ) )
-
-	-- RL.DrawTextEx( font, text, { 400, 600 }, fontSize, spacing, RL.WHITE )
-	-- RL.DrawRectangleLines( { 400, 600, textSize.x, textSize.y }, RL.RED )
-
 	gui:draw()
 end

@@ -20,7 +20,7 @@ set( CMAKE_C_STANDARD 99 ) # Requires C99 standard
 option( SHARED "Build using dynamic libraries." off )
 option( LUAJIT "Use LuaJIT." on )
 option( LUA_EVENTS "Enable Lua event callbacks (RL.event)." on )
-option( EXPORT_SYMBOLS "Expose all symbols. Usefull for Lua C libraries." off )
+option( EXPORT_SYMBOLS "Expose all symbols. Usefull for Lua C libraries." on )
 option( WINDOWS_CONSOLE "Window console." off )
 # option( EXPOSE_API_SYMBOLS "Expose dynamic symbols for API. Usefull for Lua C libraries." off )
 
@@ -125,7 +125,7 @@ else() # Desktop
 	elseif( APPLE )
 		set( CMAKE_C_COMPILER "clang" )
 
-		# EXPORT_SYMBOLS is not needed since Apple exports them by default.
+		# NOTE! EXPORT_SYMBOLS is not needed since Apple exports them by default.
 
 		# //TODO Linking to SDL.
 

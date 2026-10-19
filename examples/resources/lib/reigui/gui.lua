@@ -209,16 +209,6 @@ function GUI_DEFAULT_STYLES_UPDATE()
 			}
 		},
 	}
-	GUI_DEFAULT_ICONS = {
-		{
-			iconId = RL.ICON_FOLDER_FILE_OPEN,
-			offset = Vector2:new( 0, 0 ),
-			pixelSize = 1,
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
-			alignH = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT ),
-			alignV = RL.GuiGetStyle( RL.DEFAULT, RL.TEXT_ALIGNMENT_VERTICAL ),
-		}
-	}
 end
 
 GUI_DEFAULT_STYLES_UPDATE()
@@ -256,6 +246,7 @@ function Gui:new()
 	object._mousePos = Vector2:new()
 	object._mousePressPos = Vector2:new( -1, -1 ) -- Use to check if release and check are inside bounds.
 	object._isMousePressed = false
+	object._scissorRect = nil
 
 	return object
 end
@@ -504,27 +495,32 @@ end
 
 -- Draw functions.
 
-function Gui:beginScissorMode( crop )
-	crop = crop:subPosition( self.mouseOffset )
-
-	local scissorRect = RL.GetScissorMode()
-
-	if scissorRect then
-		crop = crop:getCollisionRec( scissorRect )
-	end
-
-	RL.BeginScissorMode( crop )
-
-	return crop, scissorRect
+function Gui:beginScissorModeGui( rect )
+	self._scissorRect = rect
+	RL.BeginScissorMode( rect )
 end
 
-function Gui:endScissorMode( scissorRect )
-	if scissorRect then
-		RL.BeginScissorMode( scissorRect )
-		self._scissorRect = scissorRect
+function Gui:endScissorModeGui()
+	self._scissorRect = nil
+	RL.EndScissorMode()
+end
+
+function Gui:beginScissorMode( crop )
+	if self._scissorRect then
+		-- crop needs to be transformed to global position for scissor test.
+		crop = crop:addPosition( self._scissorRect:getPosition() )
+		crop = crop:subPosition( self.view:getPosition() )
+		crop = crop:getCollisionRec( self._scissorRect )
+	end
+	
+	RL.BeginScissorMode( crop )
+end
+
+function Gui:endScissorMode()
+	if self._scissorRect then
+		RL.BeginScissorMode( self._scissorRect )
 	else
 		RL.EndScissorMode()
-		self._scissorRect = nil
 	end
 end
 
@@ -545,10 +541,8 @@ function Gui:drawRectangle( rect, styles, stylesOverlay )
 		return
 	end
 
-	local scissorRect = nil
-
 	if crop then
-		crop, scissorRect = self:beginScissorMode( crop )
+		self:beginScissorMode( crop )
 	end
 
 	local drawCallbacks = {
@@ -574,7 +568,7 @@ function Gui:drawRectangle( rect, styles, stylesOverlay )
 	end
 
 	if crop then
-		self:endScissorMode( scissorRect )
+		self:endScissorMode()
 	end
 end
 
@@ -587,10 +581,8 @@ function Gui:drawTexturedRectangle( rect, styles, stylesOverlay )
 		return
 	end
 
-	local scissorRect = nil
-
 	if crop then
-		crop, scissorRect = self:beginScissorMode( crop )
+		self:beginScissorMode( crop )
 	end
 
 	for i, tex in ipairs( textures ) do
@@ -625,7 +617,7 @@ function Gui:drawTexturedRectangle( rect, styles, stylesOverlay )
 	end
 
 	if crop then
-		self:endScissorMode( scissorRect )
+		self:endScissorMode()
 	end
 end
 
@@ -663,16 +655,14 @@ function Gui:drawText( text, bounds, styles, stylesOverlay )
 	pos.x = RL.Round( pos.x )
 	pos.y = RL.Round( pos.y )
 
-	local scissorRect = nil
-
 	if crop then
-		crop, scissorRect = self:beginScissorMode( crop )
+		self:beginScissorMode( crop )
 	end
 
 	RL.DrawTextEx( font, text, pos, fontSize, spacing, color )
 
 	if crop then
-		self:endScissorMode( scissorRect )
+		self:endScissorMode()
 	end
 end
 
@@ -681,10 +671,8 @@ function Gui:drawTextBoxed( text, bounds, offset, styles, stylesOverlay )
 	local soText = stylesOverlay and stylesOverlay.text
 	local crop = ( soText and soText.crop ) or sText.crop
 
-	local scissorRect = nil
-
 	if crop then
-		crop, scissorRect = self:beginScissorMode( crop )
+		self:beginScissorMode( crop )
 	end
 
 	local font = soText and soText.font or sText.font
@@ -700,7 +688,7 @@ function Gui:drawTextBoxed( text, bounds, offset, styles, stylesOverlay )
 	mouseCharId, offset = RL.DrawTextBoxed( font, text, bounds, fontSize, spacing, wordWrap, color, limitHeight, offset, tabSize )
 
 	if crop then
-		self:endScissorMode( scissorRect )
+		self:endScissorMode()
 	end
 
 	return mouseCharId, offset
@@ -715,10 +703,8 @@ function Gui:drawIcons( bounds, styles, stylesOverlay )
 		return
 	end
 
-	local scissorRect = nil
-
 	if crop then
-		crop, scissorRect = self:beginScissorMode( crop )
+		self:beginScissorMode( crop )
 	end
 
 	for i, icon in ipairs( icons ) do
@@ -748,7 +734,7 @@ function Gui:drawIcons( bounds, styles, stylesOverlay )
 	end
 
 	if crop then
-		self:endScissorMode( scissorRect )
+		self:endScissorMode()
 	end
 end
 

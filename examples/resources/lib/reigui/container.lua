@@ -312,13 +312,14 @@ function Container:draw()
 		panelBounds.width - styles.padding * 2,
 		panelBounds.height - styles.padding * 2
 	)
+	local offset = Vector2:new( RL.Round( self.view.x + self.scroll.x ), RL.Round( self.view.y + self.scroll.y ) )
 
-	RL.BeginScissorMode( clipRect )
+	self.gui:beginScissorModeGui( clipRect )
 		RL.rlPushMatrix()
-		RL.rlTranslatef( { RL.Round( self.view.x + self.scroll.x ), RL.Round( self.view.y + self.scroll.y ), 0 } )
+		RL.rlTranslatef( { offset.x, offset.y, 0 } )
 		self.gui:draw()
 		RL.rlPopMatrix()
-	RL.EndScissorMode()
+	self.gui:endScissorModeGui( clipRect )
 end
 
 function Container:setPosition( pos )

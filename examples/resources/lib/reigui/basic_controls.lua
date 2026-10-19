@@ -364,6 +364,8 @@ function TextInputBox:textEdit( delta )
 		if 0 < char then
 			local cpt = RL.LoadCodepoints( self.text )
 
+			print( cpt, self.charLimit )
+
 			if self.charLimit == nil or #cpt < self.charLimit then
 				table.insert( cpt, self._cursor.pos, char )
 				self._cursor.pos = RL.Clamp( self._cursor.pos + 1, 0, #cpt + 1 )
@@ -503,7 +505,7 @@ function TextInputBox:draw()
 		RL.DrawRectangle( self._cursor.rect:addPosition( Vector2:temp( borderW + self.bounds.x - self._cursor.scrollPos, self.bounds.y ) ), RL.BLUE )
 	end
 
-	RL.DrawRectangle( RL.RED, self.view )
+	-- RL.DrawRectangle( RL.RED, self.view )
 end
 
 function TextInputBox:setPosition( pos )

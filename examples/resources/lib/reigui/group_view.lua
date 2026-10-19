@@ -42,7 +42,7 @@ function GroupView.DEFAULT_STYLES_UPDATE()
 			iconId = RL.ICON_ARROW_DOWN_FILL,
 			offset = Vector2:new( 0, 0 ),
 			pixelSize = 1,
-			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_NORMAL ) ) ),
+			color = Color:newT( RL.GetColor( RL.GuiGetStyle( RL.BUTTON, RL.TEXT_COLOR_PRESSED ) ) ),
 			alignH = RL.TEXT_ALIGN_LEFT,
 			alignV = RL.TEXT_ALIGN_CENTER,
 		},

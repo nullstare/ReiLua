@@ -407,6 +407,12 @@ Set to support mouse passthrough, only supported when FLAG_WINDOW_UNDECORATED
 
 ---
 
+> FLAG_BORDERLESS_WINDOWED_MODE = 32768
+
+Set to run program in borderless windowed mode
+
+---
+
 > FLAG_MSAA_4X_HINT = 32
 
 Set to try enabling MSAA 4X
@@ -1641,6 +1647,18 @@ Shader location: vertex attribute: boneWeights
 
 ---
 
+> SHADER_LOC_MATRIX_BONETRANSFORMS = 28
+
+Shader location: matrix attribute: bone transforms (animation)
+
+---
+
+> SHADER_LOC_VERTEX_INSTANCETRANSFORM = 29
+
+Shader location: vertex attribute: instance transforms
+
+---
+
 
 assignGlobalInt = nil
 
@@ -1707,6 +1725,30 @@ Shader uniform type: ivec3 (3 int)
 > SHADER_UNIFORM_IVEC4 = 7
 
 Shader uniform type: ivec4 (4 int)
+
+---
+
+> SHADER_UNIFORM_UINT = 8
+
+Shader uniform type: unsigned int
+
+---
+
+> SHADER_UNIFORM_UIVEC2 = 9
+
+Shader uniform type: uivec2 (2 unsigned int)
+
+---
+
+> SHADER_UNIFORM_UIVEC3 = 10
+
+Shader uniform type: uivec3 (3 unsigned int)
+
+---
+
+> SHADER_UNIFORM_UIVEC4 = 11
+
+Shader uniform type: uivec4 (4 unsigned int)
 
 ---
 
@@ -1801,6 +1843,24 @@ Shader attribute type: vec4 (4 float)
 > PIXELFORMAT_UNCOMPRESSED_R32G32B32A32 = 10
 
 32*4 bpp (4 channels - float)
+
+---
+
+> PIXELFORMAT_UNCOMPRESSED_R16 = 11
+
+16 bpp (1 channel - half float)
+
+---
+
+> PIXELFORMAT_UNCOMPRESSED_R16G16B16 = 12
+
+16*3 bpp (3 channels - half float)
+
+---
+
+> PIXELFORMAT_UNCOMPRESSED_R16G16B16A16 = 13
+
+16*4 bpp (4 channels - half float)
 
 ---
 
@@ -2485,6 +2545,10 @@ Used also for: TEXTBOXMULTI
 ---
 
 > VALUEBOX = 10
+
+---
+
+> TABBAR = 11
 
 ---
 
@@ -3780,6 +3844,154 @@ ColorPicker right hue bar selector overflow
 
 ---
 
+> ICON_WARNING = 220
+
+---
+
+> ICON_HELP_BOX = 221
+
+---
+
+> ICON_INFO_BOX = 222
+
+---
+
+> ICON_PRIORITY = 223
+
+---
+
+> ICON_LAYERS_ISO = 224
+
+---
+
+> ICON_LAYERS2 = 225
+
+---
+
+> ICON_MLAYERS = 226
+
+---
+
+> ICON_MAPS = 227
+
+---
+
+> ICON_HOT = 228
+
+---
+
+> ICON_LABEL = 229
+
+---
+
+> ICON_NAME_ID = 230
+
+---
+
+> ICON_SLICING = 231
+
+---
+
+> ICON_MANUAL_CONTROL = 232
+
+---
+
+> ICON_COLLISION = 233
+
+---
+
+> ICON_CIRCLE_ADD = 234
+
+---
+
+> ICON_CIRCLE_ADD_FILL = 235
+
+---
+
+> ICON_CIRCLE_WARNING = 236
+
+---
+
+> ICON_CIRCLE_WARNING_FILL = 237
+
+---
+
+> ICON_BOX_MORE = 238
+
+---
+
+> ICON_BOX_MORE_FILL = 239
+
+---
+
+> ICON_BOX_MINUS = 240
+
+---
+
+> ICON_BOX_MINUS_FILL = 241
+
+---
+
+> ICON_UNION = 242
+
+---
+
+> ICON_INTERSECTION = 243
+
+---
+
+> ICON_DIFFERENCE = 244
+
+---
+
+> ICON_SPHERE = 245
+
+---
+
+> ICON_CYLINDER = 246
+
+---
+
+> ICON_CONE = 247
+
+---
+
+> ICON_ELLIPSOID = 248
+
+---
+
+> ICON_CAPSULE = 249
+
+---
+
+> ICON_FILETYPE_FONT = 250
+
+---
+
+> ICON_FILETYPE_3D = 251
+
+---
+
+> ICON_FILETYPE_CODE_XML = 252
+
+---
+
+> ICON_FILETYPE_CODE_C = 253
+
+---
+
+> ICON_FILETYPE_CODE_PYTHON = 254
+
+---
+
+> ICON_FILETYPE_CODE_JS = 255
+
+---
+
+> ICON_FILETYPE_ICON = 256
+
+---
+
 
 ## Defines - Light type
 > LIGHT_DIRECTIONAL = 0
@@ -4309,6 +4521,12 @@ RL_SUPPORT_MESH_GPU_SKINNING = nil
 
 
 ## Defines - RLGL GlVersion
+> RL_OPENGL_SOFTWARE = 0
+
+Software rendering
+
+---
+
 > RL_OPENGL_11 = 1
 
 OpenGL 1.1
@@ -4336,6 +4554,12 @@ OpenGL 4.3 (using GLSL 330)
 > RL_OPENGL_ES_20 = 5
 
 OpenGL ES 2.0 (GLSL 100)
+
+---
+
+> RL_OPENGL_ES_30 = 6
+
+OpenGL ES 3.0 (GLSL 300 es)
 
 ---
 

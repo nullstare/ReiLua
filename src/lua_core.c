@@ -491,6 +491,7 @@ static void defineGlobals() {
 	assignGlobalInt( FLAG_WINDOW_TRANSPARENT, "FLAG_WINDOW_TRANSPARENT" ); // Set to allow transparent framebuffer
 	assignGlobalInt( FLAG_WINDOW_HIGHDPI, "FLAG_WINDOW_HIGHDPI" ); // Set to support HighDPI
 	assignGlobalInt( FLAG_WINDOW_MOUSE_PASSTHROUGH, "FLAG_WINDOW_MOUSE_PASSTHROUGH" ); // Set to support mouse passthrough, only supported when FLAG_WINDOW_UNDECORATED
+	assignGlobalInt( FLAG_BORDERLESS_WINDOWED_MODE, "FLAG_BORDERLESS_WINDOWED_MODE" ); // Set to run program in borderless windowed mode
 	assignGlobalInt( FLAG_MSAA_4X_HINT, "FLAG_MSAA_4X_HINT" ); // Set to try enabling MSAA 4X
 	assignGlobalInt( FLAG_INTERLACED_HINT, "FLAG_INTERLACED_HINT" ); // Set to try enabling interlaced video format (for V3D)
 	/* Trace log level */
@@ -702,6 +703,8 @@ static void defineGlobals() {
 	assignGlobalInt( SHADER_LOC_MAP_BRDF, "SHADER_LOC_MAP_BRDF" ); // Shader location: sampler2d texture: brdf
 	assignGlobalInt( SHADER_LOC_VERTEX_BONEIDS, "SHADER_LOC_VERTEX_BONEIDS" ); // Shader location: vertex attribute: boneIds
 	assignGlobalInt( SHADER_LOC_VERTEX_BONEWEIGHTS, "SHADER_LOC_VERTEX_BONEWEIGHTS" ); // Shader location: vertex attribute: boneWeights
+	assignGlobalInt( SHADER_LOC_MATRIX_BONETRANSFORMS, "SHADER_LOC_MATRIX_BONETRANSFORMS" ); // Shader location: matrix attribute: bone transforms (animation)
+	assignGlobalInt( SHADER_LOC_VERTEX_INSTANCETRANSFORM, "SHADER_LOC_VERTEX_INSTANCETRANSFORM" ); // Shader location: vertex attribute: instance transforms
 	// assignGlobalInt( SHADER_LOC_BONE_MATRICES, "SHADER_LOC_BONE_MATRICES" ); // Shader location: array of matrices uniform: boneMatrices
 	assignGlobalInt( SHADER_LOC_MAP_DIFFUSE, "SHADER_LOC_MAP_DIFFUSE" ); // Shader location: sampler2d texture: diffuce (same as: SHADER_LOC_MAP_ALBEDO)
 	assignGlobalInt( SHADER_LOC_MAP_SPECULAR, "SHADER_LOC_MAP_SPECULAR" ); // Shader location: sampler2d texture: specular (same as: SHADER_LOC_MAP_METALNESS)
@@ -714,6 +717,10 @@ static void defineGlobals() {
 	assignGlobalInt( SHADER_UNIFORM_IVEC2, "SHADER_UNIFORM_IVEC2" ); // Shader uniform type: ivec2 (2 int)
 	assignGlobalInt( SHADER_UNIFORM_IVEC3, "SHADER_UNIFORM_IVEC3" ); // Shader uniform type: ivec3 (3 int)
 	assignGlobalInt( SHADER_UNIFORM_IVEC4, "SHADER_UNIFORM_IVEC4" ); // Shader uniform type: ivec4 (4 int)
+	assignGlobalInt( SHADER_UNIFORM_UINT, "SHADER_UNIFORM_UINT" ); // Shader uniform type: unsigned int
+	assignGlobalInt( SHADER_UNIFORM_UIVEC2, "SHADER_UNIFORM_UIVEC2" ); // Shader uniform type: uivec2 (2 unsigned int)
+	assignGlobalInt( SHADER_UNIFORM_UIVEC3, "SHADER_UNIFORM_UIVEC3" ); // Shader uniform type: uivec3 (3 unsigned int)
+	assignGlobalInt( SHADER_UNIFORM_UIVEC4, "SHADER_UNIFORM_UIVEC4" ); // Shader uniform type: uivec4 (4 unsigned int)
 	assignGlobalInt( SHADER_UNIFORM_SAMPLER2D, "SHADER_UNIFORM_SAMPLER2D" ); // Shader uniform type: sampler2d
 	/* Shader attribute data types */
 	assignGlobalInt( SHADER_ATTRIB_FLOAT, "SHADER_ATTRIB_FLOAT" ); // Shader attribute type: float
@@ -731,6 +738,9 @@ static void defineGlobals() {
 	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_R32, "PIXELFORMAT_UNCOMPRESSED_R32" ); // 32 bpp (1 channel - float)
 	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_R32G32B32, "PIXELFORMAT_UNCOMPRESSED_R32G32B32" ); // 32*3 bpp (3 channels - float)
 	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_R32G32B32A32, "PIXELFORMAT_UNCOMPRESSED_R32G32B32A32" ); // 32*4 bpp (4 channels - float)
+	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_R16, "PIXELFORMAT_UNCOMPRESSED_R16" ); // 16 bpp (1 channel - half float)
+	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_R16G16B16, "PIXELFORMAT_UNCOMPRESSED_R16G16B16" ); // 16*3 bpp (3 channels - half float)
+	assignGlobalInt( PIXELFORMAT_UNCOMPRESSED_R16G16B16A16, "PIXELFORMAT_UNCOMPRESSED_R16G16B16A16" ); // 16*4 bpp (4 channels - half float)
 	assignGlobalInt( PIXELFORMAT_COMPRESSED_DXT1_RGB, "PIXELFORMAT_COMPRESSED_DXT1_RGB" ); // 4 bpp (no alpha)
 	assignGlobalInt( PIXELFORMAT_COMPRESSED_DXT1_RGBA, "PIXELFORMAT_COMPRESSED_DXT1_RGBA" ); // 4 bpp (1 bit alpha)
 	assignGlobalInt( PIXELFORMAT_COMPRESSED_DXT3_RGBA, "PIXELFORMAT_COMPRESSED_DXT3_RGBA" ); // 8 bpp
@@ -864,6 +874,7 @@ static void defineGlobals() {
 	assignGlobalInt( DROPDOWNBOX, "DROPDOWNBOX" );
 	assignGlobalInt( TEXTBOX, "TEXTBOX" ); // Used also for: TEXTBOXMULTI
 	assignGlobalInt( VALUEBOX, "VALUEBOX" );
+	assignGlobalInt( TABBAR, "TABBAR" );
 	assignGlobalInt( LISTVIEW, "LISTVIEW" );
 	assignGlobalInt( COLORPICKER, "COLORPICKER" );
 	assignGlobalInt( SCROLLBAR, "SCROLLBAR" );
@@ -1165,6 +1176,43 @@ static void defineGlobals() {
 	assignGlobalInt( ICON_FOLDER, "ICON_FOLDER" );
 	assignGlobalInt( ICON_FILE, "ICON_FILE" );
 	assignGlobalInt( ICON_SAND_TIMER, "ICON_SAND_TIMER" );
+	assignGlobalInt( ICON_WARNING, "ICON_WARNING" );
+	assignGlobalInt( ICON_HELP_BOX, "ICON_HELP_BOX" );
+	assignGlobalInt( ICON_INFO_BOX, "ICON_INFO_BOX" );
+	assignGlobalInt( ICON_PRIORITY, "ICON_PRIORITY" );
+	assignGlobalInt( ICON_LAYERS_ISO, "ICON_LAYERS_ISO" );
+	assignGlobalInt( ICON_LAYERS2, "ICON_LAYERS2" );
+	assignGlobalInt( ICON_MLAYERS, "ICON_MLAYERS" );
+	assignGlobalInt( ICON_MAPS, "ICON_MAPS" );
+	assignGlobalInt( ICON_HOT, "ICON_HOT" );
+	assignGlobalInt( ICON_LABEL, "ICON_LABEL" );
+	assignGlobalInt( ICON_NAME_ID, "ICON_NAME_ID" );
+	assignGlobalInt( ICON_SLICING, "ICON_SLICING" );
+	assignGlobalInt( ICON_MANUAL_CONTROL, "ICON_MANUAL_CONTROL" );
+	assignGlobalInt( ICON_COLLISION, "ICON_COLLISION" );
+	assignGlobalInt( ICON_CIRCLE_ADD, "ICON_CIRCLE_ADD" );
+	assignGlobalInt( ICON_CIRCLE_ADD_FILL, "ICON_CIRCLE_ADD_FILL" );
+	assignGlobalInt( ICON_CIRCLE_WARNING, "ICON_CIRCLE_WARNING" );
+	assignGlobalInt( ICON_CIRCLE_WARNING_FILL, "ICON_CIRCLE_WARNING_FILL" );
+	assignGlobalInt( ICON_BOX_MORE, "ICON_BOX_MORE" );
+	assignGlobalInt( ICON_BOX_MORE_FILL, "ICON_BOX_MORE_FILL" );
+	assignGlobalInt( ICON_BOX_MINUS, "ICON_BOX_MINUS" );
+	assignGlobalInt( ICON_BOX_MINUS_FILL, "ICON_BOX_MINUS_FILL" );
+	assignGlobalInt( ICON_UNION, "ICON_UNION" );
+	assignGlobalInt( ICON_INTERSECTION, "ICON_INTERSECTION" );
+	assignGlobalInt( ICON_DIFFERENCE, "ICON_DIFFERENCE" );
+	assignGlobalInt( ICON_SPHERE, "ICON_SPHERE" );
+	assignGlobalInt( ICON_CYLINDER, "ICON_CYLINDER" );
+	assignGlobalInt( ICON_CONE, "ICON_CONE" );
+	assignGlobalInt( ICON_ELLIPSOID, "ICON_ELLIPSOID" );
+	assignGlobalInt( ICON_CAPSULE, "ICON_CAPSULE" );
+	assignGlobalInt( ICON_FILETYPE_FONT, "ICON_FILETYPE_FONT" );
+	assignGlobalInt( ICON_FILETYPE_3D, "ICON_FILETYPE_3D" );
+	assignGlobalInt( ICON_FILETYPE_CODE_XML, "ICON_FILETYPE_CODE_XML" );
+	assignGlobalInt( ICON_FILETYPE_CODE_C, "ICON_FILETYPE_CODE_C" );
+	assignGlobalInt( ICON_FILETYPE_CODE_PYTHON, "ICON_FILETYPE_CODE_PYTHON" );
+	assignGlobalInt( ICON_FILETYPE_CODE_JS, "ICON_FILETYPE_CODE_JS" );
+	assignGlobalInt( ICON_FILETYPE_ICON, "ICON_FILETYPE_ICON" );
 	/* Light type */
 	assignGlobalInt( LIGHT_DIRECTIONAL, "LIGHT_DIRECTIONAL" ); // Directional light
 	assignGlobalInt( LIGHT_POINT, "LIGHT_POINT" ); // Point light
@@ -1268,11 +1316,13 @@ static void defineGlobals() {
 	assignGlobalInt( RL_SUPPORT_MESH_GPU_SKINNING, "SUPPORT_GPU_SKINNING" );
 #endif
 	/* RLGL GlVersion */
+	assignGlobalInt( RL_OPENGL_SOFTWARE, "RL_OPENGL_SOFTWARE" ); // Software rendering
 	assignGlobalInt( RL_OPENGL_11, "RL_OPENGL_11" ); // OpenGL 1.1
 	assignGlobalInt( RL_OPENGL_21, "RL_OPENGL_21" ); // OpenGL 2.1 (GLSL 120)
 	assignGlobalInt( RL_OPENGL_33, "RL_OPENGL_33" ); // OpenGL 3.3 (GLSL 330)
 	assignGlobalInt( RL_OPENGL_43, "RL_OPENGL_43" ); // OpenGL 4.3 (using GLSL 330)
 	assignGlobalInt( RL_OPENGL_ES_20, "RL_OPENGL_ES_20" ); // OpenGL ES 2.0 (GLSL 100)
+	assignGlobalInt( RL_OPENGL_ES_30, "RL_OPENGL_ES_30" ); // OpenGL ES 3.0 (GLSL 300 es)
 	/* RLGL Framebuffer attachment type */
 	assignGlobalInt( RL_ATTACHMENT_COLOR_CHANNEL0, "RL_ATTACHMENT_COLOR_CHANNEL0" ); // Framebuffer attachment type: color 0
 	assignGlobalInt( RL_ATTACHMENT_COLOR_CHANNEL1, "RL_ATTACHMENT_COLOR_CHANNEL1" ); // Framebuffer attachment type: color 1

@@ -23,6 +23,8 @@ DETAILED CHANGES:
 	- ADDED: Windows console build option.
 	- ADDED: GetScissorMode.
 	- ADDED: GuiGetTextWidth, GuiTabBarEx and GuiValueBoxFloat.
+	- ADDED: Enum support for apiScanner.
+	- ADDED: Some missing enums.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.9.0		Using raylib 5.5 and Forked Raygui 4.0

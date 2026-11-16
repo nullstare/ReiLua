@@ -121,7 +121,7 @@ end
 function utillib.insertTable( to, from, pos )
 	if from[1] then
 		for i, v in ipairs( from ) do
-			table.insert( to, pos + i - 1 or #to + 1, v )
+			table.insert( to, ( pos and pos + i - 1 ) or #to + 1, v )
 		end
 	else
 		for key, v in pairs( from ) do
@@ -131,13 +131,13 @@ function utillib.insertTable( to, from, pos )
 end
 
 function utillib.slice( t, first, last )
-    local sub = {}
+	local sub = {}
 
-    for i = first, last or #t do
-        sub[ #sub + 1 ] = t[i]
-    end
+	for i = first, last or #t do
+		sub[ #sub + 1 ] = t[i]
+	end
 
-    return sub
+	return sub
 end
 
 function utillib.split( string, sep )
@@ -343,6 +343,8 @@ end
 function utillib.capitalize( str )
 	return string.format( "%s%s", str:sub( 1, 1 ):upper(), str:sub( 2, -1 ) )
 end
+
+-- //TODO Investigate if these loads security risk.
 
 function utillib.doString( str )
 	local func, err = load( str )

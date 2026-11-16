@@ -271,28 +271,28 @@ function Vector3:modf()
 	return integral, self - integral
 end
 
-function Vector3:addEq( v2 )
-	self.x = self.x + v2.x
-	self.y = self.y + v2.y
-	self.z = self.z + v2.z
+function Vector3:addEq( v )
+	self.x = self.x + v.x
+	self.y = self.y + v.y
+	self.z = self.z + v.z
 end
 
-function Vector3:subEq( v2 )
-	self.x = self.x - v2.x
-	self.y = self.y - v2.y
-	self.z = self.z - v2.z
+function Vector3:subEq( v )
+	self.x = self.x - v.x
+	self.y = self.y - v.y
+	self.z = self.z - v.z
 end
 
-function Vector3:mulEq( v2 )
-	self.x = self.x * v2.x
-	self.y = self.y * v2.y
-	self.z = self.z * v2.z
+function Vector3:mulEq( v )
+	self.x = self.x * v.x
+	self.y = self.y * v.y
+	self.z = self.z * v.z
 end
 
-function Vector3:divEq( v2 )
-	self.x = self.x / v2.x
-	self.y = self.y / v2.y
-	self.z = self.z / v2.z
+function Vector3:divEq( v )
+	self.x = self.x / v.x
+	self.y = self.y / v.y
+	self.z = self.z / v.z
 end
 
 -- Temp pre generated objects to avoid "slow" table generation.

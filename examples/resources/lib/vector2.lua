@@ -240,24 +240,24 @@ function Vector2:modf()
 	return integral, self - integral
 end
 
-function Vector2:addEq( v2 )
-	self.x = self.x + v2.x
-	self.y = self.y + v2.y
+function Vector2:addEq( v )
+	self.x = self.x + v.x
+	self.y = self.y + v.y
 end
 
-function Vector2:subEq( v2 )
-	self.x = self.x - v2.x
-	self.y = self.y - v2.y
+function Vector2:subEq( v )
+	self.x = self.x - v.x
+	self.y = self.y - v.y
 end
 
-function Vector2:mulEq( v2 )
-	self.x = self.x * v2.x
-	self.y = self.y * v2.y
+function Vector2:mulEq( v )
+	self.x = self.x * v.x
+	self.y = self.y * v.y
 end
 
-function Vector2:divEq( v2 )
-	self.x = self.x / v2.x
-	self.y = self.y / v2.y
+function Vector2:divEq( v )
+	self.x = self.x / v.x
+	self.y = self.y / v.y
 end
 
 -- Temp pre generated objects to avoid "slow" table generation.

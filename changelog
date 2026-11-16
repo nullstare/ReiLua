@@ -4,6 +4,8 @@ Release:	ReiLua version 1.0.0		Using raylib 6.0 and raygui 5.0
 KEY CHANGES:
 	- CHANGE: Switch to raylib 6.0.
 	- CHANGE: Switch to raygui 5.0.
+	- REMOVED: Lua GUI libraries: gui, raygui and ReiGui. ReiGui now lives in it's own repo https://github.com/nullstare/ReiGui
+	raygui.lua was quite hacky and relied on forked raygui.h and I did't want to maintain it anymore.
 
 DETAILED CHANGES:
 	- ADDED: Animation blending example.

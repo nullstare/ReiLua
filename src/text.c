@@ -713,7 +713,7 @@ int ltextMeasureTextBoxed( lua_State* L ) {
 		tabSize = luaL_checkinteger( L, 10 );
 	}
 	DrawTextBoxed( font, text, rec, fontSize, spacing, wordWrap, tint, limitHeight, &textOffset, tabSize, false );
-	Vector2 size = { rec.width, textOffset.y + state->lineSpacing };
+	Vector2 size = { rec.width, textOffset.y + fontSize };
 	uluaPushVector2( L, size );
 	uluaPushVector2( L, textOffset );
 

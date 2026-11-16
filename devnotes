@@ -1,11 +1,7 @@
 Current {
-	- Reigui.
-		- Tree View.
 }
 
 Backlog {
-	- Raygui lib
-		- Remove and replace with new gui library.
 	- Platform desktop SDL
 		- Text input not working on gui. Could this be Raylib issue?
 		- Haptic functions.

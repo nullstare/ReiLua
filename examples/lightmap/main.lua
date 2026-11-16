@@ -52,6 +52,7 @@ function RL.init()
 	RL.SetTextureFilter( tileTexture, RL.TEXTURE_FILTER_BILINEAR )
 	lightmap = RL.LoadTexture( RL.GetBasePath().."../resources/images/lightmap.png" )
 	RL.SetTextureFilter( lightmap, RL.TEXTURE_FILTER_BILINEAR )
+	RL.SetTextureWrap( lightmap, RL.TEXTURE_WRAP_CLAMP )
 
 	shader = RL.LoadShader( RL.GetBasePath().."../resources/shaders/glsl"..GLSL_VERSION.."/lightmap.vs",
 						    RL.GetBasePath().."../resources/shaders/glsl"..GLSL_VERSION.."/lightmap.fs" )

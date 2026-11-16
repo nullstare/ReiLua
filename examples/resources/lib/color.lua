@@ -33,10 +33,10 @@ local metatable = {
 		return 4
 	end,
 	__eq = function( c1, c2 )
-		return RL.FloatEquals( c1.r, c2.r )
-		and RL.FloatEquals( c1.g, c2.g )
-		and RL.FloatEquals( c1.b, c2.b )
-		and RL.FloatEquals( c1.a, c2.a )
+		return c1.r == c2.r
+		and c1.g == c2.g
+		and c1.b == c2.b
+		and c1.a == c2.a
 	end,
 	__concat = function( a, b )
 		return tostring( a )..tostring( b )
@@ -124,7 +124,7 @@ function Color:fromHex( hexValue )
 end
 
 function Color:getNormalized()
-	return RL.ColorNormalize( self )
+	return Color:newT( RL.ColorNormalize( self ) )
 end
 
 function Color:fromNormalized( normalized )
@@ -155,13 +155,21 @@ function Color:alphaBlend( dst, src, tint )
 	return Color:newT( RL.ColorAlphaBlend( dst, src, tint ) )
 end
 
+function Color:getWithFullAlpha()
+	return Color:new( self.r, self.g, self.b, 255 )
+end
+
+function Color:getWithZeroAlpha()
+	return Color:new( self.r, self.g, self.b, 0 )
+end
+
 function Color:lerp( color, amount )
-	return Color:temp(
-		RL.Lerp( self.r, color.r, amount ),
-		RL.Lerp( self.g, color.g, amount ),
-		RL.Lerp( self.b, color.b, amount ),
-		RL.Lerp( self.a, color.a, amount )
-	):round()
+	return Color:new(
+		RL.Round( RL.Lerp( self.r, color.r, amount ) ),
+		RL.Round( RL.Lerp( self.g, color.g, amount ) ),
+		RL.Round( RL.Lerp( self.b, color.b, amount ) ),
+		RL.Round( RL.Lerp( self.a, color.a, amount ) )
+	)
 end
 
 function Color:round()
@@ -170,6 +178,42 @@ function Color:round()
 		RL.Round( self.g ),
 		RL.Round( self.b ),
 		RL.Round( self.a )
+	)
+end
+
+function Color:floor()
+	return Color:new(
+		math.floor( self.r ),
+		math.floor( self.g ),
+		math.floor( self.b ),
+		math.floor( self.a )
+	)
+end
+
+function Color:ceil()
+	return Color:new(
+		math.ceil( self.r ),
+		math.ceil( self.g ),
+		math.ceil( self.b ),
+		math.ceil( self.a )
+	)
+end
+
+function Color:min( c )
+	return Color:new(
+		math.min( self.r, c.r ),
+		math.min( self.g, c.g ),
+		math.min( self.b, c.b ),
+		math.min( self.a, c.a )
+	)
+end
+
+function Color:max( c )
+	return Color:new(
+		math.max( self.r, c.r ),
+		math.max( self.g, c.g ),
+		math.max( self.b, c.b ),
+		math.max( self.a, c.a )
 	)
 end
 
@@ -184,6 +228,23 @@ end
 
 function Color:invert()
 	return Color:new( 255 - self.r, 255 - self.g, 255 - self.b, self.a )
+end
+
+function Color:maxValue()
+	return math.max( math.max( self.r, self.g ), math.max( self.b, self.a ) )
+end
+
+function Color:minValue()
+	return math.min( math.min( self.r, self.g ), math.min( self.b, self.a ) )
+end
+
+function Color:clamp( c, min, max )
+	return Color:temp(
+		RL.Clamp( c.r, min.r, max.r ),
+		RL.Clamp( c.g, min.g, max.g ),
+		RL.Clamp( c.b, min.b, max.b ),
+		RL.Clamp( c.a, min.a, max.a )
+	):round()
 end
 
 -- Temp pre generated objects to avoid "slow" table generation.

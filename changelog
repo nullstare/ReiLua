@@ -22,6 +22,7 @@ DETAILED CHANGES:
 	- CHANGE: EXPORT_SYMBOLS for Linux and Windows. Removed other symbol based options at least for now.
 	- ADDED: Windows console build option.
 	- ADDED: GetScissorMode.
+	- ADDED: GuiGetTextWidth, GuiTabBarEx and GuiValueBoxFloat.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 0.9.0		Using raylib 5.5 and Forked Raygui 4.0

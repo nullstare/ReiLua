@@ -9,10 +9,6 @@ int lguiGuiIsLocked( lua_State* L );
 int lguiGuiSetAlpha( lua_State* L );
 int lguiGuiSetState( lua_State* L );
 int lguiGuiGetState( lua_State* L );
-// int lguiGuiSetSliderDragging( lua_State* L );
-// int lguiGuiGetSliderDragging( lua_State* L );
-// int lguiGuiSetSliderActive( lua_State* L );
-// int lguiGuiGetSliderActive( lua_State* L );
 /* Font set/get functions. */
 int lguiGuiSetFont( lua_State* L );
 int lguiGuiGetFont( lua_State* L );
@@ -33,12 +29,14 @@ int lguiGuiGetIcons( lua_State* L );
 int lguiGuiSetIcons( lua_State* L );
 int lguiGuiLoadIcons( lua_State* L );
 int lguiGuiDrawIcon( lua_State* L );
+int lguiGuiGetTextWidth( lua_State* L );
 /* Container/separator controls, useful for controls organization. */
 int lguiGuiWindowBox( lua_State* L );
 int lguiGuiGroupBox( lua_State* L );
 int lguiGuiLine( lua_State* L );
 int lguiGuiPanel( lua_State* L );
 int lguiGuiTabBar( lua_State* L );
+int lguiGuiTabBarEx( lua_State* L );
 int lguiGuiScrollPanel( lua_State* L );
 /* Basic controls set. */
 int lguiGuiLabel( lua_State* L );
@@ -52,6 +50,7 @@ int lguiGuiComboBox( lua_State* L );
 int lguiGuiDropdownBox( lua_State* L );
 int lguiGuiSpinner( lua_State* L );
 int lguiGuiValueBox( lua_State* L );
+int lguiGuiValueBoxFloat( lua_State* L );
 int lguiGuiTextBox( lua_State* L );
 int lguiGuiSlider( lua_State* L );
 int lguiGuiSliderBar( lua_State* L );

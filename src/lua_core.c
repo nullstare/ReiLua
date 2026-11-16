@@ -1363,16 +1363,16 @@ static void logCustom( int logLevel, const char* text, va_list args ) {
 	char string[ STRING_LEN ] = {'\0'};
 	char msg[ STRING_LEN ] = {'\0'};
 
-	vsprintf( string, text, args );
+	vsnprintf( string, STRING_LEN, text, args );
 
 	switch ( logLevel ) {
-		case LOG_ALL: sprintf( msg, "ALL: %s", string ); break;
-		case LOG_TRACE: sprintf( msg, "TRACE: %s", string ); break;
-		case LOG_DEBUG: sprintf( msg, "DEBUG: %s", string ); break;
-		case LOG_INFO: sprintf( msg, "INFO: %s", string ); break;
-		case LOG_WARNING: sprintf( msg, "WARNING: %s", string ); break;
-		case LOG_ERROR: sprintf( msg, "ERROR: %s", string ); break;
-		case LOG_FATAL: sprintf( msg, "FATAL: %s", string ); break;
+		case LOG_ALL: snprintf( msg, STRING_LEN, "ALL: %s", string ); break;
+		case LOG_TRACE: snprintf( msg, STRING_LEN, "TRACE: %s", string ); break;
+		case LOG_DEBUG: snprintf( msg, STRING_LEN, "DEBUG: %s", string ); break;
+		case LOG_INFO: snprintf( msg, STRING_LEN, "INFO: %s", string ); break;
+		case LOG_WARNING: snprintf( msg, STRING_LEN, "WARNING: %s", string ); break;
+		case LOG_ERROR: snprintf( msg, STRING_LEN, "ERROR: %s", string ); break;
+		case LOG_FATAL: snprintf( msg, STRING_LEN, "FATAL: %s", string ); break;
 		default: break;
 	}
 	printf( "%s\n", msg );
@@ -2642,12 +2642,14 @@ void luaRegister() {
 	assignGlobalFunction( "GuiSetIcons", lguiGuiSetIcons );
 	assignGlobalFunction( "GuiLoadIcons", lguiGuiLoadIcons );
 	assignGlobalFunction( "GuiDrawIcon", lguiGuiDrawIcon );
+	assignGlobalFunction( "GuiGetTextWidth", lguiGuiGetTextWidth );
 		/* Container/separator controls, useful for controls organization. */
 	assignGlobalFunction( "GuiWindowBox", lguiGuiWindowBox );
 	assignGlobalFunction( "GuiGroupBox", lguiGuiGroupBox );
 	assignGlobalFunction( "GuiLine", lguiGuiLine );
 	assignGlobalFunction( "GuiPanel", lguiGuiPanel );
 	assignGlobalFunction( "GuiTabBar", lguiGuiTabBar );
+	assignGlobalFunction( "GuiTabBarEx", lguiGuiTabBarEx );
 	assignGlobalFunction( "GuiScrollPanel", lguiGuiScrollPanel );
 		/* Basic controls set. */
 	assignGlobalFunction( "GuiLabel", lguiGuiLabel );
@@ -2661,6 +2663,7 @@ void luaRegister() {
 	assignGlobalFunction( "GuiDropdownBox", lguiGuiDropdownBox );
 	assignGlobalFunction( "GuiSpinner", lguiGuiSpinner );
 	assignGlobalFunction( "GuiValueBox", lguiGuiValueBox );
+	assignGlobalFunction( "GuiValueBoxFloat", lguiGuiValueBoxFloat );
 	assignGlobalFunction( "GuiTextBox", lguiGuiTextBox );
 	assignGlobalFunction( "GuiSlider", lguiGuiSlider );
 	assignGlobalFunction( "GuiSliderBar", lguiGuiSliderBar );

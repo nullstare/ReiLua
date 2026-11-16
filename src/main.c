@@ -36,16 +36,16 @@ int main( int argn, const char** argc ) {
 			interpret_mode = true;
 
 			if ( 2 < argn ) {
-				sprintf( basePath, "%s/%s", GetWorkingDirectory(), argc[2] );
+				snprintf( basePath, STRING_LEN, "%s/%s", GetWorkingDirectory(), argc[2] );
 			}
 		}
 		else{
-			sprintf( basePath, "%s/%s", GetWorkingDirectory(), argc[1] );
+			snprintf( basePath, STRING_LEN, "%s/%s", GetWorkingDirectory(), argc[1] );
 		}
 	}
 	/* If no argument given, assume main.lua is in exe directory. */
 	else {
-		sprintf( basePath, "%s", GetApplicationDirectory() );
+		snprintf( basePath, STRING_LEN, "%s", GetApplicationDirectory() );
 	}
 
 	if ( interpret_mode ) {

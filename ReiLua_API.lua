@@ -7521,6 +7521,11 @@ function RL.GuiLoadIcons( fileName, loadIconsName ) end
 ---@return any RL.GuiDrawIcon
 function  RL.GuiDrawIcon( iconId, pos, pixelSize, color ) end
 
+---Get text width considering gui style and icon size (if required)
+---@param text string
+---@return any RL.GuiGetTextWidth
+function  RL.GuiGetTextWidth( text ) end
+
 -- Gui - Container/separator controls, useful for controls organization
 
 ---Window Box control, shows a window that can be closed
@@ -7552,13 +7557,29 @@ function RL.GuiLine( bounds, text ) end
 function RL.GuiPanel( bounds, text ) end
 
 ---Tab Bar control, returns TAB to be closed or -1
----- Success return int, int
+---- Success return int, int, int
 ---@param bounds table
 ---@param text string
+---@param hscroll integer
 ---@param active integer
 ---@return any result
+---@return any hscroll
 ---@return any active 
-function RL.GuiTabBar( bounds, text, active ) end
+function RL.GuiTabBar( bounds, text, hscroll, active ) end
+
+---Tab Bar control, using text entries list and returning focus entry.
+---NOTE: In case of tab close result, consider focused tab
+---- Success return int, int, int, int
+---@param bounds table
+---@param text string
+---@param hscroll integer
+---@param active integer
+---@param focus integer
+---@return any result
+---@return any hscroll
+---@return any active
+---@return any focus 
+function RL.GuiTabBarEx( bounds, text, hscroll, active, focus ) end
 
 ---Scroll Panel control
 ---- Success return int, Vector2, Rectangle
@@ -7673,6 +7694,17 @@ function RL.GuiSpinner( bounds, text, value, minValue, maxValue, editMode ) end
 ---@return any result
 ---@return any value 
 function RL.GuiValueBox( bounds, text, value, minValue, maxValue, editMode ) end
+
+---Value box control for float values
+---- Success return int, float
+---@param bounds table
+---@param text string|nil
+---@param textValue string|nil
+---@param value number
+---@param editMode boolean
+---@return any result
+---@return any value 
+function RL.GuiValueBoxFloat( bounds, text, textValue, value, editMode ) end
 
 ---Text Box control, updates input text
 ---- Success return int, string

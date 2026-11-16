@@ -11516,6 +11516,12 @@ Draw icon
 
 ---
 
+> RL.GuiGetTextWidth( string text )
+
+Get text width considering gui style and icon size (if required)
+
+---
+
 ## Gui - Container/separator controls, useful for controls organization
 
 ---
@@ -11552,11 +11558,20 @@ Panel control, useful to group controls
 
 ---
 
-> result, active = RL.GuiTabBar( Rectangle bounds, string text, int active )
+> result, hscroll, active = RL.GuiTabBar( Rectangle bounds, string text, int hscroll, int active )
 
 Tab Bar control, returns TAB to be closed or -1
 
-- Success return int, int
+- Success return int, int, int
+
+---
+
+> result, hscroll, active, focus = RL.GuiTabBarEx( Rectangle bounds, string text, int hscroll, int active, int focus )
+
+Tab Bar control, using text entries list and returning focus entry.
+NOTE: In case of tab close result, consider focused tab
+
+- Success return int, int, int, int
 
 ---
 
@@ -11657,6 +11672,14 @@ Spinner control, returns selected value
 Value Box control, updates input text with numbers
 
 - Success return int, int
+
+---
+
+> result, value = RL.GuiValueBoxFloat( Rectangle bounds, string|nil text, string|nil textValue, float value, bool editMode )
+
+Value box control for float values
+
+- Success return int, float
 
 ---
 

@@ -1,3 +1,5 @@
+#include "luajit/lauxlib.h"
+#include "luajit/lua.h"
 #include "main.h"
 #include "state.h"
 #include "rgui.h"
@@ -387,6 +389,19 @@ int lguiGuiDrawIcon( lua_State* L ) {
 }
 
 /*
+> RL.GuiGetTextWidth( string text )
+
+Get text width considering gui style and icon size (if required)
+*/
+int lguiGuiGetTextWidth( lua_State* L ) {
+	const char* text = luaL_checkstring( L, 1 );
+
+	lua_pushinteger( L, GuiGetTextWidth( text ) );
+
+	return 1;
+}
+
+/*
 ## Gui - Container/separator controls, useful for controls organization
 */
 
@@ -455,25 +470,48 @@ int lguiGuiPanel( lua_State* L ) {
 }
 
 /*
-> result, active = RL.GuiTabBar( Rectangle bounds, string text, int active )
+> result, hscroll, active = RL.GuiTabBar( Rectangle bounds, string text, int hscroll, int active )
 
 Tab Bar control, returns TAB to be closed or -1
 
-- Success return int, int
+- Success return int, int, int
 */
 int lguiGuiTabBar( lua_State* L ) {
 	Rectangle bounds = uluaGetRectangle( L, 1 );
 	const char* text = luaL_checkstring( L, 2 );
-	int active = luaL_checkinteger( L, 3 );
+	int hscroll = luaL_checkinteger( L, 3 ); /* Function doesn't seem to do anything with this. */
+	int active = luaL_checkinteger( L, 4 );
 
-	int hscroll = 0; /* Function doesn't seem to do anything with this. */
-	// char** text = TextSplit( luaL_checkstring( L, 2 ), ';', &count );
-
-	// lua_pushinteger( L, GuiTabBar( bounds, (const char*)text, count, &active ) );
 	lua_pushinteger( L, GuiTabBar( bounds, text, &hscroll, &active ) );
+	lua_pushinteger( L, hscroll );
 	lua_pushinteger( L, active );
 
-	return 2;
+	return 3;
+}
+
+/*
+> result, hscroll, active, focus = RL.GuiTabBarEx( Rectangle bounds, string text, int hscroll, int active, int focus )
+
+Tab Bar control, using text entries list and returning focus entry.
+NOTE: In case of tab close result, consider focused tab
+
+- Success return int, int, int, int
+*/
+int lguiGuiTabBarEx( lua_State* L ) {
+	Rectangle bounds = uluaGetRectangle( L, 1 );
+	int hscroll = luaL_checkinteger( L, 3 ); /* Function doesn't seem to do anything with this. */
+	int active = luaL_checkinteger( L, 4 );
+	int focus = luaL_checkinteger( L, 5 );
+
+	int count = 0;
+	char** text = TextSplit( luaL_checkstring( L, 2 ), ';', &count );
+
+	lua_pushinteger( L, GuiTabBarEx( bounds, text, count, &hscroll, &active, &focus ) );
+	lua_pushinteger( L, hscroll );
+	lua_pushinteger( L, active );
+	lua_pushinteger( L, focus );
+
+	return 4;
 }
 
 /*
@@ -694,9 +732,28 @@ int lguiGuiValueBox( lua_State* L ) {
 	int maxValue = luaL_checkinteger( L, 5 );
 	bool editMode = uluaGetBoolean( L, 6 );
 
-	Rectangle textBounds = { 0 };
 	lua_pushinteger( L, GuiValueBox( bounds, text, &value, minValue, maxValue, editMode ) );
 	lua_pushinteger( L, value );
+
+	return 2;
+}
+
+/*
+> result, value = RL.GuiValueBoxFloat( Rectangle bounds, string|nil text, string|nil textValue, float value, bool editMode )
+
+Value box control for float values
+
+- Success return int, float
+*/
+int lguiGuiValueBoxFloat( lua_State* L ) {
+	Rectangle bounds = uluaGetRectangle( L, 1 );
+	char* text = getTextOrNil( L, 2 );
+	char* textValue = getTextOrNil( L, 3 );
+	float value = luaL_checkinteger( L, 4 );
+	bool editMode = uluaGetBoolean( L, 5 );
+
+	lua_pushinteger( L, GuiValueBoxFloat( bounds, text, textValue, &value, editMode ) );
+	lua_pushnumber( L, value );
 
 	return 2;
 }

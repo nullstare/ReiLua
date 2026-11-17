@@ -1376,6 +1376,28 @@ int ltexturesImageDrawImageRec( lua_State* L ) {
 }
 
 /*
+> RL.ImageDrawImagePro( Image dst, Image src, Rectangle srcRec, Rectangle dstRec, Color tint )
+
+Draw a part of an image defined by a rectangle into destination rectangle, with scaling, within an image.
+Note! Origin and rotation are not implemented so they are not required.
+*/
+int ltexturesImageDrawImagePro( lua_State* L ) {
+	Image* dst = uluaGetImage( L, 1 );
+	Image* src = uluaGetImage( L, 2 );
+	Rectangle srcRec = uluaGetRectangle( L, 3 );
+	Rectangle dstRec = uluaGetRectangle( L, 4 );
+	// Vector2 origin = uluaGetVector2( L, 4 );
+	// float fontSize = luaL_checknumber( L, 4 );
+	Vector2 origin = { 0, 0 };
+	float rotation = 0;
+	Color tint = uluaGetColor( L, 5 );
+
+	ImageDrawImagePro( dst, *src, srcRec, dstRec, origin, rotation, tint );
+
+	return 0;
+}
+
+/*
 > RL.ImageDrawText( Image dst, string text, Vector2 position, float fontSize, Color tint )
 
 Draw text (using default font) within an image (destination)

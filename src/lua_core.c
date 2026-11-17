@@ -2196,7 +2196,7 @@ void luaRegister() {
 	assignGlobalFunction( "ImageDrawImage", ltexturesImageDrawImage );
 	assignGlobalFunction( "ImageDrawImageEx", ltexturesImageDrawImageEx );
 	assignGlobalFunction( "ImageDrawImageRec", ltexturesImageDrawImageRec );
-	// assignGlobalFunction( "ImageDrawImagePro", ltexturesImageDrawImagePro ); TODO: REVIEW: ImageDrawImagePro(), implement origin and rotation for image drawing
+	assignGlobalFunction( "ImageDrawImagePro", ltexturesImageDrawImagePro );
 	assignGlobalFunction( "ImageDrawText", ltexturesImageDrawText );
 	assignGlobalFunction( "ImageDrawTextEx", ltexturesImageDrawTextEx );
 	assignGlobalFunction( "ImageDrawTextPro", ltexturesImageDrawTextPro );

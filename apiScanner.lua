@@ -45,7 +45,6 @@ local raylib = {
 		ImageDrawRectangleV = "Replaced by ImageDrawRectangle",
 		ImageDrawRectangleRec = "Replaced by ImageDrawRectangle",
 		ImageDrawRectangleGradientEx = "Replaced by ImageDrawRectangleGradient (no thick as other Ex functions)",
-		ImageDrawImagePro = "Origin and rotation not implemented",
 		DrawTextureV = "Replaced by DrawTexture",
 		UnloadFontData = "Handled internally",
 		UnloadUTF8 = "Handled internally",

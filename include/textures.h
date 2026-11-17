@@ -87,7 +87,7 @@ int ltexturesImageDrawCircleGradient( lua_State* L );
 int ltexturesImageDrawImage( lua_State* L );
 int ltexturesImageDrawImageEx( lua_State* L );
 int ltexturesImageDrawImageRec( lua_State* L );
-// int ltexturesImageDrawImagePro( lua_State* L ); TODO: REVIEW: ImageDrawImagePro(), implement origin and rotation for image drawing
+int ltexturesImageDrawImagePro( lua_State* L );
 int ltexturesImageDrawText( lua_State* L );
 int ltexturesImageDrawTextEx( lua_State* L );
 int ltexturesImageDrawTextPro( lua_State* L );

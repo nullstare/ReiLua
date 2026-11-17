@@ -4416,6 +4416,16 @@ function  RL.ImageDrawImageEx( dst, src, position, rotation, scale, tint ) end
 ---@return any RL.ImageDrawImageRec
 function  RL.ImageDrawImageRec( dst, src, srcRec, position, tint ) end
 
+---Draw a part of an image defined by a rectangle into destination rectangle, with scaling, within an image.
+---Note! Origin and rotation are not implemented so they are not required.
+---@param dst any
+---@param src any
+---@param srcRec table
+---@param dstRec table
+---@param tint table
+---@return any RL.ImageDrawImagePro
+function  RL.ImageDrawImagePro( dst, src, srcRec, dstRec, tint ) end
+
 ---Draw text (using default font) within an image (destination)
 ---@param dst any
 ---@param text string

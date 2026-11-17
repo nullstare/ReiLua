@@ -8181,6 +8181,13 @@ Draw a part of an image defined by a rectangle within an image
 
 ---
 
+> RL.ImageDrawImagePro( Image dst, Image src, Rectangle srcRec, Rectangle dstRec, Color tint )
+
+Draw a part of an image defined by a rectangle into destination rectangle, with scaling, within an image.
+Note! Origin and rotation are not implemented so they are not required.
+
+---
+
 > RL.ImageDrawText( Image dst, string text, Vector2 position, float fontSize, Color tint )
 
 Draw text (using default font) within an image (destination)

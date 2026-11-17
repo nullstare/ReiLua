@@ -12,7 +12,7 @@ Reilua means fair in finnish.
 
 ## Status
 
-ReiLua is WIP and some planned raylib functionality is still missing but it already has over 1000 functions. Current Raylib version 6.0.
+ReiLua is WIP and some planned raylib functionality is still missing but it already has over 1000 functions. Current Raylib version 6.2.
 
 Included submodules.
 
@@ -24,18 +24,15 @@ Included submodules.
 
 List of some MISSING features that are planned to be included. For specific function, check API and apiScanner.lua.
 
+* Gestures
 * Core
 	* VR stereo config functions for VR simulator
-* Gestures
 
 ## Extensions
 
 * ReiGui - GUI library for ReiLua. https://github.com/nullstare/ReiGui
 
 ## Roadmap
-
-* v1.1
-	* raylib 6.2
 
 ## Usage
 

@@ -1,6 +1,10 @@
+package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
+
+Camera3D = require( "camera3d" )
+
 local pos = { 2, 0.5, 6 }
 local speed = 5.0
-local camera = -1
+local camera = Camera3D:new()
 local texture = -1
 local textureSize = { 256, 96 }
 local res = { 384, 216 }
@@ -59,7 +63,7 @@ local function drawSprites()
 	table.sort( sprites, function( a, b ) return a.dis > b.dis end )
 
 	for _, sprite in ipairs( sprites ) do
-		RL.DrawBillboardRec( camera, texture, { sprite.tile[1] * TILE_SIZE, sprite.tile[2] * TILE_SIZE, TILE_SIZE, TILE_SIZE },
+		RL.DrawBillboardRec( camera.camera, texture, { sprite.tile[1] * TILE_SIZE, sprite.tile[2] * TILE_SIZE, TILE_SIZE, TILE_SIZE },
 							 { sprite.pos[1], 0.5 * sprite.size, sprite.pos[2] }, { sprite.size, sprite.size }, RL.WHITE )
 	end
 end
@@ -77,23 +81,33 @@ function RL.init()
 	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 
 	texture = RL.LoadTexture( RL.GetBasePath().."../resources/images/tiles.png" )
-	camera = RL.CreateCamera3D()
-	RL.SetCamera3DPosition( camera, pos )
-	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
-	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
+
+	camera:setPosition( pos )
+	camera:setTarget( { 0, 0, 0 } )
+	camera:setUp( { 0, 1, 0 } )
+	camera.mode = camera.MODES.FIRST_PERSON
 
 	table.insert( sprites, { pos = { 2.5, 2.5 }, tile = { 1, 1 }, dis = 0, size = 0.8 } )
 	table.insert( sprites, { pos = { 1.5, 3.5 }, tile = { 3, 1 }, dis = 0, size = 0.5 } )
 	table.insert( sprites, { pos = { 0.5, 3.5 }, tile = { 3, 0 }, dis = 0, size = 0.7 } )
 end
 
-function RL.draw()
-	RL.UpdateCamera3D( camera, RL.CAMERA_FIRST_PERSON )
-	pos = RL.GetCamera3DPosition( camera )
+function RL.update( delta )
+	camera:update( delta )
 
+	if RL.IsKeyPressed( RL.KEY_SPACE ) then
+		if camera.mode == camera.MODES.FREE then
+			camera.mode = camera.MODES.FIRST_PERSON
+		else
+			camera.mode = camera.MODES.FREE
+		end
+	end
+end
+
+function RL.draw()
 	RL.ClearBackground( { 100, 150, 150 } )
 
-	RL.BeginMode3D( camera )
+	camera:beginMode3D()
 		-- Floor and ceiling.
 		for x = 0, 3 do
 			for y = 0, 10 do
@@ -116,5 +130,5 @@ function RL.draw()
 		end
 
 		drawSprites()
-	RL.EndMode3D()
+	camera:endMode3D()
 end

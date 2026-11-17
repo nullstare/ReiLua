@@ -1,4 +1,8 @@
-local camera = nil
+package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
+
+Camera3D = require( "camera3d" )
+
+local camera = Camera3D:new()
 local sphereMesh = nil
 local ray = { { 0.5, 0, 4 }, { 0.1, 0, -1 } }
 local rayCol = {}
@@ -28,10 +32,10 @@ end
 function RL.init()
 	setupWindow()
 
-	camera = RL.CreateCamera3D()
-	RL.SetCamera3DPosition( camera, { 0, 2, 4 } )
-	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
-	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
+	camera:setPosition( { 0, 2, 4 } )
+	camera:setTarget( { 0, 0, 0 } )
+	camera:setUp( { 0, 1, 0 } )
+	camera.mode = camera.MODES.FIRST_PERSON
 
 	sphereMesh = RL.GenMeshSphere( 1.0, 8, 10 )
 
@@ -40,21 +44,30 @@ end
 
 function RL.update( delta )
 	if RL.IsMouseButtonPressed( 0 ) then
-		ray = RL.GetScreenToWorldRay( RL.GetMousePosition(), camera )
+		ray = RL.GetScreenToWorldRay( RL.GetMousePosition(), camera.camera )
 		ray_collision()
+	end
+
+	camera:update( delta )
+
+	if RL.IsKeyPressed( RL.KEY_SPACE ) then
+		if camera.mode == camera.MODES.FREE then
+			camera.mode = camera.MODES.FIRST_PERSON
+		else
+			camera.mode = camera.MODES.FREE
+		end
 	end
 end
 
 function RL.draw()
 	RL.ClearBackground( { 100, 150, 100 } )
-	RL.UpdateCamera3D( camera, RL.CAMERA_FIRST_PERSON )
 
-	RL.BeginMode3D( camera )
+	camera:beginMode3D()
 		RL.DrawGrid( 8, 1 )
 		RL.DrawRay( ray, { 255, 100, 100 } )
 
 		RL.DrawMesh( sphereMesh, RL.GetMaterialDefault(), RL.MatrixIdentity() )
 		RL.DrawSphereWires( rayCol.point, 0.05, 4, 8, RL.BLUE )
 		RL.DrawLine3D( rayCol.point, RL.Vector3Add( rayCol.point, rayCol.normal ), RL.GREEN )
-	RL.EndMode3D()
+	camera:endMode3D()
 end

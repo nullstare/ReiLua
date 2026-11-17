@@ -2406,6 +2406,12 @@ function RL.DirectoryExists( dirPath ) end
 ---@return any hasFileExtension 
 function RL.IsFileExtension( fileName, ext ) end
 
+---Check if file path (file or directory) is hidden by OS
+---- Success return bool
+---@param filePath string
+---@return any isHidden 
+function RL.IsFileHidden( filePath ) end
+
 ---Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
 ---- Success return int
 ---@param fileName string
@@ -2470,11 +2476,23 @@ function RL.MakeDirectory( dirPath ) end
 ---@return any success 
 function RL.ChangeDirectory( directory ) end
 
----Check if a given path is a file or a directory
+---Check if provided path points to a file
 ---- Success return bool
 ---@param path string
 ---@return any isFile 
 function RL.IsPathFile( path ) end
+
+---Check if provided path points to a directory
+---- Success return bool
+---@param path string
+---@return any isDirectory 
+function RL.IsPathDirectory( path ) end
+
+---Check if provided path is an absolute path
+---- Success return bool
+---@param path string
+---@return any isAbsolute 
+function RL.IsPathAbsolute( path ) end
 
 ---Check if fileName is valid for the platform/OS
 ---- Success return bool
@@ -3305,85 +3323,52 @@ function  RL.DrawLineBezier( startPos, endPos, thickness, color ) end
 ---@return any RL.DrawLineDashed
 function  RL.DrawLineDashed( startPos, endPos, dashSize, spaceSize, color ) end
 
----Draw a color-filled circle
----@param center table
----@param radius number
+---Draw a color-filled triangle, counter-clockwise vertex order
+---@param v1 table
+---@param v2 table
+---@param v3 table
 ---@param color table
----@return any RL.DrawCircle
-function  RL.DrawCircle( center, radius, color ) end
+---@return any RL.DrawTriangle
+function  RL.DrawTriangle( v1, v2, v3, color ) end
 
----Draw a piece of a circle
----@param center table
----@param radius number
----@param startAngle number
----@param endAngle number
----@param segments integer
+---Draw triangle with interpolated colors, counter-clockwise vertex/color order
+---@param v1 table
+---@param v2 table
+---@param v3 table
+---@param c1 table
+---@param c2 table
+---@param c3 table
+---@return any RL.DrawTriangleGradient
+function  RL.DrawTriangleGradient( v1, v2, v3, c1, c2, c3 ) end
+
+---Draw triangle outline, counter-clockwise vertex order
+---@param v1 table
+---@param v2 table
+---@param v3 table
 ---@param color table
----@return any RL.DrawCircleSector
-function  RL.DrawCircleSector( center, radius, startAngle, endAngle, segments, color ) end
+---@return any RL.DrawTriangleLines
+function  RL.DrawTriangleLines( v1, v2, v3, color ) end
 
----Draw circle sector outline
----@param center table
----@param radius number
----@param startAngle number
----@param endAngle number
----@param segments integer
+---Draw triangle outline with line thickness, counter-clockwise vertex order
+---@param v1 table
+---@param v2 table
+---@param v3 table
+---@param thick number
 ---@param color table
----@return any RL.DrawCircleSectorLines
-function  RL.DrawCircleSectorLines( center, radius, startAngle, endAngle, segments, color ) end
+---@return any RL.DrawTriangleLinesEx
+function  RL.DrawTriangleLinesEx( v1, v2, v3, thick, color ) end
 
----Draw a gradient-filled circle
----@param center table
----@param radius number
----@param color1 table
----@param color2 table
----@return any RL.DrawCircleGradient
-function  RL.DrawCircleGradient( center, radius, color1, color2 ) end
-
----Draw circle outline
----@param center table
----@param radius number
+---Draw a triangle fan defined by points (first vertex is the center)
+---@param points table
 ---@param color table
----@return any RL.DrawCircleLines
-function  RL.DrawCircleLines( center, radius, color ) end
+---@return any RL.DrawTriangleFan
+function  RL.DrawTriangleFan( points, color ) end
 
----Draw ellipse
----@param center table
----@param radiusH number
----@param radiusV number
+---Draw a triangle strip defined by points
+---@param points table
 ---@param color table
----@return any RL.DrawEllipse
-function  RL.DrawEllipse( center, radiusH, radiusV, color ) end
-
----Draw ellipse outline
----@param center table
----@param radiusH number
----@param radiusV number
----@param color table
----@return any RL.DrawEllipseLines
-function  RL.DrawEllipseLines( center, radiusH, radiusV, color ) end
-
----Draw ring
----@param center table
----@param innerRadius number
----@param outerRadius number
----@param startAngle number
----@param endAngle number
----@param segments integer
----@param color table
----@return any RL.DrawRing
-function  RL.DrawRing( center, innerRadius, outerRadius, startAngle, endAngle, segments, color ) end
-
----Draw ring outline
----@param center table
----@param innerRadius number
----@param outerRadius number
----@param startAngle number
----@param endAngle number
----@param segments integer
----@param color table
----@return any RL.DrawRingLines
-function  RL.DrawRingLines( center, innerRadius, outerRadius, startAngle, endAngle, segments, color ) end
+---@return any RL.DrawTriangleStrip
+function  RL.DrawTriangleStrip( points, color ) end
 
 ---Draw a color-filled rectangle
 ---@param rec table
@@ -3428,12 +3413,12 @@ function  RL.DrawRectangleGradientEx( rectangle, col1, col2, col3, col4 ) end
 ---@return any RL.DrawRectangleLines
 function  RL.DrawRectangleLines( rec, color ) end
 
----Draw rectangle outline with extended parameters
+---Draw rectangle outline with line thickness
 ---@param rec table
----@param lineThick integer
+---@param thick integer
 ---@param color table
 ---@return any RL.DrawRectangleLinesEx
-function  RL.DrawRectangleLinesEx( rec, lineThick, color ) end
+function  RL.DrawRectangleLinesEx( rec, thick, color ) end
 
 ---Draw rectangle with rounded edges
 ---@param rec table
@@ -3455,40 +3440,12 @@ function  RL.DrawRectangleRoundedLines( rec, roundness, segments, color ) end
 ---@param rec table
 ---@param roundness number
 ---@param segments integer
----@param lineThick number
+---@param thick number
 ---@param color table
 ---@return any RL.DrawRectangleRoundedLinesEx
-function  RL.DrawRectangleRoundedLinesEx( rec, roundness, segments, lineThick, color ) end
+function  RL.DrawRectangleRoundedLinesEx( rec, roundness, segments, thick, color ) end
 
----Draw a color-filled triangle (Vertex in counter-clockwise order!)
----@param v1 table
----@param v2 table
----@param v3 table
----@param color table
----@return any RL.DrawTriangle
-function  RL.DrawTriangle( v1, v2, v3, color ) end
-
----Draw triangle outline (Vertex in counter-clockwise order!)
----@param v1 table
----@param v2 table
----@param v3 table
----@param color table
----@return any RL.DrawTriangleLines
-function  RL.DrawTriangleLines( v1, v2, v3, color ) end
-
----Draw a triangle fan defined by points (first vertex is the center)
----@param points table
----@param color table
----@return any RL.DrawTriangleFan
-function  RL.DrawTriangleFan( points, color ) end
-
----Draw a triangle strip defined by points
----@param points table
----@param color table
----@return any RL.DrawTriangleStrip
-function  RL.DrawTriangleStrip( points, color ) end
-
----Draw a regular polygon (Vector version)
+---Draw a polygon of n sides
 ---@param center table
 ---@param sides integer
 ---@param radius number
@@ -3511,10 +3468,130 @@ function  RL.DrawPolyLines( center, sides, radius, rotation, color ) end
 ---@param sides integer
 ---@param radius number
 ---@param rotation number
----@param lineThick number
+---@param thick number
 ---@param color table
 ---@return any RL.DrawPolyLinesEx
-function  RL.DrawPolyLinesEx( center, sides, radius, rotation, lineThick, color ) end
+function  RL.DrawPolyLinesEx( center, sides, radius, rotation, thick, color ) end
+
+---Draw a color-filled circle
+---@param center table
+---@param radius number
+---@param color table
+---@return any RL.DrawCircle
+function  RL.DrawCircle( center, radius, color ) end
+
+---Draw a gradient-filled circle
+---@param center table
+---@param radius number
+---@param color1 table
+---@param color2 table
+---@return any RL.DrawCircleGradient
+function  RL.DrawCircleGradient( center, radius, color1, color2 ) end
+
+---Draw a piece of a circle
+---@param center table
+---@param radius number
+---@param startAngle number
+---@param endAngle number
+---@param segments integer
+---@param color table
+---@return any RL.DrawCircleSector
+function  RL.DrawCircleSector( center, radius, startAngle, endAngle, segments, color ) end
+
+---Draw circle sector outline
+---@param center table
+---@param radius number
+---@param startAngle number
+---@param endAngle number
+---@param segments integer
+---@param color table
+---@return any RL.DrawCircleSectorLines
+function  RL.DrawCircleSectorLines( center, radius, startAngle, endAngle, segments, color ) end
+
+---Draw circle sector outline with thickness
+---@param center table
+---@param radius number
+---@param startAngle number
+---@param endAngle number
+---@param segments integer
+---@param thick number
+---@param color table
+---@return any RL.DrawCircleSectorLinesEx
+function  RL.DrawCircleSectorLinesEx( center, radius, startAngle, endAngle, segments, thick, color ) end
+
+---Draw circle outline
+---@param center table
+---@param radius number
+---@param color table
+---@return any RL.DrawCircleLines
+function  RL.DrawCircleLines( center, radius, color ) end
+
+---Draw circle outline with line thickness
+---@param center table
+---@param radius number
+---@param thick number
+---@param color table
+---@return any RL.DrawCircleLinesEx
+function  RL.DrawCircleLinesEx( center, radius, thick, color ) end
+
+---Draw ellipse
+---@param center table
+---@param radiusH number
+---@param radiusV number
+---@param color table
+---@return any RL.DrawEllipse
+function  RL.DrawEllipse( center, radiusH, radiusV, color ) end
+
+---Draw ellipse outline
+---@param center table
+---@param radiusH number
+---@param radiusV number
+---@param color table
+---@return any RL.DrawEllipseLines
+function  RL.DrawEllipseLines( center, radiusH, radiusV, color ) end
+
+---Draw ellipse outline with line thickness
+---@param center table
+---@param radiusH number
+---@param radiusV number
+---@param thick number
+---@param color table
+---@return any RL.DrawEllipseLinesEx
+function  RL.DrawEllipseLinesEx( center, radiusH, radiusV, thick, color ) end
+
+---Draw ring
+---@param center table
+---@param innerRadius number
+---@param outerRadius number
+---@param startAngle number
+---@param endAngle number
+---@param segments integer
+---@param color table
+---@return any RL.DrawRing
+function  RL.DrawRing( center, innerRadius, outerRadius, startAngle, endAngle, segments, color ) end
+
+---Draw ring outline
+---@param center table
+---@param innerRadius number
+---@param outerRadius number
+---@param startAngle number
+---@param endAngle number
+---@param segments integer
+---@param color table
+---@return any RL.DrawRingLines
+function  RL.DrawRingLines( center, innerRadius, outerRadius, startAngle, endAngle, segments, color ) end
+
+---Draw ring outline with line thickness
+---@param center table
+---@param innerRadius number
+---@param outerRadius number
+---@param startAngle number
+---@param endAngle number
+---@param segments integer
+---@param thick number
+---@param color table
+---@return any RL.DrawRingLinesEx
+function  RL.DrawRingLinesEx( center, innerRadius, outerRadius, startAngle, endAngle, segments, thick, color ) end
 
 -- Shapes - Splines drawing functions
 
@@ -3637,7 +3714,7 @@ function RL.GetSplinePointCatmullRom( p1, p2, p3, p4, t ) end
 ---@param p3 table
 ---@param t number
 ---@return any point 
-function RL.GetSplinePointBezierQuad( p1, c2, p3, t ) end
+function RL.GetSplinePointBezierQuadratic( p1, c2, p3, t ) end
 
 ---Get (evaluate) spline point: Cubic Bezier
 ---- Success return Vector2
@@ -4196,36 +4273,12 @@ function  RL.ImageDrawLine( dst, start, end, color ) end
 ---@return any RL.ImageDrawLineEx
 function  RL.ImageDrawLineEx( dst, start, end, thick, color ) end
 
----Draw circle within an image
+---Draw a lines sequence within an image
 ---@param dst any
----@param center table
----@param radius integer
+---@param points table
 ---@param color table
----@return any RL.ImageDrawCircle
-function  RL.ImageDrawCircle( dst, center, radius, color ) end
-
----Draw circle outline within an image
----@param dst any
----@param center table
----@param radius integer
----@param color table
----@return any RL.ImageDrawCircleLines
-function  RL.ImageDrawCircleLines( dst, center, radius, color ) end
-
----Draw rectangle within an image
----@param dst any
----@param rec table
----@param color table
----@return any RL.ImageDrawRectangle
-function  RL.ImageDrawRectangle( dst, rec, color ) end
-
----Draw rectangle lines within an image
----@param dst any
----@param rec table
----@param thick integer
----@param color table
----@return any RL.ImageDrawRectangleLines
-function  RL.ImageDrawRectangleLines( dst, rec, thick, color ) end
+---@return any RL.DrawLineStrip
+function  RL.DrawLineStrip( dst, points, color ) end
 
 ---Draw triangle within an image
 ---@param dst any
@@ -4244,8 +4297,8 @@ function  RL.ImageDrawTriangle( dst, v1, v2, v3, color ) end
 ---@param c1 table
 ---@param c2 table
 ---@param c3 table
----@return any RL.ImageDrawTriangleEx
-function  RL.ImageDrawTriangleEx( dst, v1, v2, v3, c1, c2, c3 ) end
+---@return any RL.ImageDrawTriangleGradient
+function  RL.ImageDrawTriangleGradient( dst, v1, v2, v3, c1, c2, c3 ) end
 
 ---Draw triangle outline within an image
 ---@param dst any
@@ -4270,14 +4323,98 @@ function  RL.ImageDrawTriangleFan( dst, points, color ) end
 ---@return any RL.ImageDrawTriangleStrip
 function  RL.ImageDrawTriangleStrip( dst, points, color ) end
 
----Draw a source image within a destination image (Tint applied to source)
+---Draw rectangle within an image
+---@param dst any
+---@param rec table
+---@param color table
+---@return any RL.ImageDrawRectangle
+function  RL.ImageDrawRectangle( dst, rec, color ) end
+
+---Draw a color-filled rectangle with pro parameters within and image
+---@param dst any
+---@param rec table
+---@param origin table
+---@param rotation number
+---@param color table
+---@return any RL.ImageDrawRectanglePro
+function  RL.ImageDrawRectanglePro( dst, rec, origin, rotation, color ) end
+
+---Draw rectangle lines within an image
+---@param dst any
+---@param rec table
+---@param color table
+---@return any RL.ImageDrawRectangleLines
+function  RL.ImageDrawRectangleLines( dst, rec, color ) end
+
+---Draw rectangle lines within an image with line thickness
+---@param dst any
+---@param rec table
+---@param thick integer
+---@param color table
+---@return any RL.ImageDrawRectangleLinesEx
+function  RL.ImageDrawRectangleLinesEx( dst, rec, thick, color ) end
+
+---Draw rectangle with gradient colors within an image, counter-clockwise color order
+---@param dst any
+---@param rec table
+---@param c1 table
+---@param c2 table
+---@param c3 table
+---@param c4 table
+---@return any RL.ImageDrawRectangleGradient
+function  RL.ImageDrawRectangleGradient( dst, rec, c1, c2, c3, c4 ) end
+
+---Draw circle within an image
+---@param dst any
+---@param center table
+---@param radius integer
+---@param color table
+---@return any RL.ImageDrawCircle
+function  RL.ImageDrawCircle( dst, center, radius, color ) end
+
+---Draw circle outline within an image
+---@param dst any
+---@param center table
+---@param radius integer
+---@param color table
+---@return any RL.ImageDrawCircleLines
+function  RL.ImageDrawCircleLines( dst, center, radius, color ) end
+
+---Draw a gradient-filled circle within an image
+---@param dst any
+---@param center table
+---@param radius number
+---@param inner table
+---@param outer table
+---@return any RL.ImageDrawCircleGradient
+function  RL.ImageDrawCircleGradient( dst, center, radius, inner, outer ) end
+
+---Draw an image within an image
+---@param dst any
+---@param src any
+---@param pos table
+---@param tint table
+---@return any RL.ImageDrawImage
+function  RL.ImageDrawImage( dst, src, pos, tint ) end
+
+---Draw an image with scaling and rotation within an image
+---@param dst any
+---@param src any
+---@param position table
+---@param rotation number
+---@param scale number
+---@param tint table
+---@return any RL.ImageDrawImageEx
+function  RL.ImageDrawImageEx( dst, src, position, rotation, scale, tint ) end
+
+---Draw a part of an image defined by a rectangle within an image
 ---@param dst any
 ---@param src any
 ---@param srcRec table
----@param dstRec table
+---@param position table
 ---@param tint table
----@return any RL.ImageDraw
-function  RL.ImageDraw( dst, src, srcRec, dstRec, tint ) end
+---@return any RL.ImageDrawImageRec
+function  RL.ImageDrawImageRec( dst, src, srcRec, position, tint ) end
 
 ---Draw text (using default font) within an image (destination)
 ---@param dst any
@@ -4298,6 +4435,19 @@ function  RL.ImageDrawText( dst, text, position, fontSize, tint ) end
 ---@param tint table
 ---@return any RL.ImageDrawTextEx
 function  RL.ImageDrawTextEx( dst, font, text, position, fontSize, spacing, tint ) end
+
+---Draw text using Font and pro parameters (rotation)
+---@param dst any
+---@param font any
+---@param text string
+---@param position table
+---@param origin table
+---@param rotation number
+---@param fontSize number
+---@param spacing number
+---@param tint table
+---@return any RL.ImageDrawTextPro
+function  RL.ImageDrawTextPro( dst, font, text, position, origin, rotation, fontSize, spacing, tint ) end
 
 -- Textures - Texture loading functions
 
@@ -4337,6 +4487,13 @@ function RL.LoadTextureFromData( textureData ) end
 ---@param size table
 ---@return any renderTexture 
 function RL.LoadRenderTexture( size ) end
+
+---Load texture for rendering (framebuffer), with specific format
+---- Success return RenderTexture
+---@param size table
+---@param format integer
+---@return any renderTexture 
+function RL.LoadRenderTextureEx( size, format ) end
 
 ---Load RenderTexture from data (framebuffer)
 ---- Success return RenderTexture

@@ -1,3 +1,4 @@
+#include "luajit/lauxlib.h"
 #include "main.h"
 #include "state.h"
 #include "textures.h"
@@ -1081,64 +1082,27 @@ int ltexturesImageDrawLineEx( lua_State* L ) {
 }
 
 /*
-> RL.ImageDrawCircle( Image dst, Vector2 center, int radius, Color color )
+> RL.DrawLineStrip( Image dst, Vector2{} points, Color color )
 
-Draw circle within an image
+Draw a lines sequence within an image
 */
-int ltexturesImageDrawCircle( lua_State* L ) {
+int ltexturesImageDrawLineStrip( lua_State* L ) {
 	Image* image = uluaGetImage( L, 1 );
-	Vector2 center = uluaGetVector2( L, 2 );
-	int radius = luaL_checkinteger( L, 3 );
-	Color color = uluaGetColor( L, 4 );
-
-	ImageDrawCircleV( image, center, radius, color );
-
-	return 0;
-}
-
-/*
-> RL.ImageDrawCircleLines( Image dst, Vector2 center, int radius, Color color )
-
-Draw circle outline within an image
-*/
-int ltexturesImageDrawCircleLines( lua_State* L ) {
-	Image* image = uluaGetImage( L, 1 );
-	Vector2 center = uluaGetVector2( L, 2 );
-	int radius = luaL_checkinteger( L, 3 );
-	Color color = uluaGetColor( L, 4 );
-
-	ImageDrawCircleLinesV( image, center, radius, color );
-
-	return 0;
-}
-
-/*
-> RL.ImageDrawRectangle( Image dst, Rectangle rec, Color color )
-
-Draw rectangle within an image
-*/
-int ltexturesImageDrawRectangle( lua_State* L ) {
-	Image* image = uluaGetImage( L, 1 );
-	Rectangle rec = uluaGetRectangle( L, 2 );
+	int pointsCount = uluaGetTableLen( L, 2 );
 	Color color = uluaGetColor( L, 3 );
 
-	ImageDrawRectangleRec( image, rec, color );
+	Vector2 points[ pointsCount ];
 
-	return 0;
-}
+	/* t = points index. */
+	int t = 2, i = 0;
+	lua_pushnil( L );
 
-/*
-> RL.ImageDrawRectangleLines( Image dst, Rectangle rec, int thick, Color color )
-
-Draw rectangle lines within an image
-*/
-int ltexturesImageDrawRectangleLines( lua_State* L ) {
-	Image* image = uluaGetImage( L, 1 );
-	Rectangle rec = uluaGetRectangle( L, 2 );
-	int thick = luaL_checkinteger( L, 3 );
-	Color color = uluaGetColor( L, 4 );
-
-	ImageDrawRectangleLines( image, rec, thick, color );
+	while ( lua_next( L, t ) != 0 ) {
+		points[i] = uluaGetVector2( L, lua_gettop( L ) );
+		i++;
+		lua_pop( L, 1 );
+	}
+	ImageDrawLineStrip( image, points, pointsCount, color );
 
 	return 0;
 }
@@ -1161,11 +1125,11 @@ int ltexturesImageDrawTriangle( lua_State* L ) {
 }
 
 /*
-> RL.ImageDrawTriangleEx( Image dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3 )
+> RL.ImageDrawTriangleGradient( Image dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3 )
 
 Draw triangle with interpolated colors within an image
 */
-int ltexturesImageDrawTriangleEx( lua_State* L ) {
+int ltexturesImageDrawTriangleGradient( lua_State* L ) {
 	Image* image = uluaGetImage( L, 1 );
 	Vector2 v1 = uluaGetVector2( L, 2 );
 	Vector2 v2 = uluaGetVector2( L, 3 );
@@ -1174,7 +1138,7 @@ int ltexturesImageDrawTriangleEx( lua_State* L ) {
 	Color c2 = uluaGetColor( L, 6 );
 	Color c3 = uluaGetColor( L, 7 );
 
-	ImageDrawTriangleEx( image, v1, v2, v3, c1, c2, c3 );
+	ImageDrawTriangleGradient( image, v1, v2, v3, c1, c2, c3 );
 
 	return 0;
 }
@@ -1231,18 +1195,182 @@ int ltexturesImageDrawTriangleStrip( lua_State* L ) {
 }
 
 /*
-> RL.ImageDraw( Image dst, Image src, Rectangle srcRec, Rectangle dstRec, Color tint )
+> RL.ImageDrawRectangle( Image dst, Rectangle rec, Color color )
 
-Draw a source image within a destination image (Tint applied to source)
+Draw rectangle within an image
 */
-int ltexturesImageDraw( lua_State* L ) {
-	Image* imageDst = uluaGetImage( L, 1 );
-	Image* imageSrc = uluaGetImage( L, 2 );
+int ltexturesImageDrawRectangle( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	Rectangle rec = uluaGetRectangle( L, 2 );
+	Color color = uluaGetColor( L, 3 );
+
+	ImageDrawRectangleRec( image, rec, color );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawRectanglePro( Image dst, Rectangle rec, Vector2 origin, float rotation, Color color )
+
+Draw a color-filled rectangle with pro parameters within and image
+*/
+int ltexturesImageDrawRectanglePro( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	Rectangle rec = uluaGetRectangle( L, 2 );
+	Vector2 origin = uluaGetVector2( L, 2 );
+	float rotation = luaL_checknumber( L, 3 );
+	Color color = uluaGetColor( L, 3 );
+
+	ImageDrawRectanglePro( image, rec, origin, rotation, color );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawRectangleLines( Image dst, Rectangle rec, Color color )
+
+Draw rectangle lines within an image
+*/
+int ltexturesImageDrawRectangleLines( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	Rectangle rec = uluaGetRectangle( L, 2 );
+	Color color = uluaGetColor( L, 3 );
+
+	ImageDrawRectangleLines( image, rec.x, rec.y, rec.width, rec.height, color );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawRectangleLinesEx( Image dst, Rectangle rec, int thick, Color color )
+
+Draw rectangle lines within an image with line thickness
+*/
+int ltexturesImageDrawRectangleLinesEx( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	Rectangle rec = uluaGetRectangle( L, 2 );
+	int thick = luaL_checkinteger( L, 3 );
+	Color color = uluaGetColor( L, 4 );
+
+	ImageDrawRectangleLinesEx( image, rec, thick, color );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawRectangleGradient( Image dst, Rectangle rec, Color c1, Color c2, Color c3, Color c4 )
+
+Draw rectangle with gradient colors within an image, counter-clockwise color order
+*/
+int ltexturesImageDrawRectangleGradient( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	Rectangle rec = uluaGetRectangle( L, 2 );
+	Color c1 = uluaGetColor( L, 3 );
+	Color c2 = uluaGetColor( L, 4 );
+	Color c3 = uluaGetColor( L, 5 );
+	Color c4 = uluaGetColor( L, 6 );
+
+	ImageDrawRectangleGradientEx( image, rec, c1, c2, c3, c4 );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawCircle( Image dst, Vector2 center, int radius, Color color )
+
+Draw circle within an image
+*/
+int ltexturesImageDrawCircle( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	Vector2 center = uluaGetVector2( L, 2 );
+	int radius = luaL_checkinteger( L, 3 );
+	Color color = uluaGetColor( L, 4 );
+
+	ImageDrawCircleV( image, center, radius, color );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawCircleLines( Image dst, Vector2 center, int radius, Color color )
+
+Draw circle outline within an image
+*/
+int ltexturesImageDrawCircleLines( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	Vector2 center = uluaGetVector2( L, 2 );
+	int radius = luaL_checkinteger( L, 3 );
+	Color color = uluaGetColor( L, 4 );
+
+	ImageDrawCircleLinesV( image, center, radius, color );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawCircleGradient( Image dst, Vector2 center, float radius, Color inner, Color outer )
+
+Draw a gradient-filled circle within an image
+*/
+int ltexturesImageDrawCircleGradient( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	Vector2 center = uluaGetVector2( L, 2 );
+	float radius = luaL_checknumber( L, 3 );
+	Color inner = uluaGetColor( L, 4 );
+	Color outer = uluaGetColor( L, 4 );
+
+	ImageDrawCircleGradient( image, center, radius, inner, outer );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawImage( Image dst, Image src, Vector2 pos, Color tint )
+
+Draw an image within an image
+*/
+int ltexturesImageDrawImage( lua_State* L ) {
+	Image* dst = uluaGetImage( L, 1 );
+	Image* src = uluaGetImage( L, 2 );
+	Vector2 pos = uluaGetVector2( L, 3 );
+	Color tint = uluaGetColor( L, 4 );
+
+	ImageDrawImage( dst, *src, pos.x, pos.y, tint );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawImageEx( Image dst, Image src, Vector2 position, float rotation, float scale, Color tint )
+
+Draw an image with scaling and rotation within an image
+*/
+int ltexturesImageDrawImageEx( lua_State* L ) {
+	Image* dst = uluaGetImage( L, 1 );
+	Image* src = uluaGetImage( L, 2 );
+	Vector2 pos = uluaGetVector2( L, 3 );
+	float rotation = luaL_checknumber( L, 4 );
+	float scale = luaL_checknumber( L, 5 );
+	Color tint = uluaGetColor( L, 6 );
+
+	ImageDrawImageEx( dst, *src, pos, rotation, scale, tint );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawImageRec( Image dst, Image src, Rectangle srcRec, Vector2 position, Color tint )
+
+Draw a part of an image defined by a rectangle within an image
+*/
+int ltexturesImageDrawImageRec( lua_State* L ) {
+	Image* dst = uluaGetImage( L, 1 );
+	Image* src = uluaGetImage( L, 2 );
 	Rectangle srcRec = uluaGetRectangle( L, 3 );
-	Rectangle dstRec = uluaGetRectangle( L, 4 );
+	Vector2 pos = uluaGetVector2( L, 4 );
 	Color tint = uluaGetColor( L, 5 );
 
-	ImageDraw( imageDst, *imageSrc, srcRec, dstRec, tint );
+	ImageDrawImageRec( dst, *src, srcRec, pos, tint );
 
 	return 0;
 }
@@ -1279,6 +1407,27 @@ int ltexturesImageDrawTextEx( lua_State* L ) {
 	Color tint = uluaGetColor( L, 7 );
 
 	ImageDrawTextEx( image, *font, text, position, fontSize, spacing, tint );
+
+	return 0;
+}
+
+/*
+> RL.ImageDrawTextPro( Image dst, Font font, string text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint )
+
+Draw text using Font and pro parameters (rotation)
+*/
+int ltexturesImageDrawTextPro( lua_State* L ) {
+	Image* image = uluaGetImage( L, 1 );
+	Font* font = uluaGetFont( L, 2 );
+	const char* text = luaL_checkstring( L, 3 );
+	Vector2 position = uluaGetVector2( L, 4 );
+	Vector2 origin = uluaGetVector2( L, 5 );
+	float rotation = luaL_checknumber( L, 6 );
+	float fontSize = luaL_checknumber( L, 7 );
+	float spacing = luaL_checknumber( L, 8 );
+	Color tint = uluaGetColor( L, 9 );
+
+	ImageDrawTextPro( image, *font, text, position, origin, rotation, fontSize, spacing, tint );
 
 	return 0;
 }
@@ -1400,6 +1549,22 @@ int ltexturesLoadRenderTexture( lua_State* L ) {
 	Vector2 size = uluaGetVector2( L, 1 );
 
 	uluaPushRenderTexture( L, LoadRenderTexture( (int)size.x, (int)size.y ) );
+
+	return 1;
+}
+
+/*
+> renderTexture = RL.LoadRenderTextureEx( Vector2 size, int format )
+
+Load texture for rendering (framebuffer), with specific format
+
+- Success return RenderTexture
+*/
+int ltexturesLoadRenderTextureEx( lua_State* L ) {
+	Vector2 size = uluaGetVector2( L, 1 );
+	int format = luaL_checkinteger( L, 2 );
+
+	uluaPushRenderTexture( L, LoadRenderTextureEx( (int)size.x, (int)size.y, format ) );
 
 	return 1;
 }

@@ -1973,6 +1973,19 @@ int lcoreIsFileExtension( lua_State* L ) {
 }
 
 /*
+> isHidden = RL.IsFileHidden( string filePath )
+
+Check if file path (file or directory) is hidden by OS
+
+- Success return bool
+*/
+int lcoreIsFileHidden( lua_State* L ) {
+	lua_pushboolean( L, IsFileHidden( luaL_checkstring( L, 1 ) ) );
+
+	return 1;
+}
+
+/*
 > length = RL.GetFileLength( string fileName )
 
 Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
@@ -2120,12 +2133,38 @@ int lcoreChangeDirectory( lua_State* L ) {
 /*
 > isFile = RL.IsPathFile( string path )
 
-Check if a given path is a file or a directory
+Check if provided path points to a file
 
 - Success return bool
 */
 int lcoreIsPathFile( lua_State* L ) {
 	lua_pushboolean( L, IsPathFile( luaL_checkstring( L, 1 ) ) );
+
+	return 1;
+}
+
+/*
+> isDirectory = RL.IsPathDirectory( string path )
+
+Check if provided path points to a directory
+
+- Success return bool
+*/
+int lcoreIsPathDirectory( lua_State* L ) {
+	lua_pushboolean( L, IsPathDirectory( luaL_checkstring( L, 1 ) ) );
+
+	return 1;
+}
+
+/*
+> isAbsolute = RL.IsPathAbsolute( string path )
+
+Check if provided path is an absolute path
+
+- Success return bool
+*/
+int lcoreIsPathAbsolute( lua_State* L ) {
+	lua_pushboolean( L, IsPathAbsolute( luaL_checkstring( L, 1 ) ) );
 
 	return 1;
 }

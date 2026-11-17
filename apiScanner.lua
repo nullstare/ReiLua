@@ -44,6 +44,8 @@ local raylib = {
 		ImageDrawCircleLinesV = "Replaced by ImageDrawCircleLines",
 		ImageDrawRectangleV = "Replaced by ImageDrawRectangle",
 		ImageDrawRectangleRec = "Replaced by ImageDrawRectangle",
+		ImageDrawRectangleGradientEx = "Replaced by ImageDrawRectangleGradient (no thick as other Ex functions)",
+		ImageDrawImagePro = "Origin and rotation not implemented",
 		DrawTextureV = "Replaced by DrawTexture",
 		UnloadFontData = "Handled internally",
 		UnloadUTF8 = "Handled internally",
@@ -77,7 +79,7 @@ local raylib = {
 		DrawEllipseV = "Replaced by DrawEllipse",
 		DrawEllipseLinesV = "Replaced by DrawEllipseLines",
 	},
-	enumBlacklist = {},
+	-- enumBlacklist = {},
 	info = {
 	}
 }
@@ -192,9 +194,9 @@ local rlgl = {
 local raygui = {
 	prefix = "RAYGUIAPI",
 	file = "raygui.h",
-	funcBlacklist = {
-	},
-	enumBlacklist = {},
+	-- funcBlacklist = {
+	-- },
+	-- enumBlacklist = {},
 	info = {
 	},
 }
@@ -205,7 +207,7 @@ local raymath = {
 		Vector3ToFloatV = "Can be replaced by Lua equivalent",
 		MatrixToFloatV = "Can be replaced by Lua equivalent",
 	},
-	enumBlacklist = {},
+	-- enumBlacklist = {},
 	info = {
 	},
 }
@@ -218,7 +220,7 @@ local easings = {
 		EaseLinearOut = "Replaced by EaseLinear",
 		EaseLinearInOut = "Replaced by EaseLinear",
 	},
-	enumBlacklist = {},
+	-- enumBlacklist = {},
 	info = {
 	},
 }
@@ -240,15 +242,34 @@ end
 for _, header in ipairs( headers ) do
 	if RL.arg[4] == "--blacklist" then
 		if RL.arg[5] == nil then
-			print( "\nFunctions blacklisted from '"..header.file.."':\n" )
+			if header.funcBlacklist then
+				print( "\nFunctions blacklisted from '"..header.file.."':\n" )
+				
+				for func, info in pairs( header.funcBlacklist ) do
+					print( func.."\t\""..info.."\"" )
+				end
+			end
+			
+			if header.enumBlacklist then
+				print( "\nEnums blacklisted from '"..header.file.."':\n" )
 	
-			for func, info in pairs( header.funcBlacklist ) do
-				print( func.."\t\""..info.."\"" )
+				for enum, info in pairs( header.enumBlacklist ) do
+					print( enum.."\t\""..info.."\"" )
+				end
 			end
 		else
-			for func, info in pairs( header.funcBlacklist ) do
-				if func:lower() == RL.arg[5]:lower() then
-					print( "\nFunction '"..func.."' blacklisted from '"..header.file.."'\t\""..info.."\"\n" )
+			if header.funcBlacklist then
+				for func, info in pairs( header.funcBlacklist ) do
+					if func:lower() == RL.arg[5]:lower() then
+						print( "\nFunction '"..func.."' blacklisted from '"..header.file.."'\t\""..info.."\"\n" )
+					end
+				end
+			end
+			if header.enumBlacklist then
+				for enum, info in pairs( header.enumBlacklist ) do
+					if enum:lower() == RL.arg[5]:lower() then
+						print( "\nEnum '"..enum.."' blacklisted from '"..header.file.."'\t\""..info.."\"\n" )
+					end
 				end
 			end
 		end
@@ -270,8 +291,10 @@ for _, header in ipairs( headers ) do
 						local func = splits[ #splits ]
 
 						func = func:gsub( "*", "" ) -- Removes pointer signs.
+
+						local checkBlacklist = not header.funcBlacklist or ( header.funcBlacklist and not header.funcBlacklist[ func ] )
 		
-						if RL[ func ] == nil and not header.funcBlacklist[ func ] then
+						if RL[ func ] == nil and checkBlacklist then
 							local output = func
 		
 							if header.info[ func ] ~= nil then
@@ -291,15 +314,17 @@ for _, header in ipairs( headers ) do
 							if enum then
 								enum = enum:gsub( "/", "" )
 								enum = enum:gsub( ",", "" )
+
+								local checkBlacklist = not header.enumBlacklist or ( header.enumBlacklist and not header.enumBlacklist[ enum ] )
 		
-								if 0 < #enum and RL[ enum ] == nil and not header.enumBlacklist[ enum ] then
+								if 0 < #enum and RL[ enum ] == nil and checkBlacklist then
 									local prefix = enum:sub( 1, 3 )
 
 									-- Check if some of the enums are already defined without RL_ prefix.
 									if prefix == "RL_" then
 										if RL[ enum:sub( 4 ) ] then
 											enum = string.format( "%s\t\"Most likely same as %s = %d\"", enum, enum:sub( 4 ), RL[ enum:sub( 4 ) ] )
-											-- Could use this to copy it to enumBlacklist.
+											-- Could use this to help copy it to enumBlacklist.
 											-- enum = string.format( "%s = \"Same as %s\",", enum, enum:sub( 4 ) )
 										end
 									end

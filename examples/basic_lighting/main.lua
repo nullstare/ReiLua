@@ -96,16 +96,16 @@ function RL.update( delta )
 	camera:update( delta )
 
 	-- Check key inputs to enable/disable lights.
-	if RL.IsKeyPressed( RL.KEY_Y ) then
+	if RL.IsKeyPressed( RL.KEY_ONE ) then
 		RL.SetLightEnabled( lights[1], not RL.IsLightEnabled( lights[1] ) )
 	end
-	if RL.IsKeyPressed( RL.KEY_R ) then
+	if RL.IsKeyPressed( RL.KEY_TWO ) then
 		RL.SetLightEnabled( lights[2], not RL.IsLightEnabled( lights[2] ) )
 	end
-	if RL.IsKeyPressed( RL.KEY_G ) then
+	if RL.IsKeyPressed( RL.KEY_THREE ) then
 		RL.SetLightEnabled( lights[3], not RL.IsLightEnabled( lights[3] ) )
 	end
-	if RL.IsKeyPressed( RL.KEY_B ) then
+	if RL.IsKeyPressed( RL.KEY_FOUR ) then
 		RL.SetLightEnabled( lights[4], not RL.IsLightEnabled( lights[4] ) )
 	end
 
@@ -137,7 +137,7 @@ function RL.draw()
 
 	camera:endMode3D()
 
-	RL.DrawText( "Use keys [Y][R][G][B] to toggle lights", { 10, 10 }, 20, RL.DARKGRAY )
+	RL.DrawText( "Use keys [1][2][3][4] to toggle lights", { 10, 10 }, 20, RL.DARKGRAY )
 end
 
 function RL.exit()

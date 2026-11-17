@@ -113,10 +113,10 @@ function RL.draw()
 		scrollPanel.view
 	)
 
-	_, guiTabBarActive = RL.GuiTabBar(
+	_, _, guiTabBarActive = RL.GuiTabBar(
 		{ 420, 680, 320, 32 },
 		RL.GuiIconText( RL.ICON_FILETYPE_PLAY, "Play" )..";"..RL.GuiIconText( RL.ICON_FILETYPE_IMAGE, "Cat.png" )..";"..RL.GuiIconText( RL.ICON_FILE_COPY, "Files" ),
-		guiTabBarActive
+		0, guiTabBarActive
 	)
 
 	_, colorPickerHSV = RL.GuiColorPickerHSV( { 1024, 20, 150, 150 }, "GuiColorPuckerHSV", colorPickerHSV )

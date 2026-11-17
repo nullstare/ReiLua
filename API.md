@@ -6051,6 +6051,14 @@ Check file extension (Including point: .png, .wav)
 
 ---
 
+> isHidden = RL.IsFileHidden( string filePath )
+
+Check if file path (file or directory) is hidden by OS
+
+- Success return bool
+
+---
+
 > length = RL.GetFileLength( string fileName )
 
 Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
@@ -6141,7 +6149,23 @@ Change working directory, return true on success
 
 > isFile = RL.IsPathFile( string path )
 
-Check if a given path is a file or a directory
+Check if provided path points to a file
+
+- Success return bool
+
+---
+
+> isDirectory = RL.IsPathDirectory( string path )
+
+Check if provided path points to a directory
+
+- Success return bool
+
+---
+
+> isAbsolute = RL.IsPathAbsolute( string path )
+
+Check if provided path is an absolute path
 
 - Success return bool
 
@@ -7174,57 +7198,39 @@ Draw a dashed line
 
 ---
 
-> RL.DrawCircle( Vector2 center, float radius, Color color )
+> RL.DrawTriangle( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
 
-Draw a color-filled circle
-
----
-
-> RL.DrawCircleSector( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
-
-Draw a piece of a circle
+Draw a color-filled triangle, counter-clockwise vertex order
 
 ---
 
-> RL.DrawCircleSectorLines( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
+> RL.DrawTriangleGradient( Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3 )
 
-Draw circle sector outline
-
----
-
-> RL.DrawCircleGradient( Vector2 center, float radius, Color color1, Color color2 )
-
-Draw a gradient-filled circle
+Draw triangle with interpolated colors, counter-clockwise vertex/color order
 
 ---
 
-> RL.DrawCircleLines( Vector2 center, float radius, Color color )
+> RL.DrawTriangleLines( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
 
-Draw circle outline
-
----
-
-> RL.DrawEllipse( Vector2 center, float radiusH, float radiusV, Color color )
-
-Draw ellipse
+Draw triangle outline, counter-clockwise vertex order
 
 ---
 
-> RL.DrawEllipseLines( Vector2 center, float radiusH, float radiusV, Color color )
+> RL.DrawTriangleLinesEx( Vector2 v1, Vector2 v2, Vector2 v3, float thick, Color color )
 
-Draw ellipse outline
-
----
-
-> RL.DrawRing( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
-
-Draw ring
+Draw triangle outline with line thickness, counter-clockwise vertex order
 
 ---
 
-> RL.DrawRingLines( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
+> RL.DrawTriangleFan( Vector2{} points, Color color )
 
-Draw ring outline
+Draw a triangle fan defined by points (first vertex is the center)
+
+---
+
+> RL.DrawTriangleStrip( Vector2{} points, Color color )
+
+Draw a triangle strip defined by points
 
 ---
 
@@ -7264,9 +7270,9 @@ Draw rectangle outline
 
 ---
 
-> RL.DrawRectangleLinesEx( Rectangle rec, int lineThick, Color color )
+> RL.DrawRectangleLinesEx( Rectangle rec, int thick, Color color )
 
-Draw rectangle outline with extended parameters
+Draw rectangle outline with line thickness
 
 ---
 
@@ -7282,39 +7288,15 @@ Draw rectangle lines with rounded edges
 
 ---
 
-> RL.DrawRectangleRoundedLinesEx( Rectangle rec, float roundness, int segments, float lineThick, Color color )
+> RL.DrawRectangleRoundedLinesEx( Rectangle rec, float roundness, int segments, float thick, Color color )
 
 Draw rectangle with rounded edges outline
 
 ---
 
-> RL.DrawTriangle( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
-
-Draw a color-filled triangle (Vertex in counter-clockwise order!)
-
----
-
-> RL.DrawTriangleLines( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
-
-Draw triangle outline (Vertex in counter-clockwise order!)
-
----
-
-> RL.DrawTriangleFan( Vector2{} points, Color color )
-
-Draw a triangle fan defined by points (first vertex is the center)
-
----
-
-> RL.DrawTriangleStrip( Vector2{} points, Color color )
-
-Draw a triangle strip defined by points
-
----
-
 > RL.DrawPoly( Vector2 center, int sides, float radius, float rotation, Color color )
 
-Draw a regular polygon (Vector version)
+Draw a polygon of n sides
 
 ---
 
@@ -7324,9 +7306,87 @@ Draw a polygon outline of n sides
 
 ---
 
-> RL.DrawPolyLinesEx( Vector2 center, int sides, float radius, float rotation, float lineThick, Color color )
+> RL.DrawPolyLinesEx( Vector2 center, int sides, float radius, float rotation, float thick, Color color )
 
 Draw a polygon outline of n sides with extended parameters
+
+---
+
+> RL.DrawCircle( Vector2 center, float radius, Color color )
+
+Draw a color-filled circle
+
+---
+
+> RL.DrawCircleGradient( Vector2 center, float radius, Color color1, Color color2 )
+
+Draw a gradient-filled circle
+
+---
+
+> RL.DrawCircleSector( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
+
+Draw a piece of a circle
+
+---
+
+> RL.DrawCircleSectorLines( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
+
+Draw circle sector outline
+
+---
+
+> RL.DrawCircleSectorLinesEx( Vector2 center, float radius, float startAngle, float endAngle, int segments, float thick, Color color )
+
+Draw circle sector outline with thickness
+
+---
+
+> RL.DrawCircleLines( Vector2 center, float radius, Color color )
+
+Draw circle outline
+
+---
+
+> RL.DrawCircleLinesEx( Vector2 center, float radius, float thick, Color color )
+
+Draw circle outline with line thickness
+
+---
+
+> RL.DrawEllipse( Vector2 center, float radiusH, float radiusV, Color color )
+
+Draw ellipse
+
+---
+
+> RL.DrawEllipseLines( Vector2 center, float radiusH, float radiusV, Color color )
+
+Draw ellipse outline
+
+---
+
+> RL.DrawEllipseLinesEx( Vector2 center, float radiusH, float radiusV, float thick, Color color )
+
+Draw ellipse outline with line thickness
+
+---
+
+> RL.DrawRing( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
+
+Draw ring
+
+---
+
+> RL.DrawRingLines( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
+
+Draw ring outline
+
+---
+
+> RL.DrawRingLinesEx( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, float thick, Color color )
+
+Draw ring outline with line thickness
 
 ---
 
@@ -7422,7 +7482,7 @@ Get (evaluate) spline point: Catmull-Rom
 
 ---
 
-> point = RL.GetSplinePointBezierQuad( Vector2 p1, Vector2 c2, Vector2 p3, float t )
+> point = RL.GetSplinePointBezierQuadratic( Vector2 p1, Vector2 c2, Vector2 p3, float t )
 
 Get (evaluate) spline point: Quadratic Bezier
 
@@ -8019,27 +8079,9 @@ Draw a line defining thickness within an image
 
 ---
 
-> RL.ImageDrawCircle( Image dst, Vector2 center, int radius, Color color )
+> RL.DrawLineStrip( Image dst, Vector2{} points, Color color )
 
-Draw circle within an image
-
----
-
-> RL.ImageDrawCircleLines( Image dst, Vector2 center, int radius, Color color )
-
-Draw circle outline within an image
-
----
-
-> RL.ImageDrawRectangle( Image dst, Rectangle rec, Color color )
-
-Draw rectangle within an image
-
----
-
-> RL.ImageDrawRectangleLines( Image dst, Rectangle rec, int thick, Color color )
-
-Draw rectangle lines within an image
+Draw a lines sequence within an image
 
 ---
 
@@ -8049,7 +8091,7 @@ Draw triangle within an image
 
 ---
 
-> RL.ImageDrawTriangleEx( Image dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3 )
+> RL.ImageDrawTriangleGradient( Image dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3 )
 
 Draw triangle with interpolated colors within an image
 
@@ -8073,9 +8115,69 @@ Draw a triangle strip defined by points within an image
 
 ---
 
-> RL.ImageDraw( Image dst, Image src, Rectangle srcRec, Rectangle dstRec, Color tint )
+> RL.ImageDrawRectangle( Image dst, Rectangle rec, Color color )
 
-Draw a source image within a destination image (Tint applied to source)
+Draw rectangle within an image
+
+---
+
+> RL.ImageDrawRectanglePro( Image dst, Rectangle rec, Vector2 origin, float rotation, Color color )
+
+Draw a color-filled rectangle with pro parameters within and image
+
+---
+
+> RL.ImageDrawRectangleLines( Image dst, Rectangle rec, Color color )
+
+Draw rectangle lines within an image
+
+---
+
+> RL.ImageDrawRectangleLinesEx( Image dst, Rectangle rec, int thick, Color color )
+
+Draw rectangle lines within an image with line thickness
+
+---
+
+> RL.ImageDrawRectangleGradient( Image dst, Rectangle rec, Color c1, Color c2, Color c3, Color c4 )
+
+Draw rectangle with gradient colors within an image, counter-clockwise color order
+
+---
+
+> RL.ImageDrawCircle( Image dst, Vector2 center, int radius, Color color )
+
+Draw circle within an image
+
+---
+
+> RL.ImageDrawCircleLines( Image dst, Vector2 center, int radius, Color color )
+
+Draw circle outline within an image
+
+---
+
+> RL.ImageDrawCircleGradient( Image dst, Vector2 center, float radius, Color inner, Color outer )
+
+Draw a gradient-filled circle within an image
+
+---
+
+> RL.ImageDrawImage( Image dst, Image src, Vector2 pos, Color tint )
+
+Draw an image within an image
+
+---
+
+> RL.ImageDrawImageEx( Image dst, Image src, Vector2 position, float rotation, float scale, Color tint )
+
+Draw an image with scaling and rotation within an image
+
+---
+
+> RL.ImageDrawImageRec( Image dst, Image src, Rectangle srcRec, Vector2 position, Color tint )
+
+Draw a part of an image defined by a rectangle within an image
 
 ---
 
@@ -8088,6 +8190,12 @@ Draw text (using default font) within an image (destination)
 > RL.ImageDrawTextEx( Image dst, Font font, string text, Vector2 position, float fontSize, float spacing, Color tint )
 
 Draw text (Custom sprite font) within an image (Destination)
+
+---
+
+> RL.ImageDrawTextPro( Image dst, Font font, string text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint )
+
+Draw text using Font and pro parameters (rotation)
 
 ---
 
@@ -8139,6 +8247,14 @@ Load Texture from data
 > renderTexture = RL.LoadRenderTexture( Vector2 size )
 
 Load texture for rendering (framebuffer)
+
+- Success return RenderTexture
+
+---
+
+> renderTexture = RL.LoadRenderTextureEx( Vector2 size, int format )
+
+Load texture for rendering (framebuffer), with specific format
 
 - Success return RenderTexture
 

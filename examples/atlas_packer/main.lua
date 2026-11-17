@@ -37,9 +37,8 @@ local function makeAtlas()
 
 	for i, rect in ipairs( atlasRects ) do
 		print( "Rect", i, Rectangle:tempT( rect ) )
-		RL.ImageDraw( atlasImg, images[i],
-			{ 0, 0, rect[3], rect[4] },
-			rect,
+		RL.ImageDrawImage( atlasImg, images[i],
+			{ rect[1], rect[2] },
 			RL.WHITE
 		)
 	end

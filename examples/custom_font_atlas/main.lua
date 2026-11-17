@@ -66,10 +66,9 @@ function RL.init()
 	atlas.image = RL.GenImageColor( atlas.size, RL.BLANK )
 
 	for i, dstRect in ipairs( atlas.rects ) do
-		local srcRect = Rectangle:new( 0, 0, dstRect[3], dstRect[4] )
 		-- We draw rect so ImageAlphaCrop doesn't crop alpha of the glyphs.
-		RL.ImageDrawRectangleLines( atlas.image, dstRect, 1, glyphBgrCol )
-		RL.ImageDraw( atlas.image, images[i], srcRect, dstRect, RL.WHITE )
+		RL.ImageDrawRectangleLines( atlas.image, dstRect, glyphBgrCol )
+		RL.ImageDrawImage( atlas.image, images[i], { dstRect[1], dstRect[2] }, RL.WHITE )
 	end
 
 	RL.ImageAlphaCrop( atlas.image, 0 )

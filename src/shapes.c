@@ -152,153 +152,118 @@ int lshapesDrawLineDashed( lua_State* L ) {
 }
 
 /*
-> RL.DrawCircle( Vector2 center, float radius, Color color )
+> RL.DrawTriangle( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
 
-Draw a color-filled circle
+Draw a color-filled triangle, counter-clockwise vertex order
 */
-int lshapesDrawCircle( lua_State* L ) {
-	Vector2 center = uluaGetVector2( L, 1 );
-	float radius = luaL_checknumber( L, 2 );
-	Color color = uluaGetColor( L, 3 );
-
-	DrawCircleV( center, radius, color );
-
-	return 0;
-}
-
-/*
-> RL.DrawCircleSector( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
-
-Draw a piece of a circle
-*/
-int lshapesDrawCircleSector( lua_State* L ) {
-	Vector2 center = uluaGetVector2( L, 1 );
-	float radius = luaL_checknumber( L, 2 );
-	float startAngle = luaL_checknumber( L, 3 );
-	float endAngle = luaL_checknumber( L, 4 );
-	int segments = luaL_checkinteger( L, 5 );
-	Color color = uluaGetColor( L, 6 );
-
-	DrawCircleSector( center, radius, startAngle, endAngle, segments, color );
-
-	return 0;
-}
-
-/*
-> RL.DrawCircleSectorLines( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
-
-Draw circle sector outline
-*/
-int lshapesDrawCircleSectorLines( lua_State* L ) {
-	Vector2 center = uluaGetVector2( L, 1 );
-	float radius = luaL_checknumber( L, 2 );
-	float startAngle = luaL_checknumber( L, 3 );
-	float endAngle = luaL_checknumber( L, 4 );
-	int segments = luaL_checkinteger( L, 5 );
-	Color color = uluaGetColor( L, 6 );
-
-	DrawCircleSectorLines( center, radius, startAngle, endAngle, segments, color );
-
-	return 0;
-}
-
-/*
-> RL.DrawCircleGradient( Vector2 center, float radius, Color color1, Color color2 )
-
-Draw a gradient-filled circle
-*/
-int lshapesDrawCircleGradient( lua_State* L ) {
-	Vector2 center = uluaGetVector2( L, 1 );
-	float radius = luaL_checknumber( L, 2 );
-	Color color1 = uluaGetColor( L, 3 );
-	Color color2 = uluaGetColor( L, 4 );
-
-	DrawCircleGradient( center, radius, color1, color2 );
-
-	return 0;
-}
-
-/*
-> RL.DrawCircleLines( Vector2 center, float radius, Color color )
-
-Draw circle outline
-*/
-int lshapesDrawCircleLines( lua_State* L ) {
-	Vector2 center = uluaGetVector2( L, 1 );
-	float radius = luaL_checknumber( L, 2 );
-	Color color = uluaGetColor( L, 3 );
-
-	DrawCircleLines( center.x, center.y, radius, color );
-
-	return 0;
-}
-
-/*
-> RL.DrawEllipse( Vector2 center, float radiusH, float radiusV, Color color )
-
-Draw ellipse
-*/
-int lshapesDrawEllipse( lua_State* L ) {
-	Vector2 center = uluaGetVector2( L, 1 );
-	float radiusH = luaL_checknumber( L, 2 );
-	float radiusV = luaL_checknumber( L, 3 );
+int lshapesDrawTriangle( lua_State* L ) {
+	Vector2 v1 = uluaGetVector2( L, 1 );
+	Vector2 v2 = uluaGetVector2( L, 2 );
+	Vector2 v3 = uluaGetVector2( L, 3 );
 	Color color = uluaGetColor( L, 4 );
 
-	DrawEllipse( center.x, center.y, radiusH, radiusV, color );
+	DrawTriangle( v1, v2, v3, color );
 
 	return 0;
 }
 
 /*
-> RL.DrawEllipseLines( Vector2 center, float radiusH, float radiusV, Color color )
+> RL.DrawTriangleGradient( Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3 )
 
-Draw ellipse outline
+Draw triangle with interpolated colors, counter-clockwise vertex/color order
 */
-int lshapesDrawEllipseLines( lua_State* L ) {
-	Vector2 center = uluaGetVector2( L, 1 );
-	float radiusH = luaL_checknumber( L, 2 );
-	float radiusV = luaL_checknumber( L, 3 );
+int lshapesDrawTriangleGradient( lua_State* L ) {
+	Vector2 v1 = uluaGetVector2( L, 1 );
+	Vector2 v2 = uluaGetVector2( L, 2 );
+	Vector2 v3 = uluaGetVector2( L, 3 );
+	Color c1 = uluaGetColor( L, 4 );
+	Color c2 = uluaGetColor( L, 5 );
+	Color c3 = uluaGetColor( L, 6 );
+
+	DrawTriangleGradient( v1, v2, v3, c1, c2, c3 );
+
+	return 0;
+}
+
+/*
+> RL.DrawTriangleLines( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
+
+Draw triangle outline, counter-clockwise vertex order
+*/
+int lshapesDrawTriangleLines( lua_State* L ) {
+	Vector2 v1 = uluaGetVector2( L, 1 );
+	Vector2 v2 = uluaGetVector2( L, 2 );
+	Vector2 v3 = uluaGetVector2( L, 3 );
 	Color color = uluaGetColor( L, 4 );
 
-	DrawEllipseLines( center.x, center.y, radiusH, radiusV, color );
+	DrawTriangleLines( v1, v2, v3, color );
 
 	return 0;
 }
 
 /*
-> RL.DrawRing( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
+> RL.DrawTriangleLinesEx( Vector2 v1, Vector2 v2, Vector2 v3, float thick, Color color )
 
-Draw ring
+Draw triangle outline with line thickness, counter-clockwise vertex order
 */
-int lshapesDrawRing( lua_State* L ) {
-	Vector2 center = uluaGetVector2( L, 1 );
-	float innerRadius = luaL_checknumber( L, 2 );
-	float outerRadius = luaL_checknumber( L, 3 );
-	float startAngle = luaL_checknumber( L, 4 );
-	float endAngle = luaL_checknumber( L, 5 );
-	int segments = luaL_checkinteger( L, 6 );
-	Color color = uluaGetColor( L, 7 );
+int lshapesDrawTriangleLinesEx( lua_State* L ) {
+	Vector2 v1 = uluaGetVector2( L, 1 );
+	Vector2 v2 = uluaGetVector2( L, 2 );
+	Vector2 v3 = uluaGetVector2( L, 3 );
+	float thick = luaL_checknumber( L, 4 );
+	Color color = uluaGetColor( L, 5 );
 
-	DrawRing( center, innerRadius, outerRadius, startAngle, endAngle, segments, color );
+	DrawTriangleLinesEx( v1, v2, v3, thick, color );
 
 	return 0;
 }
 
 /*
-> RL.DrawRingLines( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
+> RL.DrawTriangleFan( Vector2{} points, Color color )
 
-Draw ring outline
+Draw a triangle fan defined by points (first vertex is the center)
 */
-int lshapesDrawRingLines( lua_State* L ) {
-	Vector2 center = uluaGetVector2( L, 1 );
-	float innerRadius = luaL_checknumber( L, 2 );
-	float outerRadius = luaL_checknumber( L, 3 );
-	float startAngle = luaL_checknumber( L, 4 );
-	float endAngle = luaL_checknumber( L, 5 );
-	int segments = luaL_checkinteger( L, 6 );
-	Color color = uluaGetColor( L, 7 );
+int lshapesDrawTriangleFan( lua_State* L ) {
+	int pointsCount = uluaGetTableLen( L, 1 );
+	Color color = uluaGetColor( L, 2 );
 
-	DrawRingLines( center, innerRadius, outerRadius, startAngle, endAngle, segments, color );
+	Vector2 points[ pointsCount ];
+
+	/* t = points index. */
+	int t = 1, i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		points[i] = uluaGetVector2( L, lua_gettop( L ) );
+		i++;
+		lua_pop( L, 1 );
+	}
+	DrawTriangleFan( points, pointsCount, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawTriangleStrip( Vector2{} points, Color color )
+
+Draw a triangle strip defined by points
+*/
+int lshapesDrawTriangleStrip( lua_State* L ) {
+	int pointsCount = uluaGetTableLen( L, 1 );
+	Color color = uluaGetColor( L, 2 );
+
+	Vector2 points[ pointsCount ];
+
+	/* t = points index. */
+	int t = 1, i = 0;
+	lua_pushnil( L );
+
+	while ( lua_next( L, t ) != 0 ) {
+		points[i] = uluaGetVector2( L, lua_gettop( L ) );
+		i++;
+		lua_pop( L, 1 );
+	}
+	DrawTriangleStrip( points, pointsCount, color );
 
 	return 0;
 }
@@ -395,16 +360,16 @@ int lshapesDrawRectangleLines( lua_State* L ) {
 }
 
 /*
-> RL.DrawRectangleLinesEx( Rectangle rec, int lineThick, Color color )
+> RL.DrawRectangleLinesEx( Rectangle rec, int thick, Color color )
 
-Draw rectangle outline with extended parameters
+Draw rectangle outline with line thickness
 */
 int lshapesDrawRectangleLinesEx( lua_State* L ) {
 	Rectangle rect = uluaGetRectangle( L, 1 );
-	int lineThick = luaL_checkinteger( L, 2 );
+	int thick = luaL_checkinteger( L, 2 );
 	Color color = uluaGetColor( L, 3 );
 
-	DrawRectangleLinesEx( rect, lineThick, color );
+	DrawRectangleLinesEx( rect, thick, color );
 
 	return 0;
 }
@@ -442,7 +407,7 @@ int lshapesDrawRectangleRoundedLines( lua_State* L ) {
 }
 
 /*
-> RL.DrawRectangleRoundedLinesEx( Rectangle rec, float roundness, int segments, float lineThick, Color color )
+> RL.DrawRectangleRoundedLinesEx( Rectangle rec, float roundness, int segments, float thick, Color color )
 
 Draw rectangle with rounded edges outline
 */
@@ -450,92 +415,10 @@ int lshapesDrawRectangleRoundedLinesEx( lua_State* L ) {
 	Rectangle rect = uluaGetRectangle( L, 1 );
 	float roundness = luaL_checknumber( L, 2 );
 	int segments = luaL_checkinteger( L, 3 );
-	float lineThick = luaL_checknumber( L, 4 );
+	float thick = luaL_checknumber( L, 4 );
 	Color color = uluaGetColor( L, 5 );
 
-	DrawRectangleRoundedLinesEx( rect, roundness, segments, lineThick, color );
-
-	return 0;
-}
-
-/*
-> RL.DrawTriangle( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
-
-Draw a color-filled triangle (Vertex in counter-clockwise order!)
-*/
-int lshapesDrawTriangle( lua_State* L ) {
-	Vector2 v1 = uluaGetVector2( L, 1 );
-	Vector2 v2 = uluaGetVector2( L, 2 );
-	Vector2 v3 = uluaGetVector2( L, 3 );
-	Color color = uluaGetColor( L, 4 );
-
-	DrawTriangle( v1, v2, v3, color );
-
-	return 0;
-}
-
-/*
-> RL.DrawTriangleLines( Vector2 v1, Vector2 v2, Vector2 v3, Color color )
-
-Draw triangle outline (Vertex in counter-clockwise order!)
-*/
-int lshapesDrawTriangleLines( lua_State* L ) {
-	Vector2 v1 = uluaGetVector2( L, 1 );
-	Vector2 v2 = uluaGetVector2( L, 2 );
-	Vector2 v3 = uluaGetVector2( L, 3 );
-	Color color = uluaGetColor( L, 4 );
-
-	DrawTriangleLines( v1, v2, v3, color );
-
-	return 0;
-}
-
-/*
-> RL.DrawTriangleFan( Vector2{} points, Color color )
-
-Draw a triangle fan defined by points (first vertex is the center)
-*/
-int lshapesDrawTriangleFan( lua_State* L ) {
-	int pointsCount = uluaGetTableLen( L, 1 );
-	Color color = uluaGetColor( L, 2 );
-
-	Vector2 points[ pointsCount ];
-
-	/* t = points index. */
-	int t = 1, i = 0;
-	lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-		points[i] = uluaGetVector2( L, lua_gettop( L ) );
-		i++;
-		lua_pop( L, 1 );
-	}
-	DrawTriangleFan( points, pointsCount, color );
-
-	return 0;
-}
-
-/*
-> RL.DrawTriangleStrip( Vector2{} points, Color color )
-
-Draw a triangle strip defined by points
-*/
-int lshapesDrawTriangleStrip( lua_State* L ) {
-	int pointsCount = uluaGetTableLen( L, 1 );
-	Color color = uluaGetColor( L, 2 );
-
-	Vector2 points[ pointsCount ];
-
-	/* t = points index. */
-	int t = 1, i = 0;
-	lua_pushnil( L );
-
-	while ( lua_next( L, t ) != 0 ) {
-		points[i] = uluaGetVector2( L, lua_gettop( L ) );
-		i++;
-		lua_pop( L, 1 );
-	}
-	DrawTriangleStrip( points, pointsCount, color );
+	DrawRectangleRoundedLinesEx( rect, roundness, segments, thick, color );
 
 	return 0;
 }
@@ -543,7 +426,7 @@ int lshapesDrawTriangleStrip( lua_State* L ) {
 /*
 > RL.DrawPoly( Vector2 center, int sides, float radius, float rotation, Color color )
 
-Draw a regular polygon (Vector version)
+Draw a polygon of n sides
 */
 int lshapesDrawPoly( lua_State* L ) {
 	Vector2 center = uluaGetVector2( L, 1 );
@@ -575,7 +458,7 @@ int lshapesDrawPolyLines( lua_State* L ) {
 }
 
 /*
-> RL.DrawPolyLinesEx( Vector2 center, int sides, float radius, float rotation, float lineThick, Color color )
+> RL.DrawPolyLinesEx( Vector2 center, int sides, float radius, float rotation, float thick, Color color )
 
 Draw a polygon outline of n sides with extended parameters
 */
@@ -584,10 +467,234 @@ int lshapesDrawPolyLinesEx( lua_State* L ) {
 	int sides = luaL_checkinteger( L, 2 );
 	float radius = luaL_checknumber( L, 3 );
 	float rotation = luaL_checknumber( L, 4 );
-	float lineThick = luaL_checknumber( L, 5 );
+	float thick = luaL_checknumber( L, 5 );
 	Color color = uluaGetColor( L, 6 );
 
-	DrawPolyLinesEx( center, sides, radius, rotation, lineThick, color );
+	DrawPolyLinesEx( center, sides, radius, rotation, thick, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawCircle( Vector2 center, float radius, Color color )
+
+Draw a color-filled circle
+*/
+int lshapesDrawCircle( lua_State* L ) {
+	Vector2 center = uluaGetVector2( L, 1 );
+	float radius = luaL_checknumber( L, 2 );
+	Color color = uluaGetColor( L, 3 );
+
+	DrawCircleV( center, radius, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawCircleGradient( Vector2 center, float radius, Color color1, Color color2 )
+
+Draw a gradient-filled circle
+*/
+int lshapesDrawCircleGradient( lua_State* L ) {
+	Vector2 center = uluaGetVector2( L, 1 );
+	float radius = luaL_checknumber( L, 2 );
+	Color color1 = uluaGetColor( L, 3 );
+	Color color2 = uluaGetColor( L, 4 );
+
+	DrawCircleGradient( center, radius, color1, color2 );
+
+	return 0;
+}
+
+/*
+> RL.DrawCircleSector( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
+
+Draw a piece of a circle
+*/
+int lshapesDrawCircleSector( lua_State* L ) {
+	Vector2 center = uluaGetVector2( L, 1 );
+	float radius = luaL_checknumber( L, 2 );
+	float startAngle = luaL_checknumber( L, 3 );
+	float endAngle = luaL_checknumber( L, 4 );
+	int segments = luaL_checkinteger( L, 5 );
+	Color color = uluaGetColor( L, 6 );
+
+	DrawCircleSector( center, radius, startAngle, endAngle, segments, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawCircleSectorLines( Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color )
+
+Draw circle sector outline
+*/
+int lshapesDrawCircleSectorLines( lua_State* L ) {
+	Vector2 center = uluaGetVector2( L, 1 );
+	float radius = luaL_checknumber( L, 2 );
+	float startAngle = luaL_checknumber( L, 3 );
+	float endAngle = luaL_checknumber( L, 4 );
+	int segments = luaL_checkinteger( L, 5 );
+	Color color = uluaGetColor( L, 6 );
+
+	DrawCircleSectorLines( center, radius, startAngle, endAngle, segments, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawCircleSectorLinesEx( Vector2 center, float radius, float startAngle, float endAngle, int segments, float thick, Color color )
+
+Draw circle sector outline with thickness
+*/
+int lshapesDrawCircleSectorLinesEx( lua_State* L ) {
+	Vector2 center = uluaGetVector2( L, 1 );
+	float radius = luaL_checknumber( L, 2 );
+	float startAngle = luaL_checknumber( L, 3 );
+	float endAngle = luaL_checknumber( L, 4 );
+	int segments = luaL_checkinteger( L, 5 );
+	float thick = luaL_checknumber( L, 6 );
+	Color color = uluaGetColor( L, 7 );
+
+	DrawCircleSectorLinesEx( center, radius, startAngle, endAngle, segments, thick, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawCircleLines( Vector2 center, float radius, Color color )
+
+Draw circle outline
+*/
+int lshapesDrawCircleLines( lua_State* L ) {
+	Vector2 center = uluaGetVector2( L, 1 );
+	float radius = luaL_checknumber( L, 2 );
+	Color color = uluaGetColor( L, 3 );
+
+	DrawCircleLinesV( center, radius, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawCircleLinesEx( Vector2 center, float radius, float thick, Color color )
+
+Draw circle outline with line thickness
+*/
+int lshapesDrawCircleLinesEx( lua_State* L ) {
+	Vector2 center = uluaGetVector2( L, 1 );
+	float radius = luaL_checknumber( L, 2 );
+	float thick = luaL_checknumber( L, 3 );
+	Color color = uluaGetColor( L, 4 );
+
+	DrawCircleLinesEx( center, radius, thick, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawEllipse( Vector2 center, float radiusH, float radiusV, Color color )
+
+Draw ellipse
+*/
+int lshapesDrawEllipse( lua_State* L ) {
+	Vector2 center = uluaGetVector2( L, 1 );
+	float radiusH = luaL_checknumber( L, 2 );
+	float radiusV = luaL_checknumber( L, 3 );
+	Color color = uluaGetColor( L, 4 );
+
+	DrawEllipse( center.x, center.y, radiusH, radiusV, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawEllipseLines( Vector2 center, float radiusH, float radiusV, Color color )
+
+Draw ellipse outline
+*/
+int lshapesDrawEllipseLines( lua_State* L ) {
+	Vector2 center = uluaGetVector2( L, 1 );
+	float radiusH = luaL_checknumber( L, 2 );
+	float radiusV = luaL_checknumber( L, 3 );
+	Color color = uluaGetColor( L, 4 );
+
+	DrawEllipseLinesV( center, radiusH, radiusV, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawEllipseLinesEx( Vector2 center, float radiusH, float radiusV, float thick, Color color )
+
+Draw ellipse outline with line thickness
+*/
+int lshapesDrawEllipseLinesEx( lua_State* L ) {
+	Vector2 center = uluaGetVector2( L, 1 );
+	float radiusH = luaL_checknumber( L, 2 );
+	float radiusV = luaL_checknumber( L, 3 );
+	float thick = luaL_checknumber( L, 5 );
+	Color color = uluaGetColor( L, 4 );
+
+	DrawEllipseLinesEx( center, radiusH, radiusV, thick, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawRing( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
+
+Draw ring
+*/
+int lshapesDrawRing( lua_State* L ) {
+	Vector2 center = uluaGetVector2( L, 1 );
+	float innerRadius = luaL_checknumber( L, 2 );
+	float outerRadius = luaL_checknumber( L, 3 );
+	float startAngle = luaL_checknumber( L, 4 );
+	float endAngle = luaL_checknumber( L, 5 );
+	int segments = luaL_checkinteger( L, 6 );
+	Color color = uluaGetColor( L, 7 );
+
+	DrawRing( center, innerRadius, outerRadius, startAngle, endAngle, segments, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawRingLines( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color )
+
+Draw ring outline
+*/
+int lshapesDrawRingLines( lua_State* L ) {
+	Vector2 center = uluaGetVector2( L, 1 );
+	float innerRadius = luaL_checknumber( L, 2 );
+	float outerRadius = luaL_checknumber( L, 3 );
+	float startAngle = luaL_checknumber( L, 4 );
+	float endAngle = luaL_checknumber( L, 5 );
+	int segments = luaL_checkinteger( L, 6 );
+	Color color = uluaGetColor( L, 7 );
+
+	DrawRingLines( center, innerRadius, outerRadius, startAngle, endAngle, segments, color );
+
+	return 0;
+}
+
+/*
+> RL.DrawRingLinesEx( Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, float thick, Color color )
+
+Draw ring outline with line thickness
+*/
+int lshapesDrawRingLinesEx( lua_State* L ) {
+	Vector2 center = uluaGetVector2( L, 1 );
+	float innerRadius = luaL_checknumber( L, 2 );
+	float outerRadius = luaL_checknumber( L, 3 );
+	float startAngle = luaL_checknumber( L, 4 );
+	float endAngle = luaL_checknumber( L, 5 );
+	int segments = luaL_checkinteger( L, 6 );
+	float thick = luaL_checknumber( L, 7 );
+	Color color = uluaGetColor( L, 8 );
+
+	DrawRingLinesEx( center, innerRadius, outerRadius, startAngle, endAngle, segments, thick, color );
 
 	return 0;
 }
@@ -828,19 +935,19 @@ int lshapesGetSplinePointCatmullRom( lua_State* L ) {
 }
 
 /*
-> point = RL.GetSplinePointBezierQuad( Vector2 p1, Vector2 c2, Vector2 p3, float t )
+> point = RL.GetSplinePointBezierQuadratic( Vector2 p1, Vector2 c2, Vector2 p3, float t )
 
 Get (evaluate) spline point: Quadratic Bezier
 
 - Success return Vector2
 */
-int lshapesGetSplinePointBezierQuad( lua_State* L ) {
+int lshapesGetSplinePointBezierQuadratic( lua_State* L ) {
 	Vector2 p1 = uluaGetVector2( L, 1 );
 	Vector2 c2 = uluaGetVector2( L, 2 );
 	Vector2 p3 = uluaGetVector2( L, 3 );
 	float t = luaL_checknumber( L, 4 );
 
-	uluaPushVector2( L, GetSplinePointBezierQuad( p1, c2, p3, t ) );
+	uluaPushVector2( L, GetSplinePointBezierQuadratic( p1, c2, p3, t ) );
 
 	return 1;
 }

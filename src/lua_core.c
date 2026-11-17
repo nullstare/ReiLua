@@ -1887,6 +1887,7 @@ void luaRegister() {
 	assignGlobalFunction( "FileExists", lcoreFileExists );
 	assignGlobalFunction( "DirectoryExists", lcoreDirectoryExists );
 	assignGlobalFunction( "IsFileExtension", lcoreIsFileExtension );
+	assignGlobalFunction( "IsFileHidden", lcoreIsFileHidden );
 	assignGlobalFunction( "GetFileLength", lcoreGetFileLength );
 	assignGlobalFunction( "GetFileModTime", lcoreGetFileModTime );
 	assignGlobalFunction( "GetFileExtension", lcoreGetFileExtension );
@@ -1899,6 +1900,8 @@ void luaRegister() {
 	assignGlobalFunction( "MakeDirectory", lcoreMakeDirectory );
 	assignGlobalFunction( "ChangeDirectory", lcoreChangeDirectory );
 	assignGlobalFunction( "IsPathFile", lcoreIsPathFile );
+	assignGlobalFunction( "IsPathDirectory", lcoreIsPathDirectory );
+	assignGlobalFunction( "IsPathAbsolute", lcoreIsPathAbsolute );
 	assignGlobalFunction( "IsFileNameValid", lcoreIsFileNameValid );
 	assignGlobalFunction( "LoadDirectoryFiles", lcoreLoadDirectoryFiles );
 	assignGlobalFunction( "LoadDirectoryFilesEx", lcoreLoadDirectoryFilesEx );
@@ -2042,15 +2045,12 @@ void luaRegister() {
 	assignGlobalFunction( "DrawLineStrip", lshapesDrawLineStrip );
 	assignGlobalFunction( "DrawLineBezier", lshapesDrawLineBezier );
 	assignGlobalFunction( "DrawLineDashed", lshapesDrawLineDashed );
-	assignGlobalFunction( "DrawCircle", lshapesDrawCircle );
-	assignGlobalFunction( "DrawCircleSector", lshapesDrawCircleSector );
-	assignGlobalFunction( "DrawCircleSectorLines", lshapesDrawCircleSectorLines );
-	assignGlobalFunction( "DrawCircleGradient", lshapesDrawCircleGradient );
-	assignGlobalFunction( "DrawCircleLines", lshapesDrawCircleLines );
-	assignGlobalFunction( "DrawEllipse", lshapesDrawEllipse );
-	assignGlobalFunction( "DrawEllipseLines", lshapesDrawEllipseLines );
-	assignGlobalFunction( "DrawRing", lshapesDrawRing );
-	assignGlobalFunction( "DrawRingLines", lshapesDrawRingLines );
+	assignGlobalFunction( "DrawTriangle", lshapesDrawTriangle );
+	assignGlobalFunction( "DrawTriangleGradient", lshapesDrawTriangleGradient );
+	assignGlobalFunction( "DrawTriangleLines", lshapesDrawTriangleLines );
+	assignGlobalFunction( "DrawTriangleLinesEx", lshapesDrawTriangleLinesEx );
+	assignGlobalFunction( "DrawTriangleFan", lshapesDrawTriangleFan );
+	assignGlobalFunction( "DrawTriangleStrip", lshapesDrawTriangleStrip );
 	assignGlobalFunction( "DrawRectangle", lshapesDrawRectangle );
 	assignGlobalFunction( "DrawRectanglePro", lshapesDrawRectanglePro );
 	assignGlobalFunction( "DrawRectangleGradientV", lshapesDrawRectangleGradientV );
@@ -2061,13 +2061,22 @@ void luaRegister() {
 	assignGlobalFunction( "DrawRectangleRounded", lshapesDrawRectangleRounded );
 	assignGlobalFunction( "DrawRectangleRoundedLines", lshapesDrawRectangleRoundedLines );
 	assignGlobalFunction( "DrawRectangleRoundedLinesEx", lshapesDrawRectangleRoundedLinesEx );
-	assignGlobalFunction( "DrawTriangle", lshapesDrawTriangle );
-	assignGlobalFunction( "DrawTriangleLines", lshapesDrawTriangleLines );
-	assignGlobalFunction( "DrawTriangleFan", lshapesDrawTriangleFan );
-	assignGlobalFunction( "DrawTriangleStrip", lshapesDrawTriangleStrip );
 	assignGlobalFunction( "DrawPoly", lshapesDrawPoly );
 	assignGlobalFunction( "DrawPolyLines", lshapesDrawPolyLines );
 	assignGlobalFunction( "DrawPolyLinesEx", lshapesDrawPolyLinesEx );
+	assignGlobalFunction( "DrawCircle", lshapesDrawCircle );
+	assignGlobalFunction( "DrawCircleGradient", lshapesDrawCircleGradient );
+	assignGlobalFunction( "DrawCircleSector", lshapesDrawCircleSector );
+	assignGlobalFunction( "DrawCircleSectorLines", lshapesDrawCircleSectorLines );
+	assignGlobalFunction( "DrawCircleSectorLinesEx", lshapesDrawCircleSectorLinesEx );
+	assignGlobalFunction( "DrawCircleLines", lshapesDrawCircleLines );
+	assignGlobalFunction( "DrawCircleLinesEx", lshapesDrawCircleLinesEx );
+	assignGlobalFunction( "DrawEllipse", lshapesDrawEllipse );
+	assignGlobalFunction( "DrawEllipseLines", lshapesDrawEllipseLines );
+	assignGlobalFunction( "DrawEllipseLinesEx", lshapesDrawEllipseLinesEx );
+	assignGlobalFunction( "DrawRing", lshapesDrawRing );
+	assignGlobalFunction( "DrawRingLines", lshapesDrawRingLines );
+	assignGlobalFunction( "DrawRingLinesEx", lshapesDrawRingLinesEx );
 		/* Splines drawing functions. */
 	assignGlobalFunction( "DrawSplineLinear", lshapesDrawSplineLinear );
 	assignGlobalFunction( "DrawSplineBasis", lshapesDrawSplineBasis );
@@ -2083,7 +2092,7 @@ void luaRegister() {
 	assignGlobalFunction( "GetSplinePointLinear", lshapesGetSplinePointLinear );
 	assignGlobalFunction( "GetSplinePointBasis", lshapesGetSplinePointBasis );
 	assignGlobalFunction( "GetSplinePointCatmullRom", lshapesGetSplinePointCatmullRom );
-	assignGlobalFunction( "GetSplinePointBezierQuad", lshapesGetSplinePointBezierQuad );
+	assignGlobalFunction( "GetSplinePointBezierQuadratic", lshapesGetSplinePointBezierQuadratic );
 	assignGlobalFunction( "GetSplinePointBezierCubic", lshapesGetSplinePointBezierCubic );
 		/* Basic shapes collision detection functions. */
 	assignGlobalFunction( "CheckCollisionRecs", lshapesCheckCollisionRecs );
@@ -2170,18 +2179,27 @@ void luaRegister() {
 	assignGlobalFunction( "ImageDrawPixel", ltexturesImageDrawPixel );
 	assignGlobalFunction( "ImageDrawLine", ltexturesImageDrawLine );
 	assignGlobalFunction( "ImageDrawLineEx", ltexturesImageDrawLineEx );
-	assignGlobalFunction( "ImageDrawCircle", ltexturesImageDrawCircle );
-	assignGlobalFunction( "ImageDrawCircleLines", ltexturesImageDrawCircleLines );
-	assignGlobalFunction( "ImageDrawRectangle", ltexturesImageDrawRectangle );
-	assignGlobalFunction( "ImageDrawRectangleLines", ltexturesImageDrawRectangleLines );
+	assignGlobalFunction( "ImageDrawLineStrip", ltexturesImageDrawLineStrip );
 	assignGlobalFunction( "ImageDrawTriangle", ltexturesImageDrawTriangle );
-	assignGlobalFunction( "ImageDrawTriangleEx", ltexturesImageDrawTriangleEx );
+	assignGlobalFunction( "ImageDrawTriangleGradient", ltexturesImageDrawTriangleGradient );
 	assignGlobalFunction( "ImageDrawTriangleLines", ltexturesImageDrawTriangleLines );
 	assignGlobalFunction( "ImageDrawTriangleFan", ltexturesImageDrawTriangleFan );
 	assignGlobalFunction( "ImageDrawTriangleStrip", ltexturesImageDrawTriangleStrip );
-	assignGlobalFunction( "ImageDraw", ltexturesImageDraw );
+	assignGlobalFunction( "ImageDrawRectangle", ltexturesImageDrawRectangle );
+	assignGlobalFunction( "ImageDrawRectanglePro", ltexturesImageDrawRectanglePro );
+	assignGlobalFunction( "ImageDrawRectangleLines", ltexturesImageDrawRectangleLines );
+	assignGlobalFunction( "ImageDrawRectangleLinesEx", ltexturesImageDrawRectangleLinesEx );
+	assignGlobalFunction( "ImageDrawRectangleGradient", ltexturesImageDrawRectangleGradient );
+	assignGlobalFunction( "ImageDrawCircle", ltexturesImageDrawCircle );
+	assignGlobalFunction( "ImageDrawCircleLines", ltexturesImageDrawCircleLines );
+	assignGlobalFunction( "ImageDrawCircleGradient", ltexturesImageDrawCircleGradient );
+	assignGlobalFunction( "ImageDrawImage", ltexturesImageDrawImage );
+	assignGlobalFunction( "ImageDrawImageEx", ltexturesImageDrawImageEx );
+	assignGlobalFunction( "ImageDrawImageRec", ltexturesImageDrawImageRec );
+	// assignGlobalFunction( "ImageDrawImagePro", ltexturesImageDrawImagePro ); TODO: REVIEW: ImageDrawImagePro(), implement origin and rotation for image drawing
 	assignGlobalFunction( "ImageDrawText", ltexturesImageDrawText );
 	assignGlobalFunction( "ImageDrawTextEx", ltexturesImageDrawTextEx );
+	assignGlobalFunction( "ImageDrawTextPro", ltexturesImageDrawTextPro );
 		/* Texture loading functions. */
 	assignGlobalFunction( "GetTextureDefault", ltexturesGetTextureDefault );
 	assignGlobalFunction( "LoadTexture", ltexturesLoadTexture );
@@ -2189,6 +2207,7 @@ void luaRegister() {
 	assignGlobalFunction( "LoadTextureCubemap", ltexturesLoadTextureCubemap );
 	assignGlobalFunction( "LoadTextureFromData", ltexturesLoadTextureFromData );
 	assignGlobalFunction( "LoadRenderTexture", ltexturesLoadRenderTexture );
+	assignGlobalFunction( "LoadRenderTextureEx", ltexturesLoadRenderTextureEx );
 	assignGlobalFunction( "LoadRenderTextureFromData", ltexturesLoadRenderTextureFromData );
 	assignGlobalFunction( "IsTextureValid", ltexturesIsTextureValid );
 	assignGlobalFunction( "UnloadTexture", ltextureUnloadTexture );

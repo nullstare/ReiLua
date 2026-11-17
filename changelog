@@ -1,4 +1,13 @@
 ------------------------------------------------------------------------
+Release:	ReiLua version 1.1.0		Using raylib 6.2 and raygui 5.0
+------------------------------------------------------------------------
+KEY CHANGES:
+	- CHANGE: Switch to raylib 6.2.
+
+DETAILED CHANGES:
+	- ADDED: New Core, shapes and textures functions.
+
+------------------------------------------------------------------------
 Release:	ReiLua version 1.0.0		Using raylib 6.0 and raygui 5.0
 ------------------------------------------------------------------------
 KEY CHANGES:

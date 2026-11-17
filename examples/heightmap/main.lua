@@ -1,9 +1,6 @@
 package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
 
-Util = require( "utillib" )
-Vec2 = require( "vector2" )
-Vec3 = require( "vector3" )
-Cam3D = require( "camera3d" )
+Camera3D = require( "camera3d" )
 
 local TILE_SIZE = 32
 
@@ -34,7 +31,7 @@ function RL.init()
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
 
-	camera = Cam3D:new()
+	camera = Camera3D:new()
 
 	camera:setPosition( { 0, 8, 16 } )
 	camera:setTarget( { 0, 0, 0 } )

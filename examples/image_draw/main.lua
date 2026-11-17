@@ -22,18 +22,18 @@ function RL.init()
 	RL.ImageDrawLine( image, { 32, 45 }, { 100, 60 }, RL.GREEN )
 	RL.ImageDrawCircle( image, { 64, 32 }, 16, RL.BLUE )
 	RL.ImageDrawRectangle( image, { 120, 64, 32, 64 }, RL.BLUE )
-	RL.ImageDrawRectangleLines( image, { 160, 64, 32, 64 }, 2.0, RL.BLUE )
-	RL.ImageDraw( image, catImage, { 143, 25, 230, 250 }, { 200, 200, 230, 250 }, RL.WHITE )
+	RL.ImageDrawRectangleLines( image, { 160, 64, 32, 64 }, RL.BLUE )
+	RL.ImageDrawImageRec( image, catImage, { 143, 25, 230, 250 }, { 200, 200 }, RL.WHITE )
 	RL.ImageDrawTextEx( image, RL.GetFontDefault(), "Hello", { 300, 32 }, 48.0, 1.0, RL.WHITE )
 
-	local src = { 80, 70, 96, 96 }
+	local src = { 175, 145, 96, 96 }
 	catCopy = RL.ImageFromImage( catImage, src )
 
-	RL.ImageDraw( image, catCopy, src, { 600, 200, src[3], src[4] }, RL.WHITE )
+	RL.ImageDrawImageRec( image, catCopy, { 0, 0, src[3], src[4] }, { 600, 200 }, RL.RED )
 
 	textImage = RL.ImageTextEx( RL.GetFontDefault(), "Cat", 10, 4, RL.WHITE )
 	local imageSize = RL.GetImageSize( textImage )
-	RL.ImageDraw( image, textImage, { 0, 0, imageSize[1], imageSize[2] }, { 250, 40, imageSize[1], imageSize[2] }, RL.WHITE )
+	RL.ImageDrawImageRec( image, textImage, { 0, 0, imageSize[1], imageSize[2] }, { 250, 40 }, RL.WHITE )
 
 	texture = RL.LoadTextureFromImage( image )
 end

@@ -1,7 +1,11 @@
 -- Followed this tutorial. https://www.youtube.com/watch?v=_EurjoraotA
 
+package.path = package.path..";"..RL.GetBasePath().."../resources/lib/?.lua"
+
+Camera3D = require( "camera3d" )
+
+local camera = Camera3D:new()
 local monitor = 0
-local camera = -1
 local texture = nil
 local material = -1
 local model = -1
@@ -19,10 +23,11 @@ function RL.init()
 	RL.SetWindowState( RL.FLAG_WINDOW_RESIZABLE )
 	RL.SetWindowState( RL.FLAG_VSYNC_HINT )
 	RL.SetWindowPosition( { mPos[1] + mSize[1] / 2 - winSize[1] / 2, mPos[2] + mSize[2] / 2 - winSize[2] / 2 } )
-	camera = RL.CreateCamera3D()
-	RL.SetCamera3DPosition( camera, { 0, 2, 4 } )
-	RL.SetCamera3DTarget( camera, { 0, 0, 0 } )
-	RL.SetCamera3DUp( camera, { 0, 1, 0 } )
+
+	camera:setPosition( { 0, 2, 4 } )
+	camera:setTarget( { 0, 0, 0 } )
+	camera:setUp( { 0, 1, 0 } )
+	camera.mode = camera.MODES.FIRST_PERSON
 
 	RL.SetTextLineSpacing( 26 )
 	-- If custom material or mesh is set to model, we need to use custom unloading to prevent double free errors.
@@ -65,7 +70,7 @@ function RL.update( delta )
 		animSpeed = animSpeed - 5
 	end
 
-	if RL.IsKeyDown( RL.KEY_SPACE ) then
+	if RL.IsKeyDown( RL.KEY_P ) then
 		RL.UpdateModelAnimation( model, animations[ curAnim + 1 ], math.floor( frame ) )
 		frame = frame + animSpeed * delta
 
@@ -75,20 +80,29 @@ function RL.update( delta )
 			frame = frameCount
 		end
 	end
+
+	camera:update( delta )
+
+	if RL.IsKeyPressed( RL.KEY_SPACE ) then
+		if camera.mode == camera.MODES.FREE then
+			camera.mode = camera.MODES.FIRST_PERSON
+		else
+			camera.mode = camera.MODES.FREE
+		end
+	end
 end
 
 function RL.draw()
 	RL.ClearBackground( { 100, 150, 100 } )
-	RL.UpdateCamera3D( camera, RL.CAMERA_FIRST_PERSON )
 
-	RL.BeginMode3D( camera )
+	camera:beginMode3D()
 		RL.DrawGrid( 8, 1 )
 		RL.DrawModelEx( model, { 0, 0, 0 }, { 1.0, 0.0, 0.0 }, -90.0, { 1.0, 1.0, 1.0 }, RL.WHITE )
-	RL.EndMode3D()
+	camera:endMode3D()
 
 	RL.DrawText(
 "Enter: Change animation\
-Space: Play animation\
+P: Play animation\
 Up arrow: Inreace animation speed\
 Down arrow: Decreace animation speed",
 		{ 10, 10 }, 30, RL.WHITE

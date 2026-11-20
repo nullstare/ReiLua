@@ -7087,6 +7087,16 @@ Swap buffer endianness from big endian to little endian and vice versa
 Get buffer data as table in the format it was stored
 
 - Success return data{}
+- Failure return nil
+
+---
+
+> data = RL.GetBufferDataAs( Buffer buffer, int type, int position, int length )
+
+Get buffer data as table in given type
+
+- Success return data{}
+- Failure return nil
 
 ---
 
@@ -7117,6 +7127,14 @@ Get buffer size in bytes
 > size = RL.GetBufferElementSize( Buffer buffer )
 
 Get buffer element size in bytes
+
+- Success return int
+
+---
+
+> size = RL.GetBufferElementTypeSize( Buffer buffer )
+
+Get buffer element type size in bytes
 
 - Success return int
 

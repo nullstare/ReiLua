@@ -37,7 +37,7 @@ enum BufferType {
 
 typedef struct {
 	int type;
-	size_t size;
+	size_t size; /* Size in bytes. */
 	void* data;
 } Buffer;
 

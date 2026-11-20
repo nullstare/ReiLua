@@ -3222,11 +3222,22 @@ function  RL.SwapBufferEndianness( buffer ) end
 
 ---Get buffer data as table in the format it was stored
 ---- Success return data{}
+---- Failure return nil
 ---@param buffer any
 ---@param position integer
 ---@param length integer
 ---@return any data 
 function RL.GetBufferData( buffer, position, length ) end
+
+---Get buffer data as table in given type
+---- Success return data{}
+---- Failure return nil
+---@param buffer any
+---@param type integer
+---@param position integer
+---@param length integer
+---@return any data 
+function RL.GetBufferDataAs( buffer, type, position, length ) end
 
 ---Get buffer as string
 ---- Success return string
@@ -3251,6 +3262,12 @@ function RL.GetBufferSize( buffer ) end
 ---@param buffer any
 ---@return any size 
 function RL.GetBufferElementSize( buffer ) end
+
+---Get buffer element type size in bytes
+---- Success return int
+---@param buffer any
+---@return any size 
+function RL.GetBufferElementTypeSize( buffer ) end
 
 ---Get buffer element count
 ---- Success return int

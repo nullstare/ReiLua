@@ -2028,10 +2028,12 @@ void luaRegister() {
 	assignGlobalFunction( "SetBufferData", lcoreSetBufferData );
 	assignGlobalFunction( "SwapBufferEndianness", lcoreSwapBufferEndianness );
 	assignGlobalFunction( "GetBufferData", lcoreGetBufferData );
+	assignGlobalFunction( "GetBufferDataAs", lcoreGetBufferDataAs );
 	assignGlobalFunction( "GetBufferAsString", lcoreGetBufferAsString );
 	assignGlobalFunction( "GetBufferType", lcoreGetBufferType );
 	assignGlobalFunction( "GetBufferSize", lcoreGetBufferSize );
 	assignGlobalFunction( "GetBufferElementSize", lcoreGetBufferElementSize );
+	assignGlobalFunction( "GetBufferElementTypeSize", lcoreGetBufferElementTypeSize );
 	assignGlobalFunction( "GetBufferLength", lcoreGetBufferLength );
 	assignGlobalFunction( "ExportBuffer", lcoreExportBuffer );
 

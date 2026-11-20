@@ -6,6 +6,8 @@ KEY CHANGES:
 
 DETAILED CHANGES:
 	- ADDED: New Core, shapes and textures functions.
+	- ADDED: GetBufferDataAs and GetBufferElementTypeSize.
+	- FIXED: Buffer bounds check refining.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 1.0.0		Using raylib 6.0 and raygui 5.0

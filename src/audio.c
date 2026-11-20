@@ -212,7 +212,7 @@ Unload wave data
 int laudioUnloadWave( lua_State* L ) {
 	Wave* wave = uluaGetWave( L, 1 );
 
-	uluaUnloadWave( wave );
+	uluaUnloadWave( wave, 0 );
 
 	return 0;
 }
@@ -225,7 +225,7 @@ Unload sound
 int laudioUnloadSound( lua_State* L ) {
 	Sound* sound = uluaGetSound( L, 1 );
 
-	uluaUnloadSound( sound );
+	uluaUnloadSound( sound, 0 );
 
 	return 0;
 }
@@ -238,7 +238,7 @@ Unload a sound alias (does not deallocate sample data)
 int laudioUnloadSoundAlias( lua_State* L ) {
 	Sound* alias = uluaGetSound( L, 1 );
 
-	uluaUnloadSoundAlias( alias );
+	uluaUnloadSoundAlias( alias, 0 );
 
 	return 0;
 }
@@ -532,7 +532,7 @@ Unload music stream
 int laudioUnloadMusicStream( lua_State* L ) {
 	Music* music = uluaGetMusic( L, 1 );
 
-	uluaUnloadMusic( music );
+	uluaUnloadMusic( music, 0 );
 
 	return 0;
 }
@@ -793,7 +793,7 @@ Unload audio stream and free memory
 int laudioUnloadAudioStream( lua_State* L ) {
 	AudioStream* stream = uluaGetAudioStream( L, 1 );
 
-	uluaUnloadAudioStream( stream );
+	uluaUnloadAudioStream( stream, 0 );
 
 	return 0;
 }

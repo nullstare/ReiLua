@@ -1162,7 +1162,7 @@ Unload mesh data from CPU and GPU
 int lmodelsUnloadMesh( lua_State* L ) {
 	Mesh* mesh = uluaGetMesh( L, 1 );
 
-	uluaUnloadMesh( mesh );
+	uluaUnloadMesh( mesh, 0 );
 
 	return 0;
 }
@@ -2184,7 +2184,7 @@ Unload animation data
 int lmodelsUnloadModelAnimation( lua_State* L ) {
 	ModelAnimation* animation = uluaGetModelAnimation( L, 1 );
 
-	uluaUnloadModelAnimation( animation );
+	uluaUnloadModelAnimation( animation, 0 );
 
 	return 0;
 }
@@ -2201,7 +2201,7 @@ int lmodelsUnloadModelAnimations( lua_State* L ) {
 	while ( lua_next( L, t ) != 0 ) {
 		if ( lua_isuserdata( L, -1 ) ) {
 			ModelAnimation* animation = uluaGetModelAnimation( L, lua_gettop( L ) );
-			uluaUnloadModelAnimation( animation );
+			uluaUnloadModelAnimation( animation, 0 );
 		}
 		i++;
 		lua_pop( L, 1 );

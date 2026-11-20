@@ -5,10 +5,21 @@
 	#define PLATFORM_SDL_EVENT_QUEUE_LEN 128
 #endif
 
+#define UNLOAD_QUEUE_ALLOC_SIZE 64
+
+typedef struct {
+	void* object;
+	unsigned int flags;
+	void (*callback)( void*, unsigned char );
+} UnloadRequest;
+
 typedef struct {
 	char* basePath;
 	bool run;
 	bool gcUnload;
+	UnloadRequest* unloadQueue;
+	int unloadQueueSize;
+	int unloadQueueCapacity;
 	int lineSpacing; /* We need to store copy here since raylib has it in static. */
 	Vector2 mouseOffset;
 	Vector2 mouseScale;
@@ -53,4 +64,6 @@ extern State* state;
 bool stateInit( int argn, const char** argc, const char* basePath );
 void stateContextInit();
 void stateInitInterpret( int argn, const char** argc );
+void addUnloadRequest( void (*callback)( void*, unsigned char ), void* object, unsigned int flags );
+void callUnloadQueue();
 void stateFree();

@@ -74,9 +74,11 @@ int main( int argn, const char** argc ) {
 			if ( WindowShouldClose() ) {
 				state->run = false;
 			}
+			callUnloadQueue();
 		}
 		luaCallExit();
 	}
+	callUnloadQueue();
 	stateFree();
 
 	return 0;

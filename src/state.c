@@ -20,6 +20,9 @@ bool stateInit( int argn, const char** argc, const char* basePath ) {
 	state->mouseScale = (Vector2){ 1, 1 };
 	state->isScissorMode = false;
 	state->scissorRect = (Rectangle){ 0, 0, 0, 0 };
+	state->unloadQueue = malloc( UNLOAD_QUEUE_ALLOC_SIZE * sizeof( UnloadRequest ) );
+	state->unloadQueueSize = 0;
+	state->unloadQueueCapacity = UNLOAD_QUEUE_ALLOC_SIZE;
 
 #if defined PLATFORM_DESKTOP_SDL2 || defined PLATFORM_DESKTOP_SDL3
 	state->SDL_eventQueue = malloc( PLATFORM_SDL_EVENT_QUEUE_LEN * sizeof( SDL_Event ) );
@@ -47,6 +50,31 @@ void stateContextInit() {
 void stateInitInterpret( int argn, const char** argc ) {
 	state = malloc( sizeof( State ) );
 	luaInit( argn, argc );
+}
+
+void addUnloadRequest( void(*callback)( void*, unsigned char ), void* object, unsigned int flags ) {
+	/* On exit just call it directly. */
+	if ( !state->run ) {
+		callback( object, flags );
+	}
+
+	if ( state->unloadQueueCapacity <= state->unloadQueueSize ) {
+		state->unloadQueueCapacity += UNLOAD_QUEUE_ALLOC_SIZE;
+		state->unloadQueue = realloc( state->unloadQueue, state->unloadQueueCapacity * sizeof( UnloadRequest ) );
+	}
+	state->unloadQueue[ state->unloadQueueSize ] = (UnloadRequest){ object, flags, callback };
+	state->unloadQueueSize++;
+}
+
+void callUnloadQueue() {
+	if ( 0 < state->unloadQueueSize ) {
+		for ( int i = 0; i < state->unloadQueueSize; i++ ) {
+			UnloadRequest* request = &state->unloadQueue[i];
+			request->callback( request->object, 0 );
+		}
+
+		state->unloadQueueSize = 0;
+	}
 }
 
 void stateFree() {

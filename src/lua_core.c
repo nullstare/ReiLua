@@ -37,7 +37,7 @@ static void lua_getiCustom( lua_State* L, int index, int i ) {
 static int gcBuffer( lua_State* L ) {
 	if ( state->gcUnload ) {
 		Buffer* buffer = luaL_checkudata( L, 1, "Buffer" );
-		uluaUnloadBuffer( buffer );
+		addUnloadRequest( uluaUnloadBuffer, buffer, 0 );
 	}
 	return 0;
 }
@@ -56,7 +56,7 @@ static void defineBuffer() {
 static int gcImage( lua_State* L ) {
 	if ( state->gcUnload ) {
 		Image* image = luaL_checkudata( L, 1, "Image" );
-		uluaUnloadImage( image );
+		addUnloadRequest( uluaUnloadImage, image, 0 );
 	}
 	return 0;
 }
@@ -75,7 +75,7 @@ static void defineImage() {
 static int gcTexture( lua_State* L ) {
 	if ( state->gcUnload ) {
 		Texture* texture = luaL_checkudata( L, 1, "Texture" );
-		uluaUnloadTexture( texture );
+		addUnloadRequest( uluaUnloadTexture, texture, 0 );
 	}
 	return 0;
 }
@@ -94,7 +94,7 @@ static void defineTexture() {
 static int gcRenderTexture( lua_State* L ) {
 	if ( state->gcUnload ) {
 		RenderTexture* renderTexture = luaL_checkudata( L, 1, "RenderTexture" );
-		uluaUnloadRenderTexture( renderTexture );
+		addUnloadRequest( uluaUnloadRenderTexture, renderTexture, 0 );
 	}
 	return 0;
 }
@@ -131,7 +131,7 @@ static void defineCamera3D() {
 static int gcShader( lua_State* L ) {
 	if ( state->gcUnload ) {
 		Shader* shader = luaL_checkudata( L, 1, "Shader" );
-		uluaUnloadShader( shader );
+		addUnloadRequest( uluaUnloadShader, shader, 0 );
 	}
 	return 0;
 }
@@ -150,7 +150,7 @@ static void defineShader() {
 static int gcFont( lua_State* L ) {
 	if ( state->gcUnload ) {
 		Font* font = luaL_checkudata( L, 1, "Font" );
-		uluaUnloadFont( font );
+		addUnloadRequest( uluaUnloadFont, font, 0 );
 	}
 	return 0;
 }
@@ -169,7 +169,7 @@ static void defineFont() {
 static int gcGlyphInfo( lua_State* L ) {
 	if ( state->gcUnload ) {
 		GlyphInfo* glyph = luaL_checkudata( L, 1, "GlyphInfo" );
-		uluaUnloadGlyphInfo( glyph );
+		addUnloadRequest( uluaUnloadGlyphInfo, glyph, 0 );
 	}
 	return 0;
 }
@@ -188,7 +188,7 @@ static void defineGlyphInfo() {
 static int gcWave( lua_State* L ) {
 	if ( state->gcUnload ) {
 		Wave* wave = luaL_checkudata( L, 1, "Wave" );
-		uluaUnloadWave( wave );
+		addUnloadRequest( uluaUnloadWave, wave, 0 );
 	}
 	return 0;
 }
@@ -207,7 +207,7 @@ static void defineWave() {
 static int gcSound( lua_State* L ) {
 	if ( state->gcUnload ) {
 		Sound* sound = luaL_checkudata( L, 1, "Sound" );
-		uluaUnloadSound( sound );
+		addUnloadRequest( uluaUnloadSound, sound, 0 );
 	}
 	return 0;
 }
@@ -226,7 +226,7 @@ static void defineSound() {
 static int gcSoundAlias( lua_State* L ) {
 	if ( state->gcUnload ) {
 		Sound* sound = luaL_checkudata( L, 1, "SoundAlias" );
-		uluaUnloadSoundAlias( sound );
+		addUnloadRequest( uluaUnloadSoundAlias, sound, 0 );
 	}
 	return 0;
 }
@@ -245,7 +245,7 @@ static void defineSoundAlias() {
 static int gcMusic( lua_State* L ) {
 	if ( state->gcUnload ) {
 		Music* music = luaL_checkudata( L, 1, "Music" );
-		uluaUnloadMusic( music );
+		addUnloadRequest( uluaUnloadMusic, music, 0 );
 	}
 	return 0;
 }
@@ -264,7 +264,7 @@ static void defineMusic() {
 static int gcAudioStream( lua_State* L ) {
 	if ( state->gcUnload ) {
 		AudioStream* stream = luaL_checkudata( L, 1, "AudioStream" );
-		uluaUnloadAudioStream( stream );
+		addUnloadRequest( uluaUnloadAudioStream, stream, 0 );
 	}
 	return 0;
 }
@@ -292,7 +292,7 @@ static void defineLight() {
 static int gcMaterial( lua_State* L ) {
 	if ( state->gcUnload ) {
 		Material* material = luaL_checkudata( L, 1, "Material" );
-		uluaUnloadMaterial( material, true );
+		addUnloadRequest( uluaUnloadMaterial, material, 1 );
 	}
 	return 0;
 }
@@ -311,7 +311,7 @@ static void defineMaterial() {
 static int gcMesh( lua_State* L ) {
 	if ( state->gcUnload ) {
 		Mesh* mesh = luaL_checkudata( L, 1, "Mesh" );
-		uluaUnloadMesh( mesh );
+		addUnloadRequest( uluaUnloadMesh, mesh, 0 );
 	}
 	return 0;
 }
@@ -330,7 +330,7 @@ static void defineMesh() {
 static int gcModel( lua_State* L ) {
 	if ( state->gcUnload ) {
 		Model* model = luaL_checkudata( L, 1, "Model" );
-		uluaUnloadModel( model, true );
+		addUnloadRequest( uluaUnloadModel, model, 1 );
 	}
 	return 0;
 }
@@ -349,7 +349,7 @@ static void defineModel() {
 static int gcModelAnimation( lua_State* L ) {
 	if ( state->gcUnload ) {
 		ModelAnimation* modelAnimation = luaL_checkudata( L, 1, "ModelAnimation" );
-		uluaUnloadModelAnimation( modelAnimation );
+		addUnloadRequest( uluaUnloadModelAnimation, modelAnimation, 0 );
 	}
 	return 0;
 }
@@ -368,7 +368,7 @@ static void defineModelAnimation() {
 static int gcModelSkeleton( lua_State* L ) {
 	if ( state->gcUnload ) {
 		ModelSkeleton* modelSkeleton = luaL_checkudata( L, 1, "ModelSkeleton" );
-		uluaUnloadModelSkeleton( modelSkeleton );
+		addUnloadRequest( uluaUnloadModelSkeleton, modelSkeleton, 0 );
 	}
 	return 0;
 }
@@ -387,7 +387,7 @@ static void defineModelSkeleton() {
 static int gcRLRenderBatch( lua_State* L ) {
 	if ( state->gcUnload ) {
 		rlRenderBatch* renderBatch = luaL_checkudata( L, 1, "rlRenderBatch" );
-		uluaUnloadRLRenderBatch( renderBatch );
+		addUnloadRequest( uluaUnloadRLRenderBatch, renderBatch, 0 );
 	}
 	return 0;
 }
@@ -415,7 +415,7 @@ static void defineAutomationEvent() {
 static int gcAutomationEventList( lua_State* L ) {
 	if ( state->gcUnload ) {
 		AutomationEventList* automationEventList = luaL_checkudata( L, 1, "AutomationEventList" );
-		uluaUnloadAutomationEventList( automationEventList );
+		addUnloadRequest( uluaUnloadAutomationEventList, automationEventList, 0 );
 	}
 	return 0;
 }
@@ -4556,128 +4556,128 @@ void uluaPushAutomationEventList( lua_State* L, AutomationEventList eventList ) 
 
 /* Unload objects. */
 
-void uluaUnloadBuffer( Buffer* buffer ) {
+void uluaUnloadBuffer( void* buffer, unsigned char flags ) {
 	luaCallUnload( "Buffer", buffer );
-	unloadBuffer( buffer );
+	unloadBuffer( (Buffer*)buffer );
 	memset( buffer, 0, sizeof( Buffer ) );
 }
 
-void uluaUnloadImage( Image* image ) {
+void uluaUnloadImage( void* image, unsigned char flags ) {
 	luaCallUnload( "Image", image );
-	UnloadImage( *image );
+	UnloadImage( *(Image*)image );
 	memset( image, 0, sizeof( Image ) );
 }
 
-void uluaUnloadTexture( Texture* texture ) {
+void uluaUnloadTexture( void* texture, unsigned char flags ) {
 	luaCallUnload( "Texture", texture );
-	UnloadTexture( *texture );
+	UnloadTexture( *(Texture*)texture );
 	memset( texture, 0, sizeof( Texture ) );
 }
 
-void uluaUnloadRenderTexture( RenderTexture* renderTexture ) {
+void uluaUnloadRenderTexture( void* renderTexture, unsigned char flags ) {
 	luaCallUnload( "RenderTexture", renderTexture );
-	UnloadRenderTexture( *renderTexture );
+	UnloadRenderTexture( *(RenderTexture*)renderTexture );
 	memset( renderTexture, 0, sizeof( RenderTexture ) );
 }
 
-void uluaUnloadShader( Shader* shader ) {
+void uluaUnloadShader( void* shader, unsigned char flags ) {
 	luaCallUnload( "Shader", shader );
-	UnloadShader( *shader );
+	UnloadShader( *(Shader*)shader );
 	memset( shader, 0, sizeof( Shader ) );
 }
 
-void uluaUnloadFont( Font* font ) {
+void uluaUnloadFont( void* font, unsigned char flags ) {
 	luaCallUnload( "Font", font );
-	UnloadFont( *font );
+	UnloadFont( *(Font*)font );
 	memset( font, 0, sizeof( Font ) );
 }
 
-void uluaUnloadGlyphInfo( GlyphInfo* glyph ) {
+void uluaUnloadGlyphInfo( void* glyph, unsigned char flags ) {
 	luaCallUnload( "GlyphInfo", glyph );
-	unloadGlyphInfo( glyph );
+	unloadGlyphInfo( (GlyphInfo*)glyph );
 }
 
-void uluaUnloadWave( Wave* wave ) {
+void uluaUnloadWave( void* wave, unsigned char flags ) {
 	luaCallUnload( "Wave", wave );
-	UnloadWave( *wave );
+	UnloadWave( *(Wave*)wave );
 	memset( wave, 0, sizeof( Wave ) );
 }
 
-void uluaUnloadSound( Sound* sound ) {
+void uluaUnloadSound( void* sound, unsigned char flags ) {
 	luaCallUnload( "Sound", sound );
-	UnloadSound( *sound );
+	UnloadSound( *(Sound*)sound );
 	memset( sound, 0, sizeof( Sound ) );
 }
 
-void uluaUnloadSoundAlias( Sound* alias ) {
+void uluaUnloadSoundAlias( void* alias, unsigned char flags ) {
 	luaCallUnload( "SoundAlias", alias );
-	UnloadSoundAlias( *alias );
+	UnloadSoundAlias( *(Sound*)alias );
 	memset( alias, 0, sizeof( Sound ) );
 }
 
-void uluaUnloadMusic( Music* music ) {
+void uluaUnloadMusic( void* music, unsigned char flags ) {
 	luaCallUnload( "Music", music );
-	UnloadMusicStream( *music );
+	UnloadMusicStream( *(Music*)music );
 	memset( music, 0, sizeof( Music ) );
 }
 
-void uluaUnloadAudioStream( AudioStream* stream ) {
+void uluaUnloadAudioStream( void* stream, unsigned char flags ) {
 	luaCallUnload( "AudioStream", stream );
-	UnloadAudioStream( *stream );
+	UnloadAudioStream( *(AudioStream*)stream );
 	memset( stream, 0, sizeof( AudioStream ) );
 }
 
-void uluaUnloadMaterial( Material* material, bool freeAll ) {
+void uluaUnloadMaterial( void* material, unsigned char flags ) {
 	luaCallUnload( "Material", material );
-	if ( freeAll ) {
-		UnloadMaterial( *material );
+	if ( 0 < flags ) {
+		UnloadMaterial( *(Material*)material );
 	}
 	/* Custom UnloadMaterial if we don't want to free Shaders or Textures. */
 	else {
-		unloadMaterial( material );
+		unloadMaterial( (Material*)material );
 	}
 	memset( material, 0, sizeof( Material ) );
 }
 
-void uluaUnloadMesh( Mesh* mesh ) {
+void uluaUnloadMesh( void* mesh, unsigned char flags ) {
 	luaCallUnload( "Mesh", mesh );
-	UnloadMesh( *mesh );
+	UnloadMesh( *(Mesh*)mesh );
 	memset( mesh, 0, sizeof( Mesh ) );
 }
 
-void uluaUnloadModel( Model* model, bool freeAll ) {
+void uluaUnloadModel( void* model, unsigned char flags ) {
 	luaCallUnload( "Model", model );
-	if ( freeAll ) {
-		UnloadModel( *model );
+	if ( 0 < flags ) {
+		UnloadModel( *(Model*)model );
 	}
 	/* Custom UnloadModel if we don't want to free Meshes or Materials. */
 	else {
-		unloadModel( model );
+		unloadModel( (Model*)model );
 	}
 	memset( model, 0, sizeof( Model ) );
 }
 
-void uluaUnloadModelAnimation( ModelAnimation* modelAnimation ) {
+void uluaUnloadModelAnimation( void* modelAnimation, unsigned char flags ) {
 	luaCallUnload( "ModelAnimation", modelAnimation );
-	unloadModelAnimation( *modelAnimation );
+	unloadModelAnimation( *(ModelAnimation*)modelAnimation );
 	memset( modelAnimation, 0, sizeof( ModelAnimation ) );
 }
 
-void uluaUnloadModelSkeleton( ModelSkeleton* modelSkeleton ) {
+void uluaUnloadModelSkeleton( void* modelSkeleton, unsigned char flags ) {
 	luaCallUnload( "ModelSkeleton", modelSkeleton );
-	unloadModelSkeleton( modelSkeleton );
+	unloadModelSkeleton( (ModelSkeleton*)modelSkeleton );
 	memset( modelSkeleton, 0, sizeof( ModelSkeleton ) );
 }
 
-void uluaUnloadRLRenderBatch( rlRenderBatch* renderBatch ) {
+void uluaUnloadRLRenderBatch( void* renderBatch, unsigned char flags ) {
 	luaCallUnload( "rlRenderBatch", renderBatch );
-	rlUnloadRenderBatch( *renderBatch );
+	rlUnloadRenderBatch( *(rlRenderBatch*)renderBatch );
 	memset( renderBatch, 0, sizeof( rlRenderBatch ) );
 }
 
-void uluaUnloadAutomationEventList( AutomationEventList* eventList ) {
+void uluaUnloadAutomationEventList( void* eventList, unsigned char flags ) {
 	luaCallUnload( "AutomationEventList", eventList );
-	UnloadAutomationEventList( *eventList );
+	UnloadAutomationEventList( *(AutomationEventList*)eventList );
 	memset( eventList, 0, sizeof( AutomationEventList ) );
 }
 

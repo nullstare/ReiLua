@@ -11,6 +11,7 @@ DETAILED CHANGES:
 	- FIXED/CHANGE: GC could cause a crash on LuaJIT when calling RL.unload. As of LuaJIT commit 5c64775,
 	__gc finalizers run on a separate VM-thread lua_State, not in main state. GC Unloads do not call
 	luaCallUnload directly anymore, but instead puts them into a queue and unload them on main state.
+	- FIXED: GetBufferDataAs was reading from wrong position.
 
 ------------------------------------------------------------------------
 Release:	ReiLua version 1.0.0		Using raylib 6.0 and raygui 5.0

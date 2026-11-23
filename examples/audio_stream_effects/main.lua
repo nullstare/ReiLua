@@ -12,7 +12,6 @@ Vector2 = require( "vector2" )
 Rect = require( "rectangle" )
 
 -- NOTE! You have to compile the C lib containing the effects in resources/clib/audioProcess.c
--- Implementing audio processors in Lua would probably be too slow.
 AudioProcess = require( "audioProcess" )
 
 local music = nil

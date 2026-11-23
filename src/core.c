@@ -19,6 +19,10 @@ static size_t getBufferElementSize( int type ) {
 		case BUFFER_LONG: return sizeof( long );
 		case BUFFER_FLOAT: return sizeof( float );
 		case BUFFER_DOUBLE: return sizeof( double );
+		default: {
+			TraceLog( LOG_WARNING, "Unknown type %d", type );
+			return 1;
+		}
 	}
 	return 1;
 }
@@ -29,187 +33,88 @@ inline static bool checkBufferBounds( Buffer* buffer, int offset, size_t size ) 
 }
 
 static void setBufferData( lua_State* L, Buffer* buffer, int index, size_t offset ) {
-	int t = index;
-	unsigned char* ucp = buffer->data + offset;
-	unsigned short* usp = buffer->data + offset;
-	unsigned int* uip = buffer->data + offset;
-	unsigned long* ulp = buffer->data + offset;
-	char* cp = buffer->data + offset;
-	short* sp = buffer->data + offset;
-	int* ip = buffer->data + offset;
-	long* lp = buffer->data + offset;
-	float* fp = buffer->data + offset;
-	double* dp = buffer->data + offset;
-	
+	size_t elemSize = getBufferElementSize( buffer->type );
+	int isFloat = ( buffer->type == BUFFER_FLOAT || buffer->type == BUFFER_DOUBLE );
+	unsigned char* p = buffer->data + offset;
+
 	lua_pushnil( L );
 
-	size_t i = 0;
-
-	while ( lua_next( L, t ) != 0 ) {
-		switch ( buffer->type ) {
-			case BUFFER_UNSIGNED_CHAR:
-				*ucp = (unsigned char)lua_tointeger( L, -1 );
-				ucp++;
-				break;
-			case BUFFER_UNSIGNED_SHORT:
-				*usp = (unsigned short)lua_tointeger( L, -1 );
-				usp++;
-				break;
-			case BUFFER_UNSIGNED_INT:
-				*uip = (unsigned int)lua_tointeger( L, -1 );
-				uip++;
-				break;
-			case BUFFER_UNSIGNED_LONG:
-				*ulp = (unsigned long)lua_tointeger( L, -1 );
-				ulp++;
-				break;
-			case BUFFER_CHAR:
-				*cp = (char)lua_tointeger( L, -1 );
-				cp++;
-				break;
-			case BUFFER_SHORT:
-				*sp = (short)lua_tointeger( L, -1 );
-				sp++;
-				break;
-			case BUFFER_INT:
-				*ip = (int)lua_tointeger( L, -1 );
-				ip++;
-				break;
-			case BUFFER_LONG:
-				*lp = (long)lua_tointeger( L, -1 );
-				lp++;
-				break;
-			case BUFFER_FLOAT:
-				*fp = (float)lua_tonumber( L, -1 );
-				fp++;
-				break;
-			case BUFFER_DOUBLE:
-				*dp = (double)lua_tonumber( L, -1 );
-				dp++;
-				break;
-			default:
-				break;
+	while ( lua_next( L, index ) != 0 ) {
+		if ( !lua_isnumber( L, -1 ) ) {
+			TraceLog( LOG_WARNING, "setBufferData: expected number, got %s", lua_typename( L, lua_type( L, -1 ) ) );
 		}
+
+		if ( isFloat ) {
+			if ( elemSize == sizeof(float) ) {
+				float val = (float)lua_tonumber( L, -1 );
+				memcpy( p, &val, sizeof(val) );
+			} else {
+				double val = lua_tonumber( L, -1 );
+				memcpy( p, &val, sizeof(val) );
+			}
+		}
+		else {
+			long long val = (long long)lua_tointeger( L, -1 );
+
+			switch ( buffer->type ) {
+				case BUFFER_CHAR:           val = (char)val;          break;
+				case BUFFER_SHORT:          val = (short)val;         break;
+				case BUFFER_INT:            val = (int)val;           break;
+				case BUFFER_LONG:           val = (long)val;          break;
+				case BUFFER_UNSIGNED_CHAR:  val = (unsigned char)val;  break;
+				case BUFFER_UNSIGNED_SHORT: val = (unsigned short)val; break;
+				case BUFFER_UNSIGNED_INT:   val = (unsigned int)val;   break;
+				case BUFFER_UNSIGNED_LONG:  val = (unsigned long)val;  break;
+			}
+
+			memcpy( p, &val, elemSize );
+		}
+
 		lua_pop( L, 1 );
-		i++;
+		p += elemSize;
 	}
 }
 
-static void getBufferData( lua_State* L, Buffer* buffer, int type, int position, int length ) {
-	size_t bufLen = buffer->size / getBufferElementSize( buffer->type );
-	size_t count = bufLen < ( position + length ) ? ( position + length ) - bufLen : length;
+/* NOTE! Check bounds before this function. Give position in bytes and length in read type length. */
+static void getBufferData( lua_State* L, Buffer* buffer, int type, unsigned int position, unsigned int length ) {
+	size_t elemSize = getBufferElementSize( type );
+	int isFloat = ( type == BUFFER_FLOAT || type == BUFFER_DOUBLE );
 
-	switch ( type ) {
-		case BUFFER_UNSIGNED_CHAR: {
-			unsigned char* p = buffer->data + position * sizeof( unsigned char );
-			lua_createtable( L, count, 0 );
+	lua_createtable( L, (int)length, 0 );
+	const unsigned char* p = buffer->data + position;
 
-			for ( int i = 0; i < count; i++ ) {
-				lua_pushinteger( L, (unsigned char)*p );
-				lua_rawseti( L, -2, i+1 );
-				p++;
+	for ( unsigned int i = 0; i < length; i++ ) {
+		if ( isFloat ) {
+			if ( elemSize == sizeof(float) ) {
+				float val;
+				memcpy( &val, p, sizeof(val) );
+				lua_pushnumber( L, (double)val );
+			} else {
+				double val;
+				memcpy( &val, p, sizeof(val) );
+				lua_pushnumber( L, val );
 			}
-			break;
 		}
-		case BUFFER_UNSIGNED_SHORT:	{
-			unsigned short *p = buffer->data + position * sizeof( unsigned short );
-			lua_createtable( L, count, 0 );
+		else {
+			long long val = 0;
+			memcpy( &val, p, elemSize );
 
-			for ( int i = 0; i < count; i++ ) {
-				lua_pushinteger( L, (unsigned short)*p );
-				lua_rawseti( L, -2, i+1 );
-				p++;
+			switch ( type ) {
+				case BUFFER_CHAR:           val = (char)val;          break;
+				case BUFFER_SHORT:          val = (short)val;         break;
+				case BUFFER_INT:            val = (int)val;           break;
+				case BUFFER_LONG:           val = (long)val;          break;
+				case BUFFER_UNSIGNED_CHAR:  val = (unsigned char)val;  break;
+				case BUFFER_UNSIGNED_SHORT: val = (unsigned short)val; break;
+				case BUFFER_UNSIGNED_INT:   val = (unsigned int)val;   break;
+				case BUFFER_UNSIGNED_LONG:  val = (unsigned long)val;  break;
 			}
-			break;
-		}
-		case BUFFER_UNSIGNED_INT: {
-			unsigned int* p = buffer->data + position * sizeof( unsigned int );
-			lua_createtable( L, count, 0 );
 
-			for ( int i = 0; i < count; i++ ) {
-				lua_pushinteger( L, (unsigned int)*p );
-				lua_rawseti( L, -2, i+1 );
-				p++;
-			}
-			break;
+			lua_pushinteger( L, (lua_Integer)val );
 		}
-		case BUFFER_UNSIGNED_LONG: {
-			unsigned long* p = buffer->data + position * sizeof( unsigned long );
-			lua_createtable( L, count, 0 );
 
-			for ( int i = 0; i < count; i++ ) {
-				lua_pushinteger( L, (unsigned long)*p );
-				lua_rawseti( L, -2, i+1 );
-				p++;
-			}
-			break;
-		}
-		case BUFFER_CHAR: {
-			char* p = buffer->data + position * sizeof( char );
-			lua_createtable( L, count, 0 );
-
-			for ( int i = 0; i < count; i++ ) {
-				lua_pushinteger( L, (char)*p );
-				lua_rawseti( L, -2, i+1 );
-				p++;
-			}
-			break;
-		}
-		case BUFFER_SHORT: {
-			short *p = buffer->data + position * sizeof( short );
-			lua_createtable( L, count, 0 );
-
-			for ( int i = 0; i < count; i++ ) {
-				lua_pushinteger( L, (short)*p );
-				lua_rawseti( L, -2, i+1 );
-				p++;
-			}
-			break;
-		}
-		case BUFFER_INT: {
-			int* p = buffer->data + position * sizeof( int );
-			lua_createtable( L, count, 0 );
-
-			for ( int i = 0; i < count; i++ ) {
-				lua_pushinteger( L, (int)*p );
-				lua_rawseti( L, -2, i+1 );
-				p++;
-			}
-			break;
-		}
-		case BUFFER_LONG: {
-			long* p = buffer->data + position * sizeof( long );
-			lua_createtable( L, count, 0 );
-
-			for ( int i = 0; i < count; i++ ) {
-				lua_pushinteger( L, (long)*p );
-				lua_rawseti( L, -2, i+1 );
-				p++;
-			}
-			break;
-		}
-		case BUFFER_FLOAT: {
-			float* p = buffer->data + position * sizeof( float );
-			lua_createtable( L, count, 0 );
-
-			for ( int i = 0; i < count; i++ ) {
-				lua_pushnumber( L, (float)*p );
-				lua_rawseti( L, -2, i+1 );
-				p++;
-			}
-			break;
-		}
-		case BUFFER_DOUBLE: {
-			double* p = buffer->data + position * sizeof( double );
-			lua_createtable( L, count, 0 );
-
-			for ( int i = 0; i < count; i++ ) {
-				lua_pushnumber( L, (double)*p );
-				lua_rawseti( L, -2, i+1 );
-				p++;
-			}
-			break;
-		}
+		lua_rawseti( L, -2, (int)(i + 1) );
+		p += elemSize;
 	}
 }
 
@@ -4278,12 +4183,12 @@ int lcoreGetBufferData( lua_State* L ) {
 	size_t eSize = getBufferElementSize( buffer->type );
 
 	if ( checkBufferBounds( buffer, position * eSize, length * eSize ) ) {
-		TraceLog( state->logLevelInvalid, "GetBufferData. position %d with length %d out of bounds of %d", position * eSize, length * eSize, buffer->size );
+		TraceLog( state->logLevelInvalid, "GetBufferData. position %d with length %d out of bounds of size %d", position * eSize, length * eSize, buffer->size );
 		lua_pushnil( L );
 		return 1;
 	}
 
-	getBufferData( L, buffer, buffer->type, position, length );
+	getBufferData( L, buffer, buffer->type, position * eSize, length );
 	
 	return 1;
 }
@@ -4291,7 +4196,7 @@ int lcoreGetBufferData( lua_State* L ) {
 /*
 > data = RL.GetBufferDataAs( Buffer buffer, int type, int position, int length )
 
-Get buffer data as table in given type
+Get buffer data as table in given type. Give position in buffer size and length in read size
 
 - Success return data{}
 - Failure return nil
@@ -4302,15 +4207,16 @@ int lcoreGetBufferDataAs( lua_State* L ) {
 	size_t position = luaL_checkinteger( L, 3 );
 	size_t length = luaL_checkinteger( L, 4 );
 
-	size_t eSize = getBufferElementSize( buffer->type );
+	size_t eSizeBuf = getBufferElementSize( buffer->type );
+	size_t eSizeRead = getBufferElementSize( type );
 
-	if ( checkBufferBounds( buffer, position * eSize, length * eSize ) ) {
-		TraceLog( state->logLevelInvalid, "GetBufferDataAs. position %d with length %d out of bounds of %d", position * eSize, length * eSize, buffer->size );
+	if ( checkBufferBounds( buffer, position * eSizeBuf, length * eSizeRead ) ) {
+		TraceLog( state->logLevelInvalid, "GetBufferDataAs. position %d with length %d out of bounds of size %d", position * eSizeBuf, length * eSizeRead, buffer->size );
 		lua_pushnil( L );
 		return 1;
 	}
 
-	getBufferData( L, buffer, type, position, length );
+	getBufferData( L, buffer, type, position * eSizeBuf, length );
 	
 	return 1;
 }

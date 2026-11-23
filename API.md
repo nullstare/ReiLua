@@ -7093,7 +7093,7 @@ Get buffer data as table in the format it was stored
 
 > data = RL.GetBufferDataAs( Buffer buffer, int type, int position, int length )
 
-Get buffer data as table in given type
+Get buffer data as table in given type. Give position in buffer size and length in read size
 
 - Success return data{}
 - Failure return nil

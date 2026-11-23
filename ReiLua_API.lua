@@ -3229,7 +3229,7 @@ function  RL.SwapBufferEndianness( buffer ) end
 ---@return any data 
 function RL.GetBufferData( buffer, position, length ) end
 
----Get buffer data as table in given type
+---Get buffer data as table in given type. Give position in buffer size and length in read size
 ---- Success return data{}
 ---- Failure return nil
 ---@param buffer any
